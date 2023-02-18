@@ -206,7 +206,54 @@ class Text_Editor
             {
                 const input_event: InputEvent = event as InputEvent;
                 if (input_event.inputType === `insertFromPaste`) {
-                    this.children.name.innerHTML = this.children.name.textContent || ``;
+                    const selection: Selection | null = document.getSelection();
+                    if (
+                        selection &&
+                        selection.anchorNode &&
+                        selection.anchorNode !== this.children.name
+                    ) {
+                        function Offset_To_Node(
+                            from: Node,
+                            to: Node,
+                        ):
+                            number
+                        {
+                            if (from === to) {
+                                return 0;
+                            } else {
+                                let offset: number = 0;
+
+                                for (const child_node of from.childNodes) {
+                                    if (child_node === to) {
+                                        return offset;
+                                    } else if (child_node.contains(to)) {
+                                        return offset + Offset_To_Node(child_node, to);
+                                    } else {
+                                        if (child_node.textContent) {
+                                            offset += child_node.textContent.length;
+                                        } else {
+                                            offset += 0;
+                                        }
+                                    }
+                                }
+
+                                return offset;
+                            }
+                        };
+
+                        let new_offset: number =
+                            Offset_To_Node(this.children.name, selection.anchorNode) +
+                            selection.anchorOffset;
+
+                        this.children.name.innerHTML = this.children.name.textContent || ``
+
+                        selection.collapse(
+                            this.children.name.firstChild || this.children.name,
+                            new_offset,
+                        );
+                    } else {
+                        this.children.name.innerHTML = ``;
+                    }
                 }
             }.bind(this),
         );

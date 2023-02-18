@@ -102,7 +102,44 @@ class Text_Editor {
         this.children.name.addEventListener(`input`, function (event) {
             const input_event = event;
             if (input_event.inputType === `insertFromPaste`) {
-                this.children.name.innerHTML = this.children.name.textContent || ``;
+                const selection = document.getSelection();
+                if (selection &&
+                    selection.anchorNode &&
+                    selection.anchorNode !== this.children.name) {
+                    function Offset_To_Node(from, to) {
+                        if (from === to) {
+                            return 0;
+                        }
+                        else {
+                            let offset = 0;
+                            for (const child_node of from.childNodes) {
+                                if (child_node === to) {
+                                    return offset;
+                                }
+                                else if (child_node.contains(to)) {
+                                    return offset + Offset_To_Node(child_node, to);
+                                }
+                                else {
+                                    if (child_node.textContent) {
+                                        offset += child_node.textContent.length;
+                                    }
+                                    else {
+                                        offset += 0;
+                                    }
+                                }
+                            }
+                            return offset;
+                        }
+                    }
+                    ;
+                    let new_offset = Offset_To_Node(this.children.name, selection.anchorNode) +
+                        selection.anchorOffset;
+                    this.children.name.innerHTML = this.children.name.textContent || ``;
+                    selection.collapse(this.children.name.firstChild || this.children.name, new_offset);
+                }
+                else {
+                    this.children.name.innerHTML = ``;
+                }
             }
         }.bind(this));
         this.Set_Name(`new_text`);
