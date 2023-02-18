@@ -13,14 +13,18 @@ function Assert(boolean_statement) {
         throw new Error(`Failed assert.`);
     }
 }
+function Escape_Text(text) {
+    return text.replaceAll(/./g, function (point) {
+        return `&#${point.charCodeAt(0)};`;
+    });
+}
 class Text_Editor {
-    constructor({ name = `new_text`, parent, }) {
-        this.name = name;
+    constructor({ parent, }) {
         this.parent = parent;
         this.children = {
             wrapper: document.createElement(`div`),
             commands: document.createElement(`div`),
-            input: document.createElement(`input`),
+            load_input: document.createElement(`input`),
             load_button: document.createElement(`div`),
             save_button: document.createElement(`div`),
             name: document.createElement(`div`),
@@ -52,17 +56,17 @@ class Text_Editor {
                 width: 100%;
                 height: 5%;
             `);
-        this.children.input.setAttribute(`type`, `file`);
-        this.children.input.setAttribute(`accept`, `text/plain`);
-        this.children.input.setAttribute(`style`, `
+        this.children.load_input.setAttribute(`type`, `file`);
+        this.children.load_input.setAttribute(`accept`, `text/plain`);
+        this.children.load_input.setAttribute(`style`, `
                 display: none;
             `);
-        this.children.input.addEventListener(`input`, function (event) {
+        this.children.load_input.addEventListener(`input`, function (event) {
             return __awaiter(this, void 0, void 0, function* () {
-                if (this.children.input.files && this.children.input.files[0]) {
-                    const file = this.children.input.files[0];
+                if (this.children.load_input.files && this.children.load_input.files[0]) {
+                    const file = this.children.load_input.files[0];
                     const file_text = yield file.text();
-                    this.Set_Name(file.name);
+                    this.Set_Name(file.name.replace(/\..+$/, ``));
                     this.Set_Text(file_text);
                     Assert(this.Get_Text() === file_text.replaceAll(/\r/g, ``));
                 }
@@ -74,7 +78,7 @@ class Text_Editor {
             `);
         this.children.load_button.textContent = `Load`;
         this.children.load_button.addEventListener(`click`, function (event) {
-            this.children.input.click();
+            this.children.load_input.click();
         }.bind(this));
         this.children.save_button.setAttribute(`style`, `
                 width: 50%;
@@ -84,19 +88,31 @@ class Text_Editor {
         this.children.save_button.addEventListener(`click`, function (event) {
             this.Save_Text();
         }.bind(this));
+        this.children.name.setAttribute(`contentEditable`, `true`);
+        this.children.name.setAttribute(`spellcheck`, `false`);
         this.children.name.setAttribute(`style`, `
                 width: 100%;
                 height: 5%;
             `);
-        this.Set_Name(name);
-        this.children.editor.setAttribute(`contenteditable`, `true`);
+        this.children.name.addEventListener(`keydown`, function (event) {
+            if (event.key === `Enter`) {
+                event.preventDefault();
+            }
+        }.bind(this));
+        this.children.name.addEventListener(`input`, function (event) {
+            const input_event = event;
+            if (input_event.inputType === `insertFromPaste`) {
+                this.children.name.innerHTML = this.children.name.textContent || ``;
+            }
+        }.bind(this));
+        this.Set_Name(`new_text`);
+        this.children.editor.setAttribute(`contentEditable`, `true`);
         this.children.editor.setAttribute(`spellcheck`, `false`);
         this.children.editor.setAttribute(`style`, `
                 width: 100%;
                 height: 90%;
             `);
-        this.children.editor.innerHTML = `<div></div>`;
-        this.children.commands.appendChild(this.children.input);
+        this.children.commands.appendChild(this.children.load_input);
         this.children.commands.appendChild(this.children.load_button);
         this.children.commands.appendChild(this.children.save_button);
         this.children.wrapper.appendChild(this.children.commands);
@@ -105,19 +121,17 @@ class Text_Editor {
         this.parent.appendChild(this.children.wrapper);
     }
     Get_Name() {
-        return this.name;
+        return this.children.name.textContent || ``;
     }
     Set_Name(name) {
-        this.name = name.replace(/\..+$/, ``);
-        this.children.name.textContent = this.name;
+        this.children.name.innerHTML = Escape_Text(name);
     }
     Get_Text() {
         return this.children.editor.innerHTML
+            .replaceAll(/\<div\>(\<br\>)?\<\/div\>/g, `\n`)
             .replace(/^\<div\>/, ``)
-            .replace(/\<\/div\>$/, ``)
-            .replaceAll(/\<br\>/g, ``)
-            .replaceAll(/\<\/div\>\<div\>/g, `\n`)
-            .replaceAll(/(\<div\>)|(\<\/div\>)/g, ``);
+            .replaceAll(/\<div\>/g, `\n`)
+            .replaceAll(/\<\/div\>/g, ``);
     }
     Set_Text(text) {
         this.children.editor.innerHTML =
@@ -126,9 +140,7 @@ class Text_Editor {
                     line = `<br>`;
                 }
                 else {
-                    line = line.replaceAll(/./g, function (character) {
-                        return `&#${character.charCodeAt(0)};`;
-                    });
+                    line = Escape_Text(line);
                 }
                 return `<div>${line}</div>`;
             }).join(``);

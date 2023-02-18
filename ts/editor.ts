@@ -8,16 +8,29 @@ function Assert(
     }
 }
 
+function Escape_Text(
+    text: String,
+):
+    string
+{
+    return text.replaceAll(
+        /./g,
+        function (point: string):
+            string
+        {
+            return `&#${point.charCodeAt(0)};`;
+        }
+    );
+}
+
 class Text_Editor
 {
-    private name: string;
-
     private parent: HTMLElement;
     private children: {
         wrapper: HTMLDivElement,
 
         commands: HTMLDivElement,
-        input: HTMLInputElement,
+        load_input: HTMLInputElement,
         load_button: HTMLDivElement,
         save_button: HTMLDivElement,
 
@@ -28,22 +41,18 @@ class Text_Editor
 
     constructor(
         {
-            name = `new_text`,
             parent,
         }: {
-            name?: string,
             parent: HTMLElement,
         },
     )
     {
-        this.name = name;
-
         this.parent = parent;
         this.children = {
             wrapper: document.createElement(`div`),
 
             commands: document.createElement(`div`),
-            input: document.createElement(`input`),
+            load_input: document.createElement(`input`),
             load_button: document.createElement(`div`),
             save_button: document.createElement(`div`),
 
@@ -86,21 +95,21 @@ class Text_Editor
             `,
         );
 
-        this.children.input.setAttribute(
+        this.children.load_input.setAttribute(
             `type`,
             `file`,
         );
-        this.children.input.setAttribute(
+        this.children.load_input.setAttribute(
             `accept`,
             `text/plain`,
         );
-        this.children.input.setAttribute(
+        this.children.load_input.setAttribute(
             `style`,
             `
                 display: none;
             `,
         );
-        this.children.input.addEventListener(
+        this.children.load_input.addEventListener(
             `input`,
             async function (
                 this: Text_Editor,
@@ -108,10 +117,10 @@ class Text_Editor
             ):
                 Promise<void>
             {
-                if (this.children.input.files && this.children.input.files[0]) {
-                    const file: File = this.children.input.files[0];
+                if (this.children.load_input.files && this.children.load_input.files[0]) {
+                    const file: File = this.children.load_input.files[0];
                     const file_text: string = await file.text();
-                    this.Set_Name(file.name);
+                    this.Set_Name(file.name.replace(/\..+$/, ``));
                     this.Set_Text(file_text);
 
                     Assert(this.Get_Text() === file_text.replaceAll(/\r/g, ``));
@@ -135,7 +144,7 @@ class Text_Editor
             ):
                 void
             {
-                this.children.input.click();
+                this.children.load_input.click();
             }.bind(this),
         );
 
@@ -160,16 +169,51 @@ class Text_Editor
         );
 
         this.children.name.setAttribute(
+            `contentEditable`,
+            `true`,
+        );
+        this.children.name.setAttribute(
+            `spellcheck`,
+            `false`,
+        );
+        this.children.name.setAttribute(
             `style`,
             `
                 width: 100%;
                 height: 5%;
             `,
         );
-        this.Set_Name(name);
+        this.children.name.addEventListener(
+            `keydown`,
+            function (
+                this: Text_Editor,
+                event: KeyboardEvent,
+            ):
+                void
+            {
+                if (event.key === `Enter`) {
+                    event.preventDefault();
+                }
+            }.bind(this),
+        );
+        this.children.name.addEventListener(
+            `input`,
+            function (
+                this: Text_Editor,
+                event: Event,
+            ):
+                void
+            {
+                const input_event: InputEvent = event as InputEvent;
+                if (input_event.inputType === `insertFromPaste`) {
+                    this.children.name.innerHTML = this.children.name.textContent || ``;
+                }
+            }.bind(this),
+        );
+        this.Set_Name(`new_text`);
 
         this.children.editor.setAttribute(
-            `contenteditable`,
+            `contentEditable`,
             `true`,
         );
         this.children.editor.setAttribute(
@@ -183,9 +227,8 @@ class Text_Editor
                 height: 90%;
             `,
         );
-        this.children.editor.innerHTML = `<div></div>`;
 
-        this.children.commands.appendChild(this.children.input);
+        this.children.commands.appendChild(this.children.load_input);
         this.children.commands.appendChild(this.children.load_button);
         this.children.commands.appendChild(this.children.save_button);
 
@@ -199,7 +242,7 @@ class Text_Editor
     Get_Name():
         string
     {
-        return this.name;
+        return this.children.name.textContent || ``;
     }
 
     Set_Name(
@@ -207,19 +250,17 @@ class Text_Editor
     ):
         void
     {
-        this.name = name.replace(/\..+$/, ``);
-        this.children.name.textContent = this.name;
+        this.children.name.innerHTML = Escape_Text(name);
     }
 
     Get_Text():
         string
     {
         return this.children.editor.innerHTML
+            .replaceAll(/\<div\>(\<br\>)?\<\/div\>/g, `\n`)
             .replace(/^\<div\>/, ``)
-            .replace(/\<\/div\>$/, ``)
-            .replaceAll(/\<br\>/g, ``)
-            .replaceAll(/\<\/div\>\<div\>/g, `\n`)
-            .replaceAll(/(\<div\>)|(\<\/div\>)/g, ``);
+            .replaceAll(/\<div\>/g, `\n`)
+            .replaceAll(/\<\/div\>/g, ``);
     }
 
     Set_Text(
@@ -237,14 +278,7 @@ class Text_Editor
                     if (line === ``) {
                         line = `<br>`;
                     } else {
-                        line = line.replaceAll(
-                            /./g,
-                            function (character: string):
-                                string
-                            {
-                                return `&#${character.charCodeAt(0)};`;
-                            }
-                        );
+                        line = Escape_Text(line);
                     }
 
                     return `<div>${line}</div>`;
