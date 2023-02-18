@@ -1,0 +1,11 @@
+{
+    "short_name": "The Scriptures",
+    "name": "The Scriptures",
+    "author": "Neal Raulerson, aka r-neal-kelly",
+    "icons": [],
+    "start_url": ".",
+    "display": "fullscreen",
+    "orientation": "landscape",
+    "theme_color": "#000000",
+    "background_color": "#000000"
+}
