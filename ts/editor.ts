@@ -13,62 +13,94 @@ class Text_Editor
     private name: string;
 
     private parent: HTMLElement;
-    private wrapper: HTMLDivElement;
-    private editor: HTMLDivElement;
-    private input: HTMLInputElement;
+    private children: {
+        wrapper: HTMLDivElement,
+
+        commands: HTMLDivElement,
+        input: HTMLInputElement,
+        load_button: HTMLDivElement,
+        save_button: HTMLDivElement,
+
+        name: HTMLDivElement,
+
+        editor: HTMLDivElement,
+    };
 
     constructor(
         {
             name = `new_text`,
             parent,
-            style,
         }: {
             name?: string,
             parent: HTMLElement,
-            style: string,
         },
     )
     {
         this.name = name;
 
         this.parent = parent;
+        this.children = {
+            wrapper: document.createElement(`div`),
 
-        this.wrapper = document.createElement(`div`);
-        this.wrapper.setAttribute(
-            `style`,
-            style,
-        );
+            commands: document.createElement(`div`),
+            input: document.createElement(`input`),
+            load_button: document.createElement(`div`),
+            save_button: document.createElement(`div`),
 
-        this.editor = document.createElement(`div`);
-        this.editor.setAttribute(
-            `contenteditable`,
-            `true`,
-        );
-        this.editor.setAttribute(
+            name: document.createElement(`div`),
+
+            editor: document.createElement(`div`),
+        };
+
+        this.children.wrapper.setAttribute(
             `style`,
             `
-                width: 100%;
-                height: 100%;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+
+                height: 90%;
+                width: 90%;
+                padding: 2px;
+
+                border-width: 0;
+
+                background-color: blue;
+                color: white;
+
+                overflow-y: auto;
             `,
         );
-        this.editor.innerHTML = `<div></div>`;
 
-        this.input = document.createElement(`input`);
-        this.input.setAttribute(
+        this.children.commands.setAttribute(
+            `style`,
+            `
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+
+                width: 100%;
+                height: 5%;
+            `,
+        );
+
+        this.children.input.setAttribute(
             `type`,
             `file`,
         );
-        this.input.setAttribute(
+        this.children.input.setAttribute(
             `accept`,
             `text/plain`,
         );
-        this.input.setAttribute(
+        this.children.input.setAttribute(
             `style`,
             `
-                display: block;
+                display: none;
             `,
         );
-        this.input.addEventListener(
+        this.children.input.addEventListener(
             `input`,
             async function (
                 this: Text_Editor,
@@ -76,21 +108,92 @@ class Text_Editor
             ):
                 Promise<void>
             {
-                if (this.input.files && this.input.files[0]) {
-                    const file: File = this.input.files[0];
+                if (this.children.input.files && this.children.input.files[0]) {
+                    const file: File = this.children.input.files[0];
                     const file_text: string = await file.text();
+                    this.Set_Name(file.name);
                     this.Set_Text(file_text);
 
                     Assert(this.Get_Text() === file_text.replaceAll(/\r/g, ``));
-
-                    this.Save_Text(); // temp
                 }
             }.bind(this),
         );
 
-        this.wrapper.appendChild(this.input);
-        this.wrapper.appendChild(this.editor);
-        this.parent.appendChild(this.wrapper);
+        this.children.load_button.setAttribute(
+            `style`,
+            `
+                width: 50%;
+                height: 100%;
+            `,
+        );
+        this.children.load_button.textContent = `Load`;
+        this.children.load_button.addEventListener(
+            `click`,
+            function (
+                this: Text_Editor,
+                event: Event,
+            ):
+                void
+            {
+                this.children.input.click();
+            }.bind(this),
+        );
+
+        this.children.save_button.setAttribute(
+            `style`,
+            `
+                width: 50%;
+                height: 100%;
+            `,
+        );
+        this.children.save_button.textContent = `Save`;
+        this.children.save_button.addEventListener(
+            `click`,
+            function (
+                this: Text_Editor,
+                event: Event,
+            ):
+                void
+            {
+                this.Save_Text();
+            }.bind(this),
+        );
+
+        this.children.name.setAttribute(
+            `style`,
+            `
+                width: 100%;
+                height: 5%;
+            `,
+        );
+        this.Set_Name(name);
+
+        this.children.editor.setAttribute(
+            `contenteditable`,
+            `true`,
+        );
+        this.children.editor.setAttribute(
+            `spellcheck`,
+            `false`,
+        );
+        this.children.editor.setAttribute(
+            `style`,
+            `
+                width: 100%;
+                height: 90%;
+            `,
+        );
+        this.children.editor.innerHTML = `<div></div>`;
+
+        this.children.commands.appendChild(this.children.input);
+        this.children.commands.appendChild(this.children.load_button);
+        this.children.commands.appendChild(this.children.save_button);
+
+        this.children.wrapper.appendChild(this.children.commands);
+        this.children.wrapper.appendChild(this.children.name);
+        this.children.wrapper.appendChild(this.children.editor);
+
+        this.parent.appendChild(this.children.wrapper);
     }
 
     Get_Name():
@@ -99,14 +202,24 @@ class Text_Editor
         return this.name;
     }
 
+    Set_Name(
+        name: string,
+    ):
+        void
+    {
+        this.name = name.replace(/\..+$/, ``);
+        this.children.name.textContent = this.name;
+    }
+
     Get_Text():
         string
     {
-        return this.editor.innerHTML
+        return this.children.editor.innerHTML
             .replace(/^\<div\>/, ``)
             .replace(/\<\/div\>$/, ``)
             .replaceAll(/\<br\>/g, ``)
             .replaceAll(/\<\/div\>\<div\>/g, `\n`)
+            .replaceAll(/(\<div\>)|(\<\/div\>)/g, ``);
     }
 
     Set_Text(
@@ -114,7 +227,7 @@ class Text_Editor
     ):
         void
     {
-        this.editor.innerHTML =
+        this.children.editor.innerHTML =
             text.split(
                 /\r?\n/,
             ).map(
@@ -148,8 +261,8 @@ class Text_Editor
         const name: string = this.Get_Name();
         const file: File = new File([text], `${name}.txt`);
         const file_url: string = URL.createObjectURL(file);
-
         const link = document.createElement(`a`);
+
         link.href = file_url;
         link.download = `${name}.txt`;
 
@@ -207,18 +320,6 @@ function Build():
     const text_editor: Text_Editor = new Text_Editor(
         {
             parent: document.body,
-            style: `
-                height: 300px;
-                width: 90%;
-                padding: 2px;
-
-                border-width: 0;
-
-                background-color: blue;
-                color: white;
-
-                overflow-y: auto;
-            `,
         },
     );
 }

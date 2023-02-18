@@ -14,51 +14,113 @@ function Assert(boolean_statement) {
     }
 }
 class Text_Editor {
-    constructor({ name = `new_text`, parent, style, }) {
+    constructor({ name = `new_text`, parent, }) {
         this.name = name;
         this.parent = parent;
-        this.wrapper = document.createElement(`div`);
-        this.wrapper.setAttribute(`style`, style);
-        this.editor = document.createElement(`div`);
-        this.editor.setAttribute(`contenteditable`, `true`);
-        this.editor.setAttribute(`style`, `
+        this.children = {
+            wrapper: document.createElement(`div`),
+            commands: document.createElement(`div`),
+            input: document.createElement(`input`),
+            load_button: document.createElement(`div`),
+            save_button: document.createElement(`div`),
+            name: document.createElement(`div`),
+            editor: document.createElement(`div`),
+        };
+        this.children.wrapper.setAttribute(`style`, `
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+
+                height: 90%;
+                width: 90%;
+                padding: 2px;
+
+                border-width: 0;
+
+                background-color: blue;
+                color: white;
+
+                overflow-y: auto;
+            `);
+        this.children.commands.setAttribute(`style`, `
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+
                 width: 100%;
-                height: 100%;
+                height: 5%;
             `);
-        this.editor.innerHTML = `<div></div>`;
-        this.input = document.createElement(`input`);
-        this.input.setAttribute(`type`, `file`);
-        this.input.setAttribute(`accept`, `text/plain`);
-        this.input.setAttribute(`style`, `
-                display: block;
+        this.children.input.setAttribute(`type`, `file`);
+        this.children.input.setAttribute(`accept`, `text/plain`);
+        this.children.input.setAttribute(`style`, `
+                display: none;
             `);
-        this.input.addEventListener(`input`, function (event) {
+        this.children.input.addEventListener(`input`, function (event) {
             return __awaiter(this, void 0, void 0, function* () {
-                if (this.input.files && this.input.files[0]) {
-                    const file = this.input.files[0];
+                if (this.children.input.files && this.children.input.files[0]) {
+                    const file = this.children.input.files[0];
                     const file_text = yield file.text();
+                    this.Set_Name(file.name);
                     this.Set_Text(file_text);
                     Assert(this.Get_Text() === file_text.replaceAll(/\r/g, ``));
-                    this.Save_Text(); // temp
                 }
             });
         }.bind(this));
-        this.wrapper.appendChild(this.input);
-        this.wrapper.appendChild(this.editor);
-        this.parent.appendChild(this.wrapper);
+        this.children.load_button.setAttribute(`style`, `
+                width: 50%;
+                height: 100%;
+            `);
+        this.children.load_button.textContent = `Load`;
+        this.children.load_button.addEventListener(`click`, function (event) {
+            this.children.input.click();
+        }.bind(this));
+        this.children.save_button.setAttribute(`style`, `
+                width: 50%;
+                height: 100%;
+            `);
+        this.children.save_button.textContent = `Save`;
+        this.children.save_button.addEventListener(`click`, function (event) {
+            this.Save_Text();
+        }.bind(this));
+        this.children.name.setAttribute(`style`, `
+                width: 100%;
+                height: 5%;
+            `);
+        this.Set_Name(name);
+        this.children.editor.setAttribute(`contenteditable`, `true`);
+        this.children.editor.setAttribute(`spellcheck`, `false`);
+        this.children.editor.setAttribute(`style`, `
+                width: 100%;
+                height: 90%;
+            `);
+        this.children.editor.innerHTML = `<div></div>`;
+        this.children.commands.appendChild(this.children.input);
+        this.children.commands.appendChild(this.children.load_button);
+        this.children.commands.appendChild(this.children.save_button);
+        this.children.wrapper.appendChild(this.children.commands);
+        this.children.wrapper.appendChild(this.children.name);
+        this.children.wrapper.appendChild(this.children.editor);
+        this.parent.appendChild(this.children.wrapper);
     }
     Get_Name() {
         return this.name;
     }
+    Set_Name(name) {
+        this.name = name.replace(/\..+$/, ``);
+        this.children.name.textContent = this.name;
+    }
     Get_Text() {
-        return this.editor.innerHTML
+        return this.children.editor.innerHTML
             .replace(/^\<div\>/, ``)
             .replace(/\<\/div\>$/, ``)
             .replaceAll(/\<br\>/g, ``)
-            .replaceAll(/\<\/div\>\<div\>/g, `\n`);
+            .replaceAll(/\<\/div\>\<div\>/g, `\n`)
+            .replaceAll(/(\<div\>)|(\<\/div\>)/g, ``);
     }
     Set_Text(text) {
-        this.editor.innerHTML =
+        this.children.editor.innerHTML =
             text.split(/\r?\n/).map(function (line) {
                 if (line === ``) {
                     line = `<br>`;
@@ -116,18 +178,6 @@ function Style() {
 function Build() {
     const text_editor = new Text_Editor({
         parent: document.body,
-        style: `
-                height: 300px;
-                width: 90%;
-                padding: 2px;
-
-                border-width: 0;
-
-                background-color: blue;
-                color: white;
-
-                overflow-y: auto;
-            `,
     });
 }
 function Main() {
