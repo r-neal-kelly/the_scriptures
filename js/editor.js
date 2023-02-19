@@ -52,7 +52,6 @@ class Line {
         this.element.setAttribute(`spellcheck`, `false`);
         this.element.setAttribute(`style`, `
                 width: 100%;
-                min-height: 20px;
             `);
         this.element.addEventListener(`keydown`, function (event) {
             if (event.key === `Enter`) {
