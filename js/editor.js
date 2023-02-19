@@ -18,19 +18,86 @@ function Escape_Text(text) {
         return `&#${point.charCodeAt(0)};`;
     });
 }
-class Text_Editor {
+function Text_Offset_To_Node(from, to) {
+    if (from === to) {
+        return 0;
+    }
+    else {
+        let offset = 0;
+        for (const child_node of from.childNodes) {
+            if (child_node === to) {
+                return offset;
+            }
+            else if (child_node.contains(to)) {
+                return offset + Text_Offset_To_Node(child_node, to);
+            }
+            else {
+                if (child_node.textContent) {
+                    offset += child_node.textContent.length;
+                }
+                else {
+                    offset += 0;
+                }
+            }
+        }
+        return offset;
+    }
+}
+;
+class Line {
     constructor({ parent, }) {
         this.parent = parent;
+        this.element = document.createElement(`div`);
+        this.element.setAttribute(`contentEditable`, `true`);
+        this.element.setAttribute(`spellcheck`, `false`);
+        this.element.setAttribute(`style`, `
+                width: 100%;
+                min-height: 20px;
+            `);
+        this.element.addEventListener(`keydown`, function (event) {
+            if (event.key === `Enter`) {
+                event.preventDefault();
+            }
+        }.bind(this));
+        this.element.addEventListener(`input`, function (event) {
+            const input_event = event;
+            if (input_event.inputType === `insertFromPaste`) {
+                const selection = document.getSelection();
+                if (selection &&
+                    selection.anchorNode &&
+                    selection.anchorNode !== this.element) {
+                    let new_offset = Text_Offset_To_Node(this.element, selection.anchorNode) +
+                        selection.anchorOffset;
+                    this.element.innerHTML = this.element.textContent || ``;
+                    selection.collapse(this.element.firstChild || this.element, new_offset);
+                }
+                else {
+                    this.element.innerHTML = ``;
+                }
+            }
+        }.bind(this));
+        this.parent.appendChild(this.element);
+    }
+    Parent() {
+        return this.parent;
+    }
+    Element() {
+        return this.element;
+    }
+}
+class Editor {
+    constructor({ parent, }) {
+        this.parent = parent;
+        this.element = document.createElement(`div`);
         this.children = {
-            wrapper: document.createElement(`div`),
             commands: document.createElement(`div`),
             load_input: document.createElement(`input`),
             load_button: document.createElement(`div`),
             save_button: document.createElement(`div`),
             name: document.createElement(`div`),
-            editor: document.createElement(`div`),
+            lines: document.createElement(`div`),
         };
-        this.children.wrapper.setAttribute(`style`, `
+        this.element.setAttribute(`style`, `
                 display: flex;
                 flex-direction: column;
                 justify-content: center;
@@ -66,7 +133,7 @@ class Text_Editor {
                 if (this.children.load_input.files && this.children.load_input.files[0]) {
                     const file = this.children.load_input.files[0];
                     const file_text = yield file.text();
-                    this.Set_Name(file.name.replace(/\..+$/, ``));
+                    this.Set_Name(file.name.replace(/\.[^.]+$/, ``));
                     this.Set_Text(file_text);
                     Assert(this.Get_Text() === file_text.replaceAll(/\r/g, ``));
                 }
@@ -106,33 +173,7 @@ class Text_Editor {
                 if (selection &&
                     selection.anchorNode &&
                     selection.anchorNode !== this.children.name) {
-                    function Offset_To_Node(from, to) {
-                        if (from === to) {
-                            return 0;
-                        }
-                        else {
-                            let offset = 0;
-                            for (const child_node of from.childNodes) {
-                                if (child_node === to) {
-                                    return offset;
-                                }
-                                else if (child_node.contains(to)) {
-                                    return offset + Offset_To_Node(child_node, to);
-                                }
-                                else {
-                                    if (child_node.textContent) {
-                                        offset += child_node.textContent.length;
-                                    }
-                                    else {
-                                        offset += 0;
-                                    }
-                                }
-                            }
-                            return offset;
-                        }
-                    }
-                    ;
-                    let new_offset = Offset_To_Node(this.children.name, selection.anchorNode) +
+                    let new_offset = Text_Offset_To_Node(this.children.name, selection.anchorNode) +
                         selection.anchorOffset;
                     this.children.name.innerHTML = this.children.name.textContent || ``;
                     selection.collapse(this.children.name.firstChild || this.children.name, new_offset);
@@ -143,19 +184,32 @@ class Text_Editor {
             }
         }.bind(this));
         this.Set_Name(`new_text`);
-        this.children.editor.setAttribute(`contentEditable`, `true`);
-        this.children.editor.setAttribute(`spellcheck`, `false`);
-        this.children.editor.setAttribute(`style`, `
+        this.children.lines.setAttribute(`style`, `
+                display: flex;
+                flex-direction: column;
+                justify-content: start;
+                align-items: start;
+                
                 width: 100%;
                 height: 90%;
+
+                overflow-y: auto;
             `);
         this.children.commands.appendChild(this.children.load_input);
         this.children.commands.appendChild(this.children.load_button);
         this.children.commands.appendChild(this.children.save_button);
-        this.children.wrapper.appendChild(this.children.commands);
-        this.children.wrapper.appendChild(this.children.name);
-        this.children.wrapper.appendChild(this.children.editor);
-        this.parent.appendChild(this.children.wrapper);
+        this.element.appendChild(this.children.commands);
+        this.element.appendChild(this.children.name);
+        this.element.appendChild(this.children.lines);
+        this.parent.appendChild(this.element);
+        this.lines = [];
+        this.Add_Line();
+    }
+    Parent() {
+        return this.parent;
+    }
+    Element() {
+        return this.element;
     }
     Get_Name() {
         return this.children.name.textContent || ``;
@@ -164,23 +218,14 @@ class Text_Editor {
         this.children.name.innerHTML = Escape_Text(name);
     }
     Get_Text() {
-        return this.children.editor.innerHTML
-            .replaceAll(/\<div\>(\<br\>)?\<\/div\>/g, `\n`)
-            .replace(/^\<div\>/, ``)
-            .replaceAll(/\<div\>/g, `\n`)
-            .replaceAll(/\<\/div\>/g, ``);
+        return this.lines.map(line => line.Element().textContent || ``).join(`\n`);
     }
     Set_Text(text) {
-        this.children.editor.innerHTML =
-            text.split(/\r?\n/).map(function (line) {
-                if (line === ``) {
-                    line = `<br>`;
-                }
-                else {
-                    line = Escape_Text(line);
-                }
-                return `<div>${line}</div>`;
-            }).join(``);
+        this.Clear_Text();
+        const text_lines = text.split(/\r?\n/);
+        for (const text_line of text_lines) {
+            this.Add_Line(text_line);
+        }
     }
     Save_Text() {
         const text = this.Get_Text();
@@ -193,6 +238,19 @@ class Text_Editor {
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
+    }
+    Clear_Text() {
+        for (const line of this.lines) {
+            this.children.lines.removeChild(line.Element());
+        }
+        this.lines = [];
+    }
+    Add_Line(text = ``) {
+        const line = new Line({
+            parent: this.children.lines,
+        });
+        this.lines.push(line);
+        line.Element().innerHTML = Escape_Text(text);
     }
 }
 function Style() {
@@ -225,7 +283,7 @@ function Style() {
     document.head.appendChild(style);
 }
 function Build() {
-    const text_editor = new Text_Editor({
+    const text_editor = new Editor({
         parent: document.body,
     });
 }

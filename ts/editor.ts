@@ -23,21 +23,39 @@ function Escape_Text(
     );
 }
 
-class Text_Editor
+function Text_Offset_To_Node(
+    from: Node,
+    to: Node,
+):
+    number
+{
+    if (from === to) {
+        return 0;
+    } else {
+        let offset: number = 0;
+
+        for (const child_node of from.childNodes) {
+            if (child_node === to) {
+                return offset;
+            } else if (child_node.contains(to)) {
+                return offset + Text_Offset_To_Node(child_node, to);
+            } else {
+                if (child_node.textContent) {
+                    offset += child_node.textContent.length;
+                } else {
+                    offset += 0;
+                }
+            }
+        }
+
+        return offset;
+    }
+};
+
+class Line
 {
     private parent: HTMLElement;
-    private children: {
-        wrapper: HTMLDivElement,
-
-        commands: HTMLDivElement,
-        load_input: HTMLInputElement,
-        load_button: HTMLDivElement,
-        save_button: HTMLDivElement,
-
-        name: HTMLDivElement,
-
-        editor: HTMLDivElement,
-    };
+    private element: HTMLDivElement;
 
     constructor(
         {
@@ -48,9 +66,114 @@ class Text_Editor
     )
     {
         this.parent = parent;
-        this.children = {
-            wrapper: document.createElement(`div`),
+        this.element = document.createElement(`div`);
 
+        this.element.setAttribute(
+            `contentEditable`,
+            `true`,
+        );
+        this.element.setAttribute(
+            `spellcheck`,
+            `false`,
+        );
+        this.element.setAttribute(
+            `style`,
+            `
+                width: 100%;
+                min-height: 20px;
+            `,
+        );
+
+        this.element.addEventListener(
+            `keydown`,
+            function (
+                this: Line,
+                event: KeyboardEvent,
+            ):
+                void
+            {
+                if (event.key === `Enter`) {
+                    event.preventDefault();
+                }
+            }.bind(this),
+        );
+        this.element.addEventListener(
+            `input`,
+            function (
+                this: Line,
+                event: Event,
+            ):
+                void
+            {
+                const input_event: InputEvent = event as InputEvent;
+                if (input_event.inputType === `insertFromPaste`) {
+                    const selection: Selection | null = document.getSelection();
+                    if (
+                        selection &&
+                        selection.anchorNode &&
+                        selection.anchorNode !== this.element
+                    ) {
+                        let new_offset: number =
+                            Text_Offset_To_Node(this.element, selection.anchorNode) +
+                            selection.anchorOffset;
+
+                        this.element.innerHTML = this.element.textContent || ``
+
+                        selection.collapse(
+                            this.element.firstChild || this.element,
+                            new_offset,
+                        );
+                    } else {
+                        this.element.innerHTML = ``;
+                    }
+                }
+            }.bind(this),
+        );
+
+        this.parent.appendChild(this.element);
+    }
+
+    Parent():
+        HTMLElement
+    {
+        return this.parent;
+    }
+
+    Element():
+        HTMLDivElement
+    {
+        return this.element;
+    }
+}
+
+class Editor
+{
+    private parent: HTMLElement;
+    private element: HTMLDivElement;
+    private children: {
+        commands: HTMLDivElement,
+        load_input: HTMLInputElement,
+        load_button: HTMLDivElement,
+        save_button: HTMLDivElement,
+
+        name: HTMLDivElement,
+
+        lines: HTMLDivElement,
+    };
+
+    private lines: Line[];
+
+    constructor(
+        {
+            parent,
+        }: {
+            parent: HTMLElement,
+        },
+    )
+    {
+        this.parent = parent;
+        this.element = document.createElement(`div`);
+        this.children = {
             commands: document.createElement(`div`),
             load_input: document.createElement(`input`),
             load_button: document.createElement(`div`),
@@ -58,10 +181,10 @@ class Text_Editor
 
             name: document.createElement(`div`),
 
-            editor: document.createElement(`div`),
+            lines: document.createElement(`div`),
         };
 
-        this.children.wrapper.setAttribute(
+        this.element.setAttribute(
             `style`,
             `
                 display: flex;
@@ -112,7 +235,7 @@ class Text_Editor
         this.children.load_input.addEventListener(
             `input`,
             async function (
-                this: Text_Editor,
+                this: Editor,
                 event: Event,
             ):
                 Promise<void>
@@ -120,7 +243,7 @@ class Text_Editor
                 if (this.children.load_input.files && this.children.load_input.files[0]) {
                     const file: File = this.children.load_input.files[0];
                     const file_text: string = await file.text();
-                    this.Set_Name(file.name.replace(/\..+$/, ``));
+                    this.Set_Name(file.name.replace(/\.[^.]+$/, ``));
                     this.Set_Text(file_text);
 
                     Assert(this.Get_Text() === file_text.replaceAll(/\r/g, ``));
@@ -139,7 +262,7 @@ class Text_Editor
         this.children.load_button.addEventListener(
             `click`,
             function (
-                this: Text_Editor,
+                this: Editor,
                 event: Event,
             ):
                 void
@@ -159,7 +282,7 @@ class Text_Editor
         this.children.save_button.addEventListener(
             `click`,
             function (
-                this: Text_Editor,
+                this: Editor,
                 event: Event,
             ):
                 void
@@ -186,7 +309,7 @@ class Text_Editor
         this.children.name.addEventListener(
             `keydown`,
             function (
-                this: Text_Editor,
+                this: Editor,
                 event: KeyboardEvent,
             ):
                 void
@@ -199,7 +322,7 @@ class Text_Editor
         this.children.name.addEventListener(
             `input`,
             function (
-                this: Text_Editor,
+                this: Editor,
                 event: Event,
             ):
                 void
@@ -212,37 +335,8 @@ class Text_Editor
                         selection.anchorNode &&
                         selection.anchorNode !== this.children.name
                     ) {
-                        function Offset_To_Node(
-                            from: Node,
-                            to: Node,
-                        ):
-                            number
-                        {
-                            if (from === to) {
-                                return 0;
-                            } else {
-                                let offset: number = 0;
-
-                                for (const child_node of from.childNodes) {
-                                    if (child_node === to) {
-                                        return offset;
-                                    } else if (child_node.contains(to)) {
-                                        return offset + Offset_To_Node(child_node, to);
-                                    } else {
-                                        if (child_node.textContent) {
-                                            offset += child_node.textContent.length;
-                                        } else {
-                                            offset += 0;
-                                        }
-                                    }
-                                }
-
-                                return offset;
-                            }
-                        };
-
                         let new_offset: number =
-                            Offset_To_Node(this.children.name, selection.anchorNode) +
+                            Text_Offset_To_Node(this.children.name, selection.anchorNode) +
                             selection.anchorOffset;
 
                         this.children.name.innerHTML = this.children.name.textContent || ``
@@ -259,19 +353,18 @@ class Text_Editor
         );
         this.Set_Name(`new_text`);
 
-        this.children.editor.setAttribute(
-            `contentEditable`,
-            `true`,
-        );
-        this.children.editor.setAttribute(
-            `spellcheck`,
-            `false`,
-        );
-        this.children.editor.setAttribute(
+        this.children.lines.setAttribute(
             `style`,
             `
+                display: flex;
+                flex-direction: column;
+                justify-content: start;
+                align-items: start;
+                
                 width: 100%;
                 height: 90%;
+
+                overflow-y: auto;
             `,
         );
 
@@ -279,11 +372,27 @@ class Text_Editor
         this.children.commands.appendChild(this.children.load_button);
         this.children.commands.appendChild(this.children.save_button);
 
-        this.children.wrapper.appendChild(this.children.commands);
-        this.children.wrapper.appendChild(this.children.name);
-        this.children.wrapper.appendChild(this.children.editor);
+        this.element.appendChild(this.children.commands);
+        this.element.appendChild(this.children.name);
+        this.element.appendChild(this.children.lines);
 
-        this.parent.appendChild(this.children.wrapper);
+        this.parent.appendChild(this.element);
+
+        this.lines = [];
+
+        this.Add_Line();
+    }
+
+    Parent():
+        HTMLElement
+    {
+        return this.parent;
+    }
+
+    Element():
+        HTMLDivElement
+    {
+        return this.element;
     }
 
     Get_Name():
@@ -303,11 +412,9 @@ class Text_Editor
     Get_Text():
         string
     {
-        return this.children.editor.innerHTML
-            .replaceAll(/\<div\>(\<br\>)?\<\/div\>/g, `\n`)
-            .replace(/^\<div\>/, ``)
-            .replaceAll(/\<div\>/g, `\n`)
-            .replaceAll(/\<\/div\>/g, ``);
+        return this.lines.map(
+            line => line.Element().textContent || ``
+        ).join(`\n`);
     }
 
     Set_Text(
@@ -315,24 +422,12 @@ class Text_Editor
     ):
         void
     {
-        this.children.editor.innerHTML =
-            text.split(
-                /\r?\n/,
-            ).map(
-                function (line: string):
-                    string
-                {
-                    if (line === ``) {
-                        line = `<br>`;
-                    } else {
-                        line = Escape_Text(line);
-                    }
+        this.Clear_Text();
 
-                    return `<div>${line}</div>`;
-                },
-            ).join(
-                ``,
-            );
+        const text_lines: string[] = text.split(/\r?\n/);
+        for (const text_line of text_lines) {
+            this.Add_Line(text_line);
+        }
     }
 
     Save_Text():
@@ -350,6 +445,30 @@ class Text_Editor
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
+    }
+
+    Clear_Text():
+        void
+    {
+        for (const line of this.lines) {
+            this.children.lines.removeChild(line.Element());
+        }
+        this.lines = [];
+    }
+
+    Add_Line(
+        text: string = ``,
+    ):
+        void
+    {
+        const line: Line = new Line(
+            {
+                parent: this.children.lines,
+            },
+        );
+        this.lines.push(line);
+
+        line.Element().innerHTML = Escape_Text(text);
     }
 }
 
@@ -398,7 +517,7 @@ function Style():
 function Build():
     void
 {
-    const text_editor: Text_Editor = new Text_Editor(
+    const text_editor: Editor = new Editor(
         {
             parent: document.body,
         },
