@@ -45,9 +45,11 @@ function Text_Offset_To_Node(from, to) {
 }
 ;
 class Line {
-    constructor({ parent, }) {
+    constructor({ editor, parent, }) {
+        this.editor = editor;
         this.parent = parent;
         this.element = document.createElement(`div`);
+        this.children = {};
         this.element.setAttribute(`contentEditable`, `true`);
         this.element.setAttribute(`spellcheck`, `false`);
         this.element.setAttribute(`style`, `
@@ -56,6 +58,39 @@ class Line {
         this.element.addEventListener(`keydown`, function (event) {
             if (event.key === `Enter`) {
                 event.preventDefault();
+            }
+            else if (event.key === `Backspace`) {
+                const line_index = this.Index();
+                if (line_index > 0) {
+                    const selection = document.getSelection();
+                    if (selection) {
+                        if (selection.isCollapsed) {
+                            if (selection.anchorOffset === 0) {
+                                event.preventDefault();
+                                const previous_line = this.Editor().Line(line_index - 1);
+                                const previous_line_node = previous_line.Element();
+                                const previous_line_node_child_count = previous_line_node.childNodes.length;
+                                const previous_line_text = previous_line.Text();
+                                previous_line.Set_Text(`${previous_line_text}${this.Text()}`);
+                                this.Editor().Remove_Line(line_index);
+                                previous_line.Element().focus();
+                                if (previous_line_node.firstChild) {
+                                    if (previous_line_node.firstChild instanceof Text) {
+                                        selection.getRangeAt(0).setStart(previous_line_node.firstChild, previous_line_text.length);
+                                    }
+                                    else {
+                                        selection.getRangeAt(0).setStart(previous_line_node.firstChild, previous_line_node_child_count);
+                                    }
+                                }
+                                else {
+                                    selection.getRangeAt(0).setStart(previous_line_node, 0);
+                                }
+                            }
+                        }
+                        else {
+                        }
+                    }
+                }
             }
         }.bind(this));
         this.element.addEventListener(`input`, function (event) {
@@ -77,11 +112,28 @@ class Line {
         }.bind(this));
         this.parent.appendChild(this.element);
     }
+    Destruct() {
+        this.parent.removeChild(this.element);
+    }
+    Editor() {
+        return this.editor;
+    }
     Parent() {
         return this.parent;
     }
     Element() {
         return this.element;
+    }
+    Index() {
+        const index = this.Editor().Lines().indexOf(this);
+        Assert(index > -1);
+        return index;
+    }
+    Text() {
+        return this.element.textContent || ``;
+    }
+    Set_Text(text) {
+        this.element.innerHTML = Escape_Text(text);
     }
 }
 class Editor {
@@ -134,7 +186,8 @@ class Editor {
                     const file_text = yield file.text();
                     this.Set_Name(file.name.replace(/\.[^.]+$/, ``));
                     this.Set_Text(file_text);
-                    Assert(this.Get_Text() === file_text.replaceAll(/\r/g, ``));
+                    this.children.load_input.value = ``;
+                    Assert(this.Text() === file_text.replaceAll(/\r/g, ``));
                 }
             });
         }.bind(this));
@@ -202,7 +255,7 @@ class Editor {
         this.element.appendChild(this.children.lines);
         this.parent.appendChild(this.element);
         this.lines = [];
-        this.Add_Line();
+        this.Add_Line(``);
     }
     Parent() {
         return this.parent;
@@ -210,14 +263,16 @@ class Editor {
     Element() {
         return this.element;
     }
-    Get_Name() {
+    Name() {
         return this.children.name.textContent || ``;
     }
     Set_Name(name) {
         this.children.name.innerHTML = Escape_Text(name);
     }
-    Get_Text() {
-        return this.lines.map(line => line.Element().textContent || ``).join(`\n`);
+    Text() {
+        return this.lines.map(function (line) {
+            return line.Text();
+        }).join(`\n`);
     }
     Set_Text(text) {
         this.Clear_Text();
@@ -227,8 +282,8 @@ class Editor {
         }
     }
     Save_Text() {
-        const text = this.Get_Text();
-        const name = this.Get_Name();
+        const text = this.Text();
+        const name = this.Name();
         const file = new File([text], `${name}.txt`);
         const file_url = URL.createObjectURL(file);
         const link = document.createElement(`a`);
@@ -240,16 +295,50 @@ class Editor {
     }
     Clear_Text() {
         for (const line of this.lines) {
-            this.children.lines.removeChild(line.Element());
+            line.Destruct();
         }
         this.lines = [];
     }
-    Add_Line(text = ``) {
+    Lines() {
+        return Array.from(this.lines);
+    }
+    Line(line_index) {
+        Assert(line_index >= 0);
+        Assert(line_index < this.lines.length);
+        return this.lines[line_index];
+    }
+    Add_Line(text) {
         const line = new Line({
+            editor: this,
             parent: this.children.lines,
         });
         this.lines.push(line);
-        line.Element().innerHTML = Escape_Text(text);
+        line.Set_Text(text);
+    }
+    Remove_Line(line_index) {
+        Assert(line_index > 0);
+        Assert(line_index < this.lines.length);
+        if (line_index > 0) {
+            this.lines.splice(line_index, 1)[0].Destruct();
+        }
+    }
+    Insert_Line(at_line_index, text) {
+        Assert(at_line_index >= 0);
+        Assert(at_line_index <= this.lines.length);
+        for (let idx = at_line_index, end = this.lines.length; idx < end; idx += 1) {
+            const line = this.lines[idx];
+            line.Parent().removeChild(line.Element());
+        }
+        const line = new Line({
+            editor: this,
+            parent: this.children.lines,
+        });
+        this.lines.splice(at_line_index, 0, line);
+        line.Set_Text(text);
+        for (let idx = at_line_index + 1, end = this.lines.length; idx < end; idx += 1) {
+            const line = this.lines[idx];
+            line.Parent().appendChild(line.Element());
+        }
     }
 }
 function Style() {

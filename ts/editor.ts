@@ -54,19 +54,29 @@ function Text_Offset_To_Node(
 
 class Line
 {
+    private editor: Editor;
+
     private parent: HTMLElement;
     private element: HTMLDivElement;
+    private children: {
+    };
 
     constructor(
         {
+            editor,
             parent,
         }: {
+            editor: Editor,
             parent: HTMLElement,
         },
     )
     {
+        this.editor = editor;
+
         this.parent = parent;
         this.element = document.createElement(`div`);
+        this.children = {
+        };
 
         this.element.setAttribute(
             `contentEditable`,
@@ -93,6 +103,50 @@ class Line
             {
                 if (event.key === `Enter`) {
                     event.preventDefault();
+                } else if (event.key === `Backspace`) {
+                    const line_index: number = this.Index();
+                    if (line_index > 0) {
+                        const selection: Selection | null = document.getSelection();
+                        if (selection) {
+                            if (selection.isCollapsed) {
+                                if (selection.anchorOffset === 0) {
+                                    event.preventDefault();
+
+                                    const previous_line: Line = this.Editor().Line(line_index - 1);
+                                    const previous_line_node: Node = previous_line.Element();
+                                    const previous_line_node_child_count: number = previous_line_node.childNodes.length;
+                                    const previous_line_text: string = previous_line.Text();
+
+                                    previous_line.Set_Text(`${previous_line_text}${this.Text()}`);
+                                    this.Editor().Remove_Line(line_index);
+
+                                    previous_line.Element().focus();
+                                    if (previous_line_node.firstChild) {
+                                        if (previous_line_node.firstChild instanceof Text) {
+                                            selection.getRangeAt(0).setStart(
+                                                previous_line_node.firstChild,
+                                                previous_line_text.length,
+                                            );
+                                        } else {
+                                            selection.getRangeAt(0).setStart(
+                                                previous_line_node.firstChild,
+                                                previous_line_node_child_count,
+                                            );
+                                        }
+                                    } else {
+                                        selection.getRangeAt(0).setStart(
+                                            previous_line_node,
+                                            0,
+                                        );
+                                    }
+
+
+                                }
+                            } else {
+
+                            }
+                        }
+                    }
                 }
             }.bind(this),
         );
@@ -132,6 +186,18 @@ class Line
         this.parent.appendChild(this.element);
     }
 
+    Destruct():
+        void
+    {
+        this.parent.removeChild(this.element);
+    }
+
+    Editor():
+        Editor
+    {
+        return this.editor;
+    }
+
     Parent():
         HTMLElement
     {
@@ -142,6 +208,29 @@ class Line
         HTMLDivElement
     {
         return this.element;
+    }
+
+    Index():
+        number
+    {
+        const index: number = this.Editor().Lines().indexOf(this);
+        Assert(index > -1);
+
+        return index;
+    }
+
+    Text():
+        string
+    {
+        return this.element.textContent || ``;
+    }
+
+    Set_Text(
+        text: string,
+    ):
+        void
+    {
+        this.element.innerHTML = Escape_Text(text);
     }
 }
 
@@ -160,7 +249,7 @@ class Editor
         lines: HTMLDivElement,
     };
 
-    private lines: Line[];
+    private lines: Array<Line>;
 
     constructor(
         {
@@ -244,8 +333,9 @@ class Editor
                     const file_text: string = await file.text();
                     this.Set_Name(file.name.replace(/\.[^.]+$/, ``));
                     this.Set_Text(file_text);
+                    this.children.load_input.value = ``;
 
-                    Assert(this.Get_Text() === file_text.replaceAll(/\r/g, ``));
+                    Assert(this.Text() === file_text.replaceAll(/\r/g, ``));
                 }
             }.bind(this),
         );
@@ -379,7 +469,7 @@ class Editor
 
         this.lines = [];
 
-        this.Add_Line();
+        this.Add_Line(``);
     }
 
     Parent():
@@ -394,7 +484,7 @@ class Editor
         return this.element;
     }
 
-    Get_Name():
+    Name():
         string
     {
         return this.children.name.textContent || ``;
@@ -408,11 +498,17 @@ class Editor
         this.children.name.innerHTML = Escape_Text(name);
     }
 
-    Get_Text():
+    Text():
         string
     {
         return this.lines.map(
-            line => line.Element().textContent || ``
+            function (
+                line: Line,
+            ):
+                string
+            {
+                return line.Text();
+            },
         ).join(`\n`);
     }
 
@@ -423,7 +519,7 @@ class Editor
     {
         this.Clear_Text();
 
-        const text_lines: string[] = text.split(/\r?\n/);
+        const text_lines: Array<string> = text.split(/\r?\n/);
         for (const text_line of text_lines) {
             this.Add_Line(text_line);
         }
@@ -432,8 +528,8 @@ class Editor
     Save_Text():
         void
     {
-        const text: string = this.Get_Text();
-        const name: string = this.Get_Name();
+        const text: string = this.Text();
+        const name: string = this.Name();
         const file: File = new File([text], `${name}.txt`);
         const file_url: string = URL.createObjectURL(file);
         const link = document.createElement(`a`);
@@ -450,24 +546,85 @@ class Editor
         void
     {
         for (const line of this.lines) {
-            this.children.lines.removeChild(line.Element());
+            line.Destruct();
         }
         this.lines = [];
     }
 
+    Lines():
+        Array<Line>
+    {
+        return Array.from(this.lines);
+    }
+
+    Line(
+        line_index: number,
+    ):
+        Line
+    {
+        Assert(line_index >= 0);
+        Assert(line_index < this.lines.length);
+
+        return this.lines[line_index];
+    }
+
     Add_Line(
-        text: string = ``,
+        text: string,
     ):
         void
     {
         const line: Line = new Line(
             {
+                editor: this,
                 parent: this.children.lines,
             },
         );
         this.lines.push(line);
 
-        line.Element().innerHTML = Escape_Text(text);
+        line.Set_Text(text);
+    }
+
+    Remove_Line(
+        line_index: number,
+    ):
+        void
+    {
+        Assert(line_index > 0);
+        Assert(line_index < this.lines.length);
+
+        if (line_index > 0) {
+            this.lines.splice(line_index, 1)[0].Destruct();
+        }
+    }
+
+    Insert_Line(
+        at_line_index: number,
+        text: string,
+    ):
+        void
+    {
+        Assert(at_line_index >= 0);
+        Assert(at_line_index <= this.lines.length);
+
+        for (let idx = at_line_index, end = this.lines.length; idx < end; idx += 1) {
+            const line = this.lines[idx];
+            line.Parent().removeChild(line.Element());
+        }
+
+        const line: Line = new Line(
+            {
+                editor: this,
+                parent: this.children.lines,
+            },
+        );
+        this.lines.splice(at_line_index, 0, line);
+
+        line.Set_Text(text);
+
+        for (let idx = at_line_index + 1, end = this.lines.length; idx < end; idx += 1) {
+            const line = this.lines[idx];
+            line.Parent().appendChild(line.Element());
+        }
     }
 }
 
