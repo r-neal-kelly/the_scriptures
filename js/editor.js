@@ -58,36 +58,75 @@ class Line {
         this.element.addEventListener(`keydown`, function (event) {
             if (event.key === `Enter`) {
                 event.preventDefault();
+                const selection = document.getSelection();
+                if (selection) {
+                    const line_text = this.Text();
+                    let line_text_a;
+                    let line_text_b;
+                    if (selection.isCollapsed) {
+                        Assert(selection.anchorNode !== null);
+                        const at = Text_Offset_To_Node(this.Element(), selection.anchorNode) +
+                            selection.anchorOffset;
+                        line_text_a = line_text.slice(0, at);
+                        line_text_b = line_text.slice(at, line_text.length);
+                    }
+                    else {
+                        Assert(selection.anchorNode !== null);
+                        Assert(selection.focusNode !== null);
+                        let start_node;
+                        let start_offset;
+                        let stop_node;
+                        let stop_offset;
+                        if (selection.anchorOffset < selection.focusOffset) {
+                            start_node = selection.anchorNode;
+                            start_offset = selection.anchorOffset;
+                            stop_node = selection.focusNode;
+                            stop_offset = selection.focusOffset;
+                        }
+                        else {
+                            start_node = selection.focusNode;
+                            start_offset = selection.focusOffset;
+                            stop_node = selection.anchorNode;
+                            stop_offset = selection.anchorOffset;
+                        }
+                        const top_node = this.Element();
+                        const from = Text_Offset_To_Node(top_node, start_node) +
+                            start_offset;
+                        const to = Text_Offset_To_Node(top_node, stop_node) +
+                            stop_offset;
+                        line_text_a = line_text.slice(0, from);
+                        line_text_b = line_text.slice(to, line_text.length);
+                    }
+                    const line_index = this.Index();
+                    this.Set_Text(line_text_a);
+                    this.Editor().Insert_Line(line_index + 1, line_text_b);
+                    this.Editor().Line(line_index + 1).Element().focus();
+                }
             }
             else if (event.key === `Backspace`) {
                 const line_index = this.Index();
                 if (line_index > 0) {
                     const selection = document.getSelection();
-                    if (selection) {
-                        if (selection.isCollapsed) {
-                            if (selection.anchorOffset === 0) {
-                                event.preventDefault();
-                                const previous_line = this.Editor().Line(line_index - 1);
-                                const previous_line_node = previous_line.Element();
-                                const previous_line_node_child_count = previous_line_node.childNodes.length;
-                                const previous_line_text = previous_line.Text();
-                                previous_line.Set_Text(`${previous_line_text}${this.Text()}`);
-                                this.Editor().Remove_Line(line_index);
-                                previous_line.Element().focus();
-                                if (previous_line_node.firstChild) {
-                                    if (previous_line_node.firstChild instanceof Text) {
-                                        selection.getRangeAt(0).setStart(previous_line_node.firstChild, previous_line_text.length);
-                                    }
-                                    else {
-                                        selection.getRangeAt(0).setStart(previous_line_node.firstChild, previous_line_node_child_count);
-                                    }
-                                }
-                                else {
-                                    selection.getRangeAt(0).setStart(previous_line_node, 0);
-                                }
+                    if (selection && selection.isCollapsed && selection.anchorOffset === 0) {
+                        event.preventDefault();
+                        const previous_line = this.Editor().Line(line_index - 1);
+                        const previous_line_node = previous_line.Element();
+                        const previous_line_node_child_count = previous_line_node.childNodes.length;
+                        const previous_line_text = previous_line.Text();
+                        previous_line.Set_Text(`${previous_line_text}${this.Text()}`);
+                        this.Editor().Remove_Line(line_index);
+                        previous_line.Element().focus();
+                        if (previous_line_node.firstChild) {
+                            if (previous_line_node.firstChild instanceof Text) {
+                                selection.getRangeAt(0).setStart(previous_line_node.firstChild, previous_line_text.length);
+                            }
+                            else {
+                                // this is supposed to work when we have spans in the innerHTML
+                                selection.getRangeAt(0).setStart(previous_line_node, previous_line_node_child_count);
                             }
                         }
                         else {
+                            selection.getRangeAt(0).setStart(previous_line_node, 0);
                         }
                     }
                 }
@@ -96,6 +135,7 @@ class Line {
         this.element.addEventListener(`input`, function (event) {
             const input_event = event;
             if (input_event.inputType === `insertFromPaste`) {
+                // we could also add lines to account for any new-spaces in the pasted text
                 const selection = document.getSelection();
                 if (selection &&
                     selection.anchorNode &&
@@ -298,6 +338,9 @@ class Editor {
             line.Destruct();
         }
         this.lines = [];
+    }
+    Line_Count() {
+        return this.lines.length;
     }
     Lines() {
         return Array.from(this.lines);
