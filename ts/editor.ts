@@ -90,6 +90,10 @@ class Line
             `style`,
             `
                 width: 100%;
+
+                border-width: 0 0 1px 0;
+                border-color: rgba(255, 255, 255, 0.7);
+                border-style: solid;
             `,
         );
 
@@ -507,6 +511,11 @@ class Editor
                 
                 width: 100%;
                 height: 90%;
+                padding: 2px;
+
+                border-width: 2px;
+                border-color: rgba(255, 255, 255, 0.7);
+                border-style: solid;
 
                 overflow-y: auto;
             `,

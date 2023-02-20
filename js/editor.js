@@ -54,6 +54,10 @@ class Line {
         this.element.setAttribute(`spellcheck`, `false`);
         this.element.setAttribute(`style`, `
                 width: 100%;
+
+                border-width: 0 0 1px 0;
+                border-color: rgba(255, 255, 255, 0.7);
+                border-style: solid;
             `);
         this.element.addEventListener(`keydown`, function (event) {
             if (event.key === `Enter`) {
@@ -284,6 +288,11 @@ class Editor {
                 
                 width: 100%;
                 height: 90%;
+                padding: 2px;
+
+                border-width: 2px;
+                border-color: rgba(255, 255, 255, 0.7);
+                border-style: solid;
 
                 overflow-y: auto;
             `);
