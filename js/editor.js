@@ -232,10 +232,175 @@ class Line {
         return this.element.textContent || ``;
     }
     Set_Text(text) {
-        this.element.innerHTML = Escape_Text(text)
-            .replaceAll(/&#[^;]+;/g, function (substring) {
-            return `<span class="Unknown_Point">${substring}</span>`;
-        });
+        this.element.innerHTML = this.Editor().Dictionary().Treat(text);
+    }
+}
+class Dictionary {
+    constructor() {
+        this.json = {
+            letters: [],
+            markers: [],
+            words: {},
+            errors: [],
+        };
+        this.Init_Test();
+    }
+    Init_Test() {
+        this.json = JSON.parse(`
+            {
+                "letters": [
+                    "a",
+                    "b",
+                    "c",
+                    "d",
+                    "e",
+                    "f",
+                    "g",
+                    "h",
+                    "i",
+                    "j",
+                    "k",
+                    "l",
+                    "m",
+                    "n",
+                    "o",
+                    "p",
+                    "q",
+                    "r",
+                    "s",
+                    "t",
+                    "u",
+                    "v",
+                    "w",
+                    "x",
+                    "y",
+                    "z"
+                ],
+                "markers": [
+                    " ",
+                    ",",
+                    "."
+                ],
+                "words": {
+                    "a": [
+                        "apple",
+                        "angel"
+                    ],
+                    "b": [
+                        "baby",
+                        "bath"
+                    ],
+                    "c": [],
+                    "d": [],
+                    "e": [],
+                    "f": [],
+                    "g": [],
+                    "h": [],
+                    "i": [],
+                    "j": [],
+                    "k": [],
+                    "l": [],
+                    "m": [],
+                    "n": [],
+                    "o": [],
+                    "p": [],
+                    "q": [],
+                    "r": [],
+                    "s": [],
+                    "t": [],
+                    "u": [],
+                    "v": [],
+                    "w": [],
+                    "x": [],
+                    "y": [],
+                    "z": []
+                },
+                "errors": [
+                    "aple",
+                    "batth"
+                ]
+            }
+        `);
+    }
+    Treat(text) {
+        let Type;
+        (function (Type) {
+            Type[Type["_NONE_"] = -1] = "_NONE_";
+            Type[Type["POINT"] = 0] = "POINT";
+            Type[Type["LETTERS"] = 1] = "LETTERS";
+            Type[Type["MARKERS"] = 2] = "MARKERS";
+        })(Type || (Type = {}));
+        ;
+        const parts = [];
+        let current_start_index = 0;
+        let current_type = Type._NONE_;
+        for (let idx = 0, end = text.length; idx < end; idx += 1) {
+            if (this.json.letters.includes(text[idx])) {
+                current_type = Type.LETTERS;
+            }
+            else if (this.json.markers.includes(text[idx])) {
+                current_type = Type.MARKERS;
+            }
+            else {
+                current_type = Type.POINT;
+            }
+            if (current_type === Type.POINT) {
+                parts.push({
+                    subtext: text.slice(current_start_index, idx + 1),
+                    type: Type.POINT,
+                });
+                current_start_index = idx + 1;
+            }
+            else if (current_type === Type.LETTERS) {
+                if (idx + 1 === end ||
+                    !this.json.letters.includes(text[idx + 1])) {
+                    parts.push({
+                        subtext: text.slice(current_start_index, idx + 1),
+                        type: Type.LETTERS,
+                    });
+                    current_start_index = idx + 1;
+                }
+            }
+            else if (current_type === Type.MARKERS) {
+                if (idx + 1 === end ||
+                    !this.json.markers.includes(text[idx + 1])) {
+                    parts.push({
+                        subtext: text.slice(current_start_index, idx + 1),
+                        type: Type.MARKERS,
+                    });
+                    current_start_index = idx + 1;
+                }
+            }
+            else {
+                Assert(false);
+            }
+        }
+        let inner_html = ``;
+        for (const part of parts) {
+            if (part.type === Type.POINT) {
+                inner_html += `<span class="UNKNOWN_POINT">${Escape_Text(part.subtext)}</span>`;
+            }
+            else if (part.type === Type.LETTERS) {
+                if (this.json.errors.includes(part.subtext)) {
+                    inner_html += `<span class="KNOWN_ERROR">${Escape_Text(part.subtext)}</span>`;
+                }
+                else if (this.json.words[part.subtext[0]].includes(part.subtext)) {
+                    inner_html += `<span class="KNOWN_WORD">${Escape_Text(part.subtext)}</span>`;
+                }
+                else {
+                    inner_html += `<span class="UNKNOWN_WORD">${Escape_Text(part.subtext)}</span>`;
+                }
+            }
+            else if (part.type === Type.MARKERS) {
+                if (this.json.markers.includes(part.subtext)) {
+                    inner_html += `<span class="KNOWN_MARKER">${Escape_Text(part.subtext)}</span>`;
+                }
+                else {
+                    inner_html += `<span class="UNKNOWN_MARKER">${Escape_Text(part.subtext)}</span>`;
+                }
+            }
+        }
+        return inner_html;
     }
 }
 class Editor {
@@ -361,6 +526,7 @@ class Editor {
         this.element.appendChild(this.children.name);
         this.element.appendChild(this.children.lines);
         this.parent.appendChild(this.element);
+        this.dictionary = new Dictionary();
         this.lines = [];
         this.Add_Line(``);
     }
@@ -369,6 +535,9 @@ class Editor {
     }
     Element() {
         return this.element;
+    }
+    Dictionary() {
+        return this.dictionary;
     }
     Name() {
         return this.children.name.textContent || ``;

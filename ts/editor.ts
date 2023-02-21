@@ -374,17 +374,213 @@ class Line
     ):
         void
     {
-        this.element.innerHTML = Escape_Text(text)
-            .replaceAll(
-                /&#[^;]+;/g,
-                function (
-                    substring: string,
-                ):
-                    string
-                {
-                    return `<span class="Unknown_Point">${substring}</span>`;
+        this.element.innerHTML = this.Editor().Dictionary().Treat(text);
+    }
+}
+
+type Letter =
+    string;
+type Marker =
+    string;
+type Word =
+    string;
+
+type Dictionary_JSON = {
+    letters: Array<Letter>;
+    markers: Array<Marker>;
+    words: { [index: Letter]: Array<Word> };
+    errors: Array<Word>;
+};
+
+class Dictionary
+{
+    private json: Dictionary_JSON;
+
+    constructor()
+    {
+        this.json = {
+            letters: [],
+            markers: [],
+            words: {},
+            errors: [],
+        };
+
+        this.Init_Test();
+    }
+
+    Init_Test():
+        void
+    {
+        this.json = JSON.parse(`
+            {
+                "letters": [
+                    "a",
+                    "b",
+                    "c",
+                    "d",
+                    "e",
+                    "f",
+                    "g",
+                    "h",
+                    "i",
+                    "j",
+                    "k",
+                    "l",
+                    "m",
+                    "n",
+                    "o",
+                    "p",
+                    "q",
+                    "r",
+                    "s",
+                    "t",
+                    "u",
+                    "v",
+                    "w",
+                    "x",
+                    "y",
+                    "z"
+                ],
+                "markers": [
+                    " ",
+                    ",",
+                    "."
+                ],
+                "words": {
+                    "a": [
+                        "apple",
+                        "angel"
+                    ],
+                    "b": [
+                        "baby",
+                        "bath"
+                    ],
+                    "c": [],
+                    "d": [],
+                    "e": [],
+                    "f": [],
+                    "g": [],
+                    "h": [],
+                    "i": [],
+                    "j": [],
+                    "k": [],
+                    "l": [],
+                    "m": [],
+                    "n": [],
+                    "o": [],
+                    "p": [],
+                    "q": [],
+                    "r": [],
+                    "s": [],
+                    "t": [],
+                    "u": [],
+                    "v": [],
+                    "w": [],
+                    "x": [],
+                    "y": [],
+                    "z": []
                 },
-            );
+                "errors": [
+                    "aple",
+                    "batth"
+                ]
+            }
+        `);
+    }
+
+    Treat(
+        text: string,
+    ):
+        string
+    {
+        enum Type
+        {
+            _NONE_ = -1,
+
+            POINT,
+            LETTERS,
+            MARKERS,
+        };
+
+        type Part = {
+            subtext: string,
+            type: Type,
+        };
+
+        const parts: Array<Part> = [];
+
+        let current_start_index: number = 0;
+        let current_type: Type = Type._NONE_;
+        for (let idx = 0, end = text.length; idx < end; idx += 1) {
+            if (this.json.letters.includes(text[idx])) {
+                current_type = Type.LETTERS;
+            } else if (this.json.markers.includes(text[idx])) {
+                current_type = Type.MARKERS;
+            } else {
+                current_type = Type.POINT;
+            }
+
+            if (current_type === Type.POINT) {
+                parts.push(
+                    {
+                        subtext: text.slice(current_start_index, idx + 1),
+                        type: Type.POINT,
+                    },
+                );
+                current_start_index = idx + 1;
+            } else if (current_type === Type.LETTERS) {
+                if (
+                    idx + 1 === end ||
+                    !this.json.letters.includes(text[idx + 1])
+                ) {
+                    parts.push(
+                        {
+                            subtext: text.slice(current_start_index, idx + 1),
+                            type: Type.LETTERS,
+                        },
+                    );
+                    current_start_index = idx + 1;
+                }
+            } else if (current_type === Type.MARKERS) {
+                if (
+                    idx + 1 === end ||
+                    !this.json.markers.includes(text[idx + 1])
+                ) {
+                    parts.push(
+                        {
+                            subtext: text.slice(current_start_index, idx + 1),
+                            type: Type.MARKERS,
+                        },
+                    );
+                    current_start_index = idx + 1;
+                }
+            } else {
+                Assert(false);
+            }
+        }
+
+        let inner_html: string = ``;
+        for (const part of parts) {
+            if (part.type === Type.POINT) {
+                inner_html += `<span class="UNKNOWN_POINT">${Escape_Text(part.subtext)}</span>`;
+            } else if (part.type === Type.LETTERS) {
+                if (this.json.errors.includes(part.subtext)) {
+                    inner_html += `<span class="KNOWN_ERROR">${Escape_Text(part.subtext)}</span>`;
+                } else if (this.json.words[part.subtext[0]].includes(part.subtext)) {
+                    inner_html += `<span class="KNOWN_WORD">${Escape_Text(part.subtext)}</span>`;
+                } else {
+                    inner_html += `<span class="UNKNOWN_WORD">${Escape_Text(part.subtext)}</span>`;
+                }
+            } else if (part.type === Type.MARKERS) {
+                if (this.json.markers.includes(part.subtext)) {
+                    inner_html += `<span class="KNOWN_MARKER">${Escape_Text(part.subtext)}</span>`;
+                } else {
+                    inner_html += `<span class="UNKNOWN_MARKER">${Escape_Text(part.subtext)}</span>`;
+                }
+            }
+        }
+
+        return inner_html;
     }
 }
 
@@ -403,6 +599,7 @@ class Editor
         lines: HTMLDivElement,
     };
 
+    private dictionary: Dictionary;
     private lines: Array<Line>;
 
     constructor(
@@ -626,6 +823,7 @@ class Editor
 
         this.parent.appendChild(this.element);
 
+        this.dictionary = new Dictionary();
         this.lines = [];
 
         this.Add_Line(``);
@@ -641,6 +839,12 @@ class Editor
         HTMLDivElement
     {
         return this.element;
+    }
+
+    Dictionary():
+        Dictionary
+    {
+        return this.dictionary;
     }
 
     Name():
