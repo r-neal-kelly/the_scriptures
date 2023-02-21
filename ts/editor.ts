@@ -207,10 +207,11 @@ class Line
             `style`,
             `
                 width: 100%;
+                padding: 2px;
 
                 border-width: 0 0 1px 0;
-                border-color: rgba(255, 255, 255, 0.7);
                 border-style: solid;
+                border-color: #3B3A32;
             `,
         );
 
@@ -443,6 +444,7 @@ class Dictionary
                 ],
                 "markers": [
                     " ",
+                    " ",
                     ",",
                     "."
                 ],
@@ -631,14 +633,14 @@ class Editor
                 justify-content: center;
                 align-items: center;
 
-                height: 90%;
-                width: 90%;
-                padding: 2px;
+                height: 95%;
+                width: 95%;
+                padding: 7px;
 
                 border-width: 0;
 
-                background-color: blue;
-                color: white;
+                background-color: #0f1318;
+                color: #E0ECFF;
 
                 overflow-y: auto;
             `,
@@ -806,8 +808,8 @@ class Editor
                 padding: 2px;
 
                 border-width: 2px;
-                border-color: rgba(255, 255, 255, 0.7);
                 border-style: solid;
+                border-color: #3B3A32;
 
                 overflow-y: auto;
             `,
@@ -1031,6 +1033,30 @@ function Style():
                     flex-direction: column;
                     justify-content: center;
                     align-items: center;
+                }
+
+                .UNKNOWN_POINT {
+                    border-width: 0 0 2px 0;
+                    border-style: solid;
+                    border-color: #ffff00;
+                }
+
+                .UNKNOWN_WORD {
+                    border-width: 0 0 2px 0;
+                    border-style: solid;
+                    border-color: #ff5858;
+                }
+
+                .UNKNOWN_MARKER {
+                    border-width: 0 0 2px 0;
+                    border-style: solid;
+                    border-color: #00da6f;
+                }
+
+                .KNOWN_ERROR {
+                    border-width: 0 0 2px 0;
+                    border-style: solid;
+                    border-color: #e767c3;
                 }
             `,
         ),
