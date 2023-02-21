@@ -44,6 +44,81 @@ function Text_Offset_To_Node(from, to) {
     }
 }
 ;
+function Text_Offset(element) {
+    const selection = document.getSelection();
+    if (selection) {
+        if (selection.isCollapsed) {
+            if (selection.anchorNode) {
+                return Text_Offset_To_Node(element, selection.anchorNode) + selection.anchorOffset;
+            }
+            else {
+                return null;
+            }
+        }
+        else {
+            if (selection.anchorNode && selection.focusNode) {
+                if (selection.anchorOffset < selection.focusOffset) {
+                    return Text_Offset_To_Node(element, selection.anchorNode) + selection.anchorOffset;
+                }
+                else {
+                    return Text_Offset_To_Node(element, selection.focusNode) + selection.focusOffset;
+                }
+            }
+            else {
+                return null;
+            }
+        }
+    }
+    else {
+        return null;
+    }
+}
+function Set_Text_Offset(element, offset) {
+    class Node_And_Offset {
+        constructor({ node, offset, }) {
+            this.node = node;
+            this.offset = offset;
+        }
+    }
+    ;
+    function Text_Offset_To_Node_And_Offset(node, target_offset, current_offset = 0) {
+        for (const child_node of node.childNodes) {
+            if (child_node instanceof Text) {
+                const text_length = child_node.textContent ?
+                    child_node.textContent.length :
+                    0;
+                current_offset += text_length;
+                if (current_offset >= target_offset) {
+                    return new Node_And_Offset({
+                        node: child_node,
+                        offset: target_offset - (current_offset - text_length),
+                    });
+                }
+            }
+            else {
+                const maybe_node_and_offset = Text_Offset_To_Node_And_Offset(child_node, target_offset, current_offset);
+                if (maybe_node_and_offset instanceof Node_And_Offset) {
+                    return maybe_node_and_offset;
+                }
+                else {
+                    current_offset = maybe_node_and_offset;
+                }
+            }
+        }
+        return current_offset;
+    }
+    element.focus();
+    const selection = document.getSelection();
+    if (selection) {
+        const maybe_node_and_offset = Text_Offset_To_Node_And_Offset(element, offset);
+        if (maybe_node_and_offset instanceof Node_And_Offset) {
+            selection.collapse(maybe_node_and_offset.node, maybe_node_and_offset.offset);
+        }
+        else {
+            selection.collapse(element, maybe_node_and_offset);
+        }
+    }
+}
 class Line {
     constructor({ editor, parent, }) {
         this.editor = editor;
@@ -108,50 +183,30 @@ class Line {
                 }
             }
             else if (event.key === `Backspace`) {
-                const line_index = this.Index();
-                if (line_index > 0) {
-                    const selection = document.getSelection();
-                    if (selection && selection.isCollapsed && selection.anchorOffset === 0) {
+                const selection = document.getSelection();
+                if (selection) {
+                    const line_index = this.Index();
+                    const text_offset = Text_Offset(this.element);
+                    if (line_index > 0 && selection.isCollapsed && text_offset === 0) {
                         event.preventDefault();
-                        const previous_line = this.Editor().Line(line_index - 1);
-                        const previous_line_node = previous_line.Element();
-                        const previous_line_node_child_count = previous_line_node.childNodes.length;
-                        const previous_line_text = previous_line.Text();
-                        previous_line.Set_Text(`${previous_line_text}${this.Text()}`);
+                        // we destroy this line and combine its text with the previous line.
+                        const previous = this.Editor().Line(line_index - 1);
+                        const previous_text = previous.Text();
+                        previous.Set_Text(`${previous_text}${this.Text()}`);
                         this.Editor().Remove_Line(line_index);
-                        previous_line.Element().focus();
-                        if (previous_line_node.firstChild) {
-                            if (previous_line_node.firstChild instanceof Text) {
-                                selection.getRangeAt(0).setStart(previous_line_node.firstChild, previous_line_text.length);
-                            }
-                            else {
-                                // this is supposed to work when we have spans in the innerHTML
-                                selection.getRangeAt(0).setStart(previous_line_node, previous_line_node_child_count);
-                            }
-                        }
-                        else {
-                            selection.getRangeAt(0).setStart(previous_line_node, 0);
-                        }
+                        Set_Text_Offset(previous.Element(), previous_text.length);
                     }
                 }
             }
         }.bind(this));
         this.element.addEventListener(`input`, function (event) {
             const input_event = event;
-            if (input_event.inputType === `insertFromPaste`) {
-                // we could also add lines to account for any new-spaces in the pasted text
-                const selection = document.getSelection();
-                if (selection &&
-                    selection.anchorNode &&
-                    selection.anchorNode !== this.element) {
-                    let new_offset = Text_Offset_To_Node(this.element, selection.anchorNode) +
-                        selection.anchorOffset;
-                    this.element.innerHTML = this.element.textContent || ``;
-                    selection.collapse(this.element.firstChild || this.element, new_offset);
-                }
-                else {
-                    this.element.innerHTML = ``;
-                }
+            if (input_event.inputType === `insertText` ||
+                input_event.inputType === `deleteContentBackward` ||
+                input_event.inputType === `insertFromPaste`) {
+                const text_offset = Text_Offset(this.element);
+                this.Set_Text(this.Text());
+                Set_Text_Offset(this.element, text_offset);
             }
         }.bind(this));
         this.parent.appendChild(this.element);
@@ -177,7 +232,10 @@ class Line {
         return this.element.textContent || ``;
     }
     Set_Text(text) {
-        this.element.innerHTML = Escape_Text(text);
+        this.element.innerHTML = Escape_Text(text)
+            .replaceAll(/&#[^;]+;/g, function (substring) {
+            return `<span class="Unknown_Point">${substring}</span>`;
+        });
     }
 }
 class Editor {
