@@ -64,17 +64,55 @@ function Text_Offset(
     const selection: Selection | null = document.getSelection();
     if (selection) {
         if (selection.isCollapsed) {
-            if (selection.anchorNode) {
+            if (
+                selection.anchorNode &&
+                (
+                    selection.anchorNode === element ||
+                    element.contains(selection.anchorNode)
+                )
+            ) {
                 return Text_Offset_To_Node(element, selection.anchorNode) + selection.anchorOffset;
             } else {
                 return null;
             }
         } else {
-            if (selection.anchorNode && selection.focusNode) {
+            if (
+                selection.anchorNode &&
+                selection.focusNode &&
+                (
+                    selection.anchorNode === element ||
+                    element.contains(selection.anchorNode)
+                ) &&
+                (
+                    selection.focusNode === element ||
+                    element.contains(selection.focusNode)
+                )
+            ) {
+                // this needs a better check. we want to know which is the start and end nodes
                 if (selection.anchorOffset < selection.focusOffset) {
-                    return Text_Offset_To_Node(element, selection.anchorNode) + selection.anchorOffset;
+                    if (selection.focusNode instanceof Text) {
+                        return Text_Offset_To_Node(element, selection.focusNode) +
+                            selection.focusOffset;
+                    } else {
+                        if (selection.focusNode.textContent) {
+                            return Text_Offset_To_Node(element, selection.focusNode) +
+                                selection.focusNode.textContent.length;
+                        } else {
+                            return Text_Offset_To_Node(element, selection.focusNode);
+                        }
+                    }
                 } else {
-                    return Text_Offset_To_Node(element, selection.focusNode) + selection.focusOffset;
+                    if (selection.anchorNode instanceof Text) {
+                        return Text_Offset_To_Node(element, selection.anchorNode) +
+                            selection.anchorOffset;
+                    } else {
+                        if (selection.anchorNode.textContent) {
+                            return Text_Offset_To_Node(element, selection.anchorNode) +
+                                selection.anchorNode.textContent.length;
+                        } else {
+                            return Text_Offset_To_Node(element, selection.anchorNode);
+                        }
+                    }
                 }
             } else {
                 return null;
@@ -580,7 +618,12 @@ class Line
     Touch():
         void
     {
+        const text_offset: number | null = Text_Offset(this.Element());
+
         this.Set_Text(this.Text());
+        if (text_offset) {
+            Set_Text_Offset(this.Element(), text_offset);
+        }
     }
 }
 
