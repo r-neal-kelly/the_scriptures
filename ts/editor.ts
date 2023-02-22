@@ -346,6 +346,91 @@ class Line
                             );
                         }
                     }
+                } else if (event.key === `l`) {
+                    if (event.altKey) {
+                        event.preventDefault();
+
+                        const selected: Dictionary_Text_And_Class | null =
+                            Dictionary.Selected_Text_And_Class();
+                        if (selected) {
+                            if (selected.class === Dictionary_Class.UNKNOWN_POINT) {
+                                this.Editor().Dictionary().Add_Letter(selected.text);
+                                this.Set_Text(this.Text());
+                            }
+                            // we need to be able to remove it by toggle also. Not sure
+                            // how it will be detected in selection.
+                        }
+                    }
+                } else if (event.key === `m`) {
+                    if (event.altKey) {
+                        event.preventDefault();
+
+                        const selected: Dictionary_Text_And_Class | null =
+                            Dictionary.Selected_Text_And_Class();
+                        if (selected) {
+                            if (selected.class === Dictionary_Class.UNKNOWN_POINT) {
+                                this.Editor().Dictionary().Add_Marker(selected.text);
+                                this.Set_Text(this.Text());
+                            } else if (selected.class === Dictionary_Class.UNKNOWN_MARKER) {
+                                this.Editor().Dictionary().Add_Marker(selected.text);
+                                this.Set_Text(this.Text());
+                            } else if (selected.class === Dictionary_Class.KNOWN_MARKER) {
+                                this.Editor().Dictionary().Remove_Marker(selected.text);
+                                this.Set_Text(this.Text());
+                            } else if (selected.class === Dictionary_Class.KNOWN_ERROR) {
+                                this.Editor().Dictionary().Remove_Error(selected.text);
+                                this.Editor().Dictionary().Add_Marker(selected.text);
+                                this.Set_Text(this.Text());
+                            }
+                        }
+                    }
+                } else if (event.key === `w`) {
+                    if (event.altKey) {
+                        event.preventDefault();
+
+                        const selected: Dictionary_Text_And_Class | null =
+                            Dictionary.Selected_Text_And_Class();
+                        if (selected) {
+                            if (selected.class === Dictionary_Class.UNKNOWN_WORD) {
+                                this.Editor().Dictionary().Add_Word(selected.text);
+                                this.Set_Text(this.Text());
+                            } else if (selected.class === Dictionary_Class.KNOWN_WORD) {
+                                this.Editor().Dictionary().Remove_Word(selected.text);
+                                this.Set_Text(this.Text());
+                            } else if (selected.class === Dictionary_Class.KNOWN_ERROR) {
+                                this.Editor().Dictionary().Remove_Error(selected.text);
+                                this.Editor().Dictionary().Add_Word(selected.text);
+                                this.Set_Text(this.Text());
+                            }
+                        }
+                    }
+                } else if (event.key === `e`) {
+                    if (event.altKey) {
+                        event.preventDefault();
+
+                        const selected: Dictionary_Text_And_Class | null =
+                            Dictionary.Selected_Text_And_Class();
+                        if (selected) {
+                            if (selected.class === Dictionary_Class.UNKNOWN_MARKER) {
+                                this.Editor().Dictionary().Add_Error(selected.text);
+                                this.Set_Text(this.Text());
+                            } else if (selected.class === Dictionary_Class.KNOWN_MARKER) {
+                                this.Editor().Dictionary().Remove_Marker(selected.text);
+                                this.Editor().Dictionary().Add_Error(selected.text);
+                                this.Set_Text(this.Text());
+                            } else if (selected.class === Dictionary_Class.UNKNOWN_WORD) {
+                                this.Editor().Dictionary().Add_Error(selected.text);
+                                this.Set_Text(this.Text());
+                            } else if (selected.class === Dictionary_Class.KNOWN_WORD) {
+                                this.Editor().Dictionary().Remove_Word(selected.text);
+                                this.Editor().Dictionary().Add_Error(selected.text);
+                                this.Set_Text(this.Text());
+                            } else if (selected.class === Dictionary_Class.KNOWN_ERROR) {
+                                this.Editor().Dictionary().Remove_Error(selected.text);
+                                this.Set_Text(this.Text());
+                            }
+                        }
+                    }
                 }
             }.bind(this),
         );
@@ -367,6 +452,43 @@ class Line
 
                     this.Set_Text(this.Text());
                     Set_Text_Offset(this.element, text_offset);
+                }
+            }.bind(this),
+        );
+        this.element.addEventListener(
+            `dblclick`,
+            function (
+                this: Line,
+                mouse_event: MouseEvent,
+            ):
+                void
+            {
+                const selection: Selection | null = document.getSelection();
+                if (selection) {
+                    if (selection.rangeCount < 1) {
+                        selection.addRange(document.createRange());
+                    }
+
+                    let node: Element = this.Element();
+                    for (const child of this.Element().children) {
+                        const rect: DOMRect = child.getBoundingClientRect();
+                        if (
+                            mouse_event.clientX >= rect.left &&
+                            mouse_event.clientX <= rect.right &&
+                            mouse_event.clientY >= rect.top &&
+                            mouse_event.clientY <= rect.bottom
+                        ) {
+                            node = child;
+                            break;
+                        }
+                    }
+                    if (node === this.Element()) {
+                        selection.getRangeAt(0).setStart(node, 0);
+                        selection.getRangeAt(0).setEnd(node, node.children.length);
+                    } else {
+                        selection.getRangeAt(0).setStart(node, 0);
+                        selection.getRangeAt(0).setEnd(node, 1);
+                    }
                 }
             }.bind(this),
         );
@@ -460,8 +582,83 @@ type Dictionary_Data = {
     errors: Array<Word>;
 };
 
+enum Dictionary_Class
+{
+    _NONE_ = -1,
+
+    UNKNOWN_POINT,
+    KNOWN_LETTER,
+    UNKNOWN_MARKER,
+    KNOWN_MARKER,
+    UNKNOWN_WORD,
+    KNOWN_WORD,
+    KNOWN_ERROR,
+};
+
+type Dictionary_Text_And_Class = {
+    text: string,
+    class: Dictionary_Class,
+};
+
 class Dictionary
 {
+    static Selected_Text_And_Class():
+        Dictionary_Text_And_Class | null
+    {
+        const selection: Selection | null = document.getSelection();
+        if (
+            selection &&
+            !selection.isCollapsed &&
+            selection.anchorNode != null &&
+            selection.focusNode != null &&
+            selection.anchorNode === selection.focusNode &&
+            selection.getRangeAt(0).startOffset === 0 &&
+            selection.getRangeAt(0).endOffset === 1
+        ) {
+            if (
+                selection.anchorNode instanceof HTMLSpanElement
+            ) {
+                const span: HTMLSpanElement = selection.anchorNode as HTMLSpanElement;
+                if (span.textContent != null) {
+                    const dictionary_text: string = span.textContent.replaceAll(/ /g, ` `);
+                    if (dictionary_text !== ``) {
+                        let dictionary_class: Dictionary_Class = Dictionary_Class._NONE_;
+                        // can't do KNOWN_LETTER unless we allow text as well as span
+                        if (span.classList.contains(`UNKNOWN_POINT`)) {
+                            dictionary_class = Dictionary_Class.UNKNOWN_POINT;
+                        } else if (span.classList.contains(`UNKNOWN_MARKER`)) {
+                            dictionary_class = Dictionary_Class.UNKNOWN_MARKER;
+                        } else if (span.classList.contains(`KNOWN_MARKER`)) {
+                            dictionary_class = Dictionary_Class.KNOWN_MARKER;
+                        } else if (span.classList.contains(`UNKNOWN_WORD`)) {
+                            dictionary_class = Dictionary_Class.UNKNOWN_WORD;
+                        } else if (span.classList.contains(`KNOWN_WORD`)) {
+                            dictionary_class = Dictionary_Class.KNOWN_WORD;
+                        } else if (span.classList.contains(`KNOWN_ERROR`)) {
+                            dictionary_class = Dictionary_Class.KNOWN_ERROR;
+                        }
+                        if (dictionary_class !== Dictionary_Class._NONE_) {
+                            return {
+                                text: dictionary_text,
+                                class: dictionary_class,
+                            };
+                        } else {
+                            return null;
+                        }
+                    } else {
+                        return null;
+                    }
+                } else {
+                    return null;
+                }
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
+    }
+
     private data: Dictionary_Data;
 
     constructor(
@@ -482,14 +679,16 @@ class Dictionary
                 errors: [],
             };
         }
+    }
 
-        //temp
-        this.Add_Word(`apple`);
-        this.Add_Letter(`p`);
-        this.Add_Letter(`l`);
-        this.Add_Letter(`e`);
-        this.Add_Marker(` `);
-        this.Add_Error(`aple`);
+    Has_Letter(
+        letter: Letter,
+    ):
+        boolean
+    {
+        Assert(letter.length === 1);
+
+        return this.data.letters.includes(letter);
     }
 
     Add_Letter(
@@ -522,11 +721,24 @@ class Dictionary
         }
     }
 
+    Has_Marker(
+        marker: Marker,
+    ):
+        boolean
+    {
+        Assert(marker.length > 0);
+
+        return this.data.markers.includes(marker);
+    }
+
     Add_Marker(
         marker: Marker,
     ):
         void
     {
+        Assert(marker.length > 0);
+        Assert(!this.Has_Error(marker));
+
         if (!this.data.markers.includes(marker)) {
             this.data.markers.push(marker);
         }
@@ -537,11 +749,26 @@ class Dictionary
     ):
         void
     {
+        Assert(marker.length > 0);
+
         const index: number = this.data.markers.indexOf(marker);
         if (index > -1) {
             this.data.markers[index] = this.data.markers[this.data.markers.length - 1];
             this.data.markers.pop();
         }
+    }
+
+    Has_Word(
+        word: Word,
+    ):
+        boolean
+    {
+        Assert(word.length > 0);
+
+        return (
+            this.data.words[word[0]] != null &&
+            this.data.words[word[0]].includes(word)
+        );
     }
 
     Add_Word(
@@ -550,6 +777,7 @@ class Dictionary
         void
     {
         Assert(word.length > 0);
+        Assert(!this.Has_Error(word));
 
         if (this.data.words[word[0]] == null) {
             this.Add_Letter(word[0]);
@@ -577,11 +805,25 @@ class Dictionary
         }
     }
 
+    Has_Error(
+        error: Word | Marker,
+    ):
+        boolean
+    {
+        Assert(error.length > 0);
+
+        return this.data.errors.includes(error);
+    }
+
     Add_Error(
         error: Word | Marker,
     ):
         void
     {
+        Assert(error.length > 0);
+        Assert(!this.Has_Marker(error));
+        Assert(!this.Has_Word(error));
+
         if (!this.data.errors.includes(error)) {
             this.data.errors.push(error);
         }
@@ -592,6 +834,8 @@ class Dictionary
     ):
         void
     {
+        Assert(error.length > 0);
+
         const index: number = this.data.errors.indexOf(error);
         if (index > -1) {
             this.data.errors[index] = this.data.errors[this.data.errors.length - 1];

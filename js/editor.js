@@ -235,6 +235,96 @@ class Line {
                     }
                 }
             }
+            else if (event.key === `l`) {
+                if (event.altKey) {
+                    event.preventDefault();
+                    const selected = Dictionary.Selected_Text_And_Class();
+                    if (selected) {
+                        if (selected.class === Dictionary_Class.UNKNOWN_POINT) {
+                            this.Editor().Dictionary().Add_Letter(selected.text);
+                            this.Set_Text(this.Text());
+                        }
+                        // we need to be able to remove it by toggle also. Not sure
+                        // how it will be detected in selection.
+                    }
+                }
+            }
+            else if (event.key === `m`) {
+                if (event.altKey) {
+                    event.preventDefault();
+                    const selected = Dictionary.Selected_Text_And_Class();
+                    if (selected) {
+                        if (selected.class === Dictionary_Class.UNKNOWN_POINT) {
+                            this.Editor().Dictionary().Add_Marker(selected.text);
+                            this.Set_Text(this.Text());
+                        }
+                        else if (selected.class === Dictionary_Class.UNKNOWN_MARKER) {
+                            this.Editor().Dictionary().Add_Marker(selected.text);
+                            this.Set_Text(this.Text());
+                        }
+                        else if (selected.class === Dictionary_Class.KNOWN_MARKER) {
+                            this.Editor().Dictionary().Remove_Marker(selected.text);
+                            this.Set_Text(this.Text());
+                        }
+                        else if (selected.class === Dictionary_Class.KNOWN_ERROR) {
+                            this.Editor().Dictionary().Remove_Error(selected.text);
+                            this.Editor().Dictionary().Add_Marker(selected.text);
+                            this.Set_Text(this.Text());
+                        }
+                    }
+                }
+            }
+            else if (event.key === `w`) {
+                if (event.altKey) {
+                    event.preventDefault();
+                    const selected = Dictionary.Selected_Text_And_Class();
+                    if (selected) {
+                        if (selected.class === Dictionary_Class.UNKNOWN_WORD) {
+                            this.Editor().Dictionary().Add_Word(selected.text);
+                            this.Set_Text(this.Text());
+                        }
+                        else if (selected.class === Dictionary_Class.KNOWN_WORD) {
+                            this.Editor().Dictionary().Remove_Word(selected.text);
+                            this.Set_Text(this.Text());
+                        }
+                        else if (selected.class === Dictionary_Class.KNOWN_ERROR) {
+                            this.Editor().Dictionary().Remove_Error(selected.text);
+                            this.Editor().Dictionary().Add_Word(selected.text);
+                            this.Set_Text(this.Text());
+                        }
+                    }
+                }
+            }
+            else if (event.key === `e`) {
+                if (event.altKey) {
+                    event.preventDefault();
+                    const selected = Dictionary.Selected_Text_And_Class();
+                    if (selected) {
+                        if (selected.class === Dictionary_Class.UNKNOWN_MARKER) {
+                            this.Editor().Dictionary().Add_Error(selected.text);
+                            this.Set_Text(this.Text());
+                        }
+                        else if (selected.class === Dictionary_Class.KNOWN_MARKER) {
+                            this.Editor().Dictionary().Remove_Marker(selected.text);
+                            this.Editor().Dictionary().Add_Error(selected.text);
+                            this.Set_Text(this.Text());
+                        }
+                        else if (selected.class === Dictionary_Class.UNKNOWN_WORD) {
+                            this.Editor().Dictionary().Add_Error(selected.text);
+                            this.Set_Text(this.Text());
+                        }
+                        else if (selected.class === Dictionary_Class.KNOWN_WORD) {
+                            this.Editor().Dictionary().Remove_Word(selected.text);
+                            this.Editor().Dictionary().Add_Error(selected.text);
+                            this.Set_Text(this.Text());
+                        }
+                        else if (selected.class === Dictionary_Class.KNOWN_ERROR) {
+                            this.Editor().Dictionary().Remove_Error(selected.text);
+                            this.Set_Text(this.Text());
+                        }
+                    }
+                }
+            }
         }.bind(this));
         this.element.addEventListener(`input`, function (event) {
             const input_event = event;
@@ -244,6 +334,33 @@ class Line {
                 const text_offset = Text_Offset(this.element);
                 this.Set_Text(this.Text());
                 Set_Text_Offset(this.element, text_offset);
+            }
+        }.bind(this));
+        this.element.addEventListener(`dblclick`, function (mouse_event) {
+            const selection = document.getSelection();
+            if (selection) {
+                if (selection.rangeCount < 1) {
+                    selection.addRange(document.createRange());
+                }
+                let node = this.Element();
+                for (const child of this.Element().children) {
+                    const rect = child.getBoundingClientRect();
+                    if (mouse_event.clientX >= rect.left &&
+                        mouse_event.clientX <= rect.right &&
+                        mouse_event.clientY >= rect.top &&
+                        mouse_event.clientY <= rect.bottom) {
+                        node = child;
+                        break;
+                    }
+                }
+                if (node === this.Element()) {
+                    selection.getRangeAt(0).setStart(node, 0);
+                    selection.getRangeAt(0).setEnd(node, node.children.length);
+                }
+                else {
+                    selection.getRangeAt(0).setStart(node, 0);
+                    selection.getRangeAt(0).setEnd(node, 1);
+                }
             }
         }.bind(this));
         this.parent.appendChild(this.element);
@@ -296,7 +413,79 @@ class Line {
         this.element.innerHTML = this.Editor().Dictionary().Treat(text);
     }
 }
+var Dictionary_Class;
+(function (Dictionary_Class) {
+    Dictionary_Class[Dictionary_Class["_NONE_"] = -1] = "_NONE_";
+    Dictionary_Class[Dictionary_Class["UNKNOWN_POINT"] = 0] = "UNKNOWN_POINT";
+    Dictionary_Class[Dictionary_Class["KNOWN_LETTER"] = 1] = "KNOWN_LETTER";
+    Dictionary_Class[Dictionary_Class["UNKNOWN_MARKER"] = 2] = "UNKNOWN_MARKER";
+    Dictionary_Class[Dictionary_Class["KNOWN_MARKER"] = 3] = "KNOWN_MARKER";
+    Dictionary_Class[Dictionary_Class["UNKNOWN_WORD"] = 4] = "UNKNOWN_WORD";
+    Dictionary_Class[Dictionary_Class["KNOWN_WORD"] = 5] = "KNOWN_WORD";
+    Dictionary_Class[Dictionary_Class["KNOWN_ERROR"] = 6] = "KNOWN_ERROR";
+})(Dictionary_Class || (Dictionary_Class = {}));
+;
 class Dictionary {
+    static Selected_Text_And_Class() {
+        const selection = document.getSelection();
+        if (selection &&
+            !selection.isCollapsed &&
+            selection.anchorNode != null &&
+            selection.focusNode != null &&
+            selection.anchorNode === selection.focusNode &&
+            selection.getRangeAt(0).startOffset === 0 &&
+            selection.getRangeAt(0).endOffset === 1) {
+            if (selection.anchorNode instanceof HTMLSpanElement) {
+                const span = selection.anchorNode;
+                if (span.textContent != null) {
+                    const dictionary_text = span.textContent.replaceAll(/ /g, ` `);
+                    if (dictionary_text !== ``) {
+                        let dictionary_class = Dictionary_Class._NONE_;
+                        // can't do KNOWN_LETTER unless we allow text as well as span
+                        if (span.classList.contains(`UNKNOWN_POINT`)) {
+                            dictionary_class = Dictionary_Class.UNKNOWN_POINT;
+                        }
+                        else if (span.classList.contains(`UNKNOWN_MARKER`)) {
+                            dictionary_class = Dictionary_Class.UNKNOWN_MARKER;
+                        }
+                        else if (span.classList.contains(`KNOWN_MARKER`)) {
+                            dictionary_class = Dictionary_Class.KNOWN_MARKER;
+                        }
+                        else if (span.classList.contains(`UNKNOWN_WORD`)) {
+                            dictionary_class = Dictionary_Class.UNKNOWN_WORD;
+                        }
+                        else if (span.classList.contains(`KNOWN_WORD`)) {
+                            dictionary_class = Dictionary_Class.KNOWN_WORD;
+                        }
+                        else if (span.classList.contains(`KNOWN_ERROR`)) {
+                            dictionary_class = Dictionary_Class.KNOWN_ERROR;
+                        }
+                        if (dictionary_class !== Dictionary_Class._NONE_) {
+                            return {
+                                text: dictionary_text,
+                                class: dictionary_class,
+                            };
+                        }
+                        else {
+                            return null;
+                        }
+                    }
+                    else {
+                        return null;
+                    }
+                }
+                else {
+                    return null;
+                }
+            }
+            else {
+                return null;
+            }
+        }
+        else {
+            return null;
+        }
+    }
     constructor({ json = null, }) {
         if (json) {
             this.data = JSON.parse(json);
@@ -309,13 +498,10 @@ class Dictionary {
                 errors: [],
             };
         }
-        //temp
-        this.Add_Word(`apple`);
-        this.Add_Letter(`p`);
-        this.Add_Letter(`l`);
-        this.Add_Letter(`e`);
-        this.Add_Marker(` `);
-        this.Add_Error(`aple`);
+    }
+    Has_Letter(letter) {
+        Assert(letter.length === 1);
+        return this.data.letters.includes(letter);
     }
     Add_Letter(letter) {
         Assert(letter.length === 1);
@@ -333,20 +519,33 @@ class Dictionary {
             delete this.data.words[letter];
         }
     }
+    Has_Marker(marker) {
+        Assert(marker.length > 0);
+        return this.data.markers.includes(marker);
+    }
     Add_Marker(marker) {
+        Assert(marker.length > 0);
+        Assert(!this.Has_Error(marker));
         if (!this.data.markers.includes(marker)) {
             this.data.markers.push(marker);
         }
     }
     Remove_Marker(marker) {
+        Assert(marker.length > 0);
         const index = this.data.markers.indexOf(marker);
         if (index > -1) {
             this.data.markers[index] = this.data.markers[this.data.markers.length - 1];
             this.data.markers.pop();
         }
     }
+    Has_Word(word) {
+        Assert(word.length > 0);
+        return (this.data.words[word[0]] != null &&
+            this.data.words[word[0]].includes(word));
+    }
     Add_Word(word) {
         Assert(word.length > 0);
+        Assert(!this.Has_Error(word));
         if (this.data.words[word[0]] == null) {
             this.Add_Letter(word[0]);
             this.data.words[word[0]].push(word);
@@ -367,12 +566,20 @@ class Dictionary {
             }
         }
     }
+    Has_Error(error) {
+        Assert(error.length > 0);
+        return this.data.errors.includes(error);
+    }
     Add_Error(error) {
+        Assert(error.length > 0);
+        Assert(!this.Has_Marker(error));
+        Assert(!this.Has_Word(error));
         if (!this.data.errors.includes(error)) {
             this.data.errors.push(error);
         }
     }
     Remove_Error(error) {
+        Assert(error.length > 0);
         const index = this.data.errors.indexOf(error);
         if (index > -1) {
             this.data.errors[index] = this.data.errors[this.data.errors.length - 1];
