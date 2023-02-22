@@ -89,6 +89,7 @@ function Text_Offset(
                 )
             ) {
                 // this needs a better check. we want to know which is the start and end nodes
+                // but this doesn't work correctly if the anchor and focus are not the same text node
                 if (selection.anchorOffset < selection.focusOffset) {
                     if (selection.focusNode instanceof Text) {
                         return Text_Offset_To_Node(element, selection.focusNode) +
@@ -255,6 +256,7 @@ class Line
                 border-style: solid;
                 border-color: #3B3A32;
 
+                font-size: 18px;
                 direction: ltr;
             `,
         );
@@ -1016,16 +1018,18 @@ class Editor
     private parent: HTMLElement;
     private element: HTMLDivElement;
     private children: {
-        commands: HTMLDivElement,
+        controls: HTMLDivElement,
 
-        load_dictionary_input: HTMLInputElement,
-        load_dictionary_button: HTMLDivElement,
-        save_dictionary_button: HTMLDivElement,
+        dictionary_label: HTMLDivElement,
+        dictionary_load_input: HTMLInputElement,
+        dictionary_load_button: HTMLDivElement,
+        dictionary_save_button: HTMLDivElement,
         dictionary_name: HTMLDivElement,
 
-        load_file_input: HTMLInputElement,
-        load_file_button: HTMLDivElement,
-        save_file_button: HTMLDivElement,
+        file_label: HTMLDivElement,
+        file_load_input: HTMLInputElement,
+        file_load_button: HTMLDivElement,
+        file_save_button: HTMLDivElement,
         file_name: HTMLDivElement,
 
         lines: HTMLDivElement,
@@ -1039,21 +1043,40 @@ class Editor
         },
     )
     {
+        const button_style: string = `
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            justify-self: center;
+
+            width: 100%;
+            padding: 2px;
+
+            border-width: 2px;
+            border-style: solid;
+            border-color: #3B3A32;
+
+            cursor: pointer;
+            user-select: none;
+        `;
+
         this.is_meta_key_active = false;
 
         this.parent = parent;
         this.element = document.createElement(`div`);
         this.children = {
-            commands: document.createElement(`div`),
+            controls: document.createElement(`div`),
 
-            load_dictionary_input: document.createElement(`input`),
-            load_dictionary_button: document.createElement(`div`),
-            save_dictionary_button: document.createElement(`div`),
+            dictionary_label: document.createElement(`div`),
+            dictionary_load_input: document.createElement(`input`),
+            dictionary_load_button: document.createElement(`div`),
+            dictionary_save_button: document.createElement(`div`),
             dictionary_name: document.createElement(`div`),
 
-            load_file_input: document.createElement(`input`),
-            load_file_button: document.createElement(`div`),
-            save_file_button: document.createElement(`div`),
+            file_label: document.createElement(`div`),
+            file_load_input: document.createElement(`input`),
+            file_load_button: document.createElement(`div`),
+            file_save_button: document.createElement(`div`),
             file_name: document.createElement(`div`),
 
             lines: document.createElement(`div`),
@@ -1128,90 +1151,28 @@ class Editor
             }.bind(this),
         );
 
-        this.children.commands.setAttribute(
+        this.children.controls.setAttribute(
             `style`,
             `
-                display: flex;
-                flex-direction: row;
-                justify-content: center;
-                align-items: center;
+                display: grid;
+                grid-template-columns: 1fr 1fr 1fr 1fr;
+                grid-template-rows: 1fr 1fr;
+                grid-gap: 3px;
 
                 width: 100%;
-                height: 5%;
+                padding: 2px 0;
             `,
         );
 
-        this.children.load_dictionary_input.setAttribute(
-            `type`,
-            `file`,
-        );
-        this.children.load_dictionary_input.setAttribute(
-            `accept`,
-            `.json`,
-        );
-        this.children.load_dictionary_input.setAttribute(
+        this.children.dictionary_label.setAttribute(
             `style`,
             `
-                display: none;
-            `,
-        );
-        this.children.load_dictionary_input.addEventListener(
-            `input`,
-            async function (
-                this: Editor,
-                event: Event,
-            ):
-                Promise<void>
-            {
-                if (this.children.load_dictionary_input.files && this.children.load_dictionary_input.files[0]) {
-                    const file: File = this.children.load_dictionary_input.files[0];
-                    const file_text: string = await file.text();
-                    this.Set_Dictionary_Name(file.name.replace(/\.[^.]+$/, ``));
-                    this.Set_Dictionary_JSON(file_text);
-                    this.children.load_dictionary_input.value = ``;
-                }
-            }.bind(this),
-        );
+                font-size: 24px;
 
-        this.children.load_dictionary_button.setAttribute(
-            `style`,
-            `
-                width: 50%;
-                height: 100%;
+                user-select: none;
             `,
         );
-        this.children.load_dictionary_button.textContent = `Load Dictionary`;
-        this.children.load_dictionary_button.addEventListener(
-            `click`,
-            function (
-                this: Editor,
-                event: Event,
-            ):
-                void
-            {
-                this.children.load_dictionary_input.click();
-            }.bind(this),
-        );
-
-        this.children.save_dictionary_button.setAttribute(
-            `style`,
-            `
-                width: 50%;
-                height: 100%;
-            `,
-        );
-        this.children.save_dictionary_button.textContent = `Save Dictionary`;
-        this.children.save_dictionary_button.addEventListener(
-            `click`,
-            function (
-                this: Editor,
-                event: Event,
-            ):
-                void
-            {
-                this.Save_Dictionary();
-            }.bind(this),
-        );
+        this.children.dictionary_label.textContent = `Dictionary:`;
 
         this.children.dictionary_name.setAttribute(
             `contentEditable`,
@@ -1224,9 +1185,9 @@ class Editor
         this.children.dictionary_name.setAttribute(
             `style`,
             `
-                width: 100%;
-                height: 5%;
+                padding: 2px;
 
+                font-size: 22px;
                 direction: ltr;
             `,
         );
@@ -1265,21 +1226,21 @@ class Editor
             }.bind(this),
         );
 
-        this.children.load_file_input.setAttribute(
+        this.children.dictionary_load_input.setAttribute(
             `type`,
             `file`,
         );
-        this.children.load_file_input.setAttribute(
+        this.children.dictionary_load_input.setAttribute(
             `accept`,
-            `.txt`,
+            `.json`,
         );
-        this.children.load_file_input.setAttribute(
+        this.children.dictionary_load_input.setAttribute(
             `style`,
             `
                 display: none;
             `,
         );
-        this.children.load_file_input.addEventListener(
+        this.children.dictionary_load_input.addEventListener(
             `input`,
             async function (
                 this: Editor,
@@ -1287,27 +1248,22 @@ class Editor
             ):
                 Promise<void>
             {
-                if (this.children.load_file_input.files && this.children.load_file_input.files[0]) {
-                    const file: File = this.children.load_file_input.files[0];
+                if (this.children.dictionary_load_input.files && this.children.dictionary_load_input.files[0]) {
+                    const file: File = this.children.dictionary_load_input.files[0];
                     const file_text: string = await file.text();
-                    this.Set_File_Name(file.name.replace(/\.[^.]+$/, ``));
-                    this.Set_Text(file_text);
-                    this.children.load_file_input.value = ``;
-
-                    Assert(this.Text() === file_text.replaceAll(/\r/g, ``));
+                    this.Set_Dictionary_Name(file.name.replace(/\.[^.]+$/, ``));
+                    this.Set_Dictionary_JSON(file_text);
+                    this.children.dictionary_load_input.value = ``;
                 }
             }.bind(this),
         );
 
-        this.children.load_file_button.setAttribute(
+        this.children.dictionary_load_button.setAttribute(
             `style`,
-            `
-                width: 50%;
-                height: 100%;
-            `,
+            button_style,
         );
-        this.children.load_file_button.textContent = `Load File`;
-        this.children.load_file_button.addEventListener(
+        this.children.dictionary_load_button.innerHTML = `<div>Load</div>`;
+        this.children.dictionary_load_button.addEventListener(
             `click`,
             function (
                 this: Editor,
@@ -1315,19 +1271,16 @@ class Editor
             ):
                 void
             {
-                this.children.load_file_input.click();
+                this.children.dictionary_load_input.click();
             }.bind(this),
         );
 
-        this.children.save_file_button.setAttribute(
+        this.children.dictionary_save_button.setAttribute(
             `style`,
-            `
-                width: 50%;
-                height: 100%;
-            `,
+            button_style,
         );
-        this.children.save_file_button.textContent = `Save File`;
-        this.children.save_file_button.addEventListener(
+        this.children.dictionary_save_button.innerHTML = `<div>Save</div>`;
+        this.children.dictionary_save_button.addEventListener(
             `click`,
             function (
                 this: Editor,
@@ -1335,9 +1288,19 @@ class Editor
             ):
                 void
             {
-                this.Save_Text();
+                this.Save_Dictionary();
             }.bind(this),
         );
+
+        this.children.file_label.setAttribute(
+            `style`,
+            `
+                font-size: 24px;
+
+                user-select: none;
+            `,
+        );
+        this.children.file_label.textContent = `File:`;
 
         this.children.file_name.setAttribute(
             `contentEditable`,
@@ -1350,9 +1313,9 @@ class Editor
         this.children.file_name.setAttribute(
             `style`,
             `
-                width: 100%;
-                height: 5%;
+                padding: 2px;
 
+                font-size: 22px;
                 direction: ltr;
             `,
         );
@@ -1391,6 +1354,74 @@ class Editor
             }.bind(this),
         );
 
+        this.children.file_load_input.setAttribute(
+            `type`,
+            `file`,
+        );
+        this.children.file_load_input.setAttribute(
+            `accept`,
+            `.txt`,
+        );
+        this.children.file_load_input.setAttribute(
+            `style`,
+            `
+                display: none;
+            `,
+        );
+        this.children.file_load_input.addEventListener(
+            `input`,
+            async function (
+                this: Editor,
+                event: Event,
+            ):
+                Promise<void>
+            {
+                if (this.children.file_load_input.files && this.children.file_load_input.files[0]) {
+                    const file: File = this.children.file_load_input.files[0];
+                    const file_text: string = await file.text();
+                    this.Set_File_Name(file.name.replace(/\.[^.]+$/, ``));
+                    this.Set_Text(file_text);
+                    this.children.file_load_input.value = ``;
+
+                    Assert(this.Text() === file_text.replaceAll(/\r/g, ``));
+                }
+            }.bind(this),
+        );
+
+        this.children.file_load_button.setAttribute(
+            `style`,
+            button_style,
+        );
+        this.children.file_load_button.innerHTML = `<div>Load</div>`;
+        this.children.file_load_button.addEventListener(
+            `click`,
+            function (
+                this: Editor,
+                event: Event,
+            ):
+                void
+            {
+                this.children.file_load_input.click();
+            }.bind(this),
+        );
+
+        this.children.file_save_button.setAttribute(
+            `style`,
+            button_style,
+        );
+        this.children.file_save_button.innerHTML = `<div>Save</div>`;
+        this.children.file_save_button.addEventListener(
+            `click`,
+            function (
+                this: Editor,
+                event: Event,
+            ):
+                void
+            {
+                this.Save_Text();
+            }.bind(this),
+        );
+
         this.children.lines.setAttribute(
             `style`,
             `
@@ -1414,17 +1445,17 @@ class Editor
         this.dictionary = new Dictionary({});
         this.lines = [];
 
-        this.children.commands.appendChild(this.children.load_dictionary_input);
-        this.children.commands.appendChild(this.children.load_dictionary_button);
-        this.children.commands.appendChild(this.children.save_dictionary_button);
+        this.children.controls.appendChild(this.children.dictionary_label);
+        this.children.controls.appendChild(this.children.dictionary_name);
+        this.children.controls.appendChild(this.children.dictionary_load_button);
+        this.children.controls.appendChild(this.children.dictionary_save_button);
 
-        this.children.commands.appendChild(this.children.load_file_input);
-        this.children.commands.appendChild(this.children.load_file_button);
-        this.children.commands.appendChild(this.children.save_file_button);
+        this.children.controls.appendChild(this.children.file_label);
+        this.children.controls.appendChild(this.children.file_name);
+        this.children.controls.appendChild(this.children.file_load_button);
+        this.children.controls.appendChild(this.children.file_save_button);
 
-        this.element.appendChild(this.children.commands);
-        this.element.appendChild(this.children.dictionary_name);
-        this.element.appendChild(this.children.file_name);
+        this.element.appendChild(this.children.controls);
         this.element.appendChild(this.children.lines);
 
         this.parent.appendChild(this.element);
