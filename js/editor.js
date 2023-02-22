@@ -235,7 +235,7 @@ class Line {
                     }
                 }
             }
-            else if (event.key === `l`) {
+            else if (event.code === `KeyL`) {
                 if (event.altKey) {
                     event.preventDefault();
                     const selected = Dictionary.Selected_Text_And_Class();
@@ -259,7 +259,7 @@ class Line {
                     }
                 }
             }
-            else if (event.key === `m`) {
+            else if (event.code === `KeyM`) {
                 if (event.altKey) {
                     event.preventDefault();
                     const selected = Dictionary.Selected_Text_And_Class();
@@ -284,7 +284,7 @@ class Line {
                     }
                 }
             }
-            else if (event.key === `w`) {
+            else if (event.code === `KeyW`) {
                 if (event.altKey) {
                     event.preventDefault();
                     const selected = Dictionary.Selected_Text_And_Class();
@@ -305,7 +305,7 @@ class Line {
                     }
                 }
             }
-            else if (event.key === `e`) {
+            else if (event.code === `KeyE`) {
                 if (event.altKey) {
                     event.preventDefault();
                     const selected = Dictionary.Selected_Text_And_Class();
