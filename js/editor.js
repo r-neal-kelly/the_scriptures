@@ -412,6 +412,9 @@ class Line {
         // with just yet.
         this.element.innerHTML = this.Editor().Dictionary().Treat(text);
     }
+    Touch() {
+        this.Set_Text(this.Text());
+    }
 }
 var Dictionary_Class;
 (function (Dictionary_Class) {
@@ -679,6 +682,10 @@ class Editor {
         this.element = document.createElement(`div`);
         this.children = {
             commands: document.createElement(`div`),
+            load_dictionary_input: document.createElement(`input`),
+            load_dictionary_button: document.createElement(`div`),
+            save_dictionary_button: document.createElement(`div`),
+            dictionary_name: document.createElement(`div`),
             load_file_input: document.createElement(`input`),
             load_file_button: document.createElement(`div`),
             save_file_button: document.createElement(`div`),
@@ -711,8 +718,61 @@ class Editor {
                 width: 100%;
                 height: 5%;
             `);
+        this.children.load_dictionary_input.setAttribute(`type`, `file`);
+        this.children.load_dictionary_input.setAttribute(`accept`, `.json`);
+        this.children.load_dictionary_input.setAttribute(`style`, `
+                display: none;
+            `);
+        this.children.load_dictionary_input.addEventListener(`input`, function (event) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (this.children.load_dictionary_input.files && this.children.load_dictionary_input.files[0]) {
+                    const file = this.children.load_dictionary_input.files[0];
+                    const file_text = yield file.text();
+                    this.Set_Dictionary_Name(file.name.replace(/\.[^.]+$/, ``));
+                    this.Set_Dictionary_JSON(file_text);
+                    this.children.load_dictionary_input.value = ``;
+                }
+            });
+        }.bind(this));
+        this.children.load_dictionary_button.setAttribute(`style`, `
+                width: 50%;
+                height: 100%;
+            `);
+        this.children.load_dictionary_button.textContent = `Load Dictionary`;
+        this.children.load_dictionary_button.addEventListener(`click`, function (event) {
+            this.children.load_dictionary_input.click();
+        }.bind(this));
+        this.children.save_dictionary_button.setAttribute(`style`, `
+                width: 50%;
+                height: 100%;
+            `);
+        this.children.save_dictionary_button.textContent = `Save Dictionary`;
+        this.children.save_dictionary_button.addEventListener(`click`, function (event) {
+            this.Save_Dictionary();
+        }.bind(this));
+        this.children.dictionary_name.setAttribute(`contentEditable`, `true`);
+        this.children.dictionary_name.setAttribute(`spellcheck`, `false`);
+        this.children.dictionary_name.setAttribute(`style`, `
+                width: 100%;
+                height: 5%;
+            `);
+        this.children.dictionary_name.addEventListener(`keydown`, function (event) {
+            if (event.key === `Enter`) {
+                event.preventDefault();
+            }
+        }.bind(this));
+        this.children.dictionary_name.addEventListener(`input`, function (event) {
+            const input_event = event;
+            if (input_event.inputType === `insertText` ||
+                input_event.inputType === `deleteContentBackward` ||
+                input_event.inputType === `insertFromPaste`) {
+                const text_offset = Text_Offset(this.children.dictionary_name);
+                this.Set_Dictionary_Name(this.Dictionary_Name());
+                Set_Text_Offset(this.children.dictionary_name, text_offset);
+            }
+        }.bind(this));
         this.children.load_file_input.setAttribute(`type`, `file`);
-        this.children.load_file_input.setAttribute(`accept`, `text/plain`);
+        this.children.load_file_input.setAttribute(`accept`, `.txt`);
         this.children.load_file_input.setAttribute(`style`, `
                 display: none;
             `);
@@ -732,7 +792,7 @@ class Editor {
                 width: 50%;
                 height: 100%;
             `);
-        this.children.load_file_button.textContent = `Load`;
+        this.children.load_file_button.textContent = `Load File`;
         this.children.load_file_button.addEventListener(`click`, function (event) {
             this.children.load_file_input.click();
         }.bind(this));
@@ -740,7 +800,7 @@ class Editor {
                 width: 50%;
                 height: 100%;
             `);
-        this.children.save_file_button.textContent = `Save`;
+        this.children.save_file_button.textContent = `Save File`;
         this.children.save_file_button.addEventListener(`click`, function (event) {
             this.Save_Text();
         }.bind(this));
@@ -783,13 +843,18 @@ class Editor {
             `);
         this.dictionary = new Dictionary({});
         this.lines = [];
+        this.children.commands.appendChild(this.children.load_dictionary_input);
+        this.children.commands.appendChild(this.children.load_dictionary_button);
+        this.children.commands.appendChild(this.children.save_dictionary_button);
         this.children.commands.appendChild(this.children.load_file_input);
         this.children.commands.appendChild(this.children.load_file_button);
         this.children.commands.appendChild(this.children.save_file_button);
         this.element.appendChild(this.children.commands);
+        this.element.appendChild(this.children.dictionary_name);
         this.element.appendChild(this.children.file_name);
         this.element.appendChild(this.children.lines);
         this.parent.appendChild(this.element);
+        this.Set_Dictionary_Name(`New Dictionary`);
         this.Set_File_Name(`New Text`);
         this.Add_Line(``);
     }
@@ -801,6 +866,42 @@ class Editor {
     }
     Dictionary() {
         return this.dictionary;
+    }
+    Dictionary_Name() {
+        if (this.children.dictionary_name.textContent) {
+            return this.children.dictionary_name.textContent.replaceAll(/ /g, ` `);
+        }
+        else {
+            return ``;
+        }
+    }
+    Set_Dictionary_Name(name) {
+        this.children.dictionary_name.innerHTML = this.Dictionary().Treat(name);
+    }
+    Dictionary_JSON() {
+        return this.Dictionary().JSON();
+    }
+    Set_Dictionary_JSON(json) {
+        this.dictionary = new Dictionary({
+            json: json,
+        });
+        this.Set_Dictionary_Name(this.Dictionary_Name());
+        this.Set_File_Name(this.File_Name());
+        for (const line of this.lines) {
+            line.Touch();
+        }
+    }
+    Save_Dictionary() {
+        const json = this.Dictionary_JSON();
+        const file_name = this.Dictionary_Name();
+        const file = new File([json], `${file_name}.json`);
+        const file_url = URL.createObjectURL(file);
+        const link = document.createElement(`a`);
+        link.href = file_url;
+        link.download = `${file_name}.json`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
     }
     File_Name() {
         if (this.children.file_name.textContent) {
