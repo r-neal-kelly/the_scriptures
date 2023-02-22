@@ -661,11 +661,11 @@ class Editor
     private element: HTMLDivElement;
     private children: {
         commands: HTMLDivElement,
-        load_input: HTMLInputElement,
-        load_button: HTMLDivElement,
-        save_button: HTMLDivElement,
+        load_file_input: HTMLInputElement,
+        load_file_button: HTMLDivElement,
+        save_file_button: HTMLDivElement,
 
-        name: HTMLDivElement,
+        file_name: HTMLDivElement,
 
         lines: HTMLDivElement,
     };
@@ -678,18 +678,15 @@ class Editor
         },
     )
     {
-        this.dictionary = new Dictionary();
-        this.lines = [];
-
         this.parent = parent;
         this.element = document.createElement(`div`);
         this.children = {
             commands: document.createElement(`div`),
-            load_input: document.createElement(`input`),
-            load_button: document.createElement(`div`),
-            save_button: document.createElement(`div`),
+            load_file_input: document.createElement(`input`),
+            load_file_button: document.createElement(`div`),
+            save_file_button: document.createElement(`div`),
 
-            name: document.createElement(`div`),
+            file_name: document.createElement(`div`),
 
             lines: document.createElement(`div`),
         };
@@ -728,21 +725,21 @@ class Editor
             `,
         );
 
-        this.children.load_input.setAttribute(
+        this.children.load_file_input.setAttribute(
             `type`,
             `file`,
         );
-        this.children.load_input.setAttribute(
+        this.children.load_file_input.setAttribute(
             `accept`,
             `text/plain`,
         );
-        this.children.load_input.setAttribute(
+        this.children.load_file_input.setAttribute(
             `style`,
             `
                 display: none;
             `,
         );
-        this.children.load_input.addEventListener(
+        this.children.load_file_input.addEventListener(
             `input`,
             async function (
                 this: Editor,
@@ -750,27 +747,27 @@ class Editor
             ):
                 Promise<void>
             {
-                if (this.children.load_input.files && this.children.load_input.files[0]) {
-                    const file: File = this.children.load_input.files[0];
+                if (this.children.load_file_input.files && this.children.load_file_input.files[0]) {
+                    const file: File = this.children.load_file_input.files[0];
                     const file_text: string = await file.text();
-                    this.Set_Name(file.name.replace(/\.[^.]+$/, ``));
+                    this.Set_File_Name(file.name.replace(/\.[^.]+$/, ``));
                     this.Set_Text(file_text);
-                    this.children.load_input.value = ``;
+                    this.children.load_file_input.value = ``;
 
                     Assert(this.Text() === file_text.replaceAll(/\r/g, ``));
                 }
             }.bind(this),
         );
 
-        this.children.load_button.setAttribute(
+        this.children.load_file_button.setAttribute(
             `style`,
             `
                 width: 50%;
                 height: 100%;
             `,
         );
-        this.children.load_button.textContent = `Load`;
-        this.children.load_button.addEventListener(
+        this.children.load_file_button.textContent = `Load`;
+        this.children.load_file_button.addEventListener(
             `click`,
             function (
                 this: Editor,
@@ -778,19 +775,19 @@ class Editor
             ):
                 void
             {
-                this.children.load_input.click();
+                this.children.load_file_input.click();
             }.bind(this),
         );
 
-        this.children.save_button.setAttribute(
+        this.children.save_file_button.setAttribute(
             `style`,
             `
                 width: 50%;
                 height: 100%;
             `,
         );
-        this.children.save_button.textContent = `Save`;
-        this.children.save_button.addEventListener(
+        this.children.save_file_button.textContent = `Save`;
+        this.children.save_file_button.addEventListener(
             `click`,
             function (
                 this: Editor,
@@ -802,22 +799,22 @@ class Editor
             }.bind(this),
         );
 
-        this.children.name.setAttribute(
+        this.children.file_name.setAttribute(
             `contentEditable`,
             `true`,
         );
-        this.children.name.setAttribute(
+        this.children.file_name.setAttribute(
             `spellcheck`,
             `false`,
         );
-        this.children.name.setAttribute(
+        this.children.file_name.setAttribute(
             `style`,
             `
                 width: 100%;
                 height: 5%;
             `,
         );
-        this.children.name.addEventListener(
+        this.children.file_name.addEventListener(
             `keydown`,
             function (
                 this: Editor,
@@ -830,7 +827,7 @@ class Editor
                 }
             }.bind(this),
         );
-        this.children.name.addEventListener(
+        this.children.file_name.addEventListener(
             `input`,
             function (
                 this: Editor,
@@ -839,30 +836,18 @@ class Editor
                 void
             {
                 const input_event: InputEvent = event as InputEvent;
-                if (input_event.inputType === `insertFromPaste`) {
-                    const selection: Selection | null = document.getSelection();
-                    if (
-                        selection &&
-                        selection.anchorNode &&
-                        selection.anchorNode !== this.children.name
-                    ) {
-                        let new_offset: number =
-                            Text_Offset_To_Node(this.children.name, selection.anchorNode) +
-                            selection.anchorOffset;
+                if (
+                    input_event.inputType === `insertText` ||
+                    input_event.inputType === `deleteContentBackward` ||
+                    input_event.inputType === `insertFromPaste`
+                ) {
+                    const text_offset: number = Text_Offset(this.children.file_name) as number;
 
-                        this.children.name.innerHTML = this.children.name.textContent || ``
-
-                        selection.collapse(
-                            this.children.name.firstChild || this.children.name,
-                            new_offset,
-                        );
-                    } else {
-                        this.children.name.innerHTML = ``;
-                    }
+                    this.Set_File_Name(this.File_Name());
+                    Set_Text_Offset(this.children.file_name, text_offset);
                 }
             }.bind(this),
         );
-        this.Set_Name(`New Text`);
 
         this.children.lines.setAttribute(
             `style`,
@@ -884,16 +869,20 @@ class Editor
             `,
         );
 
-        this.children.commands.appendChild(this.children.load_input);
-        this.children.commands.appendChild(this.children.load_button);
-        this.children.commands.appendChild(this.children.save_button);
+        this.dictionary = new Dictionary();
+        this.lines = [];
+
+        this.children.commands.appendChild(this.children.load_file_input);
+        this.children.commands.appendChild(this.children.load_file_button);
+        this.children.commands.appendChild(this.children.save_file_button);
 
         this.element.appendChild(this.children.commands);
-        this.element.appendChild(this.children.name);
+        this.element.appendChild(this.children.file_name);
         this.element.appendChild(this.children.lines);
 
         this.parent.appendChild(this.element);
 
+        this.Set_File_Name(`New Text`);
         this.Add_Line(``);
     }
 
@@ -915,22 +904,22 @@ class Editor
         return this.dictionary;
     }
 
-    Name():
+    File_Name():
         string
     {
-        if (this.element.textContent) {
-            return this.element.textContent.replaceAll(/ /g, ` `);
+        if (this.children.file_name.textContent) {
+            return this.children.file_name.textContent.replaceAll(/ /g, ` `);
         } else {
             return ``;
         }
     }
 
-    Set_Name(
+    Set_File_Name(
         name: string,
     ):
         void
     {
-        this.children.name.innerHTML = this.Dictionary().Treat(name);
+        this.children.file_name.innerHTML = this.Dictionary().Treat(name);
     }
 
     Text():
@@ -964,13 +953,13 @@ class Editor
         void
     {
         const text: string = this.Text();
-        const name: string = this.Name();
-        const file: File = new File([text], `${name}.txt`);
+        const file_name: string = this.File_Name();
+        const file: File = new File([text], `${file_name}.txt`);
         const file_url: string = URL.createObjectURL(file);
         const link = document.createElement(`a`);
 
         link.href = file_url;
-        link.download = `${name}.txt`;
+        link.download = `${file_name}.txt`;
 
         document.body.appendChild(link);
         link.click();
