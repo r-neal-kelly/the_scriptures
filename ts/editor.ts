@@ -355,10 +355,18 @@ class Line
                         if (selected) {
                             if (selected.class === Dictionary_Class.UNKNOWN_POINT) {
                                 this.Editor().Dictionary().Add_Letter(selected.text);
-                                this.Set_Text(this.Text());
+                                this.Editor().Touch();
+                            } else if (selected.class === Dictionary_Class.UNKNOWN_WORD) {
+                                if (selected.text.length === 1) {
+                                    this.Editor().Dictionary().Remove_Letter(selected.text);
+                                    this.Editor().Touch();
+                                }
+                            } else if (selected.class === Dictionary_Class.KNOWN_WORD) {
+                                if (selected.text.length === 1) {
+                                    this.Editor().Dictionary().Remove_Letter(selected.text);
+                                    this.Editor().Touch();
+                                }
                             }
-                            // we need to be able to remove it by toggle also. Not sure
-                            // how it will be detected in selection.
                         }
                     }
                 } else if (event.key === `m`) {
@@ -370,17 +378,17 @@ class Line
                         if (selected) {
                             if (selected.class === Dictionary_Class.UNKNOWN_POINT) {
                                 this.Editor().Dictionary().Add_Marker(selected.text);
-                                this.Set_Text(this.Text());
+                                this.Editor().Touch();
                             } else if (selected.class === Dictionary_Class.UNKNOWN_MARKER) {
                                 this.Editor().Dictionary().Add_Marker(selected.text);
-                                this.Set_Text(this.Text());
+                                this.Editor().Touch();
                             } else if (selected.class === Dictionary_Class.KNOWN_MARKER) {
                                 this.Editor().Dictionary().Remove_Marker(selected.text);
-                                this.Set_Text(this.Text());
+                                this.Editor().Touch();
                             } else if (selected.class === Dictionary_Class.KNOWN_ERROR) {
                                 this.Editor().Dictionary().Remove_Error(selected.text);
                                 this.Editor().Dictionary().Add_Marker(selected.text);
-                                this.Set_Text(this.Text());
+                                this.Editor().Touch();
                             }
                         }
                     }
@@ -393,14 +401,14 @@ class Line
                         if (selected) {
                             if (selected.class === Dictionary_Class.UNKNOWN_WORD) {
                                 this.Editor().Dictionary().Add_Word(selected.text);
-                                this.Set_Text(this.Text());
+                                this.Editor().Touch();
                             } else if (selected.class === Dictionary_Class.KNOWN_WORD) {
                                 this.Editor().Dictionary().Remove_Word(selected.text);
-                                this.Set_Text(this.Text());
+                                this.Editor().Touch();
                             } else if (selected.class === Dictionary_Class.KNOWN_ERROR) {
                                 this.Editor().Dictionary().Remove_Error(selected.text);
                                 this.Editor().Dictionary().Add_Word(selected.text);
-                                this.Set_Text(this.Text());
+                                this.Editor().Touch();
                             }
                         }
                     }
@@ -413,21 +421,21 @@ class Line
                         if (selected) {
                             if (selected.class === Dictionary_Class.UNKNOWN_MARKER) {
                                 this.Editor().Dictionary().Add_Error(selected.text);
-                                this.Set_Text(this.Text());
+                                this.Editor().Touch();
                             } else if (selected.class === Dictionary_Class.KNOWN_MARKER) {
                                 this.Editor().Dictionary().Remove_Marker(selected.text);
                                 this.Editor().Dictionary().Add_Error(selected.text);
-                                this.Set_Text(this.Text());
+                                this.Editor().Touch();
                             } else if (selected.class === Dictionary_Class.UNKNOWN_WORD) {
                                 this.Editor().Dictionary().Add_Error(selected.text);
-                                this.Set_Text(this.Text());
+                                this.Editor().Touch();
                             } else if (selected.class === Dictionary_Class.KNOWN_WORD) {
                                 this.Editor().Dictionary().Remove_Word(selected.text);
                                 this.Editor().Dictionary().Add_Error(selected.text);
-                                this.Set_Text(this.Text());
+                                this.Editor().Touch();
                             } else if (selected.class === Dictionary_Class.KNOWN_ERROR) {
                                 this.Editor().Dictionary().Remove_Error(selected.text);
-                                this.Set_Text(this.Text());
+                                this.Editor().Touch();
                             }
                         }
                     }
@@ -450,7 +458,7 @@ class Line
                 ) {
                     const text_offset: number = Text_Offset(this.element) as number;
 
-                    this.Set_Text(this.Text());
+                    this.Touch();
                     Set_Text_Offset(this.element, text_offset);
                 }
             }.bind(this),
@@ -1378,12 +1386,7 @@ class Editor
             },
         );
 
-        this.Set_Dictionary_Name(this.Dictionary_Name());
-        this.Set_File_Name(this.File_Name());
-
-        for (const line of this.lines) {
-            line.Touch();
-        }
+        this.Touch();
     }
 
     Save_Dictionary():
@@ -1553,6 +1556,17 @@ class Editor
         for (let idx = at_line_index + 1, end = this.lines.length; idx < end; idx += 1) {
             const line = this.lines[idx];
             line.Parent().appendChild(line.Element());
+        }
+    }
+
+    Touch():
+        void
+    {
+        this.Set_Dictionary_Name(this.Dictionary_Name());
+        this.Set_File_Name(this.File_Name());
+
+        for (const line of this.lines) {
+            line.Touch();
         }
     }
 }
