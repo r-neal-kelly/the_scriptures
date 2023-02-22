@@ -453,7 +453,7 @@ type Marker =
 type Word =
     string;
 
-type Dictionary_JSON = {
+type Dictionary_Data = {
     letters: Array<Letter>;
     markers: Array<Marker>;
     words: { [index: Letter]: Array<Word> };
@@ -462,98 +462,141 @@ type Dictionary_JSON = {
 
 class Dictionary
 {
-    private json: Dictionary_JSON;
+    private data: Dictionary_Data;
 
-    constructor()
+    constructor(
+        {
+            json = null,
+        }: {
+            json?: string | null,
+        },
+    )
     {
-        this.json = {
-            letters: [],
-            markers: [],
-            words: {},
-            errors: [],
-        };
+        if (json) {
+            this.data = JSON.parse(json);
+        } else {
+            this.data = {
+                letters: [],
+                markers: [],
+                words: {},
+                errors: [],
+            };
+        }
 
-        this.Init_Test();
+        //temp
+        this.Add_Word(`apple`);
+        this.Add_Letter(`p`);
+        this.Add_Letter(`l`);
+        this.Add_Letter(`e`);
+        this.Add_Marker(` `);
+        this.Add_Error(`aple`);
     }
 
-    Init_Test():
+    Add_Letter(
+        letter: Letter,
+    ):
         void
     {
-        this.json = JSON.parse(`
-            {
-                "letters": [
-                    "a",
-                    "b",
-                    "c",
-                    "d",
-                    "e",
-                    "f",
-                    "g",
-                    "h",
-                    "i",
-                    "j",
-                    "k",
-                    "l",
-                    "m",
-                    "n",
-                    "o",
-                    "p",
-                    "q",
-                    "r",
-                    "s",
-                    "t",
-                    "u",
-                    "v",
-                    "w",
-                    "x",
-                    "y",
-                    "z"
-                ],
-                "markers": [
-                    " ",
-                    ",",
-                    "."
-                ],
-                "words": {
-                    "a": [
-                        "apple",
-                        "angel"
-                    ],
-                    "b": [
-                        "baby",
-                        "bath"
-                    ],
-                    "c": [],
-                    "d": [],
-                    "e": [],
-                    "f": [],
-                    "g": [],
-                    "h": [],
-                    "i": [],
-                    "j": [],
-                    "k": [],
-                    "l": [],
-                    "m": [],
-                    "n": [],
-                    "o": [],
-                    "p": [],
-                    "q": [],
-                    "r": [],
-                    "s": [],
-                    "t": [],
-                    "u": [],
-                    "v": [],
-                    "w": [],
-                    "x": [],
-                    "y": [],
-                    "z": []
-                },
-                "errors": [
-                    "aple",
-                    "batth"
-                ]
+        Assert(letter.length === 1);
+
+        if (!this.data.letters.includes(letter)) {
+            this.data.letters.push(letter);
+
+            this.data.words[letter] = [];
+        }
+    }
+
+    Remove_Letter(
+        letter: Letter,
+    ):
+        void
+    {
+        Assert(letter.length === 1);
+
+        const index: number = this.data.letters.indexOf(letter);
+        if (index > -1) {
+            this.data.letters[index] = this.data.letters[this.data.letters.length - 1];
+            this.data.letters.pop();
+
+            delete this.data.words[letter];
+        }
+    }
+
+    Add_Marker(
+        marker: Marker,
+    ):
+        void
+    {
+        if (!this.data.markers.includes(marker)) {
+            this.data.markers.push(marker);
+        }
+    }
+
+    Remove_Marker(
+        marker: Marker,
+    ):
+        void
+    {
+        const index: number = this.data.markers.indexOf(marker);
+        if (index > -1) {
+            this.data.markers[index] = this.data.markers[this.data.markers.length - 1];
+            this.data.markers.pop();
+        }
+    }
+
+    Add_Word(
+        word: Word,
+    ):
+        void
+    {
+        Assert(word.length > 0);
+
+        if (this.data.words[word[0]] == null) {
+            this.Add_Letter(word[0]);
+            this.data.words[word[0]].push(word);
+        } else {
+            if (!this.data.words[word[0]].includes(word)) {
+                this.data.words[word[0]].push(word);
             }
-        `);
+        }
+    }
+
+    Remove_Word(
+        word: Word,
+    ):
+        void
+    {
+        Assert(word.length > 0);
+
+        if (this.data.words[word[0]] != null) {
+            const index: number = this.data.words[word[0]].indexOf(word);
+            if (index > -1) {
+                this.data.words[word[0]][index] = this.data.words[word[0]][this.data.words[word[0]].length - 1];
+                this.data.words[word[0]].pop();
+            }
+        }
+    }
+
+    Add_Error(
+        error: Word | Marker,
+    ):
+        void
+    {
+        if (!this.data.errors.includes(error)) {
+            this.data.errors.push(error);
+        }
+    }
+
+    Remove_Error(
+        error: Word | Marker,
+    ):
+        void
+    {
+        const index: number = this.data.errors.indexOf(error);
+        if (index > -1) {
+            this.data.errors[index] = this.data.errors[this.data.errors.length - 1];
+            this.data.errors.pop();
+        }
     }
 
     Treat(
@@ -580,9 +623,9 @@ class Dictionary
         let current_start_index: number = 0;
         let current_type: Type = Type._NONE_;
         for (let idx = 0, end = text.length; idx < end; idx += 1) {
-            if (this.json.letters.includes(text[idx])) {
+            if (this.data.letters.includes(text[idx])) {
                 current_type = Type.LETTERS;
-            } else if (this.json.markers.includes(text[idx])) {
+            } else if (this.data.markers.includes(text[idx])) {
                 current_type = Type.MARKERS;
             } else {
                 current_type = Type.POINT;
@@ -599,7 +642,7 @@ class Dictionary
             } else if (current_type === Type.LETTERS) {
                 if (
                     idx + 1 === end ||
-                    !this.json.letters.includes(text[idx + 1])
+                    !this.data.letters.includes(text[idx + 1])
                 ) {
                     parts.push(
                         {
@@ -612,7 +655,7 @@ class Dictionary
             } else if (current_type === Type.MARKERS) {
                 if (
                     idx + 1 === end ||
-                    !this.json.markers.includes(text[idx + 1])
+                    !this.data.markers.includes(text[idx + 1])
                 ) {
                     parts.push(
                         {
@@ -632,15 +675,17 @@ class Dictionary
             if (part.type === Type.POINT) {
                 inner_html += `<span class="UNKNOWN_POINT">${Escape_Text(part.subtext)}</span>`;
             } else if (part.type === Type.LETTERS) {
-                if (this.json.errors.includes(part.subtext)) {
+                if (this.data.errors.includes(part.subtext)) {
                     inner_html += `<span class="KNOWN_ERROR">${Escape_Text(part.subtext)}</span>`;
-                } else if (this.json.words[part.subtext[0]].includes(part.subtext)) {
+                } else if (this.data.words[part.subtext[0]].includes(part.subtext)) {
                     inner_html += `<span class="KNOWN_WORD">${Escape_Text(part.subtext)}</span>`;
                 } else {
                     inner_html += `<span class="UNKNOWN_WORD">${Escape_Text(part.subtext)}</span>`;
                 }
             } else if (part.type === Type.MARKERS) {
-                if (this.json.markers.includes(part.subtext)) {
+                if (this.data.errors.includes(part.subtext)) {
+                    inner_html += `<span class="KNOWN_ERROR">${Escape_Text(part.subtext)}</span>`;
+                } else if (this.data.markers.includes(part.subtext)) {
                     inner_html += `<span class="KNOWN_MARKER">${Escape_Text(part.subtext)}</span>`;
                 } else {
                     inner_html += `<span class="UNKNOWN_MARKER">${Escape_Text(part.subtext)}</span>`;
@@ -649,6 +694,12 @@ class Dictionary
         }
 
         return inner_html;
+    }
+
+    JSON():
+        string
+    {
+        return JSON.stringify(this.data);
     }
 }
 
@@ -869,7 +920,7 @@ class Editor
             `,
         );
 
-        this.dictionary = new Dictionary();
+        this.dictionary = new Dictionary({});
         this.lines = [];
 
         this.children.commands.appendChild(this.children.load_file_input);
