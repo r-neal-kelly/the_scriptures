@@ -750,11 +750,13 @@ class Editor {
         this.children = {
             controls: document.createElement(`div`),
             dictionary_label: document.createElement(`div`),
+            dictionary_new_button: document.createElement(`div`),
             dictionary_load_input: document.createElement(`input`),
             dictionary_load_button: document.createElement(`div`),
             dictionary_save_button: document.createElement(`div`),
             dictionary_name: document.createElement(`div`),
             file_label: document.createElement(`div`),
+            file_new_button: document.createElement(`div`),
             file_load_input: document.createElement(`input`),
             file_load_button: document.createElement(`div`),
             file_save_button: document.createElement(`div`),
@@ -812,7 +814,7 @@ class Editor {
         }.bind(this));
         this.children.controls.setAttribute(`style`, `
                 display: grid;
-                grid-template-columns: 1fr 1fr 1fr 1fr;
+                grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
                 grid-template-rows: 1fr 1fr;
                 grid-gap: 3px;
 
@@ -847,6 +849,13 @@ class Editor {
                 this.Set_Dictionary_Name(this.Dictionary_Name());
                 Set_Text_Offset(this.children.dictionary_name, text_offset);
             }
+        }.bind(this));
+        this.children.dictionary_new_button.setAttribute(`style`, button_style);
+        this.children.dictionary_new_button.innerHTML = `<div>New</div>`;
+        this.children.dictionary_new_button.addEventListener(`click`, function (event) {
+            this.Set_Dictionary_Name(`New Dictionary`);
+            this.dictionary = new Dictionary({});
+            this.Touch();
         }.bind(this));
         this.children.dictionary_load_input.setAttribute(`type`, `file`);
         this.children.dictionary_load_input.setAttribute(`accept`, `.json`);
@@ -903,6 +912,13 @@ class Editor {
                 Set_Text_Offset(this.children.file_name, text_offset);
             }
         }.bind(this));
+        this.children.file_new_button.setAttribute(`style`, button_style);
+        this.children.file_new_button.innerHTML = `<div>New</div>`;
+        this.children.file_new_button.addEventListener(`click`, function (event) {
+            this.Set_File_Name(`New File`);
+            this.Clear_Text();
+            this.Touch();
+        }.bind(this));
         this.children.file_load_input.setAttribute(`type`, `file`);
         this.children.file_load_input.setAttribute(`accept`, `.txt`);
         this.children.file_load_input.setAttribute(`style`, `
@@ -950,17 +966,19 @@ class Editor {
         this.lines = [];
         this.children.controls.appendChild(this.children.dictionary_label);
         this.children.controls.appendChild(this.children.dictionary_name);
+        this.children.controls.appendChild(this.children.dictionary_new_button);
         this.children.controls.appendChild(this.children.dictionary_load_button);
         this.children.controls.appendChild(this.children.dictionary_save_button);
         this.children.controls.appendChild(this.children.file_label);
         this.children.controls.appendChild(this.children.file_name);
+        this.children.controls.appendChild(this.children.file_new_button);
         this.children.controls.appendChild(this.children.file_load_button);
         this.children.controls.appendChild(this.children.file_save_button);
         this.element.appendChild(this.children.controls);
         this.element.appendChild(this.children.lines);
         this.parent.appendChild(this.element);
         this.Set_Dictionary_Name(`New Dictionary`);
-        this.Set_File_Name(`New Text`);
+        this.Set_File_Name(`New File`);
         this.Add_Line(``);
     }
     Parent() {
@@ -1026,6 +1044,7 @@ class Editor {
         for (const text_line of text_lines) {
             this.Add_Line(text_line);
         }
+        this.Remove_Line(0);
     }
     Save_Text() {
         const text = this.Text();
@@ -1044,6 +1063,7 @@ class Editor {
             line.Destruct();
         }
         this.lines = [];
+        this.Add_Line(``);
     }
     Line_Count() {
         return this.lines.length;
@@ -1065,11 +1085,9 @@ class Editor {
         line.Set_Text(text);
     }
     Remove_Line(line_index) {
-        Assert(line_index > 0);
+        Assert(line_index > 0 || this.lines.length > 1);
         Assert(line_index < this.lines.length);
-        if (line_index > 0) {
-            this.lines.splice(line_index, 1)[0].Destruct();
-        }
+        this.lines.splice(line_index, 1)[0].Destruct();
     }
     Insert_Line(at_line_index, text) {
         Assert(at_line_index >= 0);

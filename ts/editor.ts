@@ -1021,12 +1021,14 @@ class Editor
         controls: HTMLDivElement,
 
         dictionary_label: HTMLDivElement,
+        dictionary_new_button: HTMLDivElement,
         dictionary_load_input: HTMLInputElement,
         dictionary_load_button: HTMLDivElement,
         dictionary_save_button: HTMLDivElement,
         dictionary_name: HTMLDivElement,
 
         file_label: HTMLDivElement,
+        file_new_button: HTMLDivElement,
         file_load_input: HTMLInputElement,
         file_load_button: HTMLDivElement,
         file_save_button: HTMLDivElement,
@@ -1068,12 +1070,14 @@ class Editor
             controls: document.createElement(`div`),
 
             dictionary_label: document.createElement(`div`),
+            dictionary_new_button: document.createElement(`div`),
             dictionary_load_input: document.createElement(`input`),
             dictionary_load_button: document.createElement(`div`),
             dictionary_save_button: document.createElement(`div`),
             dictionary_name: document.createElement(`div`),
 
             file_label: document.createElement(`div`),
+            file_new_button: document.createElement(`div`),
             file_load_input: document.createElement(`input`),
             file_load_button: document.createElement(`div`),
             file_save_button: document.createElement(`div`),
@@ -1155,7 +1159,7 @@ class Editor
             `style`,
             `
                 display: grid;
-                grid-template-columns: 1fr 1fr 1fr 1fr;
+                grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
                 grid-template-rows: 1fr 1fr;
                 grid-gap: 3px;
 
@@ -1223,6 +1227,25 @@ class Editor
                     this.Set_Dictionary_Name(this.Dictionary_Name());
                     Set_Text_Offset(this.children.dictionary_name, text_offset);
                 }
+            }.bind(this),
+        );
+
+        this.children.dictionary_new_button.setAttribute(
+            `style`,
+            button_style,
+        );
+        this.children.dictionary_new_button.innerHTML = `<div>New</div>`;
+        this.children.dictionary_new_button.addEventListener(
+            `click`,
+            function (
+                this: Editor,
+                event: Event,
+            ):
+                void
+            {
+                this.Set_Dictionary_Name(`New Dictionary`);
+                this.dictionary = new Dictionary({});
+                this.Touch();
             }.bind(this),
         );
 
@@ -1354,6 +1377,25 @@ class Editor
             }.bind(this),
         );
 
+        this.children.file_new_button.setAttribute(
+            `style`,
+            button_style,
+        );
+        this.children.file_new_button.innerHTML = `<div>New</div>`;
+        this.children.file_new_button.addEventListener(
+            `click`,
+            function (
+                this: Editor,
+                event: Event,
+            ):
+                void
+            {
+                this.Set_File_Name(`New File`);
+                this.Clear_Text();
+                this.Touch();
+            }.bind(this),
+        );
+
         this.children.file_load_input.setAttribute(
             `type`,
             `file`,
@@ -1447,11 +1489,13 @@ class Editor
 
         this.children.controls.appendChild(this.children.dictionary_label);
         this.children.controls.appendChild(this.children.dictionary_name);
+        this.children.controls.appendChild(this.children.dictionary_new_button);
         this.children.controls.appendChild(this.children.dictionary_load_button);
         this.children.controls.appendChild(this.children.dictionary_save_button);
 
         this.children.controls.appendChild(this.children.file_label);
         this.children.controls.appendChild(this.children.file_name);
+        this.children.controls.appendChild(this.children.file_new_button);
         this.children.controls.appendChild(this.children.file_load_button);
         this.children.controls.appendChild(this.children.file_save_button);
 
@@ -1461,7 +1505,7 @@ class Editor
         this.parent.appendChild(this.element);
 
         this.Set_Dictionary_Name(`New Dictionary`);
-        this.Set_File_Name(`New Text`);
+        this.Set_File_Name(`New File`);
         this.Add_Line(``);
     }
 
@@ -1581,6 +1625,8 @@ class Editor
         for (const text_line of text_lines) {
             this.Add_Line(text_line);
         }
+
+        this.Remove_Line(0);
     }
 
     Save_Text():
@@ -1607,6 +1653,8 @@ class Editor
             line.Destruct();
         }
         this.lines = [];
+
+        this.Add_Line(``);
     }
 
     Line_Count():
@@ -1653,12 +1701,10 @@ class Editor
     ):
         void
     {
-        Assert(line_index > 0);
+        Assert(line_index > 0 || this.lines.length > 1);
         Assert(line_index < this.lines.length);
 
-        if (line_index > 0) {
-            this.lines.splice(line_index, 1)[0].Destruct();
-        }
+        this.lines.splice(line_index, 1)[0].Destruct();
     }
 
     Insert_Line(
