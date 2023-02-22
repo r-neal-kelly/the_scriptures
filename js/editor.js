@@ -139,6 +139,8 @@ class Line {
                 border-width: 0 0 1px 0;
                 border-style: solid;
                 border-color: #3B3A32;
+
+                direction: ltr;
             `);
         this.element.addEventListener(`keydown`, function (event) {
             if (event.key === `Enter`) {
@@ -726,6 +728,24 @@ class Editor {
                 event.preventDefault();
                 this.is_meta_key_active = true;
             }
+            else if (keyboard_event.key === `ArrowLeft`) {
+                if (this.Is_Meta_Key_Active()) {
+                    this.children.dictionary_name.style.direction = `rtl`;
+                    this.children.file_name.style.direction = `rtl`;
+                    for (const line of this.lines) {
+                        line.Element().style.direction = `rtl`;
+                    }
+                }
+            }
+            else if (keyboard_event.key === `ArrowRight`) {
+                if (this.Is_Meta_Key_Active()) {
+                    this.children.dictionary_name.style.direction = `ltr`;
+                    this.children.file_name.style.direction = `ltr`;
+                    for (const line of this.lines) {
+                        line.Element().style.direction = `ltr`;
+                    }
+                }
+            }
         }.bind(this));
         this.element.addEventListener(`keyup`, function (event) {
             const keyboard_event = event;
@@ -780,6 +800,8 @@ class Editor {
         this.children.dictionary_name.setAttribute(`style`, `
                 width: 100%;
                 height: 5%;
+
+                direction: ltr;
             `);
         this.children.dictionary_name.addEventListener(`keydown`, function (event) {
             if (event.key === `Enter`) {
@@ -834,6 +856,8 @@ class Editor {
         this.children.file_name.setAttribute(`style`, `
                 width: 100%;
                 height: 5%;
+
+                direction: ltr;
             `);
         this.children.file_name.addEventListener(`keydown`, function (event) {
             if (event.key === `Enter`) {
