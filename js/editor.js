@@ -919,24 +919,32 @@ function Style() {
                     border-width: 0 0 2px 0;
                     border-style: solid;
                     border-color: #ffff00;
+
+                    overflow-wrap: normal;
                 }
 
                 .UNKNOWN_WORD {
                     border-width: 0 0 2px 0;
                     border-style: solid;
                     border-color: #ff5858;
+
+                    overflow-wrap: normal;
                 }
 
                 .UNKNOWN_MARKER {
                     border-width: 0 0 2px 0;
                     border-style: solid;
                     border-color: #00da6f;
+
+                    overflow-wrap: normal;
                 }
 
                 .KNOWN_ERROR {
                     border-width: 0 0 2px 0;
                     border-style: solid;
                     border-color: #e767c3;
+
+                    overflow-wrap: normal;
                 }
             `));
     document.head.appendChild(style);
