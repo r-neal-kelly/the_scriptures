@@ -18,7 +18,11 @@ function Escape_Text(
         function (point: string):
             string
         {
-            return `&#${point.charCodeAt(0)};`;
+            if (point === ` `) {
+                return `&#${` `.charCodeAt(0)};`
+            } else {
+                return `&#${point.charCodeAt(0)};`;
+            }
         }
     );
 }
@@ -303,6 +307,45 @@ class Line
                             Set_Text_Offset(previous.Element(), previous_text.length);
                         }
                     }
+                } else if (event.key === `ArrowUp`) {
+                    event.preventDefault();
+
+                    const selection: Selection | null = document.getSelection();
+                    if (selection) {
+                        const line_index: number = this.Index();
+                        if (line_index > 0) {
+                            const text_offset: number = Text_Offset(this.element) as number;
+                            const above_line: Line = this.Editor().Line(line_index - 1);
+                            const above_line_text: string = above_line.Text();
+
+                            Set_Text_Offset(
+                                above_line.Element(),
+                                above_line_text.length < text_offset ?
+                                    above_line_text.length :
+                                    text_offset,
+                            );
+                        }
+                    }
+                } else if (event.key === `ArrowDown`) {
+                    event.preventDefault();
+
+                    const selection: Selection | null = document.getSelection();
+                    if (selection) {
+                        const line_index: number = this.Index();
+                        const line_count: number = this.Editor().Line_Count();
+                        if (line_index < line_count - 1) {
+                            const text_offset: number = Text_Offset(this.element) as number;
+                            const below_line: Line = this.Editor().Line(line_index + 1);
+                            const below_line_text: string = below_line.Text();
+
+                            Set_Text_Offset(
+                                below_line.Element(),
+                                below_line_text.length < text_offset ?
+                                    below_line_text.length :
+                                    text_offset,
+                            );
+                        }
+                    }
                 }
             }.bind(this),
         );
@@ -367,7 +410,13 @@ class Line
     Text():
         string
     {
-        return this.element.textContent || ``;
+        // for now we just replace all non-breaking spaces with regular spaces.
+        // see the comments in Set_Text for more info, as this is a temporary measure.
+        if (this.element.textContent) {
+            return this.element.textContent.replaceAll(/ /g, ` `);
+        } else {
+            return ``;
+        }
     }
 
     Set_Text(
@@ -375,6 +424,24 @@ class Line
     ):
         void
     {
+        // some browsers like firefox do not automatically replace
+        // spaces with non-breaking spaces, which is needed because
+        // browsers automatically remove extra spaces, whereas an editor
+        // should allow them. but firefox is a hot mess, it doesn't even
+        // properly backspace when spans are in the editor, so we do not
+        // support it for now. in the future we can keep track of our own
+        // caret to make up for it's hot mess, but not at this time.
+
+        // we also have the other problem though. We don't actually want all
+        // these non-breaking spaces. So we are going to have to keep a separate
+        // string containing the actual text of the line and then use it to
+        // set the innerHTML. however, sometimes we need to read from textContent,
+        // so what we will have to do is alter the actual string after input events.
+        // very frustrating, but we have to do this so that the user can actually
+        // use non-breaking spaces and we don't stomp them trying to switch them all
+        // out. I'm tempted to just switch them all out though until we need to use
+        // such a thing, because it's an annoying problem that doesn't need to be dealt
+        // with just yet.
         this.element.innerHTML = this.Editor().Dictionary().Treat(text);
     }
 }
@@ -444,7 +511,6 @@ class Dictionary
                 ],
                 "markers": [
                     " ",
-                    " ",
                     ",",
                     "."
                 ],
@@ -588,6 +654,9 @@ class Dictionary
 
 class Editor
 {
+    private dictionary: Dictionary;
+    private lines: Array<Line>;
+
     private parent: HTMLElement;
     private element: HTMLDivElement;
     private children: {
@@ -601,9 +670,6 @@ class Editor
         lines: HTMLDivElement,
     };
 
-    private dictionary: Dictionary;
-    private lines: Array<Line>;
-
     constructor(
         {
             parent,
@@ -612,6 +678,9 @@ class Editor
         },
     )
     {
+        this.dictionary = new Dictionary();
+        this.lines = [];
+
         this.parent = parent;
         this.element = document.createElement(`div`);
         this.children = {
@@ -633,8 +702,8 @@ class Editor
                 justify-content: center;
                 align-items: center;
 
-                height: 95%;
-                width: 95%;
+                height: 100%;
+                width: 100%;
                 padding: 7px;
 
                 border-width: 0;
@@ -793,7 +862,7 @@ class Editor
                 }
             }.bind(this),
         );
-        this.Set_Name(`new_text`);
+        this.Set_Name(`New Text`);
 
         this.children.lines.setAttribute(
             `style`,
@@ -825,9 +894,6 @@ class Editor
 
         this.parent.appendChild(this.element);
 
-        this.dictionary = new Dictionary();
-        this.lines = [];
-
         this.Add_Line(``);
     }
 
@@ -852,7 +918,11 @@ class Editor
     Name():
         string
     {
-        return this.children.name.textContent || ``;
+        if (this.element.textContent) {
+            return this.element.textContent.replaceAll(/ /g, ` `);
+        } else {
+            return ``;
+        }
     }
 
     Set_Name(
@@ -860,7 +930,7 @@ class Editor
     ):
         void
     {
-        this.children.name.innerHTML = Escape_Text(name);
+        this.children.name.innerHTML = this.Dictionary().Treat(name);
     }
 
     Text():

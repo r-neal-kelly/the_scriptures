@@ -15,7 +15,12 @@ function Assert(boolean_statement) {
 }
 function Escape_Text(text) {
     return text.replaceAll(/./g, function (point) {
-        return `&#${point.charCodeAt(0)};`;
+        if (point === ` `) {
+            return `&#${` `.charCodeAt(0)};`;
+        }
+        else {
+            return `&#${point.charCodeAt(0)};`;
+        }
     });
 }
 function Text_Offset_To_Node(from, to) {
@@ -199,6 +204,37 @@ class Line {
                     }
                 }
             }
+            else if (event.key === `ArrowUp`) {
+                event.preventDefault();
+                const selection = document.getSelection();
+                if (selection) {
+                    const line_index = this.Index();
+                    if (line_index > 0) {
+                        const text_offset = Text_Offset(this.element);
+                        const above_line = this.Editor().Line(line_index - 1);
+                        const above_line_text = above_line.Text();
+                        Set_Text_Offset(above_line.Element(), above_line_text.length < text_offset ?
+                            above_line_text.length :
+                            text_offset);
+                    }
+                }
+            }
+            else if (event.key === `ArrowDown`) {
+                event.preventDefault();
+                const selection = document.getSelection();
+                if (selection) {
+                    const line_index = this.Index();
+                    const line_count = this.Editor().Line_Count();
+                    if (line_index < line_count - 1) {
+                        const text_offset = Text_Offset(this.element);
+                        const below_line = this.Editor().Line(line_index + 1);
+                        const below_line_text = below_line.Text();
+                        Set_Text_Offset(below_line.Element(), below_line_text.length < text_offset ?
+                            below_line_text.length :
+                            text_offset);
+                    }
+                }
+            }
         }.bind(this));
         this.element.addEventListener(`input`, function (event) {
             const input_event = event;
@@ -230,9 +266,33 @@ class Line {
         return index;
     }
     Text() {
-        return this.element.textContent || ``;
+        // for now we just replace all non-breaking spaces with regular spaces.
+        // see the comments in Set_Text for more info, as this is a temporary measure.
+        if (this.element.textContent) {
+            return this.element.textContent.replaceAll(/ /g, ` `);
+        }
+        else {
+            return ``;
+        }
     }
     Set_Text(text) {
+        // some browsers like firefox do not automatically replace
+        // spaces with non-breaking spaces, which is needed because
+        // browsers automatically remove extra spaces, whereas an editor
+        // should allow them. but firefox is a hot mess, it doesn't even
+        // properly backspace when spans are in the editor, so we do not
+        // support it for now. in the future we can keep track of our own
+        // caret to make up for it's hot mess, but not at this time.
+        // we also have the other problem though. We don't actually want all
+        // these non-breaking spaces. So we are going to have to keep a separate
+        // string containing the actual text of the line and then use it to
+        // set the innerHTML. however, sometimes we need to read from textContent,
+        // so what we will have to do is alter the actual string after input events.
+        // very frustrating, but we have to do this so that the user can actually
+        // use non-breaking spaces and we don't stomp them trying to switch them all
+        // out. I'm tempted to just switch them all out though until we need to use
+        // such a thing, because it's an annoying problem that doesn't need to be dealt
+        // with just yet.
         this.element.innerHTML = this.Editor().Dictionary().Treat(text);
     }
 }
@@ -279,7 +339,6 @@ class Dictionary {
                 ],
                 "markers": [
                     " ",
-                    " ",
                     ",",
                     "."
                 ],
@@ -407,6 +466,8 @@ class Dictionary {
 }
 class Editor {
     constructor({ parent, }) {
+        this.dictionary = new Dictionary();
+        this.lines = [];
         this.parent = parent;
         this.element = document.createElement(`div`);
         this.children = {
@@ -423,8 +484,8 @@ class Editor {
                 justify-content: center;
                 align-items: center;
 
-                height: 95%;
-                width: 95%;
+                height: 100%;
+                width: 100%;
                 padding: 7px;
 
                 border-width: 0;
@@ -504,7 +565,7 @@ class Editor {
                 }
             }
         }.bind(this));
-        this.Set_Name(`new_text`);
+        this.Set_Name(`New Text`);
         this.children.lines.setAttribute(`style`, `
                 display: flex;
                 flex-direction: column;
@@ -528,8 +589,6 @@ class Editor {
         this.element.appendChild(this.children.name);
         this.element.appendChild(this.children.lines);
         this.parent.appendChild(this.element);
-        this.dictionary = new Dictionary();
-        this.lines = [];
         this.Add_Line(``);
     }
     Parent() {
@@ -542,10 +601,15 @@ class Editor {
         return this.dictionary;
     }
     Name() {
-        return this.children.name.textContent || ``;
+        if (this.element.textContent) {
+            return this.element.textContent.replaceAll(/ /g, ` `);
+        }
+        else {
+            return ``;
+        }
     }
     Set_Name(name) {
-        this.children.name.innerHTML = Escape_Text(name);
+        this.children.name.innerHTML = this.Dictionary().Treat(name);
     }
     Text() {
         return this.lines.map(function (line) {
