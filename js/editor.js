@@ -236,7 +236,7 @@ class Line {
                 }
             }
             else if (event.code === `KeyL`) {
-                if (event.altKey) {
+                if (this.Editor().Is_Meta_Key_Active()) {
                     event.preventDefault();
                     const selected = Dictionary.Selected_Text_And_Class();
                     if (selected) {
@@ -260,7 +260,7 @@ class Line {
                 }
             }
             else if (event.code === `KeyM`) {
-                if (event.altKey) {
+                if (this.Editor().Is_Meta_Key_Active()) {
                     event.preventDefault();
                     const selected = Dictionary.Selected_Text_And_Class();
                     if (selected) {
@@ -285,7 +285,7 @@ class Line {
                 }
             }
             else if (event.code === `KeyW`) {
-                if (event.altKey) {
+                if (this.Editor().Is_Meta_Key_Active()) {
                     event.preventDefault();
                     const selected = Dictionary.Selected_Text_And_Class();
                     if (selected) {
@@ -306,7 +306,7 @@ class Line {
                 }
             }
             else if (event.code === `KeyE`) {
-                if (event.altKey) {
+                if (this.Editor().Is_Meta_Key_Active()) {
                     event.preventDefault();
                     const selected = Dictionary.Selected_Text_And_Class();
                     if (selected) {
@@ -688,6 +688,7 @@ class Dictionary {
 }
 class Editor {
     constructor({ parent, }) {
+        this.is_meta_key_active = false;
         this.parent = parent;
         this.element = document.createElement(`div`);
         this.children = {
@@ -719,6 +720,20 @@ class Editor {
 
                 overflow-y: auto;
             `);
+        this.element.addEventListener(`keydown`, function (event) {
+            const keyboard_event = event;
+            if (keyboard_event.key === `Escape`) {
+                event.preventDefault();
+                this.is_meta_key_active = true;
+            }
+        }.bind(this));
+        this.element.addEventListener(`keyup`, function (event) {
+            const keyboard_event = event;
+            if (keyboard_event.key === `Escape`) {
+                event.preventDefault();
+                this.is_meta_key_active = false;
+            }
+        }.bind(this));
         this.children.commands.setAttribute(`style`, `
                 display: flex;
                 flex-direction: row;
@@ -1000,6 +1015,9 @@ class Editor {
         for (const line of this.lines) {
             line.Touch();
         }
+    }
+    Is_Meta_Key_Active() {
+        return this.is_meta_key_active;
     }
 }
 function Style() {
