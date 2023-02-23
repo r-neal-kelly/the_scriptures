@@ -769,6 +769,8 @@ class Editor {
                 justify-content: center;
                 align-items: center;
 
+                position: relative;
+
                 height: 100%;
                 width: 100%;
                 padding: 7px;
@@ -853,9 +855,19 @@ class Editor {
         this.children.dictionary_new_button.setAttribute(`style`, button_style);
         this.children.dictionary_new_button.innerHTML = `<div>New</div>`;
         this.children.dictionary_new_button.addEventListener(`click`, function (event) {
-            this.Set_Dictionary_Name(`New Dictionary`);
-            this.dictionary = new Dictionary({});
-            this.Touch();
+            return __awaiter(this, void 0, void 0, function* () {
+                if (this.saved_dictionary === null ?
+                    this.Dictionary().JSON() !== new Dictionary({}).JSON() :
+                    this.saved_dictionary !== this.Dictionary().JSON()) {
+                    if (!(yield this.Try_To_Save_Dictionary())) {
+                        return;
+                    }
+                }
+                this.Set_Dictionary_Name(`New Dictionary`);
+                this.dictionary = new Dictionary({});
+                this.Touch();
+                this.saved_dictionary = null;
+            });
         }.bind(this));
         this.children.dictionary_load_input.setAttribute(`type`, `file`);
         this.children.dictionary_load_input.setAttribute(`accept`, `.json`);
@@ -870,13 +882,23 @@ class Editor {
                     this.Set_Dictionary_Name(file.name.replace(/\.[^.]+$/, ``));
                     this.Set_Dictionary_JSON(file_text);
                     this.children.dictionary_load_input.value = ``;
+                    this.saved_dictionary = this.Dictionary().JSON();
                 }
             });
         }.bind(this));
         this.children.dictionary_load_button.setAttribute(`style`, button_style);
         this.children.dictionary_load_button.innerHTML = `<div>Load</div>`;
         this.children.dictionary_load_button.addEventListener(`click`, function (event) {
-            this.children.dictionary_load_input.click();
+            return __awaiter(this, void 0, void 0, function* () {
+                if (this.saved_dictionary === null ?
+                    this.Dictionary().JSON() !== new Dictionary({}).JSON() :
+                    this.saved_dictionary !== this.Dictionary().JSON()) {
+                    if (!(yield this.Try_To_Save_Dictionary())) {
+                        return;
+                    }
+                }
+                this.children.dictionary_load_input.click();
+            });
         }.bind(this));
         this.children.dictionary_save_button.setAttribute(`style`, button_style);
         this.children.dictionary_save_button.innerHTML = `<div>Save</div>`;
@@ -915,9 +937,19 @@ class Editor {
         this.children.file_new_button.setAttribute(`style`, button_style);
         this.children.file_new_button.innerHTML = `<div>New</div>`;
         this.children.file_new_button.addEventListener(`click`, function (event) {
-            this.Set_File_Name(`New File`);
-            this.Clear_Text();
-            this.Touch();
+            return __awaiter(this, void 0, void 0, function* () {
+                if (this.saved_file === null ?
+                    this.Text() !== `` :
+                    this.saved_file !== this.Text()) {
+                    if (!(yield this.Try_To_Save_File())) {
+                        return;
+                    }
+                }
+                this.Set_File_Name(`New File`);
+                this.Clear_Text();
+                this.Touch();
+                this.saved_file = null;
+            });
         }.bind(this));
         this.children.file_load_input.setAttribute(`type`, `file`);
         this.children.file_load_input.setAttribute(`accept`, `.txt`);
@@ -932,6 +964,7 @@ class Editor {
                     this.Set_File_Name(file.name.replace(/\.[^.]+$/, ``));
                     this.Set_Text(file_text);
                     this.children.file_load_input.value = ``;
+                    this.saved_file = this.Text();
                     Assert(this.Text() === file_text.replaceAll(/\r/g, ``));
                 }
             });
@@ -939,7 +972,16 @@ class Editor {
         this.children.file_load_button.setAttribute(`style`, button_style);
         this.children.file_load_button.innerHTML = `<div>Load</div>`;
         this.children.file_load_button.addEventListener(`click`, function (event) {
-            this.children.file_load_input.click();
+            return __awaiter(this, void 0, void 0, function* () {
+                if (this.saved_file === null ?
+                    this.Text() !== `` :
+                    this.saved_file !== this.Text()) {
+                    if (!(yield this.Try_To_Save_File())) {
+                        return;
+                    }
+                }
+                this.children.file_load_input.click();
+            });
         }.bind(this));
         this.children.file_save_button.setAttribute(`style`, button_style);
         this.children.file_save_button.innerHTML = `<div>Save</div>`;
@@ -980,6 +1022,8 @@ class Editor {
         this.Set_Dictionary_Name(`New Dictionary`);
         this.Set_File_Name(`New File`);
         this.Add_Line(``);
+        this.saved_dictionary = null;
+        this.saved_file = null;
     }
     Parent() {
         return this.parent;
@@ -1021,6 +1065,100 @@ class Editor {
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
+        this.saved_dictionary = json;
+    }
+    Try_To_Save_Dictionary() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield new Promise(function (resolve, reject) {
+                const modal = document.createElement(`div`);
+                modal.setAttribute(`style`, `
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+                        align-items: center;
+
+                        position: absolute;
+                        left: 0;
+                        top: 0;
+                        z-index: 1;
+
+                        width: 100%;
+                        height: 100%;
+
+                        background-color: rgba(0, 0, 0, 0.7);
+
+                        font-size: 18px;
+                    `);
+                const message = document.createElement(`div`);
+                message.setAttribute(`style`, `
+                        width: 67%;
+                        margin: 2px;
+                        padding: 7px;
+
+                        background-color: #0f1318;
+
+                        color: #E0ECFF;
+                        text-align: center;
+                    `);
+                message.innerHTML = `<div>
+                    There are unsaved changes to the current dictionary.
+                </div>`;
+                const options = document.createElement(`div`);
+                options.setAttribute(`style`, `
+                        display: grid;
+                        grid-template-columns: 1fr;
+                        grid-template-rows: 1fr 1fr 1fr;
+                        grid-gap: 12px;
+
+                        width: 67%;
+                        padding: 7px;
+
+                        background-color: #0f1318;
+
+                        color: #E0ECFF;
+                    `);
+                const button_style = `
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+
+                    border-width: 2px;
+                    border-style: solid;
+                    border-color: #3B3A32;
+
+                    cursor: pointer;
+                    user-select: none;
+                `;
+                const save_button = document.createElement(`div`);
+                save_button.setAttribute(`style`, button_style);
+                save_button.innerHTML = `<div>Save Changes</div>`;
+                save_button.addEventListener(`click`, function (event) {
+                    this.Save_Dictionary();
+                    document.body.removeChild(modal);
+                    resolve(true);
+                }.bind(this));
+                const discard_button = document.createElement(`div`);
+                discard_button.setAttribute(`style`, button_style);
+                discard_button.innerHTML = `<div>Discard Changes</div>`;
+                discard_button.addEventListener(`click`, function (event) {
+                    document.body.removeChild(modal);
+                    resolve(true);
+                }.bind(this));
+                const cancel_button = document.createElement(`div`);
+                cancel_button.setAttribute(`style`, button_style);
+                cancel_button.innerHTML = `<div>Cancel</div>`;
+                cancel_button.addEventListener(`click`, function (event) {
+                    document.body.removeChild(modal);
+                    resolve(false);
+                }.bind(this));
+                options.appendChild(save_button);
+                options.appendChild(discard_button);
+                options.appendChild(cancel_button);
+                modal.appendChild(message);
+                modal.appendChild(options);
+                document.body.appendChild(modal);
+            }.bind(this));
+        });
     }
     File_Name() {
         if (this.children.file_name.textContent) {
@@ -1057,6 +1195,100 @@ class Editor {
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
+        this.saved_file = text;
+    }
+    Try_To_Save_File() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield new Promise(function (resolve, reject) {
+                const modal = document.createElement(`div`);
+                modal.setAttribute(`style`, `
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+                        align-items: center;
+
+                        position: absolute;
+                        left: 0;
+                        top: 0;
+                        z-index: 1;
+
+                        width: 100%;
+                        height: 100%;
+
+                        background-color: rgba(0, 0, 0, 0.7);
+
+                        font-size: 18px;
+                    `);
+                const message = document.createElement(`div`);
+                message.setAttribute(`style`, `
+                        width: 67%;
+                        margin: 2px;
+                        padding: 7px;
+
+                        background-color: #0f1318;
+
+                        color: #E0ECFF;
+                        text-align: center;
+                    `);
+                message.innerHTML = `<div>
+                    There are unsaved changes to the current file.
+                </div>`;
+                const options = document.createElement(`div`);
+                options.setAttribute(`style`, `
+                        display: grid;
+                        grid-template-columns: 1fr;
+                        grid-template-rows: 1fr 1fr 1fr;
+                        grid-gap: 12px;
+
+                        width: 67%;
+                        padding: 7px;
+
+                        background-color: #0f1318;
+
+                        color: #E0ECFF;
+                    `);
+                const button_style = `
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+
+                    border-width: 2px;
+                    border-style: solid;
+                    border-color: #3B3A32;
+
+                    cursor: pointer;
+                    user-select: none;
+                `;
+                const save_button = document.createElement(`div`);
+                save_button.setAttribute(`style`, button_style);
+                save_button.innerHTML = `<div>Save Changes</div>`;
+                save_button.addEventListener(`click`, function (event) {
+                    this.Save_Text();
+                    document.body.removeChild(modal);
+                    resolve(true);
+                }.bind(this));
+                const discard_button = document.createElement(`div`);
+                discard_button.setAttribute(`style`, button_style);
+                discard_button.innerHTML = `<div>Discard Changes</div>`;
+                discard_button.addEventListener(`click`, function (event) {
+                    document.body.removeChild(modal);
+                    resolve(true);
+                }.bind(this));
+                const cancel_button = document.createElement(`div`);
+                cancel_button.setAttribute(`style`, button_style);
+                cancel_button.innerHTML = `<div>Cancel</div>`;
+                cancel_button.addEventListener(`click`, function (event) {
+                    document.body.removeChild(modal);
+                    resolve(false);
+                }.bind(this));
+                options.appendChild(save_button);
+                options.appendChild(discard_button);
+                options.appendChild(cancel_button);
+                modal.appendChild(message);
+                modal.appendChild(options);
+                document.body.appendChild(modal);
+            }.bind(this));
+        });
     }
     Clear_Text() {
         for (const line of this.lines) {

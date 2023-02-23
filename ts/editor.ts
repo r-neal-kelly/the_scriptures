@@ -1013,6 +1013,9 @@ class Editor
     private dictionary: Dictionary;
     private lines: Array<Line>;
 
+    private saved_dictionary: string | null;
+    private saved_file: string | null;
+
     private is_meta_key_active: boolean;
 
     private parent: HTMLElement;
@@ -1093,6 +1096,8 @@ class Editor
                 flex-direction: column;
                 justify-content: center;
                 align-items: center;
+
+                position: relative;
 
                 height: 100%;
                 width: 100%;
@@ -1237,15 +1242,26 @@ class Editor
         this.children.dictionary_new_button.innerHTML = `<div>New</div>`;
         this.children.dictionary_new_button.addEventListener(
             `click`,
-            function (
+            async function (
                 this: Editor,
                 event: Event,
             ):
-                void
+                Promise<void>
             {
+                if (
+                    this.saved_dictionary === null ?
+                        this.Dictionary().JSON() !== new Dictionary({}).JSON() :
+                        this.saved_dictionary !== this.Dictionary().JSON()
+                ) {
+                    if (!await this.Try_To_Save_Dictionary()) {
+                        return;
+                    }
+                }
+
                 this.Set_Dictionary_Name(`New Dictionary`);
                 this.dictionary = new Dictionary({});
                 this.Touch();
+                this.saved_dictionary = null;
             }.bind(this),
         );
 
@@ -1277,6 +1293,8 @@ class Editor
                     this.Set_Dictionary_Name(file.name.replace(/\.[^.]+$/, ``));
                     this.Set_Dictionary_JSON(file_text);
                     this.children.dictionary_load_input.value = ``;
+
+                    this.saved_dictionary = this.Dictionary().JSON();
                 }
             }.bind(this),
         );
@@ -1288,12 +1306,22 @@ class Editor
         this.children.dictionary_load_button.innerHTML = `<div>Load</div>`;
         this.children.dictionary_load_button.addEventListener(
             `click`,
-            function (
+            async function (
                 this: Editor,
                 event: Event,
             ):
-                void
+                Promise<void>
             {
+                if (
+                    this.saved_dictionary === null ?
+                        this.Dictionary().JSON() !== new Dictionary({}).JSON() :
+                        this.saved_dictionary !== this.Dictionary().JSON()
+                ) {
+                    if (!await this.Try_To_Save_Dictionary()) {
+                        return;
+                    }
+                }
+
                 this.children.dictionary_load_input.click();
             }.bind(this),
         );
@@ -1384,15 +1412,26 @@ class Editor
         this.children.file_new_button.innerHTML = `<div>New</div>`;
         this.children.file_new_button.addEventListener(
             `click`,
-            function (
+            async function (
                 this: Editor,
                 event: Event,
             ):
-                void
+                Promise<void>
             {
+                if (
+                    this.saved_file === null ?
+                        this.Text() !== `` :
+                        this.saved_file !== this.Text()
+                ) {
+                    if (!await this.Try_To_Save_File()) {
+                        return;
+                    }
+                }
+
                 this.Set_File_Name(`New File`);
                 this.Clear_Text();
                 this.Touch();
+                this.saved_file = null;
             }.bind(this),
         );
 
@@ -1425,6 +1464,8 @@ class Editor
                     this.Set_Text(file_text);
                     this.children.file_load_input.value = ``;
 
+                    this.saved_file = this.Text();
+
                     Assert(this.Text() === file_text.replaceAll(/\r/g, ``));
                 }
             }.bind(this),
@@ -1437,12 +1478,22 @@ class Editor
         this.children.file_load_button.innerHTML = `<div>Load</div>`;
         this.children.file_load_button.addEventListener(
             `click`,
-            function (
+            async function (
                 this: Editor,
                 event: Event,
             ):
-                void
+                Promise<void>
             {
+                if (
+                    this.saved_file === null ?
+                        this.Text() !== `` :
+                        this.saved_file !== this.Text()
+                ) {
+                    if (!await this.Try_To_Save_File()) {
+                        return;
+                    }
+                }
+
                 this.children.file_load_input.click();
             }.bind(this),
         );
@@ -1507,6 +1558,9 @@ class Editor
         this.Set_Dictionary_Name(`New Dictionary`);
         this.Set_File_Name(`New File`);
         this.Add_Line(``);
+
+        this.saved_dictionary = null;
+        this.saved_file = null;
     }
 
     Parent():
@@ -1580,6 +1634,151 @@ class Editor
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
+
+        this.saved_dictionary = json;
+    }
+
+    async Try_To_Save_Dictionary():
+        Promise<boolean>
+    {
+        return await new Promise<boolean>(
+            function (
+                this: Editor,
+                resolve: any,
+                reject: any,
+            ):
+                void
+            {
+                const modal: HTMLDivElement = document.createElement(`div`);
+                modal.setAttribute(
+                    `style`,
+                    `
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+                        align-items: center;
+
+                        position: absolute;
+                        left: 0;
+                        top: 0;
+                        z-index: 1;
+
+                        width: 100%;
+                        height: 100%;
+
+                        background-color: rgba(0, 0, 0, 0.7);
+
+                        font-size: 18px;
+                    `,
+                );
+
+                const message: HTMLDivElement = document.createElement(`div`);
+                message.setAttribute(
+                    `style`,
+                    `
+                        width: 67%;
+                        margin: 2px;
+                        padding: 7px;
+
+                        background-color: #0f1318;
+
+                        color: #E0ECFF;
+                        text-align: center;
+                    `,
+                );
+                message.innerHTML = `<div>
+                    There are unsaved changes to the current dictionary.
+                </div>`;
+
+                const options: HTMLDivElement = document.createElement(`div`);
+                options.setAttribute(
+                    `style`,
+                    `
+                        display: grid;
+                        grid-template-columns: 1fr;
+                        grid-template-rows: 1fr 1fr 1fr;
+                        grid-gap: 12px;
+
+                        width: 67%;
+                        padding: 7px;
+
+                        background-color: #0f1318;
+
+                        color: #E0ECFF;
+                    `,
+                );
+
+                const button_style: string = `
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+
+                    border-width: 2px;
+                    border-style: solid;
+                    border-color: #3B3A32;
+
+                    cursor: pointer;
+                    user-select: none;
+                `;
+
+                const save_button: HTMLDivElement = document.createElement(`div`);
+                save_button.setAttribute(`style`, button_style);
+                save_button.innerHTML = `<div>Save Changes</div>`;
+                save_button.addEventListener(
+                    `click`,
+                    function (
+                        this: Editor,
+                        event: MouseEvent,
+                    ):
+                        void
+                    {
+                        this.Save_Dictionary();
+                        document.body.removeChild(modal);
+                        resolve(true);
+                    }.bind(this),
+                );
+
+                const discard_button: HTMLDivElement = document.createElement(`div`);
+                discard_button.setAttribute(`style`, button_style);
+                discard_button.innerHTML = `<div>Discard Changes</div>`;
+                discard_button.addEventListener(
+                    `click`,
+                    function (
+                        this: Editor,
+                        event: MouseEvent,
+                    ):
+                        void
+                    {
+                        document.body.removeChild(modal);
+                        resolve(true);
+                    }.bind(this),
+                );
+
+                const cancel_button: HTMLDivElement = document.createElement(`div`);
+                cancel_button.setAttribute(`style`, button_style);
+                cancel_button.innerHTML = `<div>Cancel</div>`;
+                cancel_button.addEventListener(
+                    `click`,
+                    function (
+                        this: Editor,
+                        event: MouseEvent,
+                    ):
+                        void
+                    {
+                        document.body.removeChild(modal);
+                        resolve(false);
+                    }.bind(this),
+                );
+
+                options.appendChild(save_button);
+                options.appendChild(discard_button);
+                options.appendChild(cancel_button);
+
+                modal.appendChild(message);
+                modal.appendChild(options);
+                document.body.appendChild(modal);
+            }.bind(this),
+        );
     }
 
     File_Name():
@@ -1644,6 +1843,151 @@ class Editor
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
+
+        this.saved_file = text;
+    }
+
+    async Try_To_Save_File():
+        Promise<boolean>
+    {
+        return await new Promise<boolean>(
+            function (
+                this: Editor,
+                resolve: any,
+                reject: any,
+            ):
+                void
+            {
+                const modal: HTMLDivElement = document.createElement(`div`);
+                modal.setAttribute(
+                    `style`,
+                    `
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+                        align-items: center;
+
+                        position: absolute;
+                        left: 0;
+                        top: 0;
+                        z-index: 1;
+
+                        width: 100%;
+                        height: 100%;
+
+                        background-color: rgba(0, 0, 0, 0.7);
+
+                        font-size: 18px;
+                    `,
+                );
+
+                const message: HTMLDivElement = document.createElement(`div`);
+                message.setAttribute(
+                    `style`,
+                    `
+                        width: 67%;
+                        margin: 2px;
+                        padding: 7px;
+
+                        background-color: #0f1318;
+
+                        color: #E0ECFF;
+                        text-align: center;
+                    `,
+                );
+                message.innerHTML = `<div>
+                    There are unsaved changes to the current file.
+                </div>`;
+
+                const options: HTMLDivElement = document.createElement(`div`);
+                options.setAttribute(
+                    `style`,
+                    `
+                        display: grid;
+                        grid-template-columns: 1fr;
+                        grid-template-rows: 1fr 1fr 1fr;
+                        grid-gap: 12px;
+
+                        width: 67%;
+                        padding: 7px;
+
+                        background-color: #0f1318;
+
+                        color: #E0ECFF;
+                    `,
+                );
+
+                const button_style: string = `
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+
+                    border-width: 2px;
+                    border-style: solid;
+                    border-color: #3B3A32;
+
+                    cursor: pointer;
+                    user-select: none;
+                `;
+
+                const save_button: HTMLDivElement = document.createElement(`div`);
+                save_button.setAttribute(`style`, button_style);
+                save_button.innerHTML = `<div>Save Changes</div>`;
+                save_button.addEventListener(
+                    `click`,
+                    function (
+                        this: Editor,
+                        event: MouseEvent,
+                    ):
+                        void
+                    {
+                        this.Save_Text();
+                        document.body.removeChild(modal);
+                        resolve(true);
+                    }.bind(this),
+                );
+
+                const discard_button: HTMLDivElement = document.createElement(`div`);
+                discard_button.setAttribute(`style`, button_style);
+                discard_button.innerHTML = `<div>Discard Changes</div>`;
+                discard_button.addEventListener(
+                    `click`,
+                    function (
+                        this: Editor,
+                        event: MouseEvent,
+                    ):
+                        void
+                    {
+                        document.body.removeChild(modal);
+                        resolve(true);
+                    }.bind(this),
+                );
+
+                const cancel_button: HTMLDivElement = document.createElement(`div`);
+                cancel_button.setAttribute(`style`, button_style);
+                cancel_button.innerHTML = `<div>Cancel</div>`;
+                cancel_button.addEventListener(
+                    `click`,
+                    function (
+                        this: Editor,
+                        event: MouseEvent,
+                    ):
+                        void
+                    {
+                        document.body.removeChild(modal);
+                        resolve(false);
+                    }.bind(this),
+                );
+
+                options.appendChild(save_button);
+                options.appendChild(discard_button);
+                options.appendChild(cancel_button);
+
+                modal.appendChild(message);
+                modal.appendChild(options);
+                document.body.appendChild(modal);
+            }.bind(this),
+        );
     }
 
     Clear_Text():
