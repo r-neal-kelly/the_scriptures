@@ -10,7 +10,7 @@
   else if (key1 = "/")
     set := "Combo"
   else if (key1 = ";")
-    set := "Symbs"
+    set := "Symbols"
   else
     set := "Ligs"
 
@@ -37,12 +37,15 @@
 global Latin := {}
 
 ; Symbols
-Latin.Symbs_s := { "p": "¶" ; Pilcrow Sign
-                 , "s": "§" ; Section Sign
-                 , "-": "—" ; Em Dash
-                 , "[": "｟" ; Fullwidth Left White Parenthesis
-                 , "]": "｠" ; Fullwidth Right White Parenthesis
-                 , "": "" }
+Latin.Symbols_s :=  { "p": "¶" ; Pilcrow Sign
+                    , "s": "§" ; Section Sign
+                    , "-": "–" ; EN DASH U+2013
+                    , "": "" }
+
+Latin.Symbols_c :=  { "_": "—" ; EM DASH U+2014
+                    , "(": "｟" ; FULLWIDTH LEFT WHITE PARENTHESIS U+FF5F
+                    , ")": "｠" ; FULLWIDTH RIGHT WHITE PARENTHESIS U+FF60
+                    , "": "" }
 
 ; Ligatures and Digraphs
 Latin.Ligs_s  := { "aa": "ꜳ" ; Aa

@@ -173,7 +173,7 @@ class Line {
                 border-style: solid;
                 border-color: #3B3A32;
 
-                font-size: 18px;
+                font-size: 20px;
                 direction: ltr;
             `);
         this.element.addEventListener(`keydown`, function (event) {
@@ -1013,7 +1013,7 @@ class Editor {
             `);
         this.children.dictionary_label.textContent = `Dictionary:`;
         this.children.dictionary_name.setAttribute(`contentEditable`, `true`);
-        this.children.dictionary_name.setAttribute(`spellcheck`, `false`);
+        this.children.dictionary_name.setAttribute(`spellcheck`, `true`);
         this.children.dictionary_name.setAttribute(`style`, `
                 padding: 2px;
 
@@ -1095,7 +1095,7 @@ class Editor {
             `);
         this.children.file_label.textContent = `File:`;
         this.children.file_name.setAttribute(`contentEditable`, `true`);
-        this.children.file_name.setAttribute(`spellcheck`, `false`);
+        this.children.file_name.setAttribute(`spellcheck`, `true`);
         this.children.file_name.setAttribute(`style`, `
                 padding: 2px;
 
@@ -1226,7 +1226,7 @@ class Editor {
         }
     }
     Set_Dictionary_Name(name) {
-        this.children.dictionary_name.innerHTML = this.Dictionary().Treat(name);
+        this.children.dictionary_name.innerHTML = Escape_Text(name);
     }
     Dictionary_JSON() {
         return this.Dictionary().JSON();
@@ -1352,7 +1352,7 @@ class Editor {
         }
     }
     Set_File_Name(name) {
-        this.children.file_name.innerHTML = this.Dictionary().Treat(name);
+        this.children.file_name.innerHTML = Escape_Text(name);
     }
     Text() {
         return this.lines.map(function (line) {

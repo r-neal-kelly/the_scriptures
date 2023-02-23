@@ -256,7 +256,7 @@ class Line
                 border-style: solid;
                 border-color: #3B3A32;
 
-                font-size: 18px;
+                font-size: 20px;
                 direction: ltr;
             `,
         );
@@ -1403,7 +1403,7 @@ class Editor
         );
         this.children.dictionary_name.setAttribute(
             `spellcheck`,
-            `false`,
+            `true`,
         );
         this.children.dictionary_name.setAttribute(
             `style`,
@@ -1573,7 +1573,7 @@ class Editor
         );
         this.children.file_name.setAttribute(
             `spellcheck`,
-            `false`,
+            `true`,
         );
         this.children.file_name.setAttribute(
             `style`,
@@ -1810,7 +1810,7 @@ class Editor
     ):
         void
     {
-        this.children.dictionary_name.innerHTML = this.Dictionary().Treat(name);
+        this.children.dictionary_name.innerHTML = Escape_Text(name);
     }
 
     Dictionary_JSON():
@@ -2010,7 +2010,7 @@ class Editor
     ):
         void
     {
-        this.children.file_name.innerHTML = this.Dictionary().Treat(name);
+        this.children.file_name.innerHTML = Escape_Text(name);
     }
 
     Text():
