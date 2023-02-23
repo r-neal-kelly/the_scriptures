@@ -271,7 +271,7 @@ class Line {
                     }
                 }
             }
-            else if (event.code === `KeyL`) {
+            else if (event.key === `Home`) {
                 if (this.Editor().Is_Meta_Key_Active()) {
                     event.preventDefault();
                     const selected = Dictionary.Selected_Text_And_Class();
@@ -280,13 +280,12 @@ class Line {
                             this.Editor().Dictionary().Add_Letter(selected.text);
                             this.Editor().Touch();
                         }
-                        else if (selected.class === Dictionary_Class.UNKNOWN_WORD) {
-                            if (selected.text.length === 1) {
-                                this.Editor().Dictionary().Remove_Letter(selected.text);
-                                this.Editor().Touch();
-                            }
+                        else if (selected.class === Dictionary_Class.KNOWN_LETTER) {
+                            this.Editor().Dictionary().Remove_Letter(selected.text);
+                            this.Editor().Touch();
                         }
-                        else if (selected.class === Dictionary_Class.KNOWN_WORD) {
+                        else if (selected.class === Dictionary_Class.UNKNOWN_WORD ||
+                            selected.class === Dictionary_Class.KNOWN_WORD) {
                             if (selected.text.length === 1) {
                                 this.Editor().Dictionary().Remove_Letter(selected.text);
                                 this.Editor().Touch();
@@ -295,7 +294,7 @@ class Line {
                     }
                 }
             }
-            else if (event.code === `KeyM`) {
+            else if (event.key === `PageUp`) {
                 if (this.Editor().Is_Meta_Key_Active()) {
                     event.preventDefault();
                     const selected = Dictionary.Selected_Text_And_Class();
@@ -320,7 +319,7 @@ class Line {
                     }
                 }
             }
-            else if (event.code === `KeyW`) {
+            else if (event.key === `PageDown`) {
                 if (this.Editor().Is_Meta_Key_Active()) {
                     event.preventDefault();
                     const selected = Dictionary.Selected_Text_And_Class();
@@ -341,7 +340,7 @@ class Line {
                     }
                 }
             }
-            else if (event.code === `KeyE`) {
+            else if (event.key === `End`) {
                 if (this.Editor().Is_Meta_Key_Active()) {
                     event.preventDefault();
                     const selected = Dictionary.Selected_Text_And_Class();
@@ -456,7 +455,12 @@ class Line {
         // out. I'm tempted to just switch them all out though until we need to use
         // such a thing, because it's an annoying problem that doesn't need to be dealt
         // with just yet.
-        this.element.innerHTML = this.Editor().Dictionary().Treat(text);
+        if (this.Editor().Is_In_Point_Mode()) {
+            this.element.innerHTML = this.Editor().Dictionary().Treat_As_Points(text);
+        }
+        else {
+            this.element.innerHTML = this.Editor().Dictionary().Treat(text);
+        }
     }
     Touch() {
         const text_offset = Text_Offset(this.Element());
@@ -497,6 +501,9 @@ class Dictionary {
                         // can't do KNOWN_LETTER unless we allow text as well as span
                         if (span.classList.contains(`UNKNOWN_POINT`)) {
                             dictionary_class = Dictionary_Class.UNKNOWN_POINT;
+                        }
+                        else if (span.classList.contains(`KNOWN_LETTER`)) {
+                            dictionary_class = Dictionary_Class.KNOWN_LETTER;
                         }
                         else if (span.classList.contains(`UNKNOWN_MARKER`)) {
                             dictionary_class = Dictionary_Class.UNKNOWN_MARKER;
@@ -722,6 +729,21 @@ class Dictionary {
         }
         return inner_html;
     }
+    Treat_As_Points(text) {
+        let inner_html = ``;
+        for (let idx = 0, end = text.length; idx < end; idx += 1) {
+            if (this.data.letters.includes(text[idx])) {
+                inner_html += `<span class="KNOWN_LETTER SEPARATE_POINT">${Escape_Text(text[idx])}</span>`;
+            }
+            else if (this.data.markers.includes(text[idx])) {
+                inner_html += `<span class="KNOWN_MARKER SEPARATE_POINT">${Escape_Text(text[idx])}</span>`;
+            }
+            else {
+                inner_html += `<span class="UNKNOWN_POINT SEPARATE_POINT">${Escape_Text(text[idx])}</span>`;
+            }
+        }
+        return inner_html;
+    }
     JSON() {
         return JSON.stringify(this.data);
     }
@@ -745,6 +767,7 @@ class Editor {
             user-select: none;
         `;
         this.is_meta_key_active = false;
+        this.is_in_point_mode = false;
         this.parent = parent;
         this.element = document.createElement(`div`);
         this.children = {
@@ -804,6 +827,18 @@ class Editor {
                     for (const line of this.lines) {
                         line.Element().style.direction = `ltr`;
                     }
+                }
+            }
+            else if (keyboard_event.key === `ArrowDown`) {
+                if (this.Is_Meta_Key_Active()) {
+                    this.is_in_point_mode = true;
+                    this.Touch();
+                }
+            }
+            else if (keyboard_event.key === `ArrowUp`) {
+                if (this.Is_Meta_Key_Active()) {
+                    this.is_in_point_mode = false;
+                    this.Touch();
                 }
             }
         }.bind(this));
@@ -1349,6 +1384,9 @@ class Editor {
     Is_Meta_Key_Active() {
         return this.is_meta_key_active;
     }
+    Is_In_Point_Mode() {
+        return this.is_in_point_mode;
+    }
 }
 function Style() {
     const style = document.createElement(`style`);
@@ -1367,7 +1405,10 @@ function Style() {
                 html, body {
                     width: 100%;
                     height: 100%;
+
                     background-color: black;
+
+                    font-family: sans-serif;
                 }
 
                 body {
@@ -1377,11 +1418,35 @@ function Style() {
                     align-items: center;
                 }
 
+                .SEPARATE_POINT {
+                    display: inline-block;
+
+                    min-width: 7px;
+
+                    text-align: center;
+                }
+
                 .UNKNOWN_POINT {
                     border-width: 0 0 2px 0;
                     border-style: solid;
                     border-color: #ffff00;
 
+                    overflow-wrap: normal;
+                }
+
+                .KNOWN_LETTER {
+                    overflow-wrap: normal;
+                }
+
+                .UNKNOWN_MARKER {
+                    border-width: 0 0 2px 0;
+                    border-style: solid;
+                    border-color: #00da6f;
+
+                    overflow-wrap: normal;
+                }
+
+                .KNOWN_MARKER {
                     overflow-wrap: normal;
                 }
 
@@ -1393,11 +1458,7 @@ function Style() {
                     overflow-wrap: normal;
                 }
 
-                .UNKNOWN_MARKER {
-                    border-width: 0 0 2px 0;
-                    border-style: solid;
-                    border-color: #00da6f;
-
+                .KNOWN_WORD {
                     overflow-wrap: normal;
                 }
 
