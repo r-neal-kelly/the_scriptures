@@ -1742,7 +1742,7 @@ class Editor
                 padding: 2px;
 
                 border-width: 2px;
-                border-style: solid;
+                border-style: none;
                 border-color: #3B3A32;
 
                 overflow-y: auto;
