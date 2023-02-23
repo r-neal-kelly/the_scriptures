@@ -40,6 +40,8 @@ global Latin := {}
 Latin.Symbs_s := { "p": "¶" ; Pilcrow Sign
                  , "s": "§" ; Section Sign
                  , "-": "—" ; Em Dash
+                 , "[": "｟" ; Fullwidth Left White Parenthesis
+                 , "]": "｠" ; Fullwidth Right White Parenthesis
                  , "": "" }
 
 ; Ligatures and Digraphs

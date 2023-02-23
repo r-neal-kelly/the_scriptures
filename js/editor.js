@@ -653,77 +653,186 @@ class Dictionary {
             Type[Type["POINT"] = 0] = "POINT";
             Type[Type["LETTERS"] = 1] = "LETTERS";
             Type[Type["MARKERS"] = 2] = "MARKERS";
+            Type[Type["COMMAND"] = 3] = "COMMAND";
         })(Type || (Type = {}));
         ;
         const parts = [];
         let current_start_index = 0;
         let current_type = Type._NONE_;
-        for (let idx = 0, end = text.length; idx < end; idx += 1) {
-            if (this.data.letters.includes(text[idx])) {
-                current_type = Type.LETTERS;
-            }
-            else if (this.data.markers.includes(text[idx])) {
-                current_type = Type.MARKERS;
-            }
-            else {
-                current_type = Type.POINT;
-            }
-            if (current_type === Type.POINT) {
+        let has_italic = false;
+        let has_bold = false;
+        let has_underline = false;
+        for (let idx = 0, end = text.length; idx < end;) {
+            const maybe_command = text.slice(idx);
+            if (/^｟i｠/.test(maybe_command)) {
+                has_italic = true;
                 parts.push({
-                    subtext: text.slice(current_start_index, idx + 1),
-                    type: Type.POINT,
+                    subtext: `｟i｠`,
+                    type: Type.COMMAND,
+                    has_italic: false,
+                    has_bold: false,
+                    has_underline: false,
                 });
-                current_start_index = idx + 1;
+                current_start_index = idx + 3;
+                idx += 3;
             }
-            else if (current_type === Type.LETTERS) {
-                if (idx + 1 === end ||
-                    !this.data.letters.includes(text[idx + 1])) {
-                    parts.push({
-                        subtext: text.slice(current_start_index, idx + 1),
-                        type: Type.LETTERS,
-                    });
-                    current_start_index = idx + 1;
-                }
+            else if (/^｟\/i｠/.test(maybe_command)) {
+                has_italic = false;
+                parts.push({
+                    subtext: `｟/i｠`,
+                    type: Type.COMMAND,
+                    has_italic: false,
+                    has_bold: false,
+                    has_underline: false,
+                });
+                current_start_index = idx + 4;
+                idx += 4;
             }
-            else if (current_type === Type.MARKERS) {
-                if (idx + 1 === end ||
-                    !this.data.markers.includes(text[idx + 1])) {
-                    parts.push({
-                        subtext: text.slice(current_start_index, idx + 1),
-                        type: Type.MARKERS,
-                    });
-                    current_start_index = idx + 1;
-                }
+            else if (/^｟b｠/.test(maybe_command)) {
+                has_bold = true;
+                parts.push({
+                    subtext: `｟b｠`,
+                    type: Type.COMMAND,
+                    has_italic: false,
+                    has_bold: false,
+                    has_underline: false,
+                });
+                current_start_index = idx + 3;
+                idx += 3;
+            }
+            else if (/^｟\/b｠/.test(maybe_command)) {
+                has_bold = false;
+                parts.push({
+                    subtext: `｟/b｠`,
+                    type: Type.COMMAND,
+                    has_italic: false,
+                    has_bold: false,
+                    has_underline: false,
+                });
+                current_start_index = idx + 4;
+                idx += 4;
+            }
+            else if (/^｟u｠/.test(maybe_command)) {
+                has_underline = true;
+                parts.push({
+                    subtext: `｟u｠`,
+                    type: Type.COMMAND,
+                    has_italic: false,
+                    has_bold: false,
+                    has_underline: false,
+                });
+                current_start_index = idx + 3;
+                idx += 3;
+            }
+            else if (/^｟\/u｠/.test(maybe_command)) {
+                has_underline = false;
+                parts.push({
+                    subtext: `｟/u｠`,
+                    type: Type.COMMAND,
+                    has_italic: false,
+                    has_bold: false,
+                    has_underline: false,
+                });
+                current_start_index = idx + 4;
+                idx += 4;
             }
             else {
-                Assert(false);
+                if (this.data.letters.includes(text[idx])) {
+                    current_type = Type.LETTERS;
+                }
+                else if (this.data.markers.includes(text[idx])) {
+                    current_type = Type.MARKERS;
+                }
+                else {
+                    current_type = Type.POINT;
+                }
+                if (current_type === Type.POINT) {
+                    parts.push({
+                        subtext: text.slice(current_start_index, idx + 1),
+                        type: Type.POINT,
+                        has_italic,
+                        has_bold,
+                        has_underline,
+                    });
+                    current_start_index = idx + 1;
+                }
+                else if (current_type === Type.LETTERS) {
+                    if (idx + 1 === end ||
+                        /^.｟\/?[^｠]*｠/.test(maybe_command) ||
+                        !this.data.letters.includes(text[idx + 1])) {
+                        parts.push({
+                            subtext: text.slice(current_start_index, idx + 1),
+                            type: Type.LETTERS,
+                            has_italic,
+                            has_bold,
+                            has_underline,
+                        });
+                        current_start_index = idx + 1;
+                    }
+                }
+                else if (current_type === Type.MARKERS) {
+                    if (idx + 1 === end ||
+                        /^.｟\/?[^｠]*｠/.test(maybe_command) ||
+                        !this.data.markers.includes(text[idx + 1])) {
+                        parts.push({
+                            subtext: text.slice(current_start_index, idx + 1),
+                            type: Type.MARKERS,
+                            has_italic,
+                            has_bold,
+                            has_underline,
+                        });
+                        current_start_index = idx + 1;
+                    }
+                }
+                else {
+                    Assert(false);
+                }
+                idx += 1;
             }
         }
         let inner_html = ``;
         for (const part of parts) {
-            if (part.type === Type.POINT) {
-                inner_html += `<span class="UNKNOWN_POINT">${Escape_Text(part.subtext)}</span>`;
+            if (part.type === Type.COMMAND) {
+                inner_html += `<span class="COMMAND">${Escape_Text(part.subtext)}</span>`;
             }
-            else if (part.type === Type.LETTERS) {
-                if (this.data.errors.includes(part.subtext)) {
-                    inner_html += `<span class="KNOWN_ERROR">${Escape_Text(part.subtext)}</span>`;
+            else {
+                let command_classes = ``;
+                if (part.has_italic) {
+                    command_classes += ` ITALIC`;
                 }
-                else if (this.data.words[part.subtext[0]].includes(part.subtext)) {
-                    inner_html += `<span class="KNOWN_WORD">${Escape_Text(part.subtext)}</span>`;
+                if (part.has_bold) {
+                    command_classes += ` BOLD`;
+                }
+                if (part.has_underline) {
+                    command_classes += ` UNDERLINE`;
+                }
+                if (part.type === Type.POINT) {
+                    inner_html += `<span class="UNKNOWN_POINT ${command_classes}">${Escape_Text(part.subtext)}</span>`;
+                }
+                else if (part.type === Type.LETTERS) {
+                    if (this.data.errors.includes(part.subtext)) {
+                        inner_html += `<span class="KNOWN_ERROR ${command_classes}">${Escape_Text(part.subtext)}</span>`;
+                    }
+                    else if (this.data.words[part.subtext[0]].includes(part.subtext)) {
+                        inner_html += `<span class="KNOWN_WORD ${command_classes}">${Escape_Text(part.subtext)}</span>`;
+                    }
+                    else {
+                        inner_html += `<span class="UNKNOWN_WORD ${command_classes}">${Escape_Text(part.subtext)}</span>`;
+                    }
+                }
+                else if (part.type === Type.MARKERS) {
+                    if (this.data.errors.includes(part.subtext)) {
+                        inner_html += `<span class="KNOWN_ERROR ${command_classes}">${Escape_Text(part.subtext)}</span>`;
+                    }
+                    else if (this.data.markers.includes(part.subtext)) {
+                        inner_html += `<span class="KNOWN_MARKER ${command_classes}">${Escape_Text(part.subtext)}</span>`;
+                    }
+                    else {
+                        inner_html += `<span class="UNKNOWN_MARKER ${command_classes}">${Escape_Text(part.subtext)}</span>`;
+                    }
                 }
                 else {
-                    inner_html += `<span class="UNKNOWN_WORD">${Escape_Text(part.subtext)}</span>`;
-                }
-            }
-            else if (part.type === Type.MARKERS) {
-                if (this.data.errors.includes(part.subtext)) {
-                    inner_html += `<span class="KNOWN_ERROR">${Escape_Text(part.subtext)}</span>`;
-                }
-                else if (this.data.markers.includes(part.subtext)) {
-                    inner_html += `<span class="KNOWN_MARKER">${Escape_Text(part.subtext)}</span>`;
-                }
-                else {
-                    inner_html += `<span class="UNKNOWN_MARKER">${Escape_Text(part.subtext)}</span>`;
+                    Assert(false);
                 }
             }
         }
@@ -1418,6 +1527,18 @@ function Style() {
                     align-items: center;
                 }
 
+                .ITALIC {
+                    font-style: italic;
+                }
+
+                .BOLD {
+                    font-weight: bold;
+                }
+
+                .UNDERLINE {
+                    text-decoration: underline;
+                }
+
                 .SEPARATE_POINT {
                     display: inline-block;
 
@@ -1467,6 +1588,10 @@ function Style() {
                     border-style: solid;
                     border-color: #e767c3;
 
+                    overflow-wrap: normal;
+                }
+
+                .COMMAND {
                     overflow-wrap: normal;
                 }
             `));
