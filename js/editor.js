@@ -893,7 +893,7 @@ class Dictionary {
         return inner_html;
     }
     JSON() {
-        return JSON.stringify(this.data);
+        return JSON.stringify(this.data, null, 4);
     }
 }
 class Editor {

@@ -1206,7 +1206,7 @@ class Dictionary
     JSON():
         string
     {
-        return JSON.stringify(this.data);
+        return JSON.stringify(this.data, null, 4);
     }
 }
 
