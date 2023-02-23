@@ -2358,6 +2358,10 @@ function Style():
                     align-items: center;
                 }
 
+                span {
+                    display: inline-block;
+                }
+
                 .ITALIC {
                     font-style: italic;
                 }
