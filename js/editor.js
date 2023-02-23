@@ -662,6 +662,7 @@ class Dictionary {
         let has_italic = false;
         let has_bold = false;
         let has_underline = false;
+        let has_small_caps = false;
         for (let idx = 0, end = text.length; idx < end;) {
             const maybe_command = text.slice(idx);
             if (/^｟i｠/.test(maybe_command)) {
@@ -672,6 +673,7 @@ class Dictionary {
                     has_italic: false,
                     has_bold: false,
                     has_underline: false,
+                    has_small_caps: false,
                 });
                 current_start_index = idx + 3;
                 idx += 3;
@@ -684,6 +686,7 @@ class Dictionary {
                     has_italic: false,
                     has_bold: false,
                     has_underline: false,
+                    has_small_caps: false,
                 });
                 current_start_index = idx + 4;
                 idx += 4;
@@ -696,6 +699,7 @@ class Dictionary {
                     has_italic: false,
                     has_bold: false,
                     has_underline: false,
+                    has_small_caps: false,
                 });
                 current_start_index = idx + 3;
                 idx += 3;
@@ -708,6 +712,7 @@ class Dictionary {
                     has_italic: false,
                     has_bold: false,
                     has_underline: false,
+                    has_small_caps: false,
                 });
                 current_start_index = idx + 4;
                 idx += 4;
@@ -720,6 +725,7 @@ class Dictionary {
                     has_italic: false,
                     has_bold: false,
                     has_underline: false,
+                    has_small_caps: false,
                 });
                 current_start_index = idx + 3;
                 idx += 3;
@@ -732,9 +738,36 @@ class Dictionary {
                     has_italic: false,
                     has_bold: false,
                     has_underline: false,
+                    has_small_caps: false,
                 });
                 current_start_index = idx + 4;
                 idx += 4;
+            }
+            else if (/^｟sc｠/.test(maybe_command)) {
+                has_small_caps = true;
+                parts.push({
+                    subtext: `｟sc｠`,
+                    type: Type.COMMAND,
+                    has_italic: false,
+                    has_bold: false,
+                    has_underline: false,
+                    has_small_caps: false,
+                });
+                current_start_index = idx + 4;
+                idx += 4;
+            }
+            else if (/^｟\/sc｠/.test(maybe_command)) {
+                has_small_caps = false;
+                parts.push({
+                    subtext: `｟/sc｠`,
+                    type: Type.COMMAND,
+                    has_italic: false,
+                    has_bold: false,
+                    has_underline: false,
+                    has_small_caps: false,
+                });
+                current_start_index = idx + 5;
+                idx += 5;
             }
             else {
                 if (this.data.letters.includes(text[idx])) {
@@ -753,6 +786,7 @@ class Dictionary {
                         has_italic,
                         has_bold,
                         has_underline,
+                        has_small_caps,
                     });
                     current_start_index = idx + 1;
                 }
@@ -766,6 +800,7 @@ class Dictionary {
                             has_italic,
                             has_bold,
                             has_underline,
+                            has_small_caps,
                         });
                         current_start_index = idx + 1;
                     }
@@ -780,6 +815,7 @@ class Dictionary {
                             has_italic,
                             has_bold,
                             has_underline,
+                            has_small_caps,
                         });
                         current_start_index = idx + 1;
                     }
@@ -806,29 +842,32 @@ class Dictionary {
                 if (part.has_underline) {
                     command_classes += ` UNDERLINE`;
                 }
+                if (part.has_small_caps) {
+                    command_classes += ` SMALL_CAPS`;
+                }
                 if (part.type === Type.POINT) {
-                    inner_html += `<span class="UNKNOWN_POINT ${command_classes}">${Escape_Text(part.subtext)}</span>`;
+                    inner_html += `<span class="UNKNOWN_POINT${command_classes}">${Escape_Text(part.subtext)}</span>`;
                 }
                 else if (part.type === Type.LETTERS) {
                     if (this.data.errors.includes(part.subtext)) {
-                        inner_html += `<span class="KNOWN_ERROR ${command_classes}">${Escape_Text(part.subtext)}</span>`;
+                        inner_html += `<span class="KNOWN_ERROR${command_classes}">${Escape_Text(part.subtext)}</span>`;
                     }
                     else if (this.data.words[part.subtext[0]].includes(part.subtext)) {
-                        inner_html += `<span class="KNOWN_WORD ${command_classes}">${Escape_Text(part.subtext)}</span>`;
+                        inner_html += `<span class="KNOWN_WORD${command_classes}">${Escape_Text(part.subtext)}</span>`;
                     }
                     else {
-                        inner_html += `<span class="UNKNOWN_WORD ${command_classes}">${Escape_Text(part.subtext)}</span>`;
+                        inner_html += `<span class="UNKNOWN_WORD${command_classes}">${Escape_Text(part.subtext)}</span>`;
                     }
                 }
                 else if (part.type === Type.MARKERS) {
                     if (this.data.errors.includes(part.subtext)) {
-                        inner_html += `<span class="KNOWN_ERROR ${command_classes}">${Escape_Text(part.subtext)}</span>`;
+                        inner_html += `<span class="KNOWN_ERROR${command_classes}">${Escape_Text(part.subtext)}</span>`;
                     }
                     else if (this.data.markers.includes(part.subtext)) {
-                        inner_html += `<span class="KNOWN_MARKER ${command_classes}">${Escape_Text(part.subtext)}</span>`;
+                        inner_html += `<span class="KNOWN_MARKER${command_classes}">${Escape_Text(part.subtext)}</span>`;
                     }
                     else {
-                        inner_html += `<span class="UNKNOWN_MARKER ${command_classes}">${Escape_Text(part.subtext)}</span>`;
+                        inner_html += `<span class="UNKNOWN_MARKER${command_classes}">${Escape_Text(part.subtext)}</span>`;
                     }
                 }
                 else {
@@ -1537,6 +1576,10 @@ function Style() {
 
                 .UNDERLINE {
                     text-decoration: underline;
+                }
+                
+                .SMALL_CAPS {
+                    font-variant: small-caps;
                 }
 
                 .SEPARATE_POINT {
