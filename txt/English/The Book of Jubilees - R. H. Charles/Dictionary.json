@@ -81,6 +81,8 @@
         ":",
         ": ",
         ": ‘",
+        ";",
+        "; ",
         "?",
         "?),",
         "–",
@@ -128,6 +130,7 @@
         ],
         "B": [
             "BOOK",
+            "Beliar",
             "Book"
         ],
         "C": [
@@ -163,6 +166,7 @@
         ],
         "K": [],
         "L": [
+            "Let",
             "Lord"
         ],
         "M": [
@@ -174,6 +178,7 @@
             "Myself"
         ],
         "O": [
+            "O",
             "OF"
         ],
         "R": [
@@ -184,7 +189,9 @@
         ],
         "T": [
             "THE",
-            "This"
+            "Thee",
+            "This",
+            "Thy"
         ],
         "U": [
             "Unto"
@@ -195,6 +202,7 @@
             "abounding",
             "abrogate",
             "according",
+            "accuse",
             "actions",
             "affliction",
             "after",
@@ -218,8 +226,10 @@
             "before",
             "between",
             "bidden",
+            "blessing",
             "book",
             "bring",
+            "build",
             "but"
         ],
         "c": [
@@ -228,6 +238,7 @@
             "cannot",
             "captive",
             "captivity",
+            "cause",
             "change",
             "children",
             "chronological",
@@ -236,7 +247,9 @@
             "command",
             "commandment",
             "commandments",
-            "covenant"
+            "covenant",
+            "create",
+            "curse"
         ],
         "d": [
             "day",
@@ -256,7 +269,9 @@
             "each",
             "earlier",
             "eat",
+            "enemies",
             "enemy",
+            "ensnare",
             "error",
             "establish",
             "even",
@@ -269,8 +284,10 @@
         ],
         "f": [
             "face",
+            "fail",
             "fall",
             "fathers",
+            "fell",
             "festivals",
             "fire",
             "first",
@@ -278,6 +295,7 @@
             "flowing",
             "for",
             "forget",
+            "forsake",
             "forsaken",
             "forty",
             "found",
@@ -300,6 +318,7 @@
             "hands",
             "have",
             "he",
+            "head",
             "hear",
             "heard",
             "heart",
@@ -318,6 +337,7 @@
             "image",
             "images",
             "in",
+            "inheritance",
             "inscribe",
             "instruction",
             "into",
@@ -335,6 +355,9 @@
             "land",
             "later",
             "law",
+            "lest",
+            "let",
+            "lifted",
             "like"
         ],
         "m": [
@@ -343,6 +366,7 @@
             "may",
             "mayst",
             "me",
+            "mercy",
             "midst",
             "milk",
             "month",
@@ -356,6 +380,7 @@
             "neck",
             "new",
             "nights",
+            "nor",
             "not"
         ],
         "o": [
@@ -365,18 +390,22 @@
             "order",
             "ordinances",
             "out",
+            "over",
             "overshadowed",
             "own"
         ],
         "p": [
             "pass",
             "past",
+            "paths",
             "peace",
+            "people",
             "perish",
             "persecute",
             "place",
             "places",
             "plant",
+            "prayed",
             "prayer",
             "prey",
             "promise",
@@ -391,7 +420,8 @@
             "redeem",
             "remove",
             "righteous",
-            "righteousness"
+            "righteousness",
+            "rule"
         ],
         "s": [
             "sabbaths",
@@ -411,6 +441,7 @@
             "shall",
             "shame",
             "should",
+            "sin",
             "six",
             "sixteenth",
             "slay",
@@ -419,6 +450,7 @@
             "soul",
             "spake",
             "speak",
+            "spirit",
             "stiff",
             "stone",
             "strange",
@@ -429,6 +461,7 @@
             "tabernacle",
             "tables",
             "tablets",
+            "tail",
             "taken",
             "takes",
             "taught",
@@ -454,12 +487,14 @@
             "thou",
             "throughout",
             "thus",
+            "thy",
             "thyself",
             "to",
             "top",
             "transgressing",
             "tribulation",
             "truly",
+            "truth",
             "turn",
             "two"
         ],
@@ -468,6 +503,7 @@
             "unto",
             "up",
             "upon",
+            "upright",
             "uprightness"
         ],
         "v": [
@@ -475,6 +511,7 @@
         ],
         "w": [
             "walk",
+            "wander",
             "was",
             "weeks",
             "went",
