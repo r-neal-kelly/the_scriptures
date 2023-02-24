@@ -49,7 +49,13 @@
         "O",
         "K",
         "F",
-        "U"
+        "U",
+        "¹",
+        "x",
+        "²",
+        "³",
+        "⁴",
+        "⁵"
     ],
     "markers": [
         " ",
@@ -66,7 +72,9 @@
         "’",
         ") ",
         ", ‘",
-        ".’"
+        ".’",
+        ":",
+        ": ‘"
     ],
     "words": {
         "0": [],
@@ -76,7 +84,8 @@
             "13",
             "15",
             "18",
-            "19"
+            "19",
+            "1¹"
         ],
         "2": [
             "21",
@@ -102,18 +111,24 @@
         "M": [
             "Moses",
             "Mosesʼ",
-            "Mount"
+            "Mount",
+            "Me"
         ],
         "o": [
             "of",
-            "on"
+            "on",
+            "out"
         ],
         "s": [
             "spake",
-            "said"
+            "said",
+            "sixteenth",
+            "saying",
+            "stone"
         ],
         "e": [
-            "events"
+            "events",
+            "exodus"
         ],
         "r": [
             "receives",
@@ -123,13 +138,16 @@
         ],
         "c": [
             "chronological",
-            "commandment"
+            "commandment",
+            "came",
+            "children"
         ],
         "i": [
             "instruction",
             "is",
             "inscribe",
-            "in"
+            "in",
+            "it"
         ],
         "v": [
             "voice"
@@ -146,13 +164,20 @@
             "testimony",
             "their",
             "throughout",
-            "top"
+            "top",
+            "third",
+            "that",
+            "thee",
+            "two",
+            "thou",
+            "teach"
         ],
         "h": [
             "history",
             "he",
             "heavenly",
-            "him"
+            "him",
+            "have"
         ],
         "a": [
             "and",
@@ -172,7 +197,8 @@
         ],
         "f": [
             "future",
-            "for"
+            "for",
+            "first"
         ],
         "w": [
             "which",
@@ -181,7 +207,9 @@
             "world",
             "weeks",
             "when",
-            "went"
+            "went",
+            "will",
+            "written"
         ],
         "n": [],
         "d": [
@@ -189,7 +217,8 @@
             "down",
             "dictate",
             "division",
-            "days"
+            "days",
+            "day"
         ],
         "u": [
             "up",
@@ -198,7 +227,8 @@
         "p": [
             "past",
             "prayer",
-            "promise"
+            "promise",
+            "pass"
         ],
         "y": [
             "years",
@@ -210,10 +240,12 @@
             "And"
         ],
         "I": [
-            "Israel"
+            "Israel",
+            "I"
         ],
         "C": [
-            "Captivity"
+            "Captivity",
+            "Come"
         ],
         "J": [
             "Judah",
@@ -223,8 +255,13 @@
         "R": [
             "Return"
         ],
-        "g": [],
-        "m": [],
+        "g": [
+            "give"
+        ],
+        "m": [
+            "month",
+            "mayst"
+        ],
         "ʼ": [],
         "G": [
             "Godʼs",
@@ -246,13 +283,29 @@
             "Sinai"
         ],
         "H": [],
-        "E": [],
+        "E": [
+            "Egypt"
+        ],
         "O": [
             "OF"
         ],
         "K": [],
         "F": [],
-        "U": []
+        "U": [],
+        "¹": [],
+        "x": [],
+        "²": [
+            "²"
+        ],
+        "³": [
+            "³"
+        ],
+        "⁴": [
+            "⁴"
+        ],
+        "⁵": [
+            "⁵"
+        ]
     },
     "errors": [
         "'",
