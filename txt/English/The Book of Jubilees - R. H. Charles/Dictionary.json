@@ -36,6 +36,7 @@
         "g",
         "h",
         "i",
+        "j",
         "k",
         "l",
         "m",
@@ -68,12 +69,15 @@
         "(",
         ")",
         ") ",
+        ").",
         ",",
         ", ",
+        ", (",
         ", ‘",
         ".",
         ".’",
         ":",
+        ": ",
         ": ‘",
         "?",
         "?),",
@@ -114,6 +118,7 @@
             "9"
         ],
         "A": [
+            "Abraham",
             "And",
             "Apostasy"
         ],
@@ -128,8 +133,11 @@
         "E": [
             "Egypt"
         ],
-        "F": [],
+        "F": [
+            "For"
+        ],
         "G": [
+            "Gentiles",
             "Go",
             "God",
             "Godʼs"
@@ -140,10 +148,12 @@
         "I": [
             "I",
             "Incline",
+            "Isaac",
             "Israel"
         ],
         "J": [
             "JUBILEES",
+            "Jacob",
             "Jubilees",
             "Judah"
         ],
@@ -155,7 +165,9 @@
             "Me",
             "Moses",
             "Mosesʼ",
-            "Mount"
+            "Mount",
+            "My",
+            "Myself"
         ],
         "O": [
             "OF"
@@ -170,69 +182,105 @@
             "THE",
             "This"
         ],
-        "U": [],
+        "U": [
+            "Unto"
+        ],
         "a": [
             "a",
             "abode",
             "according",
+            "actions",
+            "affliction",
+            "after",
+            "against",
             "all",
+            "am",
             "an",
             "and",
             "angel",
             "appearance",
-            "as"
+            "as",
+            "aught"
         ],
         "b": [
+            "be",
+            "because",
+            "been",
+            "before",
             "between",
             "bidden",
-            "book"
+            "book",
+            "bring"
         ],
         "c": [
             "called",
             "came",
+            "cannot",
+            "captive",
             "children",
             "chronological",
             "cloud",
+            "come",
+            "command",
             "commandment",
+            "commandments",
             "covenant"
         ],
         "d": [
             "day",
             "days",
+            "declare",
+            "deliver",
             "dictate",
             "division",
+            "do",
             "down",
             "dwell"
         ],
         "e": [
             "earlier",
+            "eat",
+            "enemy",
             "establish",
+            "even",
             "events",
             "every",
             "evil",
             "exodus"
         ],
         "f": [
+            "fall",
+            "fathers",
+            "festivals",
             "fire",
             "first",
             "flaming",
+            "flowing",
             "for",
+            "forget",
             "forsaken",
             "forty",
+            "from",
             "future"
         ],
         "g": [
             "generations",
             "give",
-            "glory"
+            "glory",
+            "gods"
         ],
         "h": [
+            "hallowed",
+            "hands",
             "have",
             "he",
+            "heard",
             "heart",
             "heavenly",
             "him",
             "history",
+            "holy",
+            "honey",
             "how"
         ],
         "i": [
@@ -243,87 +291,133 @@
             "is",
             "it"
         ],
-        "k": [],
+        "j": [
+            "judgments"
+        ],
+        "k": [
+            "know"
+        ],
         "l": [
+            "land",
             "later",
             "law",
             "like"
         ],
         "m": [
+            "many",
             "may",
             "mayst",
             "midst",
+            "milk",
             "month",
-            "mount"
+            "more",
+            "mount",
+            "my"
         ],
         "n": [
+            "name",
+            "neck",
             "nights",
             "not"
         ],
         "o": [
             "of",
+            "offence",
             "on",
             "order",
+            "ordinances",
             "out",
             "overshadowed"
         ],
         "p": [
             "pass",
             "past",
+            "perish",
+            "place",
             "prayer",
-            "promise"
+            "promise",
+            "prove"
         ],
         "r": [
+            "rebellion",
             "rebuilding",
             "receive",
             "receives",
-            "redeem"
+            "recognise",
+            "redeem",
+            "righteous"
         ],
         "s": [
+            "sabbaths",
             "said",
+            "sanctuary",
+            "satisfied",
             "saying",
             "see",
+            "seed",
+            "serve",
+            "set",
             "seventh",
             "shall",
+            "shame",
+            "should",
             "six",
             "sixteenth",
+            "snare",
             "spake",
             "speak",
-            "stone"
+            "stiff",
+            "stone",
+            "strange",
+            "sware"
         ],
         "t": [
+            "tabernacle",
             "tables",
             "tablets",
+            "taken",
             "takes",
             "taught",
             "teach",
             "temple",
             "testimony",
+            "than",
             "that",
             "the",
             "thee",
             "their",
             "them",
+            "there",
             "therefrom",
+            "these",
             "they",
             "thine",
+            "things",
             "third",
             "this",
             "thou",
             "throughout",
+            "thus",
+            "thyself",
             "to",
             "top",
             "transgressing",
+            "tribulation",
+            "truly",
+            "turn",
             "two"
         ],
         "u": [
+            "uncleanness",
             "unto",
-            "up"
+            "up",
+            "upon"
         ],
         "v": [
             "voice"
         ],
         "w": [
+            "walk",
             "was",
             "weeks",
             "went",
@@ -331,7 +425,9 @@
             "which",
             "will",
             "with",
+            "witness",
             "word",
+            "words",
             "world",
             "write",
             "written",
@@ -340,7 +436,8 @@
         "x": [],
         "y": [
             "year",
-            "years"
+            "years",
+            "your"
         ],
         "²": [
             "²"
