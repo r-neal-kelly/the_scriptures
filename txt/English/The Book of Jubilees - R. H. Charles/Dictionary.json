@@ -41,7 +41,15 @@
         "B",
         "6",
         "7",
-        "T"
+        "T",
+        "L",
+        "S",
+        "H",
+        "E",
+        "O",
+        "K",
+        "F",
+        "U"
     ],
     "markers": [
         " ",
@@ -53,7 +61,12 @@
         ")",
         "?",
         " (",
-        "?),"
+        "?),",
+        "‘",
+        "’",
+        ") ",
+        ", ‘",
+        ".’"
     ],
     "words": {
         "0": [],
@@ -88,21 +101,29 @@
         ],
         "M": [
             "Moses",
-            "Mosesʼ"
+            "Mosesʼ",
+            "Mount"
         ],
         "o": [
             "of",
             "on"
         ],
-        "s": [],
-        "e": [],
+        "s": [
+            "spake",
+            "said"
+        ],
+        "e": [
+            "events"
+        ],
         "r": [
             "receives",
             "rebuilding",
-            "redeem"
+            "redeem",
+            "receive"
         ],
         "c": [
-            "chronological"
+            "chronological",
+            "commandment"
         ],
         "i": [
             "instruction",
@@ -110,7 +131,9 @@
             "inscribe",
             "in"
         ],
-        "v": [],
+        "v": [
+            "voice"
+        ],
         "t": [
             "the",
             "tables",
@@ -119,18 +142,26 @@
             "them",
             "takes",
             "tablets",
-            "therefrom"
+            "therefrom",
+            "testimony",
+            "their",
+            "throughout",
+            "top"
         ],
         "h": [
             "history",
             "he",
-            "heavenly"
+            "heavenly",
+            "him"
         ],
         "a": [
             "and",
             "a",
             "an",
-            "angel"
+            "angel",
+            "all",
+            "as",
+            "according"
         ],
         "b": [
             "book",
@@ -147,21 +178,32 @@
             "which",
             "with",
             "write",
-            "world"
+            "world",
+            "weeks",
+            "when",
+            "went"
         ],
         "n": [],
         "d": [
             "dwell",
             "down",
-            "dictate"
+            "dictate",
+            "division",
+            "days"
         ],
-        "u": [],
+        "u": [
+            "up",
+            "unto"
+        ],
         "p": [
             "past",
             "prayer",
             "promise"
         ],
-        "y": [],
+        "y": [
+            "years",
+            "year"
+        ],
         "k": [],
         "A": [
             "Apostasy",
@@ -175,7 +217,8 @@
         ],
         "J": [
             "Judah",
-            "Jubilees"
+            "Jubilees",
+            "JUBILEES"
         ],
         "R": [
             "Return"
@@ -184,14 +227,32 @@
         "m": [],
         "ʼ": [],
         "G": [
-            "Godʼs"
+            "Godʼs",
+            "God",
+            "Go"
         ],
         "B": [
-            "Book"
+            "Book",
+            "BOOK"
         ],
         "T": [
-            "This"
-        ]
+            "This",
+            "THE"
+        ],
+        "L": [
+            "Lord"
+        ],
+        "S": [
+            "Sinai"
+        ],
+        "H": [],
+        "E": [],
+        "O": [
+            "OF"
+        ],
+        "K": [],
+        "F": [],
+        "U": []
     },
     "errors": [
         "'",
