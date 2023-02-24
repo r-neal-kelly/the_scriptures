@@ -107,6 +107,16 @@ Latin.Sups_s  := { "a": "ᵃ" ; A
                  , "x": "ˣ" ; X
                  , "y": "ʸ" ; Y
                  , "z": "ᶻ" ; Z
+                 ,   0: "⁰" ; U+2070 SUPERSCRIPT ZERO
+                 ,   1: "¹" ; U+00B9 SUPERSCRIPT ONE
+                 ,   2: "²" ; U+00B2 SUPERSCRIPT TWO
+                 ,   3: "³" ; U+00B3 SUPERSCRIPT THREE
+                 ,   4: "⁴" ; U+2074 SUPERSCRIPT FOUR
+                 ,   5: "⁵" ; U+2075 SUPERSCRIPT FIVE
+                 ,   6: "⁶" ; U+2076 SUPERSCRIPT SIX
+                 ,   7: "⁷" ; U+2077 SUPERSCRIPT SEVEN
+                 ,   8: "⁸" ; U+2078 SUPERSCRIPT EIGHT
+                 ,   9: "⁹" ; U+2079 SUPERSCRIPT NINE
                  , "": "" }
 
 Latin.Sups_c  := { "a": "ᴬ" ; A
