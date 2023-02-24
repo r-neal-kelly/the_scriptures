@@ -773,6 +773,18 @@ class Dictionary {
                 current_start_index = idx + 5;
                 idx += 5;
             }
+            else if (/^｟in｠/.test(maybe_command)) {
+                parts.push({
+                    subtext: `｟in｠`,
+                    type: Type.COMMAND,
+                    has_italic: false,
+                    has_bold: false,
+                    has_underline: false,
+                    has_small_caps: false,
+                });
+                current_start_index = idx + 4;
+                idx += 4;
+            }
             else {
                 if (this.data.letters.includes(text[idx])) {
                     current_type = Type.LETTERS;
@@ -833,7 +845,11 @@ class Dictionary {
         let inner_html = ``;
         for (const part of parts) {
             if (part.type === Type.COMMAND) {
-                inner_html += `<span class="COMMAND">${Escape_Text(part.subtext)}</span>`;
+                let command_classes = ``;
+                if (part.subtext === `｟in｠`) {
+                    command_classes += ` INDENT`;
+                }
+                inner_html += `<span class="COMMAND${command_classes}">${Escape_Text(part.subtext)}</span>`;
             }
             else {
                 let command_classes = ``;
@@ -1593,6 +1609,10 @@ function Style() {
                 
                 .SMALL_CAPS {
                     font-variant: small-caps;
+                }
+
+                .INDENT {
+                    width: 6em;
                 }
 
                 .SEPARATE_POINT {
