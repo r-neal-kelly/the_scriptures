@@ -27,6 +27,8 @@
         "S",
         "T",
         "U",
+        "W",
+        "Z",
         "a",
         "b",
         "c",
@@ -77,6 +79,7 @@
         ", (",
         ", ‘",
         ".",
+        ". ",
         ".’",
         ":",
         ": ",
@@ -86,9 +89,11 @@
         "?",
         "?),",
         "–",
+        "—",
         "‘",
         "’",
         "†",
+        "† ",
         "†, "
     ],
     "words": {
@@ -131,16 +136,19 @@
         "B": [
             "BOOK",
             "Beliar",
-            "Book"
+            "Book",
+            "But"
         ],
         "C": [
             "Captivity",
             "Come"
         ],
         "E": [
-            "Egypt"
+            "Egypt",
+            "Egyptians"
         ],
         "F": [
+            "Father",
             "For"
         ],
         "G": [
@@ -161,10 +169,13 @@
         "J": [
             "JUBILEES",
             "Jacob",
+            "Jerusalem",
             "Jubilees",
             "Judah"
         ],
-        "K": [],
+        "K": [
+            "King"
+        ],
         "L": [
             "Let",
             "Lord"
@@ -196,6 +207,12 @@
         "U": [
             "Unto"
         ],
+        "W": [
+            "Write"
+        ],
+        "Z": [
+            "Zion"
+        ],
         "a": [
             "a",
             "abode",
@@ -210,31 +227,38 @@
             "all",
             "also",
             "am",
+            "among",
             "amongst",
             "an",
             "and",
             "angel",
+            "appear",
             "appearance",
+            "are",
             "as",
             "astray",
-            "aught"
+            "aught",
+            "away"
         ],
         "b": [
             "be",
             "because",
             "been",
             "before",
+            "beginning",
             "between",
             "bidden",
             "blessing",
             "book",
             "bring",
             "build",
+            "built",
             "but"
         ],
         "c": [
             "called",
             "came",
+            "camp",
             "cannot",
             "captive",
             "captivity",
@@ -242,13 +266,20 @@
             "change",
             "children",
             "chronological",
+            "circumcise",
+            "clean",
+            "cleanse",
+            "cleave",
             "cloud",
             "come",
             "command",
             "commandment",
             "commandments",
+            "confess",
+            "contrariness",
             "covenant",
             "create",
+            "creation",
             "curse"
         ],
         "d": [
@@ -256,11 +287,14 @@
             "days",
             "declare",
             "deliver",
+            "delivered",
             "demons",
+            "descend",
             "devouring",
             "dictate",
             "disclose",
             "division",
+            "divisions",
             "do",
             "down",
             "dwell"
@@ -268,12 +302,16 @@
         "e": [
             "each",
             "earlier",
+            "earth",
             "eat",
+            "elect",
             "enemies",
             "enemy",
             "ensnare",
+            "ensnared",
             "error",
             "establish",
+            "eternity",
             "even",
             "events",
             "every",
@@ -294,12 +332,14 @@
             "flaming",
             "flowing",
             "for",
+            "foreskin",
             "forget",
             "forsake",
             "forsaken",
             "forty",
             "found",
             "from",
+            "fulfil",
             "future"
         ],
         "g": [
@@ -310,20 +350,27 @@
             "go",
             "gods",
             "graven",
+            "great",
             "groves"
         ],
         "h": [
             "hallowed",
             "hand",
             "hands",
+            "has",
+            "hast",
             "have",
             "he",
             "head",
+            "healing",
             "hear",
             "heard",
             "heart",
             "hearts",
+            "heaven",
             "heavenly",
+            "heavens",
+            "henceforth",
             "hide",
             "high",
             "him",
@@ -337,6 +384,7 @@
             "image",
             "images",
             "in",
+            "individual",
             "inheritance",
             "inscribe",
             "instruction",
@@ -353,14 +401,19 @@
         ],
         "l": [
             "land",
+            "last",
             "later",
             "law",
             "lest",
             "let",
             "lifted",
-            "like"
+            "like",
+            "living",
+            "love",
+            "luminaries"
         ],
         "m": [
+            "made",
             "make",
             "many",
             "may",
@@ -373,6 +426,7 @@
             "moons",
             "more",
             "mount",
+            "mountain",
             "my"
         ],
         "n": [
@@ -381,9 +435,11 @@
             "new",
             "nights",
             "nor",
-            "not"
+            "not",
+            "number"
         ],
         "o": [
+            "obedient",
             "of",
             "offence",
             "on",
@@ -405,8 +461,11 @@
             "place",
             "places",
             "plant",
+            "power",
+            "powers",
             "prayed",
             "prayer",
+            "presence",
             "prey",
             "promise",
             "prove"
@@ -419,6 +478,7 @@
             "recognise",
             "redeem",
             "remove",
+            "renewed",
             "righteous",
             "righteousness",
             "rule"
@@ -442,16 +502,19 @@
             "shame",
             "should",
             "sin",
+            "sins",
             "six",
             "sixteenth",
             "slay",
             "snare",
             "so",
             "soul",
+            "souls",
             "spake",
             "speak",
             "spirit",
             "stiff",
+            "stiffneckedness",
             "stone",
             "strange",
             "strength",
@@ -485,11 +548,15 @@
             "this",
             "those",
             "thou",
+            "thoughts",
             "throughout",
             "thus",
             "thy",
             "thyself",
+            "till",
+            "time",
             "to",
+            "took",
             "top",
             "transgressing",
             "tribulation",
@@ -500,6 +567,7 @@
         ],
         "u": [
             "uncleanness",
+            "until",
             "unto",
             "up",
             "upon",
@@ -534,6 +602,7 @@
         ],
         "x": [],
         "y": [
+            "yea",
             "year",
             "years",
             "your"
