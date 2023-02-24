@@ -904,15 +904,25 @@ class Dictionary {
     }
     Treat_As_Points(text) {
         let inner_html = ``;
-        for (let idx = 0, end = text.length; idx < end; idx += 1) {
-            if (this.data.letters.includes(text[idx])) {
-                inner_html += `<span class="KNOWN_LETTER SEPARATE_POINT">${Escape_Text(text[idx])}</span>`;
-            }
-            else if (this.data.markers.includes(text[idx])) {
-                inner_html += `<span class="KNOWN_MARKER SEPARATE_POINT">${Escape_Text(text[idx])}</span>`;
+        for (let idx = 0, end = text.length; idx < end;) {
+            const maybe_command = text.slice(idx).match(/^(｟\/?(i|b|u|sc)｠|｟(in)｠)/);
+            if (maybe_command && maybe_command[0]) {
+                for (const end = idx + maybe_command[0].length; idx < end;) {
+                    inner_html += `<span class="COMMAND SEPARATE_POINT">${Escape_Text(text[idx])}</span>`;
+                    idx += 1;
+                }
             }
             else {
-                inner_html += `<span class="UNKNOWN_POINT SEPARATE_POINT">${Escape_Text(text[idx])}</span>`;
+                if (this.data.letters.includes(text[idx])) {
+                    inner_html += `<span class="KNOWN_LETTER SEPARATE_POINT">${Escape_Text(text[idx])}</span>`;
+                }
+                else if (this.data.markers.includes(text[idx])) {
+                    inner_html += `<span class="KNOWN_MARKER SEPARATE_POINT">${Escape_Text(text[idx])}</span>`;
+                }
+                else {
+                    inner_html += `<span class="UNKNOWN_POINT SEPARATE_POINT">${Escape_Text(text[idx])}</span>`;
+                }
+                idx += 1;
             }
         }
         return inner_html;
