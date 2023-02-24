@@ -22,23 +22,73 @@
         "y",
         "k",
         "1",
-        "4"
+        "4",
+        "A",
+        "I",
+        "5",
+        "9",
+        "C",
+        "J",
+        "0",
+        "3",
+        "R",
+        "g",
+        "m",
+        "8",
+        "2",
+        "ʼ",
+        "G",
+        "B",
+        "6",
+        "7",
+        "T"
     ],
     "markers": [
         " ",
         ".",
         ",",
-        "–"
+        "–",
+        ", ",
+        "(",
+        ")",
+        "?",
+        " (",
+        "?),"
     ],
     "words": {
+        "0": [],
         "1": [
-            "1"
+            "1",
+            "10",
+            "13",
+            "15",
+            "18",
+            "19"
         ],
+        "2": [
+            "21",
+            "22",
+            "28",
+            "26",
+            "27",
+            "29"
+        ],
+        "3": [],
         "4": [
             "4"
         ],
+        "5": [
+            "5"
+        ],
+        "6": [],
+        "7": [],
+        "8": [],
+        "9": [
+            "9"
+        ],
         "M": [
-            "Moses"
+            "Moses",
+            "Mosesʼ"
         ],
         "o": [
             "of",
@@ -47,9 +97,13 @@
         "s": [],
         "e": [],
         "r": [
-            "receives"
+            "receives",
+            "rebuilding",
+            "redeem"
         ],
-        "c": [],
+        "c": [
+            "chronological"
+        ],
         "i": [
             "instruction",
             "is",
@@ -60,36 +114,87 @@
         "t": [
             "the",
             "tables",
-            "to"
+            "to",
+            "temple",
+            "them",
+            "takes",
+            "tablets",
+            "therefrom"
         ],
         "h": [
             "history",
-            "he"
+            "he",
+            "heavenly"
         ],
         "a": [
             "and",
-            "a"
+            "a",
+            "an",
+            "angel"
         ],
         "b": [
-            "book"
+            "book",
+            "bidden"
         ],
         "l": [
             "law"
         ],
         "f": [
-            "future"
+            "future",
+            "for"
         ],
         "w": [
-            "which"
+            "which",
+            "with",
+            "write",
+            "world"
         ],
         "n": [],
-        "d": [],
+        "d": [
+            "dwell",
+            "down",
+            "dictate"
+        ],
         "u": [],
         "p": [
-            "past"
+            "past",
+            "prayer",
+            "promise"
         ],
         "y": [],
-        "k": []
+        "k": [],
+        "A": [
+            "Apostasy",
+            "And"
+        ],
+        "I": [
+            "Israel"
+        ],
+        "C": [
+            "Captivity"
+        ],
+        "J": [
+            "Judah",
+            "Jubilees"
+        ],
+        "R": [
+            "Return"
+        ],
+        "g": [],
+        "m": [],
+        "ʼ": [],
+        "G": [
+            "Godʼs"
+        ],
+        "B": [
+            "Book"
+        ],
+        "T": [
+            "This"
+        ]
     },
-    "errors": []
+    "errors": [
+        "'",
+        "\""
+    ]
 }

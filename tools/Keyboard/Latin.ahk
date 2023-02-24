@@ -39,12 +39,17 @@ global Latin := {}
 ; Symbols
 Latin.Symbols_s :=  { "p": "¶" ; Pilcrow Sign
                     , "s": "§" ; Section Sign
-                    , "-": "–" ; EN DASH U+2013
+                    , "-": "–" ; U+2013 EN DASH
+                    , "'": "ʼ" ; U+02BC MODIFIER LETTER APOSTROPHE
+                    , "[": "‘" ; U+2018 LEFT SINGLE QUOTATION MARK
+                    , "]": "’" ; U+2019 RIGHT SINGLE QUOTATION MARK
                     , "": "" }
 
-Latin.Symbols_c :=  { "_": "—" ; EM DASH U+2014
-                    , "(": "｟" ; FULLWIDTH LEFT WHITE PARENTHESIS U+FF5F
-                    , ")": "｠" ; FULLWIDTH RIGHT WHITE PARENTHESIS U+FF60
+Latin.Symbols_c :=  { "_": "—" ; U+2014 EM DASH
+                    , "{": "“" ; U+201C LEFT DOUBLE QUOTATION MARK
+                    , "}": "”" ; U+201D RIGHT DOUBLE QUOTATION MARK
+                    , "(": "｟" ; U+FF5F FULLWIDTH LEFT WHITE PARENTHESIS
+                    , ")": "｠" ; U+FF60 FULLWIDTH RIGHT WHITE PARENTHESIS
                     , "": "" }
 
 ; Ligatures and Digraphs
@@ -190,6 +195,7 @@ Latin.Combo_s := { "a": "̀" ; Grave Accent
                  , "x": "̋" ; Double Acute Accent
                  , ".": "̄" ; Macron
                  , ",": "̆" ; Breve
+                 , "'": "̕" ; COMBINING COMMA ABOVE RIGHT U+0315
                  , "": "" }
 
 Latin.Combo_c := { "d": "̌" ; Caron

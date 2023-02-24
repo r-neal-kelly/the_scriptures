@@ -462,7 +462,10 @@ class Line
                         const selected: Dictionary_Text_And_Class | null =
                             Dictionary.Selected_Text_And_Class();
                         if (selected) {
-                            if (selected.class === Dictionary_Class.UNKNOWN_MARKER) {
+                            if (selected.class === Dictionary_Class.UNKNOWN_POINT) {
+                                this.Editor().Dictionary().Add_Error(selected.text);
+                                this.Editor().Touch();
+                            } else if (selected.class === Dictionary_Class.UNKNOWN_MARKER) {
                                 this.Editor().Dictionary().Add_Error(selected.text);
                                 this.Editor().Touch();
                             } else if (selected.class === Dictionary_Class.KNOWN_MARKER) {
@@ -1158,7 +1161,11 @@ class Dictionary
                 }
 
                 if (part.type === Type.POINT) {
-                    inner_html += `<span class="UNKNOWN_POINT${command_classes}">${Escape_Text(part.subtext)}</span>`;
+                    if (this.data.errors.includes(part.subtext)) {
+                        inner_html += `<span class="KNOWN_ERROR${command_classes}">${Escape_Text(part.subtext)}</span>`;
+                    } else {
+                        inner_html += `<span class="UNKNOWN_POINT${command_classes}">${Escape_Text(part.subtext)}</span>`;
+                    }
                 } else if (part.type === Type.LETTERS) {
                     if (this.data.errors.includes(part.subtext)) {
                         inner_html += `<span class="KNOWN_ERROR${command_classes}">${Escape_Text(part.subtext)}</span>`;
