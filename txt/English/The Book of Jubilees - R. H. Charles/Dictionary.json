@@ -66,9 +66,11 @@
     "markers": [
         " ",
         " (",
+        " †",
         "(",
         ")",
         ") ",
+        "), ",
         ").",
         ",",
         ", ",
@@ -83,7 +85,9 @@
         "?),",
         "–",
         "‘",
-        "’"
+        "’",
+        "†",
+        "†, "
     ],
     "words": {
         "0": [],
@@ -188,18 +192,23 @@
         "a": [
             "a",
             "abode",
+            "abounding",
+            "abrogate",
             "according",
             "actions",
             "affliction",
             "after",
             "against",
             "all",
+            "also",
             "am",
+            "amongst",
             "an",
             "and",
             "angel",
             "appearance",
             "as",
+            "astray",
             "aught"
         ],
         "b": [
@@ -210,13 +219,16 @@
             "between",
             "bidden",
             "book",
-            "bring"
+            "bring",
+            "but"
         ],
         "c": [
             "called",
             "came",
             "cannot",
             "captive",
+            "captivity",
+            "change",
             "children",
             "chronological",
             "cloud",
@@ -231,24 +243,32 @@
             "days",
             "declare",
             "deliver",
+            "demons",
+            "devouring",
             "dictate",
+            "disclose",
             "division",
             "do",
             "down",
             "dwell"
         ],
         "e": [
+            "each",
             "earlier",
             "eat",
             "enemy",
+            "error",
             "establish",
             "even",
             "events",
             "every",
+            "everything",
             "evil",
-            "exodus"
+            "exodus",
+            "eyes"
         ],
         "f": [
+            "face",
             "fall",
             "fathers",
             "festivals",
@@ -260,30 +280,43 @@
             "forget",
             "forsaken",
             "forty",
+            "found",
             "from",
             "future"
         ],
         "g": [
+            "gather",
             "generations",
             "give",
             "glory",
-            "gods"
+            "go",
+            "gods",
+            "graven",
+            "groves"
         ],
         "h": [
             "hallowed",
+            "hand",
             "hands",
             "have",
             "he",
+            "hear",
             "heard",
             "heart",
+            "hearts",
             "heavenly",
+            "hide",
+            "high",
             "him",
+            "his",
             "history",
             "holy",
             "honey",
             "how"
         ],
         "i": [
+            "image",
+            "images",
             "in",
             "inscribe",
             "instruction",
@@ -292,6 +325,7 @@
             "it"
         ],
         "j": [
+            "jubilees",
             "judgments"
         ],
         "k": [
@@ -304,12 +338,15 @@
             "like"
         ],
         "m": [
+            "make",
             "many",
             "may",
             "mayst",
+            "me",
             "midst",
             "milk",
             "month",
+            "moons",
             "more",
             "mount",
             "my"
@@ -317,6 +354,7 @@
         "n": [
             "name",
             "neck",
+            "new",
             "nights",
             "not"
         ],
@@ -327,14 +365,20 @@
             "order",
             "ordinances",
             "out",
-            "overshadowed"
+            "overshadowed",
+            "own"
         ],
         "p": [
             "pass",
             "past",
+            "peace",
             "perish",
+            "persecute",
             "place",
+            "places",
+            "plant",
             "prayer",
+            "prey",
             "promise",
             "prove"
         ],
@@ -345,16 +389,22 @@
             "receives",
             "recognise",
             "redeem",
-            "righteous"
+            "remove",
+            "righteous",
+            "righteousness"
         ],
         "s": [
             "sabbaths",
+            "sacrifice",
             "said",
             "sanctuary",
             "satisfied",
             "saying",
+            "scatter",
             "see",
             "seed",
+            "seek",
+            "send",
             "serve",
             "set",
             "seventh",
@@ -363,12 +413,16 @@
             "should",
             "six",
             "sixteenth",
+            "slay",
             "snare",
+            "so",
+            "soul",
             "spake",
             "speak",
             "stiff",
             "stone",
             "strange",
+            "strength",
             "sware"
         ],
         "t": [
@@ -387,6 +441,7 @@
             "thee",
             "their",
             "them",
+            "themselves",
             "there",
             "therefrom",
             "these",
@@ -395,6 +450,7 @@
             "things",
             "third",
             "this",
+            "those",
             "thou",
             "throughout",
             "thus",
@@ -411,7 +467,8 @@
             "uncleanness",
             "unto",
             "up",
-            "upon"
+            "upon",
+            "uprightness"
         ],
         "v": [
             "voice"
@@ -423,12 +480,17 @@
             "went",
             "when",
             "which",
+            "who",
             "will",
             "with",
             "witness",
+            "witnesses",
             "word",
             "words",
+            "work",
+            "works",
             "world",
+            "worship",
             "write",
             "written",
             "wrought"
@@ -440,13 +502,32 @@
             "your"
         ],
         "²": [
-            "²"
+            "²",
+            "²²",
+            "²³",
+            "²¹",
+            "²⁰",
+            "²⁴",
+            "²⁵",
+            "²⁶",
+            "²⁷",
+            "²⁸",
+            "²⁹"
         ],
         "³": [
             "³"
         ],
         "¹": [
-            "¹⁰"
+            "¹²",
+            "¹³",
+            "¹¹",
+            "¹⁰",
+            "¹⁴",
+            "¹⁵",
+            "¹⁶",
+            "¹⁷",
+            "¹⁸",
+            "¹⁹"
         ],
         "ʼ": [],
         "⁰": [],

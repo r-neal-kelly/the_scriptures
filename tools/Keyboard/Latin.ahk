@@ -43,6 +43,7 @@ Latin.Symbols_s :=  { "p": "¶" ; Pilcrow Sign
                     , "'": "ʼ" ; U+02BC MODIFIER LETTER APOSTROPHE
                     , "[": "‘" ; U+2018 LEFT SINGLE QUOTATION MARK
                     , "]": "’" ; U+2019 RIGHT SINGLE QUOTATION MARK
+                    , "t": "†" ; U+2020 DAGGER
                     , "": "" }
 
 Latin.Symbols_c :=  { "_": "—" ; U+2014 EM DASH
