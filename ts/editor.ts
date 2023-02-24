@@ -1232,6 +1232,16 @@ class Dictionary
     JSON():
         string
     {
+        this.data.letters.sort();
+        this.data.markers.sort();
+        this.data.errors.sort();
+
+        const sorted_words: { [index: Letter]: Array<Word> } = {};
+        for (const letter of Object.keys(this.data.words).sort()) {
+            sorted_words[letter] = this.data.words[letter].sort();
+        }
+        this.data.words = sorted_words;
+
         return JSON.stringify(this.data, null, 4);
     }
 }

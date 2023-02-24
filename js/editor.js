@@ -918,6 +918,14 @@ class Dictionary {
         return inner_html;
     }
     JSON() {
+        this.data.letters.sort();
+        this.data.markers.sort();
+        this.data.errors.sort();
+        const sorted_words = {};
+        for (const letter of Object.keys(this.data.words).sort()) {
+            sorted_words[letter] = this.data.words[letter].sort();
+        }
+        this.data.words = sorted_words;
         return JSON.stringify(this.data, null, 4);
     }
 }

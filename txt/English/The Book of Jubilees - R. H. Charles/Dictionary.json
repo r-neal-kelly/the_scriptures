@@ -1,80 +1,85 @@
 {
     "letters": [
-        "M",
-        "o",
-        "s",
-        "e",
-        "r",
-        "c",
-        "i",
-        "v",
-        "t",
-        "h",
-        "a",
-        "b",
-        "l",
-        "f",
-        "w",
-        "n",
-        "d",
-        "u",
-        "p",
-        "y",
-        "k",
-        "1",
-        "4",
-        "A",
-        "I",
-        "5",
-        "9",
-        "C",
-        "J",
         "0",
-        "3",
-        "R",
-        "g",
-        "m",
-        "8",
+        "1",
         "2",
-        "ʼ",
-        "G",
-        "B",
+        "3",
+        "4",
+        "5",
         "6",
         "7",
-        "T",
-        "L",
-        "S",
-        "H",
+        "8",
+        "9",
+        "A",
+        "B",
+        "C",
         "E",
-        "O",
-        "K",
         "F",
+        "G",
+        "H",
+        "I",
+        "J",
+        "K",
+        "L",
+        "M",
+        "O",
+        "R",
+        "S",
+        "T",
         "U",
-        "¹",
+        "a",
+        "b",
+        "c",
+        "d",
+        "e",
+        "f",
+        "g",
+        "h",
+        "i",
+        "k",
+        "l",
+        "m",
+        "n",
+        "o",
+        "p",
+        "r",
+        "s",
+        "t",
+        "u",
+        "v",
+        "w",
         "x",
+        "y",
         "²",
         "³",
+        "¹",
+        "ʼ",
+        "⁰",
         "⁴",
-        "⁵"
+        "⁵",
+        "⁶",
+        "⁷",
+        "⁸",
+        "⁹"
     ],
     "markers": [
         " ",
-        ".",
-        ",",
-        "–",
-        ", ",
+        " (",
         "(",
         ")",
-        "?",
-        " (",
-        "?),",
-        "‘",
-        "’",
         ") ",
+        ",",
+        ", ",
         ", ‘",
+        ".",
         ".’",
         ":",
-        ": ‘"
+        ": ‘",
+        "?",
+        "?),",
+        "–",
+        "‘",
+        "’"
     ],
     "words": {
         "0": [],
@@ -90,9 +95,9 @@
         "2": [
             "21",
             "22",
-            "28",
             "26",
             "27",
+            "28",
             "29"
         ],
         "3": [],
@@ -108,207 +113,267 @@
         "9": [
             "9"
         ],
-        "M": [
-            "Moses",
-            "Mosesʼ",
-            "Mount",
-            "Me"
-        ],
-        "o": [
-            "of",
-            "on",
-            "out"
-        ],
-        "s": [
-            "spake",
-            "said",
-            "sixteenth",
-            "saying",
-            "stone"
-        ],
-        "e": [
-            "events",
-            "exodus"
-        ],
-        "r": [
-            "receives",
-            "rebuilding",
-            "redeem",
-            "receive"
-        ],
-        "c": [
-            "chronological",
-            "commandment",
-            "came",
-            "children"
-        ],
-        "i": [
-            "instruction",
-            "is",
-            "inscribe",
-            "in",
-            "it"
-        ],
-        "v": [
-            "voice"
-        ],
-        "t": [
-            "the",
-            "tables",
-            "to",
-            "temple",
-            "them",
-            "takes",
-            "tablets",
-            "therefrom",
-            "testimony",
-            "their",
-            "throughout",
-            "top",
-            "third",
-            "that",
-            "thee",
-            "two",
-            "thou",
-            "teach"
-        ],
-        "h": [
-            "history",
-            "he",
-            "heavenly",
-            "him",
-            "have"
-        ],
-        "a": [
-            "and",
-            "a",
-            "an",
-            "angel",
-            "all",
-            "as",
-            "according"
-        ],
-        "b": [
-            "book",
-            "bidden"
-        ],
-        "l": [
-            "law"
-        ],
-        "f": [
-            "future",
-            "for",
-            "first"
-        ],
-        "w": [
-            "which",
-            "with",
-            "write",
-            "world",
-            "weeks",
-            "when",
-            "went",
-            "will",
-            "written"
-        ],
-        "n": [],
-        "d": [
-            "dwell",
-            "down",
-            "dictate",
-            "division",
-            "days",
-            "day"
-        ],
-        "u": [
-            "up",
-            "unto"
-        ],
-        "p": [
-            "past",
-            "prayer",
-            "promise",
-            "pass"
-        ],
-        "y": [
-            "years",
-            "year"
-        ],
-        "k": [],
         "A": [
-            "Apostasy",
-            "And"
+            "And",
+            "Apostasy"
         ],
-        "I": [
-            "Israel",
-            "I"
+        "B": [
+            "BOOK",
+            "Book"
         ],
         "C": [
             "Captivity",
             "Come"
         ],
-        "J": [
-            "Judah",
-            "Jubilees",
-            "JUBILEES"
+        "E": [
+            "Egypt"
         ],
-        "R": [
-            "Return"
-        ],
-        "g": [
-            "give"
-        ],
-        "m": [
-            "month",
-            "mayst"
-        ],
-        "ʼ": [],
+        "F": [],
         "G": [
-            "Godʼs",
+            "Go",
             "God",
-            "Go"
+            "Godʼs"
         ],
-        "B": [
-            "Book",
-            "BOOK"
+        "H": [
+            "He"
         ],
-        "T": [
-            "This",
-            "THE"
+        "I": [
+            "I",
+            "Incline",
+            "Israel"
         ],
+        "J": [
+            "JUBILEES",
+            "Jubilees",
+            "Judah"
+        ],
+        "K": [],
         "L": [
             "Lord"
         ],
-        "S": [
-            "Sinai"
-        ],
-        "H": [],
-        "E": [
-            "Egypt"
+        "M": [
+            "Me",
+            "Moses",
+            "Mosesʼ",
+            "Mount"
         ],
         "O": [
             "OF"
         ],
-        "K": [],
-        "F": [],
+        "R": [
+            "Return"
+        ],
+        "S": [
+            "Sinai"
+        ],
+        "T": [
+            "THE",
+            "This"
+        ],
         "U": [],
-        "¹": [],
+        "a": [
+            "a",
+            "abode",
+            "according",
+            "all",
+            "an",
+            "and",
+            "angel",
+            "appearance",
+            "as"
+        ],
+        "b": [
+            "between",
+            "bidden",
+            "book"
+        ],
+        "c": [
+            "called",
+            "came",
+            "children",
+            "chronological",
+            "cloud",
+            "commandment",
+            "covenant"
+        ],
+        "d": [
+            "day",
+            "days",
+            "dictate",
+            "division",
+            "down",
+            "dwell"
+        ],
+        "e": [
+            "earlier",
+            "establish",
+            "events",
+            "every",
+            "evil",
+            "exodus"
+        ],
+        "f": [
+            "fire",
+            "first",
+            "flaming",
+            "for",
+            "forsaken",
+            "forty",
+            "future"
+        ],
+        "g": [
+            "generations",
+            "give",
+            "glory"
+        ],
+        "h": [
+            "have",
+            "he",
+            "heart",
+            "heavenly",
+            "him",
+            "history",
+            "how"
+        ],
+        "i": [
+            "in",
+            "inscribe",
+            "instruction",
+            "into",
+            "is",
+            "it"
+        ],
+        "k": [],
+        "l": [
+            "later",
+            "law",
+            "like"
+        ],
+        "m": [
+            "may",
+            "mayst",
+            "midst",
+            "month",
+            "mount"
+        ],
+        "n": [
+            "nights",
+            "not"
+        ],
+        "o": [
+            "of",
+            "on",
+            "order",
+            "out",
+            "overshadowed"
+        ],
+        "p": [
+            "pass",
+            "past",
+            "prayer",
+            "promise"
+        ],
+        "r": [
+            "rebuilding",
+            "receive",
+            "receives",
+            "redeem"
+        ],
+        "s": [
+            "said",
+            "saying",
+            "see",
+            "seventh",
+            "shall",
+            "six",
+            "sixteenth",
+            "spake",
+            "speak",
+            "stone"
+        ],
+        "t": [
+            "tables",
+            "tablets",
+            "takes",
+            "taught",
+            "teach",
+            "temple",
+            "testimony",
+            "that",
+            "the",
+            "thee",
+            "their",
+            "them",
+            "therefrom",
+            "they",
+            "thine",
+            "third",
+            "this",
+            "thou",
+            "throughout",
+            "to",
+            "top",
+            "transgressing",
+            "two"
+        ],
+        "u": [
+            "unto",
+            "up"
+        ],
+        "v": [
+            "voice"
+        ],
+        "w": [
+            "was",
+            "weeks",
+            "went",
+            "when",
+            "which",
+            "will",
+            "with",
+            "word",
+            "world",
+            "write",
+            "written",
+            "wrought"
+        ],
         "x": [],
+        "y": [
+            "year",
+            "years"
+        ],
         "²": [
             "²"
         ],
         "³": [
             "³"
         ],
+        "¹": [
+            "¹⁰"
+        ],
+        "ʼ": [],
+        "⁰": [],
         "⁴": [
             "⁴"
         ],
         "⁵": [
             "⁵"
+        ],
+        "⁶": [
+            "⁶"
+        ],
+        "⁷": [
+            "⁷"
+        ],
+        "⁸": [
+            "⁸"
+        ],
+        "⁹": [
+            "⁹"
         ]
     },
     "errors": [
-        "'",
-        "\""
+        "\"",
+        "'"
     ]
 }
