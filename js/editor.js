@@ -242,32 +242,71 @@ class Line {
             }
             else if (event.key === `ArrowUp`) {
                 event.preventDefault();
-                const selection = document.getSelection();
-                if (selection) {
-                    const line_index = this.Index();
-                    if (line_index > 0) {
-                        const text_offset = Text_Offset(this.element);
-                        const above_line = this.Editor().Line(line_index - 1);
-                        const above_line_text = above_line.Text();
-                        Set_Text_Offset(above_line.Element(), above_line_text.length < text_offset ?
-                            above_line_text.length :
-                            text_offset);
+                if (!this.Editor().Is_Meta_Key_Active()) {
+                    const selection = document.getSelection();
+                    if (selection) {
+                        const line_index = this.Index();
+                        if (line_index > 0) {
+                            const text_offset = Text_Offset(this.element);
+                            const above_line = this.Editor().Line(line_index - 1);
+                            const above_line_text = above_line.Text();
+                            Set_Text_Offset(above_line.Element(), above_line_text.length < text_offset ?
+                                above_line_text.length :
+                                text_offset);
+                        }
                     }
                 }
             }
             else if (event.key === `ArrowDown`) {
                 event.preventDefault();
+                if (!this.Editor().Is_Meta_Key_Active()) {
+                    const selection = document.getSelection();
+                    if (selection) {
+                        const line_index = this.Index();
+                        const line_count = this.Editor().Line_Count();
+                        if (line_index < line_count - 1) {
+                            const text_offset = Text_Offset(this.element);
+                            const below_line = this.Editor().Line(line_index + 1);
+                            const below_line_text = below_line.Text();
+                            Set_Text_Offset(below_line.Element(), below_line_text.length < text_offset ?
+                                below_line_text.length :
+                                text_offset);
+                        }
+                    }
+                }
+            }
+            else if (event.key === `ArrowLeft`) {
                 const selection = document.getSelection();
-                if (selection) {
-                    const line_index = this.Index();
-                    const line_count = this.Editor().Line_Count();
-                    if (line_index < line_count - 1) {
-                        const text_offset = Text_Offset(this.element);
-                        const below_line = this.Editor().Line(line_index + 1);
-                        const below_line_text = below_line.Text();
-                        Set_Text_Offset(below_line.Element(), below_line_text.length < text_offset ?
-                            below_line_text.length :
-                            text_offset);
+                if (selection &&
+                    !selection.isCollapsed &&
+                    selection.anchorNode &&
+                    selection.focusNode &&
+                    selection.anchorNode === selection.focusNode) {
+                    event.preventDefault();
+                    const parent = this.Element();
+                    const child_index = Array.from(parent.children)
+                        .indexOf(selection.anchorNode);
+                    if (child_index > 0) {
+                        selection.getRangeAt(0).setStart(parent.children[child_index - 1], 0);
+                        selection.getRangeAt(0).setEnd(parent.children[child_index - 1], 1);
+                    }
+                }
+            }
+            else if (event.key === `ArrowRight`) {
+                const selection = document.getSelection();
+                if (selection &&
+                    !selection.isCollapsed &&
+                    selection.anchorNode &&
+                    selection.focusNode &&
+                    selection.anchorNode === selection.focusNode) {
+                    event.preventDefault();
+                    const parent = this.Element();
+                    const child_index = Array.from(parent.children)
+                        .indexOf(selection.anchorNode);
+                    if (child_index >= 0 &&
+                        child_index < parent.children.length - 1) {
+                        selection.getRangeAt(0).setStart(parent.children[child_index + 1], 0);
+                        selection.getRangeAt(0).setEnd(parent.children[child_index + 1], 1);
                     }
                 }
             }
