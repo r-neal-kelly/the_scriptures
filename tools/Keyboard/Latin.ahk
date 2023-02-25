@@ -53,6 +53,8 @@ Latin.Symbols_c :=  { "+": "—" ; U+2014 EM DASH
                     , "}": "”" ; U+201D RIGHT DOUBLE QUOTATION MARK
                     , "(": "｟" ; U+FF5F FULLWIDTH LEFT WHITE PARENTHESIS
                     , ")": "｠" ; U+FF60 FULLWIDTH RIGHT WHITE PARENTHESIS
+                    , "<": "〈" ; U+2329 LEFT-POINTING ANGLE BRACKET
+                    , ">": "〉" ; U+232A RIGHT-POINTING ANGLE BRACKET
                     , "": "" }
 
 ; Ligatures and Digraphs
