@@ -39,14 +39,16 @@ global Latin := {}
 ; Symbols
 Latin.Symbols_s :=  { "p": "¶" ; Pilcrow Sign
                     , "s": "§" ; Section Sign
-                    , "-": "–" ; U+2013 EN DASH
+                    , "-": "‑" ; U+2011 NON-BREAKING HYPHEN
+                    , "=": "–" ; U+2013 EN DASH
                     , "'": "ʼ" ; U+02BC MODIFIER LETTER APOSTROPHE
                     , "[": "‘" ; U+2018 LEFT SINGLE QUOTATION MARK
                     , "]": "’" ; U+2019 RIGHT SINGLE QUOTATION MARK
                     , "t": "†" ; U+2020 DAGGER
+                    , ".": "⸼" ; U+2E3C STENOGRAPHIC FULL STOP
                     , "": "" }
 
-Latin.Symbols_c :=  { "_": "—" ; U+2014 EM DASH
+Latin.Symbols_c :=  { "+": "—" ; U+2014 EM DASH
                     , "{": "“" ; U+201C LEFT DOUBLE QUOTATION MARK
                     , "}": "”" ; U+201D RIGHT DOUBLE QUOTATION MARK
                     , "(": "｟" ; U+FF5F FULLWIDTH LEFT WHITE PARENTHESIS
