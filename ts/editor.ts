@@ -2440,7 +2440,7 @@ function Style():
 
                     background-color: black;
 
-                    font-family: sans-serif;
+                    font-family: Segoe UI, sans-serif;
                 }
 
                 body {
