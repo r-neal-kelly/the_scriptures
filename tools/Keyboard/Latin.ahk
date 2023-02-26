@@ -72,7 +72,7 @@ Latin.Ligs_s  := { "aa": "ꜳ" ; Aa
                  , "ue": "ᵫ" ; Ue
                  , "uo": "ꭣ" ; Uo
                  , "vy": "ꝡ" ; Vy
-                 , "": "̂" }
+                 , "": "" }
 
 Latin.Ligs_c  := { "aa": "Ꜳ" ; Aa
                  , "ae": "Æ" ; Ae
@@ -85,7 +85,7 @@ Latin.Ligs_c  := { "aa": "Ꜳ" ; Aa
                  , "ou": "Ȣ" ; Ou
                  , "sz": "ẞ" ; ſz (Sharp S)
                  , "vy": "Ꝡ" ; Vy
-                 , "": "̂" }
+                 , "": "" }
 
 ; Superscripts and Subscripts
 Latin.Sups_s  := { "a": "ᵃ" ; A

@@ -123,6 +123,7 @@
             "1",
             "10",
             "13",
+            "14",
             "15",
             "16",
             "17",
@@ -131,8 +132,10 @@
             "1¹"
         ],
         "2": [
+            "2",
             "21",
             "22",
+            "25",
             "26",
             "27",
             "28",
@@ -141,7 +144,9 @@
         ],
         "3": [
             "3",
-            "32"
+            "30",
+            "32",
+            "3¹"
         ],
         "4": [
             "4"
@@ -182,7 +187,8 @@
             "Eden",
             "Egypt",
             "Egyptians",
-            "Eve"
+            "Eve",
+            "Êldâ"
         ],
         "F": [
             "Father",
@@ -206,7 +212,8 @@
             "Incline",
             "Institution",
             "Isaac",
-            "Israel"
+            "Israel",
+            "It"
         ],
         "J": [
             "JUBILEES",
@@ -219,7 +226,9 @@
             "King"
         ],
         "L": [
+            "Law",
             "Let",
+            "Levitical",
             "Lord"
         ],
         "M": [
@@ -234,7 +243,9 @@
             "O",
             "OF"
         ],
-        "P": [],
+        "P": [
+            "Paradise"
+        ],
         "R": [
             "Return"
         ],
@@ -328,6 +339,7 @@
             "born",
             "both",
             "bring",
+            "brought",
             "build",
             "built",
             "burden",
@@ -366,6 +378,7 @@
             "confess",
             "contrariness",
             "covenant",
+            "covering",
             "create",
             "created",
             "creation",
@@ -378,6 +391,7 @@
             "day",
             "days",
             "declare",
+            "deep",
             "defile",
             "defiles",
             "deliver",
@@ -415,6 +429,8 @@
             "eat",
             "eaten",
             "elect",
+            "enacted",
+            "enactment",
             "enemies",
             "enemy",
             "ensnare",
@@ -431,6 +447,7 @@
             "everything",
             "evil",
             "exodus",
+            "expulsion",
             "eyes"
         ],
         "f": [
@@ -440,6 +457,7 @@
             "fathers",
             "feasts",
             "fell",
+            "female",
             "festivals",
             "fifth",
             "finished",
@@ -447,6 +465,7 @@
             "firmament",
             "first",
             "fish",
+            "five",
             "flaming",
             "flesh",
             "flies",
@@ -480,6 +499,7 @@
             "glory",
             "go",
             "gods",
+            "good",
             "granted",
             "graven",
             "great",
@@ -509,6 +529,7 @@
             "heaven",
             "heavenly",
             "heavens",
+            "helpmeet",
             "henceforth",
             "hide",
             "high",
@@ -525,6 +546,7 @@
             "how"
         ],
         "i": [
+            "iii⸼",
             "ii⸼",
             "image",
             "images",
@@ -562,12 +584,14 @@
             "lauded",
             "law",
             "lawful",
+            "laws",
             "lest",
             "let",
             "lifted",
             "light",
             "lightning",
             "like",
+            "live",
             "living",
             "love",
             "luminaries"
@@ -575,6 +599,7 @@
         "m": [
             "made",
             "make",
+            "male",
             "man",
             "mankind",
             "many",
@@ -598,12 +623,14 @@
         ],
         "n": [
             "name",
+            "named",
             "names",
             "nations",
             "neck",
             "new",
             "night",
             "nights",
+            "no",
             "nor",
             "not",
             "number"
@@ -619,11 +646,14 @@
             "on",
             "one",
             "ones",
+            "oneʼs",
             "only",
             "or",
             "order",
             "ordinances",
+            "origin",
             "other",
+            "our",
             "out",
             "outside",
             "over",
@@ -659,7 +689,8 @@
             "promise",
             "prosper",
             "prosperity",
-            "prove"
+            "prove",
+            "purification"
         ],
         "r": [
             "rebellion",
@@ -670,7 +701,10 @@
             "redeem",
             "remove",
             "renewed",
+            "respective",
             "retired",
+            "rib",
+            "ribs",
             "righteous",
             "righteousness",
             "rivers",
@@ -719,6 +753,8 @@
             "sixteenth",
             "sixth",
             "slay",
+            "sleep",
+            "slept",
             "snare",
             "snow",
             "so",
@@ -733,6 +769,7 @@
             "spring",
             "sprouting",
             "stars",
+            "stead",
             "stiff",
             "stiffneckedness",
             "stone",
@@ -798,7 +835,8 @@
             "truth",
             "turn",
             "twenty",
-            "two"
+            "two",
+            "types"
         ],
         "u": [
             "uncleanness",
@@ -822,6 +860,7 @@
             "water",
             "waters",
             "we",
+            "week",
             "weeks",
             "went",
             "were",
