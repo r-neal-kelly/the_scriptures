@@ -706,6 +706,7 @@ class Dictionary {
         let has_bold = false;
         let has_underline = false;
         let has_small_caps = false;
+        let has_error = false;
         for (let idx = 0, end = text.length; idx < end;) {
             const maybe_command = text.slice(idx);
             if (/^｟i｠/.test(maybe_command)) {
@@ -717,6 +718,7 @@ class Dictionary {
                     has_bold: false,
                     has_underline: false,
                     has_small_caps: false,
+                    has_error: false,
                 });
                 current_start_index = idx + 3;
                 idx += 3;
@@ -730,6 +732,7 @@ class Dictionary {
                     has_bold: false,
                     has_underline: false,
                     has_small_caps: false,
+                    has_error: false,
                 });
                 current_start_index = idx + 4;
                 idx += 4;
@@ -743,6 +746,7 @@ class Dictionary {
                     has_bold: false,
                     has_underline: false,
                     has_small_caps: false,
+                    has_error: false,
                 });
                 current_start_index = idx + 3;
                 idx += 3;
@@ -756,6 +760,7 @@ class Dictionary {
                     has_bold: false,
                     has_underline: false,
                     has_small_caps: false,
+                    has_error: false,
                 });
                 current_start_index = idx + 4;
                 idx += 4;
@@ -769,6 +774,7 @@ class Dictionary {
                     has_bold: false,
                     has_underline: false,
                     has_small_caps: false,
+                    has_error: false,
                 });
                 current_start_index = idx + 3;
                 idx += 3;
@@ -782,6 +788,7 @@ class Dictionary {
                     has_bold: false,
                     has_underline: false,
                     has_small_caps: false,
+                    has_error: false,
                 });
                 current_start_index = idx + 4;
                 idx += 4;
@@ -795,6 +802,7 @@ class Dictionary {
                     has_bold: false,
                     has_underline: false,
                     has_small_caps: false,
+                    has_error: false,
                 });
                 current_start_index = idx + 4;
                 idx += 4;
@@ -808,9 +816,38 @@ class Dictionary {
                     has_bold: false,
                     has_underline: false,
                     has_small_caps: false,
+                    has_error: false,
                 });
                 current_start_index = idx + 5;
                 idx += 5;
+            }
+            else if (/^｟err｠/.test(maybe_command)) {
+                has_error = true;
+                parts.push({
+                    subtext: `｟err｠`,
+                    type: Type.COMMAND,
+                    has_italic: false,
+                    has_bold: false,
+                    has_underline: false,
+                    has_small_caps: false,
+                    has_error: false,
+                });
+                current_start_index = idx + 5;
+                idx += 5;
+            }
+            else if (/^｟\/err｠/.test(maybe_command)) {
+                has_error = false;
+                parts.push({
+                    subtext: `｟/err｠`,
+                    type: Type.COMMAND,
+                    has_italic: false,
+                    has_bold: false,
+                    has_underline: false,
+                    has_small_caps: false,
+                    has_error: false,
+                });
+                current_start_index = idx + 6;
+                idx += 6;
             }
             else if (/^｟in｠/.test(maybe_command)) {
                 parts.push({
@@ -820,6 +857,7 @@ class Dictionary {
                     has_bold: false,
                     has_underline: false,
                     has_small_caps: false,
+                    has_error: false,
                 });
                 current_start_index = idx + 4;
                 idx += 4;
@@ -842,6 +880,7 @@ class Dictionary {
                         has_bold,
                         has_underline,
                         has_small_caps,
+                        has_error,
                     });
                     current_start_index = idx + 1;
                 }
@@ -856,6 +895,7 @@ class Dictionary {
                             has_bold,
                             has_underline,
                             has_small_caps,
+                            has_error,
                         });
                         current_start_index = idx + 1;
                     }
@@ -871,6 +911,7 @@ class Dictionary {
                             has_bold,
                             has_underline,
                             has_small_caps,
+                            has_error,
                         });
                         current_start_index = idx + 1;
                     }
@@ -903,6 +944,9 @@ class Dictionary {
                 }
                 if (part.has_small_caps) {
                     command_classes += ` SMALL_CAPS`;
+                }
+                if (part.has_error) {
+                    command_classes += ` ERROR`;
                 }
                 if (part.type === Type.POINT) {
                     if (this.data.errors.includes(part.subtext)) {
@@ -944,7 +988,7 @@ class Dictionary {
     Treat_As_Points(text) {
         let inner_html = ``;
         for (let idx = 0, end = text.length; idx < end;) {
-            const maybe_command = text.slice(idx).match(/^(｟\/?(i|b|u|sc)｠|｟(in)｠)/);
+            const maybe_command = text.slice(idx).match(/^(｟\/?(i|b|u|sc|err)｠|｟(in)｠)/);
             if (maybe_command && maybe_command[0]) {
                 for (const end = idx + maybe_command[0].length; idx < end;) {
                     inner_html += `<span class="COMMAND SEPARATE_POINT">${Escape_Text(text[idx])}</span>`;
@@ -1666,6 +1710,10 @@ function Style() {
                 
                 .SMALL_CAPS {
                     font-variant: small-caps;
+                }
+
+                .ERROR {
+                    color: #ffcbcb;
                 }
 
                 .INDENT {
