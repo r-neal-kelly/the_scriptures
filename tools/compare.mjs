@@ -52,24 +52,47 @@ Parameter #1 and #2:
             const /* Array<string_t> */ file_lines_a = file_data_a.split(/\r?\n/);
             const /* Array<string_t> */ file_lines_b = file_data_b.split(/\r?\n/);
 
-            let /* Array<string_t> */ lines_a;
-            let /* Array<string_t> */ lines_b;
+            let /* Array<string_t> */ rows_a;
+            let /* Array<string_t> */ rows_b;
             if (file_lines_a.length > file_lines_b.length) {
-                lines_a = file_lines_a;
-                lines_b = file_lines_b;
+                rows_a = file_lines_a;
+                rows_b = file_lines_b;
             } else {
-                lines_a = file_lines_b;
-                lines_b = file_lines_a;
+                rows_a = file_lines_b;
+                rows_b = file_lines_a;
             }
 
-            for (let idx = 0, end = lines_a.length; idx < end; idx += 1) {
-                if (
-                    idx >= lines_b.length ||
-                    lines_a[idx] !== lines_b[idx]
-                ) {
-                    console.log(`${idx}`);
+            let /* boolean_t */ found_error = false;
 
+            for (let row = 0, end = rows_a.length; row < end; row += 1) {
+                if (row >= rows_b.length) {
+                    console.log(`Row: ${row + 1}, Column: --`);
+                    found_error = true;
+                } else {
+                    let /* string_t */ columns_a;
+                    let /* string_t */ columns_b;
+                    if (rows_a[row] > rows_b[row]) {
+                        columns_a = rows_a[row];
+                        columns_b = rows_b[row];
+                    } else {
+                        columns_a = rows_b[row];
+                        columns_b = rows_a[row];
+                    }
+                    for (let column = 0, end = columns_a.length; column < end; column += 1) {
+                        if (
+                            column >= columns_b.length ||
+                            columns_a[column] !== columns_b[column]
+                        ) {
+                            console.log(`Row: ${row + 1}, Column: ${column + 1}`);
+                            found_error = true;
+                            break;
+                        }
+                    }
                 }
+            }
+
+            if (!found_error) {
+                console.log(`Perfect Match!`);
             }
         } catch (error) {
             throw error;
