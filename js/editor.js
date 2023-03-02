@@ -157,372 +157,17 @@ function Set_Text_Offset(element, offset) {
         }
     }
 }
-class Line {
-    constructor({ editor, parent, }) {
-        this.editor = editor;
-        this.parent = parent;
-        this.element = document.createElement(`div`);
-        this.children = {};
-        this.element.setAttribute(`contentEditable`, `true`);
-        this.element.setAttribute(`spellcheck`, `false`);
-        this.element.setAttribute(`style`, `
-                width: 100%;
-                padding: 2px;
-
-                border-width: 0 0 1px 0;
-                border-style: solid;
-                border-color: #3B3A32;
-
-                font-size: 20px;
-                direction: ltr;
-            `);
-        this.element.addEventListener(`keydown`, function (event) {
-            if (event.key === `Enter`) {
-                event.preventDefault();
-                const selection = document.getSelection();
-                if (selection) {
-                    const line_text = this.Text();
-                    let line_text_a;
-                    let line_text_b;
-                    if (selection.isCollapsed) {
-                        Assert(selection.anchorNode !== null);
-                        const at = Text_Offset_To_Node(this.Element(), selection.anchorNode) +
-                            selection.anchorOffset;
-                        line_text_a = line_text.slice(0, at);
-                        line_text_b = line_text.slice(at, line_text.length);
-                    }
-                    else {
-                        Assert(selection.anchorNode !== null);
-                        Assert(selection.focusNode !== null);
-                        let start_node;
-                        let start_offset;
-                        let stop_node;
-                        let stop_offset;
-                        if (selection.anchorOffset < selection.focusOffset) {
-                            start_node = selection.anchorNode;
-                            start_offset = selection.anchorOffset;
-                            stop_node = selection.focusNode;
-                            stop_offset = selection.focusOffset;
-                        }
-                        else {
-                            start_node = selection.focusNode;
-                            start_offset = selection.focusOffset;
-                            stop_node = selection.anchorNode;
-                            stop_offset = selection.anchorOffset;
-                        }
-                        const top_node = this.Element();
-                        const from = Text_Offset_To_Node(top_node, start_node) +
-                            start_offset;
-                        const to = Text_Offset_To_Node(top_node, stop_node) +
-                            stop_offset;
-                        line_text_a = line_text.slice(0, from);
-                        line_text_b = line_text.slice(to, line_text.length);
-                    }
-                    const line_index = this.Index();
-                    this.Set_Text(line_text_a);
-                    this.Editor().Insert_Line(line_index + 1, line_text_b);
-                    this.Editor().Line(line_index + 1).Element().focus();
-                }
-            }
-            else if (event.key === `Backspace`) {
-                const selection = document.getSelection();
-                if (selection) {
-                    const line_index = this.Index();
-                    const text_offset = Text_Offset(this.element);
-                    if (line_index > 0 && selection.isCollapsed && text_offset === 0) {
-                        event.preventDefault();
-                        // we destroy this line and combine its text with the previous line.
-                        const previous = this.Editor().Line(line_index - 1);
-                        const previous_text = previous.Text();
-                        previous.Set_Text(`${previous_text}${this.Text()}`);
-                        this.Editor().Remove_Line(line_index);
-                        Set_Text_Offset(previous.Element(), previous_text.length);
-                    }
-                }
-            }
-            else if (event.key === `ArrowUp`) {
-                event.preventDefault();
-                if (!this.Editor().Is_Meta_Key_Active()) {
-                    const selection = document.getSelection();
-                    if (selection) {
-                        const line_index = this.Index();
-                        if (line_index > 0) {
-                            const text_offset = Text_Offset(this.element);
-                            const above_line = this.Editor().Line(line_index - 1);
-                            const above_line_text = above_line.Text();
-                            Set_Text_Offset(above_line.Element(), above_line_text.length < text_offset ?
-                                above_line_text.length :
-                                text_offset);
-                        }
-                    }
-                }
-            }
-            else if (event.key === `ArrowDown`) {
-                event.preventDefault();
-                if (!this.Editor().Is_Meta_Key_Active()) {
-                    const selection = document.getSelection();
-                    if (selection) {
-                        const line_index = this.Index();
-                        const line_count = this.Editor().Line_Count();
-                        if (line_index < line_count - 1) {
-                            const text_offset = Text_Offset(this.element);
-                            const below_line = this.Editor().Line(line_index + 1);
-                            const below_line_text = below_line.Text();
-                            Set_Text_Offset(below_line.Element(), below_line_text.length < text_offset ?
-                                below_line_text.length :
-                                text_offset);
-                        }
-                    }
-                }
-            }
-            else if (event.key === `ArrowLeft`) {
-                const selection = document.getSelection();
-                if (selection &&
-                    !selection.isCollapsed &&
-                    selection.anchorNode &&
-                    selection.focusNode &&
-                    selection.anchorNode === selection.focusNode) {
-                    event.preventDefault();
-                    const parent = this.Element();
-                    const child_index = Array.from(parent.children)
-                        .indexOf(selection.anchorNode);
-                    if (child_index > 0) {
-                        selection.getRangeAt(0).setStart(parent.children[child_index - 1], 0);
-                        selection.getRangeAt(0).setEnd(parent.children[child_index - 1], 1);
-                    }
-                }
-            }
-            else if (event.key === `ArrowRight`) {
-                const selection = document.getSelection();
-                if (selection &&
-                    !selection.isCollapsed &&
-                    selection.anchorNode &&
-                    selection.focusNode &&
-                    selection.anchorNode === selection.focusNode) {
-                    event.preventDefault();
-                    const parent = this.Element();
-                    const child_index = Array.from(parent.children)
-                        .indexOf(selection.anchorNode);
-                    if (child_index >= 0 &&
-                        child_index < parent.children.length - 1) {
-                        selection.getRangeAt(0).setStart(parent.children[child_index + 1], 0);
-                        selection.getRangeAt(0).setEnd(parent.children[child_index + 1], 1);
-                    }
-                }
-            }
-            else if (event.key === `Home`) {
-                if (this.Editor().Is_Meta_Key_Active()) {
-                    event.preventDefault();
-                    const selected = Dictionary.Selected_Text_And_Class();
-                    if (selected) {
-                        if (selected.class === Dictionary_Class.UNKNOWN_POINT) {
-                            this.Editor().Dictionary().Add_Letter(selected.text);
-                            this.Editor().Touch();
-                        }
-                        else if (selected.class === Dictionary_Class.KNOWN_LETTER) {
-                            this.Editor().Dictionary().Remove_Letter(selected.text);
-                            this.Editor().Touch();
-                        }
-                        else if (selected.class === Dictionary_Class.UNKNOWN_WORD ||
-                            selected.class === Dictionary_Class.KNOWN_WORD) {
-                            if (selected.text.length === 1) {
-                                this.Editor().Dictionary().Remove_Letter(selected.text);
-                                this.Editor().Touch();
-                            }
-                        }
-                    }
-                }
-            }
-            else if (event.key === `PageUp`) {
-                if (this.Editor().Is_Meta_Key_Active()) {
-                    event.preventDefault();
-                    const selected = Dictionary.Selected_Text_And_Class();
-                    if (selected) {
-                        if (selected.class === Dictionary_Class.UNKNOWN_POINT) {
-                            this.Editor().Dictionary().Add_Marker(selected.text);
-                            this.Editor().Touch();
-                        }
-                        else if (selected.class === Dictionary_Class.UNKNOWN_MARKER) {
-                            this.Editor().Dictionary().Add_Marker(selected.text);
-                            this.Editor().Touch();
-                        }
-                        else if (selected.class === Dictionary_Class.KNOWN_MARKER) {
-                            this.Editor().Dictionary().Remove_Marker(selected.text);
-                            this.Editor().Touch();
-                        }
-                        else if (selected.class === Dictionary_Class.KNOWN_ERROR) {
-                            this.Editor().Dictionary().Remove_Error(selected.text);
-                            this.Editor().Dictionary().Add_Marker(selected.text);
-                            this.Editor().Touch();
-                        }
-                    }
-                }
-            }
-            else if (event.key === `PageDown`) {
-                if (this.Editor().Is_Meta_Key_Active()) {
-                    event.preventDefault();
-                    const selected = Dictionary.Selected_Text_And_Class();
-                    if (selected) {
-                        if (selected.class === Dictionary_Class.UNKNOWN_WORD) {
-                            this.Editor().Dictionary().Add_Word(selected.text);
-                            this.Editor().Touch();
-                        }
-                        else if (selected.class === Dictionary_Class.KNOWN_WORD) {
-                            this.Editor().Dictionary().Remove_Word(selected.text);
-                            this.Editor().Touch();
-                        }
-                        else if (selected.class === Dictionary_Class.KNOWN_ERROR) {
-                            this.Editor().Dictionary().Remove_Error(selected.text);
-                            this.Editor().Dictionary().Add_Word(selected.text);
-                            this.Editor().Touch();
-                        }
-                    }
-                }
-            }
-            else if (event.key === `End`) {
-                if (this.Editor().Is_Meta_Key_Active()) {
-                    event.preventDefault();
-                    const selected = Dictionary.Selected_Text_And_Class();
-                    if (selected) {
-                        if (selected.class === Dictionary_Class.UNKNOWN_POINT) {
-                            this.Editor().Dictionary().Add_Error(selected.text);
-                            this.Editor().Touch();
-                        }
-                        else if (selected.class === Dictionary_Class.UNKNOWN_MARKER) {
-                            this.Editor().Dictionary().Add_Error(selected.text);
-                            this.Editor().Touch();
-                        }
-                        else if (selected.class === Dictionary_Class.KNOWN_MARKER) {
-                            this.Editor().Dictionary().Remove_Marker(selected.text);
-                            this.Editor().Dictionary().Add_Error(selected.text);
-                            this.Editor().Touch();
-                        }
-                        else if (selected.class === Dictionary_Class.UNKNOWN_WORD) {
-                            this.Editor().Dictionary().Add_Error(selected.text);
-                            this.Editor().Touch();
-                        }
-                        else if (selected.class === Dictionary_Class.KNOWN_WORD) {
-                            this.Editor().Dictionary().Remove_Word(selected.text);
-                            this.Editor().Dictionary().Add_Error(selected.text);
-                            this.Editor().Touch();
-                        }
-                        else if (selected.class === Dictionary_Class.KNOWN_ERROR) {
-                            this.Editor().Dictionary().Remove_Error(selected.text);
-                            this.Editor().Touch();
-                        }
-                    }
-                }
-            }
-        }.bind(this));
-        this.element.addEventListener(`input`, function (event) {
-            const input_event = event;
-            if (input_event.inputType === `insertText` ||
-                input_event.inputType === `deleteContentBackward` ||
-                input_event.inputType === `insertFromPaste`) {
-                const text_offset = Text_Offset(this.element);
-                this.Touch();
-                Set_Text_Offset(this.element, text_offset);
-            }
-        }.bind(this));
-        this.element.addEventListener(`dblclick`, function (mouse_event) {
-            const selection = document.getSelection();
-            if (selection) {
-                if (selection.rangeCount < 1) {
-                    selection.addRange(document.createRange());
-                }
-                let node = this.Element();
-                for (const child of this.Element().children) {
-                    const rect = child.getBoundingClientRect();
-                    if (mouse_event.clientX >= rect.left &&
-                        mouse_event.clientX <= rect.right &&
-                        mouse_event.clientY >= rect.top &&
-                        mouse_event.clientY <= rect.bottom) {
-                        node = child;
-                        break;
-                    }
-                }
-                if (node === this.Element()) {
-                    selection.getRangeAt(0).setStart(node, 0);
-                    selection.getRangeAt(0).setEnd(node, node.children.length);
-                }
-                else {
-                    selection.getRangeAt(0).setStart(node, 0);
-                    selection.getRangeAt(0).setEnd(node, 1);
-                }
-            }
-        }.bind(this));
-        this.parent.appendChild(this.element);
-    }
-    Destruct() {
-        this.parent.removeChild(this.element);
-    }
-    Editor() {
-        return this.editor;
-    }
-    Parent() {
-        return this.parent;
-    }
-    Element() {
-        return this.element;
-    }
-    Index() {
-        const index = this.Editor().Lines().indexOf(this);
-        Assert(index > -1);
-        return index;
-    }
-    Text() {
-        // for now we just replace all non-breaking spaces with regular spaces.
-        // see the comments in Set_Text for more info, as this is a temporary measure.
-        if (this.element.textContent) {
-            return this.element.textContent.replaceAll(/ /g, ` `);
-        }
-        else {
-            return ``;
-        }
-    }
-    Set_Text(text) {
-        // some browsers like firefox do not automatically replace
-        // spaces with non-breaking spaces, which is needed because
-        // browsers automatically remove extra spaces, whereas an editor
-        // should allow them. but firefox is a hot mess, it doesn't even
-        // properly backspace when spans are in the editor, so we do not
-        // support it for now. in the future we can keep track of our own
-        // caret to make up for it's hot mess, but not at this time.
-        // we also have the other problem though. We don't actually want all
-        // these non-breaking spaces. So we are going to have to keep a separate
-        // string containing the actual text of the line and then use it to
-        // set the innerHTML. however, sometimes we need to read from textContent,
-        // so what we will have to do is alter the actual string after input events.
-        // very frustrating, but we have to do this so that the user can actually
-        // use non-breaking spaces and we don't stomp them trying to switch them all
-        // out. I'm tempted to just switch them all out though until we need to use
-        // such a thing, because it's an annoying problem that doesn't need to be dealt
-        // with just yet.
-        if (this.Editor().Is_In_Point_Mode()) {
-            this.element.innerHTML = this.Editor().Dictionary().Treat_As_Points(text);
-        }
-        else {
-            this.element.innerHTML = this.Editor().Dictionary().Treat(text);
-        }
-    }
-    Touch() {
-        const text_offset = Text_Offset(this.Element());
-        this.Set_Text(this.Text());
-        if (text_offset) {
-            Set_Text_Offset(this.Element(), text_offset);
-        }
-    }
-}
 var Dictionary_Class;
 (function (Dictionary_Class) {
     Dictionary_Class[Dictionary_Class["_NONE_"] = -1] = "_NONE_";
     Dictionary_Class[Dictionary_Class["UNKNOWN_POINT"] = 0] = "UNKNOWN_POINT";
     Dictionary_Class[Dictionary_Class["KNOWN_LETTER"] = 1] = "KNOWN_LETTER";
-    Dictionary_Class[Dictionary_Class["UNKNOWN_MARKER"] = 2] = "UNKNOWN_MARKER";
-    Dictionary_Class[Dictionary_Class["KNOWN_MARKER"] = 3] = "KNOWN_MARKER";
-    Dictionary_Class[Dictionary_Class["UNKNOWN_WORD"] = 4] = "UNKNOWN_WORD";
-    Dictionary_Class[Dictionary_Class["KNOWN_WORD"] = 5] = "KNOWN_WORD";
-    Dictionary_Class[Dictionary_Class["KNOWN_ERROR"] = 6] = "KNOWN_ERROR";
+    Dictionary_Class[Dictionary_Class["KNOWN_MARKER"] = 2] = "KNOWN_MARKER";
+    Dictionary_Class[Dictionary_Class["UNKNOWN_WORD"] = 3] = "UNKNOWN_WORD";
+    Dictionary_Class[Dictionary_Class["KNOWN_WORD"] = 4] = "KNOWN_WORD";
+    Dictionary_Class[Dictionary_Class["UNKNOWN_BREAK"] = 5] = "UNKNOWN_BREAK";
+    Dictionary_Class[Dictionary_Class["KNOWN_BREAK"] = 6] = "KNOWN_BREAK";
+    Dictionary_Class[Dictionary_Class["KNOWN_ERROR"] = 7] = "KNOWN_ERROR";
 })(Dictionary_Class || (Dictionary_Class = {}));
 ;
 class Dictionary {
@@ -541,15 +186,11 @@ class Dictionary {
                     const dictionary_text = span.textContent.replaceAll(/ /g, ` `);
                     if (dictionary_text !== ``) {
                         let dictionary_class = Dictionary_Class._NONE_;
-                        // can't do KNOWN_LETTER unless we allow text as well as span
                         if (span.classList.contains(`UNKNOWN_POINT`)) {
                             dictionary_class = Dictionary_Class.UNKNOWN_POINT;
                         }
                         else if (span.classList.contains(`KNOWN_LETTER`)) {
                             dictionary_class = Dictionary_Class.KNOWN_LETTER;
-                        }
-                        else if (span.classList.contains(`UNKNOWN_MARKER`)) {
-                            dictionary_class = Dictionary_Class.UNKNOWN_MARKER;
                         }
                         else if (span.classList.contains(`KNOWN_MARKER`)) {
                             dictionary_class = Dictionary_Class.KNOWN_MARKER;
@@ -559,6 +200,12 @@ class Dictionary {
                         }
                         else if (span.classList.contains(`KNOWN_WORD`)) {
                             dictionary_class = Dictionary_Class.KNOWN_WORD;
+                        }
+                        else if (span.classList.contains(`UNKNOWN_BREAK`)) {
+                            dictionary_class = Dictionary_Class.UNKNOWN_BREAK;
+                        }
+                        else if (span.classList.contains(`KNOWN_BREAK`)) {
+                            dictionary_class = Dictionary_Class.KNOWN_BREAK;
                         }
                         else if (span.classList.contains(`KNOWN_ERROR`)) {
                             dictionary_class = Dictionary_Class.KNOWN_ERROR;
@@ -598,6 +245,7 @@ class Dictionary {
                 letters: [],
                 markers: [],
                 words: {},
+                breaks: {},
                 errors: [],
             };
         }
@@ -623,22 +271,23 @@ class Dictionary {
         }
     }
     Has_Marker(marker) {
-        Assert(marker.length > 0);
+        Assert(marker.length === 1);
         return this.data.markers.includes(marker);
     }
     Add_Marker(marker) {
-        Assert(marker.length > 0);
-        Assert(!this.Has_Error(marker));
+        Assert(marker.length === 1);
         if (!this.data.markers.includes(marker)) {
             this.data.markers.push(marker);
+            this.data.breaks[marker] = [];
         }
     }
     Remove_Marker(marker) {
-        Assert(marker.length > 0);
+        Assert(marker.length === 1);
         const index = this.data.markers.indexOf(marker);
         if (index > -1) {
             this.data.markers[index] = this.data.markers[this.data.markers.length - 1];
             this.data.markers.pop();
+            delete this.data.breaks[marker];
         }
     }
     Has_Word(word) {
@@ -669,14 +318,42 @@ class Dictionary {
             }
         }
     }
+    Has_Break(break_) {
+        Assert(break_.length > 0);
+        return (this.data.breaks[break_[0]] != null &&
+            this.data.breaks[break_[0]].includes(break_));
+    }
+    Add_Break(break_) {
+        Assert(break_.length > 0);
+        Assert(!this.Has_Error(break_));
+        if (this.data.breaks[break_[0]] == null) {
+            this.Add_Marker(break_[0]);
+            this.data.breaks[break_[0]].push(break_);
+        }
+        else {
+            if (!this.data.breaks[break_[0]].includes(break_)) {
+                this.data.breaks[break_[0]].push(break_);
+            }
+        }
+    }
+    Remove_Break(break_) {
+        Assert(break_.length > 0);
+        if (this.data.breaks[break_[0]] != null) {
+            const index = this.data.breaks[break_[0]].indexOf(break_);
+            if (index > -1) {
+                this.data.breaks[break_[0]][index] = this.data.breaks[break_[0]][this.data.breaks[break_[0]].length - 1];
+                this.data.breaks[break_[0]].pop();
+            }
+        }
+    }
     Has_Error(error) {
         Assert(error.length > 0);
         return this.data.errors.includes(error);
     }
     Add_Error(error) {
         Assert(error.length > 0);
-        Assert(!this.Has_Marker(error));
         Assert(!this.Has_Word(error));
+        Assert(!this.Has_Break(error));
         if (!this.data.errors.includes(error)) {
             this.data.errors.push(error);
         }
@@ -971,11 +648,11 @@ class Dictionary {
                     if (this.data.errors.includes(part.subtext)) {
                         inner_html += `<span class="KNOWN_ERROR${command_classes}">${Escape_Text(part.subtext)}</span>`;
                     }
-                    else if (this.data.markers.includes(part.subtext)) {
-                        inner_html += `<span class="KNOWN_MARKER${command_classes}">${Escape_Text(part.subtext)}</span>`;
+                    else if (this.data.breaks[part.subtext[0]].includes(part.subtext)) {
+                        inner_html += `<span class="KNOWN_BREAK${command_classes}">${Escape_Text(part.subtext)}</span>`;
                     }
                     else {
-                        inner_html += `<span class="UNKNOWN_MARKER${command_classes}">${Escape_Text(part.subtext)}</span>`;
+                        inner_html += `<span class="UNKNOWN_BREAK${command_classes}">${Escape_Text(part.subtext)}</span>`;
                     }
                 }
                 else {
@@ -1013,13 +690,393 @@ class Dictionary {
     JSON() {
         this.data.letters.sort();
         this.data.markers.sort();
-        this.data.errors.sort();
         const sorted_words = {};
         for (const letter of Object.keys(this.data.words).sort()) {
             sorted_words[letter] = this.data.words[letter].sort();
         }
         this.data.words = sorted_words;
+        const sorted_breaks = {};
+        for (const marker of Object.keys(this.data.breaks).sort()) {
+            sorted_breaks[marker] = this.data.breaks[marker].sort();
+        }
+        this.data.breaks = sorted_breaks;
+        this.data.errors.sort();
         return JSON.stringify(this.data, null, 4);
+    }
+}
+class Line {
+    constructor({ editor, parent, }) {
+        this.editor = editor;
+        this.parent = parent;
+        this.element = document.createElement(`div`);
+        this.children = {};
+        this.element.setAttribute(`contentEditable`, `true`);
+        this.element.setAttribute(`spellcheck`, `false`);
+        this.element.setAttribute(`style`, `
+                width: 100%;
+                padding: 2px;
+
+                border-width: 0 0 1px 0;
+                border-style: solid;
+                border-color: #3B3A32;
+
+                font-size: 20px;
+                direction: ltr;
+            `);
+        this.element.addEventListener(`keydown`, function (event) {
+            if (event.key === `Enter`) {
+                event.preventDefault();
+                const selection = document.getSelection();
+                if (selection) {
+                    const line_text = this.Text();
+                    let line_text_a;
+                    let line_text_b;
+                    if (selection.isCollapsed) {
+                        Assert(selection.anchorNode !== null);
+                        const at = Text_Offset_To_Node(this.Element(), selection.anchorNode) +
+                            selection.anchorOffset;
+                        line_text_a = line_text.slice(0, at);
+                        line_text_b = line_text.slice(at, line_text.length);
+                    }
+                    else {
+                        Assert(selection.anchorNode !== null);
+                        Assert(selection.focusNode !== null);
+                        let start_node;
+                        let start_offset;
+                        let stop_node;
+                        let stop_offset;
+                        if (selection.anchorOffset < selection.focusOffset) {
+                            start_node = selection.anchorNode;
+                            start_offset = selection.anchorOffset;
+                            stop_node = selection.focusNode;
+                            stop_offset = selection.focusOffset;
+                        }
+                        else {
+                            start_node = selection.focusNode;
+                            start_offset = selection.focusOffset;
+                            stop_node = selection.anchorNode;
+                            stop_offset = selection.anchorOffset;
+                        }
+                        const top_node = this.Element();
+                        const from = Text_Offset_To_Node(top_node, start_node) +
+                            start_offset;
+                        const to = Text_Offset_To_Node(top_node, stop_node) +
+                            stop_offset;
+                        line_text_a = line_text.slice(0, from);
+                        line_text_b = line_text.slice(to, line_text.length);
+                    }
+                    const line_index = this.Index();
+                    this.Set_Text(line_text_a);
+                    this.Editor().Insert_Line(line_index + 1, line_text_b);
+                    this.Editor().Line(line_index + 1).Element().focus();
+                }
+            }
+            else if (event.key === `Backspace`) {
+                const selection = document.getSelection();
+                if (selection) {
+                    const line_index = this.Index();
+                    const text_offset = Text_Offset(this.element);
+                    if (line_index > 0 && selection.isCollapsed && text_offset === 0) {
+                        event.preventDefault();
+                        // we destroy this line and combine its text with the previous line.
+                        const previous = this.Editor().Line(line_index - 1);
+                        const previous_text = previous.Text();
+                        previous.Set_Text(`${previous_text}${this.Text()}`);
+                        this.Editor().Remove_Line(line_index);
+                        Set_Text_Offset(previous.Element(), previous_text.length);
+                    }
+                }
+            }
+            else if (event.key === `ArrowUp`) {
+                event.preventDefault();
+                if (!this.Editor().Is_Meta_Key_Active()) {
+                    const selection = document.getSelection();
+                    if (selection) {
+                        const line_index = this.Index();
+                        if (line_index > 0) {
+                            const text_offset = Text_Offset(this.element);
+                            const above_line = this.Editor().Line(line_index - 1);
+                            const above_line_text = above_line.Text();
+                            Set_Text_Offset(above_line.Element(), above_line_text.length < text_offset ?
+                                above_line_text.length :
+                                text_offset);
+                        }
+                    }
+                }
+            }
+            else if (event.key === `ArrowDown`) {
+                event.preventDefault();
+                if (!this.Editor().Is_Meta_Key_Active()) {
+                    const selection = document.getSelection();
+                    if (selection) {
+                        const line_index = this.Index();
+                        const line_count = this.Editor().Line_Count();
+                        if (line_index < line_count - 1) {
+                            const text_offset = Text_Offset(this.element);
+                            const below_line = this.Editor().Line(line_index + 1);
+                            const below_line_text = below_line.Text();
+                            Set_Text_Offset(below_line.Element(), below_line_text.length < text_offset ?
+                                below_line_text.length :
+                                text_offset);
+                        }
+                    }
+                }
+            }
+            else if (event.key === `ArrowLeft`) {
+                const selection = document.getSelection();
+                if (selection &&
+                    !selection.isCollapsed &&
+                    selection.anchorNode &&
+                    selection.focusNode &&
+                    selection.anchorNode === selection.focusNode) {
+                    event.preventDefault();
+                    const parent = this.Element();
+                    const child_index = Array.from(parent.children)
+                        .indexOf(selection.anchorNode);
+                    if (child_index > 0) {
+                        selection.getRangeAt(0).setStart(parent.children[child_index - 1], 0);
+                        selection.getRangeAt(0).setEnd(parent.children[child_index - 1], 1);
+                    }
+                }
+            }
+            else if (event.key === `ArrowRight`) {
+                const selection = document.getSelection();
+                if (selection &&
+                    !selection.isCollapsed &&
+                    selection.anchorNode &&
+                    selection.focusNode &&
+                    selection.anchorNode === selection.focusNode) {
+                    event.preventDefault();
+                    const parent = this.Element();
+                    const child_index = Array.from(parent.children)
+                        .indexOf(selection.anchorNode);
+                    if (child_index >= 0 &&
+                        child_index < parent.children.length - 1) {
+                        selection.getRangeAt(0).setStart(parent.children[child_index + 1], 0);
+                        selection.getRangeAt(0).setEnd(parent.children[child_index + 1], 1);
+                    }
+                }
+            }
+            else if (event.key === `Home`) {
+                if (this.Editor().Is_Meta_Key_Active()) {
+                    event.preventDefault();
+                    const selected = Dictionary.Selected_Text_And_Class();
+                    if (selected) {
+                        if (selected.class === Dictionary_Class.UNKNOWN_POINT) {
+                            this.Editor().Dictionary().Add_Letter(selected.text);
+                            this.Editor().Touch();
+                        }
+                        else if (selected.class === Dictionary_Class.KNOWN_LETTER) {
+                            this.Editor().Dictionary().Remove_Letter(selected.text);
+                            this.Editor().Touch();
+                        }
+                        else if (selected.class === Dictionary_Class.UNKNOWN_WORD ||
+                            selected.class === Dictionary_Class.KNOWN_WORD) {
+                            if (selected.text.length === 1) {
+                                this.Editor().Dictionary().Remove_Letter(selected.text);
+                                this.Editor().Touch();
+                            }
+                        }
+                    }
+                }
+            }
+            else if (event.key === `PageUp`) {
+                if (this.Editor().Is_Meta_Key_Active()) {
+                    event.preventDefault();
+                    const selected = Dictionary.Selected_Text_And_Class();
+                    if (selected) {
+                        if (selected.class === Dictionary_Class.UNKNOWN_POINT) {
+                            this.Editor().Dictionary().Add_Marker(selected.text);
+                            this.Editor().Touch();
+                        }
+                        else if (selected.class === Dictionary_Class.KNOWN_MARKER) {
+                            this.Editor().Dictionary().Remove_Marker(selected.text);
+                            this.Editor().Touch();
+                        }
+                        else if (selected.class === Dictionary_Class.UNKNOWN_BREAK ||
+                            selected.class === Dictionary_Class.KNOWN_BREAK) {
+                            if (selected.text.length === 1) {
+                                this.Editor().Dictionary().Remove_Marker(selected.text);
+                                this.Editor().Touch();
+                            }
+                        }
+                    }
+                }
+            }
+            else if (event.key === `PageDown`) {
+                if (this.Editor().Is_Meta_Key_Active()) {
+                    event.preventDefault();
+                    const selected = Dictionary.Selected_Text_And_Class();
+                    if (selected) {
+                        if (selected.class === Dictionary_Class.UNKNOWN_WORD) {
+                            this.Editor().Dictionary().Add_Word(selected.text);
+                            this.Editor().Touch();
+                        }
+                        else if (selected.class === Dictionary_Class.KNOWN_WORD) {
+                            this.Editor().Dictionary().Remove_Word(selected.text);
+                            this.Editor().Touch();
+                        }
+                        else if (selected.class === Dictionary_Class.KNOWN_ERROR) {
+                            this.Editor().Dictionary().Remove_Error(selected.text);
+                            this.Editor().Dictionary().Add_Word(selected.text);
+                            this.Editor().Touch();
+                        }
+                    }
+                }
+            }
+            else if (event.key === `End`) {
+                if (this.Editor().Is_Meta_Key_Active()) {
+                    event.preventDefault();
+                    const selected = Dictionary.Selected_Text_And_Class();
+                    if (selected) {
+                        if (selected.class === Dictionary_Class.UNKNOWN_BREAK) {
+                            this.Editor().Dictionary().Add_Break(selected.text);
+                            this.Editor().Touch();
+                        }
+                        else if (selected.class === Dictionary_Class.KNOWN_BREAK) {
+                            this.Editor().Dictionary().Remove_Break(selected.text);
+                            this.Editor().Touch();
+                        }
+                        else if (selected.class === Dictionary_Class.KNOWN_ERROR) {
+                            this.Editor().Dictionary().Remove_Error(selected.text);
+                            this.Editor().Dictionary().Add_Break(selected.text);
+                            this.Editor().Touch();
+                        }
+                    }
+                }
+            }
+            else if (event.key === `Delete`) {
+                if (this.Editor().Is_Meta_Key_Active()) {
+                    event.preventDefault();
+                    const selected = Dictionary.Selected_Text_And_Class();
+                    if (selected) {
+                        if (selected.class === Dictionary_Class.UNKNOWN_POINT) {
+                            this.Editor().Dictionary().Add_Error(selected.text);
+                            this.Editor().Touch();
+                        }
+                        else if (selected.class === Dictionary_Class.UNKNOWN_WORD) {
+                            this.Editor().Dictionary().Add_Error(selected.text);
+                            this.Editor().Touch();
+                        }
+                        else if (selected.class === Dictionary_Class.KNOWN_WORD) {
+                            this.Editor().Dictionary().Remove_Word(selected.text);
+                            this.Editor().Dictionary().Add_Error(selected.text);
+                            this.Editor().Touch();
+                        }
+                        else if (selected.class === Dictionary_Class.UNKNOWN_BREAK) {
+                            this.Editor().Dictionary().Add_Error(selected.text);
+                            this.Editor().Touch();
+                        }
+                        else if (selected.class === Dictionary_Class.KNOWN_BREAK) {
+                            this.Editor().Dictionary().Remove_Break(selected.text);
+                            this.Editor().Dictionary().Add_Error(selected.text);
+                            this.Editor().Touch();
+                        }
+                        else if (selected.class === Dictionary_Class.KNOWN_ERROR) {
+                            this.Editor().Dictionary().Remove_Error(selected.text);
+                            this.Editor().Touch();
+                        }
+                    }
+                }
+            }
+        }.bind(this));
+        this.element.addEventListener(`input`, function (event) {
+            const input_event = event;
+            if (input_event.inputType === `insertText` ||
+                input_event.inputType === `deleteContentBackward` ||
+                input_event.inputType === `insertFromPaste`) {
+                const text_offset = Text_Offset(this.element);
+                this.Touch();
+                Set_Text_Offset(this.element, text_offset);
+            }
+        }.bind(this));
+        this.element.addEventListener(`dblclick`, function (mouse_event) {
+            const selection = document.getSelection();
+            if (selection) {
+                if (selection.rangeCount < 1) {
+                    selection.addRange(document.createRange());
+                }
+                let node = this.Element();
+                for (const child of this.Element().children) {
+                    const rect = child.getBoundingClientRect();
+                    if (mouse_event.clientX >= rect.left &&
+                        mouse_event.clientX <= rect.right &&
+                        mouse_event.clientY >= rect.top &&
+                        mouse_event.clientY <= rect.bottom) {
+                        node = child;
+                        break;
+                    }
+                }
+                if (node === this.Element()) {
+                    selection.getRangeAt(0).setStart(node, 0);
+                    selection.getRangeAt(0).setEnd(node, node.children.length);
+                }
+                else {
+                    selection.getRangeAt(0).setStart(node, 0);
+                    selection.getRangeAt(0).setEnd(node, 1);
+                }
+            }
+        }.bind(this));
+        this.parent.appendChild(this.element);
+    }
+    Destruct() {
+        this.parent.removeChild(this.element);
+    }
+    Editor() {
+        return this.editor;
+    }
+    Parent() {
+        return this.parent;
+    }
+    Element() {
+        return this.element;
+    }
+    Index() {
+        const index = this.Editor().Lines().indexOf(this);
+        Assert(index > -1);
+        return index;
+    }
+    Text() {
+        // for now we just replace all non-breaking spaces with regular spaces.
+        // see the comments in Set_Text for more info, as this is a temporary measure.
+        if (this.element.textContent) {
+            return this.element.textContent.replaceAll(/ /g, ` `);
+        }
+        else {
+            return ``;
+        }
+    }
+    Set_Text(text) {
+        // some browsers like firefox do not automatically replace
+        // spaces with non-breaking spaces, which is needed because
+        // browsers automatically remove extra spaces, whereas an editor
+        // should allow them. but firefox is a hot mess, it doesn't even
+        // properly backspace when spans are in the editor, so we do not
+        // support it for now. in the future we can keep track of our own
+        // caret to make up for it's hot mess, but not at this time.
+        // we also have the other problem though. We don't actually want all
+        // these non-breaking spaces. So we are going to have to keep a separate
+        // string containing the actual text of the line and then use it to
+        // set the innerHTML. however, sometimes we need to read from textContent,
+        // so what we will have to do is alter the actual string after input events.
+        // very frustrating, but we have to do this so that the user can actually
+        // use non-breaking spaces and we don't stomp them trying to switch them all
+        // out. I'm tempted to just switch them all out though until we need to use
+        // such a thing, because it's an annoying problem that doesn't need to be dealt
+        // with just yet.
+        if (this.Editor().Is_In_Point_Mode()) {
+            this.element.innerHTML = this.Editor().Dictionary().Treat_As_Points(text);
+        }
+        else {
+            this.element.innerHTML = this.Editor().Dictionary().Treat(text);
+        }
+    }
+    Touch() {
+        const text_offset = Text_Offset(this.Element());
+        this.Set_Text(this.Text());
+        if (text_offset) {
+            Set_Text_Offset(this.Element(), text_offset);
+        }
     }
 }
 class Editor {
@@ -1740,14 +1797,6 @@ function Style() {
                     overflow-wrap: normal;
                 }
 
-                .UNKNOWN_MARKER {
-                    border-width: 0 0 2px 0;
-                    border-style: solid;
-                    border-color: #00da6f;
-
-                    overflow-wrap: normal;
-                }
-
                 .KNOWN_MARKER {
                     overflow-wrap: normal;
                 }
@@ -1761,6 +1810,18 @@ function Style() {
                 }
 
                 .KNOWN_WORD {
+                    overflow-wrap: normal;
+                }
+
+                .UNKNOWN_BREAK {
+                    border-width: 0 0 2px 0;
+                    border-style: solid;
+                    border-color: #00da6f;
+
+                    overflow-wrap: normal;
+                }
+
+                .KNOWN_BREAK {
                     overflow-wrap: normal;
                 }
 
