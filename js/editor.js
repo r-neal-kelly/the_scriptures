@@ -170,8 +170,33 @@ var Dictionary_Class;
     Dictionary_Class[Dictionary_Class["KNOWN_ERROR"] = 7] = "KNOWN_ERROR";
 })(Dictionary_Class || (Dictionary_Class = {}));
 ;
+var Dictionary_Boundary;
+(function (Dictionary_Boundary) {
+    Dictionary_Boundary["START"] = "START";
+    Dictionary_Boundary["MIDDLE"] = "MIDDLE";
+    Dictionary_Boundary["END"] = "END";
+})(Dictionary_Boundary || (Dictionary_Boundary = {}));
+;
 class Dictionary {
-    static Selected_Text_And_Class() {
+    static First_Entry_Index(element) {
+        for (let idx = 0, end = element.children.length; idx < end;) {
+            if (!element.children[idx].classList.contains(`COMMAND`)) {
+                return idx;
+            }
+            idx += 1;
+        }
+        return null;
+    }
+    static Last_Entry_Index(element) {
+        for (let idx = element.children.length, end = 0; idx > end;) {
+            idx -= 1;
+            if (!element.children[idx].classList.contains(`COMMAND`)) {
+                return idx;
+            }
+        }
+        return null;
+    }
+    static Selected_Entry() {
         const selection = document.getSelection();
         if (selection &&
             !selection.isCollapsed &&
@@ -182,7 +207,8 @@ class Dictionary {
             selection.getRangeAt(0).endOffset === 1) {
             if (selection.anchorNode instanceof HTMLSpanElement) {
                 const span = selection.anchorNode;
-                if (span.textContent != null) {
+                if (span.parentElement != null &&
+                    span.textContent != null) {
                     const dictionary_text = span.textContent.replaceAll(/ /g, ` `);
                     if (dictionary_text !== ``) {
                         let dictionary_class = Dictionary_Class._NONE_;
@@ -211,9 +237,18 @@ class Dictionary {
                             dictionary_class = Dictionary_Class.KNOWN_ERROR;
                         }
                         if (dictionary_class !== Dictionary_Class._NONE_) {
+                            const span_index = Array.from(span.parentElement.children).indexOf(span);
+                            let dictionary_boundary = Dictionary_Boundary.MIDDLE;
+                            if (span_index === Dictionary.First_Entry_Index(span.parentElement)) {
+                                dictionary_boundary = Dictionary_Boundary.START;
+                            }
+                            else if (span_index === Dictionary.Last_Entry_Index(span.parentElement)) {
+                                dictionary_boundary = Dictionary_Boundary.END;
+                            }
                             return {
                                 text: dictionary_text,
                                 class: dictionary_class,
+                                boundary: dictionary_boundary,
                             };
                         }
                         else {
@@ -245,7 +280,11 @@ class Dictionary {
                 letters: [],
                 markers: [],
                 words: {},
-                breaks: {},
+                breaks: {
+                    [Dictionary_Boundary.START]: {},
+                    [Dictionary_Boundary.MIDDLE]: {},
+                    [Dictionary_Boundary.END]: {},
+                },
                 errors: [],
             };
         }
@@ -278,7 +317,9 @@ class Dictionary {
         Assert(marker.length === 1);
         if (!this.data.markers.includes(marker)) {
             this.data.markers.push(marker);
-            this.data.breaks[marker] = [];
+            this.data.breaks[Dictionary_Boundary.START][marker] = [];
+            this.data.breaks[Dictionary_Boundary.MIDDLE][marker] = [];
+            this.data.breaks[Dictionary_Boundary.END][marker] = [];
         }
     }
     Remove_Marker(marker) {
@@ -287,7 +328,9 @@ class Dictionary {
         if (index > -1) {
             this.data.markers[index] = this.data.markers[this.data.markers.length - 1];
             this.data.markers.pop();
-            delete this.data.breaks[marker];
+            delete this.data.breaks[Dictionary_Boundary.START][marker];
+            delete this.data.breaks[Dictionary_Boundary.MIDDLE][marker];
+            delete this.data.breaks[Dictionary_Boundary.END][marker];
         }
     }
     Has_Word(word) {
@@ -318,31 +361,32 @@ class Dictionary {
             }
         }
     }
-    Has_Break(break_) {
+    Has_Break(break_, boundary) {
         Assert(break_.length > 0);
-        return (this.data.breaks[break_[0]] != null &&
-            this.data.breaks[break_[0]].includes(break_));
+        return (this.data.breaks[boundary][break_[0]] != null &&
+            this.data.breaks[boundary][break_[0]].includes(break_));
     }
-    Add_Break(break_) {
+    Add_Break(break_, boundary) {
         Assert(break_.length > 0);
         Assert(!this.Has_Error(break_));
-        if (this.data.breaks[break_[0]] == null) {
+        if (this.data.breaks[boundary][break_[0]] == null) {
             this.Add_Marker(break_[0]);
-            this.data.breaks[break_[0]].push(break_);
+            this.data.breaks[boundary][break_[0]].push(break_);
         }
         else {
-            if (!this.data.breaks[break_[0]].includes(break_)) {
-                this.data.breaks[break_[0]].push(break_);
+            if (!this.data.breaks[boundary][break_[0]].includes(break_)) {
+                this.data.breaks[boundary][break_[0]].push(break_);
             }
         }
     }
-    Remove_Break(break_) {
+    Remove_Break(break_, boundary) {
         Assert(break_.length > 0);
-        if (this.data.breaks[break_[0]] != null) {
-            const index = this.data.breaks[break_[0]].indexOf(break_);
+        if (this.data.breaks[boundary][break_[0]] != null) {
+            const index = this.data.breaks[boundary][break_[0]].indexOf(break_);
             if (index > -1) {
-                this.data.breaks[break_[0]][index] = this.data.breaks[break_[0]][this.data.breaks[break_[0]].length - 1];
-                this.data.breaks[break_[0]].pop();
+                this.data.breaks[boundary][break_[0]][index] =
+                    this.data.breaks[boundary][break_[0]][this.data.breaks[boundary][break_[0]].length - 1];
+                this.data.breaks[boundary][break_[0]].pop();
             }
         }
     }
@@ -353,7 +397,9 @@ class Dictionary {
     Add_Error(error) {
         Assert(error.length > 0);
         Assert(!this.Has_Word(error));
-        Assert(!this.Has_Break(error));
+        Assert(!this.Has_Break(error, Dictionary_Boundary.START));
+        Assert(!this.Has_Break(error, Dictionary_Boundary.MIDDLE));
+        Assert(!this.Has_Break(error, Dictionary_Boundary.END));
         if (!this.data.errors.includes(error)) {
             this.data.errors.push(error);
         }
@@ -384,6 +430,8 @@ class Dictionary {
         let has_underline = false;
         let has_small_caps = false;
         let has_error = false;
+        let first_part = null;
+        let last_part = null;
         for (let idx = 0, end = text.length; idx < end;) {
             const maybe_command = text.slice(idx);
             if (/^｟i｠/.test(maybe_command)) {
@@ -550,6 +598,10 @@ class Dictionary {
                     current_type = Type.POINT;
                 }
                 if (current_type === Type.POINT) {
+                    if (first_part === null) {
+                        first_part = parts.length;
+                    }
+                    last_part = parts.length;
                     parts.push({
                         subtext: text.slice(current_start_index, idx + 1),
                         type: Type.POINT,
@@ -565,6 +617,10 @@ class Dictionary {
                     if (idx + 1 === end ||
                         /^.｟\/?[^｠]*｠/.test(maybe_command) ||
                         !this.data.letters.includes(text[idx + 1])) {
+                        if (first_part === null) {
+                            first_part = parts.length;
+                        }
+                        last_part = parts.length;
                         parts.push({
                             subtext: text.slice(current_start_index, idx + 1),
                             type: Type.LETTERS,
@@ -581,6 +637,10 @@ class Dictionary {
                     if (idx + 1 === end ||
                         /^.｟\/?[^｠]*｠/.test(maybe_command) ||
                         !this.data.markers.includes(text[idx + 1])) {
+                        if (first_part === null) {
+                            first_part = parts.length;
+                        }
+                        last_part = parts.length;
                         parts.push({
                             subtext: text.slice(current_start_index, idx + 1),
                             type: Type.MARKERS,
@@ -600,7 +660,8 @@ class Dictionary {
             }
         }
         let inner_html = ``;
-        for (const part of parts) {
+        for (let idx = 0, end = parts.length; idx < end; idx += 1) {
+            const part = parts[idx];
             if (part.type === Type.COMMAND) {
                 let command_classes = ``;
                 if (part.subtext === `｟in｠`) {
@@ -648,11 +709,31 @@ class Dictionary {
                     if (this.data.errors.includes(part.subtext)) {
                         inner_html += `<span class="KNOWN_ERROR${command_classes}">${Escape_Text(part.subtext)}</span>`;
                     }
-                    else if (this.data.breaks[part.subtext[0]].includes(part.subtext)) {
-                        inner_html += `<span class="KNOWN_BREAK${command_classes}">${Escape_Text(part.subtext)}</span>`;
-                    }
                     else {
-                        inner_html += `<span class="UNKNOWN_BREAK${command_classes}">${Escape_Text(part.subtext)}</span>`;
+                        if (idx === first_part) {
+                            if (this.data.breaks[Dictionary_Boundary.START][part.subtext[0]].includes(part.subtext)) {
+                                inner_html += `<span class="KNOWN_BREAK${command_classes}">${Escape_Text(part.subtext)}</span>`;
+                            }
+                            else {
+                                inner_html += `<span class="UNKNOWN_BREAK${command_classes}">${Escape_Text(part.subtext)}</span>`;
+                            }
+                        }
+                        else if (idx === last_part) {
+                            if (this.data.breaks[Dictionary_Boundary.END][part.subtext[0]].includes(part.subtext)) {
+                                inner_html += `<span class="KNOWN_BREAK${command_classes}">${Escape_Text(part.subtext)}</span>`;
+                            }
+                            else {
+                                inner_html += `<span class="UNKNOWN_BREAK${command_classes}">${Escape_Text(part.subtext)}</span>`;
+                            }
+                        }
+                        else {
+                            if (this.data.breaks[Dictionary_Boundary.MIDDLE][part.subtext[0]].includes(part.subtext)) {
+                                inner_html += `<span class="KNOWN_BREAK${command_classes}">${Escape_Text(part.subtext)}</span>`;
+                            }
+                            else {
+                                inner_html += `<span class="UNKNOWN_BREAK${command_classes}">${Escape_Text(part.subtext)}</span>`;
+                            }
+                        }
                     }
                 }
                 else {
@@ -695,9 +776,15 @@ class Dictionary {
             sorted_words[letter] = this.data.words[letter].sort();
         }
         this.data.words = sorted_words;
-        const sorted_breaks = {};
-        for (const marker of Object.keys(this.data.breaks).sort()) {
-            sorted_breaks[marker] = this.data.breaks[marker].sort();
+        const sorted_breaks = {
+            [Dictionary_Boundary.START]: {},
+            [Dictionary_Boundary.MIDDLE]: {},
+            [Dictionary_Boundary.END]: {},
+        };
+        for (const boundary of [Dictionary_Boundary.START, Dictionary_Boundary.MIDDLE, Dictionary_Boundary.END]) {
+            for (const marker of Object.keys(this.data.breaks[boundary]).sort()) {
+                sorted_breaks[boundary][marker] = this.data.breaks[boundary][marker].sort();
+            }
         }
         this.data.breaks = sorted_breaks;
         this.data.errors.sort();
@@ -860,7 +947,7 @@ class Line {
             else if (event.key === `Home`) {
                 if (this.Editor().Is_Meta_Key_Active()) {
                     event.preventDefault();
-                    const selected = Dictionary.Selected_Text_And_Class();
+                    const selected = Dictionary.Selected_Entry();
                     if (selected) {
                         if (selected.class === Dictionary_Class.UNKNOWN_POINT) {
                             this.Editor().Dictionary().Add_Letter(selected.text);
@@ -883,7 +970,7 @@ class Line {
             else if (event.key === `PageUp`) {
                 if (this.Editor().Is_Meta_Key_Active()) {
                     event.preventDefault();
-                    const selected = Dictionary.Selected_Text_And_Class();
+                    const selected = Dictionary.Selected_Entry();
                     if (selected) {
                         if (selected.class === Dictionary_Class.UNKNOWN_POINT) {
                             this.Editor().Dictionary().Add_Marker(selected.text);
@@ -906,7 +993,7 @@ class Line {
             else if (event.key === `PageDown`) {
                 if (this.Editor().Is_Meta_Key_Active()) {
                     event.preventDefault();
-                    const selected = Dictionary.Selected_Text_And_Class();
+                    const selected = Dictionary.Selected_Entry();
                     if (selected) {
                         if (selected.class === Dictionary_Class.UNKNOWN_WORD) {
                             this.Editor().Dictionary().Add_Word(selected.text);
@@ -927,19 +1014,19 @@ class Line {
             else if (event.key === `End`) {
                 if (this.Editor().Is_Meta_Key_Active()) {
                     event.preventDefault();
-                    const selected = Dictionary.Selected_Text_And_Class();
+                    const selected = Dictionary.Selected_Entry();
                     if (selected) {
                         if (selected.class === Dictionary_Class.UNKNOWN_BREAK) {
-                            this.Editor().Dictionary().Add_Break(selected.text);
+                            this.Editor().Dictionary().Add_Break(selected.text, selected.boundary);
                             this.Editor().Touch();
                         }
                         else if (selected.class === Dictionary_Class.KNOWN_BREAK) {
-                            this.Editor().Dictionary().Remove_Break(selected.text);
+                            this.Editor().Dictionary().Remove_Break(selected.text, selected.boundary);
                             this.Editor().Touch();
                         }
                         else if (selected.class === Dictionary_Class.KNOWN_ERROR) {
                             this.Editor().Dictionary().Remove_Error(selected.text);
-                            this.Editor().Dictionary().Add_Break(selected.text);
+                            this.Editor().Dictionary().Add_Break(selected.text, selected.boundary);
                             this.Editor().Touch();
                         }
                     }
@@ -948,7 +1035,7 @@ class Line {
             else if (event.key === `Delete`) {
                 if (this.Editor().Is_Meta_Key_Active()) {
                     event.preventDefault();
-                    const selected = Dictionary.Selected_Text_And_Class();
+                    const selected = Dictionary.Selected_Entry();
                     if (selected) {
                         if (selected.class === Dictionary_Class.UNKNOWN_POINT) {
                             this.Editor().Dictionary().Add_Error(selected.text);
@@ -968,7 +1055,7 @@ class Line {
                             this.Editor().Touch();
                         }
                         else if (selected.class === Dictionary_Class.KNOWN_BREAK) {
-                            this.Editor().Dictionary().Remove_Break(selected.text);
+                            this.Editor().Dictionary().Remove_Break(selected.text, selected.boundary);
                             this.Editor().Dictionary().Add_Error(selected.text);
                             this.Editor().Touch();
                         }
