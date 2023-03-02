@@ -56,6 +56,8 @@ Latin.Symbols_c :=  { "+": "—" ; U+2014 EM DASH
                     , ")": "｠" ; U+FF60 FULLWIDTH RIGHT WHITE PARENTHESIS
                     , "<": "〈" ; U+2329 LEFT-POINTING ANGLE BRACKET
                     , ">": "〉" ; U+232A RIGHT-POINTING ANGLE BRACKET
+                    , "S": "᾿" ; U+1FBF GREEK PSILI
+                    , "R": "῾" ; U+1FFE GREEK DASIA
                     , "": "" }
 
 ; Ligatures and Digraphs
