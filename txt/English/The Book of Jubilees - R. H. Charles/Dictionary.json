@@ -180,10 +180,12 @@
             "Adam",
             "And",
             "Apostasy",
+            "Azûrâ",
             "Âwân"
         ],
         "B": [
             "BOOK",
+            "Barâkî᾿êl",
             "Because",
             "Behold",
             "Beliar",
@@ -201,7 +203,8 @@
         ],
         "D": [
             "Death",
-            "Declare"
+            "Declare",
+            "Dînâh"
         ],
         "E": [
             "Eat",
@@ -269,12 +272,14 @@
             "Moses",
             "Mosesʼ",
             "Mount",
+            "Mûalêlêth",
             "My",
             "Myself"
         ],
         "N": [
             "Noah",
-            "Now"
+            "Now",
+            "Nôâm"
         ],
         "O": [
             "O",
@@ -290,6 +295,7 @@
         ],
         "S": [
             "Sabbath",
+            "Seth",
             "Shem",
             "Sinai",
             "So"
@@ -339,6 +345,7 @@
             "affliction",
             "after",
             "afterwards",
+            "again",
             "against",
             "ages",
             "agreeable",
@@ -373,6 +380,7 @@
             "aside",
             "associated",
             "astray",
+            "at",
             "aught",
             "autumn",
             "awaked",
@@ -380,13 +388,17 @@
             "away"
         ],
         "b": [
+            "bare",
             "be",
             "bearing",
             "bears",
             "beasts",
+            "became",
             "because",
             "been",
             "before",
+            "began",
+            "begat",
             "beginning",
             "behalf",
             "being",
@@ -416,6 +428,7 @@
             "by"
         ],
         "c": [
+            "call",
             "called",
             "came",
             "camp",
@@ -432,10 +445,12 @@
             "chosen",
             "chronological",
             "circumcise",
+            "city",
             "classes",
             "clean",
             "cleanse",
             "cleave",
+            "close",
             "closed",
             "clothed",
             "cloud",
@@ -516,6 +531,7 @@
             "earth",
             "eat",
             "eaten",
+            "eighth",
             "eightieth",
             "eighty",
             "elect",
@@ -656,6 +672,7 @@
             "holy",
             "honey",
             "house",
+            "houses",
             "how",
             "husband"
         ],
@@ -669,6 +686,7 @@
             "individual",
             "inheritance",
             "inscribe",
+            "instead",
             "instructed",
             "instruction",
             "into",
@@ -678,6 +696,7 @@
             "i⸼"
         ],
         "j": [
+            "joyful",
             "jubilee",
             "jubilees",
             "jubileeᵃ",
@@ -743,6 +762,7 @@
             "mount",
             "mountain",
             "mountains",
+            "mourned",
             "mouth",
             "moves",
             "multiply",
@@ -760,6 +780,8 @@
             "new",
             "night",
             "nights",
+            "nine",
+            "ninth",
             "no",
             "nor",
             "not",
@@ -835,6 +857,7 @@
             "put"
         ],
         "r": [
+            "raised",
             "reason",
             "rebellion",
             "rebuilding",
@@ -911,6 +934,7 @@
             "sign",
             "sin",
             "sins",
+            "sister",
             "six",
             "sixteenth",
             "sixth",
@@ -926,6 +950,7 @@
             "snow",
             "so",
             "son",
+            "sons",
             "sorrow",
             "soul",
             "souls",
@@ -966,6 +991,7 @@
             "taught",
             "teach",
             "temple",
+            "tenth",
             "testimony",
             "than",
             "that",
@@ -1092,6 +1118,7 @@
             "yea",
             "year",
             "years",
+            "yet",
             "you",
             "your"
         ],
@@ -1161,6 +1188,7 @@
         "⸼": []
     },
     "errors": [
+        " ‘",
         "\"",
         "'",
         "-",
