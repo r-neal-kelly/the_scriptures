@@ -134,6 +134,7 @@
         "1": [
             "1",
             "10",
+            "12",
             "13",
             "14",
             "15",
@@ -161,7 +162,8 @@
             "3¹"
         ],
         "4": [
-            "4"
+            "4",
+            "4¹"
         ],
         "5": [
             "5"
@@ -173,10 +175,12 @@
             "9"
         ],
         "A": [
+            "Abel",
             "Abraham",
             "Adam",
             "And",
-            "Apostasy"
+            "Apostasy",
+            "Âwân"
         ],
         "B": [
             "BOOK",
@@ -187,13 +191,16 @@
             "But"
         ],
         "C": [
+            "Cain",
             "Captivity",
             "Cf⸼",
             "Come",
             "Creation",
-            "Creator"
+            "Creator",
+            "Cursed"
         ],
         "D": [
+            "Death",
             "Declare"
         ],
         "E": [
@@ -201,12 +208,15 @@
             "Eden",
             "Egypt",
             "Egyptians",
+            "Enoch",
+            "Enos",
             "Eve",
             "Êldâ"
         ],
         "F": [
             "Father",
-            "For"
+            "For",
+            "Four"
         ],
         "G": [
             "Garden",
@@ -217,6 +227,7 @@
             "Godʼs"
         ],
         "H": [
+            "Ham",
             "Hath",
             "He",
             "Him",
@@ -235,21 +246,26 @@
         "J": [
             "JUBILEES",
             "Jacob",
+            "Jared",
             "Jerusalem",
             "Jubilees",
             "Judah"
         ],
         "K": [
+            "Kenan",
             "King"
         ],
         "L": [
+            "Lamech",
             "Law",
             "Let",
             "Levitical",
             "Lord"
         ],
         "M": [
+            "Mahalalel",
             "Me",
+            "Methuselah",
             "Moses",
             "Mosesʼ",
             "Mount",
@@ -257,6 +273,7 @@
             "Myself"
         ],
         "N": [
+            "Noah",
             "Now"
         ],
         "O": [
@@ -273,7 +290,9 @@
         ],
         "S": [
             "Sabbath",
-            "Sinai"
+            "Shem",
+            "Sinai",
+            "So"
         ],
         "T": [
             "THE",
@@ -305,12 +324,15 @@
             "above",
             "abrogate",
             "abysses",
+            "accept",
             "acceptable",
+            "accepted",
             "accomplished",
             "accomplishes",
             "accordance",
             "according",
             "account",
+            "accursed",
             "accuse",
             "actions",
             "acts",
@@ -333,6 +355,7 @@
             "angel",
             "angels",
             "animals",
+            "announce",
             "another",
             "any",
             "anything",
@@ -384,6 +407,7 @@
             "both",
             "bread",
             "bring",
+            "brother",
             "brought",
             "build",
             "built",
@@ -424,6 +448,8 @@
             "commandment",
             "commandments",
             "commands",
+            "committed",
+            "complaining",
             "complete",
             "completed",
             "completion",
@@ -438,15 +464,18 @@
             "created",
             "creation",
             "creatures",
+            "cried",
             "curse",
             "cursed"
         ],
         "d": [
             "darkness",
+            "daughter",
             "dawn",
             "day",
             "days",
             "declare",
+            "declared",
             "deep",
             "defile",
             "defilement",
@@ -509,6 +538,7 @@
             "ever",
             "every",
             "everything",
+            "everywhere",
             "evil",
             "exactly",
             "exodus",
@@ -526,7 +556,9 @@
             "fell",
             "female",
             "festivals",
+            "field",
             "fifth",
+            "fifthᶜ",
             "figleaves",
             "finished",
             "fire",
@@ -550,10 +582,12 @@
             "found",
             "four",
             "fourth",
+            "fourthᵇ",
             "frankincense",
             "from",
             "frost",
             "fruit",
+            "fugitive",
             "fulfil",
             "future"
         ],
@@ -646,6 +680,7 @@
         "j": [
             "jubilee",
             "jubilees",
+            "jubileeᵃ",
             "judgment",
             "judgments"
         ],
@@ -720,6 +755,7 @@
             "names",
             "nations",
             "neck",
+            "neighbour",
             "neither",
             "new",
             "night",
@@ -811,6 +847,7 @@
             "remain",
             "remove",
             "renewed",
+            "reproved",
             "residue",
             "respective",
             "retired",
@@ -828,6 +865,7 @@
         ],
         "s": [
             "sabbaths",
+            "sacred",
             "sacrifice",
             "said",
             "sake",
@@ -878,9 +916,12 @@
             "sixth",
             "sixty",
             "skin",
+            "slain",
             "slay",
             "sleep",
             "slept",
+            "slew",
+            "smites",
             "snare",
             "snow",
             "so",
@@ -973,6 +1014,7 @@
             "touch",
             "touching",
             "transgressing",
+            "treacherously",
             "tree",
             "trees",
             "tribulation",
@@ -998,7 +1040,8 @@
         ],
         "v": [
             "voice",
-            "voices"
+            "voices",
+            "v⸼"
         ],
         "w": [
             "walk",
@@ -1121,6 +1164,8 @@
         "\"",
         "'",
         "-",
-        "Japhet"
+        "Japhet",
+        "iv",
+        "ᵈ"
     ]
 }
