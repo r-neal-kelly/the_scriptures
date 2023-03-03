@@ -167,7 +167,8 @@ var Dictionary_Class;
     Dictionary_Class[Dictionary_Class["KNOWN_WORD"] = 4] = "KNOWN_WORD";
     Dictionary_Class[Dictionary_Class["UNKNOWN_BREAK"] = 5] = "UNKNOWN_BREAK";
     Dictionary_Class[Dictionary_Class["KNOWN_BREAK"] = 6] = "KNOWN_BREAK";
-    Dictionary_Class[Dictionary_Class["KNOWN_ERROR"] = 7] = "KNOWN_ERROR";
+    Dictionary_Class[Dictionary_Class["KNOWN_WORD_ERROR"] = 7] = "KNOWN_WORD_ERROR";
+    Dictionary_Class[Dictionary_Class["KNOWN_BREAK_ERROR"] = 8] = "KNOWN_BREAK_ERROR";
 })(Dictionary_Class || (Dictionary_Class = {}));
 ;
 var Dictionary_Boundary;
@@ -233,8 +234,11 @@ class Dictionary {
                         else if (span.classList.contains(`KNOWN_BREAK`)) {
                             dictionary_class = Dictionary_Class.KNOWN_BREAK;
                         }
-                        else if (span.classList.contains(`KNOWN_ERROR`)) {
-                            dictionary_class = Dictionary_Class.KNOWN_ERROR;
+                        else if (span.classList.contains(`KNOWN_WORD_ERROR`)) {
+                            dictionary_class = Dictionary_Class.KNOWN_WORD_ERROR;
+                        }
+                        else if (span.classList.contains(`KNOWN_BREAK_ERROR`)) {
+                            dictionary_class = Dictionary_Class.KNOWN_BREAK_ERROR;
                         }
                         if (dictionary_class !== Dictionary_Class._NONE_) {
                             const span_index = Array.from(span.parentElement.children).indexOf(span);
@@ -285,7 +289,12 @@ class Dictionary {
                     [Dictionary_Boundary.MIDDLE]: {},
                     [Dictionary_Boundary.END]: {},
                 },
-                errors: [],
+                word_errors: [],
+                break_errors: {
+                    [Dictionary_Boundary.START]: [],
+                    [Dictionary_Boundary.MIDDLE]: [],
+                    [Dictionary_Boundary.END]: [],
+                },
             };
         }
     }
@@ -340,7 +349,7 @@ class Dictionary {
     }
     Add_Word(word) {
         Assert(word.length > 0);
-        Assert(!this.Has_Error(word));
+        Assert(!this.Has_Word_Error(word));
         if (this.data.words[word[0]] == null) {
             this.Add_Letter(word[0]);
             this.data.words[word[0]].push(word);
@@ -368,7 +377,7 @@ class Dictionary {
     }
     Add_Break(break_, boundary) {
         Assert(break_.length > 0);
-        Assert(!this.Has_Error(break_));
+        Assert(!this.Has_Break_Error(break_, boundary));
         if (this.data.breaks[boundary][break_[0]] == null) {
             this.Add_Marker(break_[0]);
             this.data.breaks[boundary][break_[0]].push(break_);
@@ -390,26 +399,43 @@ class Dictionary {
             }
         }
     }
-    Has_Error(error) {
-        Assert(error.length > 0);
-        return this.data.errors.includes(error);
+    Has_Word_Error(word_error) {
+        Assert(word_error.length > 0);
+        return this.data.word_errors.includes(word_error);
     }
-    Add_Error(error) {
-        Assert(error.length > 0);
-        Assert(!this.Has_Word(error));
-        Assert(!this.Has_Break(error, Dictionary_Boundary.START));
-        Assert(!this.Has_Break(error, Dictionary_Boundary.MIDDLE));
-        Assert(!this.Has_Break(error, Dictionary_Boundary.END));
-        if (!this.data.errors.includes(error)) {
-            this.data.errors.push(error);
+    Add_Word_Error(word_error) {
+        Assert(word_error.length > 0);
+        Assert(!this.Has_Word(word_error));
+        if (!this.data.word_errors.includes(word_error)) {
+            this.data.word_errors.push(word_error);
         }
     }
-    Remove_Error(error) {
-        Assert(error.length > 0);
-        const index = this.data.errors.indexOf(error);
+    Remove_Word_Error(word_error) {
+        Assert(word_error.length > 0);
+        const index = this.data.word_errors.indexOf(word_error);
         if (index > -1) {
-            this.data.errors[index] = this.data.errors[this.data.errors.length - 1];
-            this.data.errors.pop();
+            this.data.word_errors[index] = this.data.word_errors[this.data.word_errors.length - 1];
+            this.data.word_errors.pop();
+        }
+    }
+    Has_Break_Error(break_error, boundary) {
+        Assert(break_error.length > 0);
+        return this.data.break_errors[boundary].includes(break_error);
+    }
+    Add_Break_Error(break_error, boundary) {
+        Assert(break_error.length > 0);
+        Assert(!this.Has_Break(break_error, boundary));
+        if (!this.data.break_errors[boundary].includes(break_error)) {
+            this.data.break_errors[boundary].push(break_error);
+        }
+    }
+    Remove_Break_Error(break_error, boundary) {
+        Assert(break_error.length > 0);
+        const index = this.data.break_errors[boundary].indexOf(break_error);
+        if (index > -1) {
+            this.data.break_errors[boundary][index] =
+                this.data.break_errors[boundary][this.data.break_errors[boundary].length - 1];
+            this.data.break_errors[boundary].pop();
         }
     }
     Treat(text) {
@@ -686,19 +712,24 @@ class Dictionary {
                 if (part.has_error) {
                     command_classes += ` ERROR`;
                 }
+                const boundary = (idx === first_part ? Dictionary_Boundary.START : (idx === last_part ? Dictionary_Boundary.END :
+                    Dictionary_Boundary.MIDDLE));
                 if (part.type === Type.POINT) {
-                    if (this.data.errors.includes(part.subtext)) {
-                        inner_html += `<span class="KNOWN_ERROR${command_classes}">${Escape_Text(part.subtext)}</span>`;
+                    if (this.Has_Word_Error(part.subtext)) {
+                        inner_html += `<span class="KNOWN_WORD_ERROR${command_classes}">${Escape_Text(part.subtext)}</span>`;
+                    }
+                    else if (this.Has_Break_Error(part.subtext, boundary)) {
+                        inner_html += `<span class="KNOWN_BREAK_ERROR${command_classes}">${Escape_Text(part.subtext)}</span>`;
                     }
                     else {
                         inner_html += `<span class="UNKNOWN_POINT${command_classes}">${Escape_Text(part.subtext)}</span>`;
                     }
                 }
                 else if (part.type === Type.LETTERS) {
-                    if (this.data.errors.includes(part.subtext)) {
-                        inner_html += `<span class="KNOWN_ERROR${command_classes}">${Escape_Text(part.subtext)}</span>`;
+                    if (this.Has_Word_Error(part.subtext)) {
+                        inner_html += `<span class="KNOWN_WORD_ERROR${command_classes}">${Escape_Text(part.subtext)}</span>`;
                     }
-                    else if (this.data.words[part.subtext[0]].includes(part.subtext)) {
+                    else if (this.Has_Word(part.subtext)) {
                         inner_html += `<span class="KNOWN_WORD${command_classes}">${Escape_Text(part.subtext)}</span>`;
                     }
                     else {
@@ -706,34 +737,14 @@ class Dictionary {
                     }
                 }
                 else if (part.type === Type.MARKERS) {
-                    if (this.data.errors.includes(part.subtext)) {
-                        inner_html += `<span class="KNOWN_ERROR${command_classes}">${Escape_Text(part.subtext)}</span>`;
+                    if (this.Has_Break_Error(part.subtext, boundary)) {
+                        inner_html += `<span class="KNOWN_BREAK_ERROR${command_classes}">${Escape_Text(part.subtext)}</span>`;
+                    }
+                    else if (this.Has_Break(part.subtext, boundary)) {
+                        inner_html += `<span class="KNOWN_BREAK${command_classes}">${Escape_Text(part.subtext)}</span>`;
                     }
                     else {
-                        if (idx === first_part) {
-                            if (this.data.breaks[Dictionary_Boundary.START][part.subtext[0]].includes(part.subtext)) {
-                                inner_html += `<span class="KNOWN_BREAK${command_classes}">${Escape_Text(part.subtext)}</span>`;
-                            }
-                            else {
-                                inner_html += `<span class="UNKNOWN_BREAK${command_classes}">${Escape_Text(part.subtext)}</span>`;
-                            }
-                        }
-                        else if (idx === last_part) {
-                            if (this.data.breaks[Dictionary_Boundary.END][part.subtext[0]].includes(part.subtext)) {
-                                inner_html += `<span class="KNOWN_BREAK${command_classes}">${Escape_Text(part.subtext)}</span>`;
-                            }
-                            else {
-                                inner_html += `<span class="UNKNOWN_BREAK${command_classes}">${Escape_Text(part.subtext)}</span>`;
-                            }
-                        }
-                        else {
-                            if (this.data.breaks[Dictionary_Boundary.MIDDLE][part.subtext[0]].includes(part.subtext)) {
-                                inner_html += `<span class="KNOWN_BREAK${command_classes}">${Escape_Text(part.subtext)}</span>`;
-                            }
-                            else {
-                                inner_html += `<span class="UNKNOWN_BREAK${command_classes}">${Escape_Text(part.subtext)}</span>`;
-                            }
-                        }
+                        inner_html += `<span class="UNKNOWN_BREAK${command_classes}">${Escape_Text(part.subtext)}</span>`;
                     }
                 }
                 else {
@@ -787,7 +798,10 @@ class Dictionary {
             }
         }
         this.data.breaks = sorted_breaks;
-        this.data.errors.sort();
+        this.data.word_errors.sort();
+        for (const boundary of [Dictionary_Boundary.START, Dictionary_Boundary.MIDDLE, Dictionary_Boundary.END]) {
+            this.data.break_errors[boundary].sort();
+        }
         return JSON.stringify(this.data, null, 4);
     }
 }
@@ -1003,8 +1017,8 @@ class Line {
                             this.Editor().Dictionary().Remove_Word(selected.text);
                             this.Editor().Touch();
                         }
-                        else if (selected.class === Dictionary_Class.KNOWN_ERROR) {
-                            this.Editor().Dictionary().Remove_Error(selected.text);
+                        else if (selected.class === Dictionary_Class.KNOWN_WORD_ERROR) {
+                            this.Editor().Dictionary().Remove_Word_Error(selected.text);
                             this.Editor().Dictionary().Add_Word(selected.text);
                             this.Editor().Touch();
                         }
@@ -1024,8 +1038,8 @@ class Line {
                             this.Editor().Dictionary().Remove_Break(selected.text, selected.boundary);
                             this.Editor().Touch();
                         }
-                        else if (selected.class === Dictionary_Class.KNOWN_ERROR) {
-                            this.Editor().Dictionary().Remove_Error(selected.text);
+                        else if (selected.class === Dictionary_Class.KNOWN_BREAK_ERROR) {
+                            this.Editor().Dictionary().Remove_Break_Error(selected.text, selected.boundary);
                             this.Editor().Dictionary().Add_Break(selected.text, selected.boundary);
                             this.Editor().Touch();
                         }
@@ -1037,30 +1051,80 @@ class Line {
                     event.preventDefault();
                     const selected = Dictionary.Selected_Entry();
                     if (selected) {
-                        if (selected.class === Dictionary_Class.UNKNOWN_POINT) {
-                            this.Editor().Dictionary().Add_Error(selected.text);
-                            this.Editor().Touch();
-                        }
-                        else if (selected.class === Dictionary_Class.UNKNOWN_WORD) {
-                            this.Editor().Dictionary().Add_Error(selected.text);
+                        if (selected.class === Dictionary_Class.UNKNOWN_WORD) {
+                            this.Editor().Dictionary().Add_Word_Error(selected.text);
                             this.Editor().Touch();
                         }
                         else if (selected.class === Dictionary_Class.KNOWN_WORD) {
                             this.Editor().Dictionary().Remove_Word(selected.text);
-                            this.Editor().Dictionary().Add_Error(selected.text);
+                            this.Editor().Dictionary().Add_Word_Error(selected.text);
                             this.Editor().Touch();
                         }
                         else if (selected.class === Dictionary_Class.UNKNOWN_BREAK) {
-                            this.Editor().Dictionary().Add_Error(selected.text);
+                            this.Editor().Dictionary().Add_Break_Error(selected.text, selected.boundary);
                             this.Editor().Touch();
                         }
                         else if (selected.class === Dictionary_Class.KNOWN_BREAK) {
                             this.Editor().Dictionary().Remove_Break(selected.text, selected.boundary);
-                            this.Editor().Dictionary().Add_Error(selected.text);
+                            this.Editor().Dictionary().Add_Break_Error(selected.text, selected.boundary);
                             this.Editor().Touch();
                         }
-                        else if (selected.class === Dictionary_Class.KNOWN_ERROR) {
-                            this.Editor().Dictionary().Remove_Error(selected.text);
+                        else if (selected.class === Dictionary_Class.KNOWN_WORD_ERROR) {
+                            this.Editor().Dictionary().Remove_Word_Error(selected.text);
+                            this.Editor().Touch();
+                        }
+                        else if (selected.class === Dictionary_Class.KNOWN_BREAK_ERROR) {
+                            this.Editor().Dictionary().Remove_Break_Error(selected.text, selected.boundary);
+                            this.Editor().Touch();
+                        }
+                    }
+                }
+            }
+            else if (event.key === `Pause`) {
+                if (this.Editor().Is_Meta_Key_Active()) {
+                    event.preventDefault();
+                    const selected = Dictionary.Selected_Entry();
+                    if (selected) {
+                        if (selected.class === Dictionary_Class.UNKNOWN_POINT) {
+                            this.Editor().Dictionary().Add_Word_Error(selected.text);
+                            this.Editor().Touch();
+                        }
+                        else if (selected.class === Dictionary_Class.UNKNOWN_WORD) {
+                            this.Editor().Dictionary().Add_Word_Error(selected.text);
+                            this.Editor().Touch();
+                        }
+                        else if (selected.class === Dictionary_Class.KNOWN_WORD) {
+                            this.Editor().Dictionary().Remove_Word(selected.text);
+                            this.Editor().Dictionary().Add_Word_Error(selected.text);
+                            this.Editor().Touch();
+                        }
+                        else if (selected.class === Dictionary_Class.KNOWN_WORD_ERROR) {
+                            this.Editor().Dictionary().Remove_Word_Error(selected.text);
+                            this.Editor().Touch();
+                        }
+                    }
+                }
+            }
+            else if (event.key === `Insert`) {
+                if (this.Editor().Is_Meta_Key_Active()) {
+                    event.preventDefault();
+                    const selected = Dictionary.Selected_Entry();
+                    if (selected) {
+                        if (selected.class === Dictionary_Class.UNKNOWN_POINT) {
+                            this.Editor().Dictionary().Add_Break_Error(selected.text, selected.boundary);
+                            this.Editor().Touch();
+                        }
+                        else if (selected.class === Dictionary_Class.UNKNOWN_BREAK) {
+                            this.Editor().Dictionary().Add_Break_Error(selected.text, selected.boundary);
+                            this.Editor().Touch();
+                        }
+                        else if (selected.class === Dictionary_Class.KNOWN_BREAK) {
+                            this.Editor().Dictionary().Remove_Break(selected.text, selected.boundary);
+                            this.Editor().Dictionary().Add_Break_Error(selected.text, selected.boundary);
+                            this.Editor().Touch();
+                        }
+                        else if (selected.class === Dictionary_Class.KNOWN_BREAK_ERROR) {
+                            this.Editor().Dictionary().Remove_Break_Error(selected.text, selected.boundary);
                             this.Editor().Touch();
                         }
                     }
@@ -1912,7 +1976,15 @@ function Style() {
                     overflow-wrap: normal;
                 }
 
-                .KNOWN_ERROR {
+                .KNOWN_WORD_ERROR {
+                    border-width: 0 0 2px 0;
+                    border-style: solid;
+                    border-color: #e767c3;
+
+                    overflow-wrap: normal;
+                }
+
+                .KNOWN_BREAK_ERROR {
                     border-width: 0 0 2px 0;
                     border-style: solid;
                     border-color: #e767c3;

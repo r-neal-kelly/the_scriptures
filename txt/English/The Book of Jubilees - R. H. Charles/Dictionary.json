@@ -1355,13 +1355,17 @@
             "〉": []
         }
     },
-    "errors": [
-        " ‘",
+    "word_errors": [
         "\"",
         "'",
         "-",
         "Japhet",
         "iv",
         "ᵈ"
-    ]
+    ],
+    "break_errors": {
+        "START": [],
+        "MIDDLE": [],
+        "END": []
+    }
 }
