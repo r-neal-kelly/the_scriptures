@@ -1323,6 +1323,12 @@ class Editor {
                     this.Touch();
                 }
             }
+            else if (keyboard_event.key === `\``) {
+                if (this.Is_Meta_Key_Active()) {
+                    keyboard_event.preventDefault();
+                    this.Highlight_First_Unknown();
+                }
+            }
         }.bind(this));
         this.element.addEventListener(`keyup`, function (event) {
             const keyboard_event = event;
@@ -1868,6 +1874,77 @@ class Editor {
     }
     Is_In_Point_Mode() {
         return this.is_in_point_mode;
+    }
+    Highlight_First_Unknown() {
+        for (const line of this.lines) {
+            for (const child of line.Element().children) {
+                for (const class_name of child.classList.values()) {
+                    if (/UNKNOWN/.test(class_name)) {
+                        line.Element().focus();
+                        const selection = document.getSelection();
+                        selection.getRangeAt(0).setStart(child, 0);
+                        selection.getRangeAt(0).setEnd(child, 1);
+                        return;
+                    }
+                }
+            }
+        }
+        this.lines[0].Element().focus();
+        const selection = document.getSelection();
+        selection.collapse(this.lines[0].Element(), 0);
+    }
+    Display_Stats() {
+        const modal = document.createElement(`div`);
+        modal.setAttribute(`style`, `
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+
+                position: absolute;
+                left: 0;
+                top: 0;
+                z-index: 1;
+
+                width: 100%;
+                height: 100%;
+
+                background-color: rgba(0, 0, 0, 0.7);
+
+                font-size: 18px;
+                color: #E0ECFF;
+            `);
+        const wrapper = document.createElement(`div`);
+        wrapper.setAttribute(`style`, `
+                width: 67%;
+                margin: 2px;
+                padding: 7px;
+
+                background-color: #0f1318;
+
+                text-align: center;
+            `);
+        const okay_button = document.createElement(`div`);
+        okay_button.setAttribute(`style`, `
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            border-width: 2px;
+            border-style: solid;
+            border-color: #3B3A32;
+
+            cursor: pointer;
+            user-select: none;
+        `);
+        okay_button.innerHTML = `<div>Okay</div>`;
+        okay_button.addEventListener(`click`, function (event) {
+            document.body.removeChild(modal);
+            this.Line(0).Element().focus();
+        }.bind(this));
+        wrapper.appendChild(okay_button);
+        modal.appendChild(wrapper);
+        document.body.appendChild(modal);
     }
 }
 function Style() {
