@@ -201,7 +201,6 @@
             "Four"
         ],
         "G": [
-            "Garden",
             "Gentiles",
             "Gen⸼",
             "Go",
@@ -231,7 +230,6 @@
             "Japheth",
             "Jared",
             "Jerusalem",
-            "Jubilees",
             "Judah"
         ],
         "K": [
@@ -251,7 +249,6 @@
             "Methuselah",
             "Moses",
             "Mosesʼ",
-            "Mount",
             "Mûalêlêth",
             "My",
             "Myself"
@@ -614,7 +611,6 @@
         ],
         "g": [
             "galbanum",
-            "garden",
             "gates",
             "gather",
             "gathered",
@@ -650,7 +646,6 @@
             "hast",
             "hath",
             "have",
-            "he",
             "head",
             "heads",
             "healing",
@@ -669,9 +664,7 @@
             "hide",
             "high",
             "highest",
-            "him",
             "himself",
-            "his",
             "history",
             "hoar",
             "holier",
@@ -685,7 +678,6 @@
             "husband"
         ],
         "i": [
-            "if",
             "iii⸼",
             "ii⸼",
             "image",
@@ -708,7 +700,6 @@
         ],
         "j": [
             "joyful",
-            "jubilee",
             "jubilees",
             "jubileeᵃ",
             "judgment",
@@ -764,7 +755,6 @@
             "many",
             "may",
             "mayst",
-            "me",
             "men",
             "mercy",
             "midst",
@@ -785,8 +775,7 @@
             "mourned",
             "mouth",
             "moves",
-            "multiply",
-            "my"
+            "multiply"
         ],
         "n": [
             "naked",
@@ -911,7 +900,6 @@
             "rule"
         ],
         "s": [
-            "sabbaths",
             "sacred",
             "sacrifice",
             "said",
@@ -1049,7 +1037,6 @@
             "thistles",
             "thorns",
             "those",
-            "thou",
             "thoughts",
             "thousand",
             "three",
@@ -1057,7 +1044,6 @@
             "throughout",
             "thunder",
             "thus",
-            "thy",
             "thyself",
             "till",
             "tillage",
@@ -1097,8 +1083,7 @@
             "up",
             "upon",
             "upright",
-            "uprightness",
-            "us"
+            "uprightness"
         ],
         "v": [
             "vision",
@@ -1269,8 +1254,7 @@
             ],
             "(": [],
             ")": [
-                ") ",
-                "), "
+                ") "
             ],
             ",": [
                 ", ",
@@ -1280,7 +1264,6 @@
                 ",† "
             ],
             ".": [
-                ". ",
                 ".’ "
             ],
             ":": [
@@ -1358,17 +1341,11 @@
     "word_errors": [
         "\"",
         "'",
-        "-",
-        "Japhet",
-        "iv",
-        "ᵈ"
+        "-"
     ],
     "break_errors": {
         "START": [],
-        "MIDDLE": [
-            " ‘",
-            ","
-        ],
+        "MIDDLE": [],
         "END": []
     }
 }
