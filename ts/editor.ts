@@ -1799,6 +1799,12 @@ class Editor
 
                         this.Highlight_First_Unknown();
                     }
+                } else if (keyboard_event.key === `~`) {
+                    if (this.Is_Meta_Key_Active()) {
+                        keyboard_event.preventDefault();
+
+                        this.Highlight_Next_Error();
+                    }
                 }
             }.bind(this),
         );
@@ -2785,6 +2791,103 @@ class Editor
         this.lines[0].Element().focus();
         const selection: Selection = document.getSelection() as Selection;
         selection.collapse(this.lines[0].Element(), 0);
+    }
+
+    Highlight_Next_Error():
+        void
+    {
+        const selected_line_idx: number | null = this.Focused_Line_Index();
+        const selection: Selection | null = document.getSelection();
+        if (
+            selected_line_idx !== null &&
+            selection &&
+            !selection.isCollapsed &&
+            selection.anchorNode &&
+            selection.focusNode &&
+            selection.anchorNode === selection.focusNode &&
+            (
+                (selection.anchorOffset === 0 && selection.focusOffset === 1) ||
+                (selection.anchorOffset === 1 && selection.focusOffset === 0)
+            )
+        ) {
+            // we have a highlighted error command, so we look for the next one in this line and the ones that follow
+            const selected_line_element: Element = this.lines[selected_line_idx].Element();
+            const selected_child_idx: number =
+                Array.from(selected_line_element.children).indexOf(selection.anchorNode as Element);
+            if (selected_child_idx > -1) {
+                const selected_child_element: Element = selected_line_element.children[selected_child_idx];
+                const next_error_element: Element | null =
+                    (function (
+                        this: Editor,
+                    ):
+                        Element | null
+                    {
+                        let line_idx: number = selected_line_idx;
+                        let child_idx: number = selected_child_idx + 1;
+                        while (true) {
+                            const line: Element = this.lines[line_idx].Element();
+                            for (let end = line.children.length; child_idx < end; child_idx += 1
+                            ) {
+                                const child: Element = line.children[child_idx];
+                                if (child.textContent === `｟err｠`) {
+                                    return child;
+                                } else if (child === selected_child_element) {
+                                    return null;
+                                }
+                            }
+
+                            if (line_idx === this.lines.length - 1) {
+                                line_idx = 0;
+                            } else {
+                                line_idx += 1;
+                            }
+                            child_idx = 0;
+                        }
+                    }.bind(this))();
+
+                if (next_error_element) {
+                    selection.getRangeAt(0).setStart(next_error_element, 0);
+                    selection.getRangeAt(0).setEnd(next_error_element, 1);
+                }
+            }
+        } else {
+            // we have to look for the first error and highlight it
+            for (let line of this.lines) {
+                for (let child of line.Element().children) {
+                    if (child.textContent === `｟err｠`) {
+                        line.Element().focus();
+
+                        const selection: Selection = document.getSelection() as Selection;
+                        selection.getRangeAt(0).setStart(child, 0);
+                        selection.getRangeAt(0).setEnd(child, 1);
+                        return;
+                    }
+                }
+            }
+        }
+    }
+
+    Focused_Line_Index():
+        number | null
+    {
+        const selection: Selection | null = document.getSelection();
+        if (
+            selection &&
+            (selection.anchorNode || selection.focusNode)
+        ) {
+            for (let idx = 0, end = this.lines.length; idx < end; idx += 1) {
+                if (
+                    this.lines[idx].Element().contains(selection.anchorNode) ||
+                    this.lines[idx].Element().contains(selection.focusNode)
+                ) {
+                    return idx;
+                }
+            }
+
+            return null;
+        } else {
+            return null;
+        }
     }
 
     Display_Stats():
