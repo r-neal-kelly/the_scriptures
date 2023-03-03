@@ -1365,7 +1365,10 @@
     ],
     "break_errors": {
         "START": [],
-        "MIDDLE": [],
+        "MIDDLE": [
+            " ‘",
+            ","
+        ],
         "END": []
     }
 }
