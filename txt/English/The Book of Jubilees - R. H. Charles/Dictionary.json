@@ -230,6 +230,7 @@
             "Japheth",
             "Jared",
             "Jerusalem",
+            "Jubilees",
             "Judah"
         ],
         "K": [
@@ -249,6 +250,7 @@
             "Methuselah",
             "Moses",
             "Mosesʼ",
+            "Mount",
             "Mûalêlêth",
             "My",
             "Myself"
@@ -646,6 +648,7 @@
             "hast",
             "hath",
             "have",
+            "he",
             "head",
             "heads",
             "healing",
@@ -664,7 +667,9 @@
             "hide",
             "high",
             "highest",
+            "him",
             "himself",
+            "his",
             "history",
             "hoar",
             "holier",
@@ -775,7 +780,8 @@
             "mourned",
             "mouth",
             "moves",
-            "multiply"
+            "multiply",
+            "my"
         ],
         "n": [
             "naked",
@@ -1037,6 +1043,7 @@
             "thistles",
             "thorns",
             "those",
+            "thou",
             "thoughts",
             "thousand",
             "three",
@@ -1246,6 +1253,7 @@
         },
         "MIDDLE": {
             " ": [
+                " ",
                 " (",
                 " [",
                 " †",
@@ -1253,7 +1261,8 @@
             ],
             "(": [],
             ")": [
-                ") "
+                ") ",
+                "), "
             ],
             ",": [
                 ", ",
@@ -1263,9 +1272,11 @@
                 ",† "
             ],
             ".": [
+                ". ",
                 ".’ "
             ],
             ":": [
+                ": ",
                 ": ‘"
             ],
             ";": [
