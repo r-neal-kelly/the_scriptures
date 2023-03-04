@@ -154,6 +154,7 @@
             "Adam",
             "And",
             "Apostasy",
+            "Ararat",
             "At",
             "Atonement",
             "Azûrâ",
@@ -203,6 +204,7 @@
         ],
         "F": [
             "Father",
+            "Fifteen",
             "Final",
             "For",
             "Four"
@@ -251,7 +253,8 @@
             "Law",
             "Let",
             "Levitical",
-            "Lord"
+            "Lord",
+            "Lûbâr"
         ],
         "M": [
             "Mahalalel",
@@ -345,6 +348,7 @@
             "against",
             "ages",
             "agreeable",
+            "air",
             "alike",
             "all",
             "alone",
@@ -499,6 +503,7 @@
             "creature",
             "creatures",
             "cried",
+            "cubits",
             "curse",
             "cursed"
         ],
@@ -523,6 +528,7 @@
             "deluge",
             "demons",
             "depart",
+            "departed",
             "depth",
             "depths",
             "descend",
@@ -537,6 +543,7 @@
             "did",
             "die",
             "died",
+            "disappeared",
             "disclose",
             "distinct",
             "divide",
@@ -584,6 +591,7 @@
             "eternally",
             "eternity",
             "even",
+            "evening",
             "eventide",
             "events",
             "ever",
@@ -616,6 +624,7 @@
             "fifteenth",
             "fifth",
             "fifthᶜ",
+            "fifty",
             "figleaves",
             "finished",
             "fire",
@@ -640,16 +649,19 @@
             "forth",
             "forty",
             "found",
+            "fountains",
             "four",
             "fourteenth",
             "fourth",
             "fourthᵇ",
+            "fowls",
             "frankincense",
             "from",
             "frost",
             "fruit",
             "fugitive",
             "fulfil",
+            "full",
             "future"
         ],
         "g": [
@@ -793,6 +805,7 @@
             "left",
             "lest",
             "let",
+            "lift",
             "lifted",
             "light",
             "lightning",
@@ -815,6 +828,7 @@
             "mankind",
             "manner",
             "many",
+            "manʼs",
             "marry",
             "may",
             "mayst",
@@ -838,7 +852,11 @@
             "mountains",
             "mourned",
             "mouth",
+            "mouths",
+            "moved",
             "moves",
+            "moveth",
+            "moving",
             "multiply",
             "my"
         ],
@@ -919,6 +937,7 @@
             "plants",
             "pleasant",
             "pleasure",
+            "pour",
             "power",
             "powers",
             "praised",
@@ -928,6 +947,7 @@
             "prepared",
             "prescribed",
             "presence",
+            "prevailed",
             "prey",
             "profanes",
             "promise",
@@ -959,6 +979,9 @@
             "reproved",
             "residue",
             "respective",
+            "respects",
+            "rested",
+            "restrained",
             "retired",
             "return",
             "returnest",
@@ -966,6 +989,7 @@
             "ribs",
             "righteous",
             "righteousness",
+            "rise",
             "rising",
             "rivers",
             "root",
@@ -984,6 +1008,8 @@
             "sanctify",
             "sanctuary",
             "satisfied",
+            "save",
+            "saved",
             "savour",
             "saw",
             "say",
@@ -1137,6 +1163,7 @@
             "tongue",
             "took",
             "top",
+            "tops",
             "touch",
             "touching",
             "transgressing",
@@ -1172,6 +1199,7 @@
         ],
         "v": [
             "viii⸼",
+            "visible",
             "vision",
             "voice",
             "voices",
@@ -1210,6 +1238,7 @@
             "winter",
             "wisdom",
             "with",
+            "without",
             "witness",
             "witnesses",
             "wives",
@@ -1404,7 +1433,9 @@
                 ")",
                 ")."
             ],
-            ",": [],
+            ",": [
+                ","
+            ],
             ".": [
                 ".",
                 ". …",
@@ -1412,7 +1443,9 @@
                 ".]",
                 ".’"
             ],
-            ":": [],
+            ":": [
+                ":"
+            ],
             ";": [],
             "?": [
                 "?’"
