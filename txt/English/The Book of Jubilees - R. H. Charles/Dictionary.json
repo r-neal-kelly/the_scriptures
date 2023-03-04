@@ -1356,11 +1356,19 @@
     "word_errors": [
         "\"",
         "'",
-        "-"
+        "-",
+        "Japhet",
+        "if",
+        "iv",
+        "sabbaths",
+        "ᵈ"
     ],
     "break_errors": {
         "START": [],
-        "MIDDLE": [],
+        "MIDDLE": [
+            " ‘",
+            ","
+        ],
         "END": []
     }
 }
