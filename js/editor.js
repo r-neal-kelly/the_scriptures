@@ -1939,6 +1939,7 @@ class Editor {
                     }
                 }.bind(this))();
                 if (next_error_element) {
+                    next_error_element.parentElement.focus();
                     selection.getRangeAt(0).setStart(next_error_element, 0);
                     selection.getRangeAt(0).setEnd(next_error_element, 1);
                 }
