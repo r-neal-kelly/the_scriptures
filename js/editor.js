@@ -448,6 +448,7 @@ class Dictionary {
             Type[Type["COMMAND"] = 3] = "COMMAND";
         })(Type || (Type = {}));
         ;
+        const is_centered = /^｟cen｠/.test(text);
         const parts = [];
         let current_start_index = 0;
         let current_type = Type._NONE_;
@@ -471,8 +472,8 @@ class Dictionary {
                     has_small_caps: false,
                     has_error: false,
                 });
-                current_start_index = idx + 3;
-                idx += 3;
+                current_start_index = idx + `｟i｠`.length;
+                idx += `｟i｠`.length;
             }
             else if (/^｟\/i｠/.test(maybe_command)) {
                 has_italic = false;
@@ -485,8 +486,8 @@ class Dictionary {
                     has_small_caps: false,
                     has_error: false,
                 });
-                current_start_index = idx + 4;
-                idx += 4;
+                current_start_index = idx + `｟/i｠`.length;
+                idx += `｟/i｠`.length;
             }
             else if (/^｟b｠/.test(maybe_command)) {
                 has_bold = true;
@@ -499,8 +500,8 @@ class Dictionary {
                     has_small_caps: false,
                     has_error: false,
                 });
-                current_start_index = idx + 3;
-                idx += 3;
+                current_start_index = idx + `｟b｠`.length;
+                idx += `｟b｠`.length;
             }
             else if (/^｟\/b｠/.test(maybe_command)) {
                 has_bold = false;
@@ -513,8 +514,8 @@ class Dictionary {
                     has_small_caps: false,
                     has_error: false,
                 });
-                current_start_index = idx + 4;
-                idx += 4;
+                current_start_index = idx + `｟/b｠`.length;
+                idx += `｟/b｠`.length;
             }
             else if (/^｟u｠/.test(maybe_command)) {
                 has_underline = true;
@@ -527,8 +528,8 @@ class Dictionary {
                     has_small_caps: false,
                     has_error: false,
                 });
-                current_start_index = idx + 3;
-                idx += 3;
+                current_start_index = idx + `｟u｠`.length;
+                idx += `｟u｠`.length;
             }
             else if (/^｟\/u｠/.test(maybe_command)) {
                 has_underline = false;
@@ -541,8 +542,8 @@ class Dictionary {
                     has_small_caps: false,
                     has_error: false,
                 });
-                current_start_index = idx + 4;
-                idx += 4;
+                current_start_index = idx + `｟/u｠`.length;
+                idx += `｟/u｠`.length;
             }
             else if (/^｟sc｠/.test(maybe_command)) {
                 has_small_caps = true;
@@ -555,8 +556,8 @@ class Dictionary {
                     has_small_caps: false,
                     has_error: false,
                 });
-                current_start_index = idx + 4;
-                idx += 4;
+                current_start_index = idx + `｟sc｠`.length;
+                idx += `｟sc｠`.length;
             }
             else if (/^｟\/sc｠/.test(maybe_command)) {
                 has_small_caps = false;
@@ -569,8 +570,8 @@ class Dictionary {
                     has_small_caps: false,
                     has_error: false,
                 });
-                current_start_index = idx + 5;
-                idx += 5;
+                current_start_index = idx + `｟/sc｠`.length;
+                idx += `｟/sc｠`.length;
             }
             else if (/^｟err｠/.test(maybe_command)) {
                 has_error = true;
@@ -583,8 +584,8 @@ class Dictionary {
                     has_small_caps: false,
                     has_error: false,
                 });
-                current_start_index = idx + 5;
-                idx += 5;
+                current_start_index = idx + `｟err｠`.length;
+                idx += `｟err｠`.length;
             }
             else if (/^｟\/err｠/.test(maybe_command)) {
                 has_error = false;
@@ -597,8 +598,8 @@ class Dictionary {
                     has_small_caps: false,
                     has_error: false,
                 });
-                current_start_index = idx + 6;
-                idx += 6;
+                current_start_index = idx + `｟/err｠`.length;
+                idx += `｟/err｠`.length;
             }
             else if (/^｟in｠/.test(maybe_command)) {
                 parts.push({
@@ -610,8 +611,21 @@ class Dictionary {
                     has_small_caps: false,
                     has_error: false,
                 });
-                current_start_index = idx + 4;
-                idx += 4;
+                current_start_index = idx + `｟in｠`.length;
+                idx += `｟in｠`.length;
+            }
+            else if (/^｟cen｠/.test(maybe_command)) {
+                parts.push({
+                    subtext: `｟cen｠`,
+                    type: Type.COMMAND,
+                    has_italic: false,
+                    has_bold: false,
+                    has_underline: false,
+                    has_small_caps: false,
+                    has_error: false,
+                });
+                current_start_index = idx + `｟cen｠`.length;
+                idx += `｟cen｠`.length;
             }
             else {
                 if (this.data.letters.includes(text[idx])) {
@@ -752,7 +766,10 @@ class Dictionary {
                 }
             }
         }
-        return inner_html;
+        return ({
+            html: inner_html,
+            is_centered: is_centered,
+        });
     }
     Treat_As_Points(text) {
         let inner_html = ``;
@@ -814,6 +831,10 @@ class Line {
         this.element.setAttribute(`contentEditable`, `true`);
         this.element.setAttribute(`spellcheck`, `false`);
         this.element.setAttribute(`style`, `
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: start;
+
                 width: 100%;
                 padding: 2px;
 
@@ -1219,7 +1240,14 @@ class Line {
             this.element.innerHTML = this.Editor().Dictionary().Treat_As_Points(text);
         }
         else {
-            this.element.innerHTML = this.Editor().Dictionary().Treat(text);
+            const treatment = this.Editor().Dictionary().Treat(text);
+            this.element.innerHTML = treatment.html;
+            if (treatment.is_centered) {
+                this.element.style.justifyContent = `center`;
+            }
+            else {
+                this.element.style.justifyContent = `start`;
+            }
         }
     }
     Touch() {

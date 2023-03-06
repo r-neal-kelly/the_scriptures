@@ -267,6 +267,11 @@ type Dictionary_Entry = {
     boundary: Dictionary_Boundary,
 };
 
+type Dictionary_Treatment = {
+    html: string,
+    is_centered: boolean,
+};
+
 class Dictionary
 {
     static First_Entry_Index(
@@ -674,7 +679,7 @@ class Dictionary
     Treat(
         text: string,
     ):
-        string
+        Dictionary_Treatment
     {
         enum Type
         {
@@ -696,6 +701,7 @@ class Dictionary
             has_error: boolean,
         };
 
+        const is_centered: boolean = /^｟cen｠/.test(text);
         const parts: Array<Part> = [];
 
         let current_start_index: number = 0;
@@ -723,9 +729,9 @@ class Dictionary
                         has_error: false,
                     },
                 );
-                current_start_index = idx + 3;
+                current_start_index = idx + `｟i｠`.length;
 
-                idx += 3;
+                idx += `｟i｠`.length;
             } else if (/^｟\/i｠/.test(maybe_command)) {
                 has_italic = false;
 
@@ -740,9 +746,9 @@ class Dictionary
                         has_error: false,
                     },
                 );
-                current_start_index = idx + 4;
+                current_start_index = idx + `｟/i｠`.length;
 
-                idx += 4;
+                idx += `｟/i｠`.length;
             } else if (/^｟b｠/.test(maybe_command)) {
                 has_bold = true;
 
@@ -757,9 +763,9 @@ class Dictionary
                         has_error: false,
                     },
                 );
-                current_start_index = idx + 3;
+                current_start_index = idx + `｟b｠`.length;
 
-                idx += 3;
+                idx += `｟b｠`.length;
             } else if (/^｟\/b｠/.test(maybe_command)) {
                 has_bold = false;
 
@@ -774,9 +780,9 @@ class Dictionary
                         has_error: false,
                     },
                 );
-                current_start_index = idx + 4;
+                current_start_index = idx + `｟/b｠`.length;
 
-                idx += 4;
+                idx += `｟/b｠`.length;
             } else if (/^｟u｠/.test(maybe_command)) {
                 has_underline = true;
 
@@ -791,9 +797,9 @@ class Dictionary
                         has_error: false,
                     },
                 );
-                current_start_index = idx + 3;
+                current_start_index = idx + `｟u｠`.length;
 
-                idx += 3;
+                idx += `｟u｠`.length;
             } else if (/^｟\/u｠/.test(maybe_command)) {
                 has_underline = false;
 
@@ -808,9 +814,9 @@ class Dictionary
                         has_error: false,
                     },
                 );
-                current_start_index = idx + 4;
+                current_start_index = idx + `｟/u｠`.length;
 
-                idx += 4;
+                idx += `｟/u｠`.length;
             } else if (/^｟sc｠/.test(maybe_command)) {
                 has_small_caps = true;
 
@@ -825,9 +831,9 @@ class Dictionary
                         has_error: false,
                     },
                 );
-                current_start_index = idx + 4;
+                current_start_index = idx + `｟sc｠`.length;
 
-                idx += 4;
+                idx += `｟sc｠`.length;
             } else if (/^｟\/sc｠/.test(maybe_command)) {
                 has_small_caps = false;
 
@@ -842,9 +848,9 @@ class Dictionary
                         has_error: false,
                     },
                 );
-                current_start_index = idx + 5;
+                current_start_index = idx + `｟/sc｠`.length;
 
-                idx += 5;
+                idx += `｟/sc｠`.length;
             } else if (/^｟err｠/.test(maybe_command)) {
                 has_error = true;
 
@@ -859,9 +865,9 @@ class Dictionary
                         has_error: false,
                     },
                 );
-                current_start_index = idx + 5;
+                current_start_index = idx + `｟err｠`.length;
 
-                idx += 5;
+                idx += `｟err｠`.length;
             } else if (/^｟\/err｠/.test(maybe_command)) {
                 has_error = false;
 
@@ -876,9 +882,9 @@ class Dictionary
                         has_error: false,
                     },
                 );
-                current_start_index = idx + 6;
+                current_start_index = idx + `｟/err｠`.length;
 
-                idx += 6;
+                idx += `｟/err｠`.length;
             } else if (/^｟in｠/.test(maybe_command)) {
                 parts.push(
                     {
@@ -891,9 +897,24 @@ class Dictionary
                         has_error: false,
                     },
                 );
-                current_start_index = idx + 4;
+                current_start_index = idx + `｟in｠`.length;
 
-                idx += 4;
+                idx += `｟in｠`.length;
+            } else if (/^｟cen｠/.test(maybe_command)) {
+                parts.push(
+                    {
+                        subtext: `｟cen｠`,
+                        type: Type.COMMAND,
+                        has_italic: false,
+                        has_bold: false,
+                        has_underline: false,
+                        has_small_caps: false,
+                        has_error: false,
+                    },
+                );
+                current_start_index = idx + `｟cen｠`.length;
+
+                idx += `｟cen｠`.length;
             } else {
                 if (this.data.letters.includes(text[idx])) {
                     current_type = Type.LETTERS;
@@ -1042,7 +1063,10 @@ class Dictionary
             }
         }
 
-        return inner_html;
+        return ({
+            html: inner_html,
+            is_centered: is_centered,
+        });
     }
 
     Treat_As_Points(
@@ -1149,6 +1173,10 @@ class Line
         this.element.setAttribute(
             `style`,
             `
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: start;
+
                 width: 100%;
                 padding: 2px;
 
@@ -1633,7 +1661,13 @@ class Line
         if (this.Editor().Is_In_Point_Mode()) {
             this.element.innerHTML = this.Editor().Dictionary().Treat_As_Points(text);
         } else {
-            this.element.innerHTML = this.Editor().Dictionary().Treat(text);
+            const treatment: Dictionary_Treatment = this.Editor().Dictionary().Treat(text);
+            this.element.innerHTML = treatment.html;
+            if (treatment.is_centered) {
+                this.element.style.justifyContent = `center`;
+            } else {
+                this.element.style.justifyContent = `start`;
+            }
         }
     }
 
