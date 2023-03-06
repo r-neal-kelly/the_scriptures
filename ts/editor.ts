@@ -1338,6 +1338,15 @@ class Line
                             selection.getRangeAt(0).setStart(parent.children[child_index - 1], 0);
                             selection.getRangeAt(0).setEnd(parent.children[child_index - 1], 1);
                         }
+                    } else {
+                        const text_offset: number | null = Text_Offset(this.Element());
+                        if (text_offset != null) {
+                            event.preventDefault();
+
+                            if (text_offset > 0) {
+                                Set_Text_Offset(this.Element(), text_offset - 1);
+                            }
+                        }
                     }
                 } else if (event.key === `ArrowRight`) {
                     const selection: Selection | null = document.getSelection();
@@ -1359,6 +1368,15 @@ class Line
                         ) {
                             selection.getRangeAt(0).setStart(parent.children[child_index + 1], 0);
                             selection.getRangeAt(0).setEnd(parent.children[child_index + 1], 1);
+                        }
+                    } else {
+                        const text_offset: number | null = Text_Offset(this.Element());
+                        if (text_offset != null) {
+                            event.preventDefault();
+
+                            if (text_offset < this.Text().length) {
+                                Set_Text_Offset(this.Element(), text_offset + 1);
+                            }
                         }
                     }
                 } else if (event.key === `Home`) {
