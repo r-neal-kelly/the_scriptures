@@ -250,6 +250,7 @@
             "Ham",
             "Hath",
             "He",
+            "High",
             "Him",
             "Himself",
             "His"
@@ -297,6 +298,7 @@
             "Mizraim",
             "Moses",
             "Mosesʼ",
+            "Most",
             "Mount",
             "Mountains",
             "Mûalêlêth",
@@ -380,6 +382,7 @@
             "abounding",
             "above",
             "abrogate",
+            "abundance",
             "abyss",
             "abysses",
             "accept",
@@ -390,6 +393,7 @@
             "accordance",
             "according",
             "account",
+            "accounted",
             "accursed",
             "accuse",
             "actions",
@@ -847,6 +851,7 @@
             "healing",
             "hear",
             "heard",
+            "hearken",
             "hearkened",
             "heart",
             "hearts",
@@ -1039,6 +1044,7 @@
             "nineteenth",
             "ninth",
             "no",
+            "none",
             "nor",
             "not",
             "nothing",
@@ -1056,6 +1062,7 @@
             "of",
             "off",
             "offence",
+            "offer",
             "offered",
             "offering",
             "offerings",
@@ -1134,6 +1141,7 @@
             "protected",
             "prove",
             "purification",
+            "purified",
             "purifying",
             "put"
         ],
@@ -1154,6 +1162,7 @@
             "regard",
             "regarding",
             "rejoiced",
+            "release",
             "remain",
             "remember",
             "remembrance",
@@ -1221,6 +1230,7 @@
             "separate",
             "serpent",
             "servant",
+            "servants",
             "serve",
             "serves",
             "set",
@@ -1235,6 +1245,7 @@
             "she",
             "shed",
             "sheddeth",
+            "sheds",
             "sheep",
             "shoot",
             "shoots",
@@ -1295,11 +1306,13 @@
             "stead",
             "stiff",
             "stiffneckedness",
+            "still",
             "stone",
             "stones",
             "strange",
             "strength",
             "strewed",
+            "suffer",
             "suitable",
             "summer",
             "sun",
@@ -1425,6 +1438,7 @@
             "viii⸼",
             "vines",
             "vineyard",
+            "violent",
             "visible",
             "vision",
             "voice",
@@ -1455,6 +1469,7 @@
             "wherein",
             "wherewithal",
             "which",
+            "whilst",
             "who",
             "whoever",
             "whole",
@@ -1503,7 +1518,8 @@
             "you",
             "young",
             "younger",
-            "your"
+            "your",
+            "yourselves"
         ],
         "z": [],
         "²": [
@@ -1529,7 +1545,8 @@
             "³⁵",
             "³⁶",
             "³⁷",
-            "³⁸"
+            "³⁸",
+            "³⁹"
         ],
         "¹": [
             "¹²",
@@ -1587,7 +1604,9 @@
             ],
             ")": [],
             ",": [],
-            ".": [],
+            ".": [
+                ".       .       .       .       .       .       .       .       .       ."
+            ],
             ":": [],
             ";": [],
             "?": [],
@@ -1689,7 +1708,9 @@
             ":": [
                 ":"
             ],
-            ";": [],
+            ";": [
+                ";"
+            ],
             "?": [
                 "?’"
             ],
