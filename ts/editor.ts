@@ -1175,7 +1175,7 @@ class Line
             `
                 display: flex;
                 flex-wrap: wrap;
-                justify-content: start;
+                justify-content: center;
 
                 width: 100%;
                 padding: 2px;
@@ -1682,9 +1682,9 @@ class Line
             const treatment: Dictionary_Treatment = this.Editor().Dictionary().Treat(text);
             this.element.innerHTML = treatment.html;
             if (treatment.is_centered) {
-                this.element.style.justifyContent = `center`;
+                this.element.style.display = `flex`;
             } else {
-                this.element.style.justifyContent = `start`;
+                this.element.style.display = `block`;
             }
         }
     }
