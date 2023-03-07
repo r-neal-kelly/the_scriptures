@@ -155,7 +155,8 @@
             "7¹"
         ],
         "8": [
-            "8"
+            "8",
+            "8¹"
         ],
         "9": [
             "9",
@@ -248,6 +249,7 @@
         ],
         "H": [
             "Ham",
+            "Hamʼs",
             "Hath",
             "He",
             "High",
@@ -269,6 +271,7 @@
             "JUBILEES",
             "Jacob",
             "Japheth",
+            "Japhethʼs",
             "Jared",
             "Javan",
             "Jerusalem",
@@ -276,7 +279,9 @@
             "Judah"
         ],
         "K": [
+            "Kâinâm",
             "Kenan",
+            "Kêsêd",
             "King"
         ],
         "L": [
@@ -295,6 +300,7 @@
             "Me",
             "Meshech",
             "Methuselah",
+            "Mêlkâ",
             "Mizraim",
             "Moses",
             "Mosesʼ",
@@ -302,6 +308,7 @@
             "Mount",
             "Mountains",
             "Mûalêlêth",
+            "Mû᾿ak",
             "My",
             "Myself"
         ],
@@ -331,6 +338,7 @@
         "R": [
             "Râkê᾿êl",
             "Râsûjâl",
+            "Râsû᾿ĕjâ",
             "Return"
         ],
         "S": [
@@ -339,10 +347,13 @@
             "Sacrifice",
             "Seth",
             "Sêdêqêtêlĕbâb",
+            "Shelah",
             "Shem",
+            "Shemʼs",
             "Sheol",
             "Sinai",
-            "So"
+            "So",
+            "Sûsân"
         ],
         "T": [
             "THE",
@@ -356,6 +367,7 @@
             "Thus",
             "Thy",
             "Tiras",
+            "Truly",
             "Tubal"
         ],
         "U": [
@@ -380,6 +392,7 @@
             "abode",
             "abominable",
             "abounding",
+            "about",
             "above",
             "abrogate",
             "abundance",
@@ -400,6 +413,7 @@
             "acts",
             "admonishes",
             "affliction",
+            "afraid",
             "after",
             "afterwards",
             "again",
@@ -423,6 +437,7 @@
             "anew",
             "angel",
             "angels",
+            "angry",
             "animals",
             "announce",
             "announced",
@@ -520,6 +535,7 @@
             "cannot",
             "captive",
             "captivity",
+            "carved",
             "case",
             "cattle",
             "cause",
@@ -569,6 +585,7 @@
             "confess",
             "confound",
             "constitute",
+            "contained",
             "continually",
             "continue",
             "contrariness",
@@ -634,6 +651,7 @@
             "directed",
             "disappeared",
             "disclose",
+            "discovers",
             "dislodged",
             "displeased",
             "distinct",
@@ -825,6 +843,7 @@
             "greatly",
             "greatness",
             "green",
+            "grew",
             "ground",
             "groves",
             "grow",
@@ -900,6 +919,7 @@
             "inheritance",
             "iniquity",
             "inscribe",
+            "inscription",
             "inspire",
             "instead",
             "instituted",
@@ -1070,6 +1090,7 @@
             "offers",
             "oil",
             "old",
+            "omens",
             "on",
             "once",
             "one",
@@ -1150,6 +1171,7 @@
         "r": [
             "raised",
             "ram",
+            "read",
             "reason",
             "rebellion",
             "rebuilding",
@@ -1163,6 +1185,7 @@
             "regard",
             "regarding",
             "rejoiced",
+            "relating",
             "release",
             "remain",
             "remember",
@@ -1189,6 +1212,7 @@
             "rise",
             "rising",
             "rivers",
+            "rock",
             "root",
             "rooted",
             "rose",
@@ -1226,6 +1250,7 @@
             "seed",
             "seek",
             "seen",
+            "seize",
             "send",
             "sent",
             "separate",
@@ -1337,6 +1362,7 @@
             "taught",
             "teach",
             "teaches",
+            "teaching",
             "temple",
             "ten",
             "tent",
@@ -1367,6 +1393,7 @@
             "things",
             "third",
             "thirteen",
+            "thirtieth",
             "thirty",
             "this",
             "thistles",
@@ -1398,6 +1425,7 @@
             "touch",
             "touching",
             "towards",
+            "transcribed",
             "transgressing",
             "transgressions",
             "treacherously",
@@ -1432,7 +1460,8 @@
             "upon",
             "upright",
             "uprightness",
-            "us"
+            "us",
+            "used"
         ],
         "v": [
             "vanity",
@@ -1510,7 +1539,9 @@
             "wroth",
             "wrought"
         ],
-        "x": [],
+        "x": [
+            "x⸼"
+        ],
         "y": [
             "ye",
             "yea",
