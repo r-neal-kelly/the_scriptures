@@ -39,15 +39,15 @@ import * as path from "path";
 
 const /* string_t */ help_message = `
 Info:
+    Prints a list of any lines that differ between each file in the cwd and its tagged complement.
 
-    Prints a list of any lines that differ between two files.
-
-Parameter #1 and #2:
-
-    relative or absolute path, e.g. "../chapter_01.txt" or "./chapter_02.txt"
-
+Parameter #1:
     "-h" or "--help" or (none):
         Displays this message in the terminal.
+
+    a tag, such as " COPY"
+        Indicates the set of files to compare to another set of files
+        without the tag. E.G. With a supplied tag of "TAG", "fileTAG.txt" would be compared to "file.txt"
 `;
 
 /* void_t */ async function Compare(
