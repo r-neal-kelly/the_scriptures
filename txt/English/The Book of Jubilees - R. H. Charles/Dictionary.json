@@ -153,6 +153,7 @@
             "6¹"
         ],
         "7": [
+            "7",
             "7¹"
         ],
         "8": [
@@ -162,12 +163,14 @@
         "9": [
             "9",
             "9a",
-            "9b"
+            "9b",
+            "9¹"
         ],
         "A": [
             "Abel",
             "Abraham",
             "Adam",
+            "Amongst",
             "And",
             "Apostasy",
             "Aram",
@@ -201,6 +204,7 @@
             "Canaan",
             "Captivity",
             "Cf⸼",
+            "Chaldees",
             "Come",
             "Corruption",
             "Creation",
@@ -213,6 +217,7 @@
             "Dânêl",
             "Death",
             "Declare",
+            "Dêdân",
             "Division",
             "Dînâh"
         ],
@@ -230,6 +235,7 @@
             "Eljô",
             "Enoch",
             "Enos",
+            "Euphrates",
             "Eve",
             "Êldâ"
         ],
@@ -254,7 +260,8 @@
             "God",
             "Godʼs",
             "Gog",
-            "Gomer"
+            "Gomer",
+            "Great"
         ],
         "H": [
             "Ham",
@@ -290,6 +297,7 @@
         ],
         "K": [
             "Kaftûr",
+            "Kamâtûrî",
             "Kâinâm",
             "Kârâsô",
             "Kenan",
@@ -313,7 +321,9 @@
             "Mâ᾿ûk",
             "Mâ῾ĕdâi",
             "Me",
+            "Mebrî",
             "Meshech",
+            "Mesopotamia",
             "Methuselah",
             "Mêlkâ",
             "Mê᾿at",
@@ -334,6 +344,7 @@
             "Na᾿êltamâ᾿ûk",
             "Nêbrôd",
             "Nê᾿êlâtamâ᾿ûk",
+            "Nineveh",
             "Noah",
             "Noahʼs",
             "Nor",
@@ -343,6 +354,7 @@
         "O": [
             "O",
             "OF",
+            "Oath",
             "Of",
             "On",
             "Or"
@@ -350,6 +362,7 @@
         "P": [
             "Paradise",
             "Peleg",
+            "Pharnâk",
             "Punishment",
             "Put"
         ],
@@ -376,8 +389,10 @@
             "Shem",
             "Shemʼs",
             "Sheol",
+            "Shinar",
             "Sinai",
             "So",
+            "Subdivision",
             "Sûsân"
         ],
         "T": [
@@ -391,6 +406,7 @@
             "This",
             "Thus",
             "Thy",
+            "Tigris",
             "Tiras",
             "Tînâ",
             "Truly",
@@ -474,6 +490,7 @@
             "appear",
             "appearance",
             "appeared",
+            "appertaining",
             "appointed",
             "approached",
             "approaches",
@@ -485,6 +502,7 @@
             "art",
             "as",
             "ascend",
+            "ascends",
             "ashamed",
             "aside",
             "associated",
@@ -542,6 +560,8 @@
             "bone",
             "bones",
             "book",
+            "border",
+            "bordering",
             "born",
             "bosom",
             "both",
@@ -552,6 +572,7 @@
             "brethren",
             "bring",
             "brother",
+            "brothers",
             "brought",
             "build",
             "builds",
@@ -601,6 +622,7 @@
             "cloud",
             "clouds",
             "coast",
+            "coasts",
             "coats",
             "cold",
             "come",
@@ -759,6 +781,7 @@
             "entire",
             "envious",
             "error",
+            "errors",
             "establish",
             "eternal",
             "eternally",
@@ -886,6 +909,7 @@
             "good",
             "goodly",
             "grace",
+            "grandchildren",
             "grandsons",
             "granted",
             "graven",
@@ -964,6 +988,7 @@
             "images",
             "imagination",
             "imagined",
+            "imprecating",
             "in",
             "incense",
             "increase",
@@ -971,6 +996,7 @@
             "individual",
             "inheritance",
             "iniquity",
+            "inner",
             "inscribe",
             "inscription",
             "inspire",
@@ -982,6 +1008,7 @@
             "instrument",
             "into",
             "is",
+            "island",
             "islands",
             "it",
             "its",
@@ -1209,6 +1236,7 @@
             "pleasant",
             "pleasure",
             "portion",
+            "portions",
             "possess",
             "possession",
             "pour",
@@ -1245,6 +1273,7 @@
             "raised",
             "ram",
             "range",
+            "reach",
             "reached",
             "reaches",
             "read",
@@ -1364,6 +1393,7 @@
             "shouldst",
             "show",
             "showed",
+            "side",
             "sign",
             "signs",
             "sin",
@@ -1376,6 +1406,7 @@
             "sixth",
             "sixty",
             "skin",
+            "skirts",
             "slain",
             "slay",
             "sleep",
@@ -1397,6 +1428,7 @@
             "sonʼs",
             "soon",
             "sorrow",
+            "sought",
             "soul",
             "souls",
             "south",
@@ -1513,6 +1545,7 @@
             "towards",
             "transcribed",
             "transgressing",
+            "transgression",
             "transgressions",
             "treacherously",
             "tree",
@@ -1586,6 +1619,7 @@
             "whence",
             "where",
             "wherein",
+            "wherewith",
             "wherewithal",
             "which",
             "whilst",
@@ -1693,9 +1727,11 @@
             "᾿Adâtanêsês",
             "᾿Afêrâg",
             "᾿Amânâ",
+            "᾿Arârâ",
             "᾿Atêl",
             "᾿Azûrâd",
-            "᾿Âzrîâl"
+            "᾿Âzrîâl",
+            "᾿Êlâ"
         ],
         "῾": [
             "῾Afrâ",
@@ -1772,6 +1808,7 @@
                 ", [",
                 ", ‘",
                 ", †",
+                ",’ ",
                 ",† "
             ],
             ".": [
