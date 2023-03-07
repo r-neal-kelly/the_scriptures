@@ -1077,7 +1077,7 @@ class Dictionary
         let inner_html: string = ``;
         for (let idx = 0, end = text.length; idx < end;) {
             const maybe_command: Array<string> | null =
-                text.slice(idx).match(/^(｟\/?(i|b|u|sc|err)｠|｟(in)｠)/);
+                text.slice(idx).match(/^(｟\/?(i|b|u|sc|err)｠|｟(in|cen)｠)/);
             if (maybe_command && maybe_command[0]) {
                 for (const end = idx + maybe_command[0].length; idx < end;) {
                     inner_html += `<span class="COMMAND SEPARATE_POINT">${Escape_Text(text[idx])}</span>`;
@@ -1678,6 +1678,7 @@ class Line
         // with just yet.
         if (this.Editor().Is_In_Point_Mode()) {
             this.element.innerHTML = this.Editor().Dictionary().Treat_As_Points(text);
+            this.element.style.display = `block`;
         } else {
             const treatment: Dictionary_Treatment = this.Editor().Dictionary().Treat(text);
             this.element.innerHTML = treatment.html;
