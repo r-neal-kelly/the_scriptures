@@ -155,7 +155,8 @@
             "7¹"
         ],
         "8": [
-            "8"
+            "8",
+            "8¹"
         ],
         "9": [
             "9",
@@ -215,6 +216,7 @@
         "E": [
             "East",
             "Eat",
+            "Eber",
             "Eden",
             "Ednâ",
             "Ednî",
@@ -248,6 +250,7 @@
         ],
         "H": [
             "Ham",
+            "Hamʼs",
             "Hath",
             "He",
             "High",
@@ -269,6 +272,7 @@
             "JUBILEES",
             "Jacob",
             "Japheth",
+            "Japhethʼs",
             "Jared",
             "Javan",
             "Jerusalem",
@@ -276,7 +280,9 @@
             "Judah"
         ],
         "K": [
+            "Kâinâm",
             "Kenan",
+            "Kêsêd",
             "King"
         ],
         "L": [
@@ -295,6 +301,7 @@
             "Me",
             "Meshech",
             "Methuselah",
+            "Mêlkâ",
             "Mizraim",
             "Moses",
             "Mosesʼ",
@@ -302,6 +309,7 @@
             "Mount",
             "Mountains",
             "Mûalêlêth",
+            "Mû᾿ak",
             "My",
             "Myself"
         ],
@@ -309,6 +317,7 @@
             "Nâphîdîm",
             "Nâphîl",
             "Na᾿êltamâ᾿ûk",
+            "Nêbrôd",
             "Nê᾿êlâtamâ᾿ûk",
             "Noah",
             "Noahʼs",
@@ -325,12 +334,15 @@
         ],
         "P": [
             "Paradise",
+            "Peleg",
             "Punishment",
             "Put"
         ],
         "R": [
+            "Râfâ",
             "Râkê᾿êl",
             "Râsûjâl",
+            "Râsû᾿ĕjâ",
             "Return"
         ],
         "S": [
@@ -339,10 +351,13 @@
             "Sacrifice",
             "Seth",
             "Sêdêqêtêlĕbâb",
+            "Shelah",
             "Shem",
+            "Shemʼs",
             "Sheol",
             "Sinai",
-            "So"
+            "So",
+            "Sûsân"
         ],
         "T": [
             "THE",
@@ -356,6 +371,8 @@
             "Thus",
             "Thy",
             "Tiras",
+            "Tînâ",
+            "Truly",
             "Tubal"
         ],
         "U": [
@@ -380,6 +397,7 @@
             "abode",
             "abominable",
             "abounding",
+            "about",
             "above",
             "abrogate",
             "abundance",
@@ -400,6 +418,7 @@
             "acts",
             "admonishes",
             "affliction",
+            "afraid",
             "after",
             "afterwards",
             "again",
@@ -423,6 +442,7 @@
             "anew",
             "angel",
             "angels",
+            "angry",
             "animals",
             "announce",
             "announced",
@@ -495,6 +515,7 @@
             "bones",
             "book",
             "born",
+            "bosom",
             "both",
             "bound",
             "bow",
@@ -520,6 +541,7 @@
             "cannot",
             "captive",
             "captivity",
+            "carved",
             "case",
             "cattle",
             "cause",
@@ -569,6 +591,7 @@
             "confess",
             "confound",
             "constitute",
+            "contained",
             "continually",
             "continue",
             "contrariness",
@@ -634,6 +657,7 @@
             "directed",
             "disappeared",
             "disclose",
+            "discovers",
             "dislodged",
             "displeased",
             "distinct",
@@ -655,6 +679,7 @@
             "drank",
             "draw",
             "dread",
+            "drew",
             "drink",
             "drunk",
             "drunken",
@@ -719,6 +744,7 @@
             "explained",
             "exposes",
             "expulsion",
+            "extends",
             "eye",
             "eyes"
         ],
@@ -815,6 +841,7 @@
             "goat",
             "goats",
             "gods",
+            "goes",
             "good",
             "goodly",
             "grace",
@@ -825,6 +852,7 @@
             "greatly",
             "greatness",
             "green",
+            "grew",
             "ground",
             "groves",
             "grow",
@@ -900,6 +928,7 @@
             "inheritance",
             "iniquity",
             "inscribe",
+            "inscription",
             "inspire",
             "instead",
             "instituted",
@@ -975,6 +1004,8 @@
             "longer",
             "look",
             "looked",
+            "lot",
+            "lots",
             "love",
             "luminaries"
         ],
@@ -995,6 +1026,7 @@
             "memorial",
             "men",
             "mercy",
+            "middle",
             "midst",
             "might",
             "milk",
@@ -1039,6 +1071,7 @@
             "neither",
             "never",
             "new",
+            "nigh",
             "night",
             "nights",
             "nine",
@@ -1070,6 +1103,7 @@
             "offers",
             "oil",
             "old",
+            "omens",
             "on",
             "once",
             "one",
@@ -1098,6 +1132,7 @@
             "pardon",
             "parted",
             "parting",
+            "parts",
             "pass",
             "passed",
             "past",
@@ -1120,8 +1155,11 @@
             "plants",
             "pleasant",
             "pleasure",
+            "portion",
+            "possession",
             "pour",
             "poured",
+            "pours",
             "power",
             "powers",
             "praised",
@@ -1150,6 +1188,10 @@
         "r": [
             "raised",
             "ram",
+            "range",
+            "reached",
+            "reaches",
+            "read",
             "reason",
             "rebellion",
             "rebuilding",
@@ -1163,6 +1205,7 @@
             "regard",
             "regarding",
             "rejoiced",
+            "relating",
             "release",
             "remain",
             "remember",
@@ -1188,7 +1231,9 @@
             "righteousness",
             "rise",
             "rising",
+            "river",
             "rivers",
+            "rock",
             "root",
             "rooted",
             "rose",
@@ -1221,11 +1266,13 @@
             "season",
             "seasons",
             "second",
+            "secretly",
             "seductions",
             "see",
             "seed",
             "seek",
             "seen",
+            "seize",
             "send",
             "sent",
             "separate",
@@ -1337,6 +1384,7 @@
             "taught",
             "teach",
             "teaches",
+            "teaching",
             "temple",
             "ten",
             "tent",
@@ -1367,6 +1415,7 @@
             "things",
             "third",
             "thirteen",
+            "thirtieth",
             "thirty",
             "this",
             "thistles",
@@ -1398,6 +1447,7 @@
             "touch",
             "touching",
             "towards",
+            "transcribed",
             "transgressing",
             "transgressions",
             "treacherously",
@@ -1432,7 +1482,8 @@
             "upon",
             "upright",
             "uprightness",
-            "us"
+            "us",
+            "used"
         ],
         "v": [
             "vanity",
@@ -1510,7 +1561,9 @@
             "wroth",
             "wrought"
         ],
-        "x": [],
+        "x": [
+            "x⸼"
+        ],
         "y": [
             "ye",
             "yea",
@@ -1572,6 +1625,7 @@
         "᾿": [
             "᾿Adatan᾿êsês",
             "᾿Adâtanêsês",
+            "᾿Azûrâd",
             "᾿Âzrîâl"
         ],
         "῾": [
