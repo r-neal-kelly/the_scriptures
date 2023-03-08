@@ -363,7 +363,6 @@
             "Myself"
         ],
         "N": [
-            "Nachor",
             "Nahor",
             "Nâphîdîm",
             "Nâphîl",
@@ -2104,6 +2103,7 @@
     },
     "word_errors": [
         "Japhet",
+        "Nachor",
         "iv",
         "sabbaths",
         "vi",
