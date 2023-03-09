@@ -50,12 +50,14 @@ Parameter #1:
         without the tag. E.G. With a supplied tag of "TAG", "fileTAG.txt" would be compared to "file.txt"
 `;
 
-/* void_t */ async function Compare(
+/* Array<string_t> */ async function Compare(
     /* string_t */ file_path_a,
     /* string_t */ file_path_b,
     /* string_t */ indent = ``,
 )
 {
+    const /* Array<string_t> */ results = [];
+
     const /* string_t */ file_data_a = await Read_File(path.resolve(file_path_a));
     const /* string_t */ file_data_b = await Read_File(path.resolve(file_path_b));
 
@@ -72,12 +74,9 @@ Parameter #1:
         rows_b = file_lines_a;
     }
 
-    let /* boolean_t */ found_error = false;
-
     for (let row = 0, end = rows_a.length; row < end; row += 1) {
         if (row >= rows_b.length) {
-            console.log(`${indent}Row: ${row + 1}, Column: --`);
-            found_error = true;
+            results.push(`${indent}Row: ${row + 1}, Column: --`);
         } else {
             let /* string_t */ columns_a;
             let /* string_t */ columns_b;
@@ -93,17 +92,14 @@ Parameter #1:
                     column >= columns_b.length ||
                     columns_a[column] !== columns_b[column]
                 ) {
-                    console.log(`${indent}Row: ${row + 1}, Column: ${column + 1}`);
-                    found_error = true;
+                    results.push(`${indent}Row: ${row + 1}, Column: ${column + 1}`);
                     break;
                 }
             }
         }
     }
 
-    if (!found_error) {
-        console.log(`${indent}Perfect Match!`);
-    }
+    return results;
 }
 
 (/* void_t */ async function Main()
@@ -120,8 +116,15 @@ Parameter #1:
         for (const file of files) {
             if (regex.test(file.name)) {
                 const /* string_t */ untagged_file_name = file.name.replace(regex, `$1`);
-                console.log(untagged_file_name);
-                await Compare(`./${file.name}`, `./${untagged_file_name}`, `    `);
+                const /* Array<string_t> */ results = await Compare(`./${file.name}`, `./${untagged_file_name}`, `    `);
+                if (results.length === 0) {
+                    console.log(`${untagged_file_name} - Perfect Match!`);
+                } else {
+                    console.log(untagged_file_name);
+                    for (const result of results) {
+                        console.log(result);
+                    }
+                }
             }
         }
     }
