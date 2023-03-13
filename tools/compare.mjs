@@ -121,8 +121,11 @@ Parameter #1:
                     console.log(`${untagged_file_name} - Perfect Match!`);
                 } else {
                     console.log(untagged_file_name);
-                    for (const result of results) {
-                        console.log(result);
+                    for (let idx = 0, end = results.length > 50 ? 50 : results.length; idx < end; idx += 1) {
+                        console.log(results[idx]);
+                    }
+                    if (results.length > 50) {
+                        console.log(`    ` + `+ ${results.length - 50} more lines...`)
                     }
                 }
             }
