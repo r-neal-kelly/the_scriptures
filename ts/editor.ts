@@ -1797,7 +1797,7 @@ class Editor
 
                 height: 100%;
                 width: 100%;
-                padding: 7px;
+                padding: 7px 7px 0 7px;
 
                 border-width: 0;
 
