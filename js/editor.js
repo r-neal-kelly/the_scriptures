@@ -998,8 +998,8 @@ class Line {
                 }
             }
             else if (event.key === `Home`) {
+                event.preventDefault();
                 if (this.Editor().Is_Meta_Key_Active()) {
-                    event.preventDefault();
                     const selected = Dictionary.Selected_Entry();
                     if (selected) {
                         if (selected.class === Dictionary_Class.UNKNOWN_POINT) {
@@ -1021,8 +1021,8 @@ class Line {
                 }
             }
             else if (event.key === `PageUp`) {
+                event.preventDefault();
                 if (this.Editor().Is_Meta_Key_Active()) {
-                    event.preventDefault();
                     const selected = Dictionary.Selected_Entry();
                     if (selected) {
                         if (selected.class === Dictionary_Class.UNKNOWN_POINT) {
@@ -1044,8 +1044,8 @@ class Line {
                 }
             }
             else if (event.key === `PageDown`) {
+                event.preventDefault();
                 if (this.Editor().Is_Meta_Key_Active()) {
-                    event.preventDefault();
                     const selected = Dictionary.Selected_Entry();
                     if (selected) {
                         if (selected.class === Dictionary_Class.UNKNOWN_WORD) {
@@ -1065,8 +1065,8 @@ class Line {
                 }
             }
             else if (event.key === `End`) {
+                event.preventDefault();
                 if (this.Editor().Is_Meta_Key_Active()) {
-                    event.preventDefault();
                     const selected = Dictionary.Selected_Entry();
                     if (selected) {
                         if (selected.class === Dictionary_Class.UNKNOWN_BREAK) {

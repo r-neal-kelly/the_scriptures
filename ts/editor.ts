@@ -1380,9 +1380,9 @@ class Line
                         }
                     }
                 } else if (event.key === `Home`) {
-                    if (this.Editor().Is_Meta_Key_Active()) {
-                        event.preventDefault();
+                    event.preventDefault();
 
+                    if (this.Editor().Is_Meta_Key_Active()) {
                         const selected: Dictionary_Entry | null =
                             Dictionary.Selected_Entry();
                         if (selected) {
@@ -1404,9 +1404,9 @@ class Line
                         }
                     }
                 } else if (event.key === `PageUp`) {
-                    if (this.Editor().Is_Meta_Key_Active()) {
-                        event.preventDefault();
+                    event.preventDefault();
 
+                    if (this.Editor().Is_Meta_Key_Active()) {
                         const selected: Dictionary_Entry | null =
                             Dictionary.Selected_Entry();
                         if (selected) {
@@ -1428,9 +1428,9 @@ class Line
                         }
                     }
                 } else if (event.key === `PageDown`) {
-                    if (this.Editor().Is_Meta_Key_Active()) {
-                        event.preventDefault();
+                    event.preventDefault();
 
+                    if (this.Editor().Is_Meta_Key_Active()) {
                         const selected: Dictionary_Entry | null =
                             Dictionary.Selected_Entry();
                         if (selected) {
@@ -1448,9 +1448,9 @@ class Line
                         }
                     }
                 } else if (event.key === `End`) {
-                    if (this.Editor().Is_Meta_Key_Active()) {
-                        event.preventDefault();
+                    event.preventDefault();
 
+                    if (this.Editor().Is_Meta_Key_Active()) {
                         const selected: Dictionary_Entry | null =
                             Dictionary.Selected_Entry();
                         if (selected) {
