@@ -47,6 +47,8 @@ Latin.Symbols_s :=  { "p": "¶" ; Pilcrow Sign
                     , "t": "†" ; U+2020 DAGGER
                     , ".": "⸼" ; U+2E3C STENOGRAPHIC FULL STOP
                     , "\": "…" ; U+2026 HORIZONTAL ELLIPSIS
+                    ,   9: "⟦" ; U+27E6 MATHEMATICAL LEFT WHITE SQUARE BRACKET
+                    ,   0: "⟧" ; U+27E7 MATHEMATICAL RIGHT WHITE SQUARE BRACKET
                     , "": "" }
 
 Latin.Symbols_c :=  { "+": "—" ; U+2014 EM DASH
