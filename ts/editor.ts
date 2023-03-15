@@ -1483,16 +1483,18 @@ class Line
                             event.preventDefault();
 
                             const text: string = this.Text();
-                            if (text_offset < text.length) {
+                            if (text_offset + 2 <= text.length) {
                                 const next_code: number = text[text_offset + 1].charCodeAt(0);
                                 if (
                                     next_code >= 0xDC00 &&
                                     next_code <= 0xDFFF
                                 ) {
-                                    Set_Text_Offset(this.Element(), Math.min(text_offset + 2, text.length));
+                                    Set_Text_Offset(this.Element(), text_offset + 2);
                                 } else {
                                     Set_Text_Offset(this.Element(), text_offset + 1);
                                 }
+                            } else if (text_offset < text.length) {
+                                Set_Text_Offset(this.Element(), text_offset + 1);
                             }
                         }
                     }
