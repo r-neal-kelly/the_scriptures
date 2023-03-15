@@ -21,7 +21,13 @@ function Escape_Text(
             if (point === ` `) {
                 return `&#${` `.charCodeAt(0)};`
             } else {
-                return `&#${point.charCodeAt(0)};`;
+                const code: number = point.charCodeAt(0);
+                if (code < 0xD800 || code > 0xDFFF) {
+                    return `&#${code};`;
+                } else {
+                    // why bother escaping anything outside of the BMP
+                    return point;
+                }
             }
         }
     );
@@ -274,6 +280,22 @@ type Dictionary_Treatment = {
 
 class Dictionary
 {
+    static First_Point(
+        text: string,
+    ):
+        string
+    {
+        if (text.length === 0) {
+            return ``;
+        } else {
+            if (text.charCodeAt(0) < 0xD800 || text.charCodeAt(0) > 0xDFFF) {
+                return text.slice(0, 1);
+            } else {
+                return text.slice(0, 2);
+            }
+        }
+    }
+
     static First_Entry_Index(
         element: HTMLElement,
     ):
@@ -421,7 +443,16 @@ class Dictionary
     ):
         boolean
     {
-        Assert(letter.length === 1);
+        Assert(
+            letter.length === 1 ||
+            (
+                letter.length === 2 &&
+                letter.charCodeAt(0) >= 0xD800 &&
+                letter.charCodeAt(0) <= 0xDBFF &&
+                letter.charCodeAt(1) >= 0xDC00 &&
+                letter.charCodeAt(1) <= 0xDFFF
+            )
+        );
 
         return this.data.letters.includes(letter);
     }
@@ -431,7 +462,16 @@ class Dictionary
     ):
         void
     {
-        Assert(letter.length === 1);
+        Assert(
+            letter.length === 1 ||
+            (
+                letter.length === 2 &&
+                letter.charCodeAt(0) >= 0xD800 &&
+                letter.charCodeAt(0) <= 0xDBFF &&
+                letter.charCodeAt(1) >= 0xDC00 &&
+                letter.charCodeAt(1) <= 0xDFFF
+            )
+        );
 
         if (!this.data.letters.includes(letter)) {
             this.data.letters.push(letter);
@@ -445,7 +485,16 @@ class Dictionary
     ):
         void
     {
-        Assert(letter.length === 1);
+        Assert(
+            letter.length === 1 ||
+            (
+                letter.length === 2 &&
+                letter.charCodeAt(0) >= 0xD800 &&
+                letter.charCodeAt(0) <= 0xDBFF &&
+                letter.charCodeAt(1) >= 0xDC00 &&
+                letter.charCodeAt(1) <= 0xDFFF
+            )
+        );
 
         const index: number = this.data.letters.indexOf(letter);
         if (index > -1) {
@@ -461,7 +510,16 @@ class Dictionary
     ):
         boolean
     {
-        Assert(marker.length === 1);
+        Assert(
+            marker.length === 1 ||
+            (
+                marker.length === 2 &&
+                marker.charCodeAt(0) >= 0xD800 &&
+                marker.charCodeAt(0) <= 0xDBFF &&
+                marker.charCodeAt(1) >= 0xDC00 &&
+                marker.charCodeAt(1) <= 0xDFFF
+            )
+        );
 
         return this.data.markers.includes(marker);
     }
@@ -471,7 +529,16 @@ class Dictionary
     ):
         void
     {
-        Assert(marker.length === 1);
+        Assert(
+            marker.length === 1 ||
+            (
+                marker.length === 2 &&
+                marker.charCodeAt(0) >= 0xD800 &&
+                marker.charCodeAt(0) <= 0xDBFF &&
+                marker.charCodeAt(1) >= 0xDC00 &&
+                marker.charCodeAt(1) <= 0xDFFF
+            )
+        );
 
         if (!this.data.markers.includes(marker)) {
             this.data.markers.push(marker);
@@ -487,7 +554,16 @@ class Dictionary
     ):
         void
     {
-        Assert(marker.length === 1);
+        Assert(
+            marker.length === 1 ||
+            (
+                marker.length === 2 &&
+                marker.charCodeAt(0) >= 0xD800 &&
+                marker.charCodeAt(0) <= 0xDBFF &&
+                marker.charCodeAt(1) >= 0xDC00 &&
+                marker.charCodeAt(1) <= 0xDFFF
+            )
+        );
 
         const index: number = this.data.markers.indexOf(marker);
         if (index > -1) {
@@ -507,9 +583,11 @@ class Dictionary
     {
         Assert(word.length > 0);
 
+        const first_point: string = Dictionary.First_Point(word);
+
         return (
-            this.data.words[word[0]] != null &&
-            this.data.words[word[0]].includes(word)
+            this.data.words[first_point] != null &&
+            this.data.words[first_point].includes(word)
         );
     }
 
@@ -521,12 +599,14 @@ class Dictionary
         Assert(word.length > 0);
         Assert(!this.Has_Word_Error(word));
 
-        if (this.data.words[word[0]] == null) {
-            this.Add_Letter(word[0]);
-            this.data.words[word[0]].push(word);
+        const first_point: string = Dictionary.First_Point(word);
+
+        if (this.data.words[first_point] == null) {
+            this.Add_Letter(first_point);
+            this.data.words[first_point].push(word);
         } else {
-            if (!this.data.words[word[0]].includes(word)) {
-                this.data.words[word[0]].push(word);
+            if (!this.data.words[first_point].includes(word)) {
+                this.data.words[first_point].push(word);
             }
         }
     }
@@ -538,11 +618,14 @@ class Dictionary
     {
         Assert(word.length > 0);
 
-        if (this.data.words[word[0]] != null) {
-            const index: number = this.data.words[word[0]].indexOf(word);
+        const first_point: string = Dictionary.First_Point(word);
+
+        if (this.data.words[first_point] != null) {
+            const index: number = this.data.words[first_point].indexOf(word);
             if (index > -1) {
-                this.data.words[word[0]][index] = this.data.words[word[0]][this.data.words[word[0]].length - 1];
-                this.data.words[word[0]].pop();
+                this.data.words[first_point][index] =
+                    this.data.words[first_point][this.data.words[first_point].length - 1];
+                this.data.words[first_point].pop();
             }
         }
     }
@@ -555,9 +638,11 @@ class Dictionary
     {
         Assert(break_.length > 0);
 
+        const first_point: string = Dictionary.First_Point(break_);
+
         return (
-            this.data.breaks[boundary][break_[0]] != null &&
-            this.data.breaks[boundary][break_[0]].includes(break_)
+            this.data.breaks[boundary][first_point] != null &&
+            this.data.breaks[boundary][first_point].includes(break_)
         );
     }
 
@@ -570,12 +655,14 @@ class Dictionary
         Assert(break_.length > 0);
         Assert(!this.Has_Break_Error(break_, boundary));
 
-        if (this.data.breaks[boundary][break_[0]] == null) {
-            this.Add_Marker(break_[0]);
-            this.data.breaks[boundary][break_[0]].push(break_);
+        const first_point: string = Dictionary.First_Point(break_);
+
+        if (this.data.breaks[boundary][first_point] == null) {
+            this.Add_Marker(first_point);
+            this.data.breaks[boundary][first_point].push(break_);
         } else {
-            if (!this.data.breaks[boundary][break_[0]].includes(break_)) {
-                this.data.breaks[boundary][break_[0]].push(break_);
+            if (!this.data.breaks[boundary][first_point].includes(break_)) {
+                this.data.breaks[boundary][first_point].push(break_);
             }
         }
     }
@@ -588,12 +675,14 @@ class Dictionary
     {
         Assert(break_.length > 0);
 
-        if (this.data.breaks[boundary][break_[0]] != null) {
-            const index: number = this.data.breaks[boundary][break_[0]].indexOf(break_);
+        const first_point: string = Dictionary.First_Point(break_);
+
+        if (this.data.breaks[boundary][first_point] != null) {
+            const index: number = this.data.breaks[boundary][first_point].indexOf(break_);
             if (index > -1) {
-                this.data.breaks[boundary][break_[0]][index] =
-                    this.data.breaks[boundary][break_[0]][this.data.breaks[boundary][break_[0]].length - 1];
-                this.data.breaks[boundary][break_[0]].pop();
+                this.data.breaks[boundary][first_point][index] =
+                    this.data.breaks[boundary][first_point][this.data.breaks[boundary][first_point].length - 1];
+                this.data.breaks[boundary][first_point].pop();
             }
         }
     }
@@ -713,6 +802,7 @@ class Dictionary
         let has_error: boolean = false;
         let first_part: number | null = null;
         let last_part: number | null = null;
+
         for (let idx = 0, end = text.length; idx < end;) {
             const maybe_command: string = text.slice(idx);
             if (/^｟i｠/.test(maybe_command)) {
@@ -916,9 +1006,12 @@ class Dictionary
 
                 idx += `｟cen｠`.length;
             } else {
-                if (this.data.letters.includes(text[idx])) {
+                const point: string = Dictionary.First_Point(maybe_command);
+                const next_point: string = Dictionary.First_Point(maybe_command.slice(point.length));
+
+                if (this.data.letters.includes(point)) {
                     current_type = Type.LETTERS;
-                } else if (this.data.markers.includes(text[idx])) {
+                } else if (this.data.markers.includes(point)) {
                     current_type = Type.MARKERS;
                 } else {
                     current_type = Type.POINT;
@@ -932,7 +1025,7 @@ class Dictionary
 
                     parts.push(
                         {
-                            subtext: text.slice(current_start_index, idx + 1),
+                            subtext: text.slice(current_start_index, idx + point.length),
                             type: Type.POINT,
                             has_italic,
                             has_bold,
@@ -941,12 +1034,13 @@ class Dictionary
                             has_error,
                         },
                     );
-                    current_start_index = idx + 1;
+                    current_start_index = idx + point.length;
                 } else if (current_type === Type.LETTERS) {
                     if (
-                        idx + 1 === end ||
-                        /^.｟\/?[^｠]*｠/.test(maybe_command) ||
-                        !this.data.letters.includes(text[idx + 1])
+                        idx + point.length === end ||
+                        (point.length === 1 && /^.｟\/?[^｠]*｠/.test(maybe_command)) ||
+                        (point.length === 2 && /^..｟\/?[^｠]*｠/.test(maybe_command)) ||
+                        !this.data.letters.includes(next_point)
                     ) {
                         if (first_part === null) {
                             first_part = parts.length;
@@ -955,7 +1049,7 @@ class Dictionary
 
                         parts.push(
                             {
-                                subtext: text.slice(current_start_index, idx + 1),
+                                subtext: text.slice(current_start_index, idx + point.length),
                                 type: Type.LETTERS,
                                 has_italic,
                                 has_bold,
@@ -964,13 +1058,14 @@ class Dictionary
                                 has_error,
                             },
                         );
-                        current_start_index = idx + 1;
+                        current_start_index = idx + point.length;
                     }
                 } else if (current_type === Type.MARKERS) {
                     if (
-                        idx + 1 === end ||
-                        /^.｟\/?[^｠]*｠/.test(maybe_command) ||
-                        !this.data.markers.includes(text[idx + 1])
+                        idx + point.length === end ||
+                        (point.length === 1 && /^.｟\/?[^｠]*｠/.test(maybe_command)) ||
+                        (point.length === 2 && /^..｟\/?[^｠]*｠/.test(maybe_command)) ||
+                        !this.data.markers.includes(next_point)
                     ) {
                         if (first_part === null) {
                             first_part = parts.length;
@@ -979,7 +1074,7 @@ class Dictionary
 
                         parts.push(
                             {
-                                subtext: text.slice(current_start_index, idx + 1),
+                                subtext: text.slice(current_start_index, idx + point.length),
                                 type: Type.MARKERS,
                                 has_italic,
                                 has_bold,
@@ -988,13 +1083,13 @@ class Dictionary
                                 has_error,
                             },
                         );
-                        current_start_index = idx + 1;
+                        current_start_index = idx + point.length;
                     }
                 } else {
                     Assert(false);
                 }
 
-                idx += 1;
+                idx += point.length;
             }
         }
 
@@ -1080,19 +1175,24 @@ class Dictionary
                 text.slice(idx).match(/^(｟\/?(i|b|u|sc|err)｠|｟(in|cen)｠)/);
             if (maybe_command && maybe_command[0]) {
                 for (const end = idx + maybe_command[0].length; idx < end;) {
-                    inner_html += `<span class="COMMAND SEPARATE_POINT">${Escape_Text(text[idx])}</span>`;
-                    idx += 1;
+                    const point: string = Dictionary.First_Point(text.slice(idx));
+
+                    inner_html += `<span class="COMMAND SEPARATE_POINT">${Escape_Text(point)}</span>`;
+
+                    idx += point.length;
                 }
             } else {
-                if (this.data.letters.includes(text[idx])) {
-                    inner_html += `<span class="KNOWN_LETTER SEPARATE_POINT">${Escape_Text(text[idx])}</span>`;
-                } else if (this.data.markers.includes(text[idx])) {
-                    inner_html += `<span class="KNOWN_MARKER SEPARATE_POINT">${Escape_Text(text[idx])}</span>`;
+                const point: string = Dictionary.First_Point(text.slice(idx));
+
+                if (this.data.letters.includes(point)) {
+                    inner_html += `<span class="KNOWN_LETTER SEPARATE_POINT">${Escape_Text(point)}</span>`;
+                } else if (this.data.markers.includes(point)) {
+                    inner_html += `<span class="KNOWN_MARKER SEPARATE_POINT">${Escape_Text(point)}</span>`;
                 } else {
-                    inner_html += `<span class="UNKNOWN_POINT SEPARATE_POINT">${Escape_Text(text[idx])}</span>`;
+                    inner_html += `<span class="UNKNOWN_POINT SEPARATE_POINT">${Escape_Text(point)}</span>`;
                 }
 
-                idx += 1;
+                idx += point.length;
             }
         }
 
@@ -1344,7 +1444,15 @@ class Line
                             event.preventDefault();
 
                             if (text_offset > 0) {
-                                Set_Text_Offset(this.Element(), text_offset - 1);
+                                const previous_code: number = this.Text()[text_offset - 1].charCodeAt(0);
+                                if (
+                                    previous_code >= 0xDC00 &&
+                                    previous_code <= 0xDFFF
+                                ) {
+                                    Set_Text_Offset(this.Element(), Math.max(0, text_offset - 2));
+                                } else {
+                                    Set_Text_Offset(this.Element(), text_offset - 1);
+                                }
                             }
                         }
                     }
@@ -1374,8 +1482,17 @@ class Line
                         if (text_offset != null) {
                             event.preventDefault();
 
-                            if (text_offset < this.Text().length) {
-                                Set_Text_Offset(this.Element(), text_offset + 1);
+                            const text: string = this.Text();
+                            if (text_offset < text.length) {
+                                const next_code: number = text[text_offset + 1].charCodeAt(0);
+                                if (
+                                    next_code >= 0xDC00 &&
+                                    next_code <= 0xDFFF
+                                ) {
+                                    Set_Text_Offset(this.Element(), Math.min(text_offset + 2, text.length));
+                                } else {
+                                    Set_Text_Offset(this.Element(), text_offset + 1);
+                                }
                             }
                         }
                     }

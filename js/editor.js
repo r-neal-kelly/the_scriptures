@@ -19,7 +19,14 @@ function Escape_Text(text) {
             return `&#${` `.charCodeAt(0)};`;
         }
         else {
-            return `&#${point.charCodeAt(0)};`;
+            const code = point.charCodeAt(0);
+            if (code < 0xD800 || code > 0xDFFF) {
+                return `&#${code};`;
+            }
+            else {
+                // why bother escaping anything outside of the BMP
+                return point;
+            }
         }
     });
 }
@@ -179,6 +186,19 @@ var Dictionary_Boundary;
 })(Dictionary_Boundary || (Dictionary_Boundary = {}));
 ;
 class Dictionary {
+    static First_Point(text) {
+        if (text.length === 0) {
+            return ``;
+        }
+        else {
+            if (text.charCodeAt(0) < 0xD800 || text.charCodeAt(0) > 0xDFFF) {
+                return text.slice(0, 1);
+            }
+            else {
+                return text.slice(0, 2);
+            }
+        }
+    }
     static First_Entry_Index(element) {
         for (let idx = 0, end = element.children.length; idx < end;) {
             if (!element.children[idx].classList.contains(`COMMAND`)) {
@@ -299,18 +319,33 @@ class Dictionary {
         }
     }
     Has_Letter(letter) {
-        Assert(letter.length === 1);
+        Assert(letter.length === 1 ||
+            (letter.length === 2 &&
+                letter.charCodeAt(0) >= 0xD800 &&
+                letter.charCodeAt(0) <= 0xDBFF &&
+                letter.charCodeAt(1) >= 0xDC00 &&
+                letter.charCodeAt(1) <= 0xDFFF));
         return this.data.letters.includes(letter);
     }
     Add_Letter(letter) {
-        Assert(letter.length === 1);
+        Assert(letter.length === 1 ||
+            (letter.length === 2 &&
+                letter.charCodeAt(0) >= 0xD800 &&
+                letter.charCodeAt(0) <= 0xDBFF &&
+                letter.charCodeAt(1) >= 0xDC00 &&
+                letter.charCodeAt(1) <= 0xDFFF));
         if (!this.data.letters.includes(letter)) {
             this.data.letters.push(letter);
             this.data.words[letter] = [];
         }
     }
     Remove_Letter(letter) {
-        Assert(letter.length === 1);
+        Assert(letter.length === 1 ||
+            (letter.length === 2 &&
+                letter.charCodeAt(0) >= 0xD800 &&
+                letter.charCodeAt(0) <= 0xDBFF &&
+                letter.charCodeAt(1) >= 0xDC00 &&
+                letter.charCodeAt(1) <= 0xDFFF));
         const index = this.data.letters.indexOf(letter);
         if (index > -1) {
             this.data.letters[index] = this.data.letters[this.data.letters.length - 1];
@@ -319,11 +354,21 @@ class Dictionary {
         }
     }
     Has_Marker(marker) {
-        Assert(marker.length === 1);
+        Assert(marker.length === 1 ||
+            (marker.length === 2 &&
+                marker.charCodeAt(0) >= 0xD800 &&
+                marker.charCodeAt(0) <= 0xDBFF &&
+                marker.charCodeAt(1) >= 0xDC00 &&
+                marker.charCodeAt(1) <= 0xDFFF));
         return this.data.markers.includes(marker);
     }
     Add_Marker(marker) {
-        Assert(marker.length === 1);
+        Assert(marker.length === 1 ||
+            (marker.length === 2 &&
+                marker.charCodeAt(0) >= 0xD800 &&
+                marker.charCodeAt(0) <= 0xDBFF &&
+                marker.charCodeAt(1) >= 0xDC00 &&
+                marker.charCodeAt(1) <= 0xDFFF));
         if (!this.data.markers.includes(marker)) {
             this.data.markers.push(marker);
             this.data.breaks[Dictionary_Boundary.START][marker] = [];
@@ -332,7 +377,12 @@ class Dictionary {
         }
     }
     Remove_Marker(marker) {
-        Assert(marker.length === 1);
+        Assert(marker.length === 1 ||
+            (marker.length === 2 &&
+                marker.charCodeAt(0) >= 0xD800 &&
+                marker.charCodeAt(0) <= 0xDBFF &&
+                marker.charCodeAt(1) >= 0xDC00 &&
+                marker.charCodeAt(1) <= 0xDFFF));
         const index = this.data.markers.indexOf(marker);
         if (index > -1) {
             this.data.markers[index] = this.data.markers[this.data.markers.length - 1];
@@ -344,58 +394,65 @@ class Dictionary {
     }
     Has_Word(word) {
         Assert(word.length > 0);
-        return (this.data.words[word[0]] != null &&
-            this.data.words[word[0]].includes(word));
+        const first_point = Dictionary.First_Point(word);
+        return (this.data.words[first_point] != null &&
+            this.data.words[first_point].includes(word));
     }
     Add_Word(word) {
         Assert(word.length > 0);
         Assert(!this.Has_Word_Error(word));
-        if (this.data.words[word[0]] == null) {
-            this.Add_Letter(word[0]);
-            this.data.words[word[0]].push(word);
+        const first_point = Dictionary.First_Point(word);
+        if (this.data.words[first_point] == null) {
+            this.Add_Letter(first_point);
+            this.data.words[first_point].push(word);
         }
         else {
-            if (!this.data.words[word[0]].includes(word)) {
-                this.data.words[word[0]].push(word);
+            if (!this.data.words[first_point].includes(word)) {
+                this.data.words[first_point].push(word);
             }
         }
     }
     Remove_Word(word) {
         Assert(word.length > 0);
-        if (this.data.words[word[0]] != null) {
-            const index = this.data.words[word[0]].indexOf(word);
+        const first_point = Dictionary.First_Point(word);
+        if (this.data.words[first_point] != null) {
+            const index = this.data.words[first_point].indexOf(word);
             if (index > -1) {
-                this.data.words[word[0]][index] = this.data.words[word[0]][this.data.words[word[0]].length - 1];
-                this.data.words[word[0]].pop();
+                this.data.words[first_point][index] =
+                    this.data.words[first_point][this.data.words[first_point].length - 1];
+                this.data.words[first_point].pop();
             }
         }
     }
     Has_Break(break_, boundary) {
         Assert(break_.length > 0);
-        return (this.data.breaks[boundary][break_[0]] != null &&
-            this.data.breaks[boundary][break_[0]].includes(break_));
+        const first_point = Dictionary.First_Point(break_);
+        return (this.data.breaks[boundary][first_point] != null &&
+            this.data.breaks[boundary][first_point].includes(break_));
     }
     Add_Break(break_, boundary) {
         Assert(break_.length > 0);
         Assert(!this.Has_Break_Error(break_, boundary));
-        if (this.data.breaks[boundary][break_[0]] == null) {
-            this.Add_Marker(break_[0]);
-            this.data.breaks[boundary][break_[0]].push(break_);
+        const first_point = Dictionary.First_Point(break_);
+        if (this.data.breaks[boundary][first_point] == null) {
+            this.Add_Marker(first_point);
+            this.data.breaks[boundary][first_point].push(break_);
         }
         else {
-            if (!this.data.breaks[boundary][break_[0]].includes(break_)) {
-                this.data.breaks[boundary][break_[0]].push(break_);
+            if (!this.data.breaks[boundary][first_point].includes(break_)) {
+                this.data.breaks[boundary][first_point].push(break_);
             }
         }
     }
     Remove_Break(break_, boundary) {
         Assert(break_.length > 0);
-        if (this.data.breaks[boundary][break_[0]] != null) {
-            const index = this.data.breaks[boundary][break_[0]].indexOf(break_);
+        const first_point = Dictionary.First_Point(break_);
+        if (this.data.breaks[boundary][first_point] != null) {
+            const index = this.data.breaks[boundary][first_point].indexOf(break_);
             if (index > -1) {
-                this.data.breaks[boundary][break_[0]][index] =
-                    this.data.breaks[boundary][break_[0]][this.data.breaks[boundary][break_[0]].length - 1];
-                this.data.breaks[boundary][break_[0]].pop();
+                this.data.breaks[boundary][first_point][index] =
+                    this.data.breaks[boundary][first_point][this.data.breaks[boundary][first_point].length - 1];
+                this.data.breaks[boundary][first_point].pop();
             }
         }
     }
@@ -628,10 +685,12 @@ class Dictionary {
                 idx += `｟cen｠`.length;
             }
             else {
-                if (this.data.letters.includes(text[idx])) {
+                const point = Dictionary.First_Point(maybe_command);
+                const next_point = Dictionary.First_Point(maybe_command.slice(point.length));
+                if (this.data.letters.includes(point)) {
                     current_type = Type.LETTERS;
                 }
-                else if (this.data.markers.includes(text[idx])) {
+                else if (this.data.markers.includes(point)) {
                     current_type = Type.MARKERS;
                 }
                 else {
@@ -643,7 +702,7 @@ class Dictionary {
                     }
                     last_part = parts.length;
                     parts.push({
-                        subtext: text.slice(current_start_index, idx + 1),
+                        subtext: text.slice(current_start_index, idx + point.length),
                         type: Type.POINT,
                         has_italic,
                         has_bold,
@@ -651,18 +710,19 @@ class Dictionary {
                         has_small_caps,
                         has_error,
                     });
-                    current_start_index = idx + 1;
+                    current_start_index = idx + point.length;
                 }
                 else if (current_type === Type.LETTERS) {
-                    if (idx + 1 === end ||
-                        /^.｟\/?[^｠]*｠/.test(maybe_command) ||
-                        !this.data.letters.includes(text[idx + 1])) {
+                    if (idx + point.length === end ||
+                        (point.length === 1 && /^.｟\/?[^｠]*｠/.test(maybe_command)) ||
+                        (point.length === 2 && /^..｟\/?[^｠]*｠/.test(maybe_command)) ||
+                        !this.data.letters.includes(next_point)) {
                         if (first_part === null) {
                             first_part = parts.length;
                         }
                         last_part = parts.length;
                         parts.push({
-                            subtext: text.slice(current_start_index, idx + 1),
+                            subtext: text.slice(current_start_index, idx + point.length),
                             type: Type.LETTERS,
                             has_italic,
                             has_bold,
@@ -670,19 +730,20 @@ class Dictionary {
                             has_small_caps,
                             has_error,
                         });
-                        current_start_index = idx + 1;
+                        current_start_index = idx + point.length;
                     }
                 }
                 else if (current_type === Type.MARKERS) {
-                    if (idx + 1 === end ||
-                        /^.｟\/?[^｠]*｠/.test(maybe_command) ||
-                        !this.data.markers.includes(text[idx + 1])) {
+                    if (idx + point.length === end ||
+                        (point.length === 1 && /^.｟\/?[^｠]*｠/.test(maybe_command)) ||
+                        (point.length === 2 && /^..｟\/?[^｠]*｠/.test(maybe_command)) ||
+                        !this.data.markers.includes(next_point)) {
                         if (first_part === null) {
                             first_part = parts.length;
                         }
                         last_part = parts.length;
                         parts.push({
-                            subtext: text.slice(current_start_index, idx + 1),
+                            subtext: text.slice(current_start_index, idx + point.length),
                             type: Type.MARKERS,
                             has_italic,
                             has_bold,
@@ -690,13 +751,13 @@ class Dictionary {
                             has_small_caps,
                             has_error,
                         });
-                        current_start_index = idx + 1;
+                        current_start_index = idx + point.length;
                     }
                 }
                 else {
                     Assert(false);
                 }
-                idx += 1;
+                idx += point.length;
             }
         }
         let inner_html = ``;
@@ -777,21 +838,23 @@ class Dictionary {
             const maybe_command = text.slice(idx).match(/^(｟\/?(i|b|u|sc|err)｠|｟(in|cen)｠)/);
             if (maybe_command && maybe_command[0]) {
                 for (const end = idx + maybe_command[0].length; idx < end;) {
-                    inner_html += `<span class="COMMAND SEPARATE_POINT">${Escape_Text(text[idx])}</span>`;
-                    idx += 1;
+                    const point = Dictionary.First_Point(text.slice(idx));
+                    inner_html += `<span class="COMMAND SEPARATE_POINT">${Escape_Text(point)}</span>`;
+                    idx += point.length;
                 }
             }
             else {
-                if (this.data.letters.includes(text[idx])) {
-                    inner_html += `<span class="KNOWN_LETTER SEPARATE_POINT">${Escape_Text(text[idx])}</span>`;
+                const point = Dictionary.First_Point(text.slice(idx));
+                if (this.data.letters.includes(point)) {
+                    inner_html += `<span class="KNOWN_LETTER SEPARATE_POINT">${Escape_Text(point)}</span>`;
                 }
-                else if (this.data.markers.includes(text[idx])) {
-                    inner_html += `<span class="KNOWN_MARKER SEPARATE_POINT">${Escape_Text(text[idx])}</span>`;
+                else if (this.data.markers.includes(point)) {
+                    inner_html += `<span class="KNOWN_MARKER SEPARATE_POINT">${Escape_Text(point)}</span>`;
                 }
                 else {
-                    inner_html += `<span class="UNKNOWN_POINT SEPARATE_POINT">${Escape_Text(text[idx])}</span>`;
+                    inner_html += `<span class="UNKNOWN_POINT SEPARATE_POINT">${Escape_Text(point)}</span>`;
                 }
-                idx += 1;
+                idx += point.length;
             }
         }
         return inner_html;
@@ -965,7 +1028,14 @@ class Line {
                     if (text_offset != null) {
                         event.preventDefault();
                         if (text_offset > 0) {
-                            Set_Text_Offset(this.Element(), text_offset - 1);
+                            const previous_code = this.Text()[text_offset - 1].charCodeAt(0);
+                            if (previous_code >= 0xDC00 &&
+                                previous_code <= 0xDFFF) {
+                                Set_Text_Offset(this.Element(), Math.max(0, text_offset - 2));
+                            }
+                            else {
+                                Set_Text_Offset(this.Element(), text_offset - 1);
+                            }
                         }
                     }
                 }
@@ -991,8 +1061,16 @@ class Line {
                     const text_offset = Text_Offset(this.Element());
                     if (text_offset != null) {
                         event.preventDefault();
-                        if (text_offset < this.Text().length) {
-                            Set_Text_Offset(this.Element(), text_offset + 1);
+                        const text = this.Text();
+                        if (text_offset < text.length) {
+                            const next_code = text[text_offset + 1].charCodeAt(0);
+                            if (next_code >= 0xDC00 &&
+                                next_code <= 0xDFFF) {
+                                Set_Text_Offset(this.Element(), Math.min(text_offset + 2, text.length));
+                            }
+                            else {
+                                Set_Text_Offset(this.Element(), text_offset + 1);
+                            }
                         }
                     }
                 }
