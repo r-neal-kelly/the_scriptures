@@ -11,6 +11,8 @@
     set := "Combo"
   else if (key1 = ";")
     set := "Symbols"
+  else if (key1 = ",")
+    set := "Commas"
   else
     set := "Ligs"
 
@@ -61,6 +63,18 @@ Latin.Symbols_c :=  { "+": "—" ; U+2014 EM DASH
                     , "S": "᾿" ; U+1FBF GREEK PSILI
                     , "R": "῾" ; U+1FFE GREEK DASIA
                     , "": "" }
+
+Latin.Commas_s := {   0: "🄁" ; U+1F101 DIGIT ZERO COMMA
+                  ,   1: "🄂" ; U+1F102 DIGIT ONE COMMA
+                  ,   2: "🄃" ; U+1F103 DIGIT TWO COMMA
+                  ,   3: "🄄" ; U+1F104 DIGIT THREE COMMA
+                  ,   4: "🄅" ; U+1F105 DIGIT FOUR COMMA
+                  ,   5: "🄆" ; U+1F106 DIGIT FIVE COMMA
+                  ,   6: "🄇" ; U+1F107 DIGIT SIX COMMA
+                  ,   7: "🄈" ; U+1F108 DIGIT SEVEN COMMA
+                  ,   8: "🄉" ; U+1F109 DIGIT EIGHT COMMA
+                  ,   9: "🄊" ; U+1F10A DIGIT NINE COMMA
+                  , "": "" }
 
 ; Ligatures and Digraphs
 Latin.Ligs_s  := { "aa": "ꜳ" ; Aa
