@@ -280,6 +280,23 @@ type Dictionary_Treatment = {
 
 class Dictionary
 {
+    static Is_Point(
+        text: string,
+    ):
+        boolean
+    {
+        return (
+            text.length === 1 ||
+            (
+                text.length === 2 &&
+                text.charCodeAt(0) >= 0xD800 &&
+                text.charCodeAt(0) <= 0xDBFF &&
+                text.charCodeAt(1) >= 0xDC00 &&
+                text.charCodeAt(1) <= 0xDFFF
+            )
+        );
+    }
+
     static First_Point(
         text: string,
     ):
@@ -443,16 +460,7 @@ class Dictionary
     ):
         boolean
     {
-        Assert(
-            letter.length === 1 ||
-            (
-                letter.length === 2 &&
-                letter.charCodeAt(0) >= 0xD800 &&
-                letter.charCodeAt(0) <= 0xDBFF &&
-                letter.charCodeAt(1) >= 0xDC00 &&
-                letter.charCodeAt(1) <= 0xDFFF
-            )
-        );
+        Assert(Dictionary.Is_Point(letter));
 
         return this.data.letters.includes(letter);
     }
@@ -462,16 +470,7 @@ class Dictionary
     ):
         void
     {
-        Assert(
-            letter.length === 1 ||
-            (
-                letter.length === 2 &&
-                letter.charCodeAt(0) >= 0xD800 &&
-                letter.charCodeAt(0) <= 0xDBFF &&
-                letter.charCodeAt(1) >= 0xDC00 &&
-                letter.charCodeAt(1) <= 0xDFFF
-            )
-        );
+        Assert(Dictionary.Is_Point(letter));
 
         if (!this.data.letters.includes(letter)) {
             this.data.letters.push(letter);
@@ -485,16 +484,7 @@ class Dictionary
     ):
         void
     {
-        Assert(
-            letter.length === 1 ||
-            (
-                letter.length === 2 &&
-                letter.charCodeAt(0) >= 0xD800 &&
-                letter.charCodeAt(0) <= 0xDBFF &&
-                letter.charCodeAt(1) >= 0xDC00 &&
-                letter.charCodeAt(1) <= 0xDFFF
-            )
-        );
+        Assert(Dictionary.Is_Point(letter));
 
         const index: number = this.data.letters.indexOf(letter);
         if (index > -1) {
@@ -510,16 +500,7 @@ class Dictionary
     ):
         boolean
     {
-        Assert(
-            marker.length === 1 ||
-            (
-                marker.length === 2 &&
-                marker.charCodeAt(0) >= 0xD800 &&
-                marker.charCodeAt(0) <= 0xDBFF &&
-                marker.charCodeAt(1) >= 0xDC00 &&
-                marker.charCodeAt(1) <= 0xDFFF
-            )
-        );
+        Assert(Dictionary.Is_Point(marker));
 
         return this.data.markers.includes(marker);
     }
@@ -529,16 +510,7 @@ class Dictionary
     ):
         void
     {
-        Assert(
-            marker.length === 1 ||
-            (
-                marker.length === 2 &&
-                marker.charCodeAt(0) >= 0xD800 &&
-                marker.charCodeAt(0) <= 0xDBFF &&
-                marker.charCodeAt(1) >= 0xDC00 &&
-                marker.charCodeAt(1) <= 0xDFFF
-            )
-        );
+        Assert(Dictionary.Is_Point(marker));
 
         if (!this.data.markers.includes(marker)) {
             this.data.markers.push(marker);
@@ -554,16 +526,7 @@ class Dictionary
     ):
         void
     {
-        Assert(
-            marker.length === 1 ||
-            (
-                marker.length === 2 &&
-                marker.charCodeAt(0) >= 0xD800 &&
-                marker.charCodeAt(0) <= 0xDBFF &&
-                marker.charCodeAt(1) >= 0xDC00 &&
-                marker.charCodeAt(1) <= 0xDFFF
-            )
-        );
+        Assert(Dictionary.Is_Point(marker));
 
         const index: number = this.data.markers.indexOf(marker);
         if (index > -1) {
@@ -1236,6 +1199,18 @@ class Dictionary
     }
 }
 
+enum Line_Event_Key
+{
+    LETTER = `Home`,
+    MARKER = `PageUp`,
+    WORD = `PageDown`,
+    BREAK = `End`,
+
+    ERROR = `Delete`,
+    WORD_ERROR = `Pause`,
+    BREAK_ERROR = `Insert`,
+};
+
 class Line
 {
     private editor: Editor;
@@ -1498,12 +1473,11 @@ class Line
                             }
                         }
                     }
-                } else if (event.key === `Home`) {
+                } else if (event.key === Line_Event_Key.LETTER) {
                     event.preventDefault();
 
                     if (this.Editor().Is_Meta_Key_Active()) {
-                        const selected: Dictionary_Entry | null =
-                            Dictionary.Selected_Entry();
+                        const selected: Dictionary_Entry | null = Dictionary.Selected_Entry();
                         if (selected) {
                             if (selected.class === Dictionary_Class.UNKNOWN_POINT) {
                                 this.Editor().Dictionary().Add_Letter(selected.text);
@@ -1515,19 +1489,18 @@ class Line
                                 selected.class === Dictionary_Class.UNKNOWN_WORD ||
                                 selected.class === Dictionary_Class.KNOWN_WORD
                             ) {
-                                if (selected.text.length === 1) {
+                                if (Dictionary.Is_Point(selected.text)) {
                                     this.Editor().Dictionary().Remove_Letter(selected.text);
                                     this.Editor().Touch();
                                 }
                             }
                         }
                     }
-                } else if (event.key === `PageUp`) {
+                } else if (event.key === Line_Event_Key.MARKER) {
                     event.preventDefault();
 
                     if (this.Editor().Is_Meta_Key_Active()) {
-                        const selected: Dictionary_Entry | null =
-                            Dictionary.Selected_Entry();
+                        const selected: Dictionary_Entry | null = Dictionary.Selected_Entry();
                         if (selected) {
                             if (selected.class === Dictionary_Class.UNKNOWN_POINT) {
                                 this.Editor().Dictionary().Add_Marker(selected.text);
@@ -1539,19 +1512,18 @@ class Line
                                 selected.class === Dictionary_Class.UNKNOWN_BREAK ||
                                 selected.class === Dictionary_Class.KNOWN_BREAK
                             ) {
-                                if (selected.text.length === 1) {
+                                if (Dictionary.Is_Point(selected.text)) {
                                     this.Editor().Dictionary().Remove_Marker(selected.text);
                                     this.Editor().Touch();
                                 }
                             }
                         }
                     }
-                } else if (event.key === `PageDown`) {
+                } else if (event.key === Line_Event_Key.WORD) {
                     event.preventDefault();
 
                     if (this.Editor().Is_Meta_Key_Active()) {
-                        const selected: Dictionary_Entry | null =
-                            Dictionary.Selected_Entry();
+                        const selected: Dictionary_Entry | null = Dictionary.Selected_Entry();
                         if (selected) {
                             if (selected.class === Dictionary_Class.UNKNOWN_WORD) {
                                 this.Editor().Dictionary().Add_Word(selected.text);
@@ -1566,12 +1538,11 @@ class Line
                             }
                         }
                     }
-                } else if (event.key === `End`) {
+                } else if (event.key === Line_Event_Key.BREAK) {
                     event.preventDefault();
 
                     if (this.Editor().Is_Meta_Key_Active()) {
-                        const selected: Dictionary_Entry | null =
-                            Dictionary.Selected_Entry();
+                        const selected: Dictionary_Entry | null = Dictionary.Selected_Entry();
                         if (selected) {
                             if (selected.class === Dictionary_Class.UNKNOWN_BREAK) {
                                 this.Editor().Dictionary().Add_Break(selected.text, selected.boundary);
@@ -1586,12 +1557,11 @@ class Line
                             }
                         }
                     }
-                } else if (event.key === `Delete`) {
+                } else if (event.key === Line_Event_Key.ERROR) {
                     if (this.Editor().Is_Meta_Key_Active()) {
                         event.preventDefault();
 
-                        const selected: Dictionary_Entry | null =
-                            Dictionary.Selected_Entry();
+                        const selected: Dictionary_Entry | null = Dictionary.Selected_Entry();
                         if (selected) {
                             if (selected.class === Dictionary_Class.UNKNOWN_WORD) {
                                 this.Editor().Dictionary().Add_Word_Error(selected.text);
@@ -1616,12 +1586,11 @@ class Line
                             }
                         }
                     }
-                } else if (event.key === `Pause`) {
+                } else if (event.key === Line_Event_Key.WORD_ERROR) {
                     if (this.Editor().Is_Meta_Key_Active()) {
                         event.preventDefault();
 
-                        const selected: Dictionary_Entry | null =
-                            Dictionary.Selected_Entry();
+                        const selected: Dictionary_Entry | null = Dictionary.Selected_Entry();
                         if (selected) {
                             if (selected.class === Dictionary_Class.UNKNOWN_POINT) {
                                 this.Editor().Dictionary().Add_Word_Error(selected.text);
@@ -1639,12 +1608,11 @@ class Line
                             }
                         }
                     }
-                } else if (event.key === `Insert`) {
+                } else if (event.key === Line_Event_Key.BREAK_ERROR) {
                     if (this.Editor().Is_Meta_Key_Active()) {
                         event.preventDefault();
 
-                        const selected: Dictionary_Entry | null =
-                            Dictionary.Selected_Entry();
+                        const selected: Dictionary_Entry | null = Dictionary.Selected_Entry();
                         if (selected) {
                             if (selected.class === Dictionary_Class.UNKNOWN_POINT) {
                                 this.Editor().Dictionary().Add_Break_Error(selected.text, selected.boundary);
@@ -1975,7 +1943,13 @@ class Editor
                     if (this.Is_Meta_Key_Active()) {
                         keyboard_event.preventDefault();
 
-                        this.Highlight_Next_Error();
+                        this.Highlight_Next(`｟err｠`);
+                    }
+                } else if (keyboard_event.key === `!`) {
+                    if (this.Is_Meta_Key_Active()) {
+                        keyboard_event.preventDefault();
+
+                        this.Highlight_Next(`｟b｠`);
                     }
                 }
             }.bind(this),
@@ -2965,69 +2939,71 @@ class Editor
         selection.collapse(this.lines[0].Element(), 0);
     }
 
-    Highlight_Next_Error():
+    Highlight_Next(
+        text: string,
+    ):
         void
     {
         const selected_line_idx: number | null = this.Focused_Line_Index();
         const selection: Selection | null = document.getSelection();
         if (
-            selected_line_idx !== null &&
-            selection &&
+            selected_line_idx != null &&
+            selection != null &&
             !selection.isCollapsed &&
-            selection.anchorNode &&
-            selection.focusNode &&
+            selection.anchorNode != null &&
             selection.anchorNode === selection.focusNode &&
             (
                 (selection.anchorOffset === 0 && selection.focusOffset === 1) ||
                 (selection.anchorOffset === 1 && selection.focusOffset === 0)
             )
         ) {
-            // we have a highlighted error command, so we look for the next one in this line and the ones that follow
-            const selected_line_element: Element = this.lines[selected_line_idx].Element();
+            // we have a highlight already, so we look for the next one in this line or the lines that follow
+            const selected_line_element: Element =
+                this.lines[selected_line_idx].Element();
             const selected_child_idx: number =
                 Array.from(selected_line_element.children).indexOf(selection.anchorNode as Element);
-            if (selected_child_idx > -1) {
-                const selected_child_element: Element = selected_line_element.children[selected_child_idx];
-                const next_error_element: Element | null =
-                    (function (
-                        this: Editor,
-                    ):
-                        Element | null
-                    {
-                        let line_idx: number = selected_line_idx;
-                        let child_idx: number = selected_child_idx + 1;
-                        while (true) {
-                            const line: Element = this.lines[line_idx].Element();
-                            for (let end = line.children.length; child_idx < end; child_idx += 1
-                            ) {
-                                const child: Element = line.children[child_idx];
-                                if (child.textContent === `｟err｠`) {
-                                    return child;
-                                } else if (child === selected_child_element) {
-                                    return null;
-                                }
-                            }
+            Assert(selected_child_idx > -1);
 
-                            if (line_idx === this.lines.length - 1) {
-                                line_idx = 0;
-                            } else {
-                                line_idx += 1;
+            const selected_child_element: Element =
+                selected_line_element.children[selected_child_idx];
+            const next_error_element: Element | null =
+                (function (
+                    this: Editor,
+                ):
+                    Element | null
+                {
+                    let line_idx: number = selected_line_idx;
+                    let child_idx: number = selected_child_idx + 1;
+                    while (true) {
+                        const line: Element = this.lines[line_idx].Element();
+                        for (let end = line.children.length; child_idx < end; child_idx += 1) {
+                            const child: Element = line.children[child_idx];
+                            if ((child.textContent || ``).replaceAll(/ /g, ` `) === text) {
+                                return child;
+                            } else if (child === selected_child_element) {
+                                return null;
                             }
-                            child_idx = 0;
                         }
-                    }.bind(this))();
 
-                if (next_error_element) {
-                    (next_error_element.parentElement as HTMLElement).focus();
-                    selection.getRangeAt(0).setStart(next_error_element, 0);
-                    selection.getRangeAt(0).setEnd(next_error_element, 1);
-                }
+                        if (line_idx === this.lines.length - 1) {
+                            line_idx = 0;
+                        } else {
+                            line_idx += 1;
+                        }
+                        child_idx = 0;
+                    }
+                }.bind(this))();
+
+            if (next_error_element) {
+                (next_error_element.parentElement as HTMLElement).focus();
+                selection.getRangeAt(0).setStart(next_error_element, 0);
+                selection.getRangeAt(0).setEnd(next_error_element, 1);
             }
         } else {
-            // we have to look for the first error and highlight it
+            // we have to look for the first instance and highlight it
             for (let line of this.lines) {
                 for (let child of line.Element().children) {
-                    if (child.textContent === `｟err｠`) {
+                    if ((child.textContent || ``).replaceAll(/ /g, ` `) === text) {
                         line.Element().focus();
 
                         const selection: Selection = document.getSelection() as Selection;

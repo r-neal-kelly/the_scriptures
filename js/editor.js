@@ -186,6 +186,14 @@ var Dictionary_Boundary;
 })(Dictionary_Boundary || (Dictionary_Boundary = {}));
 ;
 class Dictionary {
+    static Is_Point(text) {
+        return (text.length === 1 ||
+            (text.length === 2 &&
+                text.charCodeAt(0) >= 0xD800 &&
+                text.charCodeAt(0) <= 0xDBFF &&
+                text.charCodeAt(1) >= 0xDC00 &&
+                text.charCodeAt(1) <= 0xDFFF));
+    }
     static First_Point(text) {
         if (text.length === 0) {
             return ``;
@@ -319,33 +327,18 @@ class Dictionary {
         }
     }
     Has_Letter(letter) {
-        Assert(letter.length === 1 ||
-            (letter.length === 2 &&
-                letter.charCodeAt(0) >= 0xD800 &&
-                letter.charCodeAt(0) <= 0xDBFF &&
-                letter.charCodeAt(1) >= 0xDC00 &&
-                letter.charCodeAt(1) <= 0xDFFF));
+        Assert(Dictionary.Is_Point(letter));
         return this.data.letters.includes(letter);
     }
     Add_Letter(letter) {
-        Assert(letter.length === 1 ||
-            (letter.length === 2 &&
-                letter.charCodeAt(0) >= 0xD800 &&
-                letter.charCodeAt(0) <= 0xDBFF &&
-                letter.charCodeAt(1) >= 0xDC00 &&
-                letter.charCodeAt(1) <= 0xDFFF));
+        Assert(Dictionary.Is_Point(letter));
         if (!this.data.letters.includes(letter)) {
             this.data.letters.push(letter);
             this.data.words[letter] = [];
         }
     }
     Remove_Letter(letter) {
-        Assert(letter.length === 1 ||
-            (letter.length === 2 &&
-                letter.charCodeAt(0) >= 0xD800 &&
-                letter.charCodeAt(0) <= 0xDBFF &&
-                letter.charCodeAt(1) >= 0xDC00 &&
-                letter.charCodeAt(1) <= 0xDFFF));
+        Assert(Dictionary.Is_Point(letter));
         const index = this.data.letters.indexOf(letter);
         if (index > -1) {
             this.data.letters[index] = this.data.letters[this.data.letters.length - 1];
@@ -354,21 +347,11 @@ class Dictionary {
         }
     }
     Has_Marker(marker) {
-        Assert(marker.length === 1 ||
-            (marker.length === 2 &&
-                marker.charCodeAt(0) >= 0xD800 &&
-                marker.charCodeAt(0) <= 0xDBFF &&
-                marker.charCodeAt(1) >= 0xDC00 &&
-                marker.charCodeAt(1) <= 0xDFFF));
+        Assert(Dictionary.Is_Point(marker));
         return this.data.markers.includes(marker);
     }
     Add_Marker(marker) {
-        Assert(marker.length === 1 ||
-            (marker.length === 2 &&
-                marker.charCodeAt(0) >= 0xD800 &&
-                marker.charCodeAt(0) <= 0xDBFF &&
-                marker.charCodeAt(1) >= 0xDC00 &&
-                marker.charCodeAt(1) <= 0xDFFF));
+        Assert(Dictionary.Is_Point(marker));
         if (!this.data.markers.includes(marker)) {
             this.data.markers.push(marker);
             this.data.breaks[Dictionary_Boundary.START][marker] = [];
@@ -377,12 +360,7 @@ class Dictionary {
         }
     }
     Remove_Marker(marker) {
-        Assert(marker.length === 1 ||
-            (marker.length === 2 &&
-                marker.charCodeAt(0) >= 0xD800 &&
-                marker.charCodeAt(0) <= 0xDBFF &&
-                marker.charCodeAt(1) >= 0xDC00 &&
-                marker.charCodeAt(1) <= 0xDFFF));
+        Assert(Dictionary.Is_Point(marker));
         const index = this.data.markers.indexOf(marker);
         if (index > -1) {
             this.data.markers[index] = this.data.markers[this.data.markers.length - 1];
@@ -885,6 +863,17 @@ class Dictionary {
         return JSON.stringify(this.data, null, 4);
     }
 }
+var Line_Event_Key;
+(function (Line_Event_Key) {
+    Line_Event_Key["LETTER"] = "Home";
+    Line_Event_Key["MARKER"] = "PageUp";
+    Line_Event_Key["WORD"] = "PageDown";
+    Line_Event_Key["BREAK"] = "End";
+    Line_Event_Key["ERROR"] = "Delete";
+    Line_Event_Key["WORD_ERROR"] = "Pause";
+    Line_Event_Key["BREAK_ERROR"] = "Insert";
+})(Line_Event_Key || (Line_Event_Key = {}));
+;
 class Line {
     constructor({ editor, parent, }) {
         this.editor = editor;
@@ -1078,7 +1067,7 @@ class Line {
                     }
                 }
             }
-            else if (event.key === `Home`) {
+            else if (event.key === Line_Event_Key.LETTER) {
                 event.preventDefault();
                 if (this.Editor().Is_Meta_Key_Active()) {
                     const selected = Dictionary.Selected_Entry();
@@ -1093,7 +1082,7 @@ class Line {
                         }
                         else if (selected.class === Dictionary_Class.UNKNOWN_WORD ||
                             selected.class === Dictionary_Class.KNOWN_WORD) {
-                            if (selected.text.length === 1) {
+                            if (Dictionary.Is_Point(selected.text)) {
                                 this.Editor().Dictionary().Remove_Letter(selected.text);
                                 this.Editor().Touch();
                             }
@@ -1101,7 +1090,7 @@ class Line {
                     }
                 }
             }
-            else if (event.key === `PageUp`) {
+            else if (event.key === Line_Event_Key.MARKER) {
                 event.preventDefault();
                 if (this.Editor().Is_Meta_Key_Active()) {
                     const selected = Dictionary.Selected_Entry();
@@ -1116,7 +1105,7 @@ class Line {
                         }
                         else if (selected.class === Dictionary_Class.UNKNOWN_BREAK ||
                             selected.class === Dictionary_Class.KNOWN_BREAK) {
-                            if (selected.text.length === 1) {
+                            if (Dictionary.Is_Point(selected.text)) {
                                 this.Editor().Dictionary().Remove_Marker(selected.text);
                                 this.Editor().Touch();
                             }
@@ -1124,7 +1113,7 @@ class Line {
                     }
                 }
             }
-            else if (event.key === `PageDown`) {
+            else if (event.key === Line_Event_Key.WORD) {
                 event.preventDefault();
                 if (this.Editor().Is_Meta_Key_Active()) {
                     const selected = Dictionary.Selected_Entry();
@@ -1145,7 +1134,7 @@ class Line {
                     }
                 }
             }
-            else if (event.key === `End`) {
+            else if (event.key === Line_Event_Key.BREAK) {
                 event.preventDefault();
                 if (this.Editor().Is_Meta_Key_Active()) {
                     const selected = Dictionary.Selected_Entry();
@@ -1166,7 +1155,7 @@ class Line {
                     }
                 }
             }
-            else if (event.key === `Delete`) {
+            else if (event.key === Line_Event_Key.ERROR) {
                 if (this.Editor().Is_Meta_Key_Active()) {
                     event.preventDefault();
                     const selected = Dictionary.Selected_Entry();
@@ -1200,7 +1189,7 @@ class Line {
                     }
                 }
             }
-            else if (event.key === `Pause`) {
+            else if (event.key === Line_Event_Key.WORD_ERROR) {
                 if (this.Editor().Is_Meta_Key_Active()) {
                     event.preventDefault();
                     const selected = Dictionary.Selected_Entry();
@@ -1225,7 +1214,7 @@ class Line {
                     }
                 }
             }
-            else if (event.key === `Insert`) {
+            else if (event.key === Line_Event_Key.BREAK_ERROR) {
                 if (this.Editor().Is_Meta_Key_Active()) {
                     event.preventDefault();
                     const selected = Dictionary.Selected_Entry();
@@ -1460,7 +1449,13 @@ class Editor {
             else if (keyboard_event.key === `~`) {
                 if (this.Is_Meta_Key_Active()) {
                     keyboard_event.preventDefault();
-                    this.Highlight_Next_Error();
+                    this.Highlight_Next(`｟err｠`);
+                }
+            }
+            else if (keyboard_event.key === `!`) {
+                if (this.Is_Meta_Key_Active()) {
+                    keyboard_event.preventDefault();
+                    this.Highlight_Next(`｟b｠`);
                 }
             }
         }.bind(this));
@@ -2027,57 +2022,55 @@ class Editor {
         const selection = document.getSelection();
         selection.collapse(this.lines[0].Element(), 0);
     }
-    Highlight_Next_Error() {
+    Highlight_Next(text) {
         const selected_line_idx = this.Focused_Line_Index();
         const selection = document.getSelection();
-        if (selected_line_idx !== null &&
-            selection &&
+        if (selected_line_idx != null &&
+            selection != null &&
             !selection.isCollapsed &&
-            selection.anchorNode &&
-            selection.focusNode &&
+            selection.anchorNode != null &&
             selection.anchorNode === selection.focusNode &&
             ((selection.anchorOffset === 0 && selection.focusOffset === 1) ||
                 (selection.anchorOffset === 1 && selection.focusOffset === 0))) {
-            // we have a highlighted error command, so we look for the next one in this line and the ones that follow
+            // we have a highlight already, so we look for the next one in this line or the lines that follow
             const selected_line_element = this.lines[selected_line_idx].Element();
             const selected_child_idx = Array.from(selected_line_element.children).indexOf(selection.anchorNode);
-            if (selected_child_idx > -1) {
-                const selected_child_element = selected_line_element.children[selected_child_idx];
-                const next_error_element = (function () {
-                    let line_idx = selected_line_idx;
-                    let child_idx = selected_child_idx + 1;
-                    while (true) {
-                        const line = this.lines[line_idx].Element();
-                        for (let end = line.children.length; child_idx < end; child_idx += 1) {
-                            const child = line.children[child_idx];
-                            if (child.textContent === `｟err｠`) {
-                                return child;
-                            }
-                            else if (child === selected_child_element) {
-                                return null;
-                            }
+            Assert(selected_child_idx > -1);
+            const selected_child_element = selected_line_element.children[selected_child_idx];
+            const next_error_element = (function () {
+                let line_idx = selected_line_idx;
+                let child_idx = selected_child_idx + 1;
+                while (true) {
+                    const line = this.lines[line_idx].Element();
+                    for (let end = line.children.length; child_idx < end; child_idx += 1) {
+                        const child = line.children[child_idx];
+                        if ((child.textContent || ``).replaceAll(/ /g, ` `) === text) {
+                            return child;
                         }
-                        if (line_idx === this.lines.length - 1) {
-                            line_idx = 0;
+                        else if (child === selected_child_element) {
+                            return null;
                         }
-                        else {
-                            line_idx += 1;
-                        }
-                        child_idx = 0;
                     }
-                }.bind(this))();
-                if (next_error_element) {
-                    next_error_element.parentElement.focus();
-                    selection.getRangeAt(0).setStart(next_error_element, 0);
-                    selection.getRangeAt(0).setEnd(next_error_element, 1);
+                    if (line_idx === this.lines.length - 1) {
+                        line_idx = 0;
+                    }
+                    else {
+                        line_idx += 1;
+                    }
+                    child_idx = 0;
                 }
+            }.bind(this))();
+            if (next_error_element) {
+                next_error_element.parentElement.focus();
+                selection.getRangeAt(0).setStart(next_error_element, 0);
+                selection.getRangeAt(0).setEnd(next_error_element, 1);
             }
         }
         else {
-            // we have to look for the first error and highlight it
+            // we have to look for the first instance and highlight it
             for (let line of this.lines) {
                 for (let child of line.Element().children) {
-                    if (child.textContent === `｟err｠`) {
+                    if ((child.textContent || ``).replaceAll(/ /g, ` `) === text) {
                         line.Element().focus();
                         const selection = document.getSelection();
                         selection.getRangeAt(0).setStart(child, 0);
