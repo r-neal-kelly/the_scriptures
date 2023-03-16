@@ -220,7 +220,6 @@ Latin.Combo_s := { "a": "̀" ; Grave Accent
                  , "f": "̈" ; Diaeresis
                  , "q": "̄" ; Macron
                  , "w": "̆" ; Breve
-                 , "e": "̇" ; Dot Above
                  , "r": "̊" ; Ring Above
                  , "t": "̃" ; Tilde
                  , "c": "̧" ; Cedilla
@@ -229,7 +228,9 @@ Latin.Combo_s := { "a": "̀" ; Grave Accent
                  , "x": "̋" ; Double Acute Accent
                  , ".": "̄" ; Macron
                  , ",": "̆" ; Breve
-                 , "'": "̕" ; COMBINING COMMA ABOVE RIGHT U+0315
+                 , "'": "̕" ; U+0315 COMBINING COMMA ABOVE RIGHT
+                 , "y": "̇" ; U+0307 COMBINING DOT ABOVE
+                 , "u": "̣" ; U+0323 COMBINING DOT BELOW
                  , "": "" }
 
 Latin.Combo_c := { "d": "̌" ; Caron
