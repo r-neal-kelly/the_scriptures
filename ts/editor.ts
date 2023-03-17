@@ -1,12 +1,4 @@
-function Assert(
-    boolean_statement: boolean
-):
-    void
-{
-    if (boolean_statement === false) {
-        throw new Error(`Failed assert.`);
-    }
-}
+import { Assert } from "./common"
 
 function Escape_Text(
     text: String,

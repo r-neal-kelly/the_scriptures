@@ -1,4 +1,3 @@
-"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -8,11 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-function Assert(boolean_statement) {
-    if (boolean_statement === false) {
-        throw new Error(`Failed assert.`);
-    }
-}
+import { Assert } from "./common";
 function Escape_Text(text) {
     return text.replaceAll(/./g, function (point) {
         if (point === ` `) {
