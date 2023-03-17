@@ -1,4 +1,4 @@
-import { Assert } from "./common"
+import { Assert } from "./common.js"
 
 function Escape_Text(
     text: String,
