@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { Assert } from "./common";
+import { Assert } from "./common.js";
 function Escape_Text(text) {
     return text.replaceAll(/./g, function (point) {
         if (point === ` `) {
