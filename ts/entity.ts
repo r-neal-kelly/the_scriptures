@@ -10,16 +10,6 @@ export type Styles = {
     [index: string]: string,
 }
 
-enum Command
-{
-    _NONE_ = -1,
-
-    LIVE,
-    REFRESH,
-    RESTYLE,
-    DIE,
-};
-
 // might want to make this a limited circle buffer.
 // it would have to never reject the Live and Die methods though, unless they aren't already queued
 class Queue
@@ -126,53 +116,9 @@ export class Instance
                         if (this.Is_Alive()) {
                             await this.On_Life();
                             if (this.Is_Alive()) {
-                                await this.On_Refresh();
-                                if (this.Is_Alive()) {
-                                    this.Apply_Styles(await this.On_Restyle());
-                                }
-                            }
-                        }
-                        resolve();
-                    }.bind(this),
-                );
-            }.bind(this),
-        );
-    }
-
-    async Refresh():
-        Promise<void>
-    {
-        return new Promise(
-            function (
-                this: Instance,
-                resolve: any,
-            ):
-                void
-            {
-                this.queue.Push(
-                    async function (
-                        this: Instance,
-                    ):
-                        Promise<void>
-                    {
-                        if (this.Is_Alive()) {
-                            // We need to refresh and restyle
-                            // before we refresh children so they
-                            // have up to date data. Also because
-                            // On_Refresh can add and remove children.
-                            await this.On_Refresh();
-                            if (this.Is_Alive()) {
                                 this.Apply_Styles(await this.On_Restyle());
                                 if (this.Is_Alive()) {
-                                    // It's assumed that order may matter,
-                                    // and thus we treat the children as a stack
-                                    // both during life and death.
-                                    for (const child of this.children) {
-                                        await child.Refresh();
-                                        if (!this.Is_Alive()) {
-                                            break;
-                                        }
-                                    }
+                                    await this.On_Refresh();
                                 }
                             }
                         }
@@ -233,11 +179,56 @@ export class Instance
         );
 
         this.styles = Object.assign(this.styles, styles);
+
         this.Element().setAttribute(
             `style`,
             Object.entries(this.styles).map(
                 ([property, value]) => `${property}: ${value};`
             ).join(`\n`),
+        );
+    }
+
+    async Refresh():
+        Promise<void>
+    {
+        return new Promise(
+            function (
+                this: Instance,
+                resolve: any,
+            ):
+                void
+            {
+                this.queue.Push(
+                    async function (
+                        this: Instance,
+                    ):
+                        Promise<void>
+                    {
+                        if (this.Is_Alive()) {
+                            // We need to restyle and refresh
+                            // before we work on children so they
+                            // have up to date data. Also because
+                            // On_Refresh can add and remove children.
+                            this.Apply_Styles(await this.On_Restyle());
+                            if (this.Is_Alive()) {
+                                await this.On_Refresh();
+                                if (this.Is_Alive()) {
+                                    // It's assumed that order may matter,
+                                    // and thus we treat the children as a stack
+                                    // both during life and death.
+                                    for (const child of this.children) {
+                                        await child.Refresh();
+                                        if (!this.Is_Alive()) {
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        resolve();
+                    }.bind(this),
+                );
+            }.bind(this),
         );
     }
 
@@ -287,16 +278,16 @@ export class Instance
         return;
     }
 
-    async On_Refresh():
-        Promise<void>
-    {
-        return;
-    }
-
     async On_Restyle():
         Promise<Styles>
     {
         return {};
+    }
+
+    async On_Refresh():
+        Promise<void>
+    {
+        return;
     }
 
     async On_Death():

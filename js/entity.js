@@ -8,15 +8,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import * as Utils from "./utils.js";
-var Command;
-(function (Command) {
-    Command[Command["_NONE_"] = -1] = "_NONE_";
-    Command[Command["LIVE"] = 0] = "LIVE";
-    Command[Command["REFRESH"] = 1] = "REFRESH";
-    Command[Command["RESTYLE"] = 2] = "RESTYLE";
-    Command[Command["DIE"] = 3] = "DIE";
-})(Command || (Command = {}));
-;
 // might want to make this a limited circle buffer.
 // it would have to never reject the Live and Die methods though, unless they aren't already queued
 class Queue {
@@ -69,41 +60,9 @@ export class Instance {
                         if (this.Is_Alive()) {
                             yield this.On_Life();
                             if (this.Is_Alive()) {
-                                yield this.On_Refresh();
-                                if (this.Is_Alive()) {
-                                    this.Apply_Styles(yield this.On_Restyle());
-                                }
-                            }
-                        }
-                        resolve();
-                    });
-                }.bind(this));
-            }.bind(this));
-        });
-    }
-    Refresh() {
-        return __awaiter(this, void 0, void 0, function* () {
-            return new Promise(function (resolve) {
-                this.queue.Push(function () {
-                    return __awaiter(this, void 0, void 0, function* () {
-                        if (this.Is_Alive()) {
-                            // We need to refresh and restyle
-                            // before we refresh children so they
-                            // have up to date data. Also because
-                            // On_Refresh can add and remove children.
-                            yield this.On_Refresh();
-                            if (this.Is_Alive()) {
                                 this.Apply_Styles(yield this.On_Restyle());
                                 if (this.Is_Alive()) {
-                                    // It's assumed that order may matter,
-                                    // and thus we treat the children as a stack
-                                    // both during life and death.
-                                    for (const child of this.children) {
-                                        yield child.Refresh();
-                                        if (!this.Is_Alive()) {
-                                            break;
-                                        }
-                                    }
+                                    yield this.On_Refresh();
                                 }
                             }
                         }
@@ -145,6 +104,38 @@ export class Instance {
         this.styles = Object.assign(this.styles, styles);
         this.Element().setAttribute(`style`, Object.entries(this.styles).map(([property, value]) => `${property}: ${value};`).join(`\n`));
     }
+    Refresh() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return new Promise(function (resolve) {
+                this.queue.Push(function () {
+                    return __awaiter(this, void 0, void 0, function* () {
+                        if (this.Is_Alive()) {
+                            // We need to restyle and refresh
+                            // before we work on children so they
+                            // have up to date data. Also because
+                            // On_Refresh can add and remove children.
+                            this.Apply_Styles(yield this.On_Restyle());
+                            if (this.Is_Alive()) {
+                                yield this.On_Refresh();
+                                if (this.Is_Alive()) {
+                                    // It's assumed that order may matter,
+                                    // and thus we treat the children as a stack
+                                    // both during life and death.
+                                    for (const child of this.children) {
+                                        yield child.Refresh();
+                                        if (!this.Is_Alive()) {
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        resolve();
+                    });
+                }.bind(this));
+            }.bind(this));
+        });
+    }
     Die() {
         return __awaiter(this, void 0, void 0, function* () {
             return new Promise(function (resolve) {
@@ -175,14 +166,14 @@ export class Instance {
             return;
         });
     }
-    On_Refresh() {
-        return __awaiter(this, void 0, void 0, function* () {
-            return;
-        });
-    }
     On_Restyle() {
         return __awaiter(this, void 0, void 0, function* () {
             return {};
+        });
+    }
+    On_Refresh() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return;
         });
     }
     On_Death() {

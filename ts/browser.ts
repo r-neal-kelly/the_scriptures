@@ -28,6 +28,22 @@ class Browser extends Entity.Instance
         }
     }
 
+    override async On_Restyle():
+        Promise<Entity.Styles>
+    {
+        return ({
+            "display": `grid`,
+
+            "width": `100%`,
+            "height": `100%`,
+
+            "overflow-x": `hidden`,
+            "overflow-y": `auto`, // temp
+
+            "color": `white`,
+        });
+    }
+
     override async On_Refresh():
         Promise<void>
     {
@@ -47,22 +63,6 @@ class Browser extends Entity.Instance
             }
         }
     }
-
-    override async On_Restyle():
-        Promise<Entity.Styles>
-    {
-        return ({
-            "display": `grid`,
-
-            "width": `100%`,
-            "height": `100%`,
-
-            "overflow-x": `hidden`,
-            "overflow-y": `auto`, // temp
-
-            "color": `white`,
-        });
-    }
 }
 
 // temp
@@ -79,16 +79,6 @@ class Line extends Entity.Instance
         this.text = text;
     }
 
-    override async On_Refresh():
-        Promise<void>
-    {
-        if (this.text === ``) {
-            this.Element().textContent = `_`;
-        } else {
-            this.Element().textContent = this.text;
-        }
-    }
-
     override async On_Restyle():
         Promise<Entity.Styles>
     {
@@ -97,6 +87,16 @@ class Line extends Entity.Instance
                 `transparent` :
                 `inherit`,
         });
+    }
+
+    override async On_Refresh():
+        Promise<void>
+    {
+        if (this.text === ``) {
+            this.Element().textContent = `_`;
+        } else {
+            this.Element().textContent = this.text.replaceAll(/  /g, `  `);
+        }
     }
 }
 

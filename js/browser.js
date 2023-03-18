@@ -22,6 +22,18 @@ class Browser extends Entity.Instance {
             }
         });
     }
+    On_Restyle() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return ({
+                "display": `grid`,
+                "width": `100%`,
+                "height": `100%`,
+                "overflow-x": `hidden`,
+                "overflow-y": `auto`,
+                "color": `white`,
+            });
+        });
+    }
     On_Refresh() {
         return __awaiter(this, void 0, void 0, function* () {
             if (this.book_info) {
@@ -39,34 +51,12 @@ class Browser extends Entity.Instance {
             }
         });
     }
-    On_Restyle() {
-        return __awaiter(this, void 0, void 0, function* () {
-            return ({
-                "display": `grid`,
-                "width": `100%`,
-                "height": `100%`,
-                "overflow-x": `hidden`,
-                "overflow-y": `auto`,
-                "color": `white`,
-            });
-        });
-    }
 }
 // temp
 class Line extends Entity.Instance {
     constructor(text) {
         super(`div`);
         this.text = text;
-    }
-    On_Refresh() {
-        return __awaiter(this, void 0, void 0, function* () {
-            if (this.text === ``) {
-                this.Element().textContent = `_`;
-            }
-            else {
-                this.Element().textContent = this.text;
-            }
-        });
     }
     On_Restyle() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -75,6 +65,16 @@ class Line extends Entity.Instance {
                     `transparent` :
                     `inherit`,
             });
+        });
+    }
+    On_Refresh() {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (this.text === ``) {
+                this.Element().textContent = `_`;
+            }
+            else {
+                this.Element().textContent = this.text.replaceAll(/  /g, `  `);
+            }
         });
     }
 }
