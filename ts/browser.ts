@@ -1,5 +1,11 @@
 import * as Utils from "./utils.js"
 
+type File_Name = string;
+
+type Book_Info = {
+    file_names: Array<File_Name>,
+}
+
 class Browser
 {
     private element: HTMLElement | null;
@@ -29,28 +35,36 @@ class Browser
             `,
         );
 
-        this.element.textContent = `Browsing...`;
+        // temp
         (async function (
             this: Browser,
         ):
             Promise<void>
         {
-            while (this.Is_Alive()) {
-                const element: HTMLElement = this.Element();
+            this.Element().style.overflowY = `auto`;
 
-                if (element.textContent === `Browsing.`) {
-                    element.textContent = `Browsing..`;
-                } else if (element.textContent === `Browsing..`) {
-                    element.textContent = `Browsing...`;
-                } else if (element.textContent === `Browsing...`) {
-                    element.textContent = `Browsing.`;
-                } else {
-                    Utils.Assert(false);
+            const info_response: Response = await fetch(`../txt/Jubilees/English/R. H. Charles/info.json`);
+            if (info_response.ok) {
+                const info: Book_Info = JSON.parse(await info_response.text());
+                for (const file_name of info.file_names) {
+                    const file_response: Response = await fetch(`../txt/Jubilees/English/R. H. Charles/${file_name}`);
+                    if (file_response.ok) {
+                        const file_text: string = await file_response.text();
+                        for (const file_line of file_text.split(/\r?\n/g)) {
+                            const div: HTMLElement = document.createElement(`div`);
+                            if (file_line === ``) {
+                                div.textContent = `_`;
+                                div.style.color = `transparent`;
+                            } else {
+                                div.textContent = file_line;
+                            }
+                            this.Element().appendChild(div);
+                        }
+                    }
                 }
-
-                await Utils.Wait_Milliseconds(300);
             }
         }.bind(this))();
+        //
 
         parent_element.appendChild(this.element);
     }

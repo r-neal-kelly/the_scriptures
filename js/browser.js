@@ -22,27 +22,34 @@ class Browser {
 
                 color: white;
             `);
-        this.element.textContent = `Browsing...`;
+        // temp
         (function () {
             return __awaiter(this, void 0, void 0, function* () {
-                while (this.Is_Alive()) {
-                    const element = this.Element();
-                    if (element.textContent === `Browsing.`) {
-                        element.textContent = `Browsing..`;
+                this.Element().style.overflowY = `auto`;
+                const info_response = yield fetch(`../txt/Jubilees/English/R. H. Charles/info.json`);
+                if (info_response.ok) {
+                    const info = JSON.parse(yield info_response.text());
+                    for (const file_name of info.file_names) {
+                        const file_response = yield fetch(`../txt/Jubilees/English/R. H. Charles/${file_name}`);
+                        if (file_response.ok) {
+                            const file_text = yield file_response.text();
+                            for (const file_line of file_text.split(/\r?\n/g)) {
+                                const div = document.createElement(`div`);
+                                if (file_line === ``) {
+                                    div.textContent = `_`;
+                                    div.style.color = `transparent`;
+                                }
+                                else {
+                                    div.textContent = file_line;
+                                }
+                                this.Element().appendChild(div);
+                            }
+                        }
                     }
-                    else if (element.textContent === `Browsing..`) {
-                        element.textContent = `Browsing...`;
-                    }
-                    else if (element.textContent === `Browsing...`) {
-                        element.textContent = `Browsing.`;
-                    }
-                    else {
-                        Utils.Assert(false);
-                    }
-                    yield Utils.Wait_Milliseconds(300);
                 }
             });
         }.bind(this))();
+        //
         parent_element.appendChild(this.element);
     }
     Element() {
