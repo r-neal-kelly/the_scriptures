@@ -11,8 +11,7 @@ import * as Utils from "./utils.js";
 function Resolve_Path(path_from_root) {
     path_from_root = path_from_root.replace(/^\//, ``);
     if (/github.io$/.test(window.location.hostname)) {
-        //return `https://raw.githubusercontent.com/r-neal-kelly/the_scriptures/master/${path_from_root}`;
-        return `https://raw.githubusercontent.com/r-neal-kelly/the_scriptures/master/txt/Jubilees/English/R.%20H.%20Charles/Info.json`;
+        return `https://raw.githubusercontent.com/r-neal-kelly/the_scriptures/master/${path_from_root}`;
     }
     else {
         return `/${path_from_root}`;
@@ -36,7 +35,7 @@ class Browser {
         (function () {
             return __awaiter(this, void 0, void 0, function* () {
                 this.Element().style.overflowY = `auto`;
-                const info_response = yield fetch(Resolve_Path(`txt/Jubilees/English/R. H. Charles/info.json`));
+                const info_response = yield fetch(Resolve_Path(`txt/Jubilees/English/R. H. Charles/Info.json`));
                 if (info_response.ok) {
                     const info = JSON.parse(yield info_response.text());
                     for (const file_name of info.file_names) {
