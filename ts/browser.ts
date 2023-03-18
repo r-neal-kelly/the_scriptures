@@ -43,11 +43,11 @@ class Browser
         {
             this.Element().style.overflowY = `auto`;
 
-            const info_response: Response = await fetch(`../txt/Jubilees/English/R. H. Charles/info.json`);
+            const info_response: Response = await fetch(`txt/Jubilees/English/R. H. Charles/info.json`);
             if (info_response.ok) {
                 const info: Book_Info = JSON.parse(await info_response.text());
                 for (const file_name of info.file_names) {
-                    const file_response: Response = await fetch(`../txt/Jubilees/English/R. H. Charles/${file_name}`);
+                    const file_response: Response = await fetch(`txt/Jubilees/English/R. H. Charles/${file_name}`);
                     if (file_response.ok) {
                         const file_text: string = await file_response.text();
                         for (const file_line of file_text.split(/\r?\n/g)) {
