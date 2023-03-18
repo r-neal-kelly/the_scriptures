@@ -11,7 +11,8 @@ import * as Utils from "./utils.js";
 function Resolve_Path(path_from_root) {
     path_from_root = path_from_root.replace(/^\//, ``);
     if (/github.io$/.test(window.location.hostname)) {
-        return `https://raw.githubusercontent.com/r-neal-kelly/the_scriptures/master/${path_from_root}`;
+        //return `https://raw.githubusercontent.com/r-neal-kelly/the_scriptures/master/${path_from_root}`;
+        return `https://raw.githubusercontent.com/r-neal-kelly/the_scriptures/master/txt/Jubilees/English/R.%20H.%20Charles/Info.json`;
     }
     else {
         return `/${path_from_root}`;
