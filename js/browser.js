@@ -8,6 +8,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import * as Utils from "./utils.js";
+function Resolve_Path(path_from_root) {
+    path_from_root = path_from_root.replace(/^\//, ``);
+    if (/github.io$/.test(window.location.hostname)) {
+        return `https://raw.githubusercontent.com/r-neal-kelly/the_scriptures/master/${path_from_root}`;
+    }
+    else {
+        return `/${path_from_root}`;
+    }
+}
 class Browser {
     constructor({ parent_element, }) {
         this.element = document.createElement(`div`);
@@ -26,11 +35,11 @@ class Browser {
         (function () {
             return __awaiter(this, void 0, void 0, function* () {
                 this.Element().style.overflowY = `auto`;
-                const info_response = yield fetch(`txt/Jubilees/English/R. H. Charles/info.json`);
+                const info_response = yield fetch(Resolve_Path(`txt/Jubilees/English/R. H. Charles/info.json`));
                 if (info_response.ok) {
                     const info = JSON.parse(yield info_response.text());
                     for (const file_name of info.file_names) {
-                        const file_response = yield fetch(`txt/Jubilees/English/R. H. Charles/${file_name}`);
+                        const file_response = yield fetch(Resolve_Path(`txt/Jubilees/English/R. H. Charles/${file_name}`));
                         if (file_response.ok) {
                             const file_text = yield file_response.text();
                             for (const file_line of file_text.split(/\r?\n/g)) {
