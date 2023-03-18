@@ -1,4 +1,4 @@
-import { Assert } from "./common.js"
+import * as Utils from "./utils.js"
 
 function Escape_Text(
     text: String,
@@ -452,7 +452,7 @@ class Dictionary
     ):
         boolean
     {
-        Assert(Dictionary.Is_Point(letter));
+        Utils.Assert(Dictionary.Is_Point(letter));
 
         return this.data.letters.includes(letter);
     }
@@ -462,7 +462,7 @@ class Dictionary
     ):
         void
     {
-        Assert(Dictionary.Is_Point(letter));
+        Utils.Assert(Dictionary.Is_Point(letter));
 
         if (!this.data.letters.includes(letter)) {
             this.data.letters.push(letter);
@@ -476,7 +476,7 @@ class Dictionary
     ):
         void
     {
-        Assert(Dictionary.Is_Point(letter));
+        Utils.Assert(Dictionary.Is_Point(letter));
 
         const index: number = this.data.letters.indexOf(letter);
         if (index > -1) {
@@ -492,7 +492,7 @@ class Dictionary
     ):
         boolean
     {
-        Assert(Dictionary.Is_Point(marker));
+        Utils.Assert(Dictionary.Is_Point(marker));
 
         return this.data.markers.includes(marker);
     }
@@ -502,7 +502,7 @@ class Dictionary
     ):
         void
     {
-        Assert(Dictionary.Is_Point(marker));
+        Utils.Assert(Dictionary.Is_Point(marker));
 
         if (!this.data.markers.includes(marker)) {
             this.data.markers.push(marker);
@@ -518,7 +518,7 @@ class Dictionary
     ):
         void
     {
-        Assert(Dictionary.Is_Point(marker));
+        Utils.Assert(Dictionary.Is_Point(marker));
 
         const index: number = this.data.markers.indexOf(marker);
         if (index > -1) {
@@ -536,7 +536,7 @@ class Dictionary
     ):
         boolean
     {
-        Assert(word.length > 0);
+        Utils.Assert(word.length > 0);
 
         const first_point: string = Dictionary.First_Point(word);
 
@@ -551,8 +551,8 @@ class Dictionary
     ):
         void
     {
-        Assert(word.length > 0);
-        Assert(!this.Has_Word_Error(word));
+        Utils.Assert(word.length > 0);
+        Utils.Assert(!this.Has_Word_Error(word));
 
         const first_point: string = Dictionary.First_Point(word);
 
@@ -571,7 +571,7 @@ class Dictionary
     ):
         void
     {
-        Assert(word.length > 0);
+        Utils.Assert(word.length > 0);
 
         const first_point: string = Dictionary.First_Point(word);
 
@@ -591,7 +591,7 @@ class Dictionary
     ):
         boolean
     {
-        Assert(break_.length > 0);
+        Utils.Assert(break_.length > 0);
 
         const first_point: string = Dictionary.First_Point(break_);
 
@@ -607,8 +607,8 @@ class Dictionary
     ):
         void
     {
-        Assert(break_.length > 0);
-        Assert(!this.Has_Break_Error(break_, boundary));
+        Utils.Assert(break_.length > 0);
+        Utils.Assert(!this.Has_Break_Error(break_, boundary));
 
         const first_point: string = Dictionary.First_Point(break_);
 
@@ -628,7 +628,7 @@ class Dictionary
     ):
         void
     {
-        Assert(break_.length > 0);
+        Utils.Assert(break_.length > 0);
 
         const first_point: string = Dictionary.First_Point(break_);
 
@@ -647,7 +647,7 @@ class Dictionary
     ):
         boolean
     {
-        Assert(word_error.length > 0);
+        Utils.Assert(word_error.length > 0);
 
         return this.data.word_errors.includes(word_error);
     }
@@ -657,8 +657,8 @@ class Dictionary
     ):
         void
     {
-        Assert(word_error.length > 0);
-        Assert(!this.Has_Word(word_error));
+        Utils.Assert(word_error.length > 0);
+        Utils.Assert(!this.Has_Word(word_error));
 
         if (!this.data.word_errors.includes(word_error)) {
             this.data.word_errors.push(word_error);
@@ -670,7 +670,7 @@ class Dictionary
     ):
         void
     {
-        Assert(word_error.length > 0);
+        Utils.Assert(word_error.length > 0);
 
         const index: number = this.data.word_errors.indexOf(word_error);
         if (index > -1) {
@@ -685,7 +685,7 @@ class Dictionary
     ):
         boolean
     {
-        Assert(break_error.length > 0);
+        Utils.Assert(break_error.length > 0);
 
         return this.data.break_errors[boundary].includes(break_error);
     }
@@ -696,8 +696,8 @@ class Dictionary
     ):
         void
     {
-        Assert(break_error.length > 0);
-        Assert(!this.Has_Break(break_error, boundary));
+        Utils.Assert(break_error.length > 0);
+        Utils.Assert(!this.Has_Break(break_error, boundary));
 
         if (!this.data.break_errors[boundary].includes(break_error)) {
             this.data.break_errors[boundary].push(break_error);
@@ -710,7 +710,7 @@ class Dictionary
     ):
         void
     {
-        Assert(break_error.length > 0);
+        Utils.Assert(break_error.length > 0);
 
         const index: number = this.data.break_errors[boundary].indexOf(break_error);
         if (index > -1) {
@@ -1041,7 +1041,7 @@ class Dictionary
                         current_start_index = idx + point.length;
                     }
                 } else {
-                    Assert(false);
+                    Utils.Assert(false);
                 }
 
                 idx += point.length;
@@ -1108,7 +1108,7 @@ class Dictionary
                         inner_html += `<span class="UNKNOWN_BREAK${command_classes}">${Escape_Text(part.subtext)}</span>`;
                     }
                 } else {
-                    Assert(false);
+                    Utils.Assert(false);
                 }
             }
         }
@@ -1273,7 +1273,7 @@ class Line
                         let line_text_a: string;
                         let line_text_b: string;
                         if (selection.isCollapsed) {
-                            Assert(selection.anchorNode !== null);
+                            Utils.Assert(selection.anchorNode !== null);
 
                             const at: number =
                                 Text_Offset_To_Node(
@@ -1285,8 +1285,8 @@ class Line
                             line_text_a = line_text.slice(0, at);
                             line_text_b = line_text.slice(at, line_text.length);
                         } else {
-                            Assert(selection.anchorNode !== null);
-                            Assert(selection.focusNode !== null);
+                            Utils.Assert(selection.anchorNode !== null);
+                            Utils.Assert(selection.focusNode !== null);
 
                             let start_node: Node;
                             let start_offset: number;
@@ -1715,7 +1715,7 @@ class Line
         number
     {
         const index: number = this.Editor().Lines().indexOf(this);
-        Assert(index > -1);
+        Utils.Assert(index > -1);
 
         return index;
     }
@@ -2269,7 +2269,7 @@ class Editor
 
                     this.saved_file = this.Text();
 
-                    Assert(this.Text() === file_text.replaceAll(/\r/g, ``));
+                    Utils.Assert(this.Text() === file_text.replaceAll(/\r/g, ``));
                 }
             }.bind(this),
         );
@@ -2821,8 +2821,8 @@ class Editor
     ):
         Line
     {
-        Assert(line_index >= 0);
-        Assert(line_index < this.lines.length);
+        Utils.Assert(line_index >= 0);
+        Utils.Assert(line_index < this.lines.length);
 
         return this.lines[line_index];
     }
@@ -2848,8 +2848,8 @@ class Editor
     ):
         void
     {
-        Assert(line_index > 0 || this.lines.length > 1);
-        Assert(line_index < this.lines.length);
+        Utils.Assert(line_index > 0 || this.lines.length > 1);
+        Utils.Assert(line_index < this.lines.length);
 
         this.lines.splice(line_index, 1)[0].Destruct();
     }
@@ -2860,8 +2860,8 @@ class Editor
     ):
         void
     {
-        Assert(at_line_index >= 0);
-        Assert(at_line_index <= this.lines.length);
+        Utils.Assert(at_line_index >= 0);
+        Utils.Assert(at_line_index <= this.lines.length);
 
         for (let idx = at_line_index, end = this.lines.length; idx < end; idx += 1) {
             const line = this.lines[idx];
@@ -2954,7 +2954,7 @@ class Editor
                 this.lines[selected_line_idx].Element();
             const selected_child_idx: number =
                 Array.from(selected_line_element.children).indexOf(selection.anchorNode as Element);
-            Assert(selected_child_idx > -1);
+            Utils.Assert(selected_child_idx > -1);
 
             const selected_child_element: Element =
                 selected_line_element.children[selected_child_idx];
@@ -3108,162 +3108,136 @@ class Editor
     }
 }
 
-function Style():
+(function Main():
     void
 {
-    const style = document.createElement(`style`);
+    Utils.Create_Style_Element(`
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-    style.setAttribute(
-        `type`,
-        `text/css`,
-    );
+        *:focus {
+            outline: 0;
+        }
+        
+        html, body {
+            width: 100%;
+            height: 100%;
 
-    style.appendChild(
-        document.createTextNode(
-            `
-                * {
-                    box-sizing: border-box;
-                    margin: 0;
-                    padding: 0;
-                }
+            background-color: black;
 
-                *:focus {
-                    outline: 0;
-                }
-                
-                html, body {
-                    width: 100%;
-                    height: 100%;
+            font-family: sans-serif;
+        }
 
-                    background-color: black;
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
 
-                    font-family: sans-serif;
-                }
+        span {
+            display: inline-block;
+        }
 
-                body {
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: center;
-                    align-items: center;
-                }
+        .ITALIC {
+            font-style: italic;
+        }
 
-                span {
-                    display: inline-block;
-                }
+        .BOLD {
+            font-weight: bold;
+        }
 
-                .ITALIC {
-                    font-style: italic;
-                }
+        .UNDERLINE {
+            text-decoration: underline;
+        }
+        
+        .SMALL_CAPS {
+            font-variant: small-caps;
+        }
 
-                .BOLD {
-                    font-weight: bold;
-                }
+        .ERROR {
+            color: #ffcbcb;
+        }
 
-                .UNDERLINE {
-                    text-decoration: underline;
-                }
-                
-                .SMALL_CAPS {
-                    font-variant: small-caps;
-                }
+        .INDENT {
+            width: 6em;
+        }
 
-                .ERROR {
-                    color: #ffcbcb;
-                }
+        .SEPARATE_POINT {
+            display: inline-block;
 
-                .INDENT {
-                    width: 6em;
-                }
+            min-width: 7px;
 
-                .SEPARATE_POINT {
-                    display: inline-block;
+            text-align: center;
+        }
 
-                    min-width: 7px;
+        .UNKNOWN_POINT {
+            border-width: 0 0 2px 0;
+            border-style: solid;
+            border-color: #ffff00;
 
-                    text-align: center;
-                }
+            overflow-wrap: normal;
+        }
 
-                .UNKNOWN_POINT {
-                    border-width: 0 0 2px 0;
-                    border-style: solid;
-                    border-color: #ffff00;
+        .KNOWN_LETTER {
+            overflow-wrap: normal;
+        }
 
-                    overflow-wrap: normal;
-                }
+        .KNOWN_MARKER {
+            overflow-wrap: normal;
+        }
 
-                .KNOWN_LETTER {
-                    overflow-wrap: normal;
-                }
+        .UNKNOWN_WORD {
+            border-width: 0 0 2px 0;
+            border-style: solid;
+            border-color: #ff5858;
 
-                .KNOWN_MARKER {
-                    overflow-wrap: normal;
-                }
+            overflow-wrap: normal;
+        }
 
-                .UNKNOWN_WORD {
-                    border-width: 0 0 2px 0;
-                    border-style: solid;
-                    border-color: #ff5858;
+        .KNOWN_WORD {
+            overflow-wrap: normal;
+        }
 
-                    overflow-wrap: normal;
-                }
+        .UNKNOWN_BREAK {
+            border-width: 0 0 2px 0;
+            border-style: solid;
+            border-color: #00da6f;
 
-                .KNOWN_WORD {
-                    overflow-wrap: normal;
-                }
+            overflow-wrap: normal;
+        }
 
-                .UNKNOWN_BREAK {
-                    border-width: 0 0 2px 0;
-                    border-style: solid;
-                    border-color: #00da6f;
+        .KNOWN_BREAK {
+            overflow-wrap: normal;
+        }
 
-                    overflow-wrap: normal;
-                }
+        .KNOWN_WORD_ERROR {
+            border-width: 0 0 2px 0;
+            border-style: solid;
+            border-color: #e767c3;
 
-                .KNOWN_BREAK {
-                    overflow-wrap: normal;
-                }
+            overflow-wrap: normal;
+        }
 
-                .KNOWN_WORD_ERROR {
-                    border-width: 0 0 2px 0;
-                    border-style: solid;
-                    border-color: #e767c3;
+        .KNOWN_BREAK_ERROR {
+            border-width: 0 0 2px 0;
+            border-style: solid;
+            border-color: #e767c3;
 
-                    overflow-wrap: normal;
-                }
+            overflow-wrap: normal;
+        }
 
-                .KNOWN_BREAK_ERROR {
-                    border-width: 0 0 2px 0;
-                    border-style: solid;
-                    border-color: #e767c3;
+        .COMMAND {
+            overflow-wrap: normal;
+        }
+    `);
 
-                    overflow-wrap: normal;
-                }
-
-                .COMMAND {
-                    overflow-wrap: normal;
-                }
-            `,
-        ),
-    );
-
-    document.head.appendChild(style);
-}
-
-function Build():
-    void
-{
-    const text_editor: Editor = new Editor(
+    new Editor(
         {
             parent: document.body,
         },
     );
-}
-
-function Main():
-    void
-{
-    Style();
-    Build();
-}
-
-Main();
+})();

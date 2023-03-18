@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { Assert } from "./common.js";
+import * as Utils from "./utils.js";
 function Escape_Text(text) {
     return text.replaceAll(/./g, function (point) {
         if (point === ` `) {
@@ -322,18 +322,18 @@ class Dictionary {
         }
     }
     Has_Letter(letter) {
-        Assert(Dictionary.Is_Point(letter));
+        Utils.Assert(Dictionary.Is_Point(letter));
         return this.data.letters.includes(letter);
     }
     Add_Letter(letter) {
-        Assert(Dictionary.Is_Point(letter));
+        Utils.Assert(Dictionary.Is_Point(letter));
         if (!this.data.letters.includes(letter)) {
             this.data.letters.push(letter);
             this.data.words[letter] = [];
         }
     }
     Remove_Letter(letter) {
-        Assert(Dictionary.Is_Point(letter));
+        Utils.Assert(Dictionary.Is_Point(letter));
         const index = this.data.letters.indexOf(letter);
         if (index > -1) {
             this.data.letters[index] = this.data.letters[this.data.letters.length - 1];
@@ -342,11 +342,11 @@ class Dictionary {
         }
     }
     Has_Marker(marker) {
-        Assert(Dictionary.Is_Point(marker));
+        Utils.Assert(Dictionary.Is_Point(marker));
         return this.data.markers.includes(marker);
     }
     Add_Marker(marker) {
-        Assert(Dictionary.Is_Point(marker));
+        Utils.Assert(Dictionary.Is_Point(marker));
         if (!this.data.markers.includes(marker)) {
             this.data.markers.push(marker);
             this.data.breaks[Dictionary_Boundary.START][marker] = [];
@@ -355,7 +355,7 @@ class Dictionary {
         }
     }
     Remove_Marker(marker) {
-        Assert(Dictionary.Is_Point(marker));
+        Utils.Assert(Dictionary.Is_Point(marker));
         const index = this.data.markers.indexOf(marker);
         if (index > -1) {
             this.data.markers[index] = this.data.markers[this.data.markers.length - 1];
@@ -366,14 +366,14 @@ class Dictionary {
         }
     }
     Has_Word(word) {
-        Assert(word.length > 0);
+        Utils.Assert(word.length > 0);
         const first_point = Dictionary.First_Point(word);
         return (this.data.words[first_point] != null &&
             this.data.words[first_point].includes(word));
     }
     Add_Word(word) {
-        Assert(word.length > 0);
-        Assert(!this.Has_Word_Error(word));
+        Utils.Assert(word.length > 0);
+        Utils.Assert(!this.Has_Word_Error(word));
         const first_point = Dictionary.First_Point(word);
         if (this.data.words[first_point] == null) {
             this.Add_Letter(first_point);
@@ -386,7 +386,7 @@ class Dictionary {
         }
     }
     Remove_Word(word) {
-        Assert(word.length > 0);
+        Utils.Assert(word.length > 0);
         const first_point = Dictionary.First_Point(word);
         if (this.data.words[first_point] != null) {
             const index = this.data.words[first_point].indexOf(word);
@@ -398,14 +398,14 @@ class Dictionary {
         }
     }
     Has_Break(break_, boundary) {
-        Assert(break_.length > 0);
+        Utils.Assert(break_.length > 0);
         const first_point = Dictionary.First_Point(break_);
         return (this.data.breaks[boundary][first_point] != null &&
             this.data.breaks[boundary][first_point].includes(break_));
     }
     Add_Break(break_, boundary) {
-        Assert(break_.length > 0);
-        Assert(!this.Has_Break_Error(break_, boundary));
+        Utils.Assert(break_.length > 0);
+        Utils.Assert(!this.Has_Break_Error(break_, boundary));
         const first_point = Dictionary.First_Point(break_);
         if (this.data.breaks[boundary][first_point] == null) {
             this.Add_Marker(first_point);
@@ -418,7 +418,7 @@ class Dictionary {
         }
     }
     Remove_Break(break_, boundary) {
-        Assert(break_.length > 0);
+        Utils.Assert(break_.length > 0);
         const first_point = Dictionary.First_Point(break_);
         if (this.data.breaks[boundary][first_point] != null) {
             const index = this.data.breaks[boundary][first_point].indexOf(break_);
@@ -430,18 +430,18 @@ class Dictionary {
         }
     }
     Has_Word_Error(word_error) {
-        Assert(word_error.length > 0);
+        Utils.Assert(word_error.length > 0);
         return this.data.word_errors.includes(word_error);
     }
     Add_Word_Error(word_error) {
-        Assert(word_error.length > 0);
-        Assert(!this.Has_Word(word_error));
+        Utils.Assert(word_error.length > 0);
+        Utils.Assert(!this.Has_Word(word_error));
         if (!this.data.word_errors.includes(word_error)) {
             this.data.word_errors.push(word_error);
         }
     }
     Remove_Word_Error(word_error) {
-        Assert(word_error.length > 0);
+        Utils.Assert(word_error.length > 0);
         const index = this.data.word_errors.indexOf(word_error);
         if (index > -1) {
             this.data.word_errors[index] = this.data.word_errors[this.data.word_errors.length - 1];
@@ -449,18 +449,18 @@ class Dictionary {
         }
     }
     Has_Break_Error(break_error, boundary) {
-        Assert(break_error.length > 0);
+        Utils.Assert(break_error.length > 0);
         return this.data.break_errors[boundary].includes(break_error);
     }
     Add_Break_Error(break_error, boundary) {
-        Assert(break_error.length > 0);
-        Assert(!this.Has_Break(break_error, boundary));
+        Utils.Assert(break_error.length > 0);
+        Utils.Assert(!this.Has_Break(break_error, boundary));
         if (!this.data.break_errors[boundary].includes(break_error)) {
             this.data.break_errors[boundary].push(break_error);
         }
     }
     Remove_Break_Error(break_error, boundary) {
-        Assert(break_error.length > 0);
+        Utils.Assert(break_error.length > 0);
         const index = this.data.break_errors[boundary].indexOf(break_error);
         if (index > -1) {
             this.data.break_errors[boundary][index] =
@@ -728,7 +728,7 @@ class Dictionary {
                     }
                 }
                 else {
-                    Assert(false);
+                    Utils.Assert(false);
                 }
                 idx += point.length;
             }
@@ -796,7 +796,7 @@ class Dictionary {
                     }
                 }
                 else {
-                    Assert(false);
+                    Utils.Assert(false);
                 }
             }
         }
@@ -901,15 +901,15 @@ class Line {
                     let line_text_a;
                     let line_text_b;
                     if (selection.isCollapsed) {
-                        Assert(selection.anchorNode !== null);
+                        Utils.Assert(selection.anchorNode !== null);
                         const at = Text_Offset_To_Node(this.Element(), selection.anchorNode) +
                             selection.anchorOffset;
                         line_text_a = line_text.slice(0, at);
                         line_text_b = line_text.slice(at, line_text.length);
                     }
                     else {
-                        Assert(selection.anchorNode !== null);
-                        Assert(selection.focusNode !== null);
+                        Utils.Assert(selection.anchorNode !== null);
+                        Utils.Assert(selection.focusNode !== null);
                         let start_node;
                         let start_offset;
                         let stop_node;
@@ -1288,7 +1288,7 @@ class Line {
     }
     Index() {
         const index = this.Editor().Lines().indexOf(this);
-        Assert(index > -1);
+        Utils.Assert(index > -1);
         return index;
     }
     Text() {
@@ -1612,7 +1612,7 @@ class Editor {
                     this.Set_Text(file_text);
                     this.children.file_load_input.value = ``;
                     this.saved_file = this.Text();
-                    Assert(this.Text() === file_text.replaceAll(/\r/g, ``));
+                    Utils.Assert(this.Text() === file_text.replaceAll(/\r/g, ``));
                 }
             });
         }.bind(this));
@@ -1951,8 +1951,8 @@ class Editor {
         return Array.from(this.lines);
     }
     Line(line_index) {
-        Assert(line_index >= 0);
-        Assert(line_index < this.lines.length);
+        Utils.Assert(line_index >= 0);
+        Utils.Assert(line_index < this.lines.length);
         return this.lines[line_index];
     }
     Add_Line(text) {
@@ -1964,13 +1964,13 @@ class Editor {
         line.Set_Text(text);
     }
     Remove_Line(line_index) {
-        Assert(line_index > 0 || this.lines.length > 1);
-        Assert(line_index < this.lines.length);
+        Utils.Assert(line_index > 0 || this.lines.length > 1);
+        Utils.Assert(line_index < this.lines.length);
         this.lines.splice(line_index, 1)[0].Destruct();
     }
     Insert_Line(at_line_index, text) {
-        Assert(at_line_index >= 0);
-        Assert(at_line_index <= this.lines.length);
+        Utils.Assert(at_line_index >= 0);
+        Utils.Assert(at_line_index <= this.lines.length);
         for (let idx = at_line_index, end = this.lines.length; idx < end; idx += 1) {
             const line = this.lines[idx];
             line.Parent().removeChild(line.Element());
@@ -2030,7 +2030,7 @@ class Editor {
             // we have a highlight already, so we look for the next one in this line or the lines that follow
             const selected_line_element = this.lines[selected_line_idx].Element();
             const selected_child_idx = Array.from(selected_line_element.children).indexOf(selection.anchorNode);
-            Assert(selected_child_idx > -1);
+            Utils.Assert(selected_child_idx > -1);
             const selected_child_element = selected_line_element.children[selected_child_idx];
             const next_error_element = (function () {
                 let line_idx = selected_line_idx;
@@ -2146,141 +2146,131 @@ class Editor {
         document.body.appendChild(modal);
     }
 }
-function Style() {
-    const style = document.createElement(`style`);
-    style.setAttribute(`type`, `text/css`);
-    style.appendChild(document.createTextNode(`
-                * {
-                    box-sizing: border-box;
-                    margin: 0;
-                    padding: 0;
-                }
+(function Main() {
+    Utils.Create_Style_Element(`
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-                *:focus {
-                    outline: 0;
-                }
-                
-                html, body {
-                    width: 100%;
-                    height: 100%;
+        *:focus {
+            outline: 0;
+        }
+        
+        html, body {
+            width: 100%;
+            height: 100%;
 
-                    background-color: black;
+            background-color: black;
 
-                    font-family: sans-serif;
-                }
+            font-family: sans-serif;
+        }
 
-                body {
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: center;
-                    align-items: center;
-                }
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
 
-                span {
-                    display: inline-block;
-                }
+        span {
+            display: inline-block;
+        }
 
-                .ITALIC {
-                    font-style: italic;
-                }
+        .ITALIC {
+            font-style: italic;
+        }
 
-                .BOLD {
-                    font-weight: bold;
-                }
+        .BOLD {
+            font-weight: bold;
+        }
 
-                .UNDERLINE {
-                    text-decoration: underline;
-                }
-                
-                .SMALL_CAPS {
-                    font-variant: small-caps;
-                }
+        .UNDERLINE {
+            text-decoration: underline;
+        }
+        
+        .SMALL_CAPS {
+            font-variant: small-caps;
+        }
 
-                .ERROR {
-                    color: #ffcbcb;
-                }
+        .ERROR {
+            color: #ffcbcb;
+        }
 
-                .INDENT {
-                    width: 6em;
-                }
+        .INDENT {
+            width: 6em;
+        }
 
-                .SEPARATE_POINT {
-                    display: inline-block;
+        .SEPARATE_POINT {
+            display: inline-block;
 
-                    min-width: 7px;
+            min-width: 7px;
 
-                    text-align: center;
-                }
+            text-align: center;
+        }
 
-                .UNKNOWN_POINT {
-                    border-width: 0 0 2px 0;
-                    border-style: solid;
-                    border-color: #ffff00;
+        .UNKNOWN_POINT {
+            border-width: 0 0 2px 0;
+            border-style: solid;
+            border-color: #ffff00;
 
-                    overflow-wrap: normal;
-                }
+            overflow-wrap: normal;
+        }
 
-                .KNOWN_LETTER {
-                    overflow-wrap: normal;
-                }
+        .KNOWN_LETTER {
+            overflow-wrap: normal;
+        }
 
-                .KNOWN_MARKER {
-                    overflow-wrap: normal;
-                }
+        .KNOWN_MARKER {
+            overflow-wrap: normal;
+        }
 
-                .UNKNOWN_WORD {
-                    border-width: 0 0 2px 0;
-                    border-style: solid;
-                    border-color: #ff5858;
+        .UNKNOWN_WORD {
+            border-width: 0 0 2px 0;
+            border-style: solid;
+            border-color: #ff5858;
 
-                    overflow-wrap: normal;
-                }
+            overflow-wrap: normal;
+        }
 
-                .KNOWN_WORD {
-                    overflow-wrap: normal;
-                }
+        .KNOWN_WORD {
+            overflow-wrap: normal;
+        }
 
-                .UNKNOWN_BREAK {
-                    border-width: 0 0 2px 0;
-                    border-style: solid;
-                    border-color: #00da6f;
+        .UNKNOWN_BREAK {
+            border-width: 0 0 2px 0;
+            border-style: solid;
+            border-color: #00da6f;
 
-                    overflow-wrap: normal;
-                }
+            overflow-wrap: normal;
+        }
 
-                .KNOWN_BREAK {
-                    overflow-wrap: normal;
-                }
+        .KNOWN_BREAK {
+            overflow-wrap: normal;
+        }
 
-                .KNOWN_WORD_ERROR {
-                    border-width: 0 0 2px 0;
-                    border-style: solid;
-                    border-color: #e767c3;
+        .KNOWN_WORD_ERROR {
+            border-width: 0 0 2px 0;
+            border-style: solid;
+            border-color: #e767c3;
 
-                    overflow-wrap: normal;
-                }
+            overflow-wrap: normal;
+        }
 
-                .KNOWN_BREAK_ERROR {
-                    border-width: 0 0 2px 0;
-                    border-style: solid;
-                    border-color: #e767c3;
+        .KNOWN_BREAK_ERROR {
+            border-width: 0 0 2px 0;
+            border-style: solid;
+            border-color: #e767c3;
 
-                    overflow-wrap: normal;
-                }
+            overflow-wrap: normal;
+        }
 
-                .COMMAND {
-                    overflow-wrap: normal;
-                }
-            `));
-    document.head.appendChild(style);
-}
-function Build() {
-    const text_editor = new Editor({
+        .COMMAND {
+            overflow-wrap: normal;
+        }
+    `);
+    new Editor({
         parent: document.body,
     });
-}
-function Main() {
-    Style();
-    Build();
-}
-Main();
+})();
