@@ -12,6 +12,7 @@ import * as Entity from "./entity.js";
 class Body extends Entity.Instance {
     constructor() {
         super(document.body);
+        this.browser = null;
     }
     On_Life() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -55,22 +56,35 @@ class Body extends Entity.Instance {
                 font-variant: small-caps;
             }
         `);
-            this.Add_Child(new Browser());
         });
+    }
+    On_Refresh() {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.Kill_All_Children();
+            this.browser = new Browser({
+                body: this,
+                name: `Browser`,
+            });
+            this.Add_Child(this.browser);
+        });
+    }
+    Document() {
+        return document;
+    }
+    Name() {
+        return ``;
+    }
+    Path() {
+        return ``;
     }
 }
 class Browser extends Entity.Instance {
-    constructor() {
+    constructor({ body, name, }) {
         super(`div`);
-        this.book_info = null;
-    }
-    On_Life() {
-        return __awaiter(this, void 0, void 0, function* () {
-            const info_response = yield fetch(Utils.Resolve_Path(`txt/Jubilees/English/R. H. Charles/Info.json`));
-            if (info_response.ok) {
-                this.book_info = JSON.parse(yield info_response.text());
-            }
-        });
+        this.body = body;
+        this.name = name;
+        this.path = `${body.Path()}/${name}`;
+        this.books = null;
     }
     On_Restyle() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -78,7 +92,7 @@ class Browser extends Entity.Instance {
                 "display": `grid`,
                 "width": `100%`,
                 "height": `100%`,
-                "overflow-x": `hidden`,
+                "overflow-x": `auto`,
                 "overflow-y": `auto`,
                 "color": `white`,
             });
@@ -87,67 +101,353 @@ class Browser extends Entity.Instance {
     On_Refresh() {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.Kill_All_Children();
-            this.Add_Child(new Books());
-            if (this.book_info) {
-                for (const file_name of this.book_info.file_names) {
-                    const file_response = yield fetch(Utils.Resolve_Path(`txt/Jubilees/English/R. H. Charles/${file_name}`));
-                    if (file_response.ok) {
-                        const file_text = yield file_response.text();
-                        for (const file_line of file_text.split(/\r?\n/g)) {
-                            this.Add_Child(new Line(file_line));
-                        }
-                        this.Add_Child(new Line(``));
-                    }
-                }
-            }
+            this.books = new Books({
+                browser: this,
+                name: `Books`,
+            });
+            this.Add_Child(this.books);
         });
+    }
+    Body() {
+        return this.body;
+    }
+    Name() {
+        return this.name;
+    }
+    Path() {
+        return this.path;
     }
 }
 class Books extends Entity.Instance {
-    constructor() {
+    constructor({ browser, name, }) {
         super(`div`);
+        this.browser = browser;
+        this.name = name;
+        this.path = `${browser.Path()}/${name}`;
+        this.info = null;
+        this.books = [];
+    }
+    On_Life() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const info_response = yield fetch(Utils.Resolve_Path(`${this.Path()}/Info.json`));
+            if (info_response.ok) {
+                this.info = JSON.parse(yield info_response.text());
+            }
+        });
     }
     On_Restyle() {
         return __awaiter(this, void 0, void 0, function* () {
             return `
-            color: yellow;
         `;
         });
     }
+    On_Refresh() {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.Kill_All_Children();
+            if (this.info) {
+                for (const name of this.info.folder_names) {
+                    const book = new Book({
+                        books: this,
+                        name: name,
+                    });
+                    this.books.push(book);
+                    this.Add_Child(book);
+                }
+            }
+        });
+    }
+    Browser() {
+        return this.browser;
+    }
+    Name() {
+        return this.name;
+    }
+    Path() {
+        return this.path;
+    }
 }
 class Book extends Entity.Instance {
-    constructor() {
+    constructor({ books, name, }) {
         super(`div`);
+        this.books = books;
+        this.name = name;
+        this.path = `${books.Path()}/${name}`;
+        this.languages = null;
+    }
+    On_Restyle() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return `
+        `;
+        });
+    }
+    On_Refresh() {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.Kill_All_Children();
+            this.languages = new Languages({
+                book: this,
+                name: `Languages`,
+            });
+            this.Add_Child(this.languages);
+        });
+    }
+    Books() {
+        return this.books;
+    }
+    Name() {
+        return this.name;
+    }
+    Path() {
+        return this.path;
     }
 }
 class Languages extends Entity.Instance {
-    constructor() {
+    constructor({ book, name, }) {
         super(`div`);
+        this.book = book;
+        this.name = name;
+        this.path = `${book.Path()}/${name}`;
+        this.info = null;
+        this.languages = [];
+    }
+    On_Life() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const info_response = yield fetch(Utils.Resolve_Path(`${this.Path()}/Info.json`));
+            if (info_response.ok) {
+                this.info = JSON.parse(yield info_response.text());
+            }
+        });
+    }
+    On_Restyle() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return `
+        `;
+        });
+    }
+    On_Refresh() {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.Kill_All_Children();
+            if (this.info) {
+                for (const name of this.info.folder_names) {
+                    const language = new Language({
+                        languages: this,
+                        name: name,
+                    });
+                    this.languages.push(language);
+                    this.Add_Child(language);
+                }
+            }
+        });
+    }
+    Book() {
+        return this.book;
+    }
+    Name() {
+        return this.name;
+    }
+    Path() {
+        return this.path;
     }
 }
 class Language extends Entity.Instance {
-    constructor() {
+    constructor({ languages, name, }) {
         super(`div`);
+        this.languages = languages;
+        this.name = name;
+        this.path = `${languages.Path()}/${name}`;
+        this.versions = null;
+    }
+    On_Restyle() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return `
+        `;
+        });
+    }
+    On_Refresh() {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.Kill_All_Children();
+            this.versions = new Versions({
+                language: this,
+                name: `Versions`,
+            });
+            this.Add_Child(this.versions);
+        });
+    }
+    Languages() {
+        return this.languages;
+    }
+    Name() {
+        return this.name;
+    }
+    Path() {
+        return this.path;
     }
 }
 class Versions extends Entity.Instance {
-    constructor() {
+    constructor({ language, name, }) {
         super(`div`);
+        this.language = language;
+        this.name = name;
+        this.path = `${language.Path()}/${name}`;
+        this.info = null;
+        this.versions = [];
+    }
+    On_Life() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const info_response = yield fetch(Utils.Resolve_Path(`${this.Path()}/Info.json`));
+            if (info_response.ok) {
+                this.info = JSON.parse(yield info_response.text());
+            }
+        });
+    }
+    On_Restyle() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return `
+        `;
+        });
+    }
+    On_Refresh() {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.Kill_All_Children();
+            if (this.info) {
+                for (const name of this.info.folder_names) {
+                    const version = new Version({
+                        versions: this,
+                        name: name,
+                    });
+                    this.versions.push(version);
+                    this.Add_Child(version);
+                }
+            }
+        });
+    }
+    Language() {
+        return this.language;
+    }
+    Name() {
+        return this.name;
+    }
+    Path() {
+        return this.path;
     }
 }
 class Version extends Entity.Instance {
-    constructor() {
+    constructor({ versions, name, }) {
         super(`div`);
+        this.versions = versions;
+        this.name = name;
+        this.path = `${versions.Path()}/${name}`;
+        this.files = null;
+    }
+    On_Restyle() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return `
+        `;
+        });
+    }
+    On_Refresh() {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.Kill_All_Children();
+            this.files = new Files({
+                version: this,
+                name: `Files`,
+            });
+            this.Add_Child(this.files);
+        });
+    }
+    Versions() {
+        return this.versions;
+    }
+    Name() {
+        return this.name;
+    }
+    Path() {
+        return this.path;
     }
 }
 class Files extends Entity.Instance {
-    constructor() {
+    constructor({ version, name, }) {
         super(`div`);
+        this.version = version;
+        this.name = name;
+        this.path = `${version.Path()}/${name}`;
+        this.info = null;
+        this.files = [];
+    }
+    On_Life() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const info_response = yield fetch(Utils.Resolve_Path(`${this.Path()}/Info.json`));
+            if (info_response.ok) {
+                this.info = JSON.parse(yield info_response.text());
+            }
+        });
+    }
+    On_Restyle() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return `
+        `;
+        });
+    }
+    On_Refresh() {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.Kill_All_Children();
+            if (this.info) {
+                for (const name of this.info.file_names) {
+                    const file = new File({
+                        files: this,
+                        name: name,
+                    });
+                    this.files.push(file);
+                    this.Add_Child(file);
+                }
+            }
+        });
+    }
+    Version() {
+        return this.version;
+    }
+    Name() {
+        return this.name;
+    }
+    Path() {
+        return this.path;
     }
 }
 class File extends Entity.Instance {
-    constructor() {
+    constructor({ files, name, }) {
         super(`div`);
+        this.files = files;
+        this.name = name;
+        this.path = `${files.Path()}/${name}`;
+    }
+    On_Restyle() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return `
+        `;
+        });
+    }
+    On_Refresh() {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.Kill_All_Children();
+            this.Add_Child(new Line(this.Name()));
+            this.Add_Child(new Line(``));
+            const file_response = yield fetch(Utils.Resolve_Path(this.Path()));
+            if (file_response.ok) {
+                const file_text = yield file_response.text();
+                for (const file_line of file_text.split(/\r?\n/g)) {
+                    this.Add_Child(new Line(file_line));
+                }
+                this.Add_Child(new Line(``));
+            }
+        });
+    }
+    Files() {
+        return this.files;
+    }
+    Name() {
+        return this.name;
+    }
+    Path() {
+        return this.path;
     }
 }
 class Lines extends Entity.Instance {
@@ -191,3 +491,8 @@ class Break extends Entity.Instance {
     }
 }
 const body = new Body();
+window.addEventListener(`beforeunload`, function (event) {
+    return __awaiter(this, void 0, void 0, function* () {
+        yield body.Die();
+    });
+});

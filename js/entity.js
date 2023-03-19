@@ -54,6 +54,10 @@ export class Instance {
             return new Promise(function (resolve) {
                 this.queue.Push(function () {
                     return __awaiter(this, void 0, void 0, function* () {
+                        // waiting here allows the constructor
+                        // of the derived type to finish before this is called
+                        // we could alternatively have the derived type call this func
+                        yield Utils.Wait_Milliseconds(1);
                         if (this.Is_Alive()) {
                             yield this.On_Life();
                             if (this.Is_Alive()) {
