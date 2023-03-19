@@ -30,9 +30,6 @@ class Queue {
         if (!this.is_executing) {
             this.Execute();
         }
-        if (this.slots.length > 1) {
-            console.log(this.slots.length);
-        }
     }
 }
 export class Instance {
@@ -101,7 +98,20 @@ export class Instance {
     }
     Apply_Styles(styles) {
         Utils.Assert(this.Is_Alive(), `Cannot apply styles on a dead element.`);
-        this.styles = Object.assign(this.styles, styles);
+        if (styles instanceof Object) {
+            this.styles = Object.assign(this.styles, styles);
+        }
+        else {
+            const styles_object = {};
+            const styles_array = styles.split(/\s*;\s*/).map(s => s.match(/[^\s:]+/g));
+            for (const style of styles_array) {
+                if (style != null &&
+                    style.length === 2) {
+                    styles_object[style[0]] = style[1];
+                }
+            }
+            this.styles = Object.assign(this.styles, styles_object);
+        }
         this.Element().setAttribute(`style`, Object.entries(this.styles).map(([property, value]) => `${property}: ${value};`).join(`\n`));
     }
     Refresh() {
@@ -144,11 +154,12 @@ export class Instance {
                         if (this.Is_Alive()) {
                             // We callback the override first so that the parent and children
                             // are still accessible to the handler.
-                            yield this.On_Death();
+                            yield this.Before_Death();
                             // We currently do this backwards and in order to prevent
                             // unnecessary array rewrites which could be quite inefficient
                             // when there are a lot of children.
                             yield this.Kill_All_Children();
+                            yield this.On_Death();
                             if (this.Has_Parent()) {
                                 this.Parent().Remove_Child(this);
                             }
@@ -172,6 +183,11 @@ export class Instance {
         });
     }
     On_Refresh() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return;
+        });
+    }
+    Before_Death() {
         return __awaiter(this, void 0, void 0, function* () {
             return;
         });
@@ -274,7 +290,7 @@ export class Instance {
     }
     Kill_All_Children() {
         return __awaiter(this, void 0, void 0, function* () {
-            const children = this.Remove_All_Children();
+            const children = this.Children();
             for (let idx = children.length, end = 0; idx > end;) {
                 idx -= 1;
                 yield children[idx].Die();

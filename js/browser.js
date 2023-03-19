@@ -9,75 +9,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import * as Utils from "./utils.js";
 import * as Entity from "./entity.js";
-class Browser extends Entity.Instance {
-    constructor() {
-        super(`div`);
-        this.book_info = null;
-    }
-    On_Life() {
-        return __awaiter(this, void 0, void 0, function* () {
-            const info_response = yield fetch(Utils.Resolve_Path(`txt/Jubilees/English/R. H. Charles/Info.json`));
-            if (info_response.ok) {
-                this.book_info = JSON.parse(yield info_response.text());
-            }
-        });
-    }
-    On_Restyle() {
-        return __awaiter(this, void 0, void 0, function* () {
-            return ({
-                "display": `grid`,
-                "width": `100%`,
-                "height": `100%`,
-                "overflow-x": `hidden`,
-                "overflow-y": `auto`,
-                "color": `white`,
-            });
-        });
-    }
-    On_Refresh() {
-        return __awaiter(this, void 0, void 0, function* () {
-            if (this.book_info) {
-                yield this.Kill_All_Children();
-                for (const file_name of this.book_info.file_names) {
-                    const file_response = yield fetch(Utils.Resolve_Path(`txt/Jubilees/English/R. H. Charles/${file_name}`));
-                    if (file_response.ok) {
-                        const file_text = yield file_response.text();
-                        for (const file_line of file_text.split(/\r?\n/g)) {
-                            this.Add_Child(new Line(file_line));
-                        }
-                        this.Add_Child(new Line(``));
-                    }
-                }
-            }
-        });
-    }
-}
-// temp
-class Line extends Entity.Instance {
-    constructor(text) {
-        super(`div`);
-        this.text = text;
-    }
-    On_Restyle() {
-        return __awaiter(this, void 0, void 0, function* () {
-            return ({
-                "color": this.text === `` ?
-                    `transparent` :
-                    `inherit`,
-            });
-        });
-    }
-    On_Refresh() {
-        return __awaiter(this, void 0, void 0, function* () {
-            if (this.text === ``) {
-                this.Element().textContent = `_`;
-            }
-            else {
-                this.Element().textContent = this.text.replaceAll(/  /g, `  `);
-            }
-        });
-    }
-}
 class Body extends Entity.Instance {
     constructor() {
         super(document.body);
@@ -126,6 +57,137 @@ class Body extends Entity.Instance {
         `);
             this.Add_Child(new Browser());
         });
+    }
+}
+class Browser extends Entity.Instance {
+    constructor() {
+        super(`div`);
+        this.book_info = null;
+    }
+    On_Life() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const info_response = yield fetch(Utils.Resolve_Path(`txt/Jubilees/English/R. H. Charles/Info.json`));
+            if (info_response.ok) {
+                this.book_info = JSON.parse(yield info_response.text());
+            }
+        });
+    }
+    On_Restyle() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return ({
+                "display": `grid`,
+                "width": `100%`,
+                "height": `100%`,
+                "overflow-x": `hidden`,
+                "overflow-y": `auto`,
+                "color": `white`,
+            });
+        });
+    }
+    On_Refresh() {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.Kill_All_Children();
+            this.Add_Child(new Books());
+            if (this.book_info) {
+                for (const file_name of this.book_info.file_names) {
+                    const file_response = yield fetch(Utils.Resolve_Path(`txt/Jubilees/English/R. H. Charles/${file_name}`));
+                    if (file_response.ok) {
+                        const file_text = yield file_response.text();
+                        for (const file_line of file_text.split(/\r?\n/g)) {
+                            this.Add_Child(new Line(file_line));
+                        }
+                        this.Add_Child(new Line(``));
+                    }
+                }
+            }
+        });
+    }
+}
+class Books extends Entity.Instance {
+    constructor() {
+        super(`div`);
+    }
+    On_Restyle() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return `
+            color: yellow;
+        `;
+        });
+    }
+}
+class Book extends Entity.Instance {
+    constructor() {
+        super(`div`);
+    }
+}
+class Languages extends Entity.Instance {
+    constructor() {
+        super(`div`);
+    }
+}
+class Language extends Entity.Instance {
+    constructor() {
+        super(`div`);
+    }
+}
+class Versions extends Entity.Instance {
+    constructor() {
+        super(`div`);
+    }
+}
+class Version extends Entity.Instance {
+    constructor() {
+        super(`div`);
+    }
+}
+class Files extends Entity.Instance {
+    constructor() {
+        super(`div`);
+    }
+}
+class File extends Entity.Instance {
+    constructor() {
+        super(`div`);
+    }
+}
+class Lines extends Entity.Instance {
+    constructor() {
+        super(`div`);
+    }
+}
+class Line extends Entity.Instance {
+    constructor(text) {
+        super(`div`);
+        this.text = text;
+    }
+    On_Restyle() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return ({
+                "color": this.text === `` ?
+                    `transparent` :
+                    `inherit`,
+            });
+        });
+    }
+    On_Refresh() {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (this.text === ``) {
+                this.Element().textContent = `_`;
+            }
+            else {
+                this.Element().textContent = this.text.replaceAll(/  /g, `  `);
+            }
+        });
+    }
+}
+class Word extends Entity.Instance {
+    constructor() {
+        super(`span`);
+    }
+}
+class Break extends Entity.Instance {
+    constructor() {
+        super(`span`);
     }
 }
 const body = new Body();

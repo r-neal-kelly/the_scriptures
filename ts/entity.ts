@@ -46,10 +46,6 @@ class Queue
         if (!this.is_executing) {
             this.Execute();
         }
-
-        if (this.slots.length > 1) {
-            console.log(this.slots.length);
-        }
     }
 }
 
@@ -169,7 +165,7 @@ export class Instance
     }
 
     private Apply_Styles(
-        styles: Styles,
+        styles: Styles | string,
     ):
         void
     {
@@ -178,7 +174,23 @@ export class Instance
             `Cannot apply styles on a dead element.`,
         );
 
-        this.styles = Object.assign(this.styles, styles);
+        if (styles instanceof Object) {
+            this.styles = Object.assign(this.styles, styles);
+        } else {
+            const styles_object: Styles = {};
+            const styles_array: Array<RegExpMatchArray | null> =
+                styles.split(/\s*;\s*/).map(s => s.match(/[^\s:]+/g));
+            for (const style of styles_array) {
+                if (
+                    style != null &&
+                    style.length === 2
+                ) {
+                    styles_object[style[0]] = style[1];
+                }
+            }
+
+            this.styles = Object.assign(this.styles, styles_object);
+        }
 
         this.Element().setAttribute(
             `style`,
@@ -251,12 +263,14 @@ export class Instance
                         if (this.Is_Alive()) {
                             // We callback the override first so that the parent and children
                             // are still accessible to the handler.
-                            await this.On_Death();
+                            await this.Before_Death();
 
                             // We currently do this backwards and in order to prevent
                             // unnecessary array rewrites which could be quite inefficient
                             // when there are a lot of children.
                             await this.Kill_All_Children();
+
+                            await this.On_Death();
 
                             if (this.Has_Parent()) {
                                 this.Parent().Remove_Child(this);
@@ -279,12 +293,18 @@ export class Instance
     }
 
     async On_Restyle():
-        Promise<Styles>
+        Promise<Styles | string>
     {
         return {};
     }
 
     async On_Refresh():
+        Promise<void>
+    {
+        return;
+    }
+
+    async Before_Death():
         Promise<void>
     {
         return;
@@ -535,7 +555,7 @@ export class Instance
     async Kill_All_Children():
         Promise<void>
     {
-        const children: Array<Instance> = this.Remove_All_Children();
+        const children: Array<Instance> = this.Children();
         for (let idx = children.length, end = 0; idx > end;) {
             idx -= 1;
             await children[idx].Die();
