@@ -1,52 +1,22 @@
-import { Integer } from "./types.js"
-import { Index } from "./types.js"
-import { ID } from "./types.js"
+import { Integer } from "./types.js";
+import { Index } from "./types.js";
+import { ID } from "./types.js";
+import { Float } from "./types.js";
 
-import * as Utils from "./utils.js"
+import * as Utils from "./utils.js";
+import * as Queue from "./queue.js";
+import * as Event from "./event.js";
 
-export { ID } from "./types.js"
+export { ID } from "./types.js";
 
 export type Styles = {
     [index: string]: string,
 }
 
-// might want to make this a limited circle buffer.
-// it would have to never reject the Live and Die methods though, unless they aren't already queued
-class Queue
-{
-    private slots: Array<any>;
-    private is_executing: boolean;
-
-    constructor()
-    {
-        this.slots = [];
-        this.is_executing = false;
-    }
-
-    async Execute():
-        Promise<void>
-    {
-        this.is_executing = true;
-
-        while (this.slots.length > 0) {
-            await this.slots[0]();
-            this.slots = this.slots.slice(1);
-        }
-
-        this.is_executing = false;
-    }
-
-    Push(
-        method: any,
-    ):
-        void
-    {
-        this.slots.push(method);
-
-        if (!this.is_executing) {
-            this.Execute();
-        }
-    }
+export type Animation_Frame = {
+    now: Float;
+    start: Float;
+    elapsed: Float;
 }
 
 export class Instance
@@ -54,17 +24,20 @@ export class Instance
     private static next_id: ID = 0;
 
     private id: ID;
+
     private element: HTMLElement;
     private styles: Styles;
     private parent: Instance | null;
     private children: Array<Instance>;
 
-    private is_alive: boolean;
+    private event_grid: Event.Grid;
+    private life_cycle_queue: Queue.Instance;
 
-    private queue: Queue;
+    private is_alive: boolean;
 
     constructor(
         element: string | HTMLBodyElement,
+        event_grid: Event.Grid,
     )
     {
         Utils.Assert(
@@ -73,6 +46,7 @@ export class Instance
         );
 
         this.id = Instance.next_id++;
+
         this.element = element instanceof HTMLBodyElement ?
             element :
             document.createElement(element);
@@ -80,9 +54,10 @@ export class Instance
         this.parent = null;
         this.children = [];
 
-        this.is_alive = true;
+        this.event_grid = event_grid;
+        this.life_cycle_queue = new Queue.Instance();
 
-        this.queue = new Queue();
+        this.is_alive = true;
 
         this.Live();
     }
@@ -96,35 +71,26 @@ export class Instance
     private async Live():
         Promise<void>
     {
-        return new Promise(
-            function (
+        await this.life_cycle_queue.Enqueue(
+            async function (
                 this: Instance,
-                resolve: any,
             ):
-                void
+                Promise<void>
             {
-                this.queue.Push(
-                    async function (
-                        this: Instance,
-                    ):
-                        Promise<void>
-                    {
-                        // waiting here allows the constructor
-                        // of the derived type to finish before this is called
-                        // we could alternatively have the derived type call this func
-                        await Utils.Wait_Milliseconds(1);
+                // waiting here allows the constructor
+                // of the derived type to finish before this is called
+                // we could alternatively have the derived type call this func
+                await Utils.Wait_Milliseconds(1);
+                if (this.Is_Alive()) {
+                    const listeners: Array<Event.Listener_Info> = await this.On_Life();
+                    if (this.Is_Alive()) {
+                        this.Event_Grid().Add_Many_Listeners(this, listeners);
+                        this.Apply_Styles(await this.On_Restyle());
                         if (this.Is_Alive()) {
-                            await this.On_Life();
-                            if (this.Is_Alive()) {
-                                this.Apply_Styles(await this.On_Restyle());
-                                if (this.Is_Alive()) {
-                                    await this.On_Refresh();
-                                }
-                            }
+                            await this.On_Refresh();
                         }
-                        resolve();
-                    }.bind(this),
-                );
+                    }
+                }
             }.bind(this),
         );
     }
@@ -132,38 +98,28 @@ export class Instance
     async Restyle():
         Promise<void>
     {
-        return new Promise(
-            function (
+        await this.life_cycle_queue.Enqueue(
+            async function (
                 this: Instance,
-                resolve: any,
             ):
-                void
+                Promise<void>
             {
-                this.queue.Push(
-                    async function (
-                        this: Instance,
-                    ):
-                        Promise<void>
-                    {
-                        if (this.Is_Alive()) {
-                            // We need to restyle before we do
-                            // children so they have up to date data.
-                            this.Apply_Styles(await this.On_Restyle());
-                            if (this.Is_Alive()) {
-                                // It's assumed that order may matter,
-                                // and thus we treat the children as a stack
-                                // both during life and death.
-                                for (const child of this.children) {
-                                    await child.Restyle();
-                                    if (!this.Is_Alive()) {
-                                        break;
-                                    }
-                                }
+                if (this.Is_Alive()) {
+                    // We need to restyle before we do
+                    // children so they have up to date data.
+                    this.Apply_Styles(await this.On_Restyle());
+                    if (this.Is_Alive()) {
+                        // It's assumed that order may matter,
+                        // and thus we treat the children as a stack
+                        // both during life and death.
+                        for (const child of this.children) {
+                            await child.Restyle();
+                            if (!this.Is_Alive()) {
+                                break;
                             }
                         }
-                        resolve();
-                    }.bind(this),
-                );
+                    }
+                }
             }.bind(this),
         );
     }
@@ -175,7 +131,7 @@ export class Instance
     {
         Utils.Assert(
             this.Is_Alive(),
-            `Cannot apply styles on a dead element.`,
+            `Cannot apply styles on a dead entity.`,
         );
 
         if (styles instanceof Object) {
@@ -207,43 +163,33 @@ export class Instance
     async Refresh():
         Promise<void>
     {
-        return new Promise(
-            function (
+        await this.life_cycle_queue.Enqueue(
+            async function (
                 this: Instance,
-                resolve: any,
             ):
-                void
+                Promise<void>
             {
-                this.queue.Push(
-                    async function (
-                        this: Instance,
-                    ):
-                        Promise<void>
-                    {
+                if (this.Is_Alive()) {
+                    // We need to restyle and refresh
+                    // before we work on children so they
+                    // have up to date data. Also because
+                    // On_Refresh can add and remove children.
+                    this.Apply_Styles(await this.On_Restyle());
+                    if (this.Is_Alive()) {
+                        await this.On_Refresh();
                         if (this.Is_Alive()) {
-                            // We need to restyle and refresh
-                            // before we work on children so they
-                            // have up to date data. Also because
-                            // On_Refresh can add and remove children.
-                            this.Apply_Styles(await this.On_Restyle());
-                            if (this.Is_Alive()) {
-                                await this.On_Refresh();
-                                if (this.Is_Alive()) {
-                                    // It's assumed that order may matter,
-                                    // and thus we treat the children as a stack
-                                    // both during life and death.
-                                    for (const child of this.children) {
-                                        await child.Refresh();
-                                        if (!this.Is_Alive()) {
-                                            break;
-                                        }
-                                    }
+                            // It's assumed that order may matter,
+                            // and thus we treat the children as a stack
+                            // both during life and death.
+                            for (const child of this.children) {
+                                await child.Refresh();
+                                if (!this.Is_Alive()) {
+                                    break;
                                 }
                             }
                         }
-                        resolve();
-                    }.bind(this),
-                );
+                    }
+                }
             }.bind(this),
         );
     }
@@ -251,49 +197,41 @@ export class Instance
     async Die():
         Promise<void>
     {
-        return new Promise(
-            function (
+        await this.life_cycle_queue.Enqueue(
+            async function (
                 this: Instance,
-                resolve: any,
             ):
-                void
+                Promise<void>
             {
-                this.queue.Push(
-                    async function (
-                        this: Instance,
-                    ):
-                        Promise<void>
-                    {
-                        if (this.Is_Alive()) {
-                            // We callback the override first so that the parent and children
-                            // are still accessible to the handler.
-                            await this.Before_Death();
+                if (this.Is_Alive()) {
+                    // We callback the override first so that the parent and children
+                    // are still accessible to the handler.
+                    await this.Before_Death();
 
-                            // We currently do this backwards and in order to prevent
-                            // unnecessary array rewrites which could be quite inefficient
-                            // when there are a lot of children.
-                            await this.Kill_All_Children();
+                    // We currently do this backwards and in order to prevent
+                    // unnecessary array rewrites which could be quite inefficient
+                    // when there are a lot of children.
+                    await this.Kill_All_Children();
 
-                            await this.On_Death();
+                    await this.On_Death();
 
-                            if (this.Has_Parent()) {
-                                this.Parent().Remove_Child(this);
-                            }
+                    if (this.Has_Parent()) {
+                        this.Parent().Remove_Child(this);
+                    }
 
-                            this.element = document.body;
-                            this.is_alive = false;
-                        }
-                        resolve();
-                    }.bind(this),
-                );
+                    this.Event_Grid().Remove(this);
+
+                    this.element = document.body;
+                    this.is_alive = false;
+                }
             }.bind(this),
         );
     }
 
     async On_Life():
-        Promise<void>
+        Promise<Array<Event.Listener_Info>>
     {
-        return;
+        return [];
     }
 
     async On_Restyle():
@@ -483,7 +421,7 @@ export class Instance
         child.parent = this;
     }
 
-    Remove_Child(
+    private Remove_Child(
         child: Instance,
     ):
         void
@@ -508,7 +446,7 @@ export class Instance
         this.Remove_Child_At(this.children.indexOf(child));
     }
 
-    Remove_Child_At(
+    private Remove_Child_At(
         child_index: Index,
     ):
         Instance
@@ -537,7 +475,7 @@ export class Instance
         return child;
     }
 
-    Remove_All_Children():
+    private Remove_All_Children():
         Array<Instance>
     {
         Utils.Assert(
@@ -556,13 +494,211 @@ export class Instance
         return children;
     }
 
+    async Kill_Child_At(
+        child_index: Index,
+    ):
+        Promise<void>
+    {
+        Utils.Assert(
+            this.Is_Alive(),
+            `Cannot kill child of a dead parent.`,
+        );
+        Utils.Assert(
+            this.Has_Child(child_index),
+            `Cannot kill a child the parent doesn't have.`,
+        );
+
+        const child: Instance = this.children[child_index];
+        Utils.Assert(child.Is_Alive());
+        Utils.Assert(child.Has_Parent());
+        Utils.Assert(child.Parent() === this);
+
+        await child.Die();
+    }
+
     async Kill_All_Children():
         Promise<void>
     {
+        Utils.Assert(
+            this.Is_Alive(),
+            `Cannot kill children of a dead parent.`,
+        );
+
         const children: Array<Instance> = this.Children();
         for (let idx = children.length, end = 0; idx > end;) {
             idx -= 1;
             await children[idx].Die();
         }
+    }
+
+    Event_Grid():
+        Event.Grid
+    {
+        Utils.Assert(
+            this.Is_Alive(),
+            `Cannot get an event grid from a dead entity.`,
+        );
+
+        return this.event_grid;
+    }
+
+    async Send(
+        event_info: Event.Info,
+    ):
+        Promise<void>
+    {
+        return this.Event_Grid().Send(event_info);
+    }
+
+    async Animate(
+        keyframes: Array<Keyframe>,
+        options: KeyframeEffectOptions,
+    ):
+        Promise<void>
+    {
+        Utils.Assert(
+            keyframes.length >= 2,
+            `Must have at least two keyframes.`,
+        );
+        Utils.Assert(
+            keyframes[0].offset === 0.0,
+            `First keyframe's offset must be 0.0`,
+        );
+        Utils.Assert(
+            keyframes[keyframes.length - 1].offset === 1.0,
+            `Last keyframe's offset must be 1.0`,
+        );
+
+        Utils.Assert(
+            options.direction === undefined ||
+            options.direction === `normal` ||
+            options.direction === `reverse`,
+            `Invalid direction.`,
+        );
+        Utils.Assert(
+            options.fill === undefined ||
+            options.fill === `both`,
+            `Invalid fill.`,
+        );
+
+        if (options.direction === undefined) {
+            options.direction = `normal`;
+        }
+        if (options.fill === undefined) {
+            // there's something wrong with setting this in Chromium,
+            // and it causes JavaScript style sets to not work afterwards.
+            // We simulate `both` below, which is necessary to avoid this bug
+            // and also to keep our component model's styles up to date.
+            options.fill = `none`;
+        }
+
+        if (this.Is_Alive()) {
+            const element: HTMLElement = this.Element();
+
+            let first_keyframe: Keyframe;
+            let last_keyframe: Keyframe;
+            if (options.direction === `normal`) {
+                first_keyframe = keyframes[0];
+                last_keyframe = keyframes[keyframes.length - 1];
+            } else {
+                first_keyframe = keyframes[keyframes.length - 1];
+                last_keyframe = keyframes[0];
+            }
+
+            for (const [key, value] of Object.entries(first_keyframe)) {
+                if (key !== `offset` && value != null) {
+                    (element.style as any)[key] = value.toString();
+                }
+            }
+
+            await new Promise<void>(
+                function (
+                    resolve: () => void,
+                ):
+                    void
+                {
+                    const animation: Animation =
+                        new Animation(new KeyframeEffect(element, keyframes, options));
+
+                    animation.onfinish = function (
+                        event: AnimationPlaybackEvent,
+                    ):
+                        void
+                    {
+                        resolve();
+                    };
+
+                    animation.play();
+                },
+            );
+
+            // Currently not checking if is alive so that we ensure even a dead element
+            // goes back to its former state before being animated.
+            for (const [key, value] of Object.entries(last_keyframe)) {
+                if (key !== `offset` && value != null) {
+                    const value_string: string = value.toString();
+                    this.styles[key] = value_string;
+                    (element.style as any)[key] = value_string;
+                }
+            }
+        }
+    }
+
+    async Animate_By_Frame<State>(
+        on_frame: (
+            frame: Animation_Frame,
+            state: State,
+        ) => boolean | Promise<boolean>,
+        state: State,
+    ):
+        Promise<void>
+    {
+        return new Promise(
+            function (
+                this: Instance,
+                resolve: () => void,
+            ):
+                void
+            {
+                let start: Float | null = null;
+                let last: Float = -1.0;
+
+                async function Loop(
+                    this: Instance,
+                    now: Float,
+                ):
+                    Promise<void>
+                {
+                    if (this.Is_Alive()) {
+                        if (start == null) {
+                            start = now;
+                        }
+                        if (last !== now) {
+                            last = now;
+                            if (
+                                await on_frame(
+                                    {
+                                        now: now,
+                                        start: start as Float,
+                                        elapsed: now - start,
+                                    } as Animation_Frame,
+                                    state,
+                                )
+                            ) {
+                                window.requestAnimationFrame(Loop.bind(this));
+                            } else {
+                                resolve();
+                            }
+                        } else {
+                            window.requestAnimationFrame(Loop.bind(this));
+                        }
+                    } else {
+                        resolve();
+                    }
+                }
+
+                window.requestAnimationFrame(Loop.bind(this));
+            }.bind(this),
+        );
     }
 }

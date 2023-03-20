@@ -1,5 +1,5 @@
-import { Integer } from "./types.js"
-import { Path } from "./types.js"
+import { Integer } from "./types.js";
+import { Path } from "./types.js";
 
 export function Assert(
     boolean_statement: boolean,

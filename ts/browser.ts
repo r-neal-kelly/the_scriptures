@@ -1,8 +1,9 @@
-import { Name } from "./types.js"
-import { Path } from "./types.js"
+import { Name } from "./types.js";
+import { Path } from "./types.js";
 
-import * as Utils from "./utils.js"
-import * as Entity from "./entity.js"
+import * as Utils from "./utils.js";
+import * as Event from "./event.js";
+import * as Entity from "./entity.js";
 
 class Body extends Entity.Instance
 {
@@ -10,13 +11,13 @@ class Body extends Entity.Instance
 
     constructor()
     {
-        super(document.body as HTMLBodyElement);
+        super(document.body as HTMLBodyElement, new Event.Grid());
 
         this.browser = null;
     }
 
     override async On_Life():
-        Promise<void>
+        Promise<Array<Event.Listener_Info>>
     {
         Utils.Create_Style_Element(`
             * {
@@ -58,6 +59,8 @@ class Body extends Entity.Instance
                 font-variant: small-caps;
             }
         `);
+
+        return [];
     }
 
     override async On_Refresh():
@@ -66,7 +69,7 @@ class Body extends Entity.Instance
         await this.Kill_All_Children();
 
         this.browser = new Browser({
-            body: this,
+            root: this,
             name: `Browser`,
         });
 
@@ -94,26 +97,26 @@ class Body extends Entity.Instance
 
 class Browser extends Entity.Instance
 {
-    private body: Body;
+    private root: Entity.Instance;
     private name: Name;
     private path: Path;
     private books: Books | null;
 
     constructor(
         {
-            body,
+            root,
             name,
         }: {
-            body: Body,
+            root: Entity.Instance,
             name: Name,
-        }
+        },
     )
     {
-        super(`div`);
+        super(`div`, root.Event_Grid());
 
-        this.body = body;
+        this.root = root;
         this.name = name;
-        this.path = `${body.Path()}/${name}`;
+        this.path = name;
         this.books = null;
     }
 
@@ -146,10 +149,10 @@ class Browser extends Entity.Instance
         this.Add_Child(this.books);
     }
 
-    Body():
-        Body
+    Root():
+        Entity.Instance
     {
-        return this.body;
+        return this.root;
     }
 
     Name():
@@ -184,10 +187,10 @@ class Books extends Entity.Instance
         }: {
             browser: Browser,
             name: Name,
-        }
+        },
     )
     {
-        super(`div`);
+        super(`div`, browser.Event_Grid());
 
         this.browser = browser;
         this.name = name;
@@ -197,13 +200,15 @@ class Books extends Entity.Instance
     }
 
     override async On_Life():
-        Promise<void>
+        Promise<Array<Event.Listener_Info>>
     {
         const info_response: Response =
             await fetch(Utils.Resolve_Path(`${this.Path()}/Info.json`));
         if (info_response.ok) {
             this.info = JSON.parse(await info_response.text());
         }
+
+        return [];
     }
 
     override async On_Restyle():
@@ -264,10 +269,10 @@ class Book extends Entity.Instance
         }: {
             books: Books,
             name: Name,
-        }
+        },
     )
     {
-        super(`div`);
+        super(`div`, books.Event_Grid());
 
         this.books = books;
         this.name = name;
@@ -333,10 +338,10 @@ class Languages extends Entity.Instance
         }: {
             book: Book,
             name: Name,
-        }
+        },
     )
     {
-        super(`div`);
+        super(`div`, book.Event_Grid());
 
         this.book = book;
         this.name = name;
@@ -346,13 +351,15 @@ class Languages extends Entity.Instance
     }
 
     override async On_Life():
-        Promise<void>
+        Promise<Array<Event.Listener_Info>>
     {
         const info_response: Response =
             await fetch(Utils.Resolve_Path(`${this.Path()}/Info.json`));
         if (info_response.ok) {
             this.info = JSON.parse(await info_response.text());
         }
+
+        return [];
     }
 
     override async On_Restyle():
@@ -413,10 +420,10 @@ class Language extends Entity.Instance
         }: {
             languages: Languages,
             name: Name,
-        }
+        },
     )
     {
-        super(`div`);
+        super(`div`, languages.Event_Grid());
 
         this.languages = languages;
         this.name = name;
@@ -482,10 +489,10 @@ class Versions extends Entity.Instance
         }: {
             language: Language,
             name: Name,
-        }
+        },
     )
     {
-        super(`div`);
+        super(`div`, language.Event_Grid());
 
         this.language = language;
         this.name = name;
@@ -495,13 +502,15 @@ class Versions extends Entity.Instance
     }
 
     override async On_Life():
-        Promise<void>
+        Promise<Array<Event.Listener_Info>>
     {
         const info_response: Response =
             await fetch(Utils.Resolve_Path(`${this.Path()}/Info.json`));
         if (info_response.ok) {
             this.info = JSON.parse(await info_response.text());
         }
+
+        return [];
     }
 
     override async On_Restyle():
@@ -562,10 +571,10 @@ class Version extends Entity.Instance
         }: {
             versions: Versions,
             name: Name,
-        }
+        },
     )
     {
-        super(`div`);
+        super(`div`, versions.Event_Grid());
 
         this.versions = versions;
         this.name = name;
@@ -631,10 +640,10 @@ class Files extends Entity.Instance
         }: {
             version: Version,
             name: Name,
-        }
+        },
     )
     {
-        super(`div`);
+        super(`div`, version.Event_Grid());
 
         this.version = version;
         this.name = name;
@@ -644,13 +653,15 @@ class Files extends Entity.Instance
     }
 
     override async On_Life():
-        Promise<void>
+        Promise<Array<Event.Listener_Info>>
     {
         const info_response: Response =
             await fetch(Utils.Resolve_Path(`${this.Path()}/Info.json`));
         if (info_response.ok) {
             this.info = JSON.parse(await info_response.text());
         }
+
+        return [];
     }
 
     override async On_Restyle():
@@ -710,10 +721,10 @@ class File extends Entity.Instance
         }: {
             files: Files,
             name: Name,
-        }
+        },
     )
     {
-        super(`div`);
+        super(`div`, files.Event_Grid());
 
         this.files = files;
         this.name = name;
@@ -732,17 +743,17 @@ class File extends Entity.Instance
     {
         await this.Kill_All_Children();
 
-        this.Add_Child(new Line(this.Name()));
-        this.Add_Child(new Line(``));
+        this.Add_Child(new Line({ text: this.Name() }));
+        this.Add_Child(new Line({ text: `` }));
 
         const file_response: Response =
             await fetch(Utils.Resolve_Path(this.Path()));
         if (file_response.ok) {
             const file_text: string = await file_response.text();
             for (const file_line of file_text.split(/\r?\n/g)) {
-                this.Add_Child(new Line(file_line));
+                this.Add_Child(new Line({ text: file_line }));
             }
-            this.Add_Child(new Line(``));
+            this.Add_Child(new Line({ text: `` }));
         }
     }
 
@@ -769,19 +780,24 @@ class Lines extends Entity.Instance
 {
     constructor()
     {
-        super(`div`);
+        super(`div`, new Event.Grid());
     }
 }
 
 class Line extends Entity.Instance
 {
+    // this class is temporarity defined like this for testing
     private text: string;
 
     constructor(
-        text: string,
+        {
+            text,
+        }: {
+            text: string,
+        },
     )
     {
-        super(`div`);
+        super(`div`, new Event.Grid());
 
         this.text = text;
     }
@@ -811,7 +827,7 @@ class Word extends Entity.Instance
 {
     constructor()
     {
-        super(`span`);
+        super(`span`, new Event.Grid());
     }
 }
 
@@ -819,7 +835,7 @@ class Break extends Entity.Instance
 {
     constructor()
     {
-        super(`span`);
+        super(`span`, new Event.Grid());
     }
 }
 
@@ -834,4 +850,4 @@ window.addEventListener(
     {
         await body.Die();
     }
-)
+);

@@ -8,10 +8,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import * as Utils from "./utils.js";
+import * as Event from "./event.js";
 import * as Entity from "./entity.js";
 class Body extends Entity.Instance {
     constructor() {
-        super(document.body);
+        super(document.body, new Event.Grid());
         this.browser = null;
     }
     On_Life() {
@@ -56,13 +57,14 @@ class Body extends Entity.Instance {
                 font-variant: small-caps;
             }
         `);
+            return [];
         });
     }
     On_Refresh() {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.Kill_All_Children();
             this.browser = new Browser({
-                body: this,
+                root: this,
                 name: `Browser`,
             });
             this.Add_Child(this.browser);
@@ -79,11 +81,11 @@ class Body extends Entity.Instance {
     }
 }
 class Browser extends Entity.Instance {
-    constructor({ body, name, }) {
-        super(`div`);
-        this.body = body;
+    constructor({ root, name, }) {
+        super(`div`, root.Event_Grid());
+        this.root = root;
         this.name = name;
-        this.path = `${body.Path()}/${name}`;
+        this.path = name;
         this.books = null;
     }
     On_Restyle() {
@@ -108,8 +110,8 @@ class Browser extends Entity.Instance {
             this.Add_Child(this.books);
         });
     }
-    Body() {
-        return this.body;
+    Root() {
+        return this.root;
     }
     Name() {
         return this.name;
@@ -120,7 +122,7 @@ class Browser extends Entity.Instance {
 }
 class Books extends Entity.Instance {
     constructor({ browser, name, }) {
-        super(`div`);
+        super(`div`, browser.Event_Grid());
         this.browser = browser;
         this.name = name;
         this.path = `${browser.Path()}/${name}`;
@@ -133,6 +135,7 @@ class Books extends Entity.Instance {
             if (info_response.ok) {
                 this.info = JSON.parse(yield info_response.text());
             }
+            return [];
         });
     }
     On_Restyle() {
@@ -168,7 +171,7 @@ class Books extends Entity.Instance {
 }
 class Book extends Entity.Instance {
     constructor({ books, name, }) {
-        super(`div`);
+        super(`div`, books.Event_Grid());
         this.books = books;
         this.name = name;
         this.path = `${books.Path()}/${name}`;
@@ -202,7 +205,7 @@ class Book extends Entity.Instance {
 }
 class Languages extends Entity.Instance {
     constructor({ book, name, }) {
-        super(`div`);
+        super(`div`, book.Event_Grid());
         this.book = book;
         this.name = name;
         this.path = `${book.Path()}/${name}`;
@@ -215,6 +218,7 @@ class Languages extends Entity.Instance {
             if (info_response.ok) {
                 this.info = JSON.parse(yield info_response.text());
             }
+            return [];
         });
     }
     On_Restyle() {
@@ -250,7 +254,7 @@ class Languages extends Entity.Instance {
 }
 class Language extends Entity.Instance {
     constructor({ languages, name, }) {
-        super(`div`);
+        super(`div`, languages.Event_Grid());
         this.languages = languages;
         this.name = name;
         this.path = `${languages.Path()}/${name}`;
@@ -284,7 +288,7 @@ class Language extends Entity.Instance {
 }
 class Versions extends Entity.Instance {
     constructor({ language, name, }) {
-        super(`div`);
+        super(`div`, language.Event_Grid());
         this.language = language;
         this.name = name;
         this.path = `${language.Path()}/${name}`;
@@ -297,6 +301,7 @@ class Versions extends Entity.Instance {
             if (info_response.ok) {
                 this.info = JSON.parse(yield info_response.text());
             }
+            return [];
         });
     }
     On_Restyle() {
@@ -332,7 +337,7 @@ class Versions extends Entity.Instance {
 }
 class Version extends Entity.Instance {
     constructor({ versions, name, }) {
-        super(`div`);
+        super(`div`, versions.Event_Grid());
         this.versions = versions;
         this.name = name;
         this.path = `${versions.Path()}/${name}`;
@@ -366,7 +371,7 @@ class Version extends Entity.Instance {
 }
 class Files extends Entity.Instance {
     constructor({ version, name, }) {
-        super(`div`);
+        super(`div`, version.Event_Grid());
         this.version = version;
         this.name = name;
         this.path = `${version.Path()}/${name}`;
@@ -379,6 +384,7 @@ class Files extends Entity.Instance {
             if (info_response.ok) {
                 this.info = JSON.parse(yield info_response.text());
             }
+            return [];
         });
     }
     On_Restyle() {
@@ -414,7 +420,7 @@ class Files extends Entity.Instance {
 }
 class File extends Entity.Instance {
     constructor({ files, name, }) {
-        super(`div`);
+        super(`div`, files.Event_Grid());
         this.files = files;
         this.name = name;
         this.path = `${files.Path()}/${name}`;
@@ -428,15 +434,15 @@ class File extends Entity.Instance {
     On_Refresh() {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.Kill_All_Children();
-            this.Add_Child(new Line(this.Name()));
-            this.Add_Child(new Line(``));
+            this.Add_Child(new Line({ text: this.Name() }));
+            this.Add_Child(new Line({ text: `` }));
             const file_response = yield fetch(Utils.Resolve_Path(this.Path()));
             if (file_response.ok) {
                 const file_text = yield file_response.text();
                 for (const file_line of file_text.split(/\r?\n/g)) {
-                    this.Add_Child(new Line(file_line));
+                    this.Add_Child(new Line({ text: file_line }));
                 }
-                this.Add_Child(new Line(``));
+                this.Add_Child(new Line({ text: `` }));
             }
         });
     }
@@ -452,12 +458,12 @@ class File extends Entity.Instance {
 }
 class Lines extends Entity.Instance {
     constructor() {
-        super(`div`);
+        super(`div`, new Event.Grid());
     }
 }
 class Line extends Entity.Instance {
-    constructor(text) {
-        super(`div`);
+    constructor({ text, }) {
+        super(`div`, new Event.Grid());
         this.text = text;
     }
     On_Restyle() {
@@ -482,12 +488,12 @@ class Line extends Entity.Instance {
 }
 class Word extends Entity.Instance {
     constructor() {
-        super(`span`);
+        super(`span`, new Event.Grid());
     }
 }
 class Break extends Entity.Instance {
     constructor() {
-        super(`span`);
+        super(`span`, new Event.Grid());
     }
 }
 const body = new Body();
