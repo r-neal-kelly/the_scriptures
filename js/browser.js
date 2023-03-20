@@ -143,7 +143,7 @@ class Books extends Entity.Instance {
     }
     On_Refresh() {
         return __awaiter(this, void 0, void 0, function* () {
-            this.Kill_All_Children();
+            yield this.Kill_All_Children();
             if (this.info) {
                 for (const name of this.info.folder_names) {
                     const book = new Book({
@@ -225,7 +225,7 @@ class Languages extends Entity.Instance {
     }
     On_Refresh() {
         return __awaiter(this, void 0, void 0, function* () {
-            this.Kill_All_Children();
+            yield this.Kill_All_Children();
             if (this.info) {
                 for (const name of this.info.folder_names) {
                     const language = new Language({
@@ -307,7 +307,7 @@ class Versions extends Entity.Instance {
     }
     On_Refresh() {
         return __awaiter(this, void 0, void 0, function* () {
-            this.Kill_All_Children();
+            yield this.Kill_All_Children();
             if (this.info) {
                 for (const name of this.info.folder_names) {
                     const version = new Version({
@@ -389,7 +389,7 @@ class Files extends Entity.Instance {
     }
     On_Refresh() {
         return __awaiter(this, void 0, void 0, function* () {
-            this.Kill_All_Children();
+            yield this.Kill_All_Children();
             if (this.info) {
                 for (const name of this.info.file_names) {
                     const file = new File({

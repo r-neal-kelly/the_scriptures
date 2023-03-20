@@ -216,7 +216,7 @@ class Books extends Entity.Instance
     override async On_Refresh():
         Promise<void>
     {
-        this.Kill_All_Children();
+        await this.Kill_All_Children();
 
         if (this.info) {
             for (const name of this.info.folder_names) {
@@ -365,7 +365,7 @@ class Languages extends Entity.Instance
     override async On_Refresh():
         Promise<void>
     {
-        this.Kill_All_Children();
+        await this.Kill_All_Children();
 
         if (this.info) {
             for (const name of this.info.folder_names) {
@@ -514,7 +514,7 @@ class Versions extends Entity.Instance
     override async On_Refresh():
         Promise<void>
     {
-        this.Kill_All_Children();
+        await this.Kill_All_Children();
 
         if (this.info) {
             for (const name of this.info.folder_names) {
@@ -663,7 +663,7 @@ class Files extends Entity.Instance
     override async On_Refresh():
         Promise<void>
     {
-        this.Kill_All_Children();
+        await this.Kill_All_Children();
 
         if (this.info) {
             for (const name of this.info.file_names) {
