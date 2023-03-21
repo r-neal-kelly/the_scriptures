@@ -1,0 +1,129 @@
+import { Count } from "../../types.js";
+import { Index } from "../../types.js";
+import { Name } from "../../types.js";
+import { Path } from "../../types.js";
+
+import * as Utils from "../../utils.js";
+
+import * as Book from "./book.js";
+import * as Language from "./language.js";
+
+type Info = {
+    names: Array<Name>,
+}
+
+export class Instance
+{
+    private book: Book.Instance;
+    private name: Name;
+    private path: Path;
+    private info: Info | null;
+    private languages: Array<Language.Instance>;
+
+    constructor(
+        {
+            book,
+        }: {
+            book: Book.Instance,
+        },
+    )
+    {
+        this.book = book;
+        this.name = `Languages`;
+        this.path = `${book.Path()}/${this.name}`;
+        this.info = null;
+        this.languages = [];
+    }
+
+    Book():
+        Book.Instance
+    {
+        return this.book;
+    }
+
+    Name():
+        Name
+    {
+        return this.name;
+    }
+
+    Path():
+        Path
+    {
+        return this.path;
+    }
+
+    private async Info():
+        Promise<Info>
+    {
+        await this.Download();
+
+        if (this.info != null) {
+            return this.info;
+        } else {
+            return (
+                {
+                    names: [],
+                }
+            );
+        }
+    }
+
+    async Language_Count():
+        Promise<Count>
+    {
+        await this.Download();
+
+        return this.languages.length;
+    }
+
+    async Language(
+        language_index: Index,
+    ):
+        Promise<Language.Instance>
+    {
+        await this.Download();
+
+        Utils.Assert(
+            language_index > -1,
+            `language_index must be greater than -1.`,
+        );
+        Utils.Assert(
+            language_index < await this.Language_Count(),
+            `language_index must be less than language_count.`,
+        );
+
+        return this.languages[language_index];
+    }
+
+    async Languages():
+        Promise<Array<Language.Instance>>
+    {
+        await this.Download();
+
+        return Array.from(this.languages);
+    }
+
+    private async Download():
+        Promise<void>
+    {
+        if (this.info == null) {
+            const response: Response =
+                await fetch(Utils.Resolve_Path(`${this.Path()}/Info.json`));
+            if (response.ok) {
+                this.info = JSON.parse(await response.text()) as Info;
+
+                for (const name of this.info.names) {
+                    this.languages.push(
+                        new Language.Instance(
+                            {
+                                languages: this,
+                                name: name,
+                            },
+                        ),
+                    );
+                }
+            }
+        }
+    }
+}
