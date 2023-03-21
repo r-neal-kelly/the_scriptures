@@ -18,7 +18,11 @@ export enum Publication_Execution
     /* Waits to execute until previously queued publications finish. */
     QUEUED,
 
-    /* Executes only if no other publications are executing, and makes subsequent publications wait. */
+    /*
+        Waits to execute when no other publications are executing,
+        makes subsequent immediate and queued publications wait,
+        and discards other exclusive publications while its executing.
+    */
     EXCLUSIVE,
 }
 
@@ -125,13 +129,26 @@ class Publisher
                 }.bind(this),
             );
         } else if (execution === Publication_Execution.EXCLUSIVE) {
-            if (
-                this.immediate_publication_count === 0 &&
-                this.queued_publications.Count() === 0 &&
-                this.has_exclusive_publication === false
-            ) {
+            if (this.has_exclusive_publication === false) {
                 this.has_exclusive_publication = true;
+
+                await Promise.all([
+                    (
+                        async function (
+                            this: Publisher,
+                        ):
+                            Promise<void>
+                        {
+                            while (this.immediate_publication_count > 0) {
+                                await Utils.Wait_Milliseconds(1);
+                            }
+                        }.bind(this)
+                    )(),
+                    this.queued_publications.Pause(),
+                ]);
                 await this.Execute(data);
+                this.queued_publications.Unpause();
+
                 this.has_exclusive_publication = false;
             }
         } else {

@@ -16,7 +16,11 @@ export var Publication_Execution;
     Publication_Execution[Publication_Execution["IMMEDIATE"] = 0] = "IMMEDIATE";
     /* Waits to execute until previously queued publications finish. */
     Publication_Execution[Publication_Execution["QUEUED"] = 1] = "QUEUED";
-    /* Executes only if no other publications are executing, and makes subsequent publications wait. */
+    /*
+        Waits to execute when no other publications are executing,
+        makes subsequent immediate and queued publications wait,
+        and discards other exclusive publications while its executing.
+    */
     Publication_Execution[Publication_Execution["EXCLUSIVE"] = 2] = "EXCLUSIVE";
 })(Publication_Execution || (Publication_Execution = {}));
 /* Contains a register of subscribers which can be published to. */
@@ -60,11 +64,20 @@ class Publisher {
                 }.bind(this));
             }
             else if (execution === Publication_Execution.EXCLUSIVE) {
-                if (this.immediate_publication_count === 0 &&
-                    this.queued_publications.Count() === 0 &&
-                    this.has_exclusive_publication === false) {
+                if (this.has_exclusive_publication === false) {
                     this.has_exclusive_publication = true;
+                    yield Promise.all([
+                        (function () {
+                            return __awaiter(this, void 0, void 0, function* () {
+                                while (this.immediate_publication_count > 0) {
+                                    yield Utils.Wait_Milliseconds(1);
+                                }
+                            });
+                        }.bind(this))(),
+                        this.queued_publications.Pause(),
+                    ]);
                     yield this.Execute(data);
+                    this.queued_publications.Unpause();
                     this.has_exclusive_publication = false;
                 }
             }
