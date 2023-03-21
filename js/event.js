@@ -173,7 +173,13 @@ export class Name {
     }
 }
 ;
-class Instance {
+export var Execution;
+(function (Execution) {
+    Execution[Execution["IMMEDIATE"] = 0] = "IMMEDIATE";
+    Execution[Execution["QUEUED"] = 1] = "QUEUED";
+    Execution[Execution["EXCLUSIVE"] = 2] = "EXCLUSIVE";
+})(Execution || (Execution = {}));
+export class Instance {
     static From(data) {
         return data[Instance.KEY];
     }
@@ -210,7 +216,7 @@ class Instance {
                         yield Promise.all(promises);
                     }
                 });
-            });
+            }.bind(this));
         });
     }
 }

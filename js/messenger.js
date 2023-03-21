@@ -104,7 +104,15 @@ class Publisher {
         return __awaiter(this, void 0, void 0, function* () {
             // we could cache this also, but probably not necessary
             const priorities = Object.keys(this.priorities).map(function (priority) {
-                return parseInt(priority);
+                if (priority === `Infinity`) {
+                    return Infinity;
+                }
+                else if (priority === `-Infinity`) {
+                    return -Infinity;
+                }
+                else {
+                    return parseInt(priority);
+                }
             }).sort(function (priority_a, priority_b) {
                 return priority_a - priority_b;
             });

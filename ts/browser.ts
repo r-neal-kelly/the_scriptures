@@ -72,7 +72,87 @@ class Body extends Entity.Instance
             }.bind(this),
         );
 
-        return [];
+        this.Element().addEventListener(
+            `click`,
+            function (
+                this: Body,
+            ):
+                void
+            {
+                this.Send(
+                    {
+                        affix: "Test",
+                        execution: Event.Execution.QUEUED,
+                    } as Event.Info,
+                );
+            }.bind(this),
+        );
+
+        return [
+            {
+                event_name: new Event.Name(Event.Prefix.BEFORE, "Test"),
+                event_handler: () => console.log("before Infinity"),
+                event_priority: Infinity,
+            },
+            {
+                event_name: new Event.Name(Event.Prefix.BEFORE, "Test"),
+                event_handler: async function (
+                    data: Event.Data,
+                ):
+                    Promise<void>
+                {
+                    console.log("before 3");
+                    await Utils.Wait_Seconds(1);
+                    console.log(Event.Instance.From(data));
+                },
+                event_priority: 3,
+            },
+            {
+                event_name: new Event.Name(Event.Prefix.BEFORE, "Test"),
+                event_handler: () => console.log("before 2"),
+                event_priority: 2,
+            },
+            {
+                event_name: new Event.Name(Event.Prefix.BEFORE, "Test"),
+                event_handler: () => console.log("before 1"),
+                event_priority: 1,
+            },
+            {
+                event_name: new Event.Name(Event.Prefix.BEFORE, "Test"),
+                event_handler: () => console.log("before -Infinity"),
+                event_priority: -Infinity,
+            },
+            {
+                event_name: new Event.Name(Event.Prefix.ON, "Test"),
+                event_handler: () => console.log("on 3"),
+                event_priority: 3,
+            },
+            {
+                event_name: new Event.Name(Event.Prefix.ON, "Test"),
+                event_handler: () => console.log("on 2"),
+                event_priority: 2,
+            },
+            {
+                event_name: new Event.Name(Event.Prefix.ON, "Test"),
+                event_handler: () => console.log("on 1"),
+                event_priority: 1,
+            },
+            {
+                event_name: new Event.Name(Event.Prefix.AFTER, "Test"),
+                event_handler: () => console.log("after 3"),
+                event_priority: 3,
+            },
+            {
+                event_name: new Event.Name(Event.Prefix.AFTER, "Test"),
+                event_handler: () => console.log("after 2"),
+                event_priority: 2,
+            },
+            {
+                event_name: new Event.Name(Event.Prefix.AFTER, "Test"),
+                event_handler: () => console.log("after 1"),
+                event_priority: 1,
+            },
+        ];
     }
 
     override async On_Refresh():

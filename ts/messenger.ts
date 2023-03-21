@@ -200,7 +200,13 @@ class Publisher
             ):
                 Subscriber_Priority
             {
-                return parseInt(priority);
+                if (priority === `Infinity`) {
+                    return Infinity;
+                } else if (priority === `-Infinity`) {
+                    return -Infinity;
+                } else {
+                    return parseInt(priority);
+                }
             },
         ).sort(
             function (

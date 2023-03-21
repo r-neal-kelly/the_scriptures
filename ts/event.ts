@@ -404,16 +404,24 @@ export class Name
     }
 };
 
+export enum Execution
+{
+    IMMEDIATE,
+    QUEUED,
+    EXCLUSIVE,
+}
+
 export type Data
     = Object;
 
 export type Info = {
     affix: Affix,
     suffixes?: Array<Suffix>,
+    execution?: Execution,
     data?: Data,
 };
 
-class Instance
+export class Instance
 {
     static KEY: symbol = Symbol(`Used to get Event.Instance from Event.Data`);
 
@@ -512,8 +520,7 @@ class Instance
                     );
                     await Promise.all(promises);
                 }
-            },
+            }.bind(this),
         );
     }
 };
-export type { Instance };
