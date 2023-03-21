@@ -8,13 +8,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import * as Utils from "./utils.js";
+import * as Execution from "./execution.js";
 import * as Messenger from "./messenger.js";
-import * as Queue from "./queue.js";
 export class Grid {
     constructor() {
         this.messenger = new Messenger.Instance();
         this.objects = new Map();
-        this.affix_queues = {};
+        this.execution_frames = {};
     }
     Has(object) {
         return this.objects.has(object);
@@ -83,15 +83,15 @@ export class Grid {
             messenger: this.messenger,
         });
     }
-    Some_Affix_Queue(affix) {
-        if (this.affix_queues[affix] == null) {
-            this.affix_queues[affix] = new Queue.Instance();
+    Some_Execution_Frame(affix) {
+        if (this.execution_frames[affix] == null) {
+            this.execution_frames[affix] = new Execution.Frame();
         }
-        return this.affix_queues[affix];
+        return this.execution_frames[affix];
     }
     Send(event_info) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield new Instance(this.messenger, this.Some_Affix_Queue(event_info.affix), event_info).Execute();
+            yield new Instance(this.messenger, this.Some_Execution_Frame(event_info.affix), event_info).Execute();
         });
     }
 }
@@ -173,23 +173,20 @@ export class Name {
     }
 }
 ;
-export var Execution;
-(function (Execution) {
-    Execution[Execution["IMMEDIATE"] = 0] = "IMMEDIATE";
-    Execution[Execution["QUEUED"] = 1] = "QUEUED";
-    Execution[Execution["EXCLUSIVE"] = 2] = "EXCLUSIVE";
-})(Execution || (Execution = {}));
+import { Publication_Type as Type } from "./messenger.js";
+export { Publication_Type as Type } from "./messenger.js";
 export class Instance {
     static From(data) {
         return data[Instance.KEY];
     }
-    constructor(messenger, affix_queue, { affix, suffixes = [], data = {}, }) {
+    constructor(messenger, execution_frame, { affix, suffixes = [], type = Type.QUEUED, data = {}, }) {
         Utils.Assert(!Object.isFrozen(data), `data will be frozen for you.`);
         data[Instance.KEY] = this;
         this.messenger = messenger;
-        this.affix_queue = affix_queue;
+        this.execution_frame = execution_frame;
         this.affix = affix;
         this.suffixes = Array.from(suffixes);
+        this.type = type;
         this.data = Object.freeze(data);
         this.has_executed = false;
     }
@@ -200,10 +197,10 @@ export class Instance {
         return __awaiter(this, void 0, void 0, function* () {
             Utils.Assert(this.has_executed === false, `This event instance has already been executed.`);
             this.has_executed = true;
-            yield this.affix_queue.Enqueue(function () {
+            yield this.execution_frame.Execute(this.type, function () {
                 return __awaiter(this, void 0, void 0, function* () {
                     const publication_info = Object.freeze({
-                        execution: Messenger.Publication_Execution.IMMEDIATE,
+                        type: Messenger.Publication_Type.IMMEDIATE,
                         data: this.data,
                     });
                     for (const prefix of [Prefix.BEFORE, Prefix.ON, Prefix.AFTER]) {

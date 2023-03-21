@@ -1,18 +1,18 @@
 import * as Utils from "./utils.js";
+import * as Execution from "./execution.js";
 import * as Messenger from "./messenger.js";
-import * as Queue from "./queue.js";
 
 export class Grid
 {
     private messenger: Messenger.Instance;
     private objects: Map<Object, Listeners>; // why are we using a map again?
-    private affix_queues: { [index: Affix]: Queue.Instance };
+    private execution_frames: { [index: Affix]: Execution.Frame };
 
     constructor()
     {
         this.messenger = new Messenger.Instance();
         this.objects = new Map();
-        this.affix_queues = {};
+        this.execution_frames = {};
     }
 
     Has(
@@ -169,16 +169,16 @@ export class Grid
         );
     }
 
-    private Some_Affix_Queue(
+    private Some_Execution_Frame(
         affix: Affix,
     ):
-        Queue.Instance
+        Execution.Frame
     {
-        if (this.affix_queues[affix] == null) {
-            this.affix_queues[affix] = new Queue.Instance();
+        if (this.execution_frames[affix] == null) {
+            this.execution_frames[affix] = new Execution.Frame();
         }
 
-        return this.affix_queues[affix];
+        return this.execution_frames[affix];
     }
 
     async Send(
@@ -188,7 +188,7 @@ export class Grid
     {
         await new Instance(
             this.messenger,
-            this.Some_Affix_Queue(event_info.affix),
+            this.Some_Execution_Frame(event_info.affix),
             event_info,
         ).Execute();
     }
@@ -404,12 +404,8 @@ export class Name
     }
 };
 
-export enum Execution
-{
-    IMMEDIATE,
-    QUEUED,
-    EXCLUSIVE,
-}
+import { Publication_Type as Type } from "./messenger.js";
+export { Publication_Type as Type } from "./messenger.js";
 
 export type Data
     = Object;
@@ -417,7 +413,7 @@ export type Data
 export type Info = {
     affix: Affix,
     suffixes?: Array<Suffix>,
-    execution?: Execution,
+    type?: Type,
     data?: Data,
 };
 
@@ -434,20 +430,22 @@ export class Instance
     }
 
     private messenger: Messenger.Instance;
-    private affix_queue: Queue.Instance;
+    private execution_frame: Execution.Frame;
 
     private affix: Affix;
     private suffixes: Array<Suffix>;
+    private type: Type;
     private data: Data;
 
     private has_executed: boolean;
 
     constructor(
         messenger: Messenger.Instance,
-        affix_queue: Queue.Instance,
+        execution_frame: Execution.Frame,
         {
             affix,
             suffixes = [],
+            type = Type.QUEUED,
             data = {},
         }: Info,
     )
@@ -460,10 +458,11 @@ export class Instance
         (data as { [index: symbol]: Instance })[Instance.KEY] = this;
 
         this.messenger = messenger;
-        this.affix_queue = affix_queue;
+        this.execution_frame = execution_frame;
 
         this.affix = affix;
         this.suffixes = Array.from(suffixes);
+        this.type = type;
         this.data = Object.freeze(data);
 
         this.has_executed = false;
@@ -485,15 +484,16 @@ export class Instance
 
         this.has_executed = true;
 
-        await this.affix_queue.Enqueue(
+        await this.execution_frame.Execute(
+            this.type,
             async function (
                 this: Instance,
             ):
                 Promise<void>
             {
-                const publication_info = Object.freeze(
+                const publication_info: Messenger.Publication_Info = Object.freeze(
                     {
-                        execution: Messenger.Publication_Execution.IMMEDIATE,
+                        type: Messenger.Publication_Type.IMMEDIATE,
                         data: this.data,
                     },
                 );

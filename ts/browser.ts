@@ -82,7 +82,7 @@ class Body extends Entity.Instance
                 this.Send(
                     {
                         affix: "Test",
-                        execution: Event.Execution.QUEUED,
+                        type: Event.Type.EXCLUSIVE,
                     } as Event.Info,
                 );
             }.bind(this),

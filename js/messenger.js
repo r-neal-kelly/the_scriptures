@@ -8,30 +8,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import * as Utils from "./utils.js";
-import * as Queue from "./queue.js";
-/* Determines how publications from the same publisher execute in relation to one another. */
-export var Publication_Execution;
-(function (Publication_Execution) {
-    /* Immediately executes, even if queued publications are executing. */
-    Publication_Execution[Publication_Execution["IMMEDIATE"] = 0] = "IMMEDIATE";
-    /* Waits to execute until previously queued publications finish. */
-    Publication_Execution[Publication_Execution["QUEUED"] = 1] = "QUEUED";
-    /*
-        Waits to execute when no other publications are executing,
-        makes subsequent immediate and queued publications wait,
-        and discards other exclusive publications while its executing.
-    */
-    Publication_Execution[Publication_Execution["EXCLUSIVE"] = 2] = "EXCLUSIVE";
-})(Publication_Execution || (Publication_Execution = {}));
+import * as Execution from "./execution.js";
+export { Type as Publication_Type } from "./execution.js";
 /* Contains a register of subscribers which can be published to. */
 class Publisher {
     constructor() {
         this.subscribers = {};
         this.priorities = {};
         this.next_subscriber_id = 0;
-        this.immediate_publication_count = 0;
-        this.queued_publications = new Queue.Instance();
-        this.has_exclusive_publication = false;
+        this.execution_frame = new Execution.Frame();
     }
     Subscribe(subscriber_info) {
         Utils.Assert(this.next_subscriber_id !== Infinity, `Ran out of unique subscriber_ids!`);
@@ -57,72 +42,33 @@ class Publisher {
         }
         delete this.subscribers[subscriber_id];
     }
-    Publish({ execution, data, }) {
+    Publish({ type, data, }) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (execution === Publication_Execution.IMMEDIATE) {
-                while (this.has_exclusive_publication === true) {
-                    yield Utils.Wait_Milliseconds(1);
-                }
-                this.immediate_publication_count += 1;
-                yield this.Execute(data);
-                this.immediate_publication_count -= 1;
-            }
-            else if (execution === Publication_Execution.QUEUED) {
-                while (this.has_exclusive_publication === true) {
-                    yield Utils.Wait_Milliseconds(1);
-                }
-                yield this.queued_publications.Enqueue(function () {
-                    return __awaiter(this, void 0, void 0, function* () {
-                        yield this.Execute(data);
+            yield this.execution_frame.Execute(type, function () {
+                return __awaiter(this, void 0, void 0, function* () {
+                    // we could cache this also, but probably not necessary
+                    const priorities = Object.keys(this.priorities).map(function (priority) {
+                        if (priority === `Infinity`) {
+                            return Infinity;
+                        }
+                        else if (priority === `-Infinity`) {
+                            return -Infinity;
+                        }
+                        else {
+                            return parseInt(priority);
+                        }
+                    }).sort(function (priority_a, priority_b) {
+                        return priority_a - priority_b;
                     });
-                }.bind(this));
-            }
-            else if (execution === Publication_Execution.EXCLUSIVE) {
-                if (this.has_exclusive_publication === false) {
-                    this.has_exclusive_publication = true;
-                    yield Promise.all([
-                        (function () {
+                    for (const priority of priorities) {
+                        yield Promise.all(this.priorities[priority].map(function (subscriber) {
                             return __awaiter(this, void 0, void 0, function* () {
-                                while (this.immediate_publication_count > 0) {
-                                    yield Utils.Wait_Milliseconds(1);
-                                }
+                                yield subscriber.Handler()(data);
                             });
-                        }.bind(this))(),
-                        this.queued_publications.Pause(),
-                    ]);
-                    yield this.Execute(data);
-                    this.queued_publications.Unpause();
-                    this.has_exclusive_publication = false;
-                }
-            }
-            else {
-                Utils.Assert(false, `Unknown publication execution.`);
-            }
-        });
-    }
-    Execute(data) {
-        return __awaiter(this, void 0, void 0, function* () {
-            // we could cache this also, but probably not necessary
-            const priorities = Object.keys(this.priorities).map(function (priority) {
-                if (priority === `Infinity`) {
-                    return Infinity;
-                }
-                else if (priority === `-Infinity`) {
-                    return -Infinity;
-                }
-                else {
-                    return parseInt(priority);
-                }
-            }).sort(function (priority_a, priority_b) {
-                return priority_a - priority_b;
-            });
-            for (const priority of priorities) {
-                yield Promise.all(this.priorities[priority].map(function (subscriber) {
-                    return __awaiter(this, void 0, void 0, function* () {
-                        yield subscriber.Handler()(data);
-                    });
-                }));
-            }
+                        }));
+                    }
+                });
+            }.bind(this));
         });
     }
 }

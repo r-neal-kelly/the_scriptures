@@ -67,7 +67,7 @@ class Body extends Entity.Instance {
             this.Element().addEventListener(`click`, function () {
                 this.Send({
                     affix: "Test",
-                    execution: Event.Execution.QUEUED,
+                    type: Event.Type.EXCLUSIVE,
                 });
             }.bind(this));
             return [

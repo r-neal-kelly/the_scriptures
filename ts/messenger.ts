@@ -1,32 +1,17 @@
 import { Integer } from "./types.js";
-import { Count } from "./types.js";
-import { Index } from "./types.js";
 import { ID } from "./types.js";
 import { Name } from "./types.js";
 
 import * as Utils from "./utils.js";
-import * as Queue from "./queue.js";
+import * as Execution from "./execution.js";
 
 /* Used both to subscribe and publish events. */
 export type Publisher_Name =
     Name;
 
-/* Determines how publications from the same publisher execute in relation to one another. */
-export enum Publication_Execution
-{
-    /* Immediately executes, even if queued publications are executing. */
-    IMMEDIATE,
-
-    /* Waits to execute until previously queued publications finish. */
-    QUEUED,
-
-    /*
-        Waits to execute when no other publications are executing,
-        makes subsequent immediate and queued publications wait,
-        and discards other exclusive publications while its executing.
-    */
-    EXCLUSIVE,
-}
+/* Determines how publications execute in relation to previous publications from the same publisher. */
+import { Type as Publication_Type } from "./execution.js";
+export { Type as Publication_Type } from "./execution.js";
 
 /* Sent to a publisher's subscriber's handlers when a publication occurs. */
 export type Publication_Data =
@@ -34,7 +19,7 @@ export type Publication_Data =
 
 /* Used when publishing an event. */
 export type Publication_Info = {
-    execution: Publication_Execution;
+    type: Publication_Type;
     data: Publication_Data;
 }
 
@@ -66,18 +51,14 @@ class Publisher
     private subscribers: { [index: Subscriber_ID]: Subscriber };
     private priorities: { [index: Subscriber_Priority]: Array<Subscriber> };
     private next_subscriber_id: Subscriber_ID;
-    private immediate_publication_count: Count;
-    private queued_publications: Queue.Instance;
-    private has_exclusive_publication: boolean;
+    private execution_frame: Execution.Frame;
 
     constructor()
     {
         this.subscribers = {};
         this.priorities = {};
         this.next_subscriber_id = 0;
-        this.immediate_publication_count = 0;
-        this.queued_publications = new Queue.Instance();
-        this.has_exclusive_publication = false;
+        this.execution_frame = new Execution.Frame();
     }
 
     Subscribe(
@@ -129,109 +110,62 @@ class Publisher
 
     async Publish(
         {
-            execution,
+            type,
             data,
         }: Publication_Info,
     ):
         Promise<void>
     {
-        if (execution === Publication_Execution.IMMEDIATE) {
-            while (this.has_exclusive_publication === true) {
-                await Utils.Wait_Milliseconds(1);
-            }
-
-            this.immediate_publication_count += 1;
-            await this.Execute(data);
-            this.immediate_publication_count -= 1;
-        } else if (execution === Publication_Execution.QUEUED) {
-            while (this.has_exclusive_publication === true) {
-                await Utils.Wait_Milliseconds(1);
-            }
-
-            await this.queued_publications.Enqueue(
-                async function (
-                    this: Publisher,
-                ):
-                    Promise<void>
-                {
-                    await this.Execute(data);
-                }.bind(this),
-            );
-        } else if (execution === Publication_Execution.EXCLUSIVE) {
-            if (this.has_exclusive_publication === false) {
-                this.has_exclusive_publication = true;
-
-                await Promise.all([
-                    (
-                        async function (
-                            this: Publisher,
-                        ):
-                            Promise<void>
-                        {
-                            while (this.immediate_publication_count > 0) {
-                                await Utils.Wait_Milliseconds(1);
-                            }
-                        }.bind(this)
-                    )(),
-                    this.queued_publications.Pause(),
-                ]);
-                await this.Execute(data);
-                this.queued_publications.Unpause();
-
-                this.has_exclusive_publication = false;
-            }
-        } else {
-            Utils.Assert(
-                false,
-                `Unknown publication execution.`,
-            );
-        }
-    }
-
-    private async Execute(
-        data: Publication_Data,
-    ):
-        Promise<void>
-    {
-        // we could cache this also, but probably not necessary
-        const priorities: Array<Subscriber_Priority> = Object.keys(this.priorities).map(
-            function (
-                priority: string,
+        await this.execution_frame.Execute(
+            type,
+            async function (
+                this: Publisher,
             ):
-                Subscriber_Priority
+                Promise<void>
             {
-                if (priority === `Infinity`) {
-                    return Infinity;
-                } else if (priority === `-Infinity`) {
-                    return -Infinity;
-                } else {
-                    return parseInt(priority);
-                }
-            },
-        ).sort(
-            function (
-                priority_a: Subscriber_Priority,
-                priority_b: Subscriber_Priority,
-            ):
-                Integer
-            {
-                return priority_a - priority_b;
-            },
-        );
-
-        for (const priority of priorities) {
-            await Promise.all(
-                this.priorities[priority].map(
-                    async function (
-                        subscriber: Subscriber
+                // we could cache this also, but probably not necessary
+                const priorities: Array<Subscriber_Priority> = Object.keys(
+                    this.priorities,
+                ).map(
+                    function (
+                        priority: string,
                     ):
-                        Promise<void>
+                        Subscriber_Priority
                     {
-                        await subscriber.Handler()(data);
+                        if (priority === `Infinity`) {
+                            return Infinity;
+                        } else if (priority === `-Infinity`) {
+                            return -Infinity;
+                        } else {
+                            return parseInt(priority);
+                        }
                     },
-                ),
-            );
-        }
+                ).sort(
+                    function (
+                        priority_a: Subscriber_Priority,
+                        priority_b: Subscriber_Priority,
+                    ):
+                        Integer
+                    {
+                        return priority_a - priority_b;
+                    },
+                );
+
+                for (const priority of priorities) {
+                    await Promise.all(
+                        this.priorities[priority].map(
+                            async function (
+                                subscriber: Subscriber
+                            ):
+                                Promise<void>
+                            {
+                                await subscriber.Handler()(data);
+                            },
+                        ),
+                    );
+                }
+            }.bind(this),
+        );
     }
 }
 
