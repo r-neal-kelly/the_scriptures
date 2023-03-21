@@ -1,15 +1,18 @@
 import * as Utils from "./utils.js";
 import * as Messenger from "./messenger.js";
+import * as Queue from "./queue.js";
 
 export class Grid
 {
     private messenger: Messenger.Instance;
-    private objects: Map<Object, Listeners>;
+    private objects: Map<Object, Listeners>; // why are we using a map again?
+    private affix_queues: { [index: Affix]: Queue.Instance };
 
     constructor()
     {
         this.messenger = new Messenger.Instance();
         this.objects = new Map();
+        this.affix_queues = {};
     }
 
     Has(
@@ -166,12 +169,28 @@ export class Grid
         );
     }
 
+    private Some_Affix_Queue(
+        affix: Affix,
+    ):
+        Queue.Instance
+    {
+        if (this.affix_queues[affix] == null) {
+            this.affix_queues[affix] = new Queue.Instance();
+        }
+
+        return this.affix_queues[affix];
+    }
+
     async Send(
         event_info: Info,
     ):
         Promise<void>
     {
-        await new Instance(this.messenger, event_info).Start();
+        await new Instance(
+            this.messenger,
+            this.Some_Affix_Queue(event_info.affix),
+            event_info,
+        ).Execute();
     }
 };
 
@@ -385,136 +404,116 @@ export class Name
     }
 };
 
-export enum Execution
-{
-    QUEUED = Messenger.Publication_Execution.QUEUED,
-    EXCLUSIVE = Messenger.Publication_Execution.EXCLUSIVE,
-}
-
 export type Data
     = Object;
 
 export type Info = {
     affix: Affix,
     suffixes?: Array<Suffix>,
-    execution?: Execution,
     data?: Data,
 };
 
 class Instance
 {
+    static KEY: symbol = Symbol(`Used to get Event.Instance from Event.Data`);
+
+    static From(
+        data: Data,
+    ):
+        Instance | null
+    {
+        return (data as { [index: symbol]: Instance })[Instance.KEY];
+    }
+
     private messenger: Messenger.Instance;
+    private affix_queue: Queue.Instance;
 
     private affix: Affix;
     private suffixes: Array<Suffix>;
-    private execution: Execution;
     private data: Data;
 
-    private is_started: boolean;
-    private is_stopped: boolean;
+    private has_executed: boolean;
 
     constructor(
         messenger: Messenger.Instance,
+        affix_queue: Queue.Instance,
         {
             affix,
             suffixes = [],
             data = {},
-            execution = Execution.QUEUED,
         }: Info,
     )
     {
         Utils.Assert(
-            (data as any)["event"] == null,
-            `data contains a property called 'event' which will be overridden.`,
-        );
-        Utils.Assert(
             !Object.isFrozen(data),
-            `data must not be frozen to add the event to it. It will then be frozen for you.`,
+            `data will be frozen for you.`,
         );
 
-        (data as any)["event"] = this;
+        (data as { [index: symbol]: Instance })[Instance.KEY] = this;
 
         this.messenger = messenger;
+        this.affix_queue = affix_queue;
 
         this.affix = affix;
         this.suffixes = Array.from(suffixes);
-        this.execution = execution;
         this.data = Object.freeze(data);
 
-        this.is_started = false;
-        this.is_stopped = false;
+        this.has_executed = false;
     }
 
-    Is_Started():
+    Has_Executed():
         boolean
     {
-        return this.is_started;
+        return this.has_executed;
     }
 
-    Is_Stopped():
-        boolean
-    {
-        return this.is_stopped;
-    }
-
-    Is_Running():
-        boolean
-    {
-        return this.Is_Started() && !this.Is_Stopped;
-    }
-
-    async Start():
+    async Execute():
         Promise<void>
     {
         Utils.Assert(
-            !this.Is_Started(),
-            `This event has already been started.`,
+            this.has_executed === false,
+            `This event instance has already been executed.`,
         );
 
-        const publication_info = Object.freeze(
+        this.has_executed = true;
+
+        await this.affix_queue.Enqueue(
+            async function (
+                this: Instance,
+            ):
+                Promise<void>
             {
-                execution: this.execution as unknown as Messenger.Publication_Execution,
-                data: this.data,
+                const publication_info = Object.freeze(
+                    {
+                        execution: Messenger.Publication_Execution.IMMEDIATE,
+                        data: this.data,
+                    },
+                );
+
+                for (const prefix of [Prefix.BEFORE, Prefix.ON, Prefix.AFTER]) {
+                    const promises: Array<Promise<void>> = this.suffixes.map(
+                        async function (
+                            this: Instance,
+                            suffix: Suffix,
+                        ):
+                            Promise<void>
+                        {
+                            await this.messenger.Publish(
+                                new Name(prefix, this.affix, suffix).String(),
+                                publication_info,
+                            );
+                        }.bind(this),
+                    );
+                    promises.push(
+                        this.messenger.Publish(
+                            new Name(prefix, this.affix).String(),
+                            publication_info,
+                        ),
+                    );
+                    await Promise.all(promises);
+                }
             },
         );
-
-        for (const prefix of [Prefix.BEFORE, Prefix.ON, Prefix.AFTER]) {
-            if (!this.Is_Stopped()) {
-                const promises: Array<Promise<void>> = this.suffixes.map(
-                    async function (
-                        this: Instance,
-                        suffix: Suffix,
-                    ):
-                        Promise<void>
-                    {
-                        await this.messenger.Publish(
-                            new Name(prefix, this.affix, suffix).String(),
-                            publication_info,
-                        );
-                    }.bind(this),
-                );
-                promises.push(
-                    this.messenger.Publish(
-                        new Name(prefix, this.affix).String(),
-                        publication_info,
-                    ),
-                );
-                await Promise.all(promises);
-            }
-        }
-
-        this.Stop();
-    }
-
-    /*
-        Stops subsequent waves of the event, i.e.
-        if this is called during the 'Before' wave,
-        'On' and 'After' waves will never occur.
-    */
-    Stop():
-        void
-    {
-        this.is_stopped = true;
     }
 };
 export type { Instance };
