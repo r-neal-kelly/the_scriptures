@@ -178,9 +178,13 @@ export class Grid
 export type Handler =
     Messenger.Subscriber_Handler;
 
+export type Priority =
+    Messenger.Subscriber_Priority;
+
 export type Listener_Info = {
     event_name: Name,
     event_handler: Handler,
+    event_priority: Priority,
 };
 
 export type Listener_Handle =
@@ -220,6 +224,7 @@ class Listeners
             listener_info.event_name.String(),
             {
                 handler: listener_info.event_handler.bind(object),
+                priority: listener_info.event_priority,
             } as Messenger.Subscriber_Info,
         );
         this.listener_handles.add(listener_handle);

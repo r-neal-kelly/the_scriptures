@@ -1,4 +1,6 @@
+import { Integer } from "./types.js";
 import { Count } from "./types.js";
+import { Index } from "./types.js";
 import { ID } from "./types.js";
 import { Name } from "./types.js";
 
@@ -44,15 +46,25 @@ export type Subscriber_ID =
 export type Subscriber_Handler =
     (publication_data: Publication_Data) => void | Promise<void>;
 
+/*
+    Allows for subscriber handlers to be called in orderly batches during a publication.
+    Negative Integers are called before positive. If multiple subscribers have the same
+    priority, they are called in batch through Promise.all().
+*/
+export type Subscriber_Priority =
+    Integer;
+
 /* Used when subscribing to a publisher. */
 export type Subscriber_Info = {
     handler: Subscriber_Handler;
+    priority: Subscriber_Priority;
 }
 
 /* Contains a register of subscribers which can be published to. */
 class Publisher
 {
     private subscribers: { [index: Subscriber_ID]: Subscriber };
+    private priorities: { [index: Subscriber_Priority]: Array<Subscriber> };
     private next_subscriber_id: Subscriber_ID;
     private immediate_publication_count: Count;
     private queued_publications: Queue.Instance;
@@ -61,6 +73,7 @@ class Publisher
     constructor()
     {
         this.subscribers = {};
+        this.priorities = {};
         this.next_subscriber_id = 0;
         this.immediate_publication_count = 0;
         this.queued_publications = new Queue.Instance();
@@ -77,10 +90,16 @@ class Publisher
             `Ran out of unique subscriber_ids!`,
         );
 
-        const subscriber_id = this.next_subscriber_id;
-        this.next_subscriber_id += 1;
+        const subscriber: Subscriber = new Subscriber(subscriber_info);
+        const subscriber_id: Subscriber_ID = this.next_subscriber_id++;
+        const subscriber_priority: Subscriber_Priority = subscriber.Priority();
 
-        this.subscribers[subscriber_id] = new Subscriber(subscriber_info);
+        this.subscribers[subscriber_id] = subscriber;
+
+        if (this.priorities[subscriber_priority] == null) {
+            this.priorities[subscriber_priority] = [];
+        }
+        this.priorities[subscriber_priority].push(subscriber);
 
         return subscriber_id;
     }
@@ -94,6 +113,16 @@ class Publisher
             this.subscribers[subscriber_id] != null,
             `Subscriber with id "${subscriber_id}" does not exist.`,
         );
+
+        const subscriber: Subscriber = this.subscribers[subscriber_id];
+        const subscriber_priority: Subscriber_Priority = subscriber.Priority();
+
+        const priority: Array<Subscriber> = this.priorities[subscriber_priority];
+        priority[priority.indexOf(subscriber)] = priority[priority.length - 1];
+        priority.pop();
+        if (priority.length === 0) {
+            delete this.priorities[subscriber_priority];
+        }
 
         delete this.subscribers[subscriber_id];
     }
@@ -164,17 +193,39 @@ class Publisher
     ):
         Promise<void>
     {
-        await Promise.all(
-            Object.values(this.subscribers).map(
-                async function (
-                    subscriber: Subscriber
-                ):
-                    Promise<void>
-                {
-                    await subscriber.Handler()(data);
-                },
-            ),
+        // we could cache this also, but probably not necessary
+        const priorities: Array<Subscriber_Priority> = Object.keys(this.priorities).map(
+            function (
+                priority: string,
+            ):
+                Subscriber_Priority
+            {
+                return parseInt(priority);
+            },
+        ).sort(
+            function (
+                priority_a: Subscriber_Priority,
+                priority_b: Subscriber_Priority,
+            ):
+                Integer
+            {
+                return priority_a - priority_b;
+            },
         );
+
+        for (const priority of priorities) {
+            await Promise.all(
+                this.priorities[priority].map(
+                    async function (
+                        subscriber: Subscriber
+                    ):
+                        Promise<void>
+                    {
+                        await subscriber.Handler()(data);
+                    },
+                ),
+            );
+        }
     }
 }
 
@@ -182,14 +233,17 @@ class Publisher
 class Subscriber
 {
     private handler: Subscriber_Handler;
+    private priority: Subscriber_Priority;
 
     constructor(
         {
             handler,
+            priority,
         }: Subscriber_Info,
     )
     {
         this.handler = handler;
+        this.priority = priority;
 
         Object.freeze(this);
     }
@@ -198,6 +252,12 @@ class Subscriber
         Subscriber_Handler
     {
         return this.handler;
+    }
+
+    Priority():
+        Subscriber_Priority
+    {
+        return this.priority;
     }
 }
 

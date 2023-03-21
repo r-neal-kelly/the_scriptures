@@ -27,6 +27,7 @@ export var Publication_Execution;
 class Publisher {
     constructor() {
         this.subscribers = {};
+        this.priorities = {};
         this.next_subscriber_id = 0;
         this.immediate_publication_count = 0;
         this.queued_publications = new Queue.Instance();
@@ -34,13 +35,26 @@ class Publisher {
     }
     Subscribe(subscriber_info) {
         Utils.Assert(this.next_subscriber_id !== Infinity, `Ran out of unique subscriber_ids!`);
-        const subscriber_id = this.next_subscriber_id;
-        this.next_subscriber_id += 1;
-        this.subscribers[subscriber_id] = new Subscriber(subscriber_info);
+        const subscriber = new Subscriber(subscriber_info);
+        const subscriber_id = this.next_subscriber_id++;
+        const subscriber_priority = subscriber.Priority();
+        this.subscribers[subscriber_id] = subscriber;
+        if (this.priorities[subscriber_priority] == null) {
+            this.priorities[subscriber_priority] = [];
+        }
+        this.priorities[subscriber_priority].push(subscriber);
         return subscriber_id;
     }
     Unsubscribe(subscriber_id) {
         Utils.Assert(this.subscribers[subscriber_id] != null, `Subscriber with id "${subscriber_id}" does not exist.`);
+        const subscriber = this.subscribers[subscriber_id];
+        const subscriber_priority = subscriber.Priority();
+        const priority = this.priorities[subscriber_priority];
+        priority[priority.indexOf(subscriber)] = priority[priority.length - 1];
+        priority.pop();
+        if (priority.length === 0) {
+            delete this.priorities[subscriber_priority];
+        }
         delete this.subscribers[subscriber_id];
     }
     Publish({ execution, data, }) {
@@ -88,22 +102,34 @@ class Publisher {
     }
     Execute(data) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield Promise.all(Object.values(this.subscribers).map(function (subscriber) {
-                return __awaiter(this, void 0, void 0, function* () {
-                    yield subscriber.Handler()(data);
-                });
-            }));
+            // we could cache this also, but probably not necessary
+            const priorities = Object.keys(this.priorities).map(function (priority) {
+                return parseInt(priority);
+            }).sort(function (priority_a, priority_b) {
+                return priority_a - priority_b;
+            });
+            for (const priority of priorities) {
+                yield Promise.all(this.priorities[priority].map(function (subscriber) {
+                    return __awaiter(this, void 0, void 0, function* () {
+                        yield subscriber.Handler()(data);
+                    });
+                }));
+            }
         });
     }
 }
 /* Contains relevant info and options that are used when publishing an event to a subscriber. */
 class Subscriber {
-    constructor({ handler, }) {
+    constructor({ handler, priority, }) {
         this.handler = handler;
+        this.priority = priority;
         Object.freeze(this);
     }
     Handler() {
         return this.handler;
+    }
+    Priority() {
+        return this.priority;
     }
 }
 /* A handle to a subscriber and their publisher, for the sake of unsubscribing. */

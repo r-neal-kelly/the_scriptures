@@ -98,6 +98,7 @@ class Listeners {
     Add({ messenger, object, listener_info, }) {
         const listener_handle = messenger.Subscribe(listener_info.event_name.String(), {
             handler: listener_info.event_handler.bind(object),
+            priority: listener_info.event_priority,
         });
         this.listener_handles.add(listener_handle);
         return listener_handle;
