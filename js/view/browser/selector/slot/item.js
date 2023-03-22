@@ -7,46 +7,40 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import * as Utils from "../../utils.js";
-import * as Entity from "../../entity.js";
-import * as Selector from "./selector.js";
+import * as Entity from "../../../../entity.js";
 export class Instance extends Entity.Instance {
-    constructor({ model, root, }) {
-        super(`div`, root.Event_Grid());
+    constructor({ model, slot, }) {
+        super(`div`, slot.Event_Grid());
         this.model = model;
-        this.root = root;
-        this.selector = null;
+        this.slot = slot;
     }
     On_Restyle() {
         return __awaiter(this, void 0, void 0, function* () {
-            return ({
-                "display": `grid`,
-                "width": `100%`,
-                "height": `100%`,
-                "overflow-x": `hidden`,
-                "overflow-y": `hidden`,
-                "color": `white`,
-            });
+            return `
+            display: flex;
+
+            width: 100%;
+            height: 100%;
+
+            overflow-x: hidden;
+            overflow-y: hidden;
+
+            color: white;
+
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-elect: none;
+        `;
         });
     }
     On_Refresh() {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.Kill_All_Children();
-            this.selector = new Selector.Instance({
-                model: this.Model().Selector(),
-                browser: this,
-            });
-            this.Add_Child(this.selector);
+            this.Element().textContent = this.Model().Name();
         });
     }
     Model() {
         return this.model;
-    }
-    Root() {
-        return this.root;
-    }
-    Selector() {
-        Utils.Assert(this.selector != null, `Does not have selector.`);
-        return this.selector;
     }
 }

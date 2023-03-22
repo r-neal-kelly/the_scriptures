@@ -7,24 +7,23 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import * as Utils from "../../utils.js";
-import * as Entity from "../../entity.js";
-import * as Selector from "./selector.js";
+import * as Entity from "../../../../entity.js";
+import * as Item from "./item.js";
 export class Instance extends Entity.Instance {
-    constructor({ model, root, }) {
-        super(`div`, root.Event_Grid());
+    constructor({ model, selector, }) {
+        super(`div`, selector.Event_Grid());
         this.model = model;
-        this.root = root;
-        this.selector = null;
+        this.selector = selector;
+        this.items = null;
     }
     On_Restyle() {
         return __awaiter(this, void 0, void 0, function* () {
             return ({
-                "display": `grid`,
+                "display": `flex`,
                 "width": `100%`,
                 "height": `100%`,
-                "overflow-x": `hidden`,
-                "overflow-y": `hidden`,
+                "overflow-x": `auto`,
+                "overflow-y": `auto`,
                 "color": `white`,
             });
         });
@@ -32,21 +31,21 @@ export class Instance extends Entity.Instance {
     On_Refresh() {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.Kill_All_Children();
-            this.selector = new Selector.Instance({
-                model: this.Model().Selector(),
-                browser: this,
-            });
-            this.Add_Child(this.selector);
+            this.items = [];
+            for (const item_model of this.Model().Items()) {
+                const item_view = new Item.Instance({
+                    model: item_model,
+                    slot: this,
+                });
+                this.items.push(item_view);
+                this.Add_Child(item_view);
+            }
         });
     }
     Model() {
         return this.model;
     }
-    Root() {
-        return this.root;
-    }
     Selector() {
-        Utils.Assert(this.selector != null, `Does not have selector.`);
         return this.selector;
     }
 }

@@ -1,9 +1,2 @@
 export { Instance } from "./browser/instance.js";
-export * as Books from "./browser/books.js";
-export * as Book from "./browser/book.js";
-export * as Languages from "./browser/languages.js";
-export * as Language from "./browser/language.js";
-export * as Versions from "./browser/versions.js";
-export * as Version from "./browser/version.js";
-export * as Files from "./browser/files.js";
-export * as File from "./browser/file.js";
+export * as Selector from "./browser/selector.js";

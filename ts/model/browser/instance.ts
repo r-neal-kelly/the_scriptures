@@ -24,7 +24,12 @@ export class Instance extends Async.Instance
             },
         );
 
-        this.Add_Dependent(this.selector);
+        this.Is_Ready_After(
+            [
+                this.data,
+                this.selector,
+            ],
+        );
     }
 
     Data():

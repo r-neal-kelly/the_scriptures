@@ -3,13 +3,13 @@ import * as Entity from "../../entity.js";
 
 import * as Model from "../../model/browser/instance.js";
 
-import * as Books from "./books.js";
+import * as Selector from "./selector.js";
 
 export class Instance extends Entity.Instance
 {
     private model: Model.Instance;
     private root: Entity.Instance;
-    private books: Books.Instance | null;
+    private selector: Selector.Instance | null;
 
     constructor(
         {
@@ -25,11 +25,11 @@ export class Instance extends Entity.Instance
 
         this.model = model;
         this.root = root;
-        this.books = null;
+        this.selector = null;
     }
 
     override async On_Restyle():
-        Promise<Entity.Styles>
+        Promise<Entity.Styles | string>
     {
         return ({
             "display": `grid`,
@@ -37,8 +37,8 @@ export class Instance extends Entity.Instance
             "width": `100%`,
             "height": `100%`,
 
-            "overflow-x": `auto`, // temp, should be hidden
-            "overflow-y": `auto`, // ""
+            "overflow-x": `hidden`,
+            "overflow-y": `hidden`,
 
             "color": `white`,
         });
@@ -49,13 +49,13 @@ export class Instance extends Entity.Instance
     {
         await this.Kill_All_Children();
 
-        this.books = new Books.Instance(
+        this.selector = new Selector.Instance(
             {
-                model: this.Model().Books(),
+                model: this.Model().Selector(),
                 browser: this,
             },
         );
-        this.Add_Child(this.books);
+        this.Add_Child(this.selector);
     }
 
     Model():
@@ -70,14 +70,14 @@ export class Instance extends Entity.Instance
         return this.root;
     }
 
-    Books():
-        Books.Instance
+    Selector():
+        Selector.Instance
     {
         Utils.Assert(
-            this.books != null,
-            `Does not have books.`,
+            this.selector != null,
+            `Does not have selector.`,
         );
 
-        return this.books as Books.Instance;
+        return this.selector as Selector.Instance;
     }
 }

@@ -15,6 +15,7 @@ import * as View from "./view/browser.js";
 class Body extends Entity.Instance {
     constructor() {
         super(document.body, new Event.Grid());
+        this.model = null;
         this.view = null;
     }
     On_Life() {
@@ -140,8 +141,10 @@ class Body extends Entity.Instance {
     On_Refresh() {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.Kill_All_Children();
+            this.model = new Model.Instance();
+            yield this.model.Ready();
             this.view = new View.Instance({
-                model: new Model.Instance(),
+                model: this.model,
                 root: this,
             });
             this.Add_Child(this.view);

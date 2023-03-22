@@ -7,12 +7,14 @@ import * as View from "./view/browser.js";
 
 class Body extends Entity.Instance
 {
+    private model: Model.Instance | null;
     private view: View.Instance | null;
 
     constructor()
     {
         super(document.body as HTMLBodyElement, new Event.Grid());
 
+        this.model = null;
         this.view = null;
     }
 
@@ -186,9 +188,12 @@ class Body extends Entity.Instance
     {
         await this.Kill_All_Children();
 
+        this.model = new Model.Instance();
+        await this.model.Ready();
+
         this.view = new View.Instance(
             {
-                model: new Model.Instance(),
+                model: this.model,
                 root: this,
             },
         );

@@ -2,6 +2,7 @@ import { Name } from "../../../types.js";
 import { Path } from "../../../types.js";
 
 import * as Utils from "../../../utils.js";
+import * as Async from "../../../async.js";
 
 import * as Browser from "../instance.js";
 import { Type } from "./type.js";
@@ -13,7 +14,7 @@ import * as Version from "./version.js";
 import * as Files from "./files.js";
 import * as File from "./file.js";
 
-export class Instance
+export class Instance extends Async.Instance
 {
     private browser: Browser.Instance;
     private name: Name;
@@ -32,6 +33,8 @@ export class Instance
         },
     )
     {
+        super();
+
         this.browser = browser;
         this.name = `Browser`;
         this.path = this.name;

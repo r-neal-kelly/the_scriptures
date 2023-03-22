@@ -1,19 +1,25 @@
-import * as Books from "./books.js";
-export class Instance {
+import * as Async from "../../async.js";
+import * as Data from "./data.js";
+import * as Selector from "./selector.js";
+export class Instance extends Async.Instance {
     constructor() {
-        this.name = `Browser`;
-        this.path = this.name;
-        this.books = new Books.Instance({
+        super();
+        this.data = new Data.Instance({
             browser: this,
         });
+        this.selector = new Selector.Instance({
+            browser: this,
+            order: Selector.Order.BOOKS_LANGUAGES_VERSIONS,
+        });
+        this.Is_Ready_After([
+            this.data,
+            this.selector,
+        ]);
     }
-    Name() {
-        return this.name;
+    Data() {
+        return this.data;
     }
-    Path() {
-        return this.path;
-    }
-    Books() {
-        return this.books;
+    Selector() {
+        return this.selector;
     }
 }

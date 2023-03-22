@@ -9,6 +9,23 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import * as Utils from "./utils.js";
 import * as Queue from "./queue.js";
+export class Animation_Frame {
+    constructor({ now, start, elapsed, }) {
+        this.now = now;
+        this.start = start;
+        this.elapsed = elapsed;
+        Object.freeze(this);
+    }
+    Now() {
+        return this.now;
+    }
+    Start() {
+        return this.start;
+    }
+    Elapsed() {
+        return this.elapsed;
+    }
+}
 export class Instance {
     constructor(element, event_grid) {
         Utils.Assert(Instance.next_id !== Infinity, `Can't create another ID!`);
@@ -359,11 +376,11 @@ export class Instance {
                             }
                             if (last !== now) {
                                 last = now;
-                                if (yield on_frame({
+                                if (yield on_frame(new Animation_Frame({
                                     now: now,
                                     start: start,
                                     elapsed: now - start,
-                                }, state)) {
+                                }), state)) {
                                     window.requestAnimationFrame(Loop.bind(this));
                                 }
                                 else {

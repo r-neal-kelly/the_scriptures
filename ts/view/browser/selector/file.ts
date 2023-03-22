@@ -1,30 +1,24 @@
-import * as Utils from "../../utils.js";
-import * as Event from "../../event.js";
-import * as Entity from "../../entity.js";
+import * as Utils from "../../../utils.js";
+import * as Event from "../../../event.js";
+import * as Entity from "../../../entity.js";
 
-import * as Model from "../../model/browser/file.js";
-
-import * as Files from "./files.js";
+import * as Model from "../../../model/browser/data/file.js";
 
 export class Instance extends Entity.Instance
 {
     private model: Model.Instance;
-    private files: Files.Instance;
 
     constructor(
         {
             model,
-            files,
         }: {
             model: Model.Instance,
-            files: Files.Instance,
         },
     )
     {
-        super(`div`, files.Event_Grid());
+        super(`div`, new Event.Grid());
 
         this.model = model;
-        this.files = files;
     }
 
     override async On_Refresh():
@@ -51,12 +45,6 @@ export class Instance extends Entity.Instance
     {
         return this.model;
     }
-
-    Files():
-        Files.Instance
-    {
-        return this.files;
-    }
 }
 
 // this class is temporary, for testing
@@ -78,7 +66,7 @@ class Line extends Entity.Instance
     }
 
     override async On_Restyle():
-        Promise<Entity.Styles>
+        Promise<Entity.Styles | string>
     {
         return ({
             "color": this.text === `` ?

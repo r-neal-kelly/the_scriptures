@@ -7,15 +7,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import * as Utils from "../../utils.js";
-import * as Entity from "../../entity.js";
-import * as Selector from "./selector.js";
+import * as Entity from "../../../entity.js";
+import * as Slot from "./slot.js";
 export class Instance extends Entity.Instance {
-    constructor({ model, root, }) {
-        super(`div`, root.Event_Grid());
+    constructor({ model, browser, }) {
+        super(`div`, browser.Event_Grid());
         this.model = model;
-        this.root = root;
-        this.selector = null;
+        this.browser = browser;
+        this.slots = null;
     }
     On_Restyle() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -32,21 +31,21 @@ export class Instance extends Entity.Instance {
     On_Refresh() {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.Kill_All_Children();
-            this.selector = new Selector.Instance({
-                model: this.Model().Selector(),
-                browser: this,
-            });
-            this.Add_Child(this.selector);
+            this.slots = [];
+            for (const slot_model of this.Model().Slots()) {
+                const slot_view = new Slot.Instance({
+                    model: slot_model,
+                    selector: this,
+                });
+                this.slots.push(slot_view);
+                this.Add_Child(slot_view);
+            }
         });
     }
     Model() {
         return this.model;
     }
-    Root() {
-        return this.root;
-    }
-    Selector() {
-        Utils.Assert(this.selector != null, `Does not have selector.`);
-        return this.selector;
+    Browser() {
+        return this.browser;
     }
 }

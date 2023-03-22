@@ -3,25 +3,27 @@ import * as Utils from "./utils.js";
 export class Instance
 {
     private is_ready: boolean;
-    private dependents: Array<Instance>;
+    private dependencies: Array<Instance>;
 
     constructor()
     {
         this.is_ready = false;
-        this.dependents = [];
+        this.dependencies = [];
     }
 
-    Add_Dependent(
-        dependent: Instance,
+    Is_Ready_After(
+        dependencies: Array<Instance>,
     ):
         void
     {
-        Utils.Assert(
-            this.dependents.indexOf(dependent) < 0,
-            `A dependent can only be added once.`,
-        );
+        for (const dependency of dependencies) {
+            Utils.Assert(
+                this.dependencies.indexOf(dependency) < 0,
+                `A dependency can only be added once.`,
+            );
 
-        this.dependents.push(dependent);
+            this.dependencies.push(dependency);
+        }
     }
 
     Is_Ready():
@@ -34,16 +36,17 @@ export class Instance
         Promise<void>
     {
         if (this.is_ready === false) {
+            // Might as well set this first, just in case this is somehow called again.
             this.is_ready = true;
 
             await Promise.all(
-                this.dependents.map(
+                this.dependencies.map(
                     function (
-                        dependent: Instance,
+                        dependency: Instance,
                     ):
                         Promise<void>
                     {
-                        return dependent.Ready();
+                        return dependency.Ready();
                     },
                 ),
             );

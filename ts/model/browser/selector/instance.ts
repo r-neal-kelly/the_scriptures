@@ -12,7 +12,7 @@ import * as Slot from "./slot.js";
 
 export class Instance extends Async.Instance
 {
-    private static MAX_SLOT_COUNT: Count;
+    private static MAX_SLOT_COUNT: Count = 4;
 
     private static Slot_To_Data_Type(
         slot_type: Slot.Type,
