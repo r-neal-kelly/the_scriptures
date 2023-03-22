@@ -91,8 +91,26 @@ export class Grid {
     }
     Send(event_info) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield new Instance(this.messenger, this.Some_Execution_Frame(event_info.affix), event_info).Execute();
+            yield new Instance(this.messenger, this.Some_Execution_Frame(event_info.Affix()), event_info).Execute();
         });
+    }
+}
+;
+export class Listener_Info {
+    constructor({ event_name, event_handler, event_priority, }) {
+        this.event_name = event_name;
+        this.event_handler = event_handler;
+        this.event_priority = event_priority;
+        Object.freeze(this);
+    }
+    Event_Name() {
+        return this.event_name;
+    }
+    Event_Handler() {
+        return this.event_handler;
+    }
+    Event_Priority() {
+        return this.event_priority;
     }
 }
 ;
@@ -104,10 +122,10 @@ class Listeners {
         return this.listener_handles.has(listener_handle);
     }
     Add({ messenger, object, listener_info, }) {
-        const listener_handle = messenger.Subscribe(listener_info.event_name.String(), {
-            handler: listener_info.event_handler.bind(object),
-            priority: listener_info.event_priority,
-        });
+        const listener_handle = messenger.Subscribe(listener_info.Event_Name().String(), new Messenger.Subscriber_Info({
+            handler: listener_info.Event_Handler().bind(object),
+            priority: listener_info.Event_Priority(),
+        }));
         this.listener_handles.add(listener_handle);
         return listener_handle;
     }
@@ -167,28 +185,48 @@ export class Name {
         else {
             this.text = `${prefix}_${affix}`;
         }
+        Object.freeze(this);
     }
     String() {
         return this.text;
     }
 }
 ;
-import { Publication_Type as Type } from "./messenger.js";
 export { Publication_Type as Type } from "./messenger.js";
+export class Info {
+    constructor({ affix, suffixes, type, data, }) {
+        this.affix = affix;
+        this.suffixes = Array.from(suffixes);
+        this.type = type;
+        this.data = data;
+        Object.freeze(this.suffixes);
+        Object.freeze(this);
+    }
+    Affix() {
+        return this.affix;
+    }
+    Suffixes() {
+        return this.suffixes;
+    }
+    Type() {
+        return this.type;
+    }
+    Data() {
+        return this.data;
+    }
+}
+;
 export class Instance {
     static From(data) {
         return data[Instance.KEY];
     }
-    constructor(messenger, execution_frame, { affix, suffixes = [], type = Type.QUEUED, data = {}, }) {
-        Utils.Assert(!Object.isFrozen(data), `data will be frozen for you.`);
-        data[Instance.KEY] = this;
+    constructor(messenger, execution_frame, info) {
+        Utils.Assert(!Object.isFrozen(info.Data()), `The data object cannot be frozen.`);
         this.messenger = messenger;
         this.execution_frame = execution_frame;
-        this.affix = affix;
-        this.suffixes = Array.from(suffixes);
-        this.type = type;
-        this.data = Object.freeze(data);
+        this.info = info;
         this.has_executed = false;
+        this.info.Data()[Instance.KEY] = this;
     }
     Has_Executed() {
         return this.has_executed;
@@ -197,19 +235,19 @@ export class Instance {
         return __awaiter(this, void 0, void 0, function* () {
             Utils.Assert(this.has_executed === false, `This event instance has already been executed.`);
             this.has_executed = true;
-            yield this.execution_frame.Execute(this.type, function () {
+            yield this.execution_frame.Execute(this.info.Type(), function () {
                 return __awaiter(this, void 0, void 0, function* () {
-                    const publication_info = Object.freeze({
+                    const publication_info = new Messenger.Publication_Info({
                         type: Messenger.Publication_Type.IMMEDIATE,
-                        data: this.data,
+                        data: this.info.Data(),
                     });
                     for (const prefix of [Prefix.BEFORE, Prefix.ON, Prefix.AFTER]) {
-                        const promises = this.suffixes.map(function (suffix) {
+                        const promises = this.info.Suffixes().map(function (suffix) {
                             return __awaiter(this, void 0, void 0, function* () {
-                                yield this.messenger.Publish(new Name(prefix, this.affix, suffix).String(), publication_info);
+                                yield this.messenger.Publish(new Name(prefix, this.info.Affix(), suffix).String(), publication_info);
                             });
                         }.bind(this));
-                        promises.push(this.messenger.Publish(new Name(prefix, this.affix).String(), publication_info));
+                        promises.push(this.messenger.Publish(new Name(prefix, this.info.Affix()).String(), publication_info));
                         yield Promise.all(promises);
                     }
                 });

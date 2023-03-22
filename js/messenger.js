@@ -10,6 +10,34 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import * as Utils from "./utils.js";
 import * as Execution from "./execution.js";
 export { Type as Publication_Type } from "./execution.js";
+/* Used when publishing an event. */
+export class Publication_Info {
+    constructor({ type, data, }) {
+        this.type = type;
+        this.data = data;
+        Object.freeze(this);
+    }
+    Type() {
+        return this.type;
+    }
+    Data() {
+        return this.data;
+    }
+}
+/* Used when subscribing to a publisher. */
+export class Subscriber_Info {
+    constructor({ handler, priority, }) {
+        this.handler = handler;
+        this.priority = priority;
+        Object.freeze(this);
+    }
+    Handler() {
+        return this.handler;
+    }
+    Priority() {
+        return this.priority;
+    }
+}
 /* Contains a register of subscribers which can be published to. */
 class Publisher {
     constructor() {
@@ -42,9 +70,9 @@ class Publisher {
         }
         delete this.subscribers[subscriber_id];
     }
-    Publish({ type, data, }) {
+    Publish(publication_info) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield this.execution_frame.Execute(type, function () {
+            yield this.execution_frame.Execute(publication_info.Type(), function () {
                 return __awaiter(this, void 0, void 0, function* () {
                     // we could cache this also, but probably not necessary
                     const priorities = Object.keys(this.priorities).map(function (priority) {
@@ -63,7 +91,7 @@ class Publisher {
                     for (const priority of priorities) {
                         yield Promise.all(this.priorities[priority].map(function (subscriber) {
                             return __awaiter(this, void 0, void 0, function* () {
-                                yield subscriber.Handler()(data);
+                                yield subscriber.Handler()(publication_info.Data());
                             });
                         }));
                     }
@@ -74,16 +102,15 @@ class Publisher {
 }
 /* Contains relevant info and options that are used when publishing an event to a subscriber. */
 class Subscriber {
-    constructor({ handler, priority, }) {
-        this.handler = handler;
-        this.priority = priority;
+    constructor(info) {
+        this.info = info;
         Object.freeze(this);
     }
     Handler() {
-        return this.handler;
+        return this.info.Handler();
     }
     Priority() {
-        return this.priority;
+        return this.info.Priority();
     }
 }
 /* A handle to a subscriber and their publisher, for the sake of unsubscribing. */

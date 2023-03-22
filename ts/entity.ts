@@ -9,9 +9,7 @@ import * as Event from "./event.js";
 
 export { ID } from "./types.js";
 
-export type Styles = {
-    [index: string]: string,
-}
+export type Styles = { [index: string]: string };
 
 export type Animation_Frame = {
     now: Float;

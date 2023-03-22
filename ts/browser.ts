@@ -80,78 +80,104 @@ class Body extends Entity.Instance
                 void
             {
                 this.Send(
-                    {
-                        affix: "Test",
-                        type: Event.Type.EXCLUSIVE,
-                    } as Event.Info,
+                    new Event.Info(
+                        {
+                            affix: "Test",
+                            suffixes: [],
+                            type: Event.Type.IMMEDIATE,
+                            data: {},
+                        },
+                    ),
                 );
             }.bind(this),
         );
 
         return [
-            {
-                event_name: new Event.Name(Event.Prefix.BEFORE, "Test"),
-                event_handler: () => console.log("before Infinity"),
-                event_priority: Infinity,
-            },
-            {
-                event_name: new Event.Name(Event.Prefix.BEFORE, "Test"),
-                event_handler: async function (
-                    data: Event.Data,
-                ):
-                    Promise<void>
+            new Event.Listener_Info(
                 {
-                    console.log("before 3");
-                    await Utils.Wait_Seconds(1);
-                    console.log(Event.Instance.From(data));
+                    event_name: new Event.Name(Event.Prefix.BEFORE, "Test"),
+                    event_handler: () => console.log("before Infinity"),
+                    event_priority: Infinity,
                 },
-                event_priority: 3,
-            },
-            {
-                event_name: new Event.Name(Event.Prefix.BEFORE, "Test"),
-                event_handler: () => console.log("before 2"),
-                event_priority: 2,
-            },
-            {
-                event_name: new Event.Name(Event.Prefix.BEFORE, "Test"),
-                event_handler: () => console.log("before 1"),
-                event_priority: 1,
-            },
-            {
-                event_name: new Event.Name(Event.Prefix.BEFORE, "Test"),
-                event_handler: () => console.log("before -Infinity"),
-                event_priority: -Infinity,
-            },
-            {
-                event_name: new Event.Name(Event.Prefix.ON, "Test"),
-                event_handler: () => console.log("on 3"),
-                event_priority: 3,
-            },
-            {
-                event_name: new Event.Name(Event.Prefix.ON, "Test"),
-                event_handler: () => console.log("on 2"),
-                event_priority: 2,
-            },
-            {
-                event_name: new Event.Name(Event.Prefix.ON, "Test"),
-                event_handler: () => console.log("on 1"),
-                event_priority: 1,
-            },
-            {
-                event_name: new Event.Name(Event.Prefix.AFTER, "Test"),
-                event_handler: () => console.log("after 3"),
-                event_priority: 3,
-            },
-            {
-                event_name: new Event.Name(Event.Prefix.AFTER, "Test"),
-                event_handler: () => console.log("after 2"),
-                event_priority: 2,
-            },
-            {
-                event_name: new Event.Name(Event.Prefix.AFTER, "Test"),
-                event_handler: () => console.log("after 1"),
-                event_priority: 1,
-            },
+            ),
+            new Event.Listener_Info(
+                {
+                    event_name: new Event.Name(Event.Prefix.BEFORE, "Test"),
+                    event_handler: async function (
+                        data: Event.Data,
+                    ):
+                        Promise<void>
+                    {
+                        console.log("before 3");
+                        await Utils.Wait_Seconds(1);
+                        console.log(Event.Instance.From(data));
+                    },
+                    event_priority: 3,
+                },
+            ),
+            new Event.Listener_Info(
+                {
+                    event_name: new Event.Name(Event.Prefix.BEFORE, "Test"),
+                    event_handler: () => console.log("before 2"),
+                    event_priority: 2,
+                },
+            ),
+            new Event.Listener_Info(
+                {
+                    event_name: new Event.Name(Event.Prefix.BEFORE, "Test"),
+                    event_handler: () => console.log("before 1"),
+                    event_priority: 1,
+                },
+            ),
+            new Event.Listener_Info(
+                {
+                    event_name: new Event.Name(Event.Prefix.BEFORE, "Test"),
+                    event_handler: () => console.log("before -Infinity"),
+                    event_priority: -Infinity,
+                },
+            ),
+            new Event.Listener_Info(
+                {
+                    event_name: new Event.Name(Event.Prefix.ON, "Test"),
+                    event_handler: () => console.log("on 3"),
+                    event_priority: 3,
+                },
+            ),
+            new Event.Listener_Info(
+                {
+                    event_name: new Event.Name(Event.Prefix.ON, "Test"),
+                    event_handler: () => console.log("on 2"),
+                    event_priority: 2,
+                },
+            ),
+            new Event.Listener_Info(
+                {
+                    event_name: new Event.Name(Event.Prefix.ON, "Test"),
+                    event_handler: () => console.log("on 1"),
+                    event_priority: 1,
+                },
+            ),
+            new Event.Listener_Info(
+                {
+                    event_name: new Event.Name(Event.Prefix.AFTER, "Test"),
+                    event_handler: () => console.log("after 3"),
+                    event_priority: 3,
+                },
+            ),
+            new Event.Listener_Info(
+                {
+                    event_name: new Event.Name(Event.Prefix.AFTER, "Test"),
+                    event_handler: () => console.log("after 2"),
+                    event_priority: 2,
+                },
+            ),
+            new Event.Listener_Info(
+                {
+                    event_name: new Event.Name(Event.Prefix.AFTER, "Test"),
+                    event_handler: () => console.log("after 1"),
+                    event_priority: 1,
+                },
+            ),
         ];
     }
 

@@ -188,26 +188,61 @@ export class Grid
     {
         await new Instance(
             this.messenger,
-            this.Some_Execution_Frame(event_info.affix),
+            this.Some_Execution_Frame(event_info.Affix()),
             event_info,
         ).Execute();
     }
 };
 
-export type Handler =
-    Messenger.Subscriber_Handler;
+export type Handler = Messenger.Subscriber_Handler;
 
-export type Priority =
-    Messenger.Subscriber_Priority;
+export type Priority = Messenger.Subscriber_Priority;
 
-export type Listener_Info = {
-    event_name: Name,
-    event_handler: Handler,
-    event_priority: Priority,
+export class Listener_Info
+{
+    private event_name: Name;
+    private event_handler: Handler;
+    private event_priority: Priority;
+
+    constructor(
+        {
+            event_name,
+            event_handler,
+            event_priority,
+        }: {
+            event_name: Name,
+            event_handler: Handler,
+            event_priority: Priority,
+        },
+    )
+    {
+        this.event_name = event_name;
+        this.event_handler = event_handler;
+        this.event_priority = event_priority;
+
+        Object.freeze(this);
+    }
+
+    Event_Name():
+        Name
+    {
+        return this.event_name;
+    }
+
+    Event_Handler():
+        Handler
+    {
+        return this.event_handler;
+    }
+
+    Event_Priority():
+        Priority
+    {
+        return this.event_priority;
+    }
 };
 
-export type Listener_Handle =
-    Messenger.Subscription;
+export type Listener_Handle = Messenger.Subscription;
 
 class Listeners
 {
@@ -240,11 +275,13 @@ class Listeners
         Listener_Handle
     {
         const listener_handle: Listener_Handle = messenger.Subscribe(
-            listener_info.event_name.String(),
-            {
-                handler: listener_info.event_handler.bind(object),
-                priority: listener_info.event_priority,
-            } as Messenger.Subscriber_Info,
+            listener_info.Event_Name().String(),
+            new Messenger.Subscriber_Info(
+                {
+                    handler: listener_info.Event_Handler().bind(object),
+                    priority: listener_info.Event_Priority(),
+                },
+            ),
         );
         this.listener_handles.add(listener_handle);
 
@@ -343,11 +380,9 @@ export enum Prefix
     AFTER = `After`,
 }
 
-export type Affix =
-    string;
+export type Affix = string;
 
-export type Suffix =
-    string;
+export type Suffix = string;
 
 export class Name
 {
@@ -395,6 +430,8 @@ export class Name
         } else {
             this.text = `${prefix}_${affix}`;
         }
+
+        Object.freeze(this);
     }
 
     String():
@@ -407,14 +444,61 @@ export class Name
 import { Publication_Type as Type } from "./messenger.js";
 export { Publication_Type as Type } from "./messenger.js";
 
-export type Data
-    = Object;
+export type Data = Object;
 
-export type Info = {
-    affix: Affix,
-    suffixes?: Array<Suffix>,
-    type?: Type,
-    data?: Data,
+export class Info
+{
+    private affix: Affix;
+    private suffixes: Array<Suffix>;
+    private type: Type;
+    private data: Data;
+
+    constructor(
+        {
+            affix,
+            suffixes,
+            type,
+            data,
+        }: {
+            affix: Affix,
+            suffixes: Array<Suffix>,
+            type: Type,
+            data: Data,
+        },
+    )
+    {
+        this.affix = affix;
+        this.suffixes = Array.from(suffixes);
+        this.type = type;
+        this.data = data;
+
+        Object.freeze(this.suffixes);
+        Object.freeze(this);
+    }
+
+    Affix():
+        Affix
+    {
+        return this.affix;
+    }
+
+    Suffixes():
+        Array<Suffix>
+    {
+        return this.suffixes;
+    }
+
+    Type():
+        Type
+    {
+        return this.type;
+    }
+
+    Data():
+        Data
+    {
+        return this.data;
+    }
 };
 
 export class Instance
@@ -431,41 +515,28 @@ export class Instance
 
     private messenger: Messenger.Instance;
     private execution_frame: Execution.Frame;
-
-    private affix: Affix;
-    private suffixes: Array<Suffix>;
-    private type: Type;
-    private data: Data;
+    private info: Info;
 
     private has_executed: boolean;
 
     constructor(
         messenger: Messenger.Instance,
         execution_frame: Execution.Frame,
-        {
-            affix,
-            suffixes = [],
-            type = Type.QUEUED,
-            data = {},
-        }: Info,
+        info: Info,
     )
     {
         Utils.Assert(
-            !Object.isFrozen(data),
-            `data will be frozen for you.`,
+            !Object.isFrozen(info.Data()),
+            `The data object cannot be frozen.`,
         );
-
-        (data as { [index: symbol]: Instance })[Instance.KEY] = this;
 
         this.messenger = messenger;
         this.execution_frame = execution_frame;
-
-        this.affix = affix;
-        this.suffixes = Array.from(suffixes);
-        this.type = type;
-        this.data = Object.freeze(data);
+        this.info = info;
 
         this.has_executed = false;
+
+        (this.info.Data() as { [index: symbol]: Instance })[Instance.KEY] = this;
     }
 
     Has_Executed():
@@ -485,21 +556,21 @@ export class Instance
         this.has_executed = true;
 
         await this.execution_frame.Execute(
-            this.type,
+            this.info.Type(),
             async function (
                 this: Instance,
             ):
                 Promise<void>
             {
-                const publication_info: Messenger.Publication_Info = Object.freeze(
+                const publication_info: Messenger.Publication_Info = new Messenger.Publication_Info(
                     {
                         type: Messenger.Publication_Type.IMMEDIATE,
-                        data: this.data,
+                        data: this.info.Data(),
                     },
                 );
 
                 for (const prefix of [Prefix.BEFORE, Prefix.ON, Prefix.AFTER]) {
-                    const promises: Array<Promise<void>> = this.suffixes.map(
+                    const promises: Array<Promise<void>> = this.info.Suffixes().map(
                         async function (
                             this: Instance,
                             suffix: Suffix,
@@ -507,14 +578,14 @@ export class Instance
                             Promise<void>
                         {
                             await this.messenger.Publish(
-                                new Name(prefix, this.affix, suffix).String(),
+                                new Name(prefix, this.info.Affix(), suffix).String(),
                                 publication_info,
                             );
                         }.bind(this),
                     );
                     promises.push(
                         this.messenger.Publish(
-                            new Name(prefix, this.affix).String(),
+                            new Name(prefix, this.info.Affix()).String(),
                             publication_info,
                         ),
                     );

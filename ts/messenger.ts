@@ -6,43 +6,96 @@ import * as Utils from "./utils.js";
 import * as Execution from "./execution.js";
 
 /* Used both to subscribe and publish events. */
-export type Publisher_Name =
-    Name;
+export type Publisher_Name = Name;
 
 /* Determines how publications execute in relation to previous publications from the same publisher. */
 import { Type as Publication_Type } from "./execution.js";
 export { Type as Publication_Type } from "./execution.js";
 
 /* Sent to a publisher's subscriber's handlers when a publication occurs. */
-export type Publication_Data =
-    any;
+export type Publication_Data = any;
 
 /* Used when publishing an event. */
-export type Publication_Info = {
-    type: Publication_Type;
-    data: Publication_Data;
+export class Publication_Info
+{
+    private type: Publication_Type;
+    private data: Publication_Data;
+
+    constructor(
+        {
+            type,
+            data,
+        }: {
+            type: Publication_Type,
+            data: Publication_Data,
+        },
+    )
+    {
+        this.type = type;
+        this.data = data;
+
+        Object.freeze(this);
+    }
+
+    Type():
+        Publication_Type
+    {
+        return this.type;
+    }
+
+    Data():
+        Publication_Data
+    {
+        return this.data;
+    }
 }
 
 /* Uniquely identifies a subscriber when paired with a publisher name. */
-export type Subscriber_ID =
-    ID;
+export type Subscriber_ID = ID;
 
 /* Used as a callback for each subscriber when an publication occurs. */
-export type Subscriber_Handler =
-    (publication_data: Publication_Data) => void | Promise<void>;
+export type Subscriber_Handler = (publication_data: Publication_Data) => void | Promise<void>;
 
 /*
     Allows for subscriber handlers to be called in orderly batches during a publication.
     Negative Integers are called before positive. If multiple subscribers have the same
     priority, they are called in batch through Promise.all().
 */
-export type Subscriber_Priority =
-    Integer;
+export type Subscriber_Priority = Integer;
 
 /* Used when subscribing to a publisher. */
-export type Subscriber_Info = {
-    handler: Subscriber_Handler;
-    priority: Subscriber_Priority;
+export class Subscriber_Info
+{
+    private handler: Subscriber_Handler;
+    private priority: Subscriber_Priority;
+
+    constructor(
+        {
+            handler,
+            priority,
+        }: {
+            handler: Subscriber_Handler,
+            priority: Subscriber_Priority,
+        },
+    )
+    {
+        this.handler = handler;
+        this.priority = priority;
+
+        Object.freeze(this);
+    }
+
+    Handler():
+        Subscriber_Handler
+    {
+        return this.handler;
+    }
+
+    Priority():
+        Subscriber_Priority
+    {
+        return this.priority;
+    }
 }
 
 /* Contains a register of subscribers which can be published to. */
@@ -109,15 +162,12 @@ class Publisher
     }
 
     async Publish(
-        {
-            type,
-            data,
-        }: Publication_Info,
+        publication_info: Publication_Info,
     ):
         Promise<void>
     {
         await this.execution_frame.Execute(
-            type,
+            publication_info.Type(),
             async function (
                 this: Publisher,
             ):
@@ -159,7 +209,7 @@ class Publisher
                             ):
                                 Promise<void>
                             {
-                                await subscriber.Handler()(data);
+                                await subscriber.Handler()(publication_info.Data());
                             },
                         ),
                     );
@@ -172,18 +222,13 @@ class Publisher
 /* Contains relevant info and options that are used when publishing an event to a subscriber. */
 class Subscriber
 {
-    private handler: Subscriber_Handler;
-    private priority: Subscriber_Priority;
+    private info: Subscriber_Info;
 
     constructor(
-        {
-            handler,
-            priority,
-        }: Subscriber_Info,
+        info: Subscriber_Info,
     )
     {
-        this.handler = handler;
-        this.priority = priority;
+        this.info = info;
 
         Object.freeze(this);
     }
@@ -191,13 +236,13 @@ class Subscriber
     Handler():
         Subscriber_Handler
     {
-        return this.handler;
+        return this.info.Handler();
     }
 
     Priority():
         Subscriber_Priority
     {
-        return this.priority;
+        return this.info.Priority();
     }
 }
 
