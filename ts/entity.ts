@@ -11,10 +11,48 @@ export { ID } from "./types.js";
 
 export type Styles = { [index: string]: string };
 
-export type Animation_Frame = {
-    now: Float;
-    start: Float;
-    elapsed: Float;
+export class Animation_Frame
+{
+    private now: Float;
+    private start: Float;
+    private elapsed: Float;
+
+    constructor(
+        {
+            now,
+            start,
+            elapsed,
+        }: {
+            now: Float,
+            start: Float,
+            elapsed: Float,
+        },
+    )
+    {
+        this.now = now;
+        this.start = start;
+        this.elapsed = elapsed;
+
+        Object.freeze(this);
+    }
+
+    Now():
+        Float
+    {
+        return this.now;
+    }
+
+    Start():
+        Float
+    {
+        return this.start;
+    }
+
+    Elapsed():
+        Float
+    {
+        return this.elapsed;
+    }
 }
 
 export class Instance
@@ -675,11 +713,13 @@ export class Instance
                             last = now;
                             if (
                                 await on_frame(
-                                    {
-                                        now: now,
-                                        start: start as Float,
-                                        elapsed: now - start,
-                                    } as Animation_Frame,
+                                    new Animation_Frame(
+                                        {
+                                            now: now,
+                                            start: start as Float,
+                                            elapsed: now - start,
+                                        },
+                                    ),
                                     state,
                                 )
                             ) {
