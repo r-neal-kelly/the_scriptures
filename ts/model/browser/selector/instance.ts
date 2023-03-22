@@ -3,13 +3,14 @@ import { Index } from "../../../types.js";
 import { Name } from "../../../types.js";
 
 import * as Utils from "../../../utils.js";
+import * as Async from "../../../async.js";
 
 import * as Browser from "../instance.js";
 import * as Data from "../data.js";
 import { Order } from "./order.js";
 import * as Slot from "./slot.js";
 
-export class Instance
+export class Instance extends Async.Instance
 {
     private static MAX_SLOT_COUNT: Count;
 
@@ -40,8 +41,6 @@ export class Instance
     private order: Order;
     private slots: Array<Slot.Instance>;
 
-    private is_ready: boolean;
-
     constructor(
         {
             browser,
@@ -52,11 +51,11 @@ export class Instance
         },
     )
     {
+        super();
+
         this.browser = browser;
         this.order = order;
         this.slots = [];
-
-        this.is_ready = false;
     }
 
     Browser():
@@ -378,19 +377,10 @@ export class Instance
     {
     }
 
-    Is_Ready():
-        boolean
-    {
-        return this.is_ready;
-    }
-
-    async Ready():
+    override async Ready():
         Promise<void>
     {
-        if (this.is_ready === false) {
-            await this.Push_Slot();
-
-            this.is_ready = true;
-        }
+        await super.Ready();
+        await this.Push_Slot();
     }
 }
