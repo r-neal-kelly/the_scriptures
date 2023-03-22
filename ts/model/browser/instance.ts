@@ -16,7 +16,7 @@ export class Instance
         this.selector = new Selector.Instance(
             {
                 browser: this,
-                order: Selector.Order.BOOK_LANGUAGE_VERSION,
+                order: Selector.Order.BOOKS_LANGUAGES_VERSIONS,
             },
         );
     }

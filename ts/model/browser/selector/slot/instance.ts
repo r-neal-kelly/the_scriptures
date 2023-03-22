@@ -13,7 +13,7 @@ export class Instance
     private selector: Selector.Instance;
     private type: Type;
     private items: Array<Item.Instance>;
-    private current_item: Item.Instance | null;
+    private selected_item: Item.Instance | null;
 
     constructor(
         {
@@ -30,7 +30,7 @@ export class Instance
         this.selector = selector;
         this.type = type;
         this.items = [];
-        this.current_item = null;
+        this.selected_item = null;
 
         for (let idx = 0, end = item_names.length; idx < end; idx += 1) {
             this.items.push(
@@ -69,7 +69,7 @@ export class Instance
         return this.items.length;
     }
 
-    Item(
+    Item_At(
         item_index: Index,
     ):
         Item.Instance
@@ -86,17 +86,23 @@ export class Instance
         return this.items[item_index];
     }
 
-    Current_Item():
-        Item.Instance | null
+    Has_Selected_Item():
+        boolean
     {
-        return this.current_item;
+        return this.selected_item != null;
     }
 
-    Select_Current_Item(
+    Selected_Item():
+        Item.Instance | null
+    {
+        return this.selected_item;
+    }
+
+    Select_Item(
         item_index: Index,
     ):
         void
     {
-        this.current_item = this.Item(item_index);
+        this.selected_item = this.Item_At(item_index);
     }
 }

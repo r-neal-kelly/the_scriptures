@@ -1,4 +1,6 @@
 export { Instance } from "./data/instance.js";
+export { Type } from "./data/type.js";
+export * as Query from "./data/query.js";
 export * as Books from "./data/books.js";
 export * as Book from "./data/book.js";
 export * as Languages from "./data/languages.js";
