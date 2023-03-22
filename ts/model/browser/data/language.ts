@@ -1,5 +1,5 @@
-import { Name } from "../../types.js";
-import { Path } from "../../types.js";
+import { Name } from "../../../types.js";
+import { Path } from "../../../types.js";
 
 import * as Languages from "./languages.js";
 import * as Versions from "./versions.js";

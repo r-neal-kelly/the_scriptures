@@ -1,9 +1,9 @@
-import { Count } from "../../types.js";
-import { Index } from "../../types.js";
-import { Name } from "../../types.js";
-import { Path } from "../../types.js";
+import { Count } from "../../../types.js";
+import { Index } from "../../../types.js";
+import { Name } from "../../../types.js";
+import { Path } from "../../../types.js";
 
-import * as Utils from "../../utils.js";
+import * as Utils from "../../../utils.js";
 
 import * as Version from "./version.js";
 import * as File from "./file.js";
@@ -69,7 +69,7 @@ export class Instance
         }
     }
 
-    async File_Count():
+    async Count():
         Promise<Count>
     {
         await this.Download();
@@ -77,7 +77,7 @@ export class Instance
         return this.files.length;
     }
 
-    async File(
+    async At(
         file_index: Index,
     ):
         Promise<File.Instance>
@@ -89,14 +89,35 @@ export class Instance
             `file_index must be greater than -1.`,
         );
         Utils.Assert(
-            file_index < await this.File_Count(),
+            file_index < await this.Count(),
             `file_index must be less than file_count.`,
         );
 
         return this.files[file_index];
     }
 
-    async Files():
+    async Get(
+        file_name: Name,
+    ):
+        Promise<File.Instance>
+    {
+        await this.Download();
+
+        for (const file of this.files) {
+            if (file.Name() === file_name) {
+                return file;
+            }
+        }
+
+        Utils.Assert(
+            false,
+            `Invalid file_name.`,
+        );
+
+        return this.files[0];
+    }
+
+    async Array():
         Promise<Array<File.Instance>>
     {
         await this.Download();

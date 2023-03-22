@@ -1,9 +1,9 @@
-import { Count } from "../../types.js";
-import { Index } from "../../types.js";
-import { Name } from "../../types.js";
-import { Path } from "../../types.js";
+import { Count } from "../../../types.js";
+import { Index } from "../../../types.js";
+import { Name } from "../../../types.js";
+import { Path } from "../../../types.js";
 
-import * as Utils from "../../utils.js";
+import * as Utils from "../../../utils.js";
 
 import * as Language from "./language.js";
 import * as Version from "./version.js";
@@ -69,7 +69,7 @@ export class Instance
         }
     }
 
-    async Version_Count():
+    async Count():
         Promise<Count>
     {
         await this.Download();
@@ -77,7 +77,7 @@ export class Instance
         return this.versions.length;
     }
 
-    async Version(
+    async At(
         version_index: Index,
     ):
         Promise<Version.Instance>
@@ -89,14 +89,35 @@ export class Instance
             `version_index must be greater than -1.`,
         );
         Utils.Assert(
-            version_index < await this.Version_Count(),
+            version_index < await this.Count(),
             `version_index must be less than version_count.`,
         );
 
         return this.versions[version_index];
     }
 
-    async Versions():
+    async Get(
+        version_name: Name,
+    ):
+        Promise<Version.Instance>
+    {
+        await this.Download();
+
+        for (const version of this.versions) {
+            if (version.Name() === version_name) {
+                return version;
+            }
+        }
+
+        Utils.Assert(
+            false,
+            `Invalid version_name.`,
+        );
+
+        return this.versions[0];
+    }
+
+    async Array():
         Promise<Array<Version.Instance>>
     {
         await this.Download();

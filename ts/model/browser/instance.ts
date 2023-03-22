@@ -1,40 +1,35 @@
-import { Name } from "../../types.js";
-import { Path } from "../../types.js";
-
-import * as Books from "./books.js";
+import * as Data from "./data.js"
+import * as Selector from "./selector.js";
 
 export class Instance
 {
-    private name: Name;
-    private path: Path;
-    private books: Books.Instance;
+    private data: Data.Instance;
+    private selector: Selector.Instance;
 
     constructor()
     {
-        this.name = `Browser`;
-        this.path = this.name;
-        this.books = new Books.Instance(
+        this.data = new Data.Instance(
             {
                 browser: this,
             },
         );
+        this.selector = new Selector.Instance(
+            {
+                browser: this,
+                order: Selector.Order.BOOK_LANGUAGE_VERSION,
+            },
+        );
     }
 
-    Name():
-        Name
+    Data():
+        Data.Instance
     {
-        return this.name;
+        return this.data;
     }
 
-    Path():
-        Path
+    Selector():
+        Selector.Instance
     {
-        return this.path;
-    }
-
-    Books():
-        Books.Instance
-    {
-        return this.books;
+        return this.selector;
     }
 }

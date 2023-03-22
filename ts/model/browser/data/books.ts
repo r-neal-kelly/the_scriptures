@@ -1,11 +1,11 @@
-import { Count } from "../../types.js";
-import { Index } from "../../types.js";
-import { Name } from "../../types.js";
-import { Path } from "../../types.js";
+import { Count } from "../../../types.js";
+import { Index } from "../../../types.js";
+import { Name } from "../../../types.js";
+import { Path } from "../../../types.js";
 
-import * as Utils from "../../utils.js";
+import * as Utils from "../../../utils.js";
 
-import * as Browser from "./instance.js";
+import * as Data from "./instance.js";
 import * as Book from "./book.js";
 
 type Info = {
@@ -14,7 +14,7 @@ type Info = {
 
 export class Instance
 {
-    private browser: Browser.Instance;
+    private data: Data.Instance;
     private name: Name;
     private path: Path;
     private info: Info | null;
@@ -22,23 +22,23 @@ export class Instance
 
     constructor(
         {
-            browser,
+            data,
         }: {
-            browser: Browser.Instance,
+            data: Data.Instance,
         },
     )
     {
-        this.browser = browser;
+        this.data = data;
         this.name = `Books`;
-        this.path = `${browser.Path()}/${this.name}`;
+        this.path = `${data.Path()}/${this.name}`;
         this.info = null;
         this.books = [];
     }
 
-    Browser():
-        Browser.Instance
+    Data():
+        Data.Instance
     {
-        return this.browser;
+        return this.data;
     }
 
     Name():
@@ -69,7 +69,7 @@ export class Instance
         }
     }
 
-    async Book_Count():
+    async Count():
         Promise<Count>
     {
         await this.Download();
@@ -77,7 +77,7 @@ export class Instance
         return this.books.length;
     }
 
-    async Book(
+    async At(
         book_index: Index,
     ):
         Promise<Book.Instance>
@@ -89,14 +89,35 @@ export class Instance
             `book_index must be greater than -1.`,
         );
         Utils.Assert(
-            book_index < await this.Book_Count(),
+            book_index < await this.Count(),
             `book_index must be less than book_count.`,
         );
 
         return this.books[book_index];
     }
 
-    async Books():
+    async Get(
+        book_name: Name,
+    ):
+        Promise<Book.Instance>
+    {
+        await this.Download();
+
+        for (const book of this.books) {
+            if (book.Name() === book_name) {
+                return book;
+            }
+        }
+
+        Utils.Assert(
+            false,
+            `Invalid book_name.`,
+        );
+
+        return this.books[0];
+    }
+
+    async Array():
         Promise<Array<Book.Instance>>
     {
         await this.Download();

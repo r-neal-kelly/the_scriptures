@@ -1,9 +1,9 @@
-import { Count } from "../../types.js";
-import { Index } from "../../types.js";
-import { Name } from "../../types.js";
-import { Path } from "../../types.js";
+import { Count } from "../../../types.js";
+import { Index } from "../../../types.js";
+import { Name } from "../../../types.js";
+import { Path } from "../../../types.js";
 
-import * as Utils from "../../utils.js";
+import * as Utils from "../../../utils.js";
 
 import * as Book from "./book.js";
 import * as Language from "./language.js";
@@ -69,7 +69,7 @@ export class Instance
         }
     }
 
-    async Language_Count():
+    async Count():
         Promise<Count>
     {
         await this.Download();
@@ -77,7 +77,7 @@ export class Instance
         return this.languages.length;
     }
 
-    async Language(
+    async At(
         language_index: Index,
     ):
         Promise<Language.Instance>
@@ -89,14 +89,35 @@ export class Instance
             `language_index must be greater than -1.`,
         );
         Utils.Assert(
-            language_index < await this.Language_Count(),
+            language_index < await this.Count(),
             `language_index must be less than language_count.`,
         );
 
         return this.languages[language_index];
     }
 
-    async Languages():
+    async Get(
+        language_name: Name,
+    ):
+        Promise<Language.Instance>
+    {
+        await this.Download();
+
+        for (const language of this.languages) {
+            if (language.Name() === language_name) {
+                return language;
+            }
+        }
+
+        Utils.Assert(
+            false,
+            `Invalid language_name.`,
+        );
+
+        return this.languages[0];
+    }
+
+    async Array():
         Promise<Array<Language.Instance>>
     {
         await this.Download();
