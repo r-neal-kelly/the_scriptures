@@ -41,7 +41,7 @@ export class Instance extends Entity.Instance {
             }
             return `
             width: 100%;
-
+            
             overflow-x: hidden;
             overflow-y: hidden;
 

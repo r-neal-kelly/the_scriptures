@@ -11,14 +11,14 @@ import * as Utils from "./utils.js";
 import * as Queue from "./queue.js";
 export var Type;
 (function (Type) {
-    /* Immediately executes, even if queued executors are executing. */
+    /* Immediately executes, even if queued executees are executing. */
     Type[Type["IMMEDIATE"] = 0] = "IMMEDIATE";
-    /* Waits to execute until previous executors in the queue finish. */
+    /* Waits to execute until previous executees in the queue finish. */
     Type[Type["QUEUED"] = 1] = "QUEUED";
     /*
-        Waits to execute when no other executors are executing,
-        makes subsequent immediate and queued executors wait,
-        and discards other exclusive executors while its executing.
+        Waits to execute when no other executees are executing,
+        makes subsequent immediate and queued executees wait,
+        and discards other exclusive executees while its executing.
     */
     Type[Type["EXCLUSIVE"] = 2] = "EXCLUSIVE";
 })(Type || (Type = {}));
@@ -28,21 +28,21 @@ export class Frame {
         this.queued = new Queue.Instance();
         this.has_exclusive = false;
     }
-    Execute(type, executor) {
+    Execute(type, executee) {
         return __awaiter(this, void 0, void 0, function* () {
             if (type === Type.IMMEDIATE) {
                 while (this.has_exclusive === true) {
                     yield Utils.Wait_Milliseconds(1);
                 }
                 this.immediate_count += 1;
-                yield executor();
+                yield executee();
                 this.immediate_count -= 1;
             }
             else if (type === Type.QUEUED) {
                 while (this.has_exclusive === true) {
                     yield Utils.Wait_Milliseconds(1);
                 }
-                yield this.queued.Enqueue(executor);
+                yield this.queued.Enqueue(executee);
             }
             else if (type === Type.EXCLUSIVE) {
                 if (this.has_exclusive === false) {
@@ -57,7 +57,7 @@ export class Frame {
                         }.bind(this))(),
                         this.queued.Pause(),
                     ]);
-                    yield executor();
+                    yield executee();
                     this.queued.Unpause();
                     this.has_exclusive = false;
                 }

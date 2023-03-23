@@ -1,9 +1,9 @@
-import * as Utils from "./utils.js";
-import * as Event from "./event.js";
-import * as Entity from "./entity.js";
+import * as Utils from "../utils.js";
+import * as Event from "../event.js";
+import * as Entity from "../entity.js";
 
-import * as Model from "./model/browser.js";
-import * as View from "./view/browser.js";
+import * as Model from "../model/browser.js";
+import * as View from "./browser.js";
 
 class Body extends Entity.Instance
 {

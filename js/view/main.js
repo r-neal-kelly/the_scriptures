@@ -7,11 +7,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import * as Utils from "./utils.js";
-import * as Event from "./event.js";
-import * as Entity from "./entity.js";
-import * as Model from "./model/browser.js";
-import * as View from "./view/browser.js";
+import * as Utils from "../utils.js";
+import * as Event from "../event.js";
+import * as Entity from "../entity.js";
+import * as Model from "../model/browser.js";
+import * as View from "./browser.js";
 class Body extends Entity.Instance {
     constructor() {
         super(document.body, new Event.Grid());

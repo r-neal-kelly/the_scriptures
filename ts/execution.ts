@@ -5,16 +5,16 @@ import * as Queue from "./queue.js";
 
 export enum Type
 {
-    /* Immediately executes, even if queued executors are executing. */
+    /* Immediately executes, even if queued executees are executing. */
     IMMEDIATE,
 
-    /* Waits to execute until previous executors in the queue finish. */
+    /* Waits to execute until previous executees in the queue finish. */
     QUEUED,
 
     /*
-        Waits to execute when no other executors are executing,
-        makes subsequent immediate and queued executors wait,
-        and discards other exclusive executors while its executing.
+        Waits to execute when no other executees are executing,
+        makes subsequent immediate and queued executees wait,
+        and discards other exclusive executees while its executing.
     */
     EXCLUSIVE,
 }
@@ -34,7 +34,7 @@ export class Frame
 
     async Execute(
         type: Type,
-        executor: () => void | Promise<void>,
+        executee: () => void | Promise<void>,
     ):
         Promise<void>
     {
@@ -44,14 +44,14 @@ export class Frame
             }
 
             this.immediate_count += 1;
-            await executor();
+            await executee();
             this.immediate_count -= 1;
         } else if (type === Type.QUEUED) {
             while (this.has_exclusive === true) {
                 await Utils.Wait_Milliseconds(1);
             }
 
-            await this.queued.Enqueue(executor);
+            await this.queued.Enqueue(executee);
         } else if (type === Type.EXCLUSIVE) {
             if (this.has_exclusive === false) {
                 this.has_exclusive = true;
@@ -72,7 +72,7 @@ export class Frame
                         this.queued.Pause(),
                     ],
                 );
-                await executor();
+                await executee();
                 this.queued.Unpause();
 
                 this.has_exclusive = false;
