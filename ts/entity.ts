@@ -342,6 +342,19 @@ export class Instance
                                             abortions: abortions,
                                         },
                                     );
+                                } else {
+                                    // This is restyling everything at least twice
+                                    // for adoptions, because the life event styles
+                                    // its own entity, and each entity that is its
+                                    // child also get the life event. But the problem
+                                    // is that it's too slow. What should happen is that
+                                    // the life event styles its element and then its children
+                                    // quicker. That's why calling this is working faster,
+                                    // because it doesn't wait to style its children.
+                                    // Once we fix the life event, we may want to do the
+                                    // same thing in the death event, and then this branch
+                                    // can be completely removed.
+                                    await child.Restyle();
                                 }
                             },
                         ),
