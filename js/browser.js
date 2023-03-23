@@ -70,14 +70,14 @@ class Body extends Entity.Instance {
     }
     On_Refresh() {
         return __awaiter(this, void 0, void 0, function* () {
-            yield this.Kill_All_Children();
+            this.Abort_All_Children();
             this.model = new Model.Instance();
             yield this.model.Ready();
             this.view = new View.Instance({
                 model: this.model,
                 root: this,
             });
-            this.Add_Child(this.view);
+            this.Adopt_Child(this.view);
         });
     }
     Window() {

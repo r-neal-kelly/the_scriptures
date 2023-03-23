@@ -17,16 +17,16 @@ export class Instance extends Entity.Instance {
     }
     On_Refresh() {
         return __awaiter(this, void 0, void 0, function* () {
-            yield this.Kill_All_Children();
-            this.Add_Child(new Line({ text: this.Model().Name() }));
-            this.Add_Child(new Line({ text: `` }));
+            this.Abort_All_Children();
+            this.Adopt_Child(new Line({ text: this.Model().Name() }));
+            this.Adopt_Child(new Line({ text: `` }));
             const file_response = yield fetch(Utils.Resolve_Path(this.Model().Path()));
             if (file_response.ok) {
                 const file_text = yield file_response.text();
                 for (const file_line of file_text.split(/\r?\n/g)) {
-                    this.Add_Child(new Line({ text: file_line }));
+                    this.Adopt_Child(new Line({ text: file_line }));
                 }
-                this.Add_Child(new Line({ text: `` }));
+                this.Adopt_Child(new Line({ text: `` }));
             }
         });
     }

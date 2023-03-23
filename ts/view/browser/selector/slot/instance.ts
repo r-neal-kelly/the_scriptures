@@ -42,7 +42,7 @@ export class Instance extends Entity.Instance
     override async On_Refresh():
         Promise<void>
     {
-        await this.Kill_All_Children();
+        this.Abort_All_Children();
 
         this.items = [];
         for (const item_model of this.Model().Items()) {
@@ -53,7 +53,7 @@ export class Instance extends Entity.Instance
                 },
             );
             this.items.push(item_view);
-            this.Add_Child(item_view);
+            this.Adopt_Child(item_view);
         }
     }
 

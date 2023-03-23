@@ -31,12 +31,12 @@ export class Instance extends Entity.Instance {
     }
     On_Refresh() {
         return __awaiter(this, void 0, void 0, function* () {
-            yield this.Kill_All_Children();
+            this.Abort_All_Children();
             this.selector = new Selector.Instance({
                 model: this.Model().Selector(),
                 browser: this,
             });
-            this.Add_Child(this.selector);
+            this.Adopt_Child(this.selector);
         });
     }
     Model() {

@@ -80,7 +80,7 @@ export class Instance extends Entity.Instance
     override async On_Refresh():
         Promise<void>
     {
-        await this.Kill_All_Children();
+        this.Abort_All_Children();
 
         this.Element().textContent = this.Model().Name();
     }

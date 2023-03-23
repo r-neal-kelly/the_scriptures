@@ -47,7 +47,7 @@ export class Instance extends Entity.Instance
     override async On_Refresh():
         Promise<void>
     {
-        await this.Kill_All_Children();
+        this.Abort_All_Children();
 
         this.selector = new Selector.Instance(
             {
@@ -55,7 +55,7 @@ export class Instance extends Entity.Instance
                 browser: this,
             },
         );
-        this.Add_Child(this.selector);
+        this.Adopt_Child(this.selector);
     }
 
     Model():

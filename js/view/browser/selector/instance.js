@@ -45,7 +45,7 @@ export class Instance extends Entity.Instance {
     }
     On_Refresh() {
         return __awaiter(this, void 0, void 0, function* () {
-            yield this.Kill_All_Children();
+            this.Abort_All_Children();
             this.slots = [];
             for (const slot_model of this.Model().Slots()) {
                 const slot_view = new Slot.Instance({
@@ -53,7 +53,7 @@ export class Instance extends Entity.Instance {
                     selector: this,
                 });
                 this.slots.push(slot_view);
-                this.Add_Child(slot_view);
+                this.Adopt_Child(slot_view);
             }
         });
     }

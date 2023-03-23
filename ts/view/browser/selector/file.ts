@@ -24,19 +24,19 @@ export class Instance extends Entity.Instance
     override async On_Refresh():
         Promise<void>
     {
-        await this.Kill_All_Children();
+        this.Abort_All_Children();
 
-        this.Add_Child(new Line({ text: this.Model().Name() }));
-        this.Add_Child(new Line({ text: `` }));
+        this.Adopt_Child(new Line({ text: this.Model().Name() }));
+        this.Adopt_Child(new Line({ text: `` }));
 
         const file_response: Response =
             await fetch(Utils.Resolve_Path(this.Model().Path()));
         if (file_response.ok) {
             const file_text: string = await file_response.text();
             for (const file_line of file_text.split(/\r?\n/g)) {
-                this.Add_Child(new Line({ text: file_line }));
+                this.Adopt_Child(new Line({ text: file_line }));
             }
-            this.Add_Child(new Line({ text: `` }));
+            this.Adopt_Child(new Line({ text: `` }));
         }
     }
 

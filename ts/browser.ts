@@ -80,7 +80,7 @@ class Body extends Entity.Instance
     override async On_Refresh():
         Promise<void>
     {
-        await this.Kill_All_Children();
+        this.Abort_All_Children();
 
         this.model = new Model.Instance();
         await this.model.Ready();
@@ -91,8 +91,7 @@ class Body extends Entity.Instance
                 root: this,
             },
         );
-
-        this.Add_Child(this.view);
+        this.Adopt_Child(this.view);
     }
 
     Window():

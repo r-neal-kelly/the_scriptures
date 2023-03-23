@@ -59,7 +59,7 @@ export class Instance extends Entity.Instance {
     }
     On_Refresh() {
         return __awaiter(this, void 0, void 0, function* () {
-            yield this.Kill_All_Children();
+            this.Abort_All_Children();
             this.Element().textContent = this.Model().Name();
         });
     }

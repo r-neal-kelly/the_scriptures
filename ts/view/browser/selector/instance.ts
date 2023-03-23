@@ -62,7 +62,7 @@ export class Instance extends Entity.Instance
     override async On_Refresh():
         Promise<void>
     {
-        await this.Kill_All_Children();
+        this.Abort_All_Children();
 
         this.slots = [];
         for (const slot_model of this.Model().Slots()) {
@@ -73,7 +73,7 @@ export class Instance extends Entity.Instance
                 },
             );
             this.slots.push(slot_view);
-            this.Add_Child(slot_view);
+            this.Adopt_Child(slot_view);
         }
     }
 

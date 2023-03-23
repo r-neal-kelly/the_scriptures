@@ -28,7 +28,7 @@ export class Instance extends Entity.Instance {
     }
     On_Refresh() {
         return __awaiter(this, void 0, void 0, function* () {
-            yield this.Kill_All_Children();
+            this.Abort_All_Children();
             this.items = [];
             for (const item_model of this.Model().Items()) {
                 const item_view = new Item.Instance({
@@ -36,7 +36,7 @@ export class Instance extends Entity.Instance {
                     slot: this,
                 });
                 this.items.push(item_view);
-                this.Add_Child(item_view);
+                this.Adopt_Child(item_view);
             }
         });
     }
