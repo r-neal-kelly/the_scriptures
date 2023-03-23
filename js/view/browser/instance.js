@@ -19,14 +19,14 @@ export class Instance extends Entity.Instance {
     }
     On_Restyle() {
         return __awaiter(this, void 0, void 0, function* () {
-            return ({
+            return {
                 "display": `grid`,
                 "width": `100%`,
                 "height": `100%`,
                 "overflow-x": `hidden`,
                 "overflow-y": `hidden`,
                 "color": `white`,
-            });
+            };
         });
     }
     On_Refresh() {

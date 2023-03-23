@@ -31,7 +31,7 @@ export class Instance extends Entity.Instance
     override async On_Restyle():
         Promise<Entity.Styles | string>
     {
-        return ({
+        return {
             "display": `grid`,
 
             "width": `100%`,
@@ -41,7 +41,7 @@ export class Instance extends Entity.Instance
             "overflow-y": `hidden`,
 
             "color": `white`,
-        });
+        };
     }
 
     override async On_Refresh():

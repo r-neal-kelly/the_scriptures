@@ -223,10 +223,14 @@ export class Instance
             const styles_array: Array<RegExpMatchArray | null> =
                 styles.split(/\s*;\s*/).map(s => s.match(/[^:]+/g));
             for (const style of styles_array) {
-                if (
-                    style != null &&
-                    style.length === 2
-                ) {
+                if (style != null) {
+                    // There can be empty lines of just space, which is just fine.
+                    // But an invalid statement, no
+                    Utils.Assert(
+                        style.length === 2,
+                        `Invalid css command! ${style}\nfrom\n${styles}`,
+                    );
+
                     styles_object[style[0].trim()] = style[1].trim();
                 }
             }
