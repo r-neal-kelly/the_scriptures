@@ -385,17 +385,6 @@ export class Instance
         // Adoptions and abortions can come from the children
         // of this entity and can be passed as an arena to
         // children during the refresh cycle.
-        for (const adoption of adoptions) {
-            const child: Instance = adoption;
-            const parent: Instance = adoption.Parent();
-
-            Utils.Assert(parent.Is_Alive());
-            Utils.Assert(child.Is_Alive());
-            Utils.Assert(child.Element().parentElement === null);
-
-            parent.Element().appendChild(child.Element());
-        }
-
         const deaths: Array<Promise<void>> = [];
         for (const abortion of abortions) {
             const child: Instance = abortion;
@@ -408,6 +397,18 @@ export class Instance
             parent.Element().removeChild(child.Element());
             deaths.push(child.Die());
         }
+
+        for (const adoption of adoptions) {
+            const child: Instance = adoption;
+            const parent: Instance = adoption.Parent();
+
+            Utils.Assert(parent.Is_Alive());
+            Utils.Assert(child.Is_Alive());
+            Utils.Assert(child.Element().parentElement === null);
+
+            parent.Element().appendChild(child.Element());
+        }
+
         await Promise.all(deaths);
     }
 
