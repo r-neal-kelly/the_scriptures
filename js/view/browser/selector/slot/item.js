@@ -17,6 +17,7 @@ export class Instance extends Entity.Instance {
     }
     On_Life() {
         return __awaiter(this, void 0, void 0, function* () {
+            console.log(`on life`, this.ID(), this.Model().Name()); // temp
             this.Element().addEventListener(`click`, this.On_Click.bind(this));
             return [
                 new Event.Listener_Info({
@@ -61,6 +62,14 @@ export class Instance extends Entity.Instance {
         return __awaiter(this, void 0, void 0, function* () {
             this.Abort_All_Children();
             this.Element().textContent = this.Model().Name();
+        });
+    }
+    // temp
+    On_Death() {
+        return __awaiter(this, void 0, void 0, function* () {
+            console.log(`on death`, this.ID(), this.Model().Name());
+            //document.body.appendChild(this.Element());
+            this.Element().style.color = `red`;
         });
     }
     On_Click(event) {

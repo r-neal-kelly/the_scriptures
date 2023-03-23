@@ -246,21 +246,38 @@ export class Instance
     async Refresh():
         Promise<void>
     {
+        // we need to queue like so in case a parent tries to call Refresh_Implementation
+        // while this is still operating. Because Enqueue doesn't wait to put the
+        // callbacks in the queue, this will certainly run one after the other,
+        // and Refresh_Implementation itself adds a callback to the queue which will
+        // run after these. We can't actually combine the two into one callback because
+        // it does add to the queue, and we would end up creating a deadlock.
         const adoptions: Array<Parent_And_Child> = [];
         const abortions: Array<Parent_And_Child> = [];
 
-        await this.Refresh_Implementation(
+        // we could also remove the queue from Refresh_Implementation, put it here
+        // and when it calls its child, but when it calls the child, it has to use
+        // the child's queue. this does work how it is however.
+        this.Refresh_Implementation(
             {
                 adoptions,
                 abortions,
             },
         );
 
-        await this.Execute_Adoptions_And_Abortions(
+        return this.life_cycle_queue.Enqueue(
+            async function (
+                this: Instance,
+            ):
+                Promise<void>
             {
-                adoptions,
-                abortions,
-            },
+                await this.Execute_Adoptions_And_Abortions(
+                    {
+                        adoptions,
+                        abortions,
+                    },
+                );
+            }.bind(this),
         );
     }
 
@@ -350,15 +367,7 @@ export class Instance
             const parent: Instance = abortion.Parent();
             if (parent.Is_Alive()) {
                 const child: Instance = abortion.Child();
-                // broken because we aren't removing it from this entity's children also.
-                // not sure how to untangle this part with Die(), but we'll get there.
-                // it actually seems to be refreshing fine in any case just with adoptions above,
-                // but I expect that won't be the case if a On_Death() or Before_Death() is waiting.
-                // yeah just checked, and what's happening is that the elements are doubling up
-                // because we haven't removed this from the dom first, which we have to do.
-                // but we want to keep the children on the entity and let the death event remove them
-                // when they are done, or maybe even here after we wait below.
-                //parent.Element().removeChild(child.Element());
+                parent.Element().removeChild(child.Element());
                 deaths.push(child.Die());
             }
         }
@@ -375,17 +384,27 @@ export class Instance
                 Promise<void>
             {
                 if (this.Is_Alive()) {
-                    // We callback the override first so that the parent and children
+                    // We callback this override first so that the parent and children
                     // are still accessible to the handler.
                     await this.Before_Death();
 
-                    await this.Kill_All_Children();
-
-                    await this.On_Death();
+                    await Promise.all(
+                        this.children.map(
+                            async function (
+                                child: Instance,
+                            ):
+                                Promise<void>
+                            {
+                                await child.Die();
+                            },
+                        ),
+                    );
 
                     if (this.Has_Parent()) {
                         this.Parent().Remove_Child(this);
                     }
+
+                    await this.On_Death();
 
                     this.Event_Grid().Remove(this);
 
@@ -585,9 +604,9 @@ export class Instance
             `A child must not have a parent to be added to another parent.`,
         );
 
-        this.Element().appendChild(child.Element());
         this.children.push(child);
         child.parent = this;
+        this.Element().appendChild(child.Element());
     }
 
     private Remove_Child(
@@ -634,7 +653,11 @@ export class Instance
         Utils.Assert(child.Has_Parent());
         Utils.Assert(child.Parent() === this);
 
-        this.Element().removeChild(child.Element());
+        if (child.Element().parentElement === this.Element()) {
+            // When an entity is aborted, it's already removed
+            // from its parent element at this point
+            this.Element().removeChild(child.Element());
+        }
         for (let idx = child_index + 1, end = this.Child_Count(); idx < end; idx += 1) {
             this.children[idx - 1] = this.children[idx];
         }
@@ -642,27 +665,6 @@ export class Instance
         child.parent = null;
 
         return child;
-    }
-
-    private async Kill_All_Children():
-        Promise<void>
-    {
-        Utils.Assert(
-            this.Is_Alive(),
-            `Cannot kill children of a dead parent.`,
-        );
-
-        await Promise.all(
-            this.children.map(
-                async function (
-                    child: Instance,
-                ):
-                    Promise<void>
-                {
-                    await child.Die();
-                },
-            ),
-        );
     }
 
     Adopt_Child(
@@ -687,6 +689,12 @@ export class Instance
             `A child must not have a parent to be adopted.`,
         );
 
+        // This essentially starts a latent stack.
+        // First the child is adopted and added to the entity
+        // and then when the dom is batch updated, it's
+        // added to the element as a child.
+        // And then when the child is aborted, it's
+        // first removed from the element and then the entity.
         this.children.push(child);
         child.parent = this;
 
