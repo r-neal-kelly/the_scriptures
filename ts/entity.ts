@@ -324,7 +324,7 @@ export class Instance
                     // Even though children can update the adoptions
                     // and abortions arrays asynchronously, their children
                     // are still added in order relative to itself.
-                    // Okay, we need to skip calling refresh on any just
+                    // We need to skip calling refresh on any just
                     // adopted children, because their life event calls
                     // refresh. We also skip calling refresh on abortions
                     // to avoid unnecessary creation of entities in their
@@ -379,12 +379,36 @@ export class Instance
     ):
         Promise<void>
     {
+        // This method must be called within a queued
+        // callback to maintain the life-cycle properly.
         Utils.Assert(this.Is_Alive());
+
+        // We call this before removing the abortions from the dom,
+        // and while they are still attached to their parent entities.
+        // Thus every entity can look at their parents as well as their children.
+        // We don't queue this here because we are already in the queue, and we
+        // want this to finish before altering the dom.
+        // Waiting here will not deadlock the queue because abortions can only be children.
+        await Promise.all(
+            Array.from(abortions).map(
+                async function (
+                    abortion: Instance,
+                ):
+                    Promise<void>
+                {
+                    await abortion.Before_Dying();
+                },
+            ),
+        );
 
         // We update the dom all at once to limit draw calls.
         // Adoptions and abortions can come from the children
-        // of this entity and can be passed as an arena to
+        // of this entity and are passed as an arena to
         // children during the refresh cycle.
+        // It should be noted because of the lopsided nature of
+        // abortions not being able to have refresh call after abortion,
+        // the children of abortions are not within the abortions array,
+        // only the top of the branches being severed. Die and Before_Dying take this into account.
         const deaths: Array<Promise<void>> = [];
         for (const abortion of abortions) {
             const child: Instance = abortion;
@@ -409,7 +433,30 @@ export class Instance
             parent.Element().appendChild(child.Element());
         }
 
+        // This will not cause a deadlock in this entity's queue
+        // because all of the deaths are children and not its own.
         await Promise.all(deaths);
+    }
+
+    private async Before_Dying():
+        Promise<void>
+    {
+        // This function must be called within the context of a queued callback.
+        Utils.Assert(this.Is_Alive());
+
+        await Promise.all(
+            this.children.map(
+                async function (
+                    child: Instance,
+                ):
+                    Promise<void>
+                {
+                    await child.Before_Dying();
+                },
+            ),
+        );
+
+        await this.Before_Death();
     }
 
     async Die():
@@ -422,8 +469,6 @@ export class Instance
                 Promise<void>
             {
                 if (this.Is_Alive()) {
-                    await this.On_Death();
-
                     await Promise.all(
                         this.children.map(
                             async function (
@@ -440,6 +485,8 @@ export class Instance
                         this.Parent().Remove_Child(this);
                     }
 
+                    await this.On_Death();
+
                     this.Event_Grid().Remove(this);
 
                     this.element = document.body;
@@ -455,18 +502,58 @@ export class Instance
         return [];
     }
 
+    /*
+        Overriding this event handler allows you to return CSS styles that will
+        be directly applied to the entity's underlying element immediately.
+        The returned styles are combined with and override already existing
+        styles on the entity.
+        If returning a styles object, the properties are standard CSS names,
+        with the '-' symbol in their names.
+        A return string should have valid CSS code within it, as if you were
+        writing a valid CSS class.
+        Children get this event after their parents.
+        All children receive this event at the same time.
+        If a child is aborted during this event, it still receive the event.
+    */
     async On_Restyle():
         Promise<Styles | string>
     {
         return {};
     }
 
+    /*
+        Overriding this event handler allows you to Adopt and Abort children
+        entities, thus building the internal tree structure of your entity.
+        Children get this event after their parents.
+        All children receive this event at the same time.
+        If a child is aborted during this event, it does not receive the event.
+    */
     async On_Refresh():
         Promise<void>
     {
         return;
     }
 
+    /*
+        Overriding this event handler allows you to work with an entity
+        before its children die and before it is removed from its parent.
+        The entity is still in the DOM during this event.
+        Children get this event before their parents.
+        All children receive the event at the same time.
+    */
+    async Before_Death():
+        Promise<void>
+    {
+        return;
+    }
+
+    /*
+        Overriding this event handler allows you to work with an entity
+        after its children die and after it has been removed from its parent.
+        The entity is no longer in the DOM during this event.
+        Children get this event before their parents.
+        All children receive the event at the same time.
+    */
     async On_Death():
         Promise<void>
     {
