@@ -5,7 +5,7 @@ import * as Messenger from "./messenger.js";
 export class Grid
 {
     private messenger: Messenger.Instance;
-    private objects: Map<Object, Listeners>; // why are we using a map again?
+    private objects: Map<Object, Listeners>; // we use a map so we can hash the Object itself
     private execution_frames: { [index: Affix]: Execution.Frame };
 
     constructor()

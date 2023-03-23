@@ -29,8 +29,6 @@ export class Instance extends Entity.Instance
     override async On_Life():
         Promise<Array<Event.Listener_Info>>
     {
-        console.log(`on life`, this.ID(), this.Model().Name()); // temp
-
         this.Element().addEventListener(`click`, this.On_Click.bind(this));
 
         return [
@@ -85,15 +83,6 @@ export class Instance extends Entity.Instance
         this.Abort_All_Children();
 
         this.Element().textContent = this.Model().Name();
-    }
-
-    // temp
-    override async On_Death():
-        Promise<void>
-    {
-        console.log(`on death`, this.ID(), this.Model().Name());
-        //document.body.appendChild(this.Element());
-        this.Element().style.color = `red`;
     }
 
     async On_Click(

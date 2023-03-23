@@ -97,8 +97,8 @@ export class Instance
     private styles: Styles;
     private parent: Instance | null;
     private children: Array<Instance>; // it may be worth using an object with an index attached to instance?
-    private refresh_adoptions: Array<Parent_And_Child> | null;
-    private refresh_abortions: Array<Parent_And_Child> | null;
+    private refresh_adoptions: Set<Instance> | null;
+    private refresh_abortions: Set<Instance> | null;
 
     private event_grid: Event.Grid;
     private life_cycle_queue: Queue.Instance;
@@ -161,8 +161,8 @@ export class Instance
 
                 this.Apply_Styles(await this.On_Restyle());
 
-                this.refresh_adoptions = [];
-                this.refresh_abortions = [];
+                this.refresh_adoptions = new Set();
+                this.refresh_abortions = new Set();
                 await this.On_Refresh();
                 await this.Execute_Adoptions_And_Abortions(
                     {
@@ -252,8 +252,8 @@ export class Instance
             // and Refresh_Implementation itself adds a callback to the queue which will
             // run after these. We can't actually combine the two into one callback because
             // it does add to the queue, and we would end up creating a deadlock.
-            const adoptions: Array<Parent_And_Child> = [];
-            const abortions: Array<Parent_And_Child> = [];
+            const adoptions: Set<Instance> = new Set();
+            const abortions: Set<Instance> = new Set();
 
             // We could also remove the queue from Refresh_Implementation, put it here
             // and when it calls its child, but when it calls the child, it has to use
@@ -290,8 +290,8 @@ export class Instance
             adoptions,
             abortions,
         }: {
-            adoptions: Array<Parent_And_Child>,
-            abortions: Array<Parent_And_Child>,
+            adoptions: Set<Instance>,
+            abortions: Set<Instance>,
         },
     ):
         Promise<void>
@@ -320,6 +320,11 @@ export class Instance
                     // Even though children can update the adoptions
                     // and abortions arrays asynchronously, their children
                     // are still added in order relative to itself.
+                    // Okay, we need to skip calling refresh on any just
+                    // adopted children, because their life event calls
+                    // refresh. We also skip calling refresh on abortions
+                    // to avoid unnecessary creation of entities in their
+                    // refresh calls.
                     await Promise.all(
                         this.children.map(
                             async function (
@@ -327,12 +332,17 @@ export class Instance
                             ):
                                 Promise<void>
                             {
-                                await child.Refresh_Implementation(
-                                    {
-                                        adoptions: adoptions,
-                                        abortions: abortions,
-                                    },
-                                );
+                                if (
+                                    !adoptions.has(child) &&
+                                    !abortions.has(child)
+                                ) {
+                                    await child.Refresh_Implementation(
+                                        {
+                                            adoptions: adoptions,
+                                            abortions: abortions,
+                                        },
+                                    );
+                                }
                             },
                         ),
                     );
@@ -346,8 +356,8 @@ export class Instance
             adoptions,
             abortions,
         }: {
-            adoptions: Array<Parent_And_Child>,
-            abortions: Array<Parent_And_Child>,
+            adoptions: Set<Instance>,
+            abortions: Set<Instance>,
         },
     ):
         Promise<void>
@@ -359,8 +369,8 @@ export class Instance
         // of this entity and can be passed as an arena to
         // children during the refresh cycle.
         for (const adoption of adoptions) {
+            const child: Instance = adoption;
             const parent: Instance = adoption.Parent();
-            const child: Instance = adoption.Child();
 
             Utils.Assert(parent.Is_Alive());
             Utils.Assert(child.Is_Alive());
@@ -371,8 +381,8 @@ export class Instance
 
         const deaths: Array<Promise<void>> = [];
         for (const abortion of abortions) {
+            const child: Instance = abortion;
             const parent: Instance = abortion.Parent();
-            const child: Instance = abortion.Child();
 
             Utils.Assert(parent.Is_Alive());
             Utils.Assert(child.Is_Alive());
@@ -394,6 +404,8 @@ export class Instance
                 Promise<void>
             {
                 if (this.Is_Alive()) {
+                    await this.On_Death();
+
                     await Promise.all(
                         this.children.map(
                             async function (
@@ -409,8 +421,6 @@ export class Instance
                     if (this.Has_Parent()) {
                         this.Parent().Remove_Child(this);
                     }
-
-                    await this.On_Death();
 
                     this.Event_Grid().Remove(this);
 
@@ -608,6 +618,7 @@ export class Instance
         );
 
         if (child.Element().parentElement === this.Element()) {
+            // It would already be removed by this point if it was aborted
             this.Element().removeChild(child.Element());
         }
 
@@ -642,17 +653,15 @@ export class Instance
             `A child must not have a parent to be adopted.`,
         );
 
+        // We have a latent stack between this and abort.
+        // First the child is added to an entity,
+        // then to the dom,
+        // then it's removed from the dom,
+        // and then finally removed from its entity.
         this.children.push(child);
         child.parent = this;
 
-        (this.refresh_adoptions as Array<Parent_And_Child>).push(
-            new Parent_And_Child(
-                {
-                    parent: this,
-                    child: child,
-                },
-            ),
-        );
+        (this.refresh_adoptions as Set<Instance>).add(child);
     }
 
     Abort_Child(
@@ -677,22 +686,7 @@ export class Instance
             `A child must have this parent to be aborted.`,
         );
 
-        const child_index: Index = this.children.indexOf(child);
-        Utils.Assert(child_index > -1);
-        for (let idx = child_index + 1, end = this.Child_Count(); idx < end; idx += 1) {
-            this.children[idx - 1] = this.children[idx];
-        }
-        this.children.pop();
-        child.parent = null;
-
-        (this.refresh_abortions as Array<Parent_And_Child>).push(
-            new Parent_And_Child(
-                {
-                    parent: this,
-                    child: child,
-                },
-            ),
-        );
+        (this.refresh_abortions as Set<Instance>).add(child);
     }
 
     Abort_All_Children():
