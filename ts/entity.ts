@@ -55,38 +55,6 @@ export class Animation_Frame
     }
 }
 
-class Parent_And_Child
-{
-    private parent: Instance;
-    private child: Instance;
-
-    constructor(
-        {
-            parent,
-            child,
-        }: {
-            parent: Instance,
-            child: Instance,
-        },
-    )
-    {
-        this.parent = parent;
-        this.child = child;
-    }
-
-    Parent():
-        Instance
-    {
-        return this.parent;
-    }
-
-    Child():
-        Instance
-    {
-        return this.child;
-    }
-}
-
 export class Instance
 {
     private static next_id: ID = 0;
@@ -164,7 +132,7 @@ export class Instance
                 this.refresh_adoptions = new Set();
                 this.refresh_abortions = new Set();
                 await this.On_Refresh();
-                await this.Execute_Adoptions_And_Abortions(
+                await this.Adopt_And_Abort_Unqueued(
                     {
                         adoptions: this.refresh_adoptions,
                         abortions: this.refresh_abortions,
@@ -278,7 +246,7 @@ export class Instance
                 ):
                     Promise<void>
                 {
-                    await this.Execute_Adoptions_And_Abortions(
+                    await this.Adopt_And_Abort_Unqueued(
                         {
                             adoptions,
                             abortions,
@@ -368,7 +336,7 @@ export class Instance
         );
     }
 
-    private async Execute_Adoptions_And_Abortions(
+    private async Adopt_And_Abort_Unqueued(
         {
             adoptions,
             abortions,
@@ -379,8 +347,8 @@ export class Instance
     ):
         Promise<void>
     {
-        // This method must be called within a queued
-        // callback to maintain the life-cycle properly.
+        // This function must be called within the context of a queued callback to avoid deadlock.
+
         Utils.Assert(this.Is_Alive());
 
         // We call this before removing the abortions from the dom,
@@ -396,7 +364,7 @@ export class Instance
                 ):
                     Promise<void>
                 {
-                    await abortion.Before_Dying();
+                    await abortion.Before_Dying_Unqueued();
                 },
             ),
         );
@@ -438,10 +406,11 @@ export class Instance
         await Promise.all(deaths);
     }
 
-    private async Before_Dying():
+    private async Before_Dying_Unqueued():
         Promise<void>
     {
-        // This function must be called within the context of a queued callback.
+        // This function must be called within the context of a queued callback to avoid deadlock.
+
         Utils.Assert(this.Is_Alive());
 
         await Promise.all(
@@ -451,7 +420,7 @@ export class Instance
                 ):
                     Promise<void>
                 {
-                    await child.Before_Dying();
+                    await child.Before_Dying_Unqueued();
                 },
             ),
         );
@@ -506,14 +475,14 @@ export class Instance
         Overriding this event handler allows you to return CSS styles that will
         be directly applied to the entity's underlying element immediately.
         The returned styles are combined with and override already existing
-        styles on the entity.
+        styles stored on the entity.
         If returning a styles object, the properties are standard CSS names,
-        with the '-' symbol in their names.
+        that use the '-' symbol, and not camelCase.
         A return string should have valid CSS code within it, as if you were
-        writing a valid CSS class.
+        writing the interior of a valid CSS class, without the '{' and '}'.
         Children get this event after their parents.
         All children receive this event at the same time.
-        If a child is aborted during this event, it still receive the event.
+        If a child is aborted during this event, it still receives the event.
     */
     async On_Restyle():
         Promise<Styles | string>

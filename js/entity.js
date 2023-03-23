@@ -26,18 +26,6 @@ export class Animation_Frame {
         return this.elapsed;
     }
 }
-class Parent_And_Child {
-    constructor({ parent, child, }) {
-        this.parent = parent;
-        this.child = child;
-    }
-    Parent() {
-        return this.parent;
-    }
-    Child() {
-        return this.child;
-    }
-}
 export class Instance {
     constructor(element, event_grid) {
         Utils.Assert(Instance.next_id !== Infinity, `Can't create another ID!`);
@@ -73,7 +61,7 @@ export class Instance {
                     this.refresh_adoptions = new Set();
                     this.refresh_abortions = new Set();
                     yield this.On_Refresh();
-                    yield this.Execute_Adoptions_And_Abortions({
+                    yield this.Adopt_And_Abort_Unqueued({
                         adoptions: this.refresh_adoptions,
                         abortions: this.refresh_abortions,
                     });
@@ -144,7 +132,7 @@ export class Instance {
                 });
                 yield this.life_cycle_queue.Enqueue(function () {
                     return __awaiter(this, void 0, void 0, function* () {
-                        yield this.Execute_Adoptions_And_Abortions({
+                        yield this.Adopt_And_Abort_Unqueued({
                             adoptions,
                             abortions,
                         });
@@ -208,10 +196,9 @@ export class Instance {
             }.bind(this));
         });
     }
-    Execute_Adoptions_And_Abortions({ adoptions, abortions, }) {
+    Adopt_And_Abort_Unqueued({ adoptions, abortions, }) {
         return __awaiter(this, void 0, void 0, function* () {
-            // This method must be called within a queued
-            // callback to maintain the life-cycle properly.
+            // This function must be called within the context of a queued callback to avoid deadlock.
             Utils.Assert(this.Is_Alive());
             // We call this before removing the abortions from the dom,
             // and while they are still attached to their parent entities.
@@ -221,7 +208,7 @@ export class Instance {
             // Waiting here will not deadlock the queue because abortions can only be children.
             yield Promise.all(Array.from(abortions).map(function (abortion) {
                 return __awaiter(this, void 0, void 0, function* () {
-                    yield abortion.Before_Dying();
+                    yield abortion.Before_Dying_Unqueued();
                 });
             }));
             // We update the dom all at once to limit draw calls.
@@ -255,13 +242,13 @@ export class Instance {
             yield Promise.all(deaths);
         });
     }
-    Before_Dying() {
+    Before_Dying_Unqueued() {
         return __awaiter(this, void 0, void 0, function* () {
-            // This function must be called within the context of a queued callback.
+            // This function must be called within the context of a queued callback to avoid deadlock.
             Utils.Assert(this.Is_Alive());
             yield Promise.all(this.children.map(function (child) {
                 return __awaiter(this, void 0, void 0, function* () {
-                    yield child.Before_Dying();
+                    yield child.Before_Dying_Unqueued();
                 });
             }));
             yield this.Before_Death();
@@ -298,14 +285,14 @@ export class Instance {
         Overriding this event handler allows you to return CSS styles that will
         be directly applied to the entity's underlying element immediately.
         The returned styles are combined with and override already existing
-        styles on the entity.
+        styles stored on the entity.
         If returning a styles object, the properties are standard CSS names,
-        with the '-' symbol in their names.
+        that use the '-' symbol, and not camelCase.
         A return string should have valid CSS code within it, as if you were
-        writing a valid CSS class.
+        writing the interior of a valid CSS class, without the '{' and '}'.
         Children get this event after their parents.
         All children receive this event at the same time.
-        If a child is aborted during this event, it still receive the event.
+        If a child is aborted during this event, it still receives the event.
     */
     On_Restyle() {
         return __awaiter(this, void 0, void 0, function* () {
