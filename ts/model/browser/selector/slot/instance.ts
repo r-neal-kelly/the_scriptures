@@ -11,6 +11,7 @@ import * as Item from "./item.js";
 export class Instance
 {
     private selector: Selector.Instance;
+    private index: Index;
     private type: Type;
     private items: Array<Item.Instance>;
     private selected_item: Item.Instance | null;
@@ -18,16 +19,19 @@ export class Instance
     constructor(
         {
             selector,
+            index,
             type,
             item_names,
         }: {
             selector: Selector.Instance,
+            index: Index,
             type: Type,
             item_names: Array<Name>,
         },
     )
     {
         this.selector = selector;
+        this.index = index;
         this.type = type;
         this.items = [];
         this.selected_item = null;
@@ -51,10 +55,24 @@ export class Instance
         return this.selector;
     }
 
+    Index():
+        Index
+    {
+        return this.index;
+    }
+
     Type():
         Type
     {
         return this.type;
+    }
+
+    Has_Item(
+        item: Item.Instance,
+    ):
+        boolean
+    {
+        return this.items.includes(item);
     }
 
     Items():
@@ -98,11 +116,23 @@ export class Instance
         return this.selected_item;
     }
 
-    Select_Item(
-        item_index: Index,
+    async Select_Item_Internally(
+        item: Item.Instance,
     ):
-        void
+        Promise<void>
     {
-        this.selected_item = this.Item_At(item_index);
+        Utils.Assert(
+            this.Has_Item(item),
+            `The item does not belong to this slot.`,
+        );
+
+        this.selected_item = item;
+
+        await this.Selector().Select_Item_Internally(
+            {
+                slot: this,
+                item: item,
+            },
+        );
     }
 }

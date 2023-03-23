@@ -56,7 +56,10 @@ export class Instance extends Async.Instance {
     Slot_Count() {
         return this.slots.length;
     }
-    Has_Slot(slot_type) {
+    Has_Slot(slot) {
+        return this.slots.includes(slot);
+    }
+    Has_Slot_Type(slot_type) {
         for (const slot of this.slots) {
             if (slot.Type() === slot_type) {
                 return true;
@@ -126,7 +129,8 @@ export class Instance extends Async.Instance {
             const max_slot_count = this.Max_Slot_Count();
             const slot_count = this.Slot_Count();
             Utils.Assert(slot_count < max_slot_count, `All slots have been pushed already.`);
-            const slot_type = this.Slot_Types()[slot_count];
+            const slot_index = slot_count;
+            const slot_type = this.Slot_Types()[slot_index];
             const slot_query = this.Slots().map(function (slot, slot_index) {
                 let query_name;
                 if (slot_index === 0 &&
@@ -148,34 +152,35 @@ export class Instance extends Async.Instance {
             }));
             this.slots.push(new Slot.Instance({
                 selector: this,
+                index: slot_index,
                 type: slot_type,
                 item_names: yield this.Browser().Data().Names(slot_query),
             }));
         });
     }
     Has_Books() {
-        return this.Has_Slot(Slot.Type.BOOKS);
+        return this.Has_Slot_Type(Slot.Type.BOOKS);
     }
     Books() {
         Utils.Assert(this.Has_Books(), `Doesn't have books.`);
         return this.Slot(Slot.Type.BOOKS);
     }
     Has_Languages() {
-        return this.Has_Slot(Slot.Type.LANGUAGES);
+        return this.Has_Slot_Type(Slot.Type.LANGUAGES);
     }
     Languages() {
         Utils.Assert(this.Has_Languages(), `Doesn't have languages.`);
         return this.Slot(Slot.Type.LANGUAGES);
     }
     Has_Versions() {
-        return this.Has_Slot(Slot.Type.VERSIONS);
+        return this.Has_Slot_Type(Slot.Type.VERSIONS);
     }
     Versions() {
         Utils.Assert(this.Has_Versions(), `Doesn't have versions.`);
         return this.Slot(Slot.Type.VERSIONS);
     }
     Has_Files() {
-        return this.Has_Slot(Slot.Type.FILES);
+        return this.Has_Slot_Type(Slot.Type.FILES);
     }
     Files() {
         Utils.Assert(this.Has_Files(), `Doesn't have files.`);
@@ -185,8 +190,13 @@ export class Instance extends Async.Instance {
         return __awaiter(this, void 0, void 0, function* () {
         });
     }
-    Select_Item_At(type, index) {
+    Select_Item_Internally({ slot, item, }) {
         return __awaiter(this, void 0, void 0, function* () {
+            Utils.Assert(this.Has_Slot(slot), `The slot does not belong to this selector.`);
+            if (slot.Type() !== Slot.Type.FILES &&
+                this.Slot_At(this.Slot_Count() - 1) === slot) {
+                yield this.Push_Slot();
+            }
         });
     }
     Select_Items({ book_name, language_name, version_name, file_name, }) {

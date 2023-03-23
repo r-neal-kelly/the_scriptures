@@ -18,14 +18,12 @@ export class Instance extends Entity.Instance {
     }
     On_Restyle() {
         return __awaiter(this, void 0, void 0, function* () {
-            return ({
-                "display": `flex`,
-                "width": `100%`,
-                "height": `100%`,
-                "overflow-x": `auto`,
-                "overflow-y": `auto`,
-                "color": `white`,
-            });
+            return `
+            width: 100%;
+
+            overflow-x: auto;
+            overflow-y: auto;
+        `;
         });
     }
     On_Refresh() {

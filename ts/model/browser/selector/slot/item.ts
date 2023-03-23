@@ -43,4 +43,16 @@ export class Instance
     {
         return this.name;
     }
+
+    Is_Selected():
+        boolean
+    {
+        return this.Slot().Selected_Item() === this;
+    }
+
+    async Select():
+        Promise<void>
+    {
+        await this.Slot().Select_Item_Internally(this);
+    }
 }

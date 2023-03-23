@@ -1,8 +1,18 @@
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 import * as Utils from "../../../../utils.js";
 import * as Item from "./item.js";
 export class Instance {
-    constructor({ selector, type, item_names, }) {
+    constructor({ selector, index, type, item_names, }) {
         this.selector = selector;
+        this.index = index;
         this.type = type;
         this.items = [];
         this.selected_item = null;
@@ -17,8 +27,14 @@ export class Instance {
     Selector() {
         return this.selector;
     }
+    Index() {
+        return this.index;
+    }
     Type() {
         return this.type;
+    }
+    Has_Item(item) {
+        return this.items.includes(item);
     }
     Items() {
         return Array.from(this.items);
@@ -37,7 +53,14 @@ export class Instance {
     Selected_Item() {
         return this.selected_item;
     }
-    Select_Item(item_index) {
-        this.selected_item = this.Item_At(item_index);
+    Select_Item_Internally(item) {
+        return __awaiter(this, void 0, void 0, function* () {
+            Utils.Assert(this.Has_Item(item), `The item does not belong to this slot.`);
+            this.selected_item = item;
+            yield this.Selector().Select_Item_Internally({
+                slot: this,
+                item: item,
+            });
+        });
     }
 }

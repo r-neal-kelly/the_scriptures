@@ -294,6 +294,8 @@ export class Instance
         return;
     }
 
+    // maybe add On_Adopted and On_Orphaned
+
     ID():
         ID
     {

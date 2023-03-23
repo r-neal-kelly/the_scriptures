@@ -65,77 +65,7 @@ class Body extends Entity.Instance {
                     yield this.Die();
                 });
             }.bind(this));
-            this.Element().addEventListener(`click`, function () {
-                this.Send(new Event.Info({
-                    affix: "Test",
-                    suffixes: [],
-                    type: Event.Type.IMMEDIATE,
-                    data: {},
-                }));
-            }.bind(this));
-            return [
-                new Event.Listener_Info({
-                    event_name: new Event.Name(Event.Prefix.BEFORE, "Test"),
-                    event_handler: () => console.log("before Infinity"),
-                    event_priority: Infinity,
-                }),
-                new Event.Listener_Info({
-                    event_name: new Event.Name(Event.Prefix.BEFORE, "Test"),
-                    event_handler: function (data) {
-                        return __awaiter(this, void 0, void 0, function* () {
-                            console.log("before 3");
-                            yield Utils.Wait_Seconds(1);
-                            console.log(Event.Instance.From(data));
-                        });
-                    },
-                    event_priority: 3,
-                }),
-                new Event.Listener_Info({
-                    event_name: new Event.Name(Event.Prefix.BEFORE, "Test"),
-                    event_handler: () => console.log("before 2"),
-                    event_priority: 2,
-                }),
-                new Event.Listener_Info({
-                    event_name: new Event.Name(Event.Prefix.BEFORE, "Test"),
-                    event_handler: () => console.log("before 1"),
-                    event_priority: 1,
-                }),
-                new Event.Listener_Info({
-                    event_name: new Event.Name(Event.Prefix.BEFORE, "Test"),
-                    event_handler: () => console.log("before -Infinity"),
-                    event_priority: -Infinity,
-                }),
-                new Event.Listener_Info({
-                    event_name: new Event.Name(Event.Prefix.ON, "Test"),
-                    event_handler: () => console.log("on 3"),
-                    event_priority: 3,
-                }),
-                new Event.Listener_Info({
-                    event_name: new Event.Name(Event.Prefix.ON, "Test"),
-                    event_handler: () => console.log("on 2"),
-                    event_priority: 2,
-                }),
-                new Event.Listener_Info({
-                    event_name: new Event.Name(Event.Prefix.ON, "Test"),
-                    event_handler: () => console.log("on 1"),
-                    event_priority: 1,
-                }),
-                new Event.Listener_Info({
-                    event_name: new Event.Name(Event.Prefix.AFTER, "Test"),
-                    event_handler: () => console.log("after 3"),
-                    event_priority: 3,
-                }),
-                new Event.Listener_Info({
-                    event_name: new Event.Name(Event.Prefix.AFTER, "Test"),
-                    event_handler: () => console.log("after 2"),
-                    event_priority: 2,
-                }),
-                new Event.Listener_Info({
-                    event_name: new Event.Name(Event.Prefix.AFTER, "Test"),
-                    event_handler: () => console.log("after 1"),
-                    event_priority: 1,
-                }),
-            ];
+            return [];
         });
     }
     On_Refresh() {

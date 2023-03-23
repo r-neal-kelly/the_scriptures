@@ -186,6 +186,7 @@ export class Instance {
             return;
         });
     }
+    // maybe add On_Adopted and On_Orphaned
     ID() {
         Utils.Assert(this.Is_Alive(), `Cannot get an ID from a dead entity.`);
         return this.id;

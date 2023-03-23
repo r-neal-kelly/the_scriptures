@@ -8,6 +8,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import * as Entity from "../../../entity.js";
+import * as Event from "../../../event.js";
 import * as Slot from "./slot.js";
 export class Instance extends Entity.Instance {
     constructor({ model, browser, }) {
@@ -16,16 +17,30 @@ export class Instance extends Entity.Instance {
         this.browser = browser;
         this.slots = null;
     }
+    On_Life() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return [
+                new Event.Listener_Info({
+                    event_name: new Event.Name(Event.Prefix.AFTER, "Selector_Slot_Item_Select"),
+                    event_handler: this.After_Select.bind(this),
+                    event_priority: 0,
+                }),
+            ];
+        });
+    }
     On_Restyle() {
         return __awaiter(this, void 0, void 0, function* () {
-            return ({
-                "display": `grid`,
-                "width": `100%`,
-                "height": `100%`,
-                "overflow-x": `hidden`,
-                "overflow-y": `hidden`,
-                "color": `white`,
-            });
+            return `
+            display: grid;
+            grid-template-rows: 1fr;
+            grid-template-columns: repeat(4,1fr);
+
+            width: 100%;
+            height: 100%;
+
+            overflow-x: hidden;
+            overflow-y: hidden;
+        `;
         });
     }
     On_Refresh() {
@@ -40,6 +55,11 @@ export class Instance extends Entity.Instance {
                 this.slots.push(slot_view);
                 this.Add_Child(slot_view);
             }
+        });
+    }
+    After_Select({ item, }) {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.Refresh();
         });
     }
     Model() {

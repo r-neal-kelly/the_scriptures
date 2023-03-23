@@ -31,17 +31,12 @@ export class Instance extends Entity.Instance
     override async On_Restyle():
         Promise<Entity.Styles | string>
     {
-        return ({
-            "display": `flex`,
+        return `
+            width: 100%;
 
-            "width": `100%`,
-            "height": `100%`,
-
-            "overflow-x": `auto`,
-            "overflow-y": `auto`,
-
-            "color": `white`,
-        });
+            overflow-x: auto;
+            overflow-y: auto;
+        `;
     }
 
     override async On_Refresh():

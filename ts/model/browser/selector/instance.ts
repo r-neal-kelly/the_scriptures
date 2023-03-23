@@ -93,6 +93,14 @@ export class Instance extends Async.Instance
     }
 
     Has_Slot(
+        slot: Slot.Instance,
+    ):
+        boolean
+    {
+        return this.slots.includes(slot);
+    }
+
+    Has_Slot_Type(
         slot_type: Slot.Type,
     ):
         boolean
@@ -206,7 +214,8 @@ export class Instance extends Async.Instance
             `All slots have been pushed already.`,
         );
 
-        const slot_type: Slot.Type = this.Slot_Types()[slot_count];
+        const slot_index: Index = slot_count;
+        const slot_type: Slot.Type = this.Slot_Types()[slot_index];
         const slot_query: Array<Data.Query.Type_And_Name> = this.Slots().map(
             function (
                 this: Instance,
@@ -252,6 +261,7 @@ export class Instance extends Async.Instance
             new Slot.Instance(
                 {
                     selector: this,
+                    index: slot_index,
                     type: slot_type,
                     item_names: await this.Browser().Data().Names(slot_query),
                 },
@@ -262,7 +272,7 @@ export class Instance extends Async.Instance
     Has_Books():
         boolean
     {
-        return this.Has_Slot(Slot.Type.BOOKS);
+        return this.Has_Slot_Type(Slot.Type.BOOKS);
     }
 
     Books():
@@ -279,7 +289,7 @@ export class Instance extends Async.Instance
     Has_Languages():
         boolean
     {
-        return this.Has_Slot(Slot.Type.LANGUAGES);
+        return this.Has_Slot_Type(Slot.Type.LANGUAGES);
     }
 
     Languages():
@@ -296,7 +306,7 @@ export class Instance extends Async.Instance
     Has_Versions():
         boolean
     {
-        return this.Has_Slot(Slot.Type.VERSIONS);
+        return this.Has_Slot_Type(Slot.Type.VERSIONS);
     }
 
     Versions():
@@ -313,7 +323,7 @@ export class Instance extends Async.Instance
     Has_Files():
         boolean
     {
-        return this.Has_Slot(Slot.Type.FILES);
+        return this.Has_Slot_Type(Slot.Type.FILES);
     }
 
     Files():
@@ -335,12 +345,28 @@ export class Instance extends Async.Instance
     {
     }
 
-    async Select_Item_At(
-        type: Slot.Type,
-        index: Index,
+    async Select_Item_Internally(
+        {
+            slot,
+            item,
+        }: {
+            slot: Slot.Instance,
+            item: Slot.Item.Instance,
+        },
     ):
         Promise<void>
     {
+        Utils.Assert(
+            this.Has_Slot(slot),
+            `The slot does not belong to this selector.`,
+        );
+
+        if (
+            slot.Type() !== Slot.Type.FILES &&
+            this.Slot_At(this.Slot_Count() - 1) === slot
+        ) {
+            await this.Push_Slot();
+        }
     }
 
     async Select_Items(
