@@ -62,29 +62,23 @@ export class Instance {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.life_cycle_queue.Enqueue(function () {
                 return __awaiter(this, void 0, void 0, function* () {
+                    Utils.Assert(this.Is_Alive());
                     // waiting here allows the constructor
                     // of the derived type to finish before this is called
                     // we could alternatively have the derived type call this func
                     yield Utils.Wait_Milliseconds(1);
-                    if (this.Is_Alive()) {
-                        const listeners = yield this.On_Life();
-                        if (this.Is_Alive()) {
-                            this.Event_Grid().Add_Many_Listeners(this, listeners);
-                            this.Apply_Styles(yield this.On_Restyle());
-                            if (this.Is_Alive()) {
-                                this.refresh_adoptions = [];
-                                this.refresh_abortions = [];
-                                yield this.On_Refresh();
-                                // this handles Is_Alive is a different way
-                                yield this.Execute_Adoptions_And_Abortions({
-                                    adoptions: this.refresh_adoptions,
-                                    abortions: this.refresh_abortions,
-                                });
-                                this.refresh_adoptions = null;
-                                this.refresh_abortions = null;
-                            }
-                        }
-                    }
+                    const listeners = yield this.On_Life();
+                    this.Event_Grid().Add_Many_Listeners(this, listeners);
+                    this.Apply_Styles(yield this.On_Restyle());
+                    this.refresh_adoptions = [];
+                    this.refresh_abortions = [];
+                    yield this.On_Refresh();
+                    yield this.Execute_Adoptions_And_Abortions({
+                        adoptions: this.refresh_adoptions,
+                        abortions: this.refresh_abortions,
+                    });
+                    this.refresh_adoptions = null;
+                    this.refresh_abortions = null;
                 });
             }.bind(this));
         });
@@ -97,17 +91,11 @@ export class Instance {
                         // We need to restyle before we do
                         // children so they have up to date data.
                         this.Apply_Styles(yield this.On_Restyle());
-                        if (this.Is_Alive()) {
-                            // It's assumed that order may matter,
-                            // and thus we treat the children as a stack
-                            // both during life and death.
-                            for (const child of this.children) {
+                        yield Promise.all(this.children.map(function (child) {
+                            return __awaiter(this, void 0, void 0, function* () {
                                 yield child.Restyle();
-                                if (!this.Is_Alive()) {
-                                    break;
-                                }
-                            }
-                        }
+                            });
+                        }));
                     }
                 });
             }.bind(this));
@@ -120,11 +108,11 @@ export class Instance {
         }
         else {
             const styles_object = {};
-            const styles_array = styles.split(/\s*;\s*/).map(s => s.match(/[^\s:]+/g));
+            const styles_array = styles.split(/\s*;\s*/).map(s => s.match(/[^:]+/g));
             for (const style of styles_array) {
                 if (style != null &&
                     style.length === 2) {
-                    styles_object[style[0]] = style[1];
+                    styles_object[style[0].trim()] = style[1].trim();
                 }
             }
             this.styles = Object.assign(this.styles, styles_object);
@@ -133,29 +121,34 @@ export class Instance {
     }
     Refresh() {
         return __awaiter(this, void 0, void 0, function* () {
-            // we need to queue like so in case a parent tries to call Refresh_Implementation
-            // while this is still operating. Because Enqueue doesn't wait to put the
-            // callbacks in the queue, this will certainly run one after the other,
-            // and Refresh_Implementation itself adds a callback to the queue which will
-            // run after these. We can't actually combine the two into one callback because
-            // it does add to the queue, and we would end up creating a deadlock.
-            const adoptions = [];
-            const abortions = [];
-            // we could also remove the queue from Refresh_Implementation, put it here
-            // and when it calls its child, but when it calls the child, it has to use
-            // the child's queue. this does work how it is however.
-            this.Refresh_Implementation({
-                adoptions,
-                abortions,
-            });
-            return this.life_cycle_queue.Enqueue(function () {
-                return __awaiter(this, void 0, void 0, function* () {
-                    yield this.Execute_Adoptions_And_Abortions({
-                        adoptions,
-                        abortions,
-                    });
+            if (this.Is_Alive()) {
+                // we need to queue like so in case a parent tries to call Refresh_Implementation
+                // while this is still operating. Because Enqueue doesn't wait to put the
+                // callbacks in the queue, this will certainly run one after the other,
+                // and Refresh_Implementation itself adds a callback to the queue which will
+                // run after these. We can't actually combine the two into one callback because
+                // it does add to the queue, and we would end up creating a deadlock.
+                const adoptions = [];
+                const abortions = [];
+                // We could also remove the queue from Refresh_Implementation, put it here
+                // and when it calls its child, but when it calls the child, it has to use
+                // the child's queue. this does work how it is however.
+                // We DO NOT await here because we want these two to be queued one right after
+                // another. We can await on the second which itself waits on this before
+                // executing.
+                this.Refresh_Implementation({
+                    adoptions,
+                    abortions,
                 });
-            }.bind(this));
+                yield this.life_cycle_queue.Enqueue(function () {
+                    return __awaiter(this, void 0, void 0, function* () {
+                        yield this.Execute_Adoptions_And_Abortions({
+                            adoptions,
+                            abortions,
+                        });
+                    });
+                }.bind(this));
+            }
         });
     }
     Refresh_Implementation({ adoptions, abortions, }) {
@@ -168,28 +161,24 @@ export class Instance {
                         // have up to date data. Also because
                         // On_Refresh can add and remove children.
                         this.Apply_Styles(yield this.On_Restyle());
-                        if (this.Is_Alive()) {
-                            // These are temporarily stored during the refresh event
-                            // to save on both hot and cold memory.
-                            this.refresh_adoptions = adoptions;
-                            this.refresh_abortions = abortions;
-                            yield this.On_Refresh();
-                            this.refresh_adoptions = null;
-                            this.refresh_abortions = null;
-                            if (this.Is_Alive()) {
-                                // Even though children can update the adoptions
-                                // and abortions arrays asynchronously, their children
-                                // are still added in order relative to itself.
-                                yield Promise.all(this.children.map(function (child) {
-                                    return __awaiter(this, void 0, void 0, function* () {
-                                        yield child.Refresh_Implementation({
-                                            adoptions: adoptions,
-                                            abortions: abortions,
-                                        });
-                                    });
-                                }));
-                            }
-                        }
+                        // These are temporarily stored during the refresh event
+                        // to save on both hot and cold memory.
+                        this.refresh_adoptions = adoptions;
+                        this.refresh_abortions = abortions;
+                        yield this.On_Refresh();
+                        this.refresh_adoptions = null;
+                        this.refresh_abortions = null;
+                        // Even though children can update the adoptions
+                        // and abortions arrays asynchronously, their children
+                        // are still added in order relative to itself.
+                        yield Promise.all(this.children.map(function (child) {
+                            return __awaiter(this, void 0, void 0, function* () {
+                                yield child.Refresh_Implementation({
+                                    adoptions: adoptions,
+                                    abortions: abortions,
+                                });
+                            });
+                        }));
                     }
                 });
             }.bind(this));
@@ -197,25 +186,28 @@ export class Instance {
     }
     Execute_Adoptions_And_Abortions({ adoptions, abortions, }) {
         return __awaiter(this, void 0, void 0, function* () {
+            Utils.Assert(this.Is_Alive());
             // We update the dom all at once to limit draw calls.
-            // The dom is only updated after this entity and all
-            // its children have been refreshed as entities.
+            // Adoptions and abortions can come from the children
+            // of this entity and can be passed as an arena to
+            // children during the refresh cycle.
             for (const adoption of adoptions) {
                 const parent = adoption.Parent();
-                if (parent.Is_Alive()) {
-                    const child = adoption.Child();
-                    parent.Element().appendChild(child.Element());
-                }
+                const child = adoption.Child();
+                Utils.Assert(parent.Is_Alive());
+                Utils.Assert(child.Is_Alive());
+                Utils.Assert(child.Element().parentElement === null);
+                parent.Element().appendChild(child.Element());
             }
-            // we need to untangle the dom changes in Die event still. this breaks before death event
             const deaths = [];
             for (const abortion of abortions) {
                 const parent = abortion.Parent();
-                if (parent.Is_Alive()) {
-                    const child = abortion.Child();
-                    parent.Element().removeChild(child.Element());
-                    deaths.push(child.Die());
-                }
+                const child = abortion.Child();
+                Utils.Assert(parent.Is_Alive());
+                Utils.Assert(child.Is_Alive());
+                Utils.Assert(child.Element().parentElement === parent.Element());
+                parent.Element().removeChild(child.Element());
+                deaths.push(child.Die());
             }
             yield Promise.all(deaths);
         });
@@ -225,9 +217,6 @@ export class Instance {
             yield this.life_cycle_queue.Enqueue(function () {
                 return __awaiter(this, void 0, void 0, function* () {
                     if (this.Is_Alive()) {
-                        // We callback this override first so that the parent and children
-                        // are still accessible to the handler.
-                        yield this.Before_Death();
                         yield Promise.all(this.children.map(function (child) {
                             return __awaiter(this, void 0, void 0, function* () {
                                 yield child.Die();
@@ -256,11 +245,6 @@ export class Instance {
         });
     }
     On_Refresh() {
-        return __awaiter(this, void 0, void 0, function* () {
-            return;
-        });
-    }
-    Before_Death() {
         return __awaiter(this, void 0, void 0, function* () {
             return;
         });
@@ -320,52 +304,27 @@ export class Instance {
         Utils.Assert(this.Is_Alive(), `Cannot get children from a dead entity.`);
         return Array.from(this.children);
     }
-    // we may want to leave this because maybe this might be useful to user besides Adoptions?
-    Add_Child(child) {
-        Utils.Assert(this.Is_Alive(), `A parent must be alive to add a child.`);
-        Utils.Assert(child.Is_Alive(), `A child must be alive to be added to a parent.`);
-        Utils.Assert(!child.Has_Parent(), `A child must not have a parent to be added to another parent.`);
-        this.children.push(child);
-        child.parent = this;
-        this.Element().appendChild(child.Element());
-    }
     Remove_Child(child) {
         Utils.Assert(this.Is_Alive(), `A parent must be alive to remove a child.`);
         Utils.Assert(child.Is_Alive(), `A child must be alive to be removed from a parent.`);
         Utils.Assert(child.Has_Parent(), `A child must have a parent to be removed from a parent.`);
         Utils.Assert(child.Parent() === this, `A child must have this parent to be removed from it.`);
-        this.Remove_Child_At(this.children.indexOf(child));
-    }
-    Remove_Child_At(child_index) {
-        Utils.Assert(this.Is_Alive(), `A parent must be alive to remove a child.`);
-        Utils.Assert(this.Has_Child(child_index), `Cannot remove a child the parent doesn't have.`);
-        const child = this.children[child_index];
-        Utils.Assert(child.Is_Alive());
-        Utils.Assert(child.Has_Parent());
-        Utils.Assert(child.Parent() === this);
         if (child.Element().parentElement === this.Element()) {
-            // When an entity is aborted, it's already removed
-            // from its parent element at this point
             this.Element().removeChild(child.Element());
         }
+        const child_index = this.children.indexOf(child);
+        Utils.Assert(child_index > -1);
         for (let idx = child_index + 1, end = this.Child_Count(); idx < end; idx += 1) {
             this.children[idx - 1] = this.children[idx];
         }
         this.children.pop();
         child.parent = null;
-        return child;
     }
     Adopt_Child(child) {
         Utils.Assert(this.Is_Alive(), `A parent must be alive to adopt a child.`);
         Utils.Assert(this.refresh_adoptions != null, `You can only adopt a child during On_Refresh().`);
         Utils.Assert(child.Is_Alive(), `A child must be alive to be adopted.`);
         Utils.Assert(!child.Has_Parent(), `A child must not have a parent to be adopted.`);
-        // This essentially starts a latent stack.
-        // First the child is adopted and added to the entity
-        // and then when the dom is batch updated, it's
-        // added to the element as a child.
-        // And then when the child is aborted, it's
-        // first removed from the element and then the entity.
         this.children.push(child);
         child.parent = this;
         this.refresh_adoptions.push(new Parent_And_Child({
@@ -378,8 +337,13 @@ export class Instance {
         Utils.Assert(this.refresh_abortions != null, `You can only abort a child during On_Refresh().`);
         Utils.Assert(child.Is_Alive(), `A child must be alive to be aborted.`);
         Utils.Assert(child.Parent() === this, `A child must have this parent to be aborted.`);
-        // it's possible that we should go ahead and remove the child here
-        // or during the death event, but wait until after both to remove from dom.
+        const child_index = this.children.indexOf(child);
+        Utils.Assert(child_index > -1);
+        for (let idx = child_index + 1, end = this.Child_Count(); idx < end; idx += 1) {
+            this.children[idx - 1] = this.children[idx];
+        }
+        this.children.pop();
+        child.parent = null;
         this.refresh_abortions.push(new Parent_And_Child({
             parent: this,
             child: child,
