@@ -40,8 +40,8 @@ export class Instance extends Entity.Instance
         return [
             new Event.Listener_Info(
                 {
-                    event_name: new Event.Name(Event.Prefix.AFTER, "Selector_Slot_Item_Select"),
-                    event_handler: this.After_Select.bind(this),
+                    event_name: new Event.Name(Event.Prefix.ON, "Selector_Slot_Item_Select"),
+                    event_handler: this.On_Selector_Slot_Item_Select.bind(this),
                     event_priority: 0,
                 },
             ),
@@ -92,13 +92,7 @@ export class Instance extends Entity.Instance
         }
     }
 
-    async After_Select(
-        {
-            item,
-        }: {
-            item: Slot.Item.Instance,
-        },
-    ):
+    async On_Selector_Slot_Item_Select():
         Promise<void>
     {
         await this.Refresh();

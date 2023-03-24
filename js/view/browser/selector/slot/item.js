@@ -21,13 +21,7 @@ export class Instance extends Entity.Instance {
     On_Life() {
         return __awaiter(this, void 0, void 0, function* () {
             this.Element().addEventListener(`click`, this.On_Click.bind(this));
-            return [
-                new Event.Listener_Info({
-                    event_name: new Event.Name(Event.Prefix.ON, "Selector_Slot_Item_Select", this.ID().toString()),
-                    event_handler: this.On_Select.bind(this),
-                    event_priority: 0,
-                }),
-            ];
+            return [];
         });
     }
     On_Restyle() {
@@ -67,32 +61,14 @@ export class Instance extends Entity.Instance {
     }
     On_Click(event) {
         return __awaiter(this, void 0, void 0, function* () {
-            this.Send(new Event.Info({
-                affix: `Selector_Slot_Item_Select`,
-                suffixes: [
-                    this.ID().toString(),
-                ],
-                type: Event.Type.EXCLUSIVE,
-                data: {
-                    item: this,
-                },
-            }));
-        });
-    }
-    On_Select({ item, }) {
-        return __awaiter(this, void 0, void 0, function* () {
             const model = this.Model();
             yield model.Select();
-            // Might make this a function on item model. Essentially,
-            // the less model types any view entity knows about the better.
-            if (model.Slot().Selector().Browser().Reader().Has_File()) {
-                this.Send(new Event.Info({
-                    affix: `Reader_Has_File`,
-                    suffixes: [],
-                    type: Event.Type.EXCLUSIVE,
-                    data: {},
-                }));
-            }
+            yield this.Send(new Event.Info({
+                affix: `Selector_Slot_Item_Select`,
+                suffixes: [],
+                type: Event.Type.EXCLUSIVE,
+                data: {},
+            }));
         });
     }
     Model() {

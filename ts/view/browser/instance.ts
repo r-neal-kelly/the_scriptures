@@ -41,7 +41,7 @@ export class Instance extends Entity.Instance
         return `
             display: grid;
             grid-template-rows: 1fr;
-            grid-template-columns: 1fr 2fr;
+            grid-template-columns: auto auto;
         
             width: 100%;
             height: 100%;

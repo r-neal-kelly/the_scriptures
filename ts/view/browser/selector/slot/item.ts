@@ -35,19 +35,7 @@ export class Instance extends Entity.Instance
     {
         this.Element().addEventListener(`click`, this.On_Click.bind(this));
 
-        return [
-            new Event.Listener_Info(
-                {
-                    event_name: new Event.Name(
-                        Event.Prefix.ON,
-                        "Selector_Slot_Item_Select",
-                        this.ID().toString(),
-                    ),
-                    event_handler: this.On_Select.bind(this),
-                    event_priority: 0,
-                },
-            ),
-        ];
+        return [];
     }
 
     override async On_Restyle():
@@ -92,48 +80,20 @@ export class Instance extends Entity.Instance
     ):
         Promise<void>
     {
-        this.Send(
+        const model: Model.Instance = this.Model();
+
+        await model.Select();
+
+        await this.Send(
             new Event.Info(
                 {
                     affix: `Selector_Slot_Item_Select`,
-                    suffixes: [
-                        this.ID().toString(),
-                    ],
+                    suffixes: [],
                     type: Event.Type.EXCLUSIVE,
-                    data: {
-                        item: this,
-                    },
+                    data: {},
                 },
             ),
         );
-    }
-
-    async On_Select(
-        {
-            item,
-        }: {
-            item: Instance,
-        },
-    ):
-        Promise<void>
-    {
-        const model: Model.Instance = this.Model();
-        await model.Select();
-
-        // Might make this a function on item model. Essentially,
-        // the less model types any view entity knows about the better.
-        if (model.Slot().Selector().Browser().Reader().Has_File()) {
-            this.Send(
-                new Event.Info(
-                    {
-                        affix: `Reader_Has_File`,
-                        suffixes: [],
-                        type: Event.Type.EXCLUSIVE,
-                        data: {},
-                    },
-                ),
-            );
-        }
     }
 
     Model():

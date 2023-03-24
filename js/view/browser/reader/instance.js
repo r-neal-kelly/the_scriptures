@@ -25,8 +25,8 @@ export class Instance extends Entity.Instance {
         return __awaiter(this, void 0, void 0, function* () {
             return [
                 new Event.Listener_Info({
-                    event_name: new Event.Name(Event.Prefix.ON, "Reader_Has_File"),
-                    event_handler: this.On_Reader_Has_File.bind(this),
+                    event_name: new Event.Name(Event.Prefix.ON, "Selector_Slot_Item_Select"),
+                    event_handler: this.On_Selector_Slot_Item_Select.bind(this),
                     event_priority: 0,
                 }),
             ];
@@ -62,7 +62,7 @@ export class Instance extends Entity.Instance {
             this.Element().scrollTo(0, 0);
         });
     }
-    On_Reader_Has_File() {
+    On_Selector_Slot_Item_Select() {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.Refresh();
         });
