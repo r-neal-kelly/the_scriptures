@@ -1,3 +1,6 @@
+import { Count } from "../../../types.js";
+import { Delta } from "../../../types.js";
+
 import * as Entity from "../../../entity.js";
 import * as Event from "../../../event.js";
 
@@ -9,7 +12,6 @@ import * as Slot from "./slot.js";
 export class Instance extends Entity.Instance
 {
     private model: Model.Instance;
-    private slots: Array<Slot.Instance> | null;
 
     constructor(
         {
@@ -30,7 +32,6 @@ export class Instance extends Entity.Instance
         );
 
         this.model = model;
-        this.slots = null;
     }
 
     override async On_Life():
@@ -66,17 +67,28 @@ export class Instance extends Entity.Instance
     override async On_Refresh():
         Promise<void>
     {
-        this.Abort_All_Children();
+        const model: Model.Instance = this.Model();
+        const slot_count: Count = model.Slot_Count();
+        const child_count: Count = this.Child_Count();
+        const slot_delta: Delta = slot_count - child_count;
 
-        this.slots = [];
-        for (const slot_model of this.Model().Slots()) {
-            const slot_view: Slot.Instance = new Slot.Instance(
-                {
-                    model: slot_model,
-                    selector: this,
-                },
-            );
-            this.slots.push(slot_view);
+        if (slot_delta > 0) {
+            for (let idx = child_count, end = slot_count; idx < end;) {
+                new Slot.Instance(
+                    {
+                        model: model.Slot(idx),
+                        selector: this,
+                    },
+                );
+
+                idx += 1;
+            }
+        } else if (slot_delta < 0) {
+            for (let idx = this.Child_Count(), end = 0; idx > end;) {
+                idx -= 1;
+
+                this.Abort_Child(this.Child(idx));
+            }
         }
     }
 

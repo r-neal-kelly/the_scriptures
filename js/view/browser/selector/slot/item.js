@@ -62,7 +62,6 @@ export class Instance extends Entity.Instance {
     }
     On_Refresh() {
         return __awaiter(this, void 0, void 0, function* () {
-            this.Abort_All_Children();
             this.Element().textContent = this.Model().Title();
         });
     }

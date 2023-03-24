@@ -84,8 +84,6 @@ export class Instance extends Entity.Instance
     override async On_Refresh():
         Promise<void>
     {
-        this.Abort_All_Children();
-
         this.Element().textContent = this.Model().Title();
     }
 

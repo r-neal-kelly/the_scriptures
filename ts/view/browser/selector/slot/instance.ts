@@ -8,7 +8,6 @@ import * as Item from "./item.js";
 export class Instance extends Entity.Instance
 {
     private model: Model.Instance;
-    private items: Array<Item.Instance> | null;
 
     constructor(
         {
@@ -29,7 +28,6 @@ export class Instance extends Entity.Instance
         );
 
         this.model = model;
-        this.items = null;
     }
 
     override async On_Restyle():
@@ -46,17 +44,19 @@ export class Instance extends Entity.Instance
     override async On_Refresh():
         Promise<void>
     {
-        this.Abort_All_Children();
+        const model: Model.Instance = this.Model();
 
-        this.items = [];
-        for (const item_model of this.Model().Items()) {
-            const item_view: Item.Instance = new Item.Instance(
-                {
-                    model: item_model,
-                    slot: this,
-                },
-            );
-            this.items.push(item_view);
+        if (this.Child_Count() !== model.Item_Count()) {
+            this.Abort_All_Children();
+
+            for (const item_model of this.Model().Items()) {
+                new Item.Instance(
+                    {
+                        model: item_model,
+                        slot: this,
+                    },
+                );
+            }
         }
     }
 

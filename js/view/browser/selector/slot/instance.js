@@ -17,7 +17,6 @@ export class Instance extends Entity.Instance {
             event_grid: selector.Event_Grid(),
         });
         this.model = model;
-        this.items = null;
     }
     On_Restyle() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -31,14 +30,15 @@ export class Instance extends Entity.Instance {
     }
     On_Refresh() {
         return __awaiter(this, void 0, void 0, function* () {
-            this.Abort_All_Children();
-            this.items = [];
-            for (const item_model of this.Model().Items()) {
-                const item_view = new Item.Instance({
-                    model: item_model,
-                    slot: this,
-                });
-                this.items.push(item_view);
+            const model = this.Model();
+            if (this.Child_Count() !== model.Item_Count()) {
+                this.Abort_All_Children();
+                for (const item_model of this.Model().Items()) {
+                    new Item.Instance({
+                        model: item_model,
+                        slot: this,
+                    });
+                }
             }
         });
     }

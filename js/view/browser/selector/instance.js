@@ -18,7 +18,6 @@ export class Instance extends Entity.Instance {
             event_grid: browser.Event_Grid(),
         });
         this.model = model;
-        this.slots = null;
     }
     On_Life() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -48,14 +47,24 @@ export class Instance extends Entity.Instance {
     }
     On_Refresh() {
         return __awaiter(this, void 0, void 0, function* () {
-            this.Abort_All_Children();
-            this.slots = [];
-            for (const slot_model of this.Model().Slots()) {
-                const slot_view = new Slot.Instance({
-                    model: slot_model,
-                    selector: this,
-                });
-                this.slots.push(slot_view);
+            const model = this.Model();
+            const slot_count = model.Slot_Count();
+            const child_count = this.Child_Count();
+            const slot_delta = slot_count - child_count;
+            if (slot_delta > 0) {
+                for (let idx = child_count, end = slot_count; idx < end;) {
+                    new Slot.Instance({
+                        model: model.Slot(idx),
+                        selector: this,
+                    });
+                    idx += 1;
+                }
+            }
+            else if (slot_delta < 0) {
+                for (let idx = this.Child_Count(), end = 0; idx > end;) {
+                    idx -= 1;
+                    this.Abort_Child(this.Child(idx));
+                }
             }
         });
     }
