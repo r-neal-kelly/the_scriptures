@@ -8,44 +8,29 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import * as Entity from "../../../../entity.js";
-import * as Event from "../../../../event.js";
 export class Instance extends Entity.Instance {
-    constructor({ model, items, }) {
+    constructor({ model, slot, }) {
         super({
             element: `div`,
-            parent: items,
-            event_grid: items.Event_Grid(),
+            parent: slot,
+            event_grid: slot.Event_Grid(),
         });
         this.model = model;
     }
-    On_Life() {
-        return __awaiter(this, void 0, void 0, function* () {
-            this.Element().addEventListener(`click`, this.On_Click.bind(this));
-            return [];
-        });
-    }
     On_Restyle() {
         return __awaiter(this, void 0, void 0, function* () {
-            let color;
-            let background_color;
-            if (this.Model().Is_Selected()) {
-                color = `black`;
-                background_color = `white`;
-            }
-            else {
-                color = `white`;
-                background_color = `black`;
-            }
             return `
             width: 100%;
-            
+                
             overflow-x: hidden;
             overflow-y: hidden;
 
-            background-color: ${background_color};
-            color: ${color};
+            background-color: black;
+            color: white;
 
-            cursor: pointer;
+            font-variant: small-caps;
+
+            cursor: default;
             -webkit-user-select: none;
             -moz-user-select: none;
             -ms-user-select: none;
@@ -55,25 +40,14 @@ export class Instance extends Entity.Instance {
     }
     On_Refresh() {
         return __awaiter(this, void 0, void 0, function* () {
-            this.Element().textContent = this.Model().Title();
-        });
-    }
-    On_Click(event) {
-        return __awaiter(this, void 0, void 0, function* () {
             const model = this.Model();
-            yield model.Select();
-            yield this.Send(new Event.Info({
-                affix: `Selector_Slot_Item_Select`,
-                suffixes: [],
-                type: Event.Type.EXCLUSIVE,
-                data: {},
-            }));
+            this.Element().textContent = model.Value();
         });
     }
     Model() {
         return this.model;
     }
-    Items() {
+    Slot() {
         return this.Parent();
     }
 }

@@ -232,11 +232,11 @@ export class Instance extends Async.Instance
                     query_name = null;
                 } else {
                     Utils.Assert(
-                        slot.Has_Selected_Item(),
+                        slot.Items().Has_Selected(),
                         `To push a new slot, each previous slot must have a selected item.`,
                     );
 
-                    query_name = slot.Selected_Item().Name();
+                    query_name = slot.Items().Selected().Name();
                 }
 
                 return new Data.Query.Type_And_Name(
@@ -262,9 +262,9 @@ export class Instance extends Async.Instance
                 await (
                     await this.Browser().Data().Files(
                         {
-                            book_name: this.Books().Selected_Item().Name(),
-                            language_name: this.Languages().Selected_Item().Name(),
-                            version_name: this.Versions().Selected_Item().Name(),
+                            book_name: this.Books().Items().Selected().Name(),
+                            language_name: this.Languages().Items().Selected().Name(),
+                            version_name: this.Versions().Items().Selected().Name(),
                         },
                     )
                 ).Array() :
@@ -382,10 +382,10 @@ export class Instance extends Async.Instance
         if (slot.Type() === Slot.Type.FILES) {
             const file: Data.File.Instance = await this.Browser().Data().File(
                 {
-                    book_name: this.Books().Selected_Item().Name(),
-                    language_name: this.Languages().Selected_Item().Name(),
-                    version_name: this.Versions().Selected_Item().Name(),
-                    file_name: this.Files().Selected_Item().Name(),
+                    book_name: this.Books().Items().Selected().Name(),
+                    language_name: this.Languages().Items().Selected().Name(),
+                    version_name: this.Versions().Items().Selected().Name(),
+                    file_name: this.Files().Items().Selected().Name(),
                 },
             );
             await this.Browser().Reader().Open_File(file);

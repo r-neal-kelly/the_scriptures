@@ -2,39 +2,39 @@ import { Index } from "../../../../types.js";
 import { Name } from "../../../../types.js";
 
 import * as Data from "../../data.js";
-import * as Slot from "./instance.js";
+import * as Items from "./items.js";
 
 export class Instance
 {
-    private slot: Slot.Instance;
+    private items: Items.Instance;
     private index: Index;
     private name: Name;
     private file: Data.File.Instance | null;
 
     constructor(
         {
-            slot,
+            items,
             index,
             name,
             file,
         }: {
-            slot: Slot.Instance,
+            items: Items.Instance,
             index: Index,
             name: Name,
             file: Data.File.Instance | null,
         },
     )
     {
-        this.slot = slot;
+        this.items = items;
         this.index = index;
         this.name = name;
         this.file = file;
     }
 
-    Slot():
-        Slot.Instance
+    Items():
+        Items.Instance
     {
-        return this.slot;
+        return this.items;
     }
 
     Index():
@@ -63,14 +63,14 @@ export class Instance
         boolean
     {
         return (
-            this.Slot().Has_Selected_Item() &&
-            this.Slot().Selected_Item() === this
+            this.Items().Has_Selected() &&
+            this.Items().Selected() === this
         );
     }
 
     async Select():
         Promise<void>
     {
-        await this.Slot().Select_Item_Internally(this);
+        await this.Items().Select(this);
     }
 }

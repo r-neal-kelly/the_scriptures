@@ -3,7 +3,7 @@ import * as Event from "../../../../event.js";
 
 import * as Model from "../../../../model/browser/selector/slot/item.js";
 
-import * as Slot from "./instance.js";
+import * as Items from "./items.js";
 
 export class Instance extends Entity.Instance
 {
@@ -12,18 +12,18 @@ export class Instance extends Entity.Instance
     constructor(
         {
             model,
-            slot,
+            items,
         }: {
             model: Model.Instance,
-            slot: Slot.Instance,
+            items: Items.Instance,
         },
     )
     {
         super(
             {
                 element: `div`,
-                parent: slot,
-                event_grid: slot.Event_Grid(),
+                parent: items,
+                event_grid: items.Event_Grid(),
             },
         );
 
@@ -61,7 +61,6 @@ export class Instance extends Entity.Instance
             color: ${color};
 
             cursor: pointer;
-            
             -webkit-user-select: none;
             -moz-user-select: none;
             -ms-user-select: none;
@@ -102,9 +101,9 @@ export class Instance extends Entity.Instance
         return this.model;
     }
 
-    Slot():
-        Slot.Instance
+    Items():
+        Items.Instance
     {
-        return this.Parent() as Slot.Instance;
+        return this.Parent() as Items.Instance;
     }
 }

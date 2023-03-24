@@ -8,14 +8,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 export class Instance {
-    constructor({ slot, index, name, file, }) {
-        this.slot = slot;
+    constructor({ items, index, name, file, }) {
+        this.items = items;
         this.index = index;
         this.name = name;
         this.file = file;
     }
-    Slot() {
-        return this.slot;
+    Items() {
+        return this.items;
     }
     Index() {
         return this.index;
@@ -32,12 +32,12 @@ export class Instance {
         }
     }
     Is_Selected() {
-        return (this.Slot().Has_Selected_Item() &&
-            this.Slot().Selected_Item() === this);
+        return (this.Items().Has_Selected() &&
+            this.Items().Selected() === this);
     }
     Select() {
         return __awaiter(this, void 0, void 0, function* () {
-            yield this.Slot().Select_Item_Internally(this);
+            yield this.Items().Select(this);
         });
     }
 }
