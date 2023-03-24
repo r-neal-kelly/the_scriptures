@@ -1,6 +1,7 @@
 import { Index } from "../../../../types.js";
 import { Name } from "../../../../types.js";
 
+import * as Data from "../../data.js";
 import * as Slot from "./instance.js";
 
 export class Instance
@@ -47,7 +48,10 @@ export class Instance
     Is_Selected():
         boolean
     {
-        return this.Slot().Selected_Item() === this;
+        return (
+            this.Slot().Has_Selected_Item() &&
+            this.Slot().Selected_Item() === this
+        );
     }
 
     async Select():

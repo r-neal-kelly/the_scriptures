@@ -23,7 +23,8 @@ export class Instance {
         return this.name;
     }
     Is_Selected() {
-        return this.Slot().Selected_Item() === this;
+        return (this.Slot().Has_Selected_Item() &&
+            this.Slot().Selected_Item() === this);
     }
     Select() {
         return __awaiter(this, void 0, void 0, function* () {

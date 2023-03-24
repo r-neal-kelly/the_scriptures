@@ -191,10 +191,23 @@ export class Instance extends Async.Instance {
         });
     }
     Select_Item_Internally({ slot, item, }) {
+        var _a, _b, _c, _d;
         return __awaiter(this, void 0, void 0, function* () {
             Utils.Assert(this.Has_Slot(slot), `The slot does not belong to this selector.`);
-            if (slot.Type() !== Slot.Type.FILES &&
-                this.Slot_At(this.Slot_Count() - 1) === slot) {
+            // How are we going to handle when selecting item in non-files slot
+            // while the files slot is open? Do we try to match it with the new
+            // slots that might have to be created, or do we just unselect the
+            // discarded slots?
+            if (slot.Type() === Slot.Type.FILES) {
+                const file = yield this.Browser().Data().File({
+                    book_name: (_a = this.Books().Selected_Item()) === null || _a === void 0 ? void 0 : _a.Name(),
+                    language_name: (_b = this.Languages().Selected_Item()) === null || _b === void 0 ? void 0 : _b.Name(),
+                    version_name: (_c = this.Versions().Selected_Item()) === null || _c === void 0 ? void 0 : _c.Name(),
+                    file_name: (_d = this.Files().Selected_Item()) === null || _d === void 0 ? void 0 : _d.Name(),
+                });
+                yield this.Browser().Reader().Open_File(file);
+            }
+            else if (this.Slot_At(this.Slot_Count() - 1) === slot) {
                 yield this.Push_Slot();
             }
         });

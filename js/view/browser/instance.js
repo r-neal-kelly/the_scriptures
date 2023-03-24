@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import * as Utils from "../../utils.js";
 import * as Entity from "../../entity.js";
 import * as Selector from "./selector.js";
+import * as Reader from "./reader.js";
 export class Instance extends Entity.Instance {
     constructor({ model, root, }) {
         super({
@@ -19,11 +20,14 @@ export class Instance extends Entity.Instance {
         });
         this.model = model;
         this.selector = null;
+        this.reader = null;
     }
     On_Restyle() {
         return __awaiter(this, void 0, void 0, function* () {
             return `
             display: grid;
+            grid-template-rows: 1fr;
+            grid-template-columns: 1fr 2fr;
         
             width: 100%;
             height: 100%;
@@ -42,6 +46,10 @@ export class Instance extends Entity.Instance {
                 model: this.Model().Selector(),
                 browser: this,
             });
+            this.reader = new Reader.Instance({
+                model: this.Model().Reader(),
+                browser: this,
+            });
         });
     }
     Model() {
@@ -53,5 +61,9 @@ export class Instance extends Entity.Instance {
     Selector() {
         Utils.Assert(this.selector != null, `Does not have selector.`);
         return this.selector;
+    }
+    Reader() {
+        Utils.Assert(this.reader != null, `Does not have reader.`);
+        return this.reader;
     }
 }

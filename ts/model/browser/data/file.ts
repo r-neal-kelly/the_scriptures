@@ -1,6 +1,8 @@
 import { Name } from "../../../types.js";
 import { Path } from "../../../types.js";
 
+import * as Utils from "../../../utils.js";
+
 import * as Files from "./files.js";
 
 export class Instance
@@ -40,5 +42,17 @@ export class Instance
         Path
     {
         return this.path;
+    }
+
+    async Maybe_Text():
+        Promise<string | null>
+    {
+        const response: Response =
+            await fetch(Utils.Resolve_Path(this.Path()));
+        if (response.ok) {
+            return await response.text();
+        } else {
+            return null;
+        }
     }
 }

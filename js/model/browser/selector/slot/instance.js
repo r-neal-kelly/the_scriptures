@@ -51,6 +51,7 @@ export class Instance {
         return this.selected_item != null;
     }
     Selected_Item() {
+        Utils.Assert(this.Has_Selected_Item(), `Has no selected item.`);
         return this.selected_item;
     }
     Select_Item_Internally(item) {

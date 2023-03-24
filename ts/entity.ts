@@ -936,6 +936,9 @@ export class Instance implements
     ):
         Promise<void>
     {
+        // should this and animate methods be queued?
+        // the reason I think not is because it would
+        // be easy to dead-lock the queue by waiting for Refresh for example.
         return this.Event_Grid().Send(event_info);
     }
 

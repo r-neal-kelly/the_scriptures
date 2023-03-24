@@ -2,7 +2,9 @@ import * as Utils from "../../../utils.js";
 import * as Event from "../../../event.js";
 import * as Entity from "../../../entity.js";
 
-import * as Model from "../../../model/browser/data/file.js";
+import * as Model from "../../../model/browser/reader/file.js";
+
+import * as Reader from "./instance.js";
 
 export class Instance extends Entity.Instance
 {
@@ -11,16 +13,18 @@ export class Instance extends Entity.Instance
     constructor(
         {
             model,
+            reader,
         }: {
             model: Model.Instance,
+            reader: Reader.Instance,
         },
     )
     {
         super(
             {
                 element: `div`,
-                parent: null,
-                event_grid: new Event.Grid()
+                parent: reader,
+                event_grid: reader.Event_Grid()
             },
         );
 
@@ -32,18 +36,13 @@ export class Instance extends Entity.Instance
     {
         this.Abort_All_Children();
 
-        this.Adopt_Child(new Line({ text: this.Model().Name() }));
+        this.Adopt_Child(new Line({ text: this.Model().Data().Name() }));
         this.Adopt_Child(new Line({ text: `` }));
 
-        const file_response: Response =
-            await fetch(Utils.Resolve_Path(this.Model().Path()));
-        if (file_response.ok) {
-            const file_text: string = await file_response.text();
-            for (const file_line of file_text.split(/\r?\n/g)) {
-                this.Adopt_Child(new Line({ text: file_line }));
-            }
-            this.Adopt_Child(new Line({ text: `` }));
+        for (const file_line of this.Model().Text().split(/\r?\n/g)) {
+            this.Adopt_Child(new Line({ text: file_line }));
         }
+        this.Adopt_Child(new Line({ text: `` }));
     }
 
     Model():
@@ -53,7 +52,7 @@ export class Instance extends Entity.Instance
     }
 }
 
-// this class is temporary, for testing
+// this class needs to be moved to its own file
 class Line extends Entity.Instance
 {
     private text: string;

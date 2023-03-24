@@ -395,6 +395,9 @@ export class Instance {
     }
     Send(event_info) {
         return __awaiter(this, void 0, void 0, function* () {
+            // should this and animate methods be queued?
+            // the reason I think not is because it would
+            // be easy to dead-lock the queue by waiting for Refresh for example.
             return this.Event_Grid().Send(event_info);
         });
     }

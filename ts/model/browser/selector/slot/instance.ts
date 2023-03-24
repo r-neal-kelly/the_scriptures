@@ -4,6 +4,7 @@ import { Name } from "../../../../types.js";
 
 import * as Utils from "../../../../utils.js";
 
+import * as Data from "../../data.js";
 import * as Selector from "../instance.js";
 import { Type } from "./type.js";
 import * as Item from "./item.js";
@@ -111,9 +112,14 @@ export class Instance
     }
 
     Selected_Item():
-        Item.Instance | null
+        Item.Instance
     {
-        return this.selected_item;
+        Utils.Assert(
+            this.Has_Selected_Item(),
+            `Has no selected item.`,
+        );
+
+        return this.selected_item as Item.Instance;
     }
 
     async Select_Item_Internally(

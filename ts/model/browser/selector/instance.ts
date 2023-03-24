@@ -361,10 +361,21 @@ export class Instance extends Async.Instance
             `The slot does not belong to this selector.`,
         );
 
-        if (
-            slot.Type() !== Slot.Type.FILES &&
-            this.Slot_At(this.Slot_Count() - 1) === slot
-        ) {
+        // How are we going to handle when selecting item in non-files slot
+        // while the files slot is open? Do we try to match it with the new
+        // slots that might have to be created, or do we just unselect the
+        // discarded slots?
+        if (slot.Type() === Slot.Type.FILES) {
+            const file: Data.File.Instance = await this.Browser().Data().File(
+                {
+                    book_name: this.Books().Selected_Item()?.Name(),
+                    language_name: this.Languages().Selected_Item()?.Name(),
+                    version_name: this.Versions().Selected_Item()?.Name(),
+                    file_name: this.Files().Selected_Item()?.Name(),
+                },
+            );
+            await this.Browser().Reader().Open_File(file);
+        } else if (this.Slot_At(this.Slot_Count() - 1) === slot) {
             await this.Push_Slot();
         }
     }

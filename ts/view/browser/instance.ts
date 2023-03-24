@@ -4,11 +4,13 @@ import * as Entity from "../../entity.js";
 import * as Model from "../../model/browser/instance.js";
 
 import * as Selector from "./selector.js";
+import * as Reader from "./reader.js";
 
 export class Instance extends Entity.Instance
 {
     private model: Model.Instance;
     private selector: Selector.Instance | null;
+    private reader: Reader.Instance | null;
 
     constructor(
         {
@@ -30,6 +32,7 @@ export class Instance extends Entity.Instance
 
         this.model = model;
         this.selector = null;
+        this.reader = null;
     }
 
     override async On_Restyle():
@@ -37,6 +40,8 @@ export class Instance extends Entity.Instance
     {
         return `
             display: grid;
+            grid-template-rows: 1fr;
+            grid-template-columns: 1fr 2fr;
         
             width: 100%;
             height: 100%;
@@ -56,6 +61,12 @@ export class Instance extends Entity.Instance
         this.selector = new Selector.Instance(
             {
                 model: this.Model().Selector(),
+                browser: this,
+            },
+        );
+        this.reader = new Reader.Instance(
+            {
+                model: this.Model().Reader(),
                 browser: this,
             },
         );
@@ -82,5 +93,16 @@ export class Instance extends Entity.Instance
         );
 
         return this.selector as Selector.Instance;
+    }
+
+    Reader():
+        Reader.Instance
+    {
+        Utils.Assert(
+            this.reader != null,
+            `Does not have reader.`,
+        );
+
+        return this.reader as Reader.Instance;
     }
 }

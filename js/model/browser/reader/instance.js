@@ -8,29 +8,33 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import * as Utils from "../../../utils.js";
-export class Instance {
-    constructor({ files, name, }) {
-        this.files = files;
-        this.name = name;
-        this.path = `${files.Path()}/${name}`;
+import * as Async from "../../../async.js";
+import * as File from "./file.js";
+export class Instance extends Async.Instance {
+    constructor({ browser, }) {
+        super();
+        this.browser = browser;
+        this.file = null;
     }
-    Files() {
-        return this.files;
+    Browser() {
+        return this.browser;
     }
-    Name() {
-        return this.name;
+    Has_File() {
+        return this.file != null;
     }
-    Path() {
-        return this.path;
+    File() {
+        Utils.Assert(this.Has_File(), `Has no file.`);
+        return this.file;
     }
-    Maybe_Text() {
+    Open_File(file) {
         return __awaiter(this, void 0, void 0, function* () {
-            const response = yield fetch(Utils.Resolve_Path(this.Path()));
-            if (response.ok) {
-                return yield response.text();
-            }
-            else {
-                return null;
+            if (this.file == null ||
+                this.file.Data() != file) {
+                this.file = new File.Instance({
+                    reader: this,
+                    data: file,
+                    text: (yield file.Maybe_Text()) || ``,
+                });
             }
         });
     }

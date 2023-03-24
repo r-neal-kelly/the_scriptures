@@ -82,7 +82,18 @@ export class Instance extends Entity.Instance {
     }
     On_Select({ item, }) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield this.Model().Select();
+            const model = this.Model();
+            yield model.Select();
+            // Might make this a function on item model. Essentially,
+            // the less model types any view entity knows about the better.
+            if (model.Slot().Selector().Browser().Reader().Has_File()) {
+                this.Send(new Event.Info({
+                    affix: `Reader_Has_File`,
+                    suffixes: [],
+                    type: Event.Type.EXCLUSIVE,
+                    data: {},
+                }));
+            }
         });
     }
     Model() {

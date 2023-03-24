@@ -119,7 +119,25 @@ export class Instance extends Entity.Instance
     ):
         Promise<void>
     {
-        await this.Model().Select();
+        const model: Model.Instance = this.Model();
+        await model.Select();
+
+        // Might make this a function on item model. Essentially,
+        // the less model types any view entity knows about the better.
+        if (model.Slot().Selector().Browser().Reader().Has_File()) {
+            this.Send(
+                new Event.Info(
+                    {
+                        affix: `Reader_Has_File`,
+                        suffixes: [
+                        ],
+                        type: Event.Type.EXCLUSIVE,
+                        data: {
+                        },
+                    },
+                ),
+            );
+        }
     }
 
     Model():
