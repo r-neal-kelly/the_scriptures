@@ -236,7 +236,7 @@ export class Instance extends Async.Instance
                         `To push a new slot, each previous slot must have a selected item.`,
                     );
 
-                    query_name = (slot.Selected_Item() as Slot.Item.Instance).Name();
+                    query_name = slot.Selected_Item().Name();
                 }
 
                 return new Data.Query.Type_And_Name(
@@ -247,7 +247,6 @@ export class Instance extends Async.Instance
                 );
             }.bind(this),
         );
-
         slot_query.push(
             new Data.Query.Type_And_Name(
                 {
@@ -257,13 +256,28 @@ export class Instance extends Async.Instance
             ),
         );
 
+        const slot_item_names: Array<Name> = await this.Browser().Data().Names(slot_query);
+        const slot_item_files: Array<Data.File.Instance> | null =
+            slot_type === Slot.Type.FILES ?
+                await (
+                    await this.Browser().Data().Files(
+                        {
+                            book_name: this.Books().Selected_Item().Name(),
+                            language_name: this.Languages().Selected_Item().Name(),
+                            version_name: this.Versions().Selected_Item().Name(),
+                        },
+                    )
+                ).Array() :
+                null;
+
         this.slots.push(
             new Slot.Instance(
                 {
                     selector: this,
                     index: slot_index,
                     type: slot_type,
-                    item_names: await this.Browser().Data().Names(slot_query),
+                    item_names: slot_item_names,
+                    item_files: slot_item_files,
                 },
             ),
         );
@@ -368,10 +382,10 @@ export class Instance extends Async.Instance
         if (slot.Type() === Slot.Type.FILES) {
             const file: Data.File.Instance = await this.Browser().Data().File(
                 {
-                    book_name: this.Books().Selected_Item()?.Name(),
-                    language_name: this.Languages().Selected_Item()?.Name(),
-                    version_name: this.Versions().Selected_Item()?.Name(),
-                    file_name: this.Files().Selected_Item()?.Name(),
+                    book_name: this.Books().Selected_Item().Name(),
+                    language_name: this.Languages().Selected_Item().Name(),
+                    version_name: this.Versions().Selected_Item().Name(),
+                    file_name: this.Files().Selected_Item().Name(),
                 },
             );
             await this.Browser().Reader().Open_File(file);

@@ -53,7 +53,7 @@ export class Instance extends Entity.Instance
     {
         return `
             width: 100%;
-
+            
             overflow-x: auto;
             overflow-y: auto;
         `;
@@ -76,6 +76,12 @@ export class Instance extends Entity.Instance
         } else {
             this.file = null;
         }
+    }
+
+    override async After_Refresh():
+        Promise<void>
+    {
+        this.Element().scrollTo(0, 0);
     }
 
     async On_Reader_Has_File():

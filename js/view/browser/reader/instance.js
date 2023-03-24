@@ -36,7 +36,7 @@ export class Instance extends Entity.Instance {
         return __awaiter(this, void 0, void 0, function* () {
             return `
             width: 100%;
-
+            
             overflow-x: auto;
             overflow-y: auto;
         `;
@@ -55,6 +55,11 @@ export class Instance extends Entity.Instance {
             else {
                 this.file = null;
             }
+        });
+    }
+    After_Refresh() {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.Element().scrollTo(0, 0);
         });
     }
     On_Reader_Has_File() {

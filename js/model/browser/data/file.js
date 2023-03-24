@@ -13,6 +13,8 @@ export class Instance {
         this.files = files;
         this.name = name;
         this.path = `${files.Path()}/${name}`;
+        this.title = name.replace(/\.[^.]*$/, ``);
+        this.extension = name.replace(/^[^.]*\./, ``);
     }
     Files() {
         return this.files;
@@ -22,6 +24,12 @@ export class Instance {
     }
     Path() {
         return this.path;
+    }
+    Title() {
+        return this.title;
+    }
+    Extension() {
+        return this.extension;
     }
     Maybe_Text() {
         return __awaiter(this, void 0, void 0, function* () {

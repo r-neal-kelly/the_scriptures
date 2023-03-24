@@ -31,12 +31,20 @@ export class Instance extends Entity.Instance
         this.model = model;
     }
 
+    override async On_Restyle():
+        Promise<Entity.Styles | string>
+    {
+        return `
+            width: 100%;
+        `;
+    }
+
     override async On_Refresh():
         Promise<void>
     {
         this.Abort_All_Children();
 
-        this.Adopt_Child(new Line({ text: this.Model().Data().Name() }));
+        this.Adopt_Child(new Line({ text: this.Model().Data().Title() }));
         this.Adopt_Child(new Line({ text: `` }));
 
         for (const file_line of this.Model().Text().split(/\r?\n/g)) {

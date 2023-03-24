@@ -36,6 +36,7 @@ export class Instance {
         this.styles = {};
         this.parent = null;
         this.children = [];
+        this.refresh_state = undefined;
         this.refresh_adoptions = null;
         this.refresh_abortions = null;
         this.event_grid = event_grid;
@@ -158,6 +159,7 @@ export class Instance {
                         // have up to date data. Also because
                         // On_Refresh can add and remove children.
                         this.Apply_Styles(yield this.On_Restyle());
+                        this.refresh_state = yield this.Before_Refresh();
                         // These are temporarily stored during the refresh event
                         // to save on both hot and cold memory.
                         this.refresh_adoptions = adoptions;
@@ -236,6 +238,7 @@ export class Instance {
             // This will not cause a deadlock in this entity's queue
             // because all of the deaths are children and not its own.
             yield Promise.all(deaths);
+            yield this.After_Refreshing_Unqueued();
         });
     }
     Before_Dying_Unqueued() {
@@ -248,6 +251,18 @@ export class Instance {
                 });
             }));
             yield this.Before_Death();
+        });
+    }
+    After_Refreshing_Unqueued() {
+        return __awaiter(this, void 0, void 0, function* () {
+            // This function must be called within the context of a queued callback to avoid deadlock.
+            Utils.Assert(this.Is_Alive());
+            yield this.After_Refresh(this.refresh_state);
+            yield Promise.all(this.children.map(function (child) {
+                return __awaiter(this, void 0, void 0, function* () {
+                    yield child.After_Refreshing_Unqueued();
+                });
+            }));
         });
     }
     Die() {
@@ -295,7 +310,17 @@ export class Instance {
             return {};
         });
     }
+    Before_Refresh() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return;
+        });
+    }
     On_Refresh() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return;
+        });
+    }
+    After_Refresh(state) {
         return __awaiter(this, void 0, void 0, function* () {
             return;
         });

@@ -10,6 +10,8 @@ export class Instance
     private files: Files.Instance;
     private name: Name;
     private path: Path;
+    private title: Name;
+    private extension: Name;
 
     constructor(
         {
@@ -24,6 +26,8 @@ export class Instance
         this.files = files;
         this.name = name;
         this.path = `${files.Path()}/${name}`;
+        this.title = name.replace(/\.[^.]*$/, ``);
+        this.extension = name.replace(/^[^.]*\./, ``);
     }
 
     Files():
@@ -42,6 +46,18 @@ export class Instance
         Path
     {
         return this.path;
+    }
+
+    Title():
+        Name
+    {
+        return this.title;
+    }
+
+    Extension():
+        Name
+    {
+        return this.extension;
     }
 
     async Maybe_Text():

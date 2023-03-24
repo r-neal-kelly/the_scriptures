@@ -8,10 +8,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 export class Instance {
-    constructor({ slot, index, name, }) {
+    constructor({ slot, index, name, file, }) {
         this.slot = slot;
         this.index = index;
         this.name = name;
+        this.file = file;
     }
     Slot() {
         return this.slot;
@@ -21,6 +22,14 @@ export class Instance {
     }
     Name() {
         return this.name;
+    }
+    Title() {
+        if (this.file != null) {
+            return this.file.Title();
+        }
+        else {
+            return this.name;
+        }
     }
     Is_Selected() {
         return (this.Slot().Has_Selected_Item() &&

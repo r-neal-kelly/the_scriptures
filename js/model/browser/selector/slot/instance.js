@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import * as Utils from "../../../../utils.js";
 import * as Item from "./item.js";
 export class Instance {
-    constructor({ selector, index, type, item_names, }) {
+    constructor({ selector, index, type, item_names, item_files, }) {
         this.selector = selector;
         this.index = index;
         this.type = type;
@@ -21,6 +21,9 @@ export class Instance {
                 slot: this,
                 index: idx,
                 name: item_names[idx],
+                file: item_files != null ?
+                    item_files[idx] :
+                    null,
             }));
         }
     }

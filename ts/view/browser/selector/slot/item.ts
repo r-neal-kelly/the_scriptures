@@ -86,7 +86,7 @@ export class Instance extends Entity.Instance
     {
         this.Abort_All_Children();
 
-        this.Element().textContent = this.Model().Name();
+        this.Element().textContent = this.Model().Title();
     }
 
     async On_Click(
@@ -129,11 +129,9 @@ export class Instance extends Entity.Instance
                 new Event.Info(
                     {
                         affix: `Reader_Has_File`,
-                        suffixes: [
-                        ],
+                        suffixes: [],
                         type: Event.Type.EXCLUSIVE,
-                        data: {
-                        },
+                        data: {},
                     },
                 ),
             );

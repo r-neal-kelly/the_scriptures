@@ -18,10 +18,17 @@ export class Instance extends Entity.Instance {
         });
         this.model = model;
     }
+    On_Restyle() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return `
+            width: 100%;
+        `;
+        });
+    }
     On_Refresh() {
         return __awaiter(this, void 0, void 0, function* () {
             this.Abort_All_Children();
-            this.Adopt_Child(new Line({ text: this.Model().Data().Name() }));
+            this.Adopt_Child(new Line({ text: this.Model().Data().Title() }));
             this.Adopt_Child(new Line({ text: `` }));
             for (const file_line of this.Model().Text().split(/\r?\n/g)) {
                 this.Adopt_Child(new Line({ text: file_line }));

@@ -15,11 +15,13 @@ export { ID } from "./types.js";
             On_Life
             On_Restyle
             On_Refresh
+            After_Refresh
         Restyle:
             On_Restyle
         Refresh:
             On_Restyle
             On_Refresh
+            After_Refresh
         Die:
             Before_Death
             On_Death
@@ -99,13 +101,28 @@ interface Life_Cycle_Listener_API
     On_Restyle(): Promise<Styles | string>;
 
     /*
+    */
+    Before_Refresh(): Promise<any>;
+
+    /*
         Overriding this event handler allows you to Adopt and Abort children
         entities, thus building the internal tree structure of your entity.
         Children get this event after their parents.
         All children receive this event at the same time.
-        If a child is aborted during this event, it does not receive the event.
+        If a child is aborted during this event, this is not called on it.
     */
     On_Refresh(): Promise<void>;
+
+    /*
+        Overriding this event handler allows you to word on an entity after
+        its children have been updated on the DOM in the Refresh event.
+        Children get this event after their parents.
+        All children receive this event at the same time.
+        If a child is aborted during this event, this is not called on it.
+    */
+    After_Refresh(
+        state: any,
+    ): Promise<void>;
 
     /*
         Overriding this event handler allows you to work with an entity
@@ -254,6 +271,8 @@ export class Instance implements
     private styles: Styles;
     private parent: Instance | null;
     private children: Array<Instance>; // it may be worth using an object with an index attached to instance?
+
+    private refresh_state: any;
     private refresh_adoptions: Set<Instance> | null;
     private refresh_abortions: Set<Instance> | null;
 
@@ -287,6 +306,8 @@ export class Instance implements
         this.styles = {};
         this.parent = null;
         this.children = [];
+
+        this.refresh_state = undefined;
         this.refresh_adoptions = null;
         this.refresh_abortions = null;
 
@@ -491,6 +512,8 @@ export class Instance implements
                     // On_Refresh can add and remove children.
                     this.Apply_Styles(await this.On_Restyle());
 
+                    this.refresh_state = await this.Before_Refresh();
+
                     // These are temporarily stored during the refresh event
                     // to save on both hot and cold memory.
                     this.refresh_adoptions = adoptions;
@@ -602,6 +625,8 @@ export class Instance implements
         // This will not cause a deadlock in this entity's queue
         // because all of the deaths are children and not its own.
         await Promise.all(deaths);
+
+        await this.After_Refreshing_Unqueued();
     }
 
     private async Before_Dying_Unqueued():
@@ -624,6 +649,28 @@ export class Instance implements
         );
 
         await this.Before_Death();
+    }
+
+    private async After_Refreshing_Unqueued():
+        Promise<void>
+    {
+        // This function must be called within the context of a queued callback to avoid deadlock.
+
+        Utils.Assert(this.Is_Alive());
+
+        await this.After_Refresh(this.refresh_state);
+
+        await Promise.all(
+            this.children.map(
+                async function (
+                    child: Instance,
+                ):
+                    Promise<void>
+                {
+                    await child.After_Refreshing_Unqueued();
+                },
+            ),
+        );
     }
 
     async Die():
@@ -693,7 +740,21 @@ export class Instance implements
         return {};
     }
 
+    async Before_Refresh():
+        Promise<any>
+    {
+        return;
+    }
+
     async On_Refresh():
+        Promise<void>
+    {
+        return;
+    }
+
+    async After_Refresh(
+        state: any,
+    ):
         Promise<void>
     {
         return;

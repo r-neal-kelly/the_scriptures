@@ -9,22 +9,26 @@ export class Instance
     private slot: Slot.Instance;
     private index: Index;
     private name: Name;
+    private file: Data.File.Instance | null;
 
     constructor(
         {
             slot,
             index,
             name,
+            file,
         }: {
             slot: Slot.Instance,
             index: Index,
             name: Name,
+            file: Data.File.Instance | null,
         },
     )
     {
         this.slot = slot;
         this.index = index;
         this.name = name;
+        this.file = file;
     }
 
     Slot():
@@ -43,6 +47,16 @@ export class Instance
         Name
     {
         return this.name;
+    }
+
+    Title():
+        Name
+    {
+        if (this.file != null) {
+            return this.file.Title();
+        } else {
+            return this.name;
+        }
     }
 
     Is_Selected():

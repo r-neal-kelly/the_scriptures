@@ -23,11 +23,13 @@ export class Instance
             index,
             type,
             item_names,
+            item_files,
         }: {
             selector: Selector.Instance,
             index: Index,
             type: Type,
             item_names: Array<Name>,
+            item_files: Array<Data.File.Instance> | null,
         },
     )
     {
@@ -44,6 +46,9 @@ export class Instance
                         slot: this,
                         index: idx,
                         name: item_names[idx],
+                        file: item_files != null ?
+                            item_files[idx] :
+                            null,
                     },
                 ),
             );
