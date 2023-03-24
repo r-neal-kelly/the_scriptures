@@ -12,21 +12,27 @@ import * as Entity from "../../entity.js";
 import * as Selector from "./selector.js";
 export class Instance extends Entity.Instance {
     constructor({ model, root, }) {
-        super(`div`, root.Event_Grid());
+        super({
+            element: `div`,
+            parent: root,
+            event_grid: root.Event_Grid(),
+        });
         this.model = model;
-        this.root = root;
         this.selector = null;
     }
     On_Restyle() {
         return __awaiter(this, void 0, void 0, function* () {
-            return {
-                "display": `grid`,
-                "width": `100%`,
-                "height": `100%`,
-                "overflow-x": `hidden`,
-                "overflow-y": `hidden`,
-                "color": `white`,
-            };
+            return `
+            display: grid;
+        
+            width: 100%;
+            height: 100%;
+
+            overflow-x: hidden;
+            overflow-y: hidden;
+
+            color: white;
+        `;
         });
     }
     On_Refresh() {
@@ -36,14 +42,13 @@ export class Instance extends Entity.Instance {
                 model: this.Model().Selector(),
                 browser: this,
             });
-            this.Adopt_Child(this.selector);
         });
     }
     Model() {
         return this.model;
     }
     Root() {
-        return this.root;
+        return this.Parent();
     }
     Selector() {
         Utils.Assert(this.selector != null, `Does not have selector.`);

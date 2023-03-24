@@ -12,7 +12,13 @@ class Body extends Entity.Instance
 
     constructor()
     {
-        super(document.body as HTMLBodyElement, new Event.Grid());
+        super(
+            {
+                element: document.body as HTMLBodyElement,
+                parent: null,
+                event_grid: new Event.Grid(),
+            },
+        );
 
         this.model = null;
         this.view = null;
@@ -91,7 +97,6 @@ class Body extends Entity.Instance
                 root: this,
             },
         );
-        this.Adopt_Child(this.view);
     }
 
     Window():
@@ -128,7 +133,13 @@ class File extends Entity.Instance
 {
     constructor()
     {
-        super(`div`, new Event.Grid());
+        super(
+            {
+                element: `div`,
+                parent: null,
+                event_grid: new Event.Grid(),
+            },
+        );
     }
 }
 
@@ -136,7 +147,13 @@ class Lines extends Entity.Instance
 {
     constructor()
     {
-        super(`div`, new Event.Grid());
+        super(
+            {
+                element: `div`,
+                parent: null,
+                event_grid: new Event.Grid(),
+            },
+        );
     }
 }
 
@@ -144,7 +161,13 @@ class Line extends Entity.Instance
 {
     constructor()
     {
-        super(`div`, new Event.Grid());
+        super(
+            {
+                element: `div`,
+                parent: null,
+                event_grid: new Event.Grid(),
+            },
+        );
     }
 }
 
@@ -152,7 +175,13 @@ class Word extends Entity.Instance
 {
     constructor()
     {
-        super(`div`, new Event.Grid());
+        super(
+            {
+                element: `span`,
+                parent: null,
+                event_grid: new Event.Grid(),
+            },
+        );
     }
 }
 
@@ -160,7 +189,13 @@ class Letter extends Entity.Instance
 {
     constructor()
     {
-        super(`div`, new Event.Grid());
+        super(
+            {
+                element: `span`,
+                parent: null,
+                event_grid: new Event.Grid(),
+            },
+        );
     }
 }
 
@@ -168,7 +203,13 @@ class Break extends Entity.Instance
 {
     constructor()
     {
-        super(`div`, new Event.Grid());
+        super(
+            {
+                element: `span`,
+                parent: null,
+                event_grid: new Event.Grid(),
+            },
+        );
     }
 }
 
@@ -176,6 +217,12 @@ class Marker extends Entity.Instance
 {
     constructor()
     {
-        super(`div`, new Event.Grid());
+        super(
+            {
+                element: `span`,
+                parent: null,
+                event_grid: new Event.Grid(),
+            },
+        );
     }
 }

@@ -9,7 +9,6 @@ import * as Slot from "./slot.js";
 export class Instance extends Entity.Instance
 {
     private model: Model.Instance;
-    private browser: Browser.Instance;
     private slots: Array<Slot.Instance> | null;
 
     constructor(
@@ -22,10 +21,15 @@ export class Instance extends Entity.Instance
         },
     )
     {
-        super(`div`, browser.Event_Grid());
+        super(
+            {
+                element: `div`,
+                parent: browser,
+                event_grid: browser.Event_Grid(),
+            },
+        );
 
         this.model = model;
-        this.browser = browser;
         this.slots = null;
     }
 
@@ -73,7 +77,6 @@ export class Instance extends Entity.Instance
                 },
             );
             this.slots.push(slot_view);
-            this.Adopt_Child(slot_view);
         }
     }
 
@@ -98,6 +101,6 @@ export class Instance extends Entity.Instance
     Browser():
         Browser.Instance
     {
-        return this.browser;
+        return this.Parent() as Browser.Instance;
     }
 }

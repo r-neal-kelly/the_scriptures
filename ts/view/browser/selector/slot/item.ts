@@ -8,7 +8,6 @@ import * as Slot from "./instance.js";
 export class Instance extends Entity.Instance
 {
     private model: Model.Instance;
-    private slot: Slot.Instance;
 
     constructor(
         {
@@ -20,10 +19,15 @@ export class Instance extends Entity.Instance
         },
     )
     {
-        super(`div`, slot.Event_Grid());
+        super(
+            {
+                element: `div`,
+                parent: slot,
+                event_grid: slot.Event_Grid(),
+            },
+        );
 
         this.model = model;
-        this.slot = slot;
     }
 
     override async On_Life():
@@ -127,6 +131,6 @@ export class Instance extends Entity.Instance
     Slot():
         Slot.Instance
     {
-        return this.slot;
+        return this.Parent() as Slot.Instance;
     }
 }

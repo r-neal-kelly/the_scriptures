@@ -11,9 +11,12 @@ import * as Entity from "../../../../entity.js";
 import * as Event from "../../../../event.js";
 export class Instance extends Entity.Instance {
     constructor({ model, slot, }) {
-        super(`div`, slot.Event_Grid());
+        super({
+            element: `div`,
+            parent: slot,
+            event_grid: slot.Event_Grid(),
+        });
         this.model = model;
-        this.slot = slot;
     }
     On_Life() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -86,6 +89,6 @@ export class Instance extends Entity.Instance {
         return this.model;
     }
     Slot() {
-        return this.slot;
+        return this.Parent();
     }
 }

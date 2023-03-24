@@ -8,7 +8,6 @@ import * as Selector from "./selector.js";
 export class Instance extends Entity.Instance
 {
     private model: Model.Instance;
-    private root: Entity.Instance;
     private selector: Selector.Instance | null;
 
     constructor(
@@ -21,27 +20,32 @@ export class Instance extends Entity.Instance
         },
     )
     {
-        super(`div`, root.Event_Grid());
+        super(
+            {
+                element: `div`,
+                parent: root,
+                event_grid: root.Event_Grid(),
+            },
+        );
 
         this.model = model;
-        this.root = root;
         this.selector = null;
     }
 
     override async On_Restyle():
         Promise<Entity.Styles | string>
     {
-        return {
-            "display": `grid`,
+        return `
+            display: grid;
+        
+            width: 100%;
+            height: 100%;
 
-            "width": `100%`,
-            "height": `100%`,
+            overflow-x: hidden;
+            overflow-y: hidden;
 
-            "overflow-x": `hidden`,
-            "overflow-y": `hidden`,
-
-            "color": `white`,
-        };
+            color: white;
+        `;
     }
 
     override async On_Refresh():
@@ -55,7 +59,6 @@ export class Instance extends Entity.Instance
                 browser: this,
             },
         );
-        this.Adopt_Child(this.selector);
     }
 
     Model():
@@ -67,7 +70,7 @@ export class Instance extends Entity.Instance
     Root():
         Entity.Instance
     {
-        return this.root;
+        return this.Parent();
     }
 
     Selector():

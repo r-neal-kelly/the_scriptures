@@ -11,9 +11,12 @@ import * as Entity from "../../../../entity.js";
 import * as Item from "./item.js";
 export class Instance extends Entity.Instance {
     constructor({ model, selector, }) {
-        super(`div`, selector.Event_Grid());
+        super({
+            element: `div`,
+            parent: selector,
+            event_grid: selector.Event_Grid(),
+        });
         this.model = model;
-        this.selector = selector;
         this.items = null;
     }
     On_Restyle() {
@@ -36,7 +39,6 @@ export class Instance extends Entity.Instance {
                     slot: this,
                 });
                 this.items.push(item_view);
-                this.Adopt_Child(item_view);
             }
         });
     }
@@ -44,6 +46,6 @@ export class Instance extends Entity.Instance {
         return this.model;
     }
     Selector() {
-        return this.selector;
+        return this.Parent();
     }
 }

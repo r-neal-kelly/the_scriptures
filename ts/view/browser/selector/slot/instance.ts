@@ -8,7 +8,6 @@ import * as Item from "./item.js";
 export class Instance extends Entity.Instance
 {
     private model: Model.Instance;
-    private selector: Selector.Instance;
     private items: Array<Item.Instance> | null;
 
     constructor(
@@ -21,10 +20,15 @@ export class Instance extends Entity.Instance
         },
     )
     {
-        super(`div`, selector.Event_Grid());
+        super(
+            {
+                element: `div`,
+                parent: selector,
+                event_grid: selector.Event_Grid(),
+            },
+        );
 
         this.model = model;
-        this.selector = selector;
         this.items = null;
     }
 
@@ -53,7 +57,6 @@ export class Instance extends Entity.Instance
                 },
             );
             this.items.push(item_view);
-            this.Adopt_Child(item_view);
         }
     }
 
@@ -66,6 +69,6 @@ export class Instance extends Entity.Instance
     Selector():
         Selector.Instance
     {
-        return this.selector;
+        return this.Parent() as Selector.Instance;
     }
 }

@@ -12,9 +12,12 @@ import * as Event from "../../../event.js";
 import * as Slot from "./slot.js";
 export class Instance extends Entity.Instance {
     constructor({ model, browser, }) {
-        super(`div`, browser.Event_Grid());
+        super({
+            element: `div`,
+            parent: browser,
+            event_grid: browser.Event_Grid(),
+        });
         this.model = model;
-        this.browser = browser;
         this.slots = null;
     }
     On_Life() {
@@ -53,7 +56,6 @@ export class Instance extends Entity.Instance {
                     selector: this,
                 });
                 this.slots.push(slot_view);
-                this.Adopt_Child(slot_view);
             }
         });
     }
@@ -66,6 +68,6 @@ export class Instance extends Entity.Instance {
         return this.model;
     }
     Browser() {
-        return this.browser;
+        return this.Parent();
     }
 }

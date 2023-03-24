@@ -16,7 +16,13 @@ export class Instance extends Entity.Instance
         },
     )
     {
-        super(`div`, new Event.Grid());
+        super(
+            {
+                element: `div`,
+                parent: null,
+                event_grid: new Event.Grid()
+            },
+        );
 
         this.model = model;
     }
@@ -60,7 +66,13 @@ class Line extends Entity.Instance
         },
     )
     {
-        super(`div`, new Event.Grid());
+        super(
+            {
+                element: `div`,
+                parent: null,
+                event_grid: new Event.Grid()
+            },
+        );
 
         this.text = text;
     }

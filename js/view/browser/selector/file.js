@@ -12,7 +12,11 @@ import * as Event from "../../../event.js";
 import * as Entity from "../../../entity.js";
 export class Instance extends Entity.Instance {
     constructor({ model, }) {
-        super(`div`, new Event.Grid());
+        super({
+            element: `div`,
+            parent: null,
+            event_grid: new Event.Grid()
+        });
         this.model = model;
     }
     On_Refresh() {
@@ -37,7 +41,11 @@ export class Instance extends Entity.Instance {
 // this class is temporary, for testing
 class Line extends Entity.Instance {
     constructor({ text, }) {
-        super(`div`, new Event.Grid());
+        super({
+            element: `div`,
+            parent: null,
+            event_grid: new Event.Grid()
+        });
         this.text = text;
     }
     On_Restyle() {

@@ -1,4 +1,4 @@
-import { Integer } from "./types.js";
+import { Count } from "./types.js";
 import { Index } from "./types.js";
 import { ID } from "./types.js";
 import { Float } from "./types.js";
@@ -8,6 +8,183 @@ import * as Queue from "./queue.js";
 import * as Event from "./event.js";
 
 export { ID } from "./types.js";
+
+/*
+    Life-Cycle:
+        Live:
+            On_Life
+            On_Restyle
+            On_Refresh
+        Restyle:
+            On_Restyle
+        Refresh:
+            On_Restyle
+            On_Refresh
+        Die:
+            Before_Death
+            On_Death
+*/
+
+interface Info_API
+{
+    Is_Alive(): boolean;
+
+    ID(): ID;
+
+    Element(): HTMLElement;
+}
+
+interface Life_Cycle_Sender_API
+{
+    /*
+        Automatically queued when the entity is constructed.
+
+        Queues a full Refresh on itself directly if it is not adopted
+        synchronously during or after creation in another entity's
+        On_Refresh event listener, or else it is automatically
+        refreshed by its parent.
+    */
+    // private Live(): Promise<void>;
+
+    /*
+        Should not be waited on in any of the event listener overrides,
+        it will dead-lock the queue.
+    */
+    Restyle(): Promise<void>;
+
+    /*
+        Automatically queued through Live.
+
+        Should not be waited on in any of the event listener overrides,
+        it will dead-lock the queue.
+    */
+    Refresh(): Promise<void>;
+
+    /*
+        Automatically queued when the parent of the entity dies.
+
+        Should not be waited on in any of the event listener overrides,
+        it will dead-lock the queue.
+    */
+    Die(): Promise<void>;
+}
+
+interface Life_Cycle_Listener_API
+{
+    /*
+        Overriding this event handler allows you to work on the entity before
+        it is has been restyled or refreshed for the first time.
+        The Event is triggered immediately upon construction of the entity,
+        and after the executing async frame that made the entity is finished.
+        After On_Refresh, it automatically refreshes if it has no parent, otherwise
+        it waits for its parent to refresh before it refreshes.
+        The element of the entity is fully accessible, however it is only added to
+        the DOM in the refresh cycle.
+    */
+    On_Life(): Promise<Array<Event.Listener_Info>>;
+
+    /*
+        Overriding this event handler allows you to return CSS styles that will
+        be applied to the entity's underlying element immediately.
+        The returned styles are combined with and override already existing
+        styles stored on the entity.
+        If returning a styles object, the properties are standard CSS names,
+        that use the '-' symbol, and not camelCase.
+        A return string should have valid CSS code within it, as if you were
+        writing the interior of a valid CSS class, without the '{' and '}'.
+        Children get this event after their parents.
+        All children receive this event at the same time.
+        If a child is aborted, it does not receive the event.
+    */
+    On_Restyle(): Promise<Styles | string>;
+
+    /*
+        Overriding this event handler allows you to Adopt and Abort children
+        entities, thus building the internal tree structure of your entity.
+        Children get this event after their parents.
+        All children receive this event at the same time.
+        If a child is aborted during this event, it does not receive the event.
+    */
+    On_Refresh(): Promise<void>;
+
+    /*
+        Overriding this event handler allows you to work with an entity
+        before its children die and before it is removed from its parent.
+        The entity is still in the DOM during this event.
+        Children get this event before their parents.
+        All children receive the event at the same time.
+    */
+    Before_Death(): Promise<void>;
+
+    /*
+        Overriding this event handler allows you to work with an entity
+        after its children die and after it has been removed from its parent.
+        The entity is no longer in the DOM during this event.
+        Children get this event before their parents.
+        All children receive the event at the same time.
+    */
+    On_Death(): Promise<void>;
+}
+
+interface Parent_API
+{
+    Has_Parent(): boolean;
+
+    Parent(): Instance;
+
+    Maybe_Parent(): Instance | null;
+}
+
+interface Child_API
+{
+    Child_Count(): Count;
+
+    Has_Child(
+        child_index: Index,
+    ): boolean;
+
+    Child(
+        child_index: Index,
+    ): Instance;
+
+    Maybe_Child(
+        child_index: Index,
+    ): Instance | null;
+
+    Children(): Array<Instance>;
+
+    Adopt_Child(
+        child: Instance,
+    ): void;
+
+    Abort_Child(
+        child: Instance,
+    ): void;
+
+    Abort_All_Children(): void;
+}
+
+interface Event_API
+{
+    Event_Grid(): Event.Grid;
+
+    Send(
+        event_info: Event.Info,
+    ): Promise<void>
+}
+
+interface Animation_API
+{
+    Animate(
+        keyframes: Array<Keyframe>,
+        options: KeyframeEffectOptions,
+    ): Promise<void>;
+
+    Animate_By_Frame<User_State>(
+        on_frame: Animation_Frame_Callback<User_State>,
+        state: User_State,
+    ): Promise<void>;
+}
 
 export type Styles = { [index: string]: string };
 
@@ -55,7 +232,19 @@ export class Animation_Frame
     }
 }
 
-export class Instance
+export type Animation_Frame_Callback<User_State> = (
+    frame: Animation_Frame,
+    state: User_State,
+) => boolean | Promise<boolean>;
+
+export class Instance implements
+    Info_API,
+    Life_Cycle_Sender_API,
+    Life_Cycle_Listener_API,
+    Parent_API,
+    Child_API,
+    Event_API,
+    Animation_API
 {
     private static next_id: ID = 0;
 
@@ -74,8 +263,15 @@ export class Instance
     private is_alive: boolean;
 
     constructor(
-        element: string | HTMLBodyElement,
-        event_grid: Event.Grid,
+        {
+            element,
+            parent,
+            event_grid,
+        }: {
+            element: string | HTMLBodyElement,
+            parent: Instance | null,
+            event_grid: Event.Grid,
+        },
     )
     {
         Utils.Assert(
@@ -98,6 +294,10 @@ export class Instance
         this.life_cycle_queue = new Queue.Instance();
 
         this.is_alive = true;
+
+        if (parent != null) {
+            parent.Adopt_Child(this);
+        }
 
         this.Live();
     }
@@ -481,90 +681,30 @@ export class Instance
         );
     }
 
-    /*
-        Life-Cycle:
-            Live:
-                On_Life
-                On_Restyle
-                On_Refresh
-            Restyle
-                On_Restyle
-            Refresh
-                On_Restyle
-                On_Refresh
-            Die
-                Before_Death
-                On_Death
-    */
-
-    /*
-        Overriding this event handler allows you to work on the entity before
-        it is has been restyled or refreshed for the first time.
-        The Event is triggered immediately upon construction of the entity,
-        and after the executing async frame that made the entity exits.
-        After exit, it automatically refreshes if it has no parent, otherwise
-        it waits for its parent to refresh before it refreshes.
-        The element of the entity is fully accessible, however it is only added to
-        the DOM for the first time in the refresh cycle.
-    */
     async On_Life():
         Promise<Array<Event.Listener_Info>>
     {
         return [];
     }
 
-    /*
-        Overriding this event handler allows you to return CSS styles that will
-        be directly applied to the entity's underlying element immediately.
-        The returned styles are combined with and override already existing
-        styles stored on the entity.
-        If returning a styles object, the properties are standard CSS names,
-        that use the '-' symbol, and not camelCase.
-        A return string should have valid CSS code within it, as if you were
-        writing the interior of a valid CSS class, without the '{' and '}'.
-        Children get this event after their parents.
-        All children receive this event at the same time.
-        If a child is aborted during this event, it does not receive the event.
-    */
     async On_Restyle():
         Promise<Styles | string>
     {
         return {};
     }
 
-    /*
-        Overriding this event handler allows you to Adopt and Abort children
-        entities, thus building the internal tree structure of your entity.
-        Children get this event after their parents.
-        All children receive this event at the same time.
-        If a child is aborted during this event, it does not receive the event.
-    */
     async On_Refresh():
         Promise<void>
     {
         return;
     }
 
-    /*
-        Overriding this event handler allows you to work with an entity
-        before its children die and before it is removed from its parent.
-        The entity is still in the DOM during this event.
-        Children get this event before their parents.
-        All children receive the event at the same time.
-    */
     async Before_Death():
         Promise<void>
     {
         return;
     }
 
-    /*
-        Overriding this event handler allows you to work with an entity
-        after its children die and after it has been removed from its parent.
-        The entity is no longer in the DOM during this event.
-        Children get this event before their parents.
-        All children receive the event at the same time.
-    */
     async On_Death():
         Promise<void>
     {
@@ -631,7 +771,7 @@ export class Instance
     }
 
     Child_Count():
-        Integer
+        Count
     {
         Utils.Assert(
             this.Is_Alive(),
@@ -893,12 +1033,9 @@ export class Instance
         }
     }
 
-    async Animate_By_Frame<State>(
-        on_frame: (
-            frame: Animation_Frame,
-            state: State,
-        ) => boolean | Promise<boolean>,
-        state: State,
+    async Animate_By_Frame<User_State>(
+        on_frame: Animation_Frame_Callback<User_State>,
+        state: User_State,
     ):
         Promise<void>
     {

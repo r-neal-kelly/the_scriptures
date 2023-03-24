@@ -14,7 +14,11 @@ import * as Model from "../model/browser.js";
 import * as View from "./browser.js";
 class Body extends Entity.Instance {
     constructor() {
-        super(document.body, new Event.Grid());
+        super({
+            element: document.body,
+            parent: null,
+            event_grid: new Event.Grid(),
+        });
         this.model = null;
         this.view = null;
     }
@@ -77,7 +81,6 @@ class Body extends Entity.Instance {
                 model: this.model,
                 root: this,
             });
-            this.Adopt_Child(this.view);
         });
     }
     Window() {
@@ -98,36 +101,64 @@ new Body();
 // you can close a book and the languages and versions will auto update
 class File extends Entity.Instance {
     constructor() {
-        super(`div`, new Event.Grid());
+        super({
+            element: `div`,
+            parent: null,
+            event_grid: new Event.Grid(),
+        });
     }
 }
 class Lines extends Entity.Instance {
     constructor() {
-        super(`div`, new Event.Grid());
+        super({
+            element: `div`,
+            parent: null,
+            event_grid: new Event.Grid(),
+        });
     }
 }
 class Line extends Entity.Instance {
     constructor() {
-        super(`div`, new Event.Grid());
+        super({
+            element: `div`,
+            parent: null,
+            event_grid: new Event.Grid(),
+        });
     }
 }
 class Word extends Entity.Instance {
     constructor() {
-        super(`div`, new Event.Grid());
+        super({
+            element: `span`,
+            parent: null,
+            event_grid: new Event.Grid(),
+        });
     }
 }
 class Letter extends Entity.Instance {
     constructor() {
-        super(`div`, new Event.Grid());
+        super({
+            element: `span`,
+            parent: null,
+            event_grid: new Event.Grid(),
+        });
     }
 }
 class Break extends Entity.Instance {
     constructor() {
-        super(`div`, new Event.Grid());
+        super({
+            element: `span`,
+            parent: null,
+            event_grid: new Event.Grid(),
+        });
     }
 }
 class Marker extends Entity.Instance {
     constructor() {
-        super(`div`, new Event.Grid());
+        super({
+            element: `span`,
+            parent: null,
+            event_grid: new Event.Grid(),
+        });
     }
 }

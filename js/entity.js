@@ -27,7 +27,7 @@ export class Animation_Frame {
     }
 }
 export class Instance {
-    constructor(element, event_grid) {
+    constructor({ element, parent, event_grid, }) {
         Utils.Assert(Instance.next_id !== Infinity, `Can't create another ID!`);
         this.id = Instance.next_id++;
         this.element = element instanceof HTMLBodyElement ?
@@ -41,6 +41,9 @@ export class Instance {
         this.event_grid = event_grid;
         this.life_cycle_queue = new Queue.Instance();
         this.is_alive = true;
+        if (parent != null) {
+            parent.Adopt_Child(this);
+        }
         this.Live();
     }
     Is_Alive() {
@@ -282,85 +285,26 @@ export class Instance {
             }.bind(this));
         });
     }
-    /*
-        Life-Cycle:
-            Live:
-                On_Life
-                On_Restyle
-                On_Refresh
-            Restyle
-                On_Restyle
-            Refresh
-                On_Restyle
-                On_Refresh
-            Die
-                Before_Death
-                On_Death
-    */
-    /*
-        Overriding this event handler allows you to work on the entity before
-        it is has been restyled or refreshed for the first time.
-        The Event is triggered immediately upon construction of the entity,
-        and after the executing async frame that made the entity exits.
-        After exit, it automatically refreshes if it has no parent, otherwise
-        it waits for its parent to refresh before it refreshes.
-        The element of the entity is fully accessible, however it is only added to
-        the DOM for the first time in the refresh cycle.
-    */
     On_Life() {
         return __awaiter(this, void 0, void 0, function* () {
             return [];
         });
     }
-    /*
-        Overriding this event handler allows you to return CSS styles that will
-        be directly applied to the entity's underlying element immediately.
-        The returned styles are combined with and override already existing
-        styles stored on the entity.
-        If returning a styles object, the properties are standard CSS names,
-        that use the '-' symbol, and not camelCase.
-        A return string should have valid CSS code within it, as if you were
-        writing the interior of a valid CSS class, without the '{' and '}'.
-        Children get this event after their parents.
-        All children receive this event at the same time.
-        If a child is aborted during this event, it does not receive the event.
-    */
     On_Restyle() {
         return __awaiter(this, void 0, void 0, function* () {
             return {};
         });
     }
-    /*
-        Overriding this event handler allows you to Adopt and Abort children
-        entities, thus building the internal tree structure of your entity.
-        Children get this event after their parents.
-        All children receive this event at the same time.
-        If a child is aborted during this event, it does not receive the event.
-    */
     On_Refresh() {
         return __awaiter(this, void 0, void 0, function* () {
             return;
         });
     }
-    /*
-        Overriding this event handler allows you to work with an entity
-        before its children die and before it is removed from its parent.
-        The entity is still in the DOM during this event.
-        Children get this event before their parents.
-        All children receive the event at the same time.
-    */
     Before_Death() {
         return __awaiter(this, void 0, void 0, function* () {
             return;
         });
     }
-    /*
-        Overriding this event handler allows you to work with an entity
-        after its children die and after it has been removed from its parent.
-        The entity is no longer in the DOM during this event.
-        Children get this event before their parents.
-        All children receive the event at the same time.
-    */
     On_Death() {
         return __awaiter(this, void 0, void 0, function* () {
             return;
