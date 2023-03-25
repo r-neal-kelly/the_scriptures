@@ -113,6 +113,38 @@ export class Instance extends Async.Instance
         return this.info as Info;
     }
 
+    // We should be able to pass some options probably,
+    // like whether or not to parse commands literally,
+    // so the caller doesn't have to manually remove them.
+    // Another important thing is that we'll probably
+    // want to send the complete text of a file and this
+    // will automatically break it down into lines. That
+    // way we can supply life information, e.g. for the
+    // center command.
+    Parse(
+        {
+            text,
+        }: {
+            text: string,
+        },
+    ):
+        Array<null>
+    {
+        return [];
+    }
+
+    Parse_As_Points(
+        {
+            text,
+        }: {
+            text: string,
+        },
+    ):
+        Array<null>
+    {
+        return [];
+    }
+
     async Ready():
         Promise<void>
     {

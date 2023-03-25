@@ -46,6 +46,20 @@ export class Instance extends Async.Instance {
         Utils.Assert(this.info != null, `Info should not be null when dictionary is ready.`);
         return this.info;
     }
+    // We should be able to pass some options probably,
+    // like whether or not to parse commands literally,
+    // so the caller doesn't have to manually remove them.
+    // Another important thing is that we'll probably
+    // want to send the complete text of a file and this
+    // will automatically break it down into lines. That
+    // way we can supply life information, e.g. for the
+    // center command.
+    Parse({ text, }) {
+        return [];
+    }
+    Parse_As_Points({ text, }) {
+        return [];
+    }
     Ready() {
         const _super = Object.create(null, {
             Ready: { get: () => super.Ready }
