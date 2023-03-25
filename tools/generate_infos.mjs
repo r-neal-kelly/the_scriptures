@@ -5,53 +5,31 @@
 `use strict`;
 
 import * as fs from "fs";
-import * as path from "path";
 
-/* string_t[] */ async function Read_Directory(directory_path)
-{
-    return new Promise(function (/* function_t */ Resolve, /* function_t */ Reject)
-    {
-        fs.readdir(directory_path, { withFileTypes: true }, function (/* error_t */ error, /* string_t[] */ files)
-        {
-            if (error) {
-                Reject(error);
-            } else {
-                Resolve(files);
-            }
-        });
-    });
-}
-
-/* string_t */ async function Read_File(/* string_t */ path_to_file)
-{
-    return new Promise(function (/* function_t */ Resolve, /* function_t */ Reject)
-    {
-        fs.readFile(path_to_file, `utf8`, function (/* error_t */ error, /* string_t */ file_text)
-        {
-            if (error) {
-                Reject(error);
-            } else {
-                Resolve(file_text);
-            }
-        });
-    });
-}
-
-async function Write_File(path_to_file, data)
+async function Read_Directory(
+    directory_path,
+)
 {
     return new Promise(
-        function (Resolve, Reject)
+        function (
+            resolve,
+            reject,
+        )
         {
-            fs.writeFile(
-                path_to_file,
-                data,
-                `utf8`,
-                function (error)
+            fs.readdir(
+                directory_path,
+                {
+                    withFileTypes: true,
+                },
+                function (
+                    error,
+                    entities,
+                )
                 {
                     if (error != null) {
-                        Reject(error);
+                        reject(error);
                     } else {
-                        Resolve();
+                        resolve(entities);
                     }
                 },
             );
@@ -59,52 +37,184 @@ async function Write_File(path_to_file, data)
     );
 }
 
-const FOLDER_TYPES = [
-    `BOOKS`,
-    `LANGUAGES`,
-    `VERSIONS`,
-    `CHAPTERS`,
-];
-
-async function Generate_Info(
-    folder_path,
-    folder_type,
+async function Read_File(
+    file_path,
 )
 {
-    folder_path = folder_path.replace(/\/$/, ``);
+    return new Promise(
+        function (
+            resolve,
+            reject,
+        )
+        {
+            fs.readFile(
+                file_path,
+                `utf8`,
+                function (
+                    error,
+                    file_text,
+                )
+                {
+                    if (error != null) {
+                        reject(error);
+                    } else {
+                        resolve(file_text);
+                    }
+                },
+            );
+        },
+    );
+}
 
-    const info = {
-        type: FOLDER_TYPES[folder_type],
-    };
+async function Write_File(
+    file_path,
+    data,
+)
+{
+    return new Promise(
+        function (
+            resolve,
+            reject,
+        )
+        {
+            fs.writeFile(
+                file_path,
+                data,
+                `utf8`,
+                function (
+                    error,
+                )
+                {
+                    if (error != null) {
+                        reject(error);
+                    } else {
+                        resolve();
+                    }
+                },
+            );
+        },
+    );
+}
+
+async function Folder_Names(
+    folder_path,
+)
+{
+    const names = [];
+
     const entities = await Read_Directory(folder_path);
-    if (
-        FOLDER_TYPES[folder_type] === `BOOKS` ||
-        FOLDER_TYPES[folder_type] === `LANGUAGES` ||
-        FOLDER_TYPES[folder_type] === `VERSIONS`
-    ) {
-        info.folder_names = [];
-        for (let entity of entities) {
-            if (entity.isDirectory()) {
-                await Generate_Info(`${folder_path}/${entity.name}`, folder_type + 1);
-                info.folder_names.push(entity.name);
-            }
+    for (let entity of entities) {
+        if (entity.isDirectory()) {
+            names.push(entity.name);
         }
-        info.folder_names.sort();
-    } else if (
-        FOLDER_TYPES[folder_type] === `CHAPTERS`
-    ) {
-        info.file_names = [];
-        for (let entity of entities) {
-            if (entity.isFile()) {
-                if (
-                    !/\.json$/.test(entity.name) &&
-                    !/COPY\.txt$/.test(entity.name)
-                ) {
-                    info.file_names.push(entity.name);
-                }
-            }
+    }
+
+    return names;
+}
+
+async function File_Names(
+    folder_path,
+)
+{
+    const names = [];
+
+    const entities = await Read_Directory(folder_path);
+    for (let entity of entities) {
+        if (entity.isFile()) {
+            names.push(entity.name);
         }
-        info.file_names.sort();
+    }
+
+    return names;
+}
+
+const FOLDER_TYPES = [
+    `Browser`,
+    `Books`,
+    `Book`,
+    `Languages`,
+    `Language`,
+    `Versions`,
+    `Version`,
+    `Files`,
+];
+Object.freeze(FOLDER_TYPES);
+
+async function Generate_Info(
+    folder_type,
+    folder_path,
+)
+{
+    const info = {};
+
+    if (FOLDER_TYPES[folder_type] === `Browser`) {
+        await Generate_Info(folder_type + 1, `${folder_path}/Books`);
+
+    } else if (FOLDER_TYPES[folder_type] === `Books`) {
+        info.names = (await Folder_Names(folder_path)).sort();
+        await Promise.all(
+            info.names.map(
+                async function (
+                    name,
+                )
+                {
+                    await Generate_Info(folder_type + 1, `${folder_path}/${name}`);
+                },
+            ),
+        );
+
+    } else if (FOLDER_TYPES[folder_type] === `Book`) {
+        await Generate_Info(folder_type + 1, `${folder_path}/Languages`);
+
+    } else if (FOLDER_TYPES[folder_type] === `Languages`) {
+        info.names = (await Folder_Names(folder_path)).sort();
+        await Promise.all(
+            info.names.map(
+                async function (
+                    name,
+                )
+                {
+                    await Generate_Info(folder_type + 1, `${folder_path}/${name}`);
+                },
+            ),
+        );
+
+    } else if (FOLDER_TYPES[folder_type] === `Language`) {
+        await Generate_Info(folder_type + 1, `${folder_path}/Versions`);
+
+    } else if (FOLDER_TYPES[folder_type] === `Versions`) {
+        info.names = (await Folder_Names(folder_path)).sort();
+        await Promise.all(
+            info.names.map(
+                async function (
+                    name,
+                )
+                {
+                    await Generate_Info(folder_type + 1, `${folder_path}/${name}`);
+                },
+            ),
+        );
+
+    } else if (FOLDER_TYPES[folder_type] === `Version`) {
+        await Generate_Info(folder_type + 1, `${folder_path}/Files`);
+
+    } else if (FOLDER_TYPES[folder_type] === `Files`) {
+        info.names = (await File_Names(folder_path)).filter(
+            function (
+                name,
+            )
+            {
+                return (
+                    /\.txt$/.test(name) &&
+                    !/COPY\.txt$/.test(name)
+                );
+            },
+        ).sort();
+
+    } else {
+        throw new Error(
+            `Invalid folder type.`,
+        );
     }
 
     await Write_File(
@@ -116,6 +226,6 @@ async function Generate_Info(
 (
     async function Main()
     {
-        await Generate_Info(`./`, 0);
+        await Generate_Info(0, `./${FOLDER_TYPES[0]}`);
     }
 )();
