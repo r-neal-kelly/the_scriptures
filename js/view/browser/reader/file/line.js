@@ -9,49 +9,44 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import * as Entity from "../../../../entity.js";
 export class Instance extends Entity.Instance {
-    constructor({ model, slot, }) {
+    constructor({ model, lines, }) {
         super({
             element: `div`,
-            parent: slot,
-            event_grid: slot.Event_Grid(),
+            parent: lines,
+            event_grid: lines.Event_Grid(),
         });
         this.model = model;
     }
     On_Restyle() {
         return __awaiter(this, void 0, void 0, function* () {
+            const model = this.Model();
+            const color = model.Text() === `` ?
+                `transparent` :
+                `inherit`;
             return `
-            width: 100%;
-                
-            overflow-x: hidden;
-            overflow-y: hidden;
-
-            background-color: black;
-            color: white;
-
-            border-color: white;
-            border-style: solid;
-            border-width: 0 0 1px 0;
-
-            font-variant: small-caps;
-
-            cursor: default;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
+            color: ${color};
         `;
         });
     }
     On_Refresh() {
         return __awaiter(this, void 0, void 0, function* () {
             const model = this.Model();
-            this.Element().textContent = model.Value();
+            const text = model.Text();
+            // I would like to avoid altering the text here,
+            // probably need to figure out what can be done
+            // with styling instead.
+            if (text === ``) {
+                this.Element().textContent = `_`;
+            }
+            else {
+                this.Element().textContent = text;
+            }
         });
     }
     Model() {
         return this.model;
     }
-    Slot() {
+    Lines() {
         return this.Parent();
     }
 }

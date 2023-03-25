@@ -8,50 +8,47 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import * as Entity from "../../../../entity.js";
+import * as Line from "./line.js";
 export class Instance extends Entity.Instance {
-    constructor({ model, slot, }) {
+    constructor({ model, file, }) {
         super({
             element: `div`,
-            parent: slot,
-            event_grid: slot.Event_Grid(),
+            parent: file,
+            event_grid: file.Event_Grid(),
         });
         this.model = model;
     }
     On_Restyle() {
         return __awaiter(this, void 0, void 0, function* () {
-            return `
-            width: 100%;
-                
-            overflow-x: hidden;
-            overflow-y: hidden;
-
-            background-color: black;
-            color: white;
-
-            border-color: white;
-            border-style: solid;
-            border-width: 0 0 1px 0;
-
-            font-variant: small-caps;
-
-            cursor: default;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-        `;
+            return ``;
         });
     }
     On_Refresh() {
         return __awaiter(this, void 0, void 0, function* () {
             const model = this.Model();
-            this.Element().textContent = model.Value();
+            const count = this.Child_Count();
+            const delta = model.Count() - count;
+            if (delta < 0) {
+                for (let idx = count, end = count + delta; idx > end;) {
+                    idx -= 1;
+                    this.Abort_Child(this.Child(idx));
+                }
+            }
+            else if (delta > 0) {
+                for (let idx = count, end = count + delta; idx < end;) {
+                    new Line.Instance({
+                        model: model.At(idx),
+                        lines: this,
+                    });
+                    idx += 1;
+                }
+            }
         });
     }
     Model() {
         return this.model;
     }
-    Slot() {
+    File() {
         return this.Parent();
     }
 }

@@ -1,16 +1,3 @@
-export class Instance {
-    constructor({ reader, data, text, }) {
-        this.reader = reader;
-        this.data = data;
-        this.text = text;
-    }
-    Reader() {
-        return this.reader;
-    }
-    Data() {
-        return this.data;
-    }
-    Text() {
-        return this.text;
-    }
-}
+export { Instance } from "./file/instance.js";
+export * as Lines from "./file/lines.js";
+export * as Line from "./file/line.js";

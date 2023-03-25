@@ -7,13 +7,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+import * as Utils from "../../../../utils.js";
 import * as Entity from "../../../../entity.js";
+import * as Lines from "./lines.js";
 export class Instance extends Entity.Instance {
-    constructor({ model, slot, }) {
+    constructor({ model, reader, }) {
         super({
             element: `div`,
-            parent: slot,
-            event_grid: slot.Event_Grid(),
+            parent: reader,
+            event_grid: reader.Event_Grid()
         });
         this.model = model;
     }
@@ -21,37 +23,29 @@ export class Instance extends Entity.Instance {
         return __awaiter(this, void 0, void 0, function* () {
             return `
             width: 100%;
-                
-            overflow-x: hidden;
-            overflow-y: hidden;
-
-            background-color: black;
-            color: white;
-
-            border-color: white;
-            border-style: solid;
-            border-width: 0 0 1px 0;
-
-            font-variant: small-caps;
-
-            cursor: default;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
         `;
         });
     }
     On_Refresh() {
         return __awaiter(this, void 0, void 0, function* () {
-            const model = this.Model();
-            this.Element().textContent = model.Value();
+            if (!this.Has_Lines()) {
+                this.Abort_All_Children();
+                new Lines.Instance({
+                    model: this.Model().Lines(),
+                    file: this,
+                });
+            }
         });
     }
     Model() {
         return this.model;
     }
-    Slot() {
-        return this.Parent();
+    Has_Lines() {
+        return (this.Has_Child(0) &&
+            this.Child(0) instanceof Lines.Instance);
+    }
+    Lines() {
+        Utils.Assert(this.Has_Lines(), `Doesn't have lines.`);
+        return this.Child(0);
     }
 }

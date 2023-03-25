@@ -41,6 +41,10 @@ export class Instance extends Entity.Instance
             background-color: black;
             color: white;
 
+            border-color: white;
+            border-style: solid;
+            border-width: 0 0 1px 0;
+
             font-variant: small-caps;
 
             cursor: default;
