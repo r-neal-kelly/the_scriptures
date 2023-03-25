@@ -6,6 +6,7 @@ import { Path } from "../../../types.js";
 import * as Utils from "../../../utils.js";
 
 import * as Version from "./version.js";
+import * as Dictionary from "./dictionary.js";
 import * as File from "./file.js";
 
 type Info = {
@@ -18,6 +19,7 @@ export class Instance
     private name: Name;
     private path: Path;
     private info: Info | null;
+    private dictionary: Dictionary.Instance;
     private files: Array<File.Instance>;
 
     constructor(
@@ -32,6 +34,11 @@ export class Instance
         this.name = `Files`;
         this.path = `${version.Path()}/${this.name}`;
         this.info = null;
+        this.dictionary = new Dictionary.Instance(
+            {
+                files: this,
+            },
+        );
         this.files = [];
     }
 
@@ -67,6 +74,14 @@ export class Instance
                 }
             );
         }
+    }
+
+    async Dictionary():
+        Promise<Dictionary.Instance>
+    {
+        await this.Download();
+
+        return this.dictionary;
     }
 
     async Count():
@@ -133,6 +148,8 @@ export class Instance
                 await fetch(Utils.Resolve_Path(`${this.Path()}/Info.json`));
             if (response.ok) {
                 this.info = JSON.parse(await response.text()) as Info;
+
+                this.dictionary.Ready();
 
                 for (const name of this.info.names) {
                     this.files.push(

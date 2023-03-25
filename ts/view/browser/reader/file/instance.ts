@@ -37,6 +37,7 @@ export class Instance extends Entity.Instance
     {
         return `
             width: 100%;
+            padding: 0 4px;
         `;
     }
 

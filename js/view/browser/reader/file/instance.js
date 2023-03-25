@@ -23,6 +23,7 @@ export class Instance extends Entity.Instance {
         return __awaiter(this, void 0, void 0, function* () {
             return `
             width: 100%;
+            padding: 0 4px;
         `;
         });
     }

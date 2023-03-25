@@ -8,6 +8,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import * as Utils from "../../../utils.js";
+import * as Dictionary from "./dictionary.js";
 import * as File from "./file.js";
 export class Instance {
     constructor({ version, }) {
@@ -15,6 +16,9 @@ export class Instance {
         this.name = `Files`;
         this.path = `${version.Path()}/${this.name}`;
         this.info = null;
+        this.dictionary = new Dictionary.Instance({
+            files: this,
+        });
         this.files = [];
     }
     Version() {
@@ -37,6 +41,12 @@ export class Instance {
                     names: [],
                 });
             }
+        });
+    }
+    Dictionary() {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.Download();
+            return this.dictionary;
         });
     }
     Count() {
@@ -77,6 +87,7 @@ export class Instance {
                 const response = yield fetch(Utils.Resolve_Path(`${this.Path()}/Info.json`));
                 if (response.ok) {
                     this.info = JSON.parse(yield response.text());
+                    this.dictionary.Ready();
                     for (const name of this.info.names) {
                         this.files.push(new File.Instance({
                             files: this,

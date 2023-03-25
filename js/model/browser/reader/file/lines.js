@@ -4,22 +4,27 @@ export class Instance {
     constructor({ file, text, }) {
         this.file = file;
         this.lines = [];
+        let line_index = 0;
         this.lines.push(new Line.Instance({
             lines: this,
+            index: line_index++,
             text: file.Data().Title(),
         }));
         this.lines.push(new Line.Instance({
             lines: this,
+            index: line_index++,
             text: ``,
         }));
         for (const line_text of text.split(/\r?\n/g)) {
             this.lines.push(new Line.Instance({
                 lines: this,
+                index: line_index++,
                 text: line_text,
             }));
         }
         this.lines.push(new Line.Instance({
             lines: this,
+            index: line_index++,
             text: ``,
         }));
     }

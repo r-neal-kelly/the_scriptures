@@ -24,10 +24,13 @@ export class Instance
         this.file = file;
         this.lines = [];
 
+        let line_index: Index = 0;
+
         this.lines.push(
             new Line.Instance(
                 {
                     lines: this,
+                    index: line_index++,
                     text: file.Data().Title(),
                 },
             ),
@@ -36,6 +39,7 @@ export class Instance
             new Line.Instance(
                 {
                     lines: this,
+                    index: line_index++,
                     text: ``,
                 },
             ),
@@ -45,6 +49,7 @@ export class Instance
                 new Line.Instance(
                     {
                         lines: this,
+                        index: line_index++,
                         text: line_text,
                     },
                 ),
@@ -54,6 +59,7 @@ export class Instance
             new Line.Instance(
                 {
                     lines: this,
+                    index: line_index++,
                     text: ``,
                 },
             ),
