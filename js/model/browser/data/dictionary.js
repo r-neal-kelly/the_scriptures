@@ -9,13 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import * as Utils from "../../../utils.js";
 import * as Async from "../../../async.js";
-export var Boundary;
-(function (Boundary) {
-    Boundary["START"] = "START";
-    Boundary["MIDDLE"] = "MIDDLE";
-    Boundary["END"] = "END";
-})(Boundary || (Boundary = {}));
-;
+import * as Text from "../../text.js";
 export class Instance extends Async.Instance {
     constructor({ files, }) {
         super();
@@ -24,7 +18,7 @@ export class Instance extends Async.Instance {
         this.path = `${files.Path()}/${this.name}`;
         this.title = this.name.replace(/\.[^.]*$/, ``);
         this.extension = this.name.replace(/^[^.]*\./, ``);
-        this.info = null;
+        this.text_dictionary = null;
     }
     Files() {
         return this.files;
@@ -41,24 +35,10 @@ export class Instance extends Async.Instance {
     Extension() {
         return this.extension;
     }
-    Info() {
+    Text_Dictionary() {
         Utils.Assert(this.Is_Ready(), `Not ready.`);
-        Utils.Assert(this.info != null, `Info should not be null when dictionary is ready.`);
-        return this.info;
-    }
-    // We should be able to pass some options probably,
-    // like whether or not to parse commands literally,
-    // so the caller doesn't have to manually remove them.
-    // Another important thing is that we'll probably
-    // want to send the complete text of a file and this
-    // will automatically break it down into lines. That
-    // way we can supply life information, e.g. for the
-    // center command.
-    Parse({ text, }) {
-        return [];
-    }
-    Parse_As_Points({ text, }) {
-        return [];
+        Utils.Assert(this.text_dictionary != null, `text_dictionary should not be null when this is ready!`);
+        return this.text_dictionary;
     }
     Ready() {
         const _super = Object.create(null, {
@@ -66,28 +46,17 @@ export class Instance extends Async.Instance {
         });
         return __awaiter(this, void 0, void 0, function* () {
             yield _super.Ready.call(this);
+            let text_dictionary_json;
             const response = yield fetch(Utils.Resolve_Path(this.Path()));
             if (response.ok) {
-                this.info = JSON.parse(yield response.text());
+                text_dictionary_json = yield response.text();
             }
             else {
-                this.info = {
-                    letters: [],
-                    markers: [],
-                    words: {},
-                    breaks: {
-                        [Boundary.START]: {},
-                        [Boundary.MIDDLE]: {},
-                        [Boundary.END]: {},
-                    },
-                    word_errors: [],
-                    break_errors: {
-                        [Boundary.START]: [],
-                        [Boundary.MIDDLE]: [],
-                        [Boundary.END]: [],
-                    },
-                };
+                text_dictionary_json = null;
             }
+            this.text_dictionary = new Text.Dictionary.Instance({
+                json: text_dictionary_json,
+            });
         });
     }
 }

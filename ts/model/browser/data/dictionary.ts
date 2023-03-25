@@ -5,41 +5,8 @@ import * as Utils from "../../../utils.js";
 
 import * as Async from "../../../async.js";
 
+import * as Text from "../../text.js";
 import * as Files from "./files.js";
-
-export type Letter = string;
-
-export type Marker = string;
-
-export type Word = string;
-
-export type Break = string;
-
-export enum Boundary
-{
-    START = `START`,
-    MIDDLE = `MIDDLE`,
-    END = `END`,
-};
-
-type Info = {
-    letters: Array<Letter>;
-    markers: Array<Marker>;
-
-    words: { [index: Letter]: Array<Word> };
-    breaks: {
-        [Boundary.START]: { [index: Marker]: Array<Break> },
-        [Boundary.MIDDLE]: { [index: Marker]: Array<Break> },
-        [Boundary.END]: { [index: Marker]: Array<Break> },
-    };
-
-    word_errors: Array<Word>;
-    break_errors: {
-        [Boundary.START]: Array<Break>,
-        [Boundary.MIDDLE]: Array<Break>,
-        [Boundary.END]: Array<Break>,
-    };
-}
 
 export class Instance extends Async.Instance
 {
@@ -48,7 +15,7 @@ export class Instance extends Async.Instance
     private path: Path;
     private title: Name;
     private extension: Name;
-    private info: Info | null;
+    private text_dictionary: Text.Dictionary.Instance | null;
 
     constructor(
         {
@@ -65,7 +32,7 @@ export class Instance extends Async.Instance
         this.path = `${files.Path()}/${this.name}`;
         this.title = this.name.replace(/\.[^.]*$/, ``);
         this.extension = this.name.replace(/^[^.]*\./, ``);
-        this.info = null;
+        this.text_dictionary = null;
     }
 
     Files():
@@ -98,51 +65,19 @@ export class Instance extends Async.Instance
         return this.extension;
     }
 
-    private Info():
-        Info
+    Text_Dictionary():
+        Text.Dictionary.Instance
     {
         Utils.Assert(
             this.Is_Ready(),
             `Not ready.`,
         );
         Utils.Assert(
-            this.info != null,
-            `Info should not be null when dictionary is ready.`,
+            this.text_dictionary != null,
+            `text_dictionary should not be null when this is ready!`,
         );
 
-        return this.info as Info;
-    }
-
-    // We should be able to pass some options probably,
-    // like whether or not to parse commands literally,
-    // so the caller doesn't have to manually remove them.
-    // Another important thing is that we'll probably
-    // want to send the complete text of a file and this
-    // will automatically break it down into lines. That
-    // way we can supply life information, e.g. for the
-    // center command.
-    Parse(
-        {
-            text,
-        }: {
-            text: string,
-        },
-    ):
-        Array<null>
-    {
-        return [];
-    }
-
-    Parse_As_Points(
-        {
-            text,
-        }: {
-            text: string,
-        },
-    ):
-        Array<null>
-    {
-        return [];
+        return this.text_dictionary as Text.Dictionary.Instance;
     }
 
     async Ready():
@@ -150,29 +85,20 @@ export class Instance extends Async.Instance
     {
         await super.Ready();
 
+        let text_dictionary_json: string | null;
+
         const response: Response =
             await fetch(Utils.Resolve_Path(this.Path()));
         if (response.ok) {
-            this.info = JSON.parse(await response.text()) as Info;
+            text_dictionary_json = await response.text();
         } else {
-            this.info = {
-                letters: [],
-                markers: [],
-
-                words: {},
-                breaks: {
-                    [Boundary.START]: {},
-                    [Boundary.MIDDLE]: {},
-                    [Boundary.END]: {},
-                },
-
-                word_errors: [],
-                break_errors: {
-                    [Boundary.START]: [],
-                    [Boundary.MIDDLE]: [],
-                    [Boundary.END]: [],
-                },
-            };
+            text_dictionary_json = null;
         }
+
+        this.text_dictionary = new Text.Dictionary.Instance(
+            {
+                json: text_dictionary_json,
+            },
+        );
     }
 }
