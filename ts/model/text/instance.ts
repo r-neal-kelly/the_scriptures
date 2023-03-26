@@ -1,5 +1,7 @@
 import { Index } from "../../types.js";
 
+import * as Utils from "../../utils.js";
+
 import * as Dictionary from "./dictionary.js";
 import { Value } from "./value.js";
 import * as Line from "./line.js";
@@ -24,14 +26,12 @@ export class Instance
         this.value = value;
         this.lines = [];
 
-        let line_index: Index = 0;
-        for (const value_line of value.split(/\r?\n/g)) {
+        for (const line_value of value.split(/\r?\n/g)) {
             this.lines.push(
                 new Line.Instance(
                     {
                         text: this,
-                        index: line_index++,
-                        value: value_line,
+                        value: line_value,
                     },
                 ),
             );
@@ -50,9 +50,59 @@ export class Instance
         return this.value;
     }
 
+    Has_Line(
+        line: Line.Instance,
+    ):
+        boolean
+    {
+        return this.lines.indexOf(line) > -1;
+    }
+
+    Has_Line_Index(
+        line_index: Index,
+    ):
+        boolean
+    {
+        return (
+            line_index > -1 &&
+            line_index < this.lines.length
+        );
+    }
+
+    Line(
+        line_index: Index,
+    ):
+        Line.Instance
+    {
+        Utils.Assert(
+            this.Has_Line_Index(line_index),
+            `Text does not have line at the index.`,
+        );
+
+        return this.lines[line_index];
+    }
+
+    Line_Index(
+        line: Line.Instance,
+    ):
+        Index
+    {
+        const index: Index = this.lines.indexOf(line);
+
+        Utils.Assert(
+            index > -1,
+            `Text does not have the line.`,
+        );
+
+        return index;
+    }
+
     Lines():
         Array<Line.Instance>
     {
         return Array.from(this.lines);
     }
+
+    // We need to be able to add, insert, remove, and set lines,
+    // certainly for the sake of the editor, but the perhaps for the browser too.
 }

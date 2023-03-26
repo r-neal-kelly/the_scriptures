@@ -1,9 +1,4 @@
 export { Instance } from "./text/instance.js";
 export * as Dictionary from "./text/dictionary.js";
 export * as Line from "./text/line.js";
-export * as Command from "./text/command.js";
-export * as Word from "./text/word.js";
-export * as Break from "./text/break.js";
-export * as Letter from "./text/letter.js";
-export * as Marker from "./text/marker.js";
-export * as Style from "./text/style.js";
+export * as Part from "./text/part.js";
