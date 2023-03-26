@@ -1,15 +1,15 @@
 import * as Utils from "../../../../utils.js";
 import * as Line from "./line.js";
 export class Instance {
-    constructor({ file, text_lines, }) {
+    constructor({ file, text, }) {
         this.file = file;
         this.lines = [];
         let line_index = 0;
-        for (const text_line of text_lines) {
+        for (const line of text) {
             this.lines.push(new Line.Instance({
                 lines: this,
                 index: line_index++,
-                text_line: text_line,
+                text: line,
             }));
         }
     }

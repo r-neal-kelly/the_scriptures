@@ -7,47 +7,40 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import * as Utils from "../../../../utils.js";
 import * as Entity from "../../../../entity.js";
-import * as Parts from "./parts.js";
+import * as Part from "./part.js";
 export class Instance extends Entity.Instance {
-    constructor({ model, lines, }) {
+    constructor({ model, line, }) {
         super({
             element: `div`,
-            parent: lines,
-            event_grid: lines.Event_Grid(),
+            parent: line,
+            event_grid: line.Event_Grid(),
         });
         this.model = model;
     }
     On_Restyle() {
         return __awaiter(this, void 0, void 0, function* () {
-            const model = this.Model();
-            const color = model.Text().Value() === `` ?
-                `transparent` :
-                `inherit`;
-            return `
-            display: block;
-            ${model.Text().Is_Centered() ? `display: flex;` : ``}
-            flex-wrap: wrap;
-            justify-content: center;
-
-            color: ${color};
-        `;
+            return ``;
         });
     }
     On_Refresh() {
         return __awaiter(this, void 0, void 0, function* () {
             const model = this.Model();
-            if (model.Text().Value() === ``) {
-                this.Element().textContent = `_`;
+            const count = this.Child_Count();
+            const delta = model.Count() - count;
+            if (delta < 0) {
+                for (let idx = count, end = count + delta; idx > end;) {
+                    idx -= 1;
+                    this.Abort_Child(this.Child(idx));
+                }
             }
-            else {
-                if (!this.Has_Parts()) {
-                    this.Abort_All_Children();
-                    new Parts.Instance({
-                        model: model.Parts(),
-                        line: this,
+            else if (delta > 0) {
+                for (let idx = count, end = count + delta; idx < end;) {
+                    new Part.Instance({
+                        model: model.At(idx),
+                        parts: this,
                     });
+                    idx += 1;
                 }
             }
         });
@@ -55,15 +48,7 @@ export class Instance extends Entity.Instance {
     Model() {
         return this.model;
     }
-    Lines() {
+    Line() {
         return this.Parent();
-    }
-    Has_Parts() {
-        return (this.Has_Child(0) &&
-            this.Child(0) instanceof Parts.Instance);
-    }
-    Parts() {
-        Utils.Assert(this.Has_Parts(), `Doesn't have parts.`);
-        return this.Child(0);
     }
 }

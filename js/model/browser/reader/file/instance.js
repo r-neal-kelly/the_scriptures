@@ -6,7 +6,7 @@ export class Instance {
         this.text = text;
         this.lines = new Lines.Instance({
             file: this,
-            text_lines: text.Lines(),
+            text: text.Lines(),
         });
     }
     Reader() {

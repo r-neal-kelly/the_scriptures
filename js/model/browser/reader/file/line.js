@@ -1,8 +1,13 @@
+import * as Parts from "./parts.js";
 export class Instance {
-    constructor({ lines, index, text_line, }) {
+    constructor({ lines, index, text, }) {
         this.lines = lines;
         this.index = index;
-        this.text_line = text_line;
+        this.text = text;
+        this.parts = new Parts.Instance({
+            line: this,
+            text: text.Parts(),
+        });
     }
     Lines() {
         return this.lines;
@@ -11,9 +16,9 @@ export class Instance {
         return this.index;
     }
     Text() {
-        return this.text_line.Value().replaceAll(/  /g, `  `);
+        return this.text;
     }
-    Text_Line() {
-        return this.text_line;
+    Parts() {
+        return this.parts;
     }
 }

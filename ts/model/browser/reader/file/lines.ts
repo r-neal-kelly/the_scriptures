@@ -16,10 +16,10 @@ export class Instance
     constructor(
         {
             file,
-            text_lines,
+            text,
         }: {
             file: File.Instance,
-            text_lines: Array<Text.Line.Instance>,
+            text: Array<Text.Line.Instance>,
         },
     )
     {
@@ -28,13 +28,13 @@ export class Instance
 
         let line_index: Index = 0;
 
-        for (const text_line of text_lines) {
+        for (const line of text) {
             this.lines.push(
                 new Line.Instance(
                     {
                         lines: this,
                         index: line_index++,
-                        text_line: text_line,
+                        text: line,
                     },
                 ),
             );

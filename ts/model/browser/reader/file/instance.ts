@@ -29,7 +29,7 @@ export class Instance
         this.lines = new Lines.Instance(
             {
                 file: this,
-                text_lines: text.Lines(),
+                text: text.Lines(),
             },
         );
     }
