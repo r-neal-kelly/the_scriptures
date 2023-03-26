@@ -3,9 +3,10 @@ export class Instance {
     constructor({ reader, data, text, }) {
         this.reader = reader;
         this.data = data;
+        this.text = text;
         this.lines = new Lines.Instance({
             file: this,
-            text: text,
+            text_lines: text.Lines(),
         });
     }
     Reader() {

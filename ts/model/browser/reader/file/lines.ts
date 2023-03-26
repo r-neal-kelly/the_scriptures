@@ -3,6 +3,8 @@ import { Index } from "../../../../types.js";
 
 import * as Utils from "../../../../utils.js";
 
+import * as Text from "../../../text.js";
+
 import * as File from "./instance.js";
 import * as Line from "./line.js";
 
@@ -14,10 +16,10 @@ export class Instance
     constructor(
         {
             file,
-            text,
+            text_lines,
         }: {
             file: File.Instance,
-            text: string,
+            text_lines: Array<Text.Line.Instance>,
         },
     )
     {
@@ -26,44 +28,17 @@ export class Instance
 
         let line_index: Index = 0;
 
-        this.lines.push(
-            new Line.Instance(
-                {
-                    lines: this,
-                    index: line_index++,
-                    text: file.Data().Title(),
-                },
-            ),
-        );
-        this.lines.push(
-            new Line.Instance(
-                {
-                    lines: this,
-                    index: line_index++,
-                    text: ``,
-                },
-            ),
-        );
-        for (const line_text of text.split(/\r?\n/g)) {
+        for (const text_line of text_lines) {
             this.lines.push(
                 new Line.Instance(
                     {
                         lines: this,
                         index: line_index++,
-                        text: line_text,
+                        text_line: text_line,
                     },
                 ),
             );
         }
-        this.lines.push(
-            new Line.Instance(
-                {
-                    lines: this,
-                    index: line_index++,
-                    text: ``,
-                },
-            ),
-        );
     }
 
     File():

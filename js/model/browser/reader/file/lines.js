@@ -1,32 +1,17 @@
 import * as Utils from "../../../../utils.js";
 import * as Line from "./line.js";
 export class Instance {
-    constructor({ file, text, }) {
+    constructor({ file, text_lines, }) {
         this.file = file;
         this.lines = [];
         let line_index = 0;
-        this.lines.push(new Line.Instance({
-            lines: this,
-            index: line_index++,
-            text: file.Data().Title(),
-        }));
-        this.lines.push(new Line.Instance({
-            lines: this,
-            index: line_index++,
-            text: ``,
-        }));
-        for (const line_text of text.split(/\r?\n/g)) {
+        for (const text_line of text_lines) {
             this.lines.push(new Line.Instance({
                 lines: this,
                 index: line_index++,
-                text: line_text,
+                text_line: text_line,
             }));
         }
-        this.lines.push(new Line.Instance({
-            lines: this,
-            index: line_index++,
-            text: ``,
-        }));
     }
     File() {
         return this.file;

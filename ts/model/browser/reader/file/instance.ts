@@ -1,3 +1,4 @@
+import * as Text from "../../../text.js";
 import * as Data from "../../data.js";
 import * as Reader from "../instance.js";
 
@@ -7,6 +8,7 @@ export class Instance
 {
     private reader: Reader.Instance;
     private data: Data.File.Instance;
+    private text: Text.Instance;
     private lines: Lines.Instance;
 
     constructor(
@@ -17,16 +19,17 @@ export class Instance
         }: {
             reader: Reader.Instance,
             data: Data.File.Instance,
-            text: string,
+            text: Text.Instance,
         },
     )
     {
         this.reader = reader;
         this.data = data;
+        this.text = text;
         this.lines = new Lines.Instance(
             {
                 file: this,
-                text: text,
+                text_lines: text.Lines(),
             },
         );
     }

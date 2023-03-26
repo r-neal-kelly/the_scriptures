@@ -1,8 +1,8 @@
 export class Instance {
-    constructor({ lines, index, text, }) {
+    constructor({ lines, index, text_line, }) {
         this.lines = lines;
         this.index = index;
-        this.text = text.replaceAll(/  /g, `  `);
+        this.text_line = text_line;
     }
     Lines() {
         return this.lines;
@@ -11,6 +11,6 @@ export class Instance {
         return this.index;
     }
     Text() {
-        return this.text;
+        return this.text_line.Value().replaceAll(/  /g, `  `);
     }
 }

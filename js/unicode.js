@@ -67,7 +67,6 @@ export class Iterator {
         return this.text;
     }
     Index() {
-        Utils.Assert(!this.Is_At_End(), `Iterator is at the end of the string.`);
         return this.index;
     }
     Point() {

@@ -1,28 +1,30 @@
 import { Index } from "../../../../types.js";
 
+import * as Text from "../../../text.js";
+
 import * as Lines from "./lines.js";
 
 export class Instance
 {
     private lines: Lines.Instance;
     private index: Index;
-    private text: string;
+    private text_line: Text.Line.Instance;
 
     constructor(
         {
             lines,
             index,
-            text,
+            text_line,
         }: {
             lines: Lines.Instance,
             index: Index,
-            text: string,
+            text_line: Text.Line.Instance,
         },
     )
     {
         this.lines = lines;
         this.index = index;
-        this.text = text.replaceAll(/  /g, `  `);
+        this.text_line = text_line;
     }
 
     Lines():
@@ -40,6 +42,6 @@ export class Instance
     Text():
         string
     {
-        return this.text;
+        return this.text_line.Value().replaceAll(/  /g, `  `);
     }
 }

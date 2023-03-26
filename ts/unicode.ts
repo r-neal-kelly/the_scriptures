@@ -125,11 +125,6 @@ export class Iterator
     Index():
         Index
     {
-        Utils.Assert(
-            !this.Is_At_End(),
-            `Iterator is at the end of the string.`,
-        );
-
         return this.index;
     }
 

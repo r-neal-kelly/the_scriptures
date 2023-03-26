@@ -9,6 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import * as Utils from "../../../utils.js";
 import * as Async from "../../../async.js";
+import * as Text from "../../text.js";
 import * as File from "./file.js";
 export class Instance extends Async.Instance {
     constructor({ browser, }) {
@@ -33,7 +34,10 @@ export class Instance extends Async.Instance {
                 this.file = new File.Instance({
                     reader: this,
                     data: file,
-                    text: (yield file.Maybe_Text()) || ``,
+                    text: new Text.Instance({
+                        dictionary: (yield file.Files().Dictionary()).Text_Dictionary(),
+                        value: (yield file.Maybe_Text()) || ``,
+                    }),
                 });
             }
         });
