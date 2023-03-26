@@ -159,6 +159,8 @@ export class Instance
                         index: it.Index() + maybe_valid_command.length,
                     },
                 );
+
+                current_start = it;
             } else {
                 const this_point: Value = it.Point();
                 const next_point: Value | null = it.Look_Forward_Point();

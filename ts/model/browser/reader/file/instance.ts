@@ -46,6 +46,12 @@ export class Instance
         return this.data;
     }
 
+    Text():
+        Text.Instance
+    {
+        return this.text;
+    }
+
     Lines():
         Lines.Instance
     {

@@ -15,6 +15,9 @@ export class Instance {
     Data() {
         return this.data;
     }
+    Text() {
+        return this.text;
+    }
     Lines() {
         return this.lines;
     }

@@ -92,6 +92,7 @@ export class Instance {
                     text: it.Text(),
                     index: it.Index() + maybe_valid_command.length,
                 });
+                current_start = it;
             }
             else {
                 const this_point = it.Point();

@@ -13,4 +13,7 @@ export class Instance {
     Text() {
         return this.text_line.Value().replaceAll(/  /g, `  `);
     }
+    Text_Line() {
+        return this.text_line;
+    }
 }

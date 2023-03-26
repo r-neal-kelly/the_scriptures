@@ -44,4 +44,10 @@ export class Instance
     {
         return this.text_line.Value().replaceAll(/  /g, `  `);
     }
+
+    Text_Line():
+        Text.Line.Instance
+    {
+        return this.text_line;
+    }
 }
