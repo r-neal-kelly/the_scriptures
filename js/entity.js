@@ -36,12 +36,11 @@ export class Instance {
         this.styles = {};
         this.parent = null;
         this.children = new Map();
-        this.refresh_state = undefined;
         this.refresh_adoptions = null;
         this.refresh_abortions = null;
-        this.event_grid = event_grid;
-        this.life_cycle_queue = new Queue.Instance();
         this.is_alive = false;
+        this.life_cycle_queue = new Queue.Instance();
+        this.event_grid = event_grid;
         // This is queued and executed before the potential
         // refresh below.
         this.Live();
@@ -80,7 +79,9 @@ export class Instance {
                         // This also gives time to parent an entity before this tries to refresh
                         // itself if it doesn't have a parent.
                         yield Utils.Wait_Milliseconds(1);
-                        this.Event_Grid().Add_Many_Listeners(this, yield this.On_Life());
+                        if (this.Has_On_Life()) {
+                            this.Event_Grid().Add_Many_Listeners(this, yield this.On_Life());
+                        }
                     });
                 }.bind(this));
             }
@@ -93,7 +94,38 @@ export class Instance {
                     if (this.Is_Alive()) {
                         // We need to restyle before we do
                         // children so they have up to date data.
-                        this.Apply_Styles(yield this.On_Restyle());
+                        if (this.Has_On_Restyle()) {
+                            this.Apply_Styles(yield this.On_Restyle());
+                        }
+                        // It's more efficient to check if it has a listener first
+                        // before spinning up an async frame. But the problem is
+                        // that we have to still give its children a chance to
+                        // get the event. So we need to skip it in its parent-child
+                        // path. Normally that would mean just recursing and doing
+                        // the skip in the recursion and moving forward, but the
+                        // problem is calling the async function in the first place.
+                        // So we need to make our own frames?
+                        /*
+                        await Promise.all(
+                            Array.from(this.children.values()).filter(
+                                function (
+                                    child: Instance,
+                                ):
+                                    boolean
+                                {
+                                    return child.Has_On_Restyle();
+                                },
+                            ).map(
+                                async function (
+                                    child: Instance,
+                                ):
+                                    Promise<void>
+                                {
+                                    await child.Restyle();
+                                },
+                            ),
+                        );
+                        */
                         yield Promise.all(Array.from(this.children.values()).map(function (child) {
                             return __awaiter(this, void 0, void 0, function* () {
                                 yield child.Restyle();
@@ -165,15 +197,21 @@ export class Instance {
                         // before we work on children so they
                         // have up to date data. Also because
                         // On_Refresh can add and remove children.
-                        this.Apply_Styles(yield this.On_Restyle());
-                        this.refresh_state = yield this.Before_Refresh();
+                        if (this.Has_On_Restyle()) {
+                            this.Apply_Styles(yield this.On_Restyle());
+                        }
+                        if (this.Has_Before_Refresh()) {
+                            yield this.Before_Refresh();
+                        }
                         // These are temporarily stored during the refresh event
                         // to save on both hot and cold memory.
-                        this.refresh_adoptions = adoptions;
-                        this.refresh_abortions = abortions;
-                        yield this.On_Refresh();
-                        this.refresh_adoptions = null;
-                        this.refresh_abortions = null;
+                        if (this.Has_On_Refresh()) {
+                            this.refresh_adoptions = adoptions;
+                            this.refresh_abortions = abortions;
+                            yield this.On_Refresh();
+                            this.refresh_adoptions = null;
+                            this.refresh_abortions = null;
+                        }
                         // Even though children can update the adoptions
                         // and abortions arrays asynchronously, their children
                         // are still added in order relative to itself, so its
@@ -203,7 +241,7 @@ export class Instance {
     }
     Adopt_And_Abort_Unqueued({ adoptions, abortions, }) {
         return __awaiter(this, void 0, void 0, function* () {
-            // This function must be called within the context of a queued callback to avoid deadlock.
+            // This function is called within the context of a queued callback to avoid deadlock.
             Utils.Assert(this.Is_Alive());
             // We call this before removing the abortions from the dom,
             // and while they are still attached to their parent entities.
@@ -252,21 +290,25 @@ export class Instance {
     }
     Before_Dying_Unqueued() {
         return __awaiter(this, void 0, void 0, function* () {
-            // This function must be called within the context of a queued callback to avoid deadlock.
+            // This function is called within the context of a queued callback to avoid deadlock.
             Utils.Assert(this.Is_Alive());
             yield Promise.all(Array.from(this.children.values()).map(function (child) {
                 return __awaiter(this, void 0, void 0, function* () {
                     yield child.Before_Dying_Unqueued();
                 });
             }));
-            yield this.Before_Death();
+            if (this.Has_Before_Death()) {
+                yield this.Before_Death();
+            }
         });
     }
     After_Refreshing_Unqueued() {
         return __awaiter(this, void 0, void 0, function* () {
-            // This function must be called within the context of a queued callback to avoid deadlock.
+            // This function is called within the context of a queued callback to avoid deadlock.
             Utils.Assert(this.Is_Alive());
-            yield this.After_Refresh(this.refresh_state);
+            if (this.Has_After_Refresh()) {
+                yield this.After_Refresh();
+            }
             yield Promise.all(Array.from(this.children.values()).map(function (child) {
                 return __awaiter(this, void 0, void 0, function* () {
                     yield child.After_Refreshing_Unqueued();
@@ -296,7 +338,9 @@ export class Instance {
                             this.parent = null;
                             parent.children.delete(this.Element());
                         }
-                        yield this.On_Death();
+                        if (this.Has_On_Death()) {
+                            yield this.On_Death();
+                        }
                         this.Event_Grid().Remove(this);
                         this.element = document.body;
                         this.is_alive = false;
@@ -305,38 +349,66 @@ export class Instance {
             }.bind(this));
         });
     }
+    Has_On_Life() {
+        return Object.getPrototypeOf(this).hasOwnProperty(`On_Life`);
+    }
     On_Life() {
         return __awaiter(this, void 0, void 0, function* () {
+            Utils.Assert(false, `You need to override On_Life or update your life_cycle_info.`);
             return [];
         });
     }
+    Has_On_Restyle() {
+        return Object.getPrototypeOf(this).hasOwnProperty(`On_Restyle`);
+    }
     On_Restyle() {
         return __awaiter(this, void 0, void 0, function* () {
-            return {};
+            Utils.Assert(false, `You need to override On_Restyle or update your life_cycle_info.`);
+            return ``;
         });
+    }
+    Has_Before_Refresh() {
+        return Object.getPrototypeOf(this).hasOwnProperty(`Before_Refresh`);
     }
     Before_Refresh() {
         return __awaiter(this, void 0, void 0, function* () {
+            Utils.Assert(false, `You need to override Before_Refresh or update your life_cycle_info.`);
             return;
         });
+    }
+    Has_On_Refresh() {
+        return Object.getPrototypeOf(this).hasOwnProperty(`On_Refresh`);
     }
     On_Refresh() {
         return __awaiter(this, void 0, void 0, function* () {
+            Utils.Assert(false, `You need to override On_Refresh or update your life_cycle_info.`);
             return;
         });
     }
-    After_Refresh(state) {
+    Has_After_Refresh() {
+        return Object.getPrototypeOf(this).hasOwnProperty(`After_Refresh`);
+    }
+    After_Refresh() {
         return __awaiter(this, void 0, void 0, function* () {
+            Utils.Assert(false, `You need to override After_Refresh or update your life_cycle_info.`);
             return;
         });
+    }
+    Has_Before_Death() {
+        return Object.getPrototypeOf(this).hasOwnProperty(`Before_Death`);
     }
     Before_Death() {
         return __awaiter(this, void 0, void 0, function* () {
+            Utils.Assert(false, `You need to override Before_Death or update your life_cycle_info.`);
             return;
         });
     }
+    Has_On_Death() {
+        return Object.getPrototypeOf(this).hasOwnProperty(`On_Death`);
+    }
     On_Death() {
         return __awaiter(this, void 0, void 0, function* () {
+            Utils.Assert(false, `You need to override On_Death or update your life_cycle_info.`);
             return;
         });
     }

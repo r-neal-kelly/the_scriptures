@@ -27,7 +27,7 @@ export { ID } from "./types.js";
             On_Death
 */
 
-interface Info_API
+export interface Info_API
 {
     Is_Alive(): boolean;
 
@@ -36,7 +36,7 @@ interface Info_API
     Element(): HTMLElement;
 }
 
-interface Life_Cycle_Sender_API
+export interface Life_Cycle_Sender_API
 {
     /*
         Automatically queued when the entity is constructed.
@@ -49,7 +49,7 @@ interface Life_Cycle_Sender_API
     // private Live(): Promise<void>;
 
     /*
-        Should not be waited on in any of the event listener overrides,
+        Should not be waited on in any of the event listeners,
         it will dead-lock the queue.
     */
     Restyle(): Promise<void>;
@@ -57,7 +57,7 @@ interface Life_Cycle_Sender_API
     /*
         Automatically queued through Live.
 
-        Should not be waited on in any of the event listener overrides,
+        Should not be waited on in any of the event listeners,
         it will dead-lock the queue.
     */
     Refresh(): Promise<void>;
@@ -65,16 +65,16 @@ interface Life_Cycle_Sender_API
     /*
         Automatically queued when the parent of the entity dies.
 
-        Should not be waited on in any of the event listener overrides,
+        Should not be waited on in any of the event listeners,
         it will dead-lock the queue.
     */
     Die(): Promise<void>;
 }
 
-interface Life_Cycle_Listener_API
+export interface Life_Cycle_Listener_API
 {
     /*
-        Overriding this event handler allows you to work on the entity before
+        Providing this event handler allows you to work on the entity before
         it is has been restyled or refreshed for the first time.
         The Event is triggered immediately upon construction of the entity,
         and after the executing async frame that made the entity is finished.
@@ -86,7 +86,7 @@ interface Life_Cycle_Listener_API
     On_Life(): Promise<Array<Event.Listener_Info>>;
 
     /*
-        Overriding this event handler allows you to return CSS styles that will
+        Providing this event handler allows you to return CSS styles that will
         be applied to the entity's underlying element immediately.
         The returned styles are combined with and override already existing
         styles stored on the entity.
@@ -102,10 +102,10 @@ interface Life_Cycle_Listener_API
 
     /*
     */
-    Before_Refresh(): Promise<any>;
+    Before_Refresh(): Promise<void>;
 
     /*
-        Overriding this event handler allows you to Adopt and Abort children
+        Providing this event handler allows you to Adopt and Abort children
         entities, thus building the internal tree structure of your entity.
         Children get this event after their parents.
         All children receive this event at the same time.
@@ -114,18 +114,16 @@ interface Life_Cycle_Listener_API
     On_Refresh(): Promise<void>;
 
     /*
-        Overriding this event handler allows you to word on an entity after
+        Providing this event handler allows you to word on an entity after
         its children have been updated on the DOM in the Refresh event.
         Children get this event after their parents.
         All children receive this event at the same time.
         If a child is aborted during this event, this is not called on it.
     */
-    After_Refresh(
-        state: any,
-    ): Promise<void>;
+    After_Refresh(): Promise<void>;
 
     /*
-        Overriding this event handler allows you to work with an entity
+        Providing this event handler allows you to work with an entity
         before its children die and before it is removed from its parent.
         The entity is still in the DOM during this event.
         Children get this event before their parents.
@@ -134,7 +132,7 @@ interface Life_Cycle_Listener_API
     Before_Death(): Promise<void>;
 
     /*
-        Overriding this event handler allows you to work with an entity
+        Providing this event handler allows you to work with an entity
         after its children die and after it has been removed from its parent.
         The entity is no longer in the DOM during this event.
         Children get this event before their parents.
@@ -143,7 +141,7 @@ interface Life_Cycle_Listener_API
     On_Death(): Promise<void>;
 }
 
-interface Parent_API
+export interface Parent_API
 {
     Has_Parent(): boolean;
 
@@ -152,7 +150,7 @@ interface Parent_API
     Maybe_Parent(): Instance | null;
 }
 
-interface Child_API
+export interface Child_API
 {
     Child_Count(): Count;
 
@@ -181,7 +179,7 @@ interface Child_API
     Abort_All_Children(): void;
 }
 
-interface Event_API
+export interface Event_API
 {
     Event_Grid(): Event.Grid;
 
@@ -190,7 +188,7 @@ interface Event_API
     ): Promise<void>
 }
 
-interface Animation_API
+export interface Animation_API
 {
     Animate(
         keyframes: Array<Keyframe>,
@@ -272,15 +270,12 @@ export class Instance implements
 
     private parent: Instance | null;
     private children: Map<HTMLElement, Instance>;
-
-    private refresh_state: any;
     private refresh_adoptions: Set<Instance> | null;
     private refresh_abortions: Set<Instance> | null;
 
-    private event_grid: Event.Grid;
-    private life_cycle_queue: Queue.Instance;
-
     private is_alive: boolean;
+    private life_cycle_queue: Queue.Instance;
+    private event_grid: Event.Grid;
 
     constructor(
         {
@@ -308,15 +303,13 @@ export class Instance implements
 
         this.parent = null;
         this.children = new Map();
-
-        this.refresh_state = undefined;
         this.refresh_adoptions = null;
         this.refresh_abortions = null;
 
-        this.event_grid = event_grid;
+        this.is_alive = false;
         this.life_cycle_queue = new Queue.Instance();
 
-        this.is_alive = false;
+        this.event_grid = event_grid;
 
         // This is queued and executed before the potential
         // refresh below.
@@ -367,7 +360,9 @@ export class Instance implements
                     // itself if it doesn't have a parent.
                     await Utils.Wait_Milliseconds(1);
 
-                    this.Event_Grid().Add_Many_Listeners(this, await this.On_Life());
+                    if (this.Has_On_Life()) {
+                        this.Event_Grid().Add_Many_Listeners(this, await this.On_Life());
+                    }
                 }.bind(this),
             );
         }
@@ -385,7 +380,39 @@ export class Instance implements
                 if (this.Is_Alive()) {
                     // We need to restyle before we do
                     // children so they have up to date data.
-                    this.Apply_Styles(await this.On_Restyle());
+                    if (this.Has_On_Restyle()) {
+                        this.Apply_Styles(await this.On_Restyle());
+                    }
+
+                    // It's more efficient to check if it has a listener first
+                    // before spinning up an async frame. But the problem is
+                    // that we have to still give its children a chance to
+                    // get the event. So we need to skip it in its parent-child
+                    // path. Normally that would mean just recursing and doing
+                    // the skip in the recursion and moving forward, but the
+                    // problem is calling the async function in the first place.
+                    // So we need to make our own frames?
+                    /*
+                    await Promise.all(
+                        Array.from(this.children.values()).filter(
+                            function (
+                                child: Instance,
+                            ):
+                                boolean
+                            {
+                                return child.Has_On_Restyle();
+                            },
+                        ).map(
+                            async function (
+                                child: Instance,
+                            ):
+                                Promise<void>
+                            {
+                                await child.Restyle();
+                            },
+                        ),
+                    );
+                    */
 
                     await Promise.all(
                         Array.from(this.children.values()).map(
@@ -508,17 +535,23 @@ export class Instance implements
                     // before we work on children so they
                     // have up to date data. Also because
                     // On_Refresh can add and remove children.
-                    this.Apply_Styles(await this.On_Restyle());
+                    if (this.Has_On_Restyle()) {
+                        this.Apply_Styles(await this.On_Restyle());
+                    }
 
-                    this.refresh_state = await this.Before_Refresh();
+                    if (this.Has_Before_Refresh()) {
+                        await this.Before_Refresh();
+                    }
 
                     // These are temporarily stored during the refresh event
                     // to save on both hot and cold memory.
-                    this.refresh_adoptions = adoptions;
-                    this.refresh_abortions = abortions;
-                    await this.On_Refresh();
-                    this.refresh_adoptions = null;
-                    this.refresh_abortions = null;
+                    if (this.Has_On_Refresh()) {
+                        this.refresh_adoptions = adoptions;
+                        this.refresh_abortions = abortions;
+                        await this.On_Refresh();
+                        this.refresh_adoptions = null;
+                        this.refresh_abortions = null;
+                    }
 
                     // Even though children can update the adoptions
                     // and abortions arrays asynchronously, their children
@@ -566,7 +599,7 @@ export class Instance implements
     ):
         Promise<void>
     {
-        // This function must be called within the context of a queued callback to avoid deadlock.
+        // This function is called within the context of a queued callback to avoid deadlock.
 
         Utils.Assert(this.Is_Alive());
 
@@ -632,7 +665,7 @@ export class Instance implements
     private async Before_Dying_Unqueued():
         Promise<void>
     {
-        // This function must be called within the context of a queued callback to avoid deadlock.
+        // This function is called within the context of a queued callback to avoid deadlock.
 
         Utils.Assert(this.Is_Alive());
 
@@ -648,17 +681,21 @@ export class Instance implements
             ),
         );
 
-        await this.Before_Death();
+        if (this.Has_Before_Death()) {
+            await this.Before_Death();
+        }
     }
 
     private async After_Refreshing_Unqueued():
         Promise<void>
     {
-        // This function must be called within the context of a queued callback to avoid deadlock.
+        // This function is called within the context of a queued callback to avoid deadlock.
 
         Utils.Assert(this.Is_Alive());
 
-        await this.After_Refresh(this.refresh_state);
+        if (this.Has_After_Refresh()) {
+            await this.After_Refresh();
+        }
 
         await Promise.all(
             Array.from(this.children.values()).map(
@@ -708,7 +745,9 @@ export class Instance implements
                         parent.children.delete(this.Element());
                     }
 
-                    await this.On_Death();
+                    if (this.Has_On_Death()) {
+                        await this.On_Death();
+                    }
 
                     this.Event_Grid().Remove(this);
 
@@ -719,47 +758,122 @@ export class Instance implements
         );
     }
 
+    private Has_On_Life():
+        boolean
+    {
+        return Object.getPrototypeOf(this).hasOwnProperty(`On_Life`);
+    }
+
     async On_Life():
         Promise<Array<Event.Listener_Info>>
     {
+        Utils.Assert(
+            false,
+            `You need to override On_Life or update your life_cycle_info.`,
+        );
+
         return [];
+    }
+
+    private Has_On_Restyle():
+        boolean
+    {
+        return Object.getPrototypeOf(this).hasOwnProperty(`On_Restyle`);
     }
 
     async On_Restyle():
         Promise<Styles | string>
     {
-        return {};
+        Utils.Assert(
+            false,
+            `You need to override On_Restyle or update your life_cycle_info.`,
+        );
+
+        return ``;
+    }
+
+    private Has_Before_Refresh():
+        boolean
+    {
+        return Object.getPrototypeOf(this).hasOwnProperty(`Before_Refresh`);
     }
 
     async Before_Refresh():
-        Promise<any>
+        Promise<void>
     {
+        Utils.Assert(
+            false,
+            `You need to override Before_Refresh or update your life_cycle_info.`,
+        );
+
         return;
+    }
+
+    private Has_On_Refresh():
+        boolean
+    {
+        return Object.getPrototypeOf(this).hasOwnProperty(`On_Refresh`);
     }
 
     async On_Refresh():
         Promise<void>
     {
+        Utils.Assert(
+            false,
+            `You need to override On_Refresh or update your life_cycle_info.`,
+        );
+
         return;
     }
 
-    async After_Refresh(
-        state: any,
-    ):
+    private Has_After_Refresh():
+        boolean
+    {
+        return Object.getPrototypeOf(this).hasOwnProperty(`After_Refresh`);
+    }
+
+    async After_Refresh():
         Promise<void>
     {
+        Utils.Assert(
+            false,
+            `You need to override After_Refresh or update your life_cycle_info.`,
+        );
+
         return;
+    }
+
+    private Has_Before_Death():
+        boolean
+    {
+        return Object.getPrototypeOf(this).hasOwnProperty(`Before_Death`);
     }
 
     async Before_Death():
         Promise<void>
     {
+        Utils.Assert(
+            false,
+            `You need to override Before_Death or update your life_cycle_info.`,
+        );
+
         return;
+    }
+
+    private Has_On_Death():
+        boolean
+    {
+        return Object.getPrototypeOf(this).hasOwnProperty(`On_Death`);
     }
 
     async On_Death():
         Promise<void>
     {
+        Utils.Assert(
+            false,
+            `You need to override On_Death or update your life_cycle_info.`,
+        );
+
         return;
     }
 

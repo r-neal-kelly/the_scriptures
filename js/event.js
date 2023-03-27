@@ -20,8 +20,9 @@ export class Grid {
         return this.objects.has(object);
     }
     Add(object) {
-        Utils.Assert(!this.Has(object), `This object is already in the grid.`);
-        this.objects.set(object, new Listeners());
+        if (!this.Has(object)) {
+            this.objects.set(object, new Listeners());
+        }
     }
     Add_Many(objects) {
         for (const object of objects) {
@@ -29,9 +30,10 @@ export class Grid {
         }
     }
     Remove(object) {
-        Utils.Assert(this.Has(object), `This object is not in the grid.`);
-        this.Remove_All_Listeners(object);
-        this.objects.delete(object);
+        if (this.Has(object)) {
+            this.Remove_All_Listeners(object);
+            this.objects.delete(object);
+        }
     }
     Remove_Many(objects) {
         for (const object of objects) {
