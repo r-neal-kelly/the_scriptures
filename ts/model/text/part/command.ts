@@ -7,24 +7,24 @@ import { Style } from "./style.js";
 
 export enum Known_Value
 {
-    CENTER = `｟cen｠`,
+    CENTER = `⸨cen⸩`,
 
-    INDENT = `｟in｠`,
+    INDENT = `⸨in⸩`,
 
-    OPEN_ITALIC = `｟i｠`,
-    CLOSE_ITALIC = `｟/i｠`,
+    OPEN_ITALIC = `⸨i⸩`,
+    CLOSE_ITALIC = `⸨/i⸩`,
 
-    OPEN_BOLD = `｟b｠`,
-    CLOSE_BOLD = `｟/b｠`,
+    OPEN_BOLD = `⸨b⸩`,
+    CLOSE_BOLD = `⸨/b⸩`,
 
-    OPEN_UNDERLINE = `｟u｠`,
-    CLOSE_UNDERLINE = `｟/u｠`,
+    OPEN_UNDERLINE = `⸨u⸩`,
+    CLOSE_UNDERLINE = `⸨/u⸩`,
 
-    OPEN_SMALL_CAPS = `｟sc｠`,
-    CLOSE_SMALL_CAPS = `｟/sc｠`,
+    OPEN_SMALL_CAPS = `⸨sc⸩`,
+    CLOSE_SMALL_CAPS = `⸨/sc⸩`,
 
-    OPEN_ERROR = `｟err｠`,
-    CLOSE_ERROR = `｟/err｠`,
+    OPEN_ERROR = `⸨err⸩`,
+    CLOSE_ERROR = `⸨/err⸩`,
 }
 
 export function Is_Valid_Value(
@@ -33,18 +33,18 @@ export function Is_Valid_Value(
     boolean
 {
     const interior_value: Value =
-        value.replace(/^｟\/?/, ``).replace(/｠$/, ``);
+        value.replace(/^⸨\/?/, ``).replace(/⸩$/, ``);
 
     return (
         value.length > 2 &&
-        value[0] === `｟` &&
-        value[value.length - 1] === `｠` &&
+        value[0] === `⸨` &&
+        value[value.length - 1] === `⸩` &&
 
         interior_value.length > 0 &&
-        !/｟/.test(interior_value) &&
+        !/⸨/.test(interior_value) &&
         !/\//.test(interior_value) &&
         !/\s/.test(interior_value) &&
-        !/｠/.test(interior_value)
+        !/⸩/.test(interior_value)
     );
 }
 
@@ -80,7 +80,7 @@ export function Valid_Value_From(
 ):
     string | null
 {
-    const matches: RegExpMatchArray | null = text.match(/^｟\/?[^｟\/｠]+｠/);
+    const matches: RegExpMatchArray | null = text.match(/^⸨\/?[^⸨\/⸩]+⸩/);
     if (matches != null) {
         return matches[0];
     } else {
@@ -93,7 +93,7 @@ export function Maybe_Valid_Value_From(
 ):
     string | null
 {
-    const matches: RegExpMatchArray | null = text.match(/^｟[^｠]*｠/);
+    const matches: RegExpMatchArray | null = text.match(/^⸨[^⸩]*⸩/);
     if (matches != null) {
         return matches[0];
     } else {

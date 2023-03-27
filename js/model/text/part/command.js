@@ -4,29 +4,29 @@ import { Status } from "./status.js";
 import { Style } from "./style.js";
 export var Known_Value;
 (function (Known_Value) {
-    Known_Value["CENTER"] = "\uFF5Fcen\uFF60";
-    Known_Value["INDENT"] = "\uFF5Fin\uFF60";
-    Known_Value["OPEN_ITALIC"] = "\uFF5Fi\uFF60";
-    Known_Value["CLOSE_ITALIC"] = "\uFF5F/i\uFF60";
-    Known_Value["OPEN_BOLD"] = "\uFF5Fb\uFF60";
-    Known_Value["CLOSE_BOLD"] = "\uFF5F/b\uFF60";
-    Known_Value["OPEN_UNDERLINE"] = "\uFF5Fu\uFF60";
-    Known_Value["CLOSE_UNDERLINE"] = "\uFF5F/u\uFF60";
-    Known_Value["OPEN_SMALL_CAPS"] = "\uFF5Fsc\uFF60";
-    Known_Value["CLOSE_SMALL_CAPS"] = "\uFF5F/sc\uFF60";
-    Known_Value["OPEN_ERROR"] = "\uFF5Ferr\uFF60";
-    Known_Value["CLOSE_ERROR"] = "\uFF5F/err\uFF60";
+    Known_Value["CENTER"] = "\u2E28cen\u2E29";
+    Known_Value["INDENT"] = "\u2E28in\u2E29";
+    Known_Value["OPEN_ITALIC"] = "\u2E28i\u2E29";
+    Known_Value["CLOSE_ITALIC"] = "\u2E28/i\u2E29";
+    Known_Value["OPEN_BOLD"] = "\u2E28b\u2E29";
+    Known_Value["CLOSE_BOLD"] = "\u2E28/b\u2E29";
+    Known_Value["OPEN_UNDERLINE"] = "\u2E28u\u2E29";
+    Known_Value["CLOSE_UNDERLINE"] = "\u2E28/u\u2E29";
+    Known_Value["OPEN_SMALL_CAPS"] = "\u2E28sc\u2E29";
+    Known_Value["CLOSE_SMALL_CAPS"] = "\u2E28/sc\u2E29";
+    Known_Value["OPEN_ERROR"] = "\u2E28err\u2E29";
+    Known_Value["CLOSE_ERROR"] = "\u2E28/err\u2E29";
 })(Known_Value || (Known_Value = {}));
 export function Is_Valid_Value(value) {
-    const interior_value = value.replace(/^｟\/?/, ``).replace(/｠$/, ``);
+    const interior_value = value.replace(/^⸨\/?/, ``).replace(/⸩$/, ``);
     return (value.length > 2 &&
-        value[0] === `｟` &&
-        value[value.length - 1] === `｠` &&
+        value[0] === `⸨` &&
+        value[value.length - 1] === `⸩` &&
         interior_value.length > 0 &&
-        !/｟/.test(interior_value) &&
+        !/⸨/.test(interior_value) &&
         !/\//.test(interior_value) &&
         !/\s/.test(interior_value) &&
-        !/｠/.test(interior_value));
+        !/⸩/.test(interior_value));
 }
 export function Is_Known_Value(value) {
     return (value === Known_Value.CENTER ||
@@ -43,7 +43,7 @@ export function Is_Known_Value(value) {
         value === Known_Value.CLOSE_ERROR);
 }
 export function Valid_Value_From(text) {
-    const matches = text.match(/^｟\/?[^｟\/｠]+｠/);
+    const matches = text.match(/^⸨\/?[^⸨\/⸩]+⸩/);
     if (matches != null) {
         return matches[0];
     }
@@ -52,7 +52,7 @@ export function Valid_Value_From(text) {
     }
 }
 export function Maybe_Valid_Value_From(text) {
-    const matches = text.match(/^｟[^｠]*｠/);
+    const matches = text.match(/^⸨[^⸩]*⸩/);
     if (matches != null) {
         return matches[0];
     }

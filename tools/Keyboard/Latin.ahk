@@ -56,10 +56,10 @@ Latin.Symbols_s :=  { "p": "¶" ; Pilcrow Sign
 Latin.Symbols_c :=  { "+": "—" ; U+2014 EM DASH
                     , "{": "“" ; U+201C LEFT DOUBLE QUOTATION MARK
                     , "}": "”" ; U+201D RIGHT DOUBLE QUOTATION MARK
-                    , "(": "｟" ; U+FF5F FULLWIDTH LEFT WHITE PARENTHESIS
-                    , ")": "｠" ; U+FF60 FULLWIDTH RIGHT WHITE PARENTHESIS
-                    , "<": "〈" ; U+2329 LEFT-POINTING ANGLE BRACKET
-                    , ">": "〉" ; U+232A RIGHT-POINTING ANGLE BRACKET
+                    , "(": "⸨" ; U+2E28 LEFT DOUBLE PARENTHESIS
+                    , ")": "⸩" ; U+2E29 RIGHT DOUBLE PARENTHESIS
+                    , "<": "⟨" ; U+27E8 MATHEMATICAL LEFT ANGLE BRACKET
+                    , ">": "⟩" ; U+27E9 MATHEMATICAL RIGHT ANGLE BRACKET
                     , "S": "᾿" ; U+1FBF GREEK PSILI
                     , "R": "῾" ; U+1FFE GREEK DASIA
                     , "": "" }

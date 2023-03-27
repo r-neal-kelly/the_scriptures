@@ -478,7 +478,7 @@ class Dictionary {
             Type[Type["COMMAND"] = 3] = "COMMAND";
         })(Type || (Type = {}));
         ;
-        const is_centered = /^｟cen｠/.test(text);
+        const is_centered = /^⸨cen⸩/.test(text);
         const parts = [];
         let current_start_index = 0;
         let current_type = Type._NONE_;
@@ -491,10 +491,10 @@ class Dictionary {
         let last_part = null;
         for (let idx = 0, end = text.length; idx < end;) {
             const maybe_command = text.slice(idx);
-            if (/^｟i｠/.test(maybe_command)) {
+            if (/^⸨i⸩/.test(maybe_command)) {
                 has_italic = true;
                 parts.push({
-                    subtext: `｟i｠`,
+                    subtext: `⸨i⸩`,
                     type: Type.COMMAND,
                     has_italic: false,
                     has_bold: false,
@@ -502,13 +502,13 @@ class Dictionary {
                     has_small_caps: false,
                     has_error: false,
                 });
-                current_start_index = idx + `｟i｠`.length;
-                idx += `｟i｠`.length;
+                current_start_index = idx + `⸨i⸩`.length;
+                idx += `⸨i⸩`.length;
             }
-            else if (/^｟\/i｠/.test(maybe_command)) {
+            else if (/^⸨\/i⸩/.test(maybe_command)) {
                 has_italic = false;
                 parts.push({
-                    subtext: `｟/i｠`,
+                    subtext: `⸨/i⸩`,
                     type: Type.COMMAND,
                     has_italic: false,
                     has_bold: false,
@@ -516,13 +516,13 @@ class Dictionary {
                     has_small_caps: false,
                     has_error: false,
                 });
-                current_start_index = idx + `｟/i｠`.length;
-                idx += `｟/i｠`.length;
+                current_start_index = idx + `⸨/i⸩`.length;
+                idx += `⸨/i⸩`.length;
             }
-            else if (/^｟b｠/.test(maybe_command)) {
+            else if (/^⸨b⸩/.test(maybe_command)) {
                 has_bold = true;
                 parts.push({
-                    subtext: `｟b｠`,
+                    subtext: `⸨b⸩`,
                     type: Type.COMMAND,
                     has_italic: false,
                     has_bold: false,
@@ -530,13 +530,13 @@ class Dictionary {
                     has_small_caps: false,
                     has_error: false,
                 });
-                current_start_index = idx + `｟b｠`.length;
-                idx += `｟b｠`.length;
+                current_start_index = idx + `⸨b⸩`.length;
+                idx += `⸨b⸩`.length;
             }
-            else if (/^｟\/b｠/.test(maybe_command)) {
+            else if (/^⸨\/b⸩/.test(maybe_command)) {
                 has_bold = false;
                 parts.push({
-                    subtext: `｟/b｠`,
+                    subtext: `⸨/b⸩`,
                     type: Type.COMMAND,
                     has_italic: false,
                     has_bold: false,
@@ -544,13 +544,13 @@ class Dictionary {
                     has_small_caps: false,
                     has_error: false,
                 });
-                current_start_index = idx + `｟/b｠`.length;
-                idx += `｟/b｠`.length;
+                current_start_index = idx + `⸨/b⸩`.length;
+                idx += `⸨/b⸩`.length;
             }
-            else if (/^｟u｠/.test(maybe_command)) {
+            else if (/^⸨u⸩/.test(maybe_command)) {
                 has_underline = true;
                 parts.push({
-                    subtext: `｟u｠`,
+                    subtext: `⸨u⸩`,
                     type: Type.COMMAND,
                     has_italic: false,
                     has_bold: false,
@@ -558,13 +558,13 @@ class Dictionary {
                     has_small_caps: false,
                     has_error: false,
                 });
-                current_start_index = idx + `｟u｠`.length;
-                idx += `｟u｠`.length;
+                current_start_index = idx + `⸨u⸩`.length;
+                idx += `⸨u⸩`.length;
             }
-            else if (/^｟\/u｠/.test(maybe_command)) {
+            else if (/^⸨\/u⸩/.test(maybe_command)) {
                 has_underline = false;
                 parts.push({
-                    subtext: `｟/u｠`,
+                    subtext: `⸨/u⸩`,
                     type: Type.COMMAND,
                     has_italic: false,
                     has_bold: false,
@@ -572,13 +572,13 @@ class Dictionary {
                     has_small_caps: false,
                     has_error: false,
                 });
-                current_start_index = idx + `｟/u｠`.length;
-                idx += `｟/u｠`.length;
+                current_start_index = idx + `⸨/u⸩`.length;
+                idx += `⸨/u⸩`.length;
             }
-            else if (/^｟sc｠/.test(maybe_command)) {
+            else if (/^⸨sc⸩/.test(maybe_command)) {
                 has_small_caps = true;
                 parts.push({
-                    subtext: `｟sc｠`,
+                    subtext: `⸨sc⸩`,
                     type: Type.COMMAND,
                     has_italic: false,
                     has_bold: false,
@@ -586,13 +586,13 @@ class Dictionary {
                     has_small_caps: false,
                     has_error: false,
                 });
-                current_start_index = idx + `｟sc｠`.length;
-                idx += `｟sc｠`.length;
+                current_start_index = idx + `⸨sc⸩`.length;
+                idx += `⸨sc⸩`.length;
             }
-            else if (/^｟\/sc｠/.test(maybe_command)) {
+            else if (/^⸨\/sc⸩/.test(maybe_command)) {
                 has_small_caps = false;
                 parts.push({
-                    subtext: `｟/sc｠`,
+                    subtext: `⸨/sc⸩`,
                     type: Type.COMMAND,
                     has_italic: false,
                     has_bold: false,
@@ -600,13 +600,13 @@ class Dictionary {
                     has_small_caps: false,
                     has_error: false,
                 });
-                current_start_index = idx + `｟/sc｠`.length;
-                idx += `｟/sc｠`.length;
+                current_start_index = idx + `⸨/sc⸩`.length;
+                idx += `⸨/sc⸩`.length;
             }
-            else if (/^｟err｠/.test(maybe_command)) {
+            else if (/^⸨err⸩/.test(maybe_command)) {
                 has_error = true;
                 parts.push({
-                    subtext: `｟err｠`,
+                    subtext: `⸨err⸩`,
                     type: Type.COMMAND,
                     has_italic: false,
                     has_bold: false,
@@ -614,13 +614,13 @@ class Dictionary {
                     has_small_caps: false,
                     has_error: false,
                 });
-                current_start_index = idx + `｟err｠`.length;
-                idx += `｟err｠`.length;
+                current_start_index = idx + `⸨err⸩`.length;
+                idx += `⸨err⸩`.length;
             }
-            else if (/^｟\/err｠/.test(maybe_command)) {
+            else if (/^⸨\/err⸩/.test(maybe_command)) {
                 has_error = false;
                 parts.push({
-                    subtext: `｟/err｠`,
+                    subtext: `⸨/err⸩`,
                     type: Type.COMMAND,
                     has_italic: false,
                     has_bold: false,
@@ -628,12 +628,12 @@ class Dictionary {
                     has_small_caps: false,
                     has_error: false,
                 });
-                current_start_index = idx + `｟/err｠`.length;
-                idx += `｟/err｠`.length;
+                current_start_index = idx + `⸨/err⸩`.length;
+                idx += `⸨/err⸩`.length;
             }
-            else if (/^｟in｠/.test(maybe_command)) {
+            else if (/^⸨in⸩/.test(maybe_command)) {
                 parts.push({
-                    subtext: `｟in｠`,
+                    subtext: `⸨in⸩`,
                     type: Type.COMMAND,
                     has_italic: false,
                     has_bold: false,
@@ -641,12 +641,12 @@ class Dictionary {
                     has_small_caps: false,
                     has_error: false,
                 });
-                current_start_index = idx + `｟in｠`.length;
-                idx += `｟in｠`.length;
+                current_start_index = idx + `⸨in⸩`.length;
+                idx += `⸨in⸩`.length;
             }
-            else if (/^｟cen｠/.test(maybe_command)) {
+            else if (/^⸨cen⸩/.test(maybe_command)) {
                 parts.push({
-                    subtext: `｟cen｠`,
+                    subtext: `⸨cen⸩`,
                     type: Type.COMMAND,
                     has_italic: false,
                     has_bold: false,
@@ -654,8 +654,8 @@ class Dictionary {
                     has_small_caps: false,
                     has_error: false,
                 });
-                current_start_index = idx + `｟cen｠`.length;
-                idx += `｟cen｠`.length;
+                current_start_index = idx + `⸨cen⸩`.length;
+                idx += `⸨cen⸩`.length;
             }
             else {
                 const point = Dictionary.First_Point(maybe_command);
@@ -687,8 +687,8 @@ class Dictionary {
                 }
                 else if (current_type === Type.LETTERS) {
                     if (idx + point.length === end ||
-                        (point.length === 1 && /^.｟\/?[^｠]*｠/.test(maybe_command)) ||
-                        (point.length === 2 && /^..｟\/?[^｠]*｠/.test(maybe_command)) ||
+                        (point.length === 1 && /^.⸨\/?[^⸩]*⸩/.test(maybe_command)) ||
+                        (point.length === 2 && /^..⸨\/?[^⸩]*⸩/.test(maybe_command)) ||
                         !this.data.letters.includes(next_point)) {
                         if (first_part === null) {
                             first_part = parts.length;
@@ -708,8 +708,8 @@ class Dictionary {
                 }
                 else if (current_type === Type.MARKERS) {
                     if (idx + point.length === end ||
-                        (point.length === 1 && /^.｟\/?[^｠]*｠/.test(maybe_command)) ||
-                        (point.length === 2 && /^..｟\/?[^｠]*｠/.test(maybe_command)) ||
+                        (point.length === 1 && /^.⸨\/?[^⸩]*⸩/.test(maybe_command)) ||
+                        (point.length === 2 && /^..⸨\/?[^⸩]*⸩/.test(maybe_command)) ||
                         !this.data.markers.includes(next_point)) {
                         if (first_part === null) {
                             first_part = parts.length;
@@ -738,7 +738,7 @@ class Dictionary {
             const part = parts[idx];
             if (part.type === Type.COMMAND) {
                 let command_classes = ``;
-                if (part.subtext === `｟in｠`) {
+                if (part.subtext === `⸨in⸩`) {
                     command_classes += ` INDENT`;
                 }
                 inner_html += `<span class="COMMAND${command_classes}">${Escape_Text(part.subtext)}</span>`;
@@ -808,7 +808,7 @@ class Dictionary {
     Treat_As_Points(text) {
         let inner_html = ``;
         for (let idx = 0, end = text.length; idx < end;) {
-            const maybe_command = text.slice(idx).match(/^(｟\/?(i|b|u|sc|err)｠|｟(in|cen)｠)/);
+            const maybe_command = text.slice(idx).match(/^(⸨\/?(i|b|u|sc|err)⸩|⸨(in|cen)⸩)/);
             if (maybe_command && maybe_command[0]) {
                 for (const end = idx + maybe_command[0].length; idx < end;) {
                     const point = Dictionary.First_Point(text.slice(idx));
@@ -1444,13 +1444,13 @@ class Editor {
             else if (keyboard_event.key === `~`) {
                 if (this.Is_Meta_Key_Active()) {
                     keyboard_event.preventDefault();
-                    this.Highlight_Next(`｟err｠`);
+                    this.Highlight_Next(`⸨err⸩`);
                 }
             }
             else if (keyboard_event.key === `!`) {
                 if (this.Is_Meta_Key_Active()) {
                     keyboard_event.preventDefault();
-                    this.Highlight_Next(`｟b｠`);
+                    this.Highlight_Next(`⸨b⸩`);
                 }
             }
         }.bind(this));
