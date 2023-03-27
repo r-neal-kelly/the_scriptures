@@ -35,9 +35,7 @@ export class Instance {
             document.createElement(element);
         this.styles = {};
         this.parent = null;
-        this.index = null;
-        this.children = {};
-        this.child_count = 0;
+        this.children = new Map();
         this.refresh_state = undefined;
         this.refresh_adoptions = null;
         this.refresh_abortions = null;
@@ -96,7 +94,7 @@ export class Instance {
                         // We need to restyle before we do
                         // children so they have up to date data.
                         this.Apply_Styles(yield this.On_Restyle());
-                        yield Promise.all(Object.values(this.children).map(function (child) {
+                        yield Promise.all(Array.from(this.children.values()).map(function (child) {
                             return __awaiter(this, void 0, void 0, function* () {
                                 yield child.Restyle();
                             });
@@ -188,7 +186,7 @@ export class Instance {
                         // which these do. Otherwise, we'd have to skip this for
                         // adopted children because the refresh would be called
                         // multiple times.
-                        yield Promise.all(Object.values(this.children).map(function (child) {
+                        yield Promise.all(Array.from(this.children.values()).map(function (child) {
                             return __awaiter(this, void 0, void 0, function* () {
                                 if (!abortions.has(child)) {
                                     yield child.Refresh_Implementation({
@@ -256,7 +254,7 @@ export class Instance {
         return __awaiter(this, void 0, void 0, function* () {
             // This function must be called within the context of a queued callback to avoid deadlock.
             Utils.Assert(this.Is_Alive());
-            yield Promise.all(Object.values(this.children).map(function (child) {
+            yield Promise.all(Array.from(this.children.values()).map(function (child) {
                 return __awaiter(this, void 0, void 0, function* () {
                     yield child.Before_Dying_Unqueued();
                 });
@@ -269,7 +267,7 @@ export class Instance {
             // This function must be called within the context of a queued callback to avoid deadlock.
             Utils.Assert(this.Is_Alive());
             yield this.After_Refresh(this.refresh_state);
-            yield Promise.all(Object.values(this.children).map(function (child) {
+            yield Promise.all(Array.from(this.children.values()).map(function (child) {
                 return __awaiter(this, void 0, void 0, function* () {
                     yield child.After_Refreshing_Unqueued();
                 });
@@ -281,7 +279,7 @@ export class Instance {
             yield this.life_cycle_queue.Enqueue(function () {
                 return __awaiter(this, void 0, void 0, function* () {
                     if (this.Is_Alive()) {
-                        yield Promise.all(Object.values(this.children).map(function (child) {
+                        yield Promise.all(Array.from(this.children.values()).map(function (child) {
                             return __awaiter(this, void 0, void 0, function* () {
                                 yield child.Die();
                             });
@@ -295,15 +293,8 @@ export class Instance {
                                 // Die event.
                                 parent.Element().removeChild(this.Element());
                             }
-                            for (let idx = this.Index() + 1, end = parent.Child_Count(); idx < end; idx += 1) {
-                                const sibling = parent.children[idx];
-                                sibling.index = idx - 1;
-                                parent.children[sibling.index] = sibling;
-                            }
-                            parent.child_count -= 1;
-                            delete parent.children[parent.child_count];
-                            this.index = null;
                             this.parent = null;
+                            parent.children.delete(this.Element());
                         }
                         yield this.On_Death();
                         this.Event_Grid().Remove(this);
@@ -370,22 +361,9 @@ export class Instance {
         Utils.Assert(this.Is_Alive(), `Cannot get a parent from a dead entity.`);
         return this.parent;
     }
-    Has_Index() {
-        Utils.Assert(this.Is_Alive(), `Cannot know if a dead entity has an index.`);
-        return this.index != null;
-    }
-    Index() {
-        Utils.Assert(this.Is_Alive(), `Cannot get an index from a dead entity.`);
-        Utils.Assert(this.Has_Index(), `Entity does not have an index, use Maybe_Index or Has_Index.`);
-        return this.index;
-    }
-    Maybe_Index() {
-        Utils.Assert(this.Is_Alive(), `Cannot get an index from a dead entity.`);
-        return this.index;
-    }
     Child_Count() {
         Utils.Assert(this.Is_Alive(), `Cannot know a dead entity's child count.`);
-        return this.child_count;
+        return this.Element().children.length;
     }
     Has_Child(child_index) {
         Utils.Assert(this.Is_Alive(), `Cannot know if a dead entity has a child.`);
@@ -396,13 +374,11 @@ export class Instance {
         Utils.Assert(this.Is_Alive(), `Cannot get a child from a dead entity.`);
         Utils.Assert(child_index >= 0, `Cannot have an index less than 0.`);
         Utils.Assert(this.Has_Child(child_index), `Entity does not have the indexed child, use Maybe_Child or Has_Child.`);
-        return this.children[child_index];
+        return this.children.get(this.Element().children[child_index]);
     }
     Maybe_Child(child_index) {
-        Utils.Assert(this.Is_Alive(), `Cannot get a child from a dead entity.`);
-        Utils.Assert(child_index >= 0, `Cannot have an index less than 0.`);
         if (this.Has_Child(child_index)) {
-            return this.children[child_index];
+            return this.Child(child_index);
         }
         else {
             return null;
@@ -410,10 +386,8 @@ export class Instance {
     }
     Children() {
         Utils.Assert(this.Is_Alive(), `Cannot get children from a dead entity.`);
-        return Object.keys(this.children).sort(function (a, b) {
-            return parseInt(a) - parseInt(b);
-        }).map(function (index) {
-            return this.children[index];
+        return Array.from(this.Element().children).map(function (child) {
+            return this.children.get(child);
         }.bind(this));
     }
     Adopt_Child(child) {
@@ -421,16 +395,14 @@ export class Instance {
         Utils.Assert(this.refresh_adoptions != null, `You can only adopt a child during On_Refresh().`);
         Utils.Assert(child.Is_Alive(), `A child must be alive to be adopted.`);
         Utils.Assert(!child.Has_Parent(), `A child must not have a parent to be adopted.`);
-        Utils.Assert(this.child_count + 1 < Infinity, `Can not add any more children!`);
+        Utils.Assert(this.Child_Count() + 1 < Infinity, `Can not add any more children!`);
         // We have a latent stack between this and abort.
         // First the child is added to an entity,
         // then to the dom,
         // then it's removed from the dom,
         // and then finally removed from its entity.
         child.parent = this;
-        child.index = this.child_count;
-        this.children[this.child_count] = child;
-        this.child_count += 1;
+        this.children.set(child.Element(), child);
         this.refresh_adoptions.add(child);
     }
     Abort_Child(child) {
@@ -444,7 +416,7 @@ export class Instance {
         this.refresh_abortions.add(child);
     }
     Abort_All_Children() {
-        for (const child of Object.values(this.children)) {
+        for (const child of Array.from(this.children.values())) {
             this.Abort_Child(child);
         }
     }
