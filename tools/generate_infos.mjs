@@ -140,6 +140,9 @@ const FOLDER_TYPES = [
 ];
 Object.freeze(FOLDER_TYPES);
 
+// This really should read and write to the info file instead of
+// always generating it, that way we can add info to it manually
+// when needed.
 async function Generate_Info(
     folder_type,
     folder_path,

@@ -36,6 +36,8 @@ export class Instance extends Entity.Instance
         return `
             width: 100%;
 
+            padding: 2px 2px;
+
             overflow-x: auto;
             overflow-y: auto;
         `;
