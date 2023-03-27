@@ -1,3 +1,4 @@
+import { Integer } from "./types.js";
 import { Count } from "./types.js";
 import { Index } from "./types.js";
 import { ID } from "./types.js";
@@ -150,6 +151,12 @@ interface Parent_API
     Parent(): Instance;
 
     Maybe_Parent(): Instance | null;
+
+    Has_Index(): boolean;
+
+    Index(): Index;
+
+    Maybe_Index(): Index | null;
 }
 
 interface Child_API
@@ -269,8 +276,11 @@ export class Instance implements
 
     private element: HTMLElement;
     private styles: Styles;
+
     private parent: Instance | null;
-    private children: Array<Instance>; // it may be worth using an object with an index attached to instance?
+    private index: Index | null;
+    private children: { [index: Index]: Instance };
+    private child_count: Count;
 
     private refresh_state: any;
     private refresh_adoptions: Set<Instance> | null;
@@ -304,8 +314,11 @@ export class Instance implements
             element :
             document.createElement(element);
         this.styles = {};
+
         this.parent = null;
-        this.children = [];
+        this.index = null;
+        this.children = {};
+        this.child_count = 0;
 
         this.refresh_state = undefined;
         this.refresh_adoptions = null;
@@ -314,13 +327,29 @@ export class Instance implements
         this.event_grid = event_grid;
         this.life_cycle_queue = new Queue.Instance();
 
-        this.is_alive = true;
+        this.is_alive = false;
 
-        if (parent != null) {
-            parent.Adopt_Child(this);
-        }
-
+        // This is queued and executed before the potential
+        // refresh below.
         this.Live();
+
+        // We only allow adoption of children in the
+        // constructor or in the refresh event, and so
+        // there is no possibility that the latent Live
+        // event will change if this has a parent or not,
+        // therefore it's perfectly safe to check now.
+        if (parent != null) {
+            // Notice that the parent's refresh_adoptions
+            // must necessarily be extant when this is called,
+            // but not the child's, whose refresh event is called
+            // after parent's finishes.
+            parent.Adopt_Child(this);
+        } else {
+            // We only refresh when there is no parent
+            // because the parent itself will refresh
+            // its children.
+            this.Refresh();
+        }
     }
 
     Is_Alive():
@@ -332,47 +361,27 @@ export class Instance implements
     private async Live():
         Promise<void>
     {
-        // We need to avoid deadlocking the queue, which happens
-        // when waiting for a queued callback to finish in
-        // a previously queued callback. So we get the promise
-        // for the last queued callback and wait on that.
-        await (
-            await new Promise<Promise<void>>(
-                function (
+        if (!this.Is_Alive()) {
+            this.is_alive = true;
+
+            await this.life_cycle_queue.Enqueue(
+                async function (
                     this: Instance,
-                    resolve: (promise: Promise<void>) => void,
                 ):
-                    void
+                    Promise<void>
                 {
-                    this.life_cycle_queue.Enqueue(
-                        async function (
-                            this: Instance,
-                        ):
-                            Promise<void>
-                        {
-                            Utils.Assert(this.Is_Alive());
+                    // Waiting here allows the constructor
+                    // of the derived type to finish before this is called.
+                    // We could also use the async type perhaps, to let the main entity
+                    // start life for all of its children.
+                    // This also gives time to parent an entity before this tries to refresh
+                    // itself if it doesn't have a parent.
+                    await Utils.Wait_Milliseconds(1);
 
-                            // Waiting here allows the constructor
-                            // of the derived type to finish before this is called.
-                            // We could also use the async type perhaps, to let the main entity
-                            // start life for all of its children.
-                            // This also gives time to parent an entity before this tries to refresh
-                            // itself if it doesn't have a parent.
-                            await Utils.Wait_Milliseconds(1);
-
-                            this.Event_Grid().Add_Many_Listeners(this, await this.On_Life());
-
-                            if (!this.Has_Parent()) {
-                                // We need to wait for this, but it will cause a deadlock
-                                // if we do it directly, because it queues a callback.
-                                // So we pass along its promise instead.
-                                resolve(this.Refresh());
-                            }
-                        }.bind(this),
-                    );
+                    this.Event_Grid().Add_Many_Listeners(this, await this.On_Life());
                 }.bind(this),
-            )
-        );
+            );
+        }
     }
 
     async Restyle():
@@ -390,7 +399,7 @@ export class Instance implements
                     this.Apply_Styles(await this.On_Restyle());
 
                     await Promise.all(
-                        this.children.map(
+                        Object.values(this.children).map(
                             async function (
                                 child: Instance,
                             ):
@@ -535,7 +544,7 @@ export class Instance implements
                     // adopted children because the refresh would be called
                     // multiple times.
                     await Promise.all(
-                        this.children.map(
+                        Object.values(this.children).map(
                             async function (
                                 child: Instance,
                             ):
@@ -598,6 +607,8 @@ export class Instance implements
         // abortions not being able to have refresh call after abortion,
         // the children of abortions are not within the abortions array,
         // only the top of the branches being severed. Die and Before_Dying take this into account.
+        // Otherwise we'd have to create a cache to check if a child as a parent has already died
+        // before inefficiently calling for its children's death.
         const deaths: Array<Promise<void>> = [];
         for (const abortion of abortions) {
             const child: Instance = abortion;
@@ -637,7 +648,7 @@ export class Instance implements
         Utils.Assert(this.Is_Alive());
 
         await Promise.all(
-            this.children.map(
+            Object.values(this.children).map(
                 async function (
                     child: Instance,
                 ):
@@ -661,7 +672,7 @@ export class Instance implements
         await this.After_Refresh(this.refresh_state);
 
         await Promise.all(
-            this.children.map(
+            Object.values(this.children).map(
                 async function (
                     child: Instance,
                 ):
@@ -684,7 +695,7 @@ export class Instance implements
             {
                 if (this.Is_Alive()) {
                     await Promise.all(
-                        this.children.map(
+                        Object.values(this.children).map(
                             async function (
                                 child: Instance,
                             ):
@@ -699,21 +710,25 @@ export class Instance implements
                         const parent: Instance = this.Parent();
                         if (this.Element().parentElement === parent.Element()) {
                             // We need to check because it would already
-                            // be removed by this point if it was aborted.
+                            // be removed by this point if it was aborted,
+                            // but it would still be there during a manual
+                            // Die event.
                             parent.Element().removeChild(this.Element());
                         }
 
-                        // this can be made more efficient by using two hashmaps for children
-                        const child_index: Index = parent.children.indexOf(this);
-                        Utils.Assert(child_index > -1);
                         for (
-                            let idx = child_index + 1, end = parent.Child_Count();
+                            let idx = this.Index() + 1, end = parent.Child_Count();
                             idx < end;
                             idx += 1
                         ) {
-                            parent.children[idx - 1] = parent.children[idx];
+                            const sibling: Instance = parent.children[idx];
+                            sibling.index = idx - 1;
+                            parent.children[sibling.index] = sibling;
                         }
-                        parent.children.pop();
+
+                        parent.child_count -= 1;
+                        delete parent.children[parent.child_count];
+                        this.index = null;
                         this.parent = null;
                     }
 
@@ -831,6 +846,43 @@ export class Instance implements
         return this.parent;
     }
 
+    Has_Index():
+        boolean
+    {
+        Utils.Assert(
+            this.Is_Alive(),
+            `Cannot know if a dead entity has an index.`,
+        );
+
+        return this.index != null;
+    }
+
+    Index():
+        Index
+    {
+        Utils.Assert(
+            this.Is_Alive(),
+            `Cannot get an index from a dead entity.`,
+        );
+        Utils.Assert(
+            this.Has_Index(),
+            `Entity does not have an index, use Maybe_Index or Has_Index.`,
+        );
+
+        return this.index as Index;
+    }
+
+    Maybe_Index():
+        Index | null
+    {
+        Utils.Assert(
+            this.Is_Alive(),
+            `Cannot get an index from a dead entity.`,
+        );
+
+        return this.index;
+    }
+
     Child_Count():
         Count
     {
@@ -839,7 +891,7 @@ export class Instance implements
             `Cannot know a dead entity's child count.`,
         );
 
-        return this.children.length;
+        return this.child_count;
     }
 
     Has_Child(
@@ -909,7 +961,25 @@ export class Instance implements
             `Cannot get children from a dead entity.`,
         );
 
-        return Array.from(this.children);
+        return Object.keys(this.children).sort(
+            function (
+                a: string,
+                b: string,
+            ):
+                Integer
+            {
+                return parseInt(a) - parseInt(b);
+            },
+        ).map(
+            function (
+                this: Instance,
+                index: string,
+            ):
+                Instance
+            {
+                return (this.children as { [index: string]: Instance })[index];
+            }.bind(this),
+        );
     }
 
     Adopt_Child(
@@ -933,14 +1003,20 @@ export class Instance implements
             !child.Has_Parent(),
             `A child must not have a parent to be adopted.`,
         );
+        Utils.Assert(
+            this.child_count + 1 < Infinity,
+            `Can not add any more children!`,
+        );
 
         // We have a latent stack between this and abort.
         // First the child is added to an entity,
         // then to the dom,
         // then it's removed from the dom,
         // and then finally removed from its entity.
-        this.children.push(child);
         child.parent = this;
+        child.index = this.child_count;
+        this.children[this.child_count] = child;
+        this.child_count += 1;
 
         (this.refresh_adoptions as Set<Instance>).add(child);
     }
@@ -976,7 +1052,7 @@ export class Instance implements
     Abort_All_Children():
         void
     {
-        for (const child of this.children) {
+        for (const child of Object.values(this.children)) {
             this.Abort_Child(child);
         }
     }
