@@ -36,7 +36,7 @@ export class Instance extends Async.Instance {
                     data: file,
                     text: new Text.Instance({
                         dictionary: (yield file.Files().Dictionary()).Text_Dictionary(),
-                        value: (yield file.Maybe_Text()) || ``,
+                        value: ((yield file.Maybe_Text()) || ``).replace(/\r?\n\r?\n/g, `\n \n`),
                     }),
                 });
             }

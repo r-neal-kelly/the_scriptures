@@ -2,6 +2,8 @@ import { Count } from "./types.js";
 
 import * as Utils from "./utils.js";
 
+// I think we can use a promise chain instead of an array,
+// such that each execution calls the next execution.
 export class Instance
 {
     private slots: Array<() => Promise<void>>;

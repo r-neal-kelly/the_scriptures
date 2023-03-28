@@ -32,14 +32,14 @@ export class Instance extends Entity.Instance {
             if (!this.Has_Lines()) {
                 this.Abort_All_Children();
                 new Lines.Instance({
-                    model: this.Model().Lines(),
+                    model: () => this.Model().Lines(),
                     file: this,
                 });
             }
         });
     }
     Model() {
-        return this.model;
+        return this.model();
     }
     Has_Lines() {
         return (this.Has_Child(0) &&

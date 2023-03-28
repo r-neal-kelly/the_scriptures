@@ -35,7 +35,19 @@ export class Instance extends Entity.Instance
     {
         this.Element().addEventListener(`click`, this.On_Click.bind(this));
 
-        return [];
+        return [
+            new Event.Listener_Info(
+                {
+                    event_name: new Event.Name(
+                        Event.Prefix.ON,
+                        "Selector_Slot_Item_Select",
+                        this.ID().toString(),
+                    ),
+                    event_handler: this.On_Selector_Slot_Item_Select.bind(this),
+                    event_priority: 0,
+                },
+            ),
+        ];
     }
 
     override async On_Restyle():
@@ -80,20 +92,24 @@ export class Instance extends Entity.Instance
     ):
         Promise<void>
     {
-        const model: Model.Instance = this.Model();
-
-        await model.Select();
-
         await this.Send(
             new Event.Info(
                 {
                     affix: `Selector_Slot_Item_Select`,
-                    suffixes: [],
+                    suffixes: [
+                        this.ID().toString(),
+                    ],
                     type: Event.Type.EXCLUSIVE,
                     data: {},
                 },
             ),
         );
+    }
+
+    async On_Selector_Slot_Item_Select():
+        Promise<void>
+    {
+        await this.Model().Select();
     }
 
     Model():

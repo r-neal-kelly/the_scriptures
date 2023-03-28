@@ -65,7 +65,7 @@ export class Instance extends Async.Instance
                     text: new Text.Instance(
                         {
                             dictionary: (await file.Files().Dictionary()).Text_Dictionary(),
-                            value: await file.Maybe_Text() || ``,
+                            value: (await file.Maybe_Text() || ``).replace(/\r?\n\r?\n/g, `\n \n`),
                         },
                     ),
                 },

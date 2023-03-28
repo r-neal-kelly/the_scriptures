@@ -10,7 +10,6 @@ import * as File from "./file.js";
 export class Instance extends Entity.Instance
 {
     private model: Model.Instance;
-    private file: File.Instance | null;
 
     constructor(
         {
@@ -31,7 +30,6 @@ export class Instance extends Entity.Instance
         );
 
         this.model = model;
-        this.file = null;
     }
 
     override async On_Life():
@@ -40,8 +38,8 @@ export class Instance extends Entity.Instance
         return [
             new Event.Listener_Info(
                 {
-                    event_name: new Event.Name(Event.Prefix.ON, "Selector_Slot_Item_Select"),
-                    event_handler: this.On_Selector_Slot_Item_Select.bind(this),
+                    event_name: new Event.Name(Event.Prefix.AFTER, "Selector_Slot_Item_Select"),
+                    event_handler: this.After_Selector_Slot_Item_Select.bind(this),
                     event_priority: 0,
                 },
             ),
@@ -64,17 +62,19 @@ export class Instance extends Entity.Instance
     {
         const model: Model.Instance = this.Model();
 
-        this.Abort_All_Children();
-
         if (this.model.Has_File()) {
-            this.file = new File.Instance(
-                {
-                    model: model.File(),
-                    reader: this,
-                },
-            );
+            if (!this.Has_File()) {
+                new File.Instance(
+                    {
+                        model: () => this.Model().File(),
+                        reader: this,
+                    },
+                );
+            }
         } else {
-            this.file = null;
+            if (this.Has_File()) {
+                this.Abort_Child(this.File());
+            }
         }
     }
 
@@ -84,7 +84,7 @@ export class Instance extends Entity.Instance
         this.Element().scrollTo(0, 0);
     }
 
-    async On_Selector_Slot_Item_Select():
+    async After_Selector_Slot_Item_Select():
         Promise<void>
     {
         await this.Refresh();
@@ -105,7 +105,10 @@ export class Instance extends Entity.Instance
     Has_File():
         boolean
     {
-        return this.file != null;
+        return (
+            this.Has_Child(0) &&
+            this.Child(0) instanceof File.Instance
+        );
     }
 
     File():
@@ -113,9 +116,9 @@ export class Instance extends Entity.Instance
     {
         Utils.Assert(
             this.Has_File(),
-            `Has no file.`,
+            `Doesn't have file.`,
         );
 
-        return this.file as File.Instance;
+        return this.Child(0) as File.Instance;
     }
 }

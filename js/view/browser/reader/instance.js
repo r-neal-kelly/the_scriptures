@@ -19,14 +19,13 @@ export class Instance extends Entity.Instance {
             event_grid: browser.Event_Grid(),
         });
         this.model = model;
-        this.file = null;
     }
     On_Life() {
         return __awaiter(this, void 0, void 0, function* () {
             return [
                 new Event.Listener_Info({
-                    event_name: new Event.Name(Event.Prefix.ON, "Selector_Slot_Item_Select"),
-                    event_handler: this.On_Selector_Slot_Item_Select.bind(this),
+                    event_name: new Event.Name(Event.Prefix.AFTER, "Selector_Slot_Item_Select"),
+                    event_handler: this.After_Selector_Slot_Item_Select.bind(this),
                     event_priority: 0,
                 }),
             ];
@@ -45,15 +44,18 @@ export class Instance extends Entity.Instance {
     On_Refresh() {
         return __awaiter(this, void 0, void 0, function* () {
             const model = this.Model();
-            this.Abort_All_Children();
             if (this.model.Has_File()) {
-                this.file = new File.Instance({
-                    model: model.File(),
-                    reader: this,
-                });
+                if (!this.Has_File()) {
+                    new File.Instance({
+                        model: () => this.Model().File(),
+                        reader: this,
+                    });
+                }
             }
             else {
-                this.file = null;
+                if (this.Has_File()) {
+                    this.Abort_Child(this.File());
+                }
             }
         });
     }
@@ -62,7 +64,7 @@ export class Instance extends Entity.Instance {
             this.Element().scrollTo(0, 0);
         });
     }
-    On_Selector_Slot_Item_Select() {
+    After_Selector_Slot_Item_Select() {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.Refresh();
         });
@@ -74,10 +76,11 @@ export class Instance extends Entity.Instance {
         return this.Parent();
     }
     Has_File() {
-        return this.file != null;
+        return (this.Has_Child(0) &&
+            this.Child(0) instanceof File.Instance);
     }
     File() {
-        Utils.Assert(this.Has_File(), `Has no file.`);
-        return this.file;
+        Utils.Assert(this.Has_File(), `Doesn't have file.`);
+        return this.Child(0);
     }
 }

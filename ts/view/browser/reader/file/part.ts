@@ -6,14 +6,14 @@ import * as Parts from "./parts.js";
 
 export class Instance extends Entity.Instance
 {
-    private model: Model.Instance;
+    private model: () => Model.Instance;
 
     constructor(
         {
             model,
             parts,
         }: {
-            model: Model.Instance,
+            model: () => Model.Instance,
             parts: Parts.Instance,
         },
     )
@@ -37,37 +37,57 @@ export class Instance extends Entity.Instance
             model.Text().Is_Error() ||
             model.Text().Has_Error_Style();
 
+        const width: string = model.Index() === 0 && model.Parts().Line().Text().Is_Indented() ?
+            `3em` :
+            `auto`;
+
+        const border_color: string = is_error ?
+            `#ffcbcb` :
+            `transparent`;
+
+        const color: string = is_error ?
+            `#ffcbcb` :
+            `inherit`;
+        const font_style: string = model.Text().Has_Italic_Style() ?
+            `italic` :
+            `normal`;
+        const font_weight: string = model.Text().Has_Bold_Style() ?
+            `bold` :
+            `normal`;
+        const font_variant: string = model.Text().Has_Small_Caps_Style() ?
+            `small-caps` :
+            `normal`;
+        const text_decoration: string = model.Text().Has_Underline_Style() ?
+            `underline` :
+            `none`;
+
         return `
             display: inline-block;
 
-            border-color: transparent;
+            width: ${width};
+
             border-style: solid;
             border-width: 0 0 2px 0;
-            ${is_error ? `border-color: #ffcbcb;` : ``}
+            border-color: ${border_color};
 
-            ${model.Index() === 0 && model.Parts().Line().Text().Is_Indented() ? `width: 3em;` : ``}
-
-            ${model.Text().Has_Italic_Style() ? `font-style: italic;` : ``}
-            ${model.Text().Has_Bold_Style() ? `font-weight: bold;` : ``}
-            ${model.Text().Has_Underline_Style() ? `text-decoration: underline;` : ``}
-            ${model.Text().Has_Small_Caps_Style() ? `font-variant: small-caps;` : ``}
-            ${is_error ? `color: #ffcbcb;` : ``}
+            color: ${color};
+            font-style: ${font_style};
+            font-weight: ${font_weight};
+            font-variant: ${font_variant};
+            text-decoration: ${text_decoration};
         `;
     }
 
     override async On_Refresh():
         Promise<void>
     {
-        // I would like to avoid altering the text here,
-        // probably need to figure out what can be done
-        // with styling instead.
-
         const model: Model.Instance = this.Model();
-        //const text: string = model.Text().Value().replaceAll(/  /g, `  `);
 
         if (model.Text().Is_Command()) {
             this.Element().textContent = ``;
         } else {
+            // Doing this in reader causes the dictionary to think some things are
+            // errors, because the dictionary doesn't recognize the non-breaking space.
             this.Element().textContent = model.Text().Value().replace(/ /g, ` `);
         }
     }
@@ -75,7 +95,7 @@ export class Instance extends Entity.Instance
     Model():
         Model.Instance
     {
-        return this.model;
+        return this.model();
     }
 
     Parts():

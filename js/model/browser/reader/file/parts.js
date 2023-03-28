@@ -20,8 +20,8 @@ export class Instance {
         return this.parts.length;
     }
     At(part_index) {
-        Utils.Assert(part_index > -1, `part_index must be greater than -1.`);
-        Utils.Assert(part_index < this.Count(), `part_index must be less than part_count.`);
+        Utils.Assert(part_index > -1, `part_index (${part_index}) must be greater than -1.`);
+        Utils.Assert(part_index < this.Count(), `part_index (${part_index}) must be less than part_count (${this.Count()}).`);
         return this.parts[part_index];
     }
     Array() {

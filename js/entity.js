@@ -97,40 +97,23 @@ export class Instance {
                         if (this.Has_On_Restyle()) {
                             this.Apply_Styles(yield this.On_Restyle());
                         }
-                        // It's more efficient to check if it has a listener first
-                        // before spinning up an async frame. But the problem is
-                        // that we have to still give its children a chance to
-                        // get the event. So we need to skip it in its parent-child
-                        // path. Normally that would mean just recursing and doing
-                        // the skip in the recursion and moving forward, but the
-                        // problem is calling the async function in the first place.
-                        // So we need to make our own frames?
-                        /*
-                        await Promise.all(
-                            Array.from(this.children.values()).filter(
-                                function (
-                                    child: Instance,
-                                ):
-                                    boolean
-                                {
-                                    return child.Has_On_Restyle();
-                                },
-                            ).map(
-                                async function (
-                                    child: Instance,
-                                ):
-                                    Promise<void>
-                                {
-                                    await child.Restyle();
-                                },
-                            ),
-                        );
-                        */
-                        yield Promise.all(Array.from(this.children.values()).map(function (child) {
-                            return __awaiter(this, void 0, void 0, function* () {
-                                yield child.Restyle();
-                            });
-                        }));
+                        // It's more efficient to check if it has a listener
+                        // before spinning up an async frame.
+                        const promises = [];
+                        (function Call_Children(entity) {
+                            for (const child of entity.children.values()) {
+                                if (child.Has_On_Restyle()) {
+                                    promises.push(child.Restyle());
+                                }
+                                else {
+                                    // If a child doesn't have On_Restyle,
+                                    // then its children can be treated in its
+                                    // place in each await pass of the tree.
+                                    Call_Children(child);
+                                }
+                            }
+                        })(this);
+                        yield Promise.all(promises);
                     }
                 });
             }.bind(this));
@@ -259,7 +242,7 @@ export class Instance {
             // of this entity and are passed as an arena to
             // children during the refresh cycle.
             // It should be noted because of the lopsided nature of
-            // abortions not being able to have refresh call after abortion,
+            // abortions not being able to have refresh calls after abortion,
             // the children of abortions are not within the abortions array,
             // only the top of the branches being severed. Die and Before_Dying take this into account.
             // Otherwise we'd have to create a cache to check if a child as a parent has already died
@@ -270,8 +253,13 @@ export class Instance {
                 const parent = abortion.Parent();
                 Utils.Assert(parent.Is_Alive());
                 Utils.Assert(child.Is_Alive());
-                Utils.Assert(child.Element().parentElement === parent.Element());
-                parent.Element().removeChild(child.Element());
+                if (child.Element().parentElement === parent.Element()) {
+                    // I don't think it's possible in our algorithm that this
+                    // could already be removed, but it can happen, perhaps something
+                    // in the browser, not sure. Also I suppose it's possible for
+                    // a user to do this, so the redundancy is not a bad thing.
+                    parent.Element().removeChild(child.Element());
+                }
                 deaths.push(child.Die());
             }
             for (const adoption of adoptions) {
@@ -292,11 +280,18 @@ export class Instance {
         return __awaiter(this, void 0, void 0, function* () {
             // This function is called within the context of a queued callback to avoid deadlock.
             Utils.Assert(this.Is_Alive());
-            yield Promise.all(Array.from(this.children.values()).map(function (child) {
-                return __awaiter(this, void 0, void 0, function* () {
-                    yield child.Before_Dying_Unqueued();
-                });
-            }));
+            const promises = [];
+            (function Call_Children(entity) {
+                for (const child of entity.children.values()) {
+                    if (child.Has_Before_Death()) {
+                        promises.push(child.Before_Dying_Unqueued());
+                    }
+                    else {
+                        Call_Children(child);
+                    }
+                }
+            })(this);
+            yield Promise.all(promises);
             if (this.Has_Before_Death()) {
                 yield this.Before_Death();
             }
@@ -309,11 +304,18 @@ export class Instance {
             if (this.Has_After_Refresh()) {
                 yield this.After_Refresh();
             }
-            yield Promise.all(Array.from(this.children.values()).map(function (child) {
-                return __awaiter(this, void 0, void 0, function* () {
-                    yield child.After_Refreshing_Unqueued();
-                });
-            }));
+            const promises = [];
+            (function Call_Children(entity) {
+                for (const child of entity.children.values()) {
+                    if (child.Has_After_Refresh()) {
+                        promises.push(child.After_Refreshing_Unqueued());
+                    }
+                    else {
+                        Call_Children(child);
+                    }
+                }
+            })(this);
+            yield Promise.all(promises);
         });
     }
     Die() {
@@ -435,7 +437,7 @@ export class Instance {
     }
     Child_Count() {
         Utils.Assert(this.Is_Alive(), `Cannot know a dead entity's child count.`);
-        return this.Element().children.length;
+        return this.children.size;
     }
     Has_Child(child_index) {
         Utils.Assert(this.Is_Alive(), `Cannot know if a dead entity has a child.`);

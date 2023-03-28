@@ -22,41 +22,59 @@ export class Instance extends Entity.Instance {
             const model = this.Model();
             const is_error = model.Text().Is_Error() ||
                 model.Text().Has_Error_Style();
+            const width = model.Index() === 0 && model.Parts().Line().Text().Is_Indented() ?
+                `3em` :
+                `auto`;
+            const border_color = is_error ?
+                `#ffcbcb` :
+                `transparent`;
+            const color = is_error ?
+                `#ffcbcb` :
+                `inherit`;
+            const font_style = model.Text().Has_Italic_Style() ?
+                `italic` :
+                `normal`;
+            const font_weight = model.Text().Has_Bold_Style() ?
+                `bold` :
+                `normal`;
+            const font_variant = model.Text().Has_Small_Caps_Style() ?
+                `small-caps` :
+                `normal`;
+            const text_decoration = model.Text().Has_Underline_Style() ?
+                `underline` :
+                `none`;
             return `
             display: inline-block;
 
-            border-color: transparent;
+            width: ${width};
+
             border-style: solid;
             border-width: 0 0 2px 0;
-            ${is_error ? `border-color: #ffcbcb;` : ``}
+            border-color: ${border_color};
 
-            ${model.Index() === 0 && model.Parts().Line().Text().Is_Indented() ? `width: 3em;` : ``}
-
-            ${model.Text().Has_Italic_Style() ? `font-style: italic;` : ``}
-            ${model.Text().Has_Bold_Style() ? `font-weight: bold;` : ``}
-            ${model.Text().Has_Underline_Style() ? `text-decoration: underline;` : ``}
-            ${model.Text().Has_Small_Caps_Style() ? `font-variant: small-caps;` : ``}
-            ${is_error ? `color: #ffcbcb;` : ``}
+            color: ${color};
+            font-style: ${font_style};
+            font-weight: ${font_weight};
+            font-variant: ${font_variant};
+            text-decoration: ${text_decoration};
         `;
         });
     }
     On_Refresh() {
         return __awaiter(this, void 0, void 0, function* () {
-            // I would like to avoid altering the text here,
-            // probably need to figure out what can be done
-            // with styling instead.
             const model = this.Model();
-            //const text: string = model.Text().Value().replaceAll(/  /g, `  `);
             if (model.Text().Is_Command()) {
                 this.Element().textContent = ``;
             }
             else {
+                // Doing this in reader causes the dictionary to think some things are
+                // errors, because the dictionary doesn't recognize the non-breaking space.
                 this.Element().textContent = model.Text().Value().replace(/ /g, ` `);
             }
         });
     }
     Model() {
-        return this.model;
+        return this.model();
     }
     Parts() {
         return this.Parent();

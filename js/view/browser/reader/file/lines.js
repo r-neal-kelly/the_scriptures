@@ -35,18 +35,17 @@ export class Instance extends Entity.Instance {
                 }
             }
             else if (delta > 0) {
-                for (let idx = count, end = count + delta; idx < end;) {
+                for (let idx = count, end = count + delta; idx < end; idx += 1) {
                     new Line.Instance({
-                        model: model.At(idx),
+                        model: () => this.Model().At(idx),
                         lines: this,
                     });
-                    idx += 1;
                 }
             }
         });
     }
     Model() {
-        return this.model;
+        return this.model();
     }
     File() {
         return this.Parent();

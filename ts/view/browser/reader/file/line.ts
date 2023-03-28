@@ -9,14 +9,14 @@ import * as Parts from "./parts.js";
 
 export class Instance extends Entity.Instance
 {
-    private model: Model.Instance;
+    private model: () => Model.Instance;
 
     constructor(
         {
             model,
             lines,
         }: {
-            model: Model.Instance,
+            model: () => Model.Instance,
             lines: Lines.Instance,
         },
     )
@@ -36,13 +36,16 @@ export class Instance extends Entity.Instance
         Promise<Entity.Styles | string>
     {
         const model: Model.Instance = this.Model();
+
+        const display: string = model.Text().Is_Centered() ?
+            `flex` :
+            `block`;
         const color: string = model.Text().Value() === `` ?
             `transparent` :
             `inherit`;
 
         return `
-            display: block;
-            ${model.Text().Is_Centered() ? `display: flex;` : ``}
+            display: ${display};
             flex-wrap: wrap;
             justify-content: center;
 
@@ -55,26 +58,22 @@ export class Instance extends Entity.Instance
     {
         const model: Model.Instance = this.Model();
 
-        if (model.Text().Value() === ``) {
-            this.Element().textContent = `_`;
-        } else {
-            if (!this.Has_Parts()) {
-                this.Abort_All_Children();
+        if (!this.Has_Parts()) {
+            this.Abort_All_Children();
 
-                new Parts.Instance(
-                    {
-                        model: model.Parts(),
-                        line: this,
-                    },
-                );
-            }
+            new Parts.Instance(
+                {
+                    model: () => this.Model().Parts(),
+                    line: this,
+                },
+            );
         }
     }
 
     Model():
         Model.Instance
     {
-        return this.model;
+        return this.model();
     }
 
     Lines():

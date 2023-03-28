@@ -9,14 +9,14 @@ import * as Lines from "./lines.js";
 
 export class Instance extends Entity.Instance
 {
-    private model: Model.Instance;
+    private model: () => Model.Instance;
 
     constructor(
         {
             model,
             reader,
         }: {
-            model: Model.Instance,
+            model: () => Model.Instance,
             reader: Reader.Instance,
         },
     )
@@ -49,7 +49,7 @@ export class Instance extends Entity.Instance
 
             new Lines.Instance(
                 {
-                    model: this.Model().Lines(),
+                    model: () => this.Model().Lines(),
                     file: this,
                 },
             );
@@ -59,7 +59,7 @@ export class Instance extends Entity.Instance
     Model():
         Model.Instance
     {
-        return this.model;
+        return this.model();
     }
 
     Has_Lines():

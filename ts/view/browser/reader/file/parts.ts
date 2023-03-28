@@ -10,14 +10,14 @@ import * as Part from "./part.js";
 
 export class Instance extends Entity.Instance
 {
-    private model: Model.Instance;
+    private model: () => Model.Instance;
 
     constructor(
         {
             model,
             line,
         }: {
-            model: Model.Instance,
+            model: () => Model.Instance,
             line: Line.Instance,
         },
     )
@@ -43,25 +43,24 @@ export class Instance extends Entity.Instance
         Promise<void>
     {
         const model: Model.Instance = this.Model();
-        const count: Count = this.Child_Count();
-        const delta: Delta = model.Count() - count;
+        const target: Count = model.Count();
+        const current: Count = this.Child_Count();
+        const delta: Delta = target - current;
 
         if (delta < 0) {
-            for (let idx = count, end = count + delta; idx > end;) {
+            for (let idx = current, end = current + delta; idx > end;) {
                 idx -= 1;
 
                 this.Abort_Child(this.Child(idx));
             }
         } else if (delta > 0) {
-            for (let idx = count, end = count + delta; idx < end;) {
+            for (let idx = current, end = current + delta; idx < end; idx += 1) {
                 new Part.Instance(
                     {
-                        model: model.At(idx),
+                        model: () => this.Model().At(idx),
                         parts: this,
                     },
                 );
-
-                idx += 1;
             }
         }
     }
@@ -69,7 +68,7 @@ export class Instance extends Entity.Instance
     Model():
         Model.Instance
     {
-        return this.model;
+        return this.model();
     }
 
     Line():

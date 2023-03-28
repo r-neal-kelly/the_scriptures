@@ -10,14 +10,14 @@ import * as Line from "./line.js";
 
 export class Instance extends Entity.Instance
 {
-    private model: Model.Instance;
+    private model: () => Model.Instance;
 
     constructor(
         {
             model,
             file,
         }: {
-            model: Model.Instance,
+            model: () => Model.Instance,
             file: File.Instance,
         },
     )
@@ -53,15 +53,13 @@ export class Instance extends Entity.Instance
                 this.Abort_Child(this.Child(idx));
             }
         } else if (delta > 0) {
-            for (let idx = count, end = count + delta; idx < end;) {
+            for (let idx = count, end = count + delta; idx < end; idx += 1) {
                 new Line.Instance(
                     {
-                        model: model.At(idx),
+                        model: () => this.Model().At(idx),
                         lines: this,
                     },
                 );
-
-                idx += 1;
             }
         }
     }
@@ -69,7 +67,7 @@ export class Instance extends Entity.Instance
     Model():
         Model.Instance
     {
-        return this.model;
+        return this.model();
     }
 
     File():

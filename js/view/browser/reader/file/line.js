@@ -22,12 +22,14 @@ export class Instance extends Entity.Instance {
     On_Restyle() {
         return __awaiter(this, void 0, void 0, function* () {
             const model = this.Model();
+            const display = model.Text().Is_Centered() ?
+                `flex` :
+                `block`;
             const color = model.Text().Value() === `` ?
                 `transparent` :
                 `inherit`;
             return `
-            display: block;
-            ${model.Text().Is_Centered() ? `display: flex;` : ``}
+            display: ${display};
             flex-wrap: wrap;
             justify-content: center;
 
@@ -38,22 +40,17 @@ export class Instance extends Entity.Instance {
     On_Refresh() {
         return __awaiter(this, void 0, void 0, function* () {
             const model = this.Model();
-            if (model.Text().Value() === ``) {
-                this.Element().textContent = `_`;
-            }
-            else {
-                if (!this.Has_Parts()) {
-                    this.Abort_All_Children();
-                    new Parts.Instance({
-                        model: model.Parts(),
-                        line: this,
-                    });
-                }
+            if (!this.Has_Parts()) {
+                this.Abort_All_Children();
+                new Parts.Instance({
+                    model: () => this.Model().Parts(),
+                    line: this,
+                });
             }
         });
     }
     Model() {
-        return this.model;
+        return this.model();
     }
     Lines() {
         return this.Parent();

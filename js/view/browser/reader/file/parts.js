@@ -26,27 +26,27 @@ export class Instance extends Entity.Instance {
     On_Refresh() {
         return __awaiter(this, void 0, void 0, function* () {
             const model = this.Model();
-            const count = this.Child_Count();
-            const delta = model.Count() - count;
+            const target = model.Count();
+            const current = this.Child_Count();
+            const delta = target - current;
             if (delta < 0) {
-                for (let idx = count, end = count + delta; idx > end;) {
+                for (let idx = current, end = current + delta; idx > end;) {
                     idx -= 1;
                     this.Abort_Child(this.Child(idx));
                 }
             }
             else if (delta > 0) {
-                for (let idx = count, end = count + delta; idx < end;) {
+                for (let idx = current, end = current + delta; idx < end; idx += 1) {
                     new Part.Instance({
-                        model: model.At(idx),
+                        model: () => this.Model().At(idx),
                         parts: this,
                     });
-                    idx += 1;
                 }
             }
         });
     }
     Model() {
-        return this.model;
+        return this.model();
     }
     Line() {
         return this.Parent();
