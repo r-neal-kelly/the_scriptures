@@ -24,7 +24,6 @@ export { ID } from "./types.js";
             After_Refresh
         Die:
             Before_Death
-            On_Death
 */
 
 export interface Info_API
@@ -130,15 +129,6 @@ export interface Life_Cycle_Listener_API
         All children receive the event at the same time.
     */
     Before_Death(): Promise<void>;
-
-    /*
-        Providing this event handler allows you to work with an entity
-        after its children die and after it has been removed from its parent.
-        The entity is no longer in the DOM during this event.
-        Children get this event before their parents.
-        All children receive the event at the same time.
-    */
-    On_Death(): Promise<void>;
 }
 
 export interface Parent_API
@@ -584,24 +574,6 @@ export class Instance implements
 
         Utils.Assert(this.Is_Alive());
 
-        // We call this before removing the abortions from the dom,
-        // and while they are still attached to their parent entities.
-        // Thus every entity can look at their parents as well as their children.
-        // We don't queue this here because we are already in the queue, and we
-        // want this to finish before altering the dom.
-        // Waiting here will not deadlock the queue because abortions can only be children.
-        await Promise.all(
-            Array.from(abortions).map(
-                async function (
-                    abortion: Instance,
-                ):
-                    Promise<void>
-                {
-                    await abortion.Before_Dying_Unqueued();
-                },
-            ),
-        );
-
         // We update the dom all at once to limit draw calls.
         // Adoptions and abortions can come from the children
         // of this entity and are passed as an arena to
@@ -648,36 +620,6 @@ export class Instance implements
         await this.After_Refreshing_Unqueued();
     }
 
-    private async Before_Dying_Unqueued():
-        Promise<void>
-    {
-        // This function is called within the context of a queued callback to avoid deadlock.
-
-        Utils.Assert(this.Is_Alive());
-
-        const promises: Array<Promise<void>> = [];
-        (
-            function Call_Children(
-                entity: Instance,
-            ):
-                void
-            {
-                for (const child of entity.children.values()) {
-                    if (child.Has_Before_Death()) {
-                        promises.push(child.Before_Dying_Unqueued());
-                    } else {
-                        Call_Children(child);
-                    }
-                }
-            }
-        )(this);
-        await Promise.all(promises);
-
-        if (this.Has_Before_Death()) {
-            await this.Before_Death();
-        }
-    }
-
     private async After_Refreshing_Unqueued():
         Promise<void>
     {
@@ -718,6 +660,10 @@ export class Instance implements
                 Promise<void>
             {
                 if (this.Is_Alive()) {
+                    if (this.Has_Before_Death()) {
+                        await this.Before_Death();
+                    }
+
                     await Promise.all(
                         Array.from(this.children.values()).map(
                             async function (
@@ -741,10 +687,6 @@ export class Instance implements
                         }
                         this.parent = null;
                         parent.children.delete(this.Element());
-                    }
-
-                    if (this.Has_On_Death()) {
-                        await this.On_Death();
                     }
 
                     this.Event_Grid().Remove(this);
@@ -853,23 +795,6 @@ export class Instance implements
         Utils.Assert(
             false,
             `You need to override Before_Death or update your life_cycle_info.`,
-        );
-
-        return;
-    }
-
-    private Has_On_Death():
-        boolean
-    {
-        return Object.getPrototypeOf(this).hasOwnProperty(`On_Death`);
-    }
-
-    async On_Death():
-        Promise<void>
-    {
-        Utils.Assert(
-            false,
-            `You need to override On_Death or update your life_cycle_info.`,
         );
 
         return;
