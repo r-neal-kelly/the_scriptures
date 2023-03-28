@@ -31,18 +31,11 @@ export class Instance extends Entity.Instance {
     }
     On_Refresh() {
         const model = this.Model();
-        if (this.model.Has_File()) {
-            if (!this.Has_File()) {
-                new File.Instance({
-                    model: () => this.Model().File(),
-                    reader: this,
-                });
-            }
-        }
-        else {
-            if (this.Has_File()) {
-                this.Abort_Child(this.File());
-            }
+        if (!this.Has_File()) {
+            new File.Instance({
+                model: () => this.Model().File(),
+                reader: this,
+            });
         }
         this.Element().scrollTo(0, 0);
     }

@@ -10,7 +10,8 @@ import * as File from "./file.js";
 export class Instance extends Async.Instance
 {
     private browser: Browser.Instance;
-    private file: File.Instance | null;
+    private blank_file: File.Instance;
+    private current_file: File.Instance;
 
     constructor(
         {
@@ -23,7 +24,23 @@ export class Instance extends Async.Instance
         super();
 
         this.browser = browser;
-        this.file = null;
+        this.blank_file = new File.Instance(
+            {
+                reader: this,
+                data: null,
+                text: new Text.Instance(
+                    {
+                        dictionary: new Text.Dictionary.Instance(
+                            {
+                                json: null,
+                            },
+                        ),
+                        value: ``,
+                    },
+                ),
+            },
+        );
+        this.current_file = this.blank_file;
     }
 
     Browser():
@@ -32,21 +49,10 @@ export class Instance extends Async.Instance
         return this.browser;
     }
 
-    Has_File():
-        boolean
-    {
-        return this.file != null;
-    }
-
     File():
         File.Instance
     {
-        Utils.Assert(
-            this.Has_File(),
-            `Has no file.`,
-        );
-
-        return this.file as File.Instance;
+        return this.current_file;
     }
 
     async Open_File(
@@ -54,18 +60,20 @@ export class Instance extends Async.Instance
     ):
         Promise<void>
     {
-        if (
-            this.file == null ||
-            this.file.Data() != file
-        ) {
-            this.file = new File.Instance(
+        if (this.current_file.Maybe_Data() != file) {
+            const file_dictionary: Text.Dictionary.Instance =
+                (await file.Files().Dictionary()).Text_Dictionary();
+            const file_value: string =
+                (await file.Maybe_Text() || ``).replace(/\r?\n\r?\n/g, `\n \n`);
+
+            this.current_file = new File.Instance(
                 {
                     reader: this,
                     data: file,
                     text: new Text.Instance(
                         {
-                            dictionary: (await file.Files().Dictionary()).Text_Dictionary(),
-                            value: (await file.Maybe_Text() || ``).replace(/\r?\n\r?\n/g, `\n \n`),
+                            dictionary: file_dictionary,
+                            value: file_value,
                         },
                     ),
                 },

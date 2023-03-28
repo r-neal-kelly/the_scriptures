@@ -37,25 +37,16 @@ export class Instance extends Entity.Instance
         void
     {
         const model: Model.Instance = this.Model();
-        const target: Count = model.Count();
-        const current: Count = this.Child_Count();
-        const delta: Delta = target - current;
+        const target: Count = Math.max(Model.Instance.Min_Count(), model.Count());
+        const count: Count = this.Child_Count();
 
-        if (delta < 0) {
-            for (let idx = current, end = current + delta; idx > end;) {
-                idx -= 1;
-
-                this.Abort_Child(this.Child(idx));
-            }
-        } else if (delta > 0) {
-            for (let idx = current, end = current + delta; idx < end; idx += 1) {
-                new Part.Instance(
-                    {
-                        model: () => this.Model().At(idx),
-                        parts: this,
-                    },
-                );
-            }
+        for (let idx = count, end = target; idx < end; idx += 1) {
+            new Part.Instance(
+                {
+                    model: () => this.Model().At(idx),
+                    parts: this,
+                },
+            );
         }
     }
 

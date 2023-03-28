@@ -5,11 +5,26 @@ import * as Utils from "../../../../utils.js";
 
 import * as Text from "../../../text.js";
 
+import * as File from "./instance.js";
 import * as Line from "./line.js";
 import * as Part from "./part.js";
 
 export class Instance
 {
+    private static blank_part: Part.Instance = new Part.Instance(
+        {
+            parts: null,
+            index: null,
+            text: null,
+        },
+    );
+
+    static Min_Count():
+        Count
+    {
+        return File.Instance.Min_Part_Count();
+    }
+
     private line: Line.Instance;
     private parts: Array<Part.Instance>;
 
@@ -62,12 +77,12 @@ export class Instance
             part_index > -1,
             `part_index (${part_index}) must be greater than -1.`,
         );
-        Utils.Assert(
-            part_index < this.Count(),
-            `part_index (${part_index}) must be less than part_count (${this.Count()}).`,
-        );
 
-        return this.parts[part_index];
+        if (part_index < this.Count()) {
+            return this.parts[part_index];
+        } else {
+            return Instance.blank_part;
+        }
     }
 
     Array():

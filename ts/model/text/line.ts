@@ -88,8 +88,8 @@ export class Instance
         );
 
         this.value = value;
-        this.parts = [];
         this.points = [];
+        this.parts = [];
         this.is_centered =
             this.value.slice(0, Command.Known_Value.CENTER.length) === Command.Known_Value.CENTER;
         this.is_indented =

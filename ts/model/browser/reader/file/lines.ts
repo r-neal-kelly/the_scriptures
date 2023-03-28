@@ -10,6 +10,20 @@ import * as Line from "./line.js";
 
 export class Instance
 {
+    private static blank_line: Line.Instance = new Line.Instance(
+        {
+            lines: null,
+            index: null,
+            text: null,
+        },
+    );
+
+    static Min_Count():
+        Count
+    {
+        return File.Instance.Min_Line_Count();
+    }
+
     private file: File.Instance;
     private lines: Array<Line.Instance>;
 
@@ -62,12 +76,12 @@ export class Instance
             line_index > -1,
             `line_index (${line_index}) must be greater than -1.`,
         );
-        Utils.Assert(
-            line_index < this.Count(),
-            `line_index (${line_index}) must be less than line_count (${this.Count()}).`,
-        );
 
-        return this.lines[line_index];
+        if (line_index < this.Count()) {
+            return this.lines[line_index];
+        } else {
+            return Instance.blank_line;
+        }
     }
 
     Array():

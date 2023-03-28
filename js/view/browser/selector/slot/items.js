@@ -20,6 +20,28 @@ export class Instance extends Entity.Instance {
                 });
             }
         }
+        /*
+        const model: Model.Instance = this.Model();
+        const count: Count = this.Child_Count();
+        const delta: Delta = model.Count() - count;
+
+        if (delta < 0) {
+            for (let idx = count, end = count + delta; idx > end;) {
+                idx -= 1;
+
+                this.Abort_Child(this.Child(idx));
+            }
+        } else if (delta > 0) {
+            for (let idx = count, end = count + delta; idx < end; idx += 1) {
+                new Line.Instance(
+                    {
+                        model: () => this.Model().At(idx),
+                        lines: this,
+                    },
+                );
+            }
+        }
+        */
     }
     On_Restyle() {
         return `

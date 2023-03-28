@@ -22,10 +22,13 @@ export class Instance extends Entity.Instance {
     }
     On_Restyle() {
         const model = this.Model();
-        const display = model.Text().Is_Centered() ?
-            `flex` :
-            `block`;
-        const color = model.Text().Value() === `` ?
+        const is_blank = model.Is_Blank();
+        const display = is_blank ?
+            `none` :
+            model.Text().Is_Centered() ?
+                `flex` :
+                `block`;
+        const color = is_blank || model.Text().Value() === `` ?
             `transparent` :
             `inherit`;
         return `

@@ -33,12 +33,14 @@ export class Instance extends Entity.Instance
         void
     {
         const model: Model.Instance = this.Model();
+        const is_blank: boolean = model.Is_Blank();
 
-        if (model.Text().Is_Command()) {
+        if (is_blank || model.Text().Is_Command()) {
             this.Element().textContent = ``;
         } else {
             // Doing this in reader causes the dictionary to think some things are
             // errors, because the dictionary doesn't recognize the non-breaking space.
+            // So we're currently doing it here, although we could move it to model I suppose.
             this.Element().textContent = model.Text().Value().replace(/ /g, ` `);
         }
     }
@@ -47,13 +49,22 @@ export class Instance extends Entity.Instance
         Entity.Styles | string
     {
         const model: Model.Instance = this.Model();
+        const is_blank: boolean = model.Is_Blank();
         const is_error: boolean =
-            model.Text().Is_Error() ||
-            model.Text().Has_Error_Style();
+            !is_blank &&
+            (
+                model.Text().Is_Error() ||
+                model.Text().Has_Error_Style()
+            );
 
-        const width: string = model.Index() === 0 && model.Parts().Line().Text().Is_Indented() ?
-            `3em` :
-            `auto`;
+        const display: string = is_blank ?
+            `none` :
+            `inline-block`;
+
+        const width: string =
+            !is_blank && model.Index() === 0 && model.Parts().Line().Text().Is_Indented() ?
+                `3em` :
+                `auto`;
 
         const border_color: string = is_error ?
             `#ffcbcb` :
@@ -62,21 +73,21 @@ export class Instance extends Entity.Instance
         const color: string = is_error ?
             `#ffcbcb` :
             `inherit`;
-        const font_style: string = model.Text().Has_Italic_Style() ?
+        const font_style: string = !is_blank && model.Text().Has_Italic_Style() ?
             `italic` :
             `normal`;
-        const font_weight: string = model.Text().Has_Bold_Style() ?
+        const font_weight: string = !is_blank && model.Text().Has_Bold_Style() ?
             `bold` :
             `normal`;
-        const font_variant: string = model.Text().Has_Small_Caps_Style() ?
+        const font_variant: string = !is_blank && model.Text().Has_Small_Caps_Style() ?
             `small-caps` :
             `normal`;
-        const text_decoration: string = model.Text().Has_Underline_Style() ?
+        const text_decoration: string = !is_blank && model.Text().Has_Underline_Style() ?
             `underline` :
             `none`;
 
         return `
-            display: inline-block;
+            display: ${display};
 
             width: ${width};
 

@@ -53,11 +53,15 @@ export class Instance extends Entity.Instance
         Entity.Styles | string
     {
         const model: Model.Instance = this.Model();
+        const is_blank: boolean = model.Is_Blank();
 
-        const display: string = model.Text().Is_Centered() ?
-            `flex` :
-            `block`;
-        const color: string = model.Text().Value() === `` ?
+        const display: string = is_blank ?
+            `none` :
+            model.Text().Is_Centered() ?
+                `flex` :
+                `block`;
+
+        const color: string = is_blank || model.Text().Value() === `` ?
             `transparent` :
             `inherit`;
 

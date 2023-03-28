@@ -1,5 +1,4 @@
 import { Count } from "../../../../types.js";
-import { Delta } from "../../../../types.js";
 
 import * as Entity from "../../../../entity.js";
 
@@ -37,24 +36,16 @@ export class Instance extends Entity.Instance
         void
     {
         const model: Model.Instance = this.Model();
+        const target: Count = Math.max(Model.Instance.Min_Count(), model.Count());
         const count: Count = this.Child_Count();
-        const delta: Delta = model.Count() - count;
 
-        if (delta < 0) {
-            for (let idx = count, end = count + delta; idx > end;) {
-                idx -= 1;
-
-                this.Abort_Child(this.Child(idx));
-            }
-        } else if (delta > 0) {
-            for (let idx = count, end = count + delta; idx < end; idx += 1) {
-                new Line.Instance(
-                    {
-                        model: () => this.Model().At(idx),
-                        lines: this,
-                    },
-                );
-            }
+        for (let idx = count, end = target; idx < end; idx += 1) {
+            new Line.Instance(
+                {
+                    model: () => this.Model().At(idx),
+                    lines: this,
+                },
+            );
         }
     }
 

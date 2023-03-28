@@ -1,4 +1,5 @@
 import * as Entity from "../../../../entity.js";
+import * as Model from "../../../../model/browser/reader/file/lines.js";
 import * as Line from "./line.js";
 export class Instance extends Entity.Instance {
     constructor({ model, file, }) {
@@ -11,21 +12,13 @@ export class Instance extends Entity.Instance {
     }
     On_Refresh() {
         const model = this.Model();
+        const target = Math.max(Model.Instance.Min_Count(), model.Count());
         const count = this.Child_Count();
-        const delta = model.Count() - count;
-        if (delta < 0) {
-            for (let idx = count, end = count + delta; idx > end;) {
-                idx -= 1;
-                this.Abort_Child(this.Child(idx));
-            }
-        }
-        else if (delta > 0) {
-            for (let idx = count, end = count + delta; idx < end; idx += 1) {
-                new Line.Instance({
-                    model: () => this.Model().At(idx),
-                    lines: this,
-                });
-            }
+        for (let idx = count, end = target; idx < end; idx += 1) {
+            new Line.Instance({
+                model: () => this.Model().At(idx),
+                lines: this,
+            });
         }
     }
     On_Restyle() {

@@ -10,20 +10,27 @@ export class Instance extends Entity.Instance {
     }
     On_Refresh() {
         const model = this.Model();
-        if (model.Text().Is_Command()) {
+        const is_blank = model.Is_Blank();
+        if (is_blank || model.Text().Is_Command()) {
             this.Element().textContent = ``;
         }
         else {
             // Doing this in reader causes the dictionary to think some things are
             // errors, because the dictionary doesn't recognize the non-breaking space.
+            // So we're currently doing it here, although we could move it to model I suppose.
             this.Element().textContent = model.Text().Value().replace(/ /g, ` `);
         }
     }
     On_Restyle() {
         const model = this.Model();
-        const is_error = model.Text().Is_Error() ||
-            model.Text().Has_Error_Style();
-        const width = model.Index() === 0 && model.Parts().Line().Text().Is_Indented() ?
+        const is_blank = model.Is_Blank();
+        const is_error = !is_blank &&
+            (model.Text().Is_Error() ||
+                model.Text().Has_Error_Style());
+        const display = is_blank ?
+            `none` :
+            `inline-block`;
+        const width = !is_blank && model.Index() === 0 && model.Parts().Line().Text().Is_Indented() ?
             `3em` :
             `auto`;
         const border_color = is_error ?
@@ -32,20 +39,20 @@ export class Instance extends Entity.Instance {
         const color = is_error ?
             `#ffcbcb` :
             `inherit`;
-        const font_style = model.Text().Has_Italic_Style() ?
+        const font_style = !is_blank && model.Text().Has_Italic_Style() ?
             `italic` :
             `normal`;
-        const font_weight = model.Text().Has_Bold_Style() ?
+        const font_weight = !is_blank && model.Text().Has_Bold_Style() ?
             `bold` :
             `normal`;
-        const font_variant = model.Text().Has_Small_Caps_Style() ?
+        const font_variant = !is_blank && model.Text().Has_Small_Caps_Style() ?
             `small-caps` :
             `normal`;
-        const text_decoration = model.Text().Has_Underline_Style() ?
+        const text_decoration = !is_blank && model.Text().Has_Underline_Style() ?
             `underline` :
             `none`;
         return `
-            display: inline-block;
+            display: ${display};
 
             width: ${width};
 

@@ -1,6 +1,10 @@
 import * as Utils from "../../../../utils.js";
+import * as File from "./instance.js";
 import * as Line from "./line.js";
 export class Instance {
+    static Min_Count() {
+        return File.Instance.Min_Line_Count();
+    }
     constructor({ file, text, }) {
         this.file = file;
         this.lines = [];
@@ -21,10 +25,19 @@ export class Instance {
     }
     At(line_index) {
         Utils.Assert(line_index > -1, `line_index (${line_index}) must be greater than -1.`);
-        Utils.Assert(line_index < this.Count(), `line_index (${line_index}) must be less than line_count (${this.Count()}).`);
-        return this.lines[line_index];
+        if (line_index < this.Count()) {
+            return this.lines[line_index];
+        }
+        else {
+            return Instance.blank_line;
+        }
     }
     Array() {
         return Array.from(this.lines);
     }
 }
+Instance.blank_line = new Line.Instance({
+    lines: null,
+    index: null,
+    text: null,
+});
