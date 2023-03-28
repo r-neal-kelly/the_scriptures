@@ -8,7 +8,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import * as Utils from "./utils.js";
-import * as Queue from "./queue.js";
 export class Animation_Frame {
     constructor({ now, start, elapsed, }) {
         this.now = now;
@@ -29,146 +28,95 @@ export class Animation_Frame {
 export class Instance {
     constructor({ element, parent, event_grid, }) {
         Utils.Assert(Instance.next_id !== Infinity, `Can't create another ID!`);
+        this.is_alive = false;
         this.id = Instance.next_id++;
-        this.element = element instanceof HTMLBodyElement ?
+        this.element = element instanceof HTMLElement ?
             element :
             document.createElement(element);
         this.styles = {};
+        this.event_grid = event_grid;
         this.parent = null;
         this.children = new Map();
-        this.refresh_adoptions = null;
-        this.refresh_abortions = null;
-        this.is_alive = false;
-        this.life_cycle_queue = new Queue.Instance();
-        this.event_grid = event_grid;
+        this.may_adopt_and_abort = false;
         this.Live(parent);
     }
     Live(parent) {
-        return __awaiter(this, void 0, void 0, function* () {
-            if (!this.Is_Alive()) {
-                this.is_alive = true;
-                this.Event_Grid().Add_Many_Listeners(this, this.On_Life());
-                // We only refresh when there is no parent
-                // because the parent itself will refresh
-                // its children through this event.
-                if (parent != null) {
-                    parent.Adopt_Child(this);
-                }
-                else {
-                    // Waiting in the queue allows the derived type to
-                    // finish its constructor.
-                    //this.life_cycle_queue.Enqueue(
-                    //    async function ():
-                    //        Promise<void>
-                    //    {
-                    yield Utils.Wait_Milliseconds(1);
-                    //    }
-                    //);
-                    this.Refresh();
-                }
+        if (!this.Is_Alive()) {
+            this.is_alive = true;
+            this.Event_Grid().Add_Many_Listeners(this, this.On_Life());
+            // We only refresh when there is no parent
+            // because the parent itself will refresh
+            // its children through this event.
+            if (parent != null) {
+                parent.Adopt_Child(this);
             }
-        });
+            else {
+                // Waiting here allows the derived type to
+                // finish its constructor before Refresh.
+                (function () {
+                    return __awaiter(this, void 0, void 0, function* () {
+                        yield Utils.Wait_Milliseconds(1);
+                        this.Refresh();
+                    });
+                }).bind(this)();
+            }
+        }
     }
     Refresh() {
-        return __awaiter(this, void 0, void 0, function* () {
-            //this.life_cycle_queue.Enqueue(
-            //    function (
-            //        this: Instance,
-            //    ):
-            //        void
-            //    {
-            if (this.Is_Alive()) {
-                this.refresh_adoptions = new Set();
-                this.refresh_abortions = new Set();
-                this.On_Refresh();
-                for (const abortion of this.refresh_abortions) {
-                    const child = abortion;
-                    const parent = abortion.Parent();
-                    if (child.Element().parentElement === parent.Element()) {
-                        parent.Element().removeChild(child.Element());
-                    }
-                    child.Die();
-                }
-                for (const adoption of this.refresh_adoptions) {
-                    const child = adoption;
-                    const parent = adoption.Parent();
-                    parent.Element().appendChild(child.Element());
-                }
-                for (const child of this.children.values()) {
-                    child.Refresh();
-                }
+        if (this.Is_Alive()) {
+            this.may_adopt_and_abort = true;
+            this.On_Refresh();
+            this.may_adopt_and_abort = false;
+            for (const child of this.children.values()) {
+                child.Refresh();
             }
-            //    }.bind(this),
-            //);
-            yield this.Restyle();
-        });
+        }
+        this.Restyle();
     }
     Restyle() {
-        return __awaiter(this, void 0, void 0, function* () {
-            //await this.life_cycle_queue.Enqueue(
-            //    function (
-            //        this: Instance,
-            //    ):
-            //        void
-            //    {
-            if (this.Is_Alive()) {
-                const styles = this.On_Restyle();
-                if (styles instanceof Object) {
-                    this.styles = Object.assign(this.styles, styles);
-                }
-                else {
-                    const styles_object = {};
-                    const styles_array = styles.split(/\s*;\s*/).map(s => s.match(/[^:]+/g));
-                    for (const style of styles_array) {
-                        if (style != null) {
-                            Utils.Assert(style.length === 2, `Invalid css command! ${style}\nfrom\n${styles}`);
-                            styles_object[style[0].trim()] = style[1].trim();
-                        }
-                    }
-                    this.styles = Object.assign(this.styles, styles_object);
-                }
-                this.Element().setAttribute(`style`, Object.entries(this.styles).map(([property, value]) => `${property}: ${value};`).join(`\n`));
-                for (const child of this.children.values()) {
-                    child.Restyle();
-                }
+        if (this.Is_Alive()) {
+            const styles = this.On_Restyle();
+            if (styles instanceof Object) {
+                this.styles = Object.assign(this.styles, styles);
             }
-            //    }.bind(this),
-            //);
-        });
+            else {
+                const styles_object = {};
+                const styles_array = styles.split(/\s*;\s*/).map(s => s.match(/[^:]+/g));
+                for (const style of styles_array) {
+                    if (style != null) {
+                        Utils.Assert(style.length === 2, `Invalid css command! ${style}\nfrom\n${styles}`);
+                        styles_object[style[0].trim()] = style[1].trim();
+                    }
+                }
+                this.styles = Object.assign(this.styles, styles_object);
+            }
+            this.Element().setAttribute(`style`, Object.entries(this.styles).map(([property, value]) => `${property}: ${value};`).join(`\n`));
+            for (const child of this.children.values()) {
+                child.Restyle();
+            }
+        }
     }
     Die() {
-        return __awaiter(this, void 0, void 0, function* () {
-            //await this.life_cycle_queue.Enqueue(
-            //    function (
-            //        this: Instance,
-            //    ):
-            //        void
-            //    {
-            if (this.Is_Alive()) {
-                this.Before_Death();
-                for (const child of this.children.values()) {
-                    child.Die();
-                }
-                if (this.Has_Parent()) {
-                    const parent = this.Parent();
-                    if (this.Element().parentElement === parent.Element()) {
-                        parent.Element().removeChild(this.Element());
-                    }
-                    this.parent = null;
-                    parent.children.delete(this.Element());
-                }
-                this.Event_Grid().Remove(this);
-                this.life_cycle_queue.Flush();
-                this.is_alive = false;
-                this.styles = {};
-                this.element = document.body;
+        if (this.Is_Alive()) {
+            this.Before_Death();
+            for (const child of this.children.values()) {
+                child.Die();
             }
-            //    }.bind(this),
-            //);
-        });
-    }
-    Is_Alive() {
-        return this.is_alive;
+            if (this.Has_Parent()) {
+                const parent = this.Parent();
+                const parent_element = parent.Element();
+                const child_element = this.Element();
+                if (child_element.parentElement === parent_element) {
+                    parent_element.removeChild(child_element);
+                }
+                this.parent = null;
+                parent.children.delete(child_element);
+            }
+            this.Event_Grid().Remove(this);
+            this.styles = {};
+            this.element = document.body;
+            this.is_alive = false;
+        }
     }
     On_Life() {
         return [];
@@ -181,6 +129,9 @@ export class Instance {
     }
     Before_Death() {
         return;
+    }
+    Is_Alive() {
+        return this.is_alive;
     }
     ID() {
         Utils.Assert(this.Is_Alive(), `Cannot get an ID from a dead entity.`);
@@ -234,23 +185,20 @@ export class Instance {
     }
     Adopt_Child(child) {
         Utils.Assert(this.Is_Alive(), `A parent must be alive to adopt a child.`);
-        Utils.Assert(this.refresh_adoptions != null, `You can only adopt a child during On_Refresh().`);
+        Utils.Assert(this.may_adopt_and_abort === true, `You can only adopt a child during On_Refresh().`);
         Utils.Assert(child.Is_Alive(), `A child must be alive to be adopted.`);
         Utils.Assert(!child.Has_Parent(), `A child must not have a parent to be adopted.`);
         Utils.Assert(this.Child_Count() + 1 < Infinity, `Can not add any more children!`);
-        child.parent = this;
         this.children.set(child.Element(), child);
-        this.refresh_adoptions.add(child);
+        child.parent = this;
+        this.Element().appendChild(child.Element());
     }
     Abort_Child(child) {
         Utils.Assert(this.Is_Alive(), `A parent must be alive to abort a child.`);
-        Utils.Assert(this.refresh_abortions != null, `You can only abort a child during On_Refresh().`);
+        Utils.Assert(this.may_adopt_and_abort === true, `You can only abort a child during On_Refresh().`);
         Utils.Assert(child.Is_Alive(), `A child must be alive to be aborted.`);
         Utils.Assert(child.Parent() === this, `A child must have this parent to be aborted.`);
-        // We don't directly remove the child entity from parent entity
-        // to maintain the stack started in Adopt. It's fully removed in
-        // the Die event instead.
-        this.refresh_abortions.add(child);
+        child.Die();
     }
     Abort_All_Children() {
         for (const child of Array.from(this.children.values())) {
@@ -310,8 +258,8 @@ export class Instance {
                     };
                     animation.play();
                 });
-                // Currently not checking if is alive so that we ensure even a dead element
-                // goes back to its former state before being animated.
+                // We skip checking if it's still alive so that we ensure even a dead element
+                // goes back to its former state, e.g. when using the HTMLBodyElement.
                 for (const [key, value] of Object.entries(last_keyframe)) {
                     if (key !== `offset` && value != null) {
                         const value_string = value.toString();

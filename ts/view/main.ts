@@ -74,13 +74,13 @@ class Body extends Entity.Instance
 
         this.Window().addEventListener(
             `beforeunload`,
-            async function (
+            function (
                 this: Body,
                 event: BeforeUnloadEvent,
             ):
-                Promise<void>
+                void
             {
-                await this.Die();
+                this.Die();
             }.bind(this),
         );
 

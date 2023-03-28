@@ -4,7 +4,6 @@ import { ID } from "./types.js";
 import { Float } from "./types.js";
 
 import * as Utils from "./utils.js";
-import * as Queue from "./queue.js";
 import * as Event from "./event.js";
 
 export { ID } from "./types.js";
@@ -40,7 +39,7 @@ export interface Life_Cycle_Sender_API
     */
     // private Live(
     //    parent: Instance | null,
-    //): Promise<void>;
+    //): void;
 
     /*
         Automatically queued through Live.
@@ -48,13 +47,13 @@ export interface Life_Cycle_Sender_API
         Should not be waited on in any of the event listeners,
         it will dead-lock the queue.
     */
-    Refresh(): Promise<void>;
+    Refresh(): void;
 
     /*
         Should not be waited on in any of the event listeners,
         it will dead-lock the queue.
     */
-    Restyle(): Promise<void>;
+    Restyle(): void;
 
     /*
         Automatically queued when the parent of the entity dies.
@@ -62,7 +61,7 @@ export interface Life_Cycle_Sender_API
         Should not be waited on in any of the event listeners,
         it will dead-lock the queue.
     */
-    Die(): Promise<void>;
+    Die(): void;
 }
 
 export interface Life_Cycle_Listener_API
@@ -231,18 +230,15 @@ export class Instance implements
 {
     private static next_id: ID = 0;
 
+    private is_alive: boolean;
     private id: ID;
     private element: HTMLElement;
     private styles: Styles;
+    private event_grid: Event.Grid;
 
     private parent: Instance | null;
     private children: Map<HTMLElement, Instance>;
-    private refresh_adoptions: Set<Instance> | null;
-    private refresh_abortions: Set<Instance> | null;
-
-    private is_alive: boolean;
-    private life_cycle_queue: Queue.Instance;
-    private event_grid: Event.Grid;
+    private may_adopt_and_abort: boolean;
 
     constructor(
         {
@@ -250,7 +246,7 @@ export class Instance implements
             parent,
             event_grid,
         }: {
-            element: string | HTMLBodyElement,
+            element: string | HTMLElement,
             parent: Instance | null,
             event_grid: Event.Grid,
         },
@@ -261,28 +257,25 @@ export class Instance implements
             `Can't create another ID!`,
         );
 
+        this.is_alive = false;
         this.id = Instance.next_id++;
-        this.element = element instanceof HTMLBodyElement ?
+        this.element = element instanceof HTMLElement ?
             element :
             document.createElement(element);
         this.styles = {};
+        this.event_grid = event_grid;
 
         this.parent = null;
         this.children = new Map();
-        this.refresh_adoptions = null;
-        this.refresh_abortions = null;
-
-        this.is_alive = false;
-        this.life_cycle_queue = new Queue.Instance();
-        this.event_grid = event_grid;
+        this.may_adopt_and_abort = false;
 
         this.Live(parent);
     }
 
-    private async Live(
+    private Live(
         parent: Instance | null,
     ):
-        Promise<void>
+        void
     {
         if (!this.Is_Alive()) {
             this.is_alive = true;
@@ -295,71 +288,41 @@ export class Instance implements
             if (parent != null) {
                 parent.Adopt_Child(this);
             } else {
-                // Waiting in the queue allows the derived type to
-                // finish its constructor.
-                //this.life_cycle_queue.Enqueue(
-                //    async function ():
-                //        Promise<void>
-                //    {
-                await Utils.Wait_Milliseconds(1);
-                //    }
-                //);
-                this.Refresh();
+                // Waiting here allows the derived type to
+                // finish its constructor before Refresh.
+                (
+                    async function (
+                        this: Instance,
+                    ):
+                        Promise<void>
+                    {
+                        await Utils.Wait_Milliseconds(1);
+                        this.Refresh();
+                    }
+                ).bind(this)();
             }
         }
     }
 
-    async Refresh():
-        Promise<void>
+    Refresh():
+        void
     {
-        //this.life_cycle_queue.Enqueue(
-        //    function (
-        //        this: Instance,
-        //    ):
-        //        void
-        //    {
         if (this.Is_Alive()) {
-            this.refresh_adoptions = new Set();
-            this.refresh_abortions = new Set();
-
+            this.may_adopt_and_abort = true;
             this.On_Refresh();
-
-            for (const abortion of this.refresh_abortions) {
-                const child: Instance = abortion;
-                const parent: Instance = abortion.Parent();
-
-                if (child.Element().parentElement === parent.Element()) {
-                    parent.Element().removeChild(child.Element());
-                }
-                child.Die();
-            }
-
-            for (const adoption of this.refresh_adoptions) {
-                const child: Instance = adoption;
-                const parent: Instance = adoption.Parent();
-
-                parent.Element().appendChild(child.Element());
-            }
+            this.may_adopt_and_abort = false;
 
             for (const child of this.children.values()) {
                 child.Refresh();
             }
         }
-        //    }.bind(this),
-        //);
 
-        await this.Restyle();
+        this.Restyle();
     }
 
-    async Restyle():
-        Promise<void>
+    Restyle():
+        void
     {
-        //await this.life_cycle_queue.Enqueue(
-        //    function (
-        //        this: Instance,
-        //    ):
-        //        void
-        //    {
         if (this.Is_Alive()) {
             const styles: Styles | string = this.On_Restyle();
 
@@ -394,19 +357,11 @@ export class Instance implements
                 child.Restyle();
             }
         }
-        //    }.bind(this),
-        //);
     }
 
-    async Die():
-        Promise<void>
+    Die():
+        void
     {
-        //await this.life_cycle_queue.Enqueue(
-        //    function (
-        //        this: Instance,
-        //    ):
-        //        void
-        //    {
         if (this.Is_Alive()) {
             this.Before_Death();
 
@@ -416,28 +371,21 @@ export class Instance implements
 
             if (this.Has_Parent()) {
                 const parent: Instance = this.Parent();
-                if (this.Element().parentElement === parent.Element()) {
-                    parent.Element().removeChild(this.Element());
+                const parent_element: HTMLElement = parent.Element();
+                const child_element: HTMLElement = this.Element();
+
+                if (child_element.parentElement === parent_element) {
+                    parent_element.removeChild(child_element);
                 }
                 this.parent = null;
-                parent.children.delete(this.Element());
+                parent.children.delete(child_element);
             }
 
             this.Event_Grid().Remove(this);
-            this.life_cycle_queue.Flush();
-            this.is_alive = false;
-
             this.styles = {};
             this.element = document.body;
+            this.is_alive = false;
         }
-        //    }.bind(this),
-        //);
-    }
-
-    Is_Alive():
-        boolean
-    {
-        return this.is_alive;
     }
 
     On_Life():
@@ -462,6 +410,12 @@ export class Instance implements
         void
     {
         return;
+    }
+
+    Is_Alive():
+        boolean
+    {
+        return this.is_alive;
     }
 
     ID():
@@ -614,7 +568,7 @@ export class Instance implements
             `A parent must be alive to adopt a child.`,
         );
         Utils.Assert(
-            this.refresh_adoptions != null,
+            this.may_adopt_and_abort === true,
             `You can only adopt a child during On_Refresh().`,
         );
         Utils.Assert(
@@ -630,10 +584,9 @@ export class Instance implements
             `Can not add any more children!`,
         );
 
-        child.parent = this;
         this.children.set(child.Element(), child);
-
-        (this.refresh_adoptions as Set<Instance>).add(child);
+        child.parent = this;
+        this.Element().appendChild(child.Element());
     }
 
     Abort_Child(
@@ -646,7 +599,7 @@ export class Instance implements
             `A parent must be alive to abort a child.`,
         );
         Utils.Assert(
-            this.refresh_abortions != null,
+            this.may_adopt_and_abort === true,
             `You can only abort a child during On_Refresh().`,
         );
         Utils.Assert(
@@ -658,10 +611,7 @@ export class Instance implements
             `A child must have this parent to be aborted.`,
         );
 
-        // We don't directly remove the child entity from parent entity
-        // to maintain the stack started in Adopt. It's fully removed in
-        // the Die event instead.
-        (this.refresh_abortions as Set<Instance>).add(child);
+        child.Die();
     }
 
     Abort_All_Children():
@@ -773,8 +723,8 @@ export class Instance implements
                 },
             );
 
-            // Currently not checking if is alive so that we ensure even a dead element
-            // goes back to its former state before being animated.
+            // We skip checking if it's still alive so that we ensure even a dead element
+            // goes back to its former state, e.g. when using the HTMLBodyElement.
             for (const [key, value] of Object.entries(last_keyframe)) {
                 if (key !== `offset` && value != null) {
                     const value_string: string = value.toString();

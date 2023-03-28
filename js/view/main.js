@@ -63,9 +63,7 @@ class Body extends Entity.Instance {
             }
         `);
         this.Window().addEventListener(`beforeunload`, function (event) {
-            return __awaiter(this, void 0, void 0, function* () {
-                yield this.Die();
-            });
+            this.Die();
         }.bind(this));
         return [];
     }

@@ -83,7 +83,7 @@ export class Instance extends Entity.Instance
     async After_Selector_Slot_Item_Select():
         Promise<void>
     {
-        await this.Refresh();
+        this.Refresh();
     }
 
     Model():

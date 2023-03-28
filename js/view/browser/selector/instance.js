@@ -65,7 +65,7 @@ export class Instance extends Entity.Instance {
     }
     After_Selector_Slot_Item_Select() {
         return __awaiter(this, void 0, void 0, function* () {
-            yield this.Refresh();
+            this.Refresh();
         });
     }
     Model() {
