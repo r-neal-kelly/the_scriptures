@@ -1,3 +1,4 @@
+import { Integer } from "./types.js";
 import { Count } from "./types.js";
 import { Index } from "./types.js";
 import { ID } from "./types.js";
@@ -228,6 +229,7 @@ export class Instance implements
     Event_API,
     Animation_API
 {
+    private static origin_id: Integer = new Date().getTime();
     private static next_id: ID = 0;
 
     private is_alive: boolean;
@@ -279,6 +281,11 @@ export class Instance implements
     {
         if (!this.Is_Alive()) {
             this.is_alive = true;
+
+            this.element.setAttribute(
+                `id`,
+                `Entity_${Instance.origin_id}_${this.ID()}`,
+            );
 
             this.Event_Grid().Add_Many_Listeners(this, this.On_Life());
 

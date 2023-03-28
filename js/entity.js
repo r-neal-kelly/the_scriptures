@@ -43,6 +43,7 @@ export class Instance {
     Live(parent) {
         if (!this.Is_Alive()) {
             this.is_alive = true;
+            this.element.setAttribute(`id`, `Entity_${Instance.origin_id}_${this.ID()}`);
             this.Event_Grid().Add_Many_Listeners(this, this.On_Life());
             // We only refresh when there is no parent
             // because the parent itself will refresh
@@ -308,4 +309,5 @@ export class Instance {
         });
     }
 }
+Instance.origin_id = new Date().getTime();
 Instance.next_id = 0;
