@@ -150,6 +150,14 @@ export class Instance {
                         const break_ = it.Text().slice(current_start.Index(), it.Look_Forward_Index());
                         const boundary = it.Index() === first_non_command_index ?
                             Dictionary.Boundary.START :
+                            // This check fails when one or more commands are the end of the string.
+                            // We'll need to read the string backwards, so we'll need to update
+                            // the iterator and make a function probably in Command that tells us
+                            // the index of the last point in the string that is not part of a
+                            // command value. Then we'll need to compare that with the next point's
+                            // index, which means we'll need to keep it as an iterator | null.
+                            // So the command function can simply return an iterator also.
+                            // In the even that the whole string is a command, it should return null.
                             next_point == null ?
                                 Dictionary.Boundary.END :
                                 Dictionary.Boundary.MIDDLE;
@@ -180,6 +188,13 @@ export class Instance {
                 it = it.Next();
             }
         }
+        // We can either iterator over parts to create segments or try to create segments
+        // in the one loop, as confusing as that will make it. I think the problem is that
+        // the first part determines the algorithm, because if it's a word, we combine it with
+        // the following break, and potentially recurse, that is if the break touches the next word
+        // with a non-space. However, if we start with a break, we combine that with the next word.
+        // I suppose we could assume that it starts with break always, and if the first part is a word
+        // then it's its own segment, which is safe, but not when we assume it starts with a word.
     }
     Points() {
         return Array.from(this.points);
