@@ -89,16 +89,13 @@ export interface Life_Cycle_Listener_API
     /*
         Providing this event handler allows you to return CSS styles that will
         be applied to the entity's underlying element immediately.
-        The returned styles are combined with and override already existing
-        styles stored on the entity.
-        If returning a styles object, the properties are standard CSS names,
-        that use the '-' symbol, and not camelCase.
-        A return string should have valid CSS code within it, as if you were
+        The returned styles completely replace all styles on the entity.
+        The returned string should have valid CSS code within it, as if you were
         writing the interior of a valid CSS class, without the '{' and '}'.
         Children get this event after their parents.
         If a child is aborted in the Refresh event, it does not receive the event.
     */
-    On_Restyle(): Styles | string;
+    On_Restyle(): string;
 
     /*
         Providing this event handler allows you to work with an entity
@@ -169,8 +166,6 @@ export interface Animation_API
     ): Promise<void>;
 }
 
-export type Styles = { [index: string]: string };
-
 export class Animation_Frame
 {
     private now: Float;
@@ -235,7 +230,6 @@ export class Instance implements
     private is_alive: boolean;
     private id: ID;
     private element: HTMLElement;
-    private styles: Styles;
     private event_grid: Event.Grid;
 
     private parent: Instance | null;
@@ -264,7 +258,6 @@ export class Instance implements
         this.element = element instanceof HTMLElement ?
             element :
             document.createElement(element);
-        this.styles = {};
         this.event_grid = event_grid;
 
         this.parent = null;
@@ -331,33 +324,9 @@ export class Instance implements
         void
     {
         if (this.Is_Alive()) {
-            const styles: Styles | string = this.On_Restyle();
-
-            if (styles instanceof Object) {
-                this.styles = Object.assign(this.styles, styles);
-            } else {
-                const styles_object: Styles = {};
-                const styles_array: Array<RegExpMatchArray | null> =
-                    styles.split(/\s*;\s*/).map(s => s.match(/[^:]+/g));
-                for (const style of styles_array) {
-                    if (style != null) {
-                        Utils.Assert(
-                            style.length === 2,
-                            `Invalid css command! ${style}\nfrom\n${styles}`,
-                        );
-
-                        styles_object[style[0].trim()] = style[1].trim();
-                    }
-                }
-
-                this.styles = Object.assign(this.styles, styles_object);
-            }
-
             this.Element().setAttribute(
                 `style`,
-                Object.entries(this.styles).map(
-                    ([property, value]) => `${property}: ${value};`
-                ).join(`\n`),
+                this.On_Restyle(),
             );
 
             for (const child of this.children.values()) {
@@ -389,7 +358,6 @@ export class Instance implements
             }
 
             this.Event_Grid().Remove(this);
-            this.styles = {};
             this.element = document.body;
             this.is_alive = false;
         }
@@ -408,7 +376,7 @@ export class Instance implements
     }
 
     On_Restyle():
-        Styles | string
+        string
     {
         return ``;
     }
@@ -734,9 +702,7 @@ export class Instance implements
             // goes back to its former state, e.g. when using the HTMLBodyElement.
             for (const [key, value] of Object.entries(last_keyframe)) {
                 if (key !== `offset` && value != null) {
-                    const value_string: string = value.toString();
-                    this.styles[key] = value_string;
-                    (element.style as any)[key] = value_string;
+                    (element.style as any)[key] = value.toString();
                 }
             }
         }

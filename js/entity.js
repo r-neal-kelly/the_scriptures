@@ -33,7 +33,6 @@ export class Instance {
         this.element = element instanceof HTMLElement ?
             element :
             document.createElement(element);
-        this.styles = {};
         this.event_grid = event_grid;
         this.parent = null;
         this.children = new Map();
@@ -76,22 +75,7 @@ export class Instance {
     }
     Restyle() {
         if (this.Is_Alive()) {
-            const styles = this.On_Restyle();
-            if (styles instanceof Object) {
-                this.styles = Object.assign(this.styles, styles);
-            }
-            else {
-                const styles_object = {};
-                const styles_array = styles.split(/\s*;\s*/).map(s => s.match(/[^:]+/g));
-                for (const style of styles_array) {
-                    if (style != null) {
-                        Utils.Assert(style.length === 2, `Invalid css command! ${style}\nfrom\n${styles}`);
-                        styles_object[style[0].trim()] = style[1].trim();
-                    }
-                }
-                this.styles = Object.assign(this.styles, styles_object);
-            }
-            this.Element().setAttribute(`style`, Object.entries(this.styles).map(([property, value]) => `${property}: ${value};`).join(`\n`));
+            this.Element().setAttribute(`style`, this.On_Restyle());
             for (const child of this.children.values()) {
                 child.Restyle();
             }
@@ -114,7 +98,6 @@ export class Instance {
                 parent.children.delete(child_element);
             }
             this.Event_Grid().Remove(this);
-            this.styles = {};
             this.element = document.body;
             this.is_alive = false;
         }
@@ -263,9 +246,7 @@ export class Instance {
                 // goes back to its former state, e.g. when using the HTMLBodyElement.
                 for (const [key, value] of Object.entries(last_keyframe)) {
                     if (key !== `offset` && value != null) {
-                        const value_string = value.toString();
-                        this.styles[key] = value_string;
-                        element.style[key] = value_string;
+                        element.style[key] = value.toString();
                     }
                 }
             }

@@ -50,7 +50,7 @@ export class Instance extends Entity.Instance
     }
 
     override On_Restyle():
-        Entity.Styles | string
+        string
     {
         const model: Model.Instance = this.Model();
         const is_blank: boolean = model.Is_Blank();

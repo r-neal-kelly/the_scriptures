@@ -57,7 +57,7 @@ export class Instance extends Entity.Instance
     }
 
     override On_Restyle():
-        Entity.Styles | string
+        string
     {
         let color: string;
         let background_color: string;

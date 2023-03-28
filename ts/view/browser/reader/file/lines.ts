@@ -50,7 +50,7 @@ export class Instance extends Entity.Instance
     }
 
     override On_Restyle():
-        Entity.Styles | string
+        string
     {
         return ``;
     }
