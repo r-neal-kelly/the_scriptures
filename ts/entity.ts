@@ -322,9 +322,9 @@ export class Instance implements
             for (const child of this.children.values()) {
                 child.Refresh();
             }
-        }
 
-        this.Restyle();
+            this.Restyle();
+        }
     }
 
     Restyle():

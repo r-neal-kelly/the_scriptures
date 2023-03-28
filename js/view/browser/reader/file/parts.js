@@ -12,9 +12,9 @@ export class Instance extends Entity.Instance {
     }
     On_Refresh() {
         const model = this.Model();
-        const target = Math.max(Model.Instance.Min_Count(), model.Count());
-        const count = this.Child_Count();
-        for (let idx = count, end = target; idx < end; idx += 1) {
+        const model_count = Math.max(Model.Instance.Min_Count(), model.Count());
+        const view_count = this.Child_Count();
+        for (let idx = view_count, end = model_count; idx < end; idx += 1) {
             new Part.Instance({
                 model: () => this.Model().At(idx),
                 parts: this,
