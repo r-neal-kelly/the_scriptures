@@ -30,21 +30,8 @@ export class Instance extends Entity.Instance
         this.model = model;
     }
 
-    override async On_Restyle():
-        Promise<Entity.Styles | string>
-    {
-        return `
-            width: 100%;
-
-            padding: 2px 2px;
-
-            overflow-x: auto;
-            overflow-y: auto;
-        `;
-    }
-
-    override async On_Refresh():
-        Promise<void>
+    override On_Refresh():
+        void
     {
         const model: Model.Instance = this.Model();
 
@@ -60,6 +47,19 @@ export class Instance extends Entity.Instance
                 );
             }
         }
+    }
+
+    override On_Restyle():
+        Entity.Styles | string
+    {
+        return `
+            width: 100%;
+
+            padding: 2px 2px;
+
+            overflow-x: auto;
+            overflow-y: auto;
+        `;
     }
 
     Model():

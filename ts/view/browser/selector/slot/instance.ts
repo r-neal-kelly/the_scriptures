@@ -33,30 +33,8 @@ export class Instance extends Entity.Instance
         this.model = model;
     }
 
-    override async On_Restyle():
-        Promise<Entity.Styles | string>
-    {
-        return `
-            display: grid;
-            grid-template-rows: auto auto;
-            grid-template-columns: 1fr;
-            align-content: start;
-
-            width: 100%;
-            height: 100%;
-            padding: 0 3px;
-
-            border-color: white;
-            border-style: solid;
-            border-width: 0 1px 0 0;
-
-            overflow-x: hidden;
-            overflow-y: hidden;
-        `;
-    }
-
-    override async On_Refresh():
-        Promise<void>
+    override On_Refresh():
+        void
     {
         const model: Model.Instance = this.Model();
 
@@ -79,6 +57,28 @@ export class Instance extends Entity.Instance
                 },
             );
         }
+    }
+
+    override On_Restyle():
+        Entity.Styles | string
+    {
+        return `
+            display: grid;
+            grid-template-rows: auto auto;
+            grid-template-columns: 1fr;
+            align-content: start;
+
+            width: 100%;
+            height: 100%;
+            padding: 0 3px;
+
+            border-color: white;
+            border-style: solid;
+            border-width: 0 1px 0 0;
+
+            overflow-x: hidden;
+            overflow-y: hidden;
+        `;
     }
 
     Model():

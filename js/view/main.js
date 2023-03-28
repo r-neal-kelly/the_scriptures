@@ -13,18 +13,16 @@ import * as Entity from "../entity.js";
 import * as Model from "../model/browser.js";
 import * as View from "./browser.js";
 class Body extends Entity.Instance {
-    constructor() {
+    constructor({ model, }) {
         super({
             element: document.body,
             parent: null,
             event_grid: new Event.Grid(),
         });
-        this.model = null;
-        this.view = null;
+        this.model = model;
     }
     On_Life() {
-        return __awaiter(this, void 0, void 0, function* () {
-            Utils.Create_Style_Element(`
+        Utils.Create_Style_Element(`
             * {
                 box-sizing: border-box;
                 margin: 0;
@@ -64,24 +62,24 @@ class Body extends Entity.Instance {
                 font-variant: small-caps;
             }
         `);
-            this.Window().addEventListener(`beforeunload`, function (event) {
-                return __awaiter(this, void 0, void 0, function* () {
-                    yield this.Die();
-                });
-            }.bind(this));
-            return [];
-        });
+        this.Window().addEventListener(`beforeunload`, function (event) {
+            return __awaiter(this, void 0, void 0, function* () {
+                yield this.Die();
+            });
+        }.bind(this));
+        return [];
     }
     On_Refresh() {
-        return __awaiter(this, void 0, void 0, function* () {
+        if (!this.Has_View()) {
             this.Abort_All_Children();
-            this.model = new Model.Instance();
-            yield this.model.Ready();
-            this.view = new View.Instance({
-                model: this.model,
+            new View.Instance({
+                model: this.Model(),
                 root: this,
             });
-        });
+        }
+    }
+    Model() {
+        return this.model;
     }
     Window() {
         return window;
@@ -89,9 +87,22 @@ class Body extends Entity.Instance {
     Document() {
         return document;
     }
+    Has_View() {
+        return (this.Has_Child(0) &&
+            this.Child(0) instanceof View.Instance);
+    }
     View() {
-        Utils.Assert(this.view != null, `Does not have a view.`);
-        return this.view;
+        Utils.Assert(this.Has_View(), `Does not have a view.`);
+        return this.Child(0);
     }
 }
-new Body();
+function Main() {
+    return __awaiter(this, void 0, void 0, function* () {
+        const model = new Model.Instance();
+        yield model.Ready();
+        new Body({
+            model: model,
+        });
+    });
+}
+Main();

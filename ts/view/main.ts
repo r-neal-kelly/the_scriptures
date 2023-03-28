@@ -7,10 +7,15 @@ import * as View from "./browser.js";
 
 class Body extends Entity.Instance
 {
-    private model: Model.Instance | null;
-    private view: View.Instance | null;
+    private model: Model.Instance;
 
-    constructor()
+    constructor(
+        {
+            model,
+        }: {
+            model: Model.Instance,
+        },
+    )
     {
         super(
             {
@@ -20,12 +25,11 @@ class Body extends Entity.Instance
             },
         );
 
-        this.model = null;
-        this.view = null;
+        this.model = model;
     }
 
-    override async On_Life():
-        Promise<Array<Event.Listener_Info>>
+    override On_Life():
+        Array<Event.Listener_Info>
     {
         Utils.Create_Style_Element(`
             * {
@@ -83,20 +87,25 @@ class Body extends Entity.Instance
         return [];
     }
 
-    override async On_Refresh():
-        Promise<void>
+    override On_Refresh():
+        void
     {
-        this.Abort_All_Children();
+        if (!this.Has_View()) {
+            this.Abort_All_Children();
 
-        this.model = new Model.Instance();
-        await this.model.Ready();
+            new View.Instance(
+                {
+                    model: this.Model(),
+                    root: this,
+                },
+            );
+        }
+    }
 
-        this.view = new View.Instance(
-            {
-                model: this.model,
-                root: this,
-            },
-        );
+    Model():
+        Model.Instance
+    {
+        return this.model;
     }
 
     Window():
@@ -111,16 +120,39 @@ class Body extends Entity.Instance
         return document;
     }
 
+    Has_View():
+        boolean
+    {
+        return (
+            this.Has_Child(0) &&
+            this.Child(0) instanceof View.Instance
+        );
+    }
+
     View():
         View.Instance
     {
         Utils.Assert(
-            this.view != null,
+            this.Has_View(),
             `Does not have a view.`,
         );
 
-        return this.view as View.Instance;
+        return this.Child(0) as View.Instance;
     }
 }
 
-new Body();
+async function Main():
+    Promise<void>
+{
+    const model: Model.Instance = new Model.Instance();
+
+    await model.Ready();
+
+    new Body(
+        {
+            model: model,
+        },
+    );
+}
+
+Main();

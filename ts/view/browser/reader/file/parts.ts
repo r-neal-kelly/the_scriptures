@@ -33,14 +33,8 @@ export class Instance extends Entity.Instance
         this.model = model;
     }
 
-    override async On_Restyle():
-        Promise<Entity.Styles | string>
-    {
-        return ``;
-    }
-
-    override async On_Refresh():
-        Promise<void>
+    override On_Refresh():
+        void
     {
         const model: Model.Instance = this.Model();
         const target: Count = model.Count();
@@ -63,6 +57,12 @@ export class Instance extends Entity.Instance
                 );
             }
         }
+    }
+
+    override On_Restyle():
+        Entity.Styles | string
+    {
+        return ``;
     }
 
     Model():

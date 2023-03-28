@@ -34,8 +34,8 @@ export class Instance extends Entity.Instance
         this.model = model;
     }
 
-    override async On_Life():
-        Promise<Array<Event.Listener_Info>>
+    override On_Life():
+        Array<Event.Listener_Info>
     {
         return [
             new Event.Listener_Info(
@@ -48,25 +48,8 @@ export class Instance extends Entity.Instance
         ];
     }
 
-    override async On_Restyle():
-        Promise<Entity.Styles | string>
-    {
-        return `
-            display: grid;
-            grid-template-rows: 1fr;
-            grid-template-columns: repeat(4, auto);
-            justify-content: start;
-
-            width: 100%;
-            height: 100%;
-
-            overflow-x: hidden;
-            overflow-y: hidden;
-        `;
-    }
-
-    override async On_Refresh():
-        Promise<void>
+    override On_Refresh():
+        void
     {
         const model: Model.Instance = this.Model();
         const slot_count: Count = model.Slot_Count();
@@ -91,6 +74,23 @@ export class Instance extends Entity.Instance
                 this.Abort_Child(this.Child(idx));
             }
         }
+    }
+
+    override On_Restyle():
+        Entity.Styles | string
+    {
+        return `
+            display: grid;
+            grid-template-rows: 1fr;
+            grid-template-columns: repeat(4, auto);
+            justify-content: start;
+
+            width: 100%;
+            height: 100%;
+
+            overflow-x: hidden;
+            overflow-y: hidden;
+        `;
     }
 
     async After_Selector_Slot_Item_Select():

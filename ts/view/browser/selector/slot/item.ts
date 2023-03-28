@@ -30,8 +30,8 @@ export class Instance extends Entity.Instance
         this.model = model;
     }
 
-    override async On_Life():
-        Promise<Array<Event.Listener_Info>>
+    override On_Life():
+        Array<Event.Listener_Info>
     {
         this.Element().addEventListener(`click`, this.On_Click.bind(this));
 
@@ -50,8 +50,14 @@ export class Instance extends Entity.Instance
         ];
     }
 
-    override async On_Restyle():
-        Promise<Entity.Styles | string>
+    override On_Refresh():
+        void
+    {
+        this.Element().textContent = this.Model().Title();
+    }
+
+    override On_Restyle():
+        Entity.Styles | string
     {
         let color: string;
         let background_color: string;
@@ -79,12 +85,6 @@ export class Instance extends Entity.Instance
             -ms-user-select: none;
             user-select: none;
         `;
-    }
-
-    override async On_Refresh():
-        Promise<void>
-    {
-        this.Element().textContent = this.Model().Title();
     }
 
     async On_Click(

@@ -32,17 +32,8 @@ export class Instance extends Entity.Instance
         this.model = model;
     }
 
-    override async On_Restyle():
-        Promise<Entity.Styles | string>
-    {
-        return `
-            width: 100%;
-            padding: 0 4px;
-        `;
-    }
-
-    override async On_Refresh():
-        Promise<void>
+    override On_Refresh():
+        void
     {
         if (!this.Has_Lines()) {
             this.Abort_All_Children();
@@ -54,6 +45,15 @@ export class Instance extends Entity.Instance
                 },
             );
         }
+    }
+
+    override On_Restyle():
+        Entity.Styles | string
+    {
+        return `
+            width: 100%;
+            padding: 0 4px;
+        `;
     }
 
     Model():

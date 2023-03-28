@@ -32,8 +32,8 @@ export class Instance extends Entity.Instance
         this.model = model;
     }
 
-    override async On_Life():
-        Promise<Array<Event.Listener_Info>>
+    override On_Life():
+        Array<Event.Listener_Info>
     {
         return [
             new Event.Listener_Info(
@@ -46,19 +46,8 @@ export class Instance extends Entity.Instance
         ];
     }
 
-    override async On_Restyle():
-        Promise<Entity.Styles | string>
-    {
-        return `
-            width: 100%;
-            
-            overflow-x: auto;
-            overflow-y: auto;
-        `;
-    }
-
-    override async On_Refresh():
-        Promise<void>
+    override On_Refresh():
+        void
     {
         const model: Model.Instance = this.Model();
 
@@ -76,12 +65,19 @@ export class Instance extends Entity.Instance
                 this.Abort_Child(this.File());
             }
         }
+
+        this.Element().scrollTo(0, 0);
     }
 
-    override async After_Refresh():
-        Promise<void>
+    override On_Restyle():
+        Entity.Styles | string
     {
-        this.Element().scrollTo(0, 0);
+        return `
+            width: 100%;
+            
+            overflow-x: auto;
+            overflow-y: auto;
+        `;
     }
 
     async After_Selector_Slot_Item_Select():

@@ -29,8 +29,22 @@ export class Instance extends Entity.Instance
         this.model = model;
     }
 
-    override async On_Restyle():
-        Promise<Entity.Styles | string>
+    override On_Refresh():
+        void
+    {
+        const model: Model.Instance = this.Model();
+
+        if (model.Text().Is_Command()) {
+            this.Element().textContent = ``;
+        } else {
+            // Doing this in reader causes the dictionary to think some things are
+            // errors, because the dictionary doesn't recognize the non-breaking space.
+            this.Element().textContent = model.Text().Value().replace(/ /g, ` `);
+        }
+    }
+
+    override On_Restyle():
+        Entity.Styles | string
     {
         const model: Model.Instance = this.Model();
         const is_error: boolean =
@@ -76,20 +90,6 @@ export class Instance extends Entity.Instance
             font-variant: ${font_variant};
             text-decoration: ${text_decoration};
         `;
-    }
-
-    override async On_Refresh():
-        Promise<void>
-    {
-        const model: Model.Instance = this.Model();
-
-        if (model.Text().Is_Command()) {
-            this.Element().textContent = ``;
-        } else {
-            // Doing this in reader causes the dictionary to think some things are
-            // errors, because the dictionary doesn't recognize the non-breaking space.
-            this.Element().textContent = model.Text().Value().replace(/ /g, ` `);
-        }
     }
 
     Model():

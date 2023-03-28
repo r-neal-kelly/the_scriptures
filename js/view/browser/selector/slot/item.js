@@ -19,30 +19,30 @@ export class Instance extends Entity.Instance {
         this.model = model;
     }
     On_Life() {
-        return __awaiter(this, void 0, void 0, function* () {
-            this.Element().addEventListener(`click`, this.On_Click.bind(this));
-            return [
-                new Event.Listener_Info({
-                    event_name: new Event.Name(Event.Prefix.ON, "Selector_Slot_Item_Select", this.ID().toString()),
-                    event_handler: this.On_Selector_Slot_Item_Select.bind(this),
-                    event_priority: 0,
-                }),
-            ];
-        });
+        this.Element().addEventListener(`click`, this.On_Click.bind(this));
+        return [
+            new Event.Listener_Info({
+                event_name: new Event.Name(Event.Prefix.ON, "Selector_Slot_Item_Select", this.ID().toString()),
+                event_handler: this.On_Selector_Slot_Item_Select.bind(this),
+                event_priority: 0,
+            }),
+        ];
+    }
+    On_Refresh() {
+        this.Element().textContent = this.Model().Title();
     }
     On_Restyle() {
-        return __awaiter(this, void 0, void 0, function* () {
-            let color;
-            let background_color;
-            if (this.Model().Is_Selected()) {
-                color = `black`;
-                background_color = `white`;
-            }
-            else {
-                color = `white`;
-                background_color = `black`;
-            }
-            return `
+        let color;
+        let background_color;
+        if (this.Model().Is_Selected()) {
+            color = `black`;
+            background_color = `white`;
+        }
+        else {
+            color = `white`;
+            background_color = `black`;
+        }
+        return `
             width: 100%;
             padding: 2px 2px;
             
@@ -58,12 +58,6 @@ export class Instance extends Entity.Instance {
             -ms-user-select: none;
             user-select: none;
         `;
-        });
-    }
-    On_Refresh() {
-        return __awaiter(this, void 0, void 0, function* () {
-            this.Element().textContent = this.Model().Title();
-        });
     }
     On_Click(event) {
         return __awaiter(this, void 0, void 0, function* () {

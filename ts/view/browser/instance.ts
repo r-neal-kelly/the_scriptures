@@ -35,27 +35,8 @@ export class Instance extends Entity.Instance
         this.reader = null;
     }
 
-    override async On_Restyle():
-        Promise<Entity.Styles | string>
-    {
-        return `
-            display: grid;
-            grid-template-rows: 1fr;
-            grid-template-columns: auto auto;
-            justify-content: start;
-        
-            width: 100%;
-            height: 100%;
-
-            overflow-x: hidden;
-            overflow-y: hidden;
-
-            color: white;
-        `;
-    }
-
-    override async On_Refresh():
-        Promise<void>
+    override On_Refresh():
+        void
     {
         this.Abort_All_Children();
 
@@ -71,6 +52,25 @@ export class Instance extends Entity.Instance
                 browser: this,
             },
         );
+    }
+
+    override On_Restyle():
+        Entity.Styles | string
+    {
+        return `
+            display: grid;
+            grid-template-rows: 1fr;
+            grid-template-columns: auto auto;
+            justify-content: start;
+        
+            width: 100%;
+            height: 100%;
+
+            overflow-x: hidden;
+            overflow-y: hidden;
+
+            color: white;
+        `;
     }
 
     Model():

@@ -32,8 +32,25 @@ export class Instance extends Entity.Instance
         this.model = model;
     }
 
-    override async On_Restyle():
-        Promise<Entity.Styles | string>
+    override On_Refresh():
+        void
+    {
+        const model: Model.Instance = this.Model();
+
+        if (!this.Has_Parts()) {
+            this.Abort_All_Children();
+
+            new Parts.Instance(
+                {
+                    model: () => this.Model().Parts(),
+                    line: this,
+                },
+            );
+        }
+    }
+
+    override On_Restyle():
+        Entity.Styles | string
     {
         const model: Model.Instance = this.Model();
 
@@ -51,23 +68,6 @@ export class Instance extends Entity.Instance
 
             color: ${color};
         `;
-    }
-
-    override async On_Refresh():
-        Promise<void>
-    {
-        const model: Model.Instance = this.Model();
-
-        if (!this.Has_Parts()) {
-            this.Abort_All_Children();
-
-            new Parts.Instance(
-                {
-                    model: () => this.Model().Parts(),
-                    line: this,
-                },
-            );
-        }
     }
 
     Model():

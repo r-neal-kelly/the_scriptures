@@ -21,48 +21,38 @@ export class Instance extends Entity.Instance {
         this.model = model;
     }
     On_Life() {
-        return __awaiter(this, void 0, void 0, function* () {
-            return [
-                new Event.Listener_Info({
-                    event_name: new Event.Name(Event.Prefix.AFTER, "Selector_Slot_Item_Select"),
-                    event_handler: this.After_Selector_Slot_Item_Select.bind(this),
-                    event_priority: 0,
-                }),
-            ];
-        });
+        return [
+            new Event.Listener_Info({
+                event_name: new Event.Name(Event.Prefix.AFTER, "Selector_Slot_Item_Select"),
+                event_handler: this.After_Selector_Slot_Item_Select.bind(this),
+                event_priority: 0,
+            }),
+        ];
+    }
+    On_Refresh() {
+        const model = this.Model();
+        if (this.model.Has_File()) {
+            if (!this.Has_File()) {
+                new File.Instance({
+                    model: () => this.Model().File(),
+                    reader: this,
+                });
+            }
+        }
+        else {
+            if (this.Has_File()) {
+                this.Abort_Child(this.File());
+            }
+        }
+        this.Element().scrollTo(0, 0);
     }
     On_Restyle() {
-        return __awaiter(this, void 0, void 0, function* () {
-            return `
+        return `
             width: 100%;
             
             overflow-x: auto;
             overflow-y: auto;
         `;
-        });
-    }
-    On_Refresh() {
-        return __awaiter(this, void 0, void 0, function* () {
-            const model = this.Model();
-            if (this.model.Has_File()) {
-                if (!this.Has_File()) {
-                    new File.Instance({
-                        model: () => this.Model().File(),
-                        reader: this,
-                    });
-                }
-            }
-            else {
-                if (this.Has_File()) {
-                    this.Abort_Child(this.File());
-                }
-            }
-        });
-    }
-    After_Refresh() {
-        return __awaiter(this, void 0, void 0, function* () {
-            this.Element().scrollTo(0, 0);
-        });
     }
     After_Selector_Slot_Item_Select() {
         return __awaiter(this, void 0, void 0, function* () {

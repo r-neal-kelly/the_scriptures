@@ -20,19 +20,37 @@ export class Instance extends Entity.Instance {
         this.model = model;
     }
     On_Life() {
-        return __awaiter(this, void 0, void 0, function* () {
-            return [
-                new Event.Listener_Info({
-                    event_name: new Event.Name(Event.Prefix.AFTER, "Selector_Slot_Item_Select"),
-                    event_handler: this.After_Selector_Slot_Item_Select.bind(this),
-                    event_priority: 0,
-                }),
-            ];
-        });
+        return [
+            new Event.Listener_Info({
+                event_name: new Event.Name(Event.Prefix.AFTER, "Selector_Slot_Item_Select"),
+                event_handler: this.After_Selector_Slot_Item_Select.bind(this),
+                event_priority: 0,
+            }),
+        ];
+    }
+    On_Refresh() {
+        const model = this.Model();
+        const slot_count = model.Slot_Count();
+        const child_count = this.Child_Count();
+        const slot_delta = slot_count - child_count;
+        if (slot_delta > 0) {
+            for (let idx = child_count, end = slot_count; idx < end;) {
+                new Slot.Instance({
+                    model: model.Slot(idx),
+                    selector: this,
+                });
+                idx += 1;
+            }
+        }
+        else if (slot_delta < 0) {
+            for (let idx = this.Child_Count(), end = 0; idx > end;) {
+                idx -= 1;
+                this.Abort_Child(this.Child(idx));
+            }
+        }
     }
     On_Restyle() {
-        return __awaiter(this, void 0, void 0, function* () {
-            return `
+        return `
             display: grid;
             grid-template-rows: 1fr;
             grid-template-columns: repeat(4, auto);
@@ -44,30 +62,6 @@ export class Instance extends Entity.Instance {
             overflow-x: hidden;
             overflow-y: hidden;
         `;
-        });
-    }
-    On_Refresh() {
-        return __awaiter(this, void 0, void 0, function* () {
-            const model = this.Model();
-            const slot_count = model.Slot_Count();
-            const child_count = this.Child_Count();
-            const slot_delta = slot_count - child_count;
-            if (slot_delta > 0) {
-                for (let idx = child_count, end = slot_count; idx < end;) {
-                    new Slot.Instance({
-                        model: model.Slot(idx),
-                        selector: this,
-                    });
-                    idx += 1;
-                }
-            }
-            else if (slot_delta < 0) {
-                for (let idx = this.Child_Count(), end = 0; idx > end;) {
-                    idx -= 1;
-                    this.Abort_Child(this.Child(idx));
-                }
-            }
-        });
     }
     After_Selector_Slot_Item_Select() {
         return __awaiter(this, void 0, void 0, function* () {

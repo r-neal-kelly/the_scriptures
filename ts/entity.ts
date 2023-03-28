@@ -13,15 +13,13 @@ export { ID } from "./types.js";
     Life-Cycle:
         Live:
             On_Life
-            On_Restyle
             On_Refresh
-            After_Refresh
-        Restyle:
             On_Restyle
         Refresh:
-            On_Restyle
             On_Refresh
-            After_Refresh
+            On_Restyle
+        Restyle:
+            On_Restyle
         Die:
             Before_Death
 */
@@ -39,19 +37,10 @@ export interface Life_Cycle_Sender_API
 {
     /*
         Automatically queued when the entity is constructed.
-
-        Queues a full Refresh on itself directly if it is not adopted
-        synchronously during or after creation in another entity's
-        On_Refresh event listener, or else it is automatically
-        refreshed by its parent.
     */
-    // private Live(): Promise<void>;
-
-    /*
-        Should not be waited on in any of the event listeners,
-        it will dead-lock the queue.
-    */
-    Restyle(): Promise<void>;
+    // private Live(
+    //    parent: Instance | null,
+    //): Promise<void>;
 
     /*
         Automatically queued through Live.
@@ -60,6 +49,12 @@ export interface Life_Cycle_Sender_API
         it will dead-lock the queue.
     */
     Refresh(): Promise<void>;
+
+    /*
+        Should not be waited on in any of the event listeners,
+        it will dead-lock the queue.
+    */
+    Restyle(): Promise<void>;
 
     /*
         Automatically queued when the parent of the entity dies.
@@ -75,14 +70,21 @@ export interface Life_Cycle_Listener_API
     /*
         Providing this event handler allows you to work on the entity before
         it is has been restyled or refreshed for the first time.
-        The Event is triggered immediately upon construction of the entity,
-        and after the executing async frame that made the entity is finished.
-        After On_Refresh, it automatically refreshes if it has no parent, otherwise
-        it waits for its parent to refresh before it refreshes.
+        The Event is triggered immediately upon construction of the entity.
+        After On_Life, it automatically refreshes if it has no parent, otherwise
+        it waits for its parent to refresh it as a child.
         The element of the entity is fully accessible, however it is only added to
         the DOM in the refresh cycle.
     */
-    On_Life(): Promise<Array<Event.Listener_Info>>;
+    On_Life(): Array<Event.Listener_Info>;
+
+    /*
+        Providing this event handler allows you to Adopt and Abort children
+        entities, thus building the internal tree structure of your entity.
+        Children get this event after their parents.
+        If a child is aborted during this event, it doesn't get a refresh event.
+    */
+    On_Refresh(): void;
 
     /*
         Providing this event handler allows you to return CSS styles that will
@@ -94,41 +96,17 @@ export interface Life_Cycle_Listener_API
         A return string should have valid CSS code within it, as if you were
         writing the interior of a valid CSS class, without the '{' and '}'.
         Children get this event after their parents.
-        All children receive this event at the same time.
-        If a child is aborted, it does not receive the event.
+        If a child is aborted in the Refresh event, it does not receive the event.
     */
-    On_Restyle(): Promise<Styles | string>;
-
-    /*
-    */
-    Before_Refresh(): Promise<void>;
-
-    /*
-        Providing this event handler allows you to Adopt and Abort children
-        entities, thus building the internal tree structure of your entity.
-        Children get this event after their parents.
-        All children receive this event at the same time.
-        If a child is aborted during this event, this is not called on it.
-    */
-    On_Refresh(): Promise<void>;
-
-    /*
-        Providing this event handler allows you to word on an entity after
-        its children have been updated on the DOM in the Refresh event.
-        Children get this event after their parents.
-        All children receive this event at the same time.
-        If a child is aborted during this event, this is not called on it.
-    */
-    After_Refresh(): Promise<void>;
+    On_Restyle(): Styles | string;
 
     /*
         Providing this event handler allows you to work with an entity
         before its children die and before it is removed from its parent.
         The entity is still in the DOM during this event.
         Children get this event before their parents.
-        All children receive the event at the same time.
     */
-    Before_Death(): Promise<void>;
+    Before_Death(): void;
 }
 
 export interface Parent_API
@@ -254,7 +232,6 @@ export class Instance implements
     private static next_id: ID = 0;
 
     private id: ID;
-
     private element: HTMLElement;
     private styles: Styles;
 
@@ -285,7 +262,6 @@ export class Instance implements
         );
 
         this.id = Instance.next_id++;
-
         this.element = element instanceof HTMLBodyElement ?
             element :
             document.createElement(element);
@@ -298,30 +274,164 @@ export class Instance implements
 
         this.is_alive = false;
         this.life_cycle_queue = new Queue.Instance();
-
         this.event_grid = event_grid;
 
-        // This is queued and executed before the potential
-        // refresh below.
-        this.Live();
+        this.Live(parent);
+    }
 
-        // We only allow adoption of children in the
-        // constructor or in the refresh event, and so
-        // there is no possibility that the latent Live
-        // event will change if this has a parent or not,
-        // therefore it's perfectly safe to check now.
-        if (parent != null) {
-            // Notice that the parent's refresh_adoptions
-            // must necessarily be extant when this is called,
-            // but not the child's, whose refresh event is called
-            // after parent's finishes.
-            parent.Adopt_Child(this);
-        } else {
+    private async Live(
+        parent: Instance | null,
+    ):
+        Promise<void>
+    {
+        if (!this.Is_Alive()) {
+            this.is_alive = true;
+
+            this.Event_Grid().Add_Many_Listeners(this, this.On_Life());
+
             // We only refresh when there is no parent
             // because the parent itself will refresh
-            // its children.
-            this.Refresh();
+            // its children through this event.
+            if (parent != null) {
+                parent.Adopt_Child(this);
+            } else {
+                // Waiting in the queue allows the derived type to
+                // finish its constructor.
+                //this.life_cycle_queue.Enqueue(
+                //    async function ():
+                //        Promise<void>
+                //    {
+                await Utils.Wait_Milliseconds(1);
+                //    }
+                //);
+                this.Refresh();
+            }
         }
+    }
+
+    async Refresh():
+        Promise<void>
+    {
+        //this.life_cycle_queue.Enqueue(
+        //    function (
+        //        this: Instance,
+        //    ):
+        //        void
+        //    {
+        if (this.Is_Alive()) {
+            this.refresh_adoptions = new Set();
+            this.refresh_abortions = new Set();
+
+            this.On_Refresh();
+
+            for (const abortion of this.refresh_abortions) {
+                const child: Instance = abortion;
+                const parent: Instance = abortion.Parent();
+
+                if (child.Element().parentElement === parent.Element()) {
+                    parent.Element().removeChild(child.Element());
+                }
+                child.Die();
+            }
+
+            for (const adoption of this.refresh_adoptions) {
+                const child: Instance = adoption;
+                const parent: Instance = adoption.Parent();
+
+                parent.Element().appendChild(child.Element());
+            }
+
+            for (const child of this.children.values()) {
+                child.Refresh();
+            }
+        }
+        //    }.bind(this),
+        //);
+
+        await this.Restyle();
+    }
+
+    async Restyle():
+        Promise<void>
+    {
+        //await this.life_cycle_queue.Enqueue(
+        //    function (
+        //        this: Instance,
+        //    ):
+        //        void
+        //    {
+        if (this.Is_Alive()) {
+            const styles: Styles | string = this.On_Restyle();
+
+            if (styles instanceof Object) {
+                this.styles = Object.assign(this.styles, styles);
+            } else {
+                const styles_object: Styles = {};
+                const styles_array: Array<RegExpMatchArray | null> =
+                    styles.split(/\s*;\s*/).map(s => s.match(/[^:]+/g));
+                for (const style of styles_array) {
+                    if (style != null) {
+                        Utils.Assert(
+                            style.length === 2,
+                            `Invalid css command! ${style}\nfrom\n${styles}`,
+                        );
+
+                        styles_object[style[0].trim()] = style[1].trim();
+                    }
+                }
+
+                this.styles = Object.assign(this.styles, styles_object);
+            }
+
+            this.Element().setAttribute(
+                `style`,
+                Object.entries(this.styles).map(
+                    ([property, value]) => `${property}: ${value};`
+                ).join(`\n`),
+            );
+
+            for (const child of this.children.values()) {
+                child.Restyle();
+            }
+        }
+        //    }.bind(this),
+        //);
+    }
+
+    async Die():
+        Promise<void>
+    {
+        //await this.life_cycle_queue.Enqueue(
+        //    function (
+        //        this: Instance,
+        //    ):
+        //        void
+        //    {
+        if (this.Is_Alive()) {
+            this.Before_Death();
+
+            for (const child of this.children.values()) {
+                child.Die();
+            }
+
+            if (this.Has_Parent()) {
+                const parent: Instance = this.Parent();
+                if (this.Element().parentElement === parent.Element()) {
+                    parent.Element().removeChild(this.Element());
+                }
+                this.parent = null;
+                parent.children.delete(this.Element());
+            }
+
+            this.Event_Grid().Remove(this);
+            this.life_cycle_queue.Flush();
+            this.is_alive = false;
+
+            this.styles = {};
+            this.element = document.body;
+        }
+        //    }.bind(this),
+        //);
     }
 
     Is_Alive():
@@ -330,473 +440,27 @@ export class Instance implements
         return this.is_alive;
     }
 
-    private async Live():
-        Promise<void>
+    On_Life():
+        Array<Event.Listener_Info>
     {
-        if (!this.Is_Alive()) {
-            this.is_alive = true;
-
-            await this.life_cycle_queue.Enqueue(
-                async function (
-                    this: Instance,
-                ):
-                    Promise<void>
-                {
-                    // Waiting here allows the constructor
-                    // of the derived type to finish before this is called.
-                    // We could also use the async type perhaps, to let the main entity
-                    // start life for all of its children.
-                    // This also gives time to parent an entity before this tries to refresh
-                    // itself if it doesn't have a parent.
-                    await Utils.Wait_Milliseconds(1);
-
-                    if (this.Has_On_Life()) {
-                        this.Event_Grid().Add_Many_Listeners(this, await this.On_Life());
-                    }
-                }.bind(this),
-            );
-        }
-    }
-
-    async Restyle():
-        Promise<void>
-    {
-        await this.life_cycle_queue.Enqueue(
-            async function (
-                this: Instance,
-            ):
-                Promise<void>
-            {
-                if (this.Is_Alive()) {
-                    // We need to restyle before we do
-                    // children so they have up to date data.
-                    if (this.Has_On_Restyle()) {
-                        this.Apply_Styles(await this.On_Restyle());
-                    }
-
-                    // It's more efficient to check if it has a listener
-                    // before spinning up an async frame.
-                    const promises: Array<Promise<void>> = [];
-                    (
-                        function Call_Children(
-                            entity: Instance,
-                        ):
-                            void
-                        {
-                            for (const child of entity.children.values()) {
-                                if (child.Has_On_Restyle()) {
-                                    promises.push(child.Restyle());
-                                } else {
-                                    // If a child doesn't have On_Restyle,
-                                    // then its children can be treated in its
-                                    // place in each await pass of the tree.
-                                    Call_Children(child);
-                                }
-                            }
-                        }
-                    )(this);
-                    await Promise.all(promises);
-                }
-            }.bind(this),
-        );
-    }
-
-    private Apply_Styles(
-        styles: Styles | string,
-    ):
-        void
-    {
-        Utils.Assert(
-            this.Is_Alive(),
-            `Cannot apply styles on a dead entity.`,
-        );
-
-        if (styles instanceof Object) {
-            this.styles = Object.assign(this.styles, styles);
-        } else {
-            const styles_object: Styles = {};
-            const styles_array: Array<RegExpMatchArray | null> =
-                styles.split(/\s*;\s*/).map(s => s.match(/[^:]+/g));
-            for (const style of styles_array) {
-                if (style != null) {
-                    // There can be empty lines of just space, which is just fine.
-                    // But an invalid statement, no
-                    Utils.Assert(
-                        style.length === 2,
-                        `Invalid css command! ${style}\nfrom\n${styles}`,
-                    );
-
-                    styles_object[style[0].trim()] = style[1].trim();
-                }
-            }
-
-            this.styles = Object.assign(this.styles, styles_object);
-        }
-
-        this.Element().setAttribute(
-            `style`,
-            Object.entries(this.styles).map(
-                ([property, value]) => `${property}: ${value};`
-            ).join(`\n`),
-        );
-    }
-
-    async Refresh():
-        Promise<void>
-    {
-        if (this.Is_Alive()) {
-            // we need to queue like so in case a parent tries to call Refresh_Implementation
-            // while this is still operating. Because Enqueue doesn't wait to put the
-            // callbacks in the queue, this will certainly run one after the other,
-            // and Refresh_Implementation itself adds a callback to the queue which will
-            // run after these. We can't actually combine the two into one callback because
-            // it does add to the queue, and we would end up creating a deadlock.
-            const adoptions: Set<Instance> = new Set();
-            const abortions: Set<Instance> = new Set();
-
-            // We could also remove the queue from Refresh_Implementation, put it here
-            // and when it calls its child, but when it calls the child, it has to use
-            // the child's queue. this does work how it is however.
-            // We DO NOT await here because we want these two to be queued one right after
-            // another. We can await on the second which itself waits on this before
-            // executing.
-            this.Refresh_Implementation(
-                {
-                    adoptions,
-                    abortions,
-                },
-            );
-
-            await this.life_cycle_queue.Enqueue(
-                async function (
-                    this: Instance,
-                ):
-                    Promise<void>
-                {
-                    await this.Adopt_And_Abort_Unqueued(
-                        {
-                            adoptions,
-                            abortions,
-                        },
-                    );
-                }.bind(this),
-            );
-        }
-    }
-
-    private async Refresh_Implementation(
-        {
-            adoptions,
-            abortions,
-        }: {
-            adoptions: Set<Instance>,
-            abortions: Set<Instance>,
-        },
-    ):
-        Promise<void>
-    {
-        await this.life_cycle_queue.Enqueue(
-            async function (
-                this: Instance,
-            ):
-                Promise<void>
-            {
-                if (this.Is_Alive()) {
-                    // We need to restyle and refresh
-                    // before we work on children so they
-                    // have up to date data. Also because
-                    // On_Refresh can add and remove children.
-                    if (this.Has_On_Restyle()) {
-                        this.Apply_Styles(await this.On_Restyle());
-                    }
-
-                    if (this.Has_Before_Refresh()) {
-                        await this.Before_Refresh();
-                    }
-
-                    // These are temporarily stored during the refresh event
-                    // to save on both hot and cold memory.
-                    if (this.Has_On_Refresh()) {
-                        this.refresh_adoptions = adoptions;
-                        this.refresh_abortions = abortions;
-                        await this.On_Refresh();
-                        this.refresh_adoptions = null;
-                        this.refresh_abortions = null;
-                    }
-
-                    // Even though children can update the adoptions
-                    // and abortions arrays asynchronously, their children
-                    // are still added in order relative to itself, so its
-                    // still deterministic what order they are added to the DOM.
-                    // We need to skip calling refresh on any aborted children
-                    // to avoid unnecessary creation of entities in their
-                    // refresh calls, and thus their immediate deaths also.
-                    // It's okay to call this for adoptions because the life event
-                    // only triggers if the new entity doesn't have a parent,
-                    // which these do. Otherwise, we'd have to skip this for
-                    // adopted children because the refresh would be called
-                    // multiple times.
-                    await Promise.all(
-                        Array.from(this.children.values()).map(
-                            async function (
-                                child: Instance,
-                            ):
-                                Promise<void>
-                            {
-                                if (!abortions.has(child)) {
-                                    await child.Refresh_Implementation(
-                                        {
-                                            adoptions: adoptions,
-                                            abortions: abortions,
-                                        },
-                                    );
-                                }
-                            },
-                        ),
-                    );
-                }
-            }.bind(this),
-        );
-    }
-
-    private async Adopt_And_Abort_Unqueued(
-        {
-            adoptions,
-            abortions,
-        }: {
-            adoptions: Set<Instance>,
-            abortions: Set<Instance>,
-        },
-    ):
-        Promise<void>
-    {
-        // This function is called within the context of a queued callback to avoid deadlock.
-
-        Utils.Assert(this.Is_Alive());
-
-        // We update the dom all at once to limit draw calls.
-        // Adoptions and abortions can come from the children
-        // of this entity and are passed as an arena to
-        // children during the refresh cycle.
-        // It should be noted because of the lopsided nature of
-        // abortions not being able to have refresh calls after abortion,
-        // the children of abortions are not within the abortions array,
-        // only the top of the branches being severed. Die and Before_Dying take this into account.
-        // Otherwise we'd have to create a cache to check if a child as a parent has already died
-        // before inefficiently calling for its children's death.
-        const deaths: Array<Promise<void>> = [];
-        for (const abortion of abortions) {
-            const child: Instance = abortion;
-            const parent: Instance = abortion.Parent();
-
-            Utils.Assert(parent.Is_Alive());
-            Utils.Assert(child.Is_Alive());
-
-            if (child.Element().parentElement === parent.Element()) {
-                // I don't think it's possible in our algorithm that this
-                // could already be removed, but it can happen, perhaps something
-                // in the browser, not sure. Also I suppose it's possible for
-                // a user to do this, so the redundancy is not a bad thing.
-                parent.Element().removeChild(child.Element());
-            }
-            deaths.push(child.Die());
-        }
-
-        for (const adoption of adoptions) {
-            const child: Instance = adoption;
-            const parent: Instance = adoption.Parent();
-
-            Utils.Assert(parent.Is_Alive());
-            Utils.Assert(child.Is_Alive());
-            Utils.Assert(child.Element().parentElement === null);
-
-            parent.Element().appendChild(child.Element());
-        }
-
-        // This will not cause a deadlock in this entity's queue
-        // because all of the deaths are children and not its own.
-        await Promise.all(deaths);
-
-        await this.After_Refreshing_Unqueued();
-    }
-
-    private async After_Refreshing_Unqueued():
-        Promise<void>
-    {
-        // This function is called within the context of a queued callback to avoid deadlock.
-
-        Utils.Assert(this.Is_Alive());
-
-        if (this.Has_After_Refresh()) {
-            await this.After_Refresh();
-        }
-
-        const promises: Array<Promise<void>> = [];
-        (
-            function Call_Children(
-                entity: Instance,
-            ):
-                void
-            {
-                for (const child of entity.children.values()) {
-                    if (child.Has_After_Refresh()) {
-                        promises.push(child.After_Refreshing_Unqueued());
-                    } else {
-                        Call_Children(child);
-                    }
-                }
-            }
-        )(this);
-        await Promise.all(promises);
-    }
-
-    async Die():
-        Promise<void>
-    {
-        await this.life_cycle_queue.Enqueue(
-            async function (
-                this: Instance,
-            ):
-                Promise<void>
-            {
-                if (this.Is_Alive()) {
-                    if (this.Has_Before_Death()) {
-                        await this.Before_Death();
-                    }
-
-                    await Promise.all(
-                        Array.from(this.children.values()).map(
-                            async function (
-                                child: Instance,
-                            ):
-                                Promise<void>
-                            {
-                                await child.Die();
-                            },
-                        ),
-                    );
-
-                    if (this.Has_Parent()) {
-                        const parent: Instance = this.Parent();
-                        if (this.Element().parentElement === parent.Element()) {
-                            // We need to check because it would already
-                            // be removed by this point if it was aborted,
-                            // but it would still be there during a manual
-                            // Die event.
-                            parent.Element().removeChild(this.Element());
-                        }
-                        this.parent = null;
-                        parent.children.delete(this.Element());
-                    }
-
-                    this.Event_Grid().Remove(this);
-
-                    this.element = document.body;
-                    this.is_alive = false;
-                }
-            }.bind(this),
-        );
-    }
-
-    private Has_On_Life():
-        boolean
-    {
-        return Object.getPrototypeOf(this).hasOwnProperty(`On_Life`);
-    }
-
-    async On_Life():
-        Promise<Array<Event.Listener_Info>>
-    {
-        Utils.Assert(
-            false,
-            `You need to override On_Life or update your life_cycle_info.`,
-        );
-
         return [];
     }
 
-    private Has_On_Restyle():
-        boolean
+    On_Refresh():
+        void
     {
-        return Object.getPrototypeOf(this).hasOwnProperty(`On_Restyle`);
+        return;
     }
 
-    async On_Restyle():
-        Promise<Styles | string>
+    On_Restyle():
+        Styles | string
     {
-        Utils.Assert(
-            false,
-            `You need to override On_Restyle or update your life_cycle_info.`,
-        );
-
         return ``;
     }
 
-    private Has_Before_Refresh():
-        boolean
+    Before_Death():
+        void
     {
-        return Object.getPrototypeOf(this).hasOwnProperty(`Before_Refresh`);
-    }
-
-    async Before_Refresh():
-        Promise<void>
-    {
-        Utils.Assert(
-            false,
-            `You need to override Before_Refresh or update your life_cycle_info.`,
-        );
-
-        return;
-    }
-
-    private Has_On_Refresh():
-        boolean
-    {
-        return Object.getPrototypeOf(this).hasOwnProperty(`On_Refresh`);
-    }
-
-    async On_Refresh():
-        Promise<void>
-    {
-        Utils.Assert(
-            false,
-            `You need to override On_Refresh or update your life_cycle_info.`,
-        );
-
-        return;
-    }
-
-    private Has_After_Refresh():
-        boolean
-    {
-        return Object.getPrototypeOf(this).hasOwnProperty(`After_Refresh`);
-    }
-
-    async After_Refresh():
-        Promise<void>
-    {
-        Utils.Assert(
-            false,
-            `You need to override After_Refresh or update your life_cycle_info.`,
-        );
-
-        return;
-    }
-
-    private Has_Before_Death():
-        boolean
-    {
-        return Object.getPrototypeOf(this).hasOwnProperty(`Before_Death`);
-    }
-
-    async Before_Death():
-        Promise<void>
-    {
-        Utils.Assert(
-            false,
-            `You need to override Before_Death or update your life_cycle_info.`,
-        );
-
         return;
     }
 
@@ -966,11 +630,6 @@ export class Instance implements
             `Can not add any more children!`,
         );
 
-        // We have a latent stack between this and abort.
-        // First the child is added to an entity,
-        // then to the dom,
-        // then it's removed from the dom,
-        // and then finally removed from its entity.
         child.parent = this;
         this.children.set(child.Element(), child);
 
@@ -1000,8 +659,8 @@ export class Instance implements
         );
 
         // We don't directly remove the child entity from parent entity
-        // to maintain the stack as noted in Adopt. It's fully removed in
-        // the Die event.
+        // to maintain the stack started in Adopt. It's fully removed in
+        // the Die event instead.
         (this.refresh_abortions as Set<Instance>).add(child);
     }
 
@@ -1029,9 +688,6 @@ export class Instance implements
     ):
         Promise<void>
     {
-        // should this and animate methods be queued?
-        // the reason I think not is because it would
-        // be easy to dead-lock the queue by waiting for Refresh for example.
         return this.Event_Grid().Send(event_info);
     }
 

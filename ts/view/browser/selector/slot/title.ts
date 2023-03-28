@@ -29,8 +29,16 @@ export class Instance extends Entity.Instance
         this.model = model;
     }
 
-    override async On_Restyle():
-        Promise<Entity.Styles | string>
+    override On_Refresh():
+        void
+    {
+        const model: Model.Instance = this.Model();
+
+        this.Element().textContent = model.Value();
+    }
+
+    override On_Restyle():
+        Entity.Styles | string
     {
         return `
             width: 100%;
@@ -53,14 +61,6 @@ export class Instance extends Entity.Instance
             -ms-user-select: none;
             user-select: none;
         `;
-    }
-
-    override async On_Refresh():
-        Promise<void>
-    {
-        const model: Model.Instance = this.Model();
-
-        this.Element().textContent = model.Value();
     }
 
     Model():

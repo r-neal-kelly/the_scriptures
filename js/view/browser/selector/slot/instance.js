@@ -1,12 +1,3 @@
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 import * as Utils from "../../../../utils.js";
 import * as Entity from "../../../../entity.js";
 import * as Title from "./title.js";
@@ -20,9 +11,23 @@ export class Instance extends Entity.Instance {
         });
         this.model = model;
     }
+    On_Refresh() {
+        const model = this.Model();
+        if (!this.Has_Title() ||
+            !this.Has_Items()) {
+            this.Abort_All_Children();
+            new Title.Instance({
+                model: model.Title(),
+                slot: this,
+            });
+            new Items.Instance({
+                model: model.Items(),
+                slot: this,
+            });
+        }
+    }
     On_Restyle() {
-        return __awaiter(this, void 0, void 0, function* () {
-            return `
+        return `
             display: grid;
             grid-template-rows: auto auto;
             grid-template-columns: 1fr;
@@ -39,24 +44,6 @@ export class Instance extends Entity.Instance {
             overflow-x: hidden;
             overflow-y: hidden;
         `;
-        });
-    }
-    On_Refresh() {
-        return __awaiter(this, void 0, void 0, function* () {
-            const model = this.Model();
-            if (!this.Has_Title() ||
-                !this.Has_Items()) {
-                this.Abort_All_Children();
-                new Title.Instance({
-                    model: model.Title(),
-                    slot: this,
-                });
-                new Items.Instance({
-                    model: model.Items(),
-                    slot: this,
-                });
-            }
-        });
     }
     Model() {
         return this.model;
