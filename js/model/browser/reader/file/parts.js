@@ -5,20 +5,21 @@ export class Instance {
     static Min_Count() {
         return File.Instance.Min_Part_Count();
     }
-    constructor({ line, text, }) {
-        this.line = line;
+    constructor({ segment, text, }) {
+        this.segment = segment;
         this.parts = [];
-        let part_index = 0;
-        for (const part of text) {
-            this.parts.push(new Part.Instance({
-                parts: this,
-                index: part_index++,
-                text: part,
-            }));
+        if (text != null) {
+            for (let idx = 0, end = text.Part_Count(); idx < end; idx += 1) {
+                this.parts.push(new Part.Instance({
+                    parts: this,
+                    index: idx,
+                    text: text.Part(idx),
+                }));
+            }
         }
     }
-    Line() {
-        return this.line;
+    Segment() {
+        return this.segment;
     }
     Count() {
         return this.parts.length;
@@ -31,9 +32,6 @@ export class Instance {
         else {
             return Instance.blank_part;
         }
-    }
-    Array() {
-        return Array.from(this.parts);
     }
 }
 Instance.blank_part = new Part.Instance({

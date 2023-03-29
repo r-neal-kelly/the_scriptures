@@ -1,3 +1,4 @@
+import { Count } from "../../types.js";
 import { Index } from "../../types.js";
 
 import * as Utils from "../../utils.js";
@@ -17,32 +18,12 @@ import * as Letter from "./part/letter.js";
 import * as Marker from "./part/marker.js";
 import * as Point from "./part/point.js";
 
-export type Points = Array<
-    Command.Instance |
-    Letter.Instance |
-    Marker.Instance |
-    Point.Instance
->;
-
-export type Parts = Array<
-    Command.Instance |
-    Word.Instance |
-    Break.Instance |
-    Point.Instance
->;
-
-export type Segments = Array<
-    Segment.Instance
->;
-
 export class Instance
 {
     private text: Text.Instance;
     private value: Value;
-    private points: Points;
-    private parts: Parts;
-    private point_segments: Segments; // it might be best to just have these two
-    private part_segments: Segments; // ""
+    private point_segments: Array<Segment.Instance>;
+    private part_segments: Array<Segment.Instance>;
     private is_centered: boolean;
     private is_indented: boolean;
 
@@ -58,8 +39,6 @@ export class Instance
     {
         this.text = text;
         this.value = ``;
-        this.points = [];
-        this.parts = [];
         this.point_segments = [];
         this.part_segments = [];
         this.is_centered = false;
@@ -97,8 +76,6 @@ export class Instance
         );
 
         this.value = value;
-        this.points = [];
-        this.parts = [];
         this.point_segments = [];
         this.part_segments = [];
         this.is_centered =
@@ -164,9 +141,6 @@ export class Instance
                     current_style &= ~Style.ERROR;
                 }
 
-                this.points.push(command);
-                this.parts.push(command);
-
                 if (!current_point_segment.Try_Add_Part(command)) {
                     this.point_segments.push(current_point_segment);
                     current_point_segment = new Segment.Instance();
@@ -201,8 +175,6 @@ export class Instance
                         },
                     );
 
-                    this.points.push(point);
-
                     if (!current_point_segment.Try_Add_Part(point)) {
                         this.point_segments.push(current_point_segment);
                         current_point_segment = new Segment.Instance();
@@ -217,8 +189,6 @@ export class Instance
                             style: current_style,
                         },
                     );
-
-                    this.points.push(point);
 
                     if (!current_point_segment.Try_Add_Part(point)) {
                         this.point_segments.push(current_point_segment);
@@ -235,8 +205,6 @@ export class Instance
                         },
                     );
 
-                    this.points.push(point);
-
                     if (!current_point_segment.Try_Add_Part(point)) {
                         this.point_segments.push(current_point_segment);
                         current_point_segment = new Segment.Instance();
@@ -245,13 +213,9 @@ export class Instance
 
                     current_type = Current_Type.POINT;
 
-                    // Saves us memory to do this here rather than
-                    // create another part for this point below.
                     if (first_non_command_index == null) {
                         first_non_command_index = it.Index();
                     }
-
-                    this.parts.push(point);
 
                     if (!current_part_segment.Try_Add_Part(point)) {
                         this.part_segments.push(current_part_segment);
@@ -289,8 +253,6 @@ export class Instance
                                 style: current_style,
                             },
                         );
-
-                        this.parts.push(part);
 
                         if (!current_part_segment.Try_Add_Part(part)) {
                             this.part_segments.push(current_part_segment);
@@ -341,8 +303,6 @@ export class Instance
                             },
                         );
 
-                        this.parts.push(part);
-
                         if (!current_part_segment.Try_Add_Part(part)) {
                             this.part_segments.push(current_part_segment);
                             current_part_segment = new Segment.Instance();
@@ -361,16 +321,50 @@ export class Instance
         this.part_segments.push(current_part_segment);
     }
 
-    Points():
-        Points
+    Point_Segment_Count():
+        Count
     {
-        return Array.from(this.points);
+        return this.point_segments.length;
     }
 
-    Parts():
-        Parts
+    Point_Segment(
+        point_segment_index: Index,
+    ):
+        Segment.Instance
     {
-        return Array.from(this.parts);
+        Utils.Assert(
+            point_segment_index > -1,
+            `point_segment_index must be greater than -1.`,
+        );
+        Utils.Assert(
+            point_segment_index < this.Point_Segment_Count(),
+            `point_segment_index must be less than point_segment_count.`,
+        );
+
+        return this.point_segments[point_segment_index];
+    }
+
+    Part_Segment_Count():
+        Count
+    {
+        return this.part_segments.length;
+    }
+
+    Part_Segment(
+        part_segment_index: Index,
+    ):
+        Segment.Instance
+    {
+        Utils.Assert(
+            part_segment_index > -1,
+            `part_segment_index must be greater than -1.`,
+        );
+        Utils.Assert(
+            part_segment_index < this.Part_Segment_Count(),
+            `part_segment_index must be less than part_segment_count.`,
+        );
+
+        return this.part_segments[part_segment_index];
     }
 
     Is_Centered():

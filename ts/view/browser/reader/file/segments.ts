@@ -2,10 +2,10 @@ import { Count } from "../../../../types.js";
 
 import * as Entity from "../../../../entity.js";
 
-import * as Model from "../../../../model/browser/reader/file/parts.js";
+import * as Model from "../../../../model/browser/reader/file/segments.js";
 
+import * as Line from "./line.js";
 import * as Segment from "./segment.js";
-import * as Part from "./part.js";
 
 export class Instance extends Entity.Instance
 {
@@ -14,18 +14,18 @@ export class Instance extends Entity.Instance
     constructor(
         {
             model,
-            segment,
+            line,
         }: {
             model: () => Model.Instance,
-            segment: Segment.Instance,
+            line: Line.Instance,
         },
     )
     {
         super(
             {
                 element: `div`,
-                parent: segment,
-                event_grid: segment.Event_Grid(),
+                parent: line,
+                event_grid: line.Event_Grid(),
             },
         );
 
@@ -40,10 +40,10 @@ export class Instance extends Entity.Instance
         const count: Count = this.Child_Count();
 
         for (let idx = count, end = target; idx < end; idx += 1) {
-            new Part.Instance(
+            new Segment.Instance(
                 {
                     model: () => this.Model().At(idx),
-                    parts: this,
+                    segments: this,
                 },
             );
         }
@@ -61,9 +61,9 @@ export class Instance extends Entity.Instance
         return this.model();
     }
 
-    Segment():
-        Segment.Instance
+    Line():
+        Line.Instance
     {
-        return this.Parent() as Segment.Instance;
+        return this.Parent() as Line.Instance;
     }
 }

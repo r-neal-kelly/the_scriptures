@@ -10,6 +10,9 @@ export class Instance {
         }
         return value;
     }
+    Part_Count() {
+        return this.parts.length;
+    }
     Has_Part(part) {
         return this.parts.indexOf(part) > -1;
     }

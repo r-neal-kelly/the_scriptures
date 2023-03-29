@@ -11,7 +11,8 @@ import * as Lines from "./lines.js";
 export class Instance
 {
     private static min_line_count: Count = 40;
-    private static min_part_count: Count = 50;
+    private static min_segment_count: Count = 50;
+    private static min_part_count: Count = 2;
 
     static Min_Line_Count():
         Count
@@ -30,6 +31,25 @@ export class Instance
         );
 
         Instance.min_line_count = min_line_count;
+    }
+
+    static Min_Segment_Count():
+        Count
+    {
+        return Instance.min_segment_count;
+    }
+
+    static Set_Min_Segment_Count(
+        min_segment_count: Count,
+    ):
+        void
+    {
+        Utils.Assert(
+            min_segment_count >= 0,
+            `min_segment_count must be greater than or equal to 0.`,
+        );
+
+        Instance.min_segment_count = min_segment_count;
     }
 
     static Min_Part_Count():
@@ -74,7 +94,7 @@ export class Instance
         this.lines = new Lines.Instance(
             {
                 file: this,
-                text: text.Lines(), // we should just pass the text and let the lines iterate it
+                text: text,
             },
         );
     }

@@ -28,4 +28,9 @@ export class Instance {
     Is_Blank() {
         return this.text == null;
     }
+    Is_Indented() {
+        return (this.Index() === 0 &&
+            this.Parts().Segment().Index() === 0 &&
+            this.Parts().Segment().Segments().Line().Text().Is_Indented());
+    }
 }

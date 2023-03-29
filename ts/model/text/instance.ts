@@ -1,3 +1,4 @@
+import { Count } from "../../types.js";
 import { Index } from "../../types.js";
 
 import * as Utils from "../../utils.js";
@@ -50,6 +51,12 @@ export class Instance
         return this.value;
     }
 
+    Line_Count():
+        Count
+    {
+        return this.lines.length;
+    }
+
     Has_Line(
         line: Line.Instance,
     ):
@@ -65,7 +72,7 @@ export class Instance
     {
         return (
             line_index > -1 &&
-            line_index < this.lines.length
+            line_index < this.Line_Count()
         );
     }
 
@@ -95,12 +102,6 @@ export class Instance
         );
 
         return index;
-    }
-
-    Lines():
-        Array<Line.Instance>
-    {
-        return Array.from(this.lines);
     }
 
     // We need to be able to add, insert, remove, and set lines,

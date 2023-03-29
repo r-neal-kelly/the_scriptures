@@ -30,7 +30,7 @@ export class Instance extends Entity.Instance {
         const display = is_blank ?
             `none` :
             `inline-block`;
-        const width = !is_blank && model.Index() === 0 && model.Parts().Line().Text().Is_Indented() ?
+        const width = !is_blank && model.Is_Indented() ?
             `3em` :
             `auto`;
         const border_color = is_error ?

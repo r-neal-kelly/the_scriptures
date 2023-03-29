@@ -62,7 +62,7 @@ export class Instance extends Entity.Instance
             `inline-block`;
 
         const width: string =
-            !is_blank && model.Index() === 0 && model.Parts().Line().Text().Is_Indented() ?
+            !is_blank && model.Is_Indented() ?
                 `3em` :
                 `auto`;
 

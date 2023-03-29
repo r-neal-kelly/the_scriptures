@@ -1,3 +1,4 @@
+import { Count } from "../../types.js";
 import { Index } from "../../types.js";
 
 import * as Utils from "../../utils.js";
@@ -24,6 +25,12 @@ export class Instance
         }
 
         return value;
+    }
+
+    Part_Count():
+        Count
+    {
+        return this.parts.length;
     }
 
     Has_Part(

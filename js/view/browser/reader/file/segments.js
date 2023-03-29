@@ -1,12 +1,12 @@
 import * as Entity from "../../../../entity.js";
-import * as Model from "../../../../model/browser/reader/file/parts.js";
-import * as Part from "./part.js";
+import * as Model from "../../../../model/browser/reader/file/segments.js";
+import * as Segment from "./segment.js";
 export class Instance extends Entity.Instance {
-    constructor({ model, segment, }) {
+    constructor({ model, line, }) {
         super({
             element: `div`,
-            parent: segment,
-            event_grid: segment.Event_Grid(),
+            parent: line,
+            event_grid: line.Event_Grid(),
         });
         this.model = model;
     }
@@ -15,9 +15,9 @@ export class Instance extends Entity.Instance {
         const target = Math.max(Model.Instance.Min_Count(), model.Count());
         const count = this.Child_Count();
         for (let idx = count, end = target; idx < end; idx += 1) {
-            new Part.Instance({
+            new Segment.Instance({
                 model: () => this.Model().At(idx),
-                parts: this,
+                segments: this,
             });
         }
     }
@@ -27,7 +27,7 @@ export class Instance extends Entity.Instance {
     Model() {
         return this.model();
     }
-    Segment() {
+    Line() {
         return this.Parent();
     }
 }

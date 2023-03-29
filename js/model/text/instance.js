@@ -18,12 +18,15 @@ export class Instance {
     Value() {
         return this.value;
     }
+    Line_Count() {
+        return this.lines.length;
+    }
     Has_Line(line) {
         return this.lines.indexOf(line) > -1;
     }
     Has_Line_Index(line_index) {
         return (line_index > -1 &&
-            line_index < this.lines.length);
+            line_index < this.Line_Count());
     }
     Line(line_index) {
         Utils.Assert(this.Has_Line_Index(line_index), `Text does not have line at the index.`);
@@ -33,8 +36,5 @@ export class Instance {
         const index = this.lines.indexOf(line);
         Utils.Assert(index > -1, `Text does not have the line.`);
         return index;
-    }
-    Lines() {
-        return Array.from(this.lines);
     }
 }

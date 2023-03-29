@@ -33,22 +33,20 @@ export class Instance
             text,
         }: {
             file: File.Instance,
-            text: Array<Text.Line.Instance>,
+            text: Text.Instance,
         },
     )
     {
         this.file = file;
         this.lines = [];
 
-        let line_index: Index = 0;
-
-        for (const line of text) {
+        for (let idx = 0, end = text.Line_Count(); idx < end; idx += 1) {
             this.lines.push(
                 new Line.Instance(
                     {
                         lines: this,
-                        index: line_index++,
-                        text: line,
+                        index: idx,
+                        text: text.Line(idx),
                     },
                 ),
             );
@@ -82,11 +80,5 @@ export class Instance
         } else {
             return Instance.blank_line;
         }
-    }
-
-    Array():
-        Array<Line.Instance>
-    {
-        return Array.from(this.lines);
     }
 }

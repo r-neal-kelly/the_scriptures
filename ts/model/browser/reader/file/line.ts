@@ -5,14 +5,14 @@ import * as Utils from "../../../../utils.js";
 import * as Text from "../../../text.js";
 
 import * as Lines from "./lines.js";
-import * as Parts from "./parts.js";
+import * as Segments from "./segments.js";
 
 export class Instance
 {
     private lines: Lines.Instance | null;
     private index: Index | null;
     private text: Text.Line.Instance | null;
-    private parts: Parts.Instance;
+    private segments: Segments.Instance;
 
     constructor(
         {
@@ -29,6 +29,13 @@ export class Instance
         this.lines = lines;
         this.index = index;
         this.text = text;
+        this.segments = new Segments.Instance(
+            {
+                line: this,
+                text: text,
+            },
+        );
+
         if (text == null) {
             Utils.Assert(
                 lines == null,
@@ -38,13 +45,6 @@ export class Instance
                 index == null,
                 `index must be null.`,
             );
-
-            this.parts = new Parts.Instance(
-                {
-                    line: this,
-                    text: [],
-                },
-            );
         } else {
             Utils.Assert(
                 lines != null,
@@ -53,13 +53,6 @@ export class Instance
             Utils.Assert(
                 index != null && index > -1,
                 `index must not be null, and must be greater than -1.`,
-            );
-
-            this.parts = new Parts.Instance(
-                {
-                    line: this,
-                    text: text.Parts(), // we should just pass the text and let the parts iterate it
-                },
             );
         }
     }
@@ -97,10 +90,10 @@ export class Instance
         return this.text as Text.Line.Instance;
     }
 
-    Parts():
-        Parts.Instance
+    Segments():
+        Segments.Instance
     {
-        return this.parts;
+        return this.segments;
     }
 
     Is_Blank():

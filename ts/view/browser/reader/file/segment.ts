@@ -2,10 +2,10 @@ import * as Utils from "../../../../utils.js";
 
 import * as Entity from "../../../../entity.js";
 
-import * as Model from "../../../../model/browser/reader/file/line.js";
+import * as Model from "../../../../model/browser/reader/file/segment.js";
 
-import * as Lines from "./lines.js";
 import * as Segments from "./segments.js";
+import * as Parts from "./parts.js";
 
 export class Instance extends Entity.Instance
 {
@@ -14,18 +14,18 @@ export class Instance extends Entity.Instance
     constructor(
         {
             model,
-            lines,
+            segments,
         }: {
             model: () => Model.Instance,
-            lines: Lines.Instance,
+            segments: Segments.Instance,
         },
     )
     {
         super(
             {
                 element: `div`,
-                parent: lines,
-                event_grid: lines.Event_Grid(),
+                parent: segments,
+                event_grid: segments.Event_Grid(),
             },
         );
 
@@ -37,13 +37,13 @@ export class Instance extends Entity.Instance
     {
         const model: Model.Instance = this.Model();
 
-        if (!this.Has_Segments()) {
+        if (!this.Has_Parts()) {
             this.Abort_All_Children();
 
-            new Segments.Instance(
+            new Parts.Instance(
                 {
-                    model: () => this.Model().Segments(),
-                    line: this,
+                    model: () => this.Model().Parts(),
+                    segment: this,
                 },
             );
         }
@@ -57,18 +57,14 @@ export class Instance extends Entity.Instance
 
         const display: string = is_blank ?
             `none` :
-            model.Text().Is_Centered() ?
-                `flex` :
-                `block`;
+            `inline-block`;
 
-        const color: string = is_blank || model.Text().Value() === `` ?
+        const color: string = is_blank ?
             `transparent` :
             `inherit`;
 
         return `
             display: ${display};
-            flex-wrap: wrap;
-            justify-content: center;
 
             color: ${color};
         `;
@@ -80,29 +76,29 @@ export class Instance extends Entity.Instance
         return this.model();
     }
 
-    Lines():
-        Lines.Instance
+    Segments():
+        Segments.Instance
     {
-        return this.Parent() as Lines.Instance;
+        return this.Parent() as Segments.Instance;
     }
 
-    Has_Segments():
+    Has_Parts():
         boolean
     {
         return (
             this.Has_Child(0) &&
-            this.Child(0) instanceof Segments.Instance
+            this.Child(0) instanceof Parts.Instance
         );
     }
 
-    Segments():
-        Segments.Instance
+    Parts():
+        Parts.Instance
     {
         Utils.Assert(
-            this.Has_Segments(),
-            `Doesn't have segments.`,
+            this.Has_Parts(),
+            `Doesn't have parts.`,
         );
 
-        return this.Child(0) as Segments.Instance;
+        return this.Child(0) as Parts.Instance;
     }
 }

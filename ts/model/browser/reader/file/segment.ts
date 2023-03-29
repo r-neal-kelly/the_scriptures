@@ -4,34 +4,42 @@ import * as Utils from "../../../../utils.js";
 
 import * as Text from "../../../text.js";
 
+import * as Segments from "./segments.js";
 import * as Parts from "./parts.js";
 
 export class Instance
 {
-    private parts: Parts.Instance | null;
+    private segments: Segments.Instance | null;
     private index: Index | null;
-    private text: Text.Part.Instance | null;
+    private text: Text.Segment.Instance | null;
+    private parts: Parts.Instance;
 
     constructor(
         {
-            parts,
+            segments,
             index,
             text,
         }: {
-            parts: Parts.Instance | null,
+            segments: Segments.Instance | null,
             index: Index | null,
-            text: Text.Part.Instance | null,
+            text: Text.Segment.Instance | null,
         },
     )
     {
-        this.parts = parts;
+        this.segments = segments;
         this.index = index;
         this.text = text;
+        this.parts = new Parts.Instance(
+            {
+                segment: this,
+                text: text,
+            },
+        );
 
         if (text == null) {
             Utils.Assert(
-                parts == null,
-                `parts must be null.`,
+                segments == null,
+                `segments must be null.`,
             );
             Utils.Assert(
                 index == null,
@@ -39,8 +47,8 @@ export class Instance
             );
         } else {
             Utils.Assert(
-                parts != null,
-                `parts must not be null.`,
+                segments != null,
+                `segments must not be null.`,
             );
             Utils.Assert(
                 index != null && index > -1,
@@ -49,15 +57,15 @@ export class Instance
         }
     }
 
-    Parts():
-        Parts.Instance
+    Segments():
+        Segments.Instance
     {
         Utils.Assert(
-            this.parts != null,
-            `Doesn't have parts.`,
+            this.segments != null,
+            `Doesn't have segments.`,
         );
 
-        return this.parts as Parts.Instance;
+        return this.segments as Segments.Instance;
     }
 
     Index():
@@ -72,29 +80,25 @@ export class Instance
     }
 
     Text():
-        Text.Part.Instance
+        Text.Segment.Instance
     {
         Utils.Assert(
             this.text != null,
             `Doesn't have text.`,
         );
 
-        return this.text as Text.Part.Instance;
+        return this.text as Text.Segment.Instance;
+    }
+
+    Parts():
+        Parts.Instance
+    {
+        return this.parts;
     }
 
     Is_Blank():
         boolean
     {
         return this.text == null;
-    }
-
-    Is_Indented():
-        boolean
-    {
-        return (
-            this.Index() === 0 &&
-            this.Parts().Segment().Index() === 0 &&
-            this.Parts().Segment().Segments().Line().Text().Is_Indented()
-        );
     }
 }

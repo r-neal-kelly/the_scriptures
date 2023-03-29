@@ -1,22 +1,22 @@
 import * as Utils from "../../../../utils.js";
 import * as Entity from "../../../../entity.js";
-import * as Segments from "./segments.js";
+import * as Parts from "./parts.js";
 export class Instance extends Entity.Instance {
-    constructor({ model, lines, }) {
+    constructor({ model, segments, }) {
         super({
             element: `div`,
-            parent: lines,
-            event_grid: lines.Event_Grid(),
+            parent: segments,
+            event_grid: segments.Event_Grid(),
         });
         this.model = model;
     }
     On_Refresh() {
         const model = this.Model();
-        if (!this.Has_Segments()) {
+        if (!this.Has_Parts()) {
             this.Abort_All_Children();
-            new Segments.Instance({
-                model: () => this.Model().Segments(),
-                line: this,
+            new Parts.Instance({
+                model: () => this.Model().Parts(),
+                segment: this,
             });
         }
     }
@@ -25,16 +25,12 @@ export class Instance extends Entity.Instance {
         const is_blank = model.Is_Blank();
         const display = is_blank ?
             `none` :
-            model.Text().Is_Centered() ?
-                `flex` :
-                `block`;
-        const color = is_blank || model.Text().Value() === `` ?
+            `inline-block`;
+        const color = is_blank ?
             `transparent` :
             `inherit`;
         return `
             display: ${display};
-            flex-wrap: wrap;
-            justify-content: center;
 
             color: ${color};
         `;
@@ -42,15 +38,15 @@ export class Instance extends Entity.Instance {
     Model() {
         return this.model();
     }
-    Lines() {
+    Segments() {
         return this.Parent();
     }
-    Has_Segments() {
+    Has_Parts() {
         return (this.Has_Child(0) &&
-            this.Child(0) instanceof Segments.Instance);
+            this.Child(0) instanceof Parts.Instance);
     }
-    Segments() {
-        Utils.Assert(this.Has_Segments(), `Doesn't have segments.`);
+    Parts() {
+        Utils.Assert(this.Has_Parts(), `Doesn't have parts.`);
         return this.Child(0);
     }
 }

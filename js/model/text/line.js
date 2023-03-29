@@ -14,8 +14,6 @@ export class Instance {
     constructor({ text, value, }) {
         this.text = text;
         this.value = ``;
-        this.points = [];
-        this.parts = [];
         this.point_segments = [];
         this.part_segments = [];
         this.is_centered = false;
@@ -34,8 +32,6 @@ export class Instance {
     Set_Value(value) {
         Utils.Assert(!/\r?\n/.test(value), `A line cannot have any line-breaks.`);
         this.value = value;
-        this.points = [];
-        this.parts = [];
         this.point_segments = [];
         this.part_segments = [];
         this.is_centered =
@@ -93,8 +89,6 @@ export class Instance {
                 else if (command.Is_Close_Error()) {
                     current_style &= ~Style.ERROR;
                 }
-                this.points.push(command);
-                this.parts.push(command);
                 if (!current_point_segment.Try_Add_Part(command)) {
                     this.point_segments.push(current_point_segment);
                     current_point_segment = new Segment.Instance();
@@ -120,7 +114,6 @@ export class Instance {
                         value: this_point,
                         style: current_style,
                     });
-                    this.points.push(point);
                     if (!current_point_segment.Try_Add_Part(point)) {
                         this.point_segments.push(current_point_segment);
                         current_point_segment = new Segment.Instance();
@@ -133,7 +126,6 @@ export class Instance {
                         value: this_point,
                         style: current_style,
                     });
-                    this.points.push(point);
                     if (!current_point_segment.Try_Add_Part(point)) {
                         this.point_segments.push(current_point_segment);
                         current_point_segment = new Segment.Instance();
@@ -146,19 +138,15 @@ export class Instance {
                         value: this_point,
                         style: current_style,
                     });
-                    this.points.push(point);
                     if (!current_point_segment.Try_Add_Part(point)) {
                         this.point_segments.push(current_point_segment);
                         current_point_segment = new Segment.Instance();
                         current_point_segment.Add_Part(point);
                     }
                     current_type = Current_Type.POINT;
-                    // Saves us memory to do this here rather than
-                    // create another part for this point below.
                     if (first_non_command_index == null) {
                         first_non_command_index = it.Index();
                     }
-                    this.parts.push(point);
                     if (!current_part_segment.Try_Add_Part(point)) {
                         this.part_segments.push(current_part_segment);
                         current_part_segment = new Segment.Instance();
@@ -184,7 +172,6 @@ export class Instance {
                             status: status,
                             style: current_style,
                         });
-                        this.parts.push(part);
                         if (!current_part_segment.Try_Add_Part(part)) {
                             this.part_segments.push(current_part_segment);
                             current_part_segment = new Segment.Instance();
@@ -224,7 +211,6 @@ export class Instance {
                             status: status,
                             style: current_style,
                         });
-                        this.parts.push(part);
                         if (!current_part_segment.Try_Add_Part(part)) {
                             this.part_segments.push(current_part_segment);
                             current_part_segment = new Segment.Instance();
@@ -239,11 +225,21 @@ export class Instance {
         this.point_segments.push(current_point_segment);
         this.part_segments.push(current_part_segment);
     }
-    Points() {
-        return Array.from(this.points);
+    Point_Segment_Count() {
+        return this.point_segments.length;
     }
-    Parts() {
-        return Array.from(this.parts);
+    Point_Segment(point_segment_index) {
+        Utils.Assert(point_segment_index > -1, `point_segment_index must be greater than -1.`);
+        Utils.Assert(point_segment_index < this.Point_Segment_Count(), `point_segment_index must be less than point_segment_count.`);
+        return this.point_segments[point_segment_index];
+    }
+    Part_Segment_Count() {
+        return this.part_segments.length;
+    }
+    Part_Segment(part_segment_index) {
+        Utils.Assert(part_segment_index > -1, `part_segment_index must be greater than -1.`);
+        Utils.Assert(part_segment_index < this.Part_Segment_Count(), `part_segment_index must be less than part_segment_count.`);
+        return this.part_segments[part_segment_index];
     }
     Is_Centered() {
         return this.is_centered;

@@ -6,7 +6,7 @@ import * as Utils from "../../../../utils.js";
 import * as Text from "../../../text.js";
 
 import * as File from "./instance.js";
-import * as Line from "./line.js";
+import * as Segment from "./segment.js";
 import * as Part from "./part.js";
 
 export class Instance
@@ -25,41 +25,41 @@ export class Instance
         return File.Instance.Min_Part_Count();
     }
 
-    private line: Line.Instance;
+    private segment: Segment.Instance;
     private parts: Array<Part.Instance>;
 
     constructor(
         {
-            line,
+            segment,
             text,
         }: {
-            line: Line.Instance,
-            text: Array<Text.Part.Instance>,
+            segment: Segment.Instance,
+            text: Text.Segment.Instance | null,
         },
     )
     {
-        this.line = line;
+        this.segment = segment;
         this.parts = [];
 
-        let part_index: Index = 0;
-
-        for (const part of text) {
-            this.parts.push(
-                new Part.Instance(
-                    {
-                        parts: this,
-                        index: part_index++,
-                        text: part,
-                    },
-                ),
-            );
+        if (text != null) {
+            for (let idx = 0, end = text.Part_Count(); idx < end; idx += 1) {
+                this.parts.push(
+                    new Part.Instance(
+                        {
+                            parts: this,
+                            index: idx,
+                            text: text.Part(idx),
+                        },
+                    ),
+                );
+            }
         }
     }
 
-    Line():
-        Line.Instance
+    Segment():
+        Segment.Instance
     {
-        return this.line;
+        return this.segment;
     }
 
     Count():
@@ -83,11 +83,5 @@ export class Instance
         } else {
             return Instance.blank_part;
         }
-    }
-
-    Array():
-        Array<Part.Instance>
-    {
-        return Array.from(this.parts);
     }
 }
