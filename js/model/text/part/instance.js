@@ -1,8 +1,10 @@
+import * as Utils from "../../../utils.js";
 import { Type } from "./type.js";
 import { Status } from "./status.js";
 import { Style } from "./style.js";
 export class Instance {
     constructor({ type, value, status, style, }) {
+        Utils.Assert(value.length > 0, `value must have a length greater than 0.`);
         this.type = type;
         this.value = value;
         this.status = status;

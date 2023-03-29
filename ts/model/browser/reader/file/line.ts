@@ -58,7 +58,7 @@ export class Instance
             this.parts = new Parts.Instance(
                 {
                     line: this,
-                    text: text.Parts(),
+                    text: text.Parts(), // we should just pass the text and let the parts iterate it
                 },
             );
         }

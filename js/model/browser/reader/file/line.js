@@ -18,7 +18,7 @@ export class Instance {
             Utils.Assert(index != null && index > -1, `index must not be null, and must be greater than -1.`);
             this.parts = new Parts.Instance({
                 line: this,
-                text: text.Parts(),
+                text: text.Parts(), // we should just pass the text and let the parts iterate it
             });
         }
     }

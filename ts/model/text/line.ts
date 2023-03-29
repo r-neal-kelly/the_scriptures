@@ -6,6 +6,7 @@ import * as Unicode from "../../unicode.js";
 import * as Text from "./instance.js";
 import { Value } from "./value.js";
 import * as Dictionary from "./dictionary.js";
+import * as Segment from "./segment.js";
 
 import { Status } from "./part/status.js";
 import { Style } from "./part/style.js";
@@ -30,12 +31,18 @@ export type Parts = Array<
     Point.Instance
 >;
 
+export type Segments = Array<
+    Segment.Instance
+>;
+
 export class Instance
 {
     private text: Text.Instance;
     private value: Value;
     private points: Points;
     private parts: Parts;
+    private point_segments: Segments; // it might be best to just have these two
+    private part_segments: Segments; // ""
     private is_centered: boolean;
     private is_indented: boolean;
 
@@ -53,6 +60,8 @@ export class Instance
         this.value = ``;
         this.points = [];
         this.parts = [];
+        this.point_segments = [];
+        this.part_segments = [];
         this.is_centered = false;
         this.is_indented = false;
 
@@ -90,6 +99,8 @@ export class Instance
         this.value = value;
         this.points = [];
         this.parts = [];
+        this.point_segments = [];
+        this.part_segments = [];
         this.is_centered =
             this.value.slice(0, Command.Known_Value.CENTER.length) === Command.Known_Value.CENTER;
         this.is_indented =
@@ -113,6 +124,9 @@ export class Instance
         );
 
         let first_non_command_index: Index | null = null;
+
+        let current_point_segment: Segment.Instance = new Segment.Instance();
+        let current_part_segment: Segment.Instance = new Segment.Instance();
 
         for (let it = current_start; !it.Is_At_End();) {
             const maybe_valid_command: Value | null =
@@ -153,6 +167,17 @@ export class Instance
                 this.points.push(command);
                 this.parts.push(command);
 
+                if (!current_point_segment.Try_Add_Part(command)) {
+                    this.point_segments.push(current_point_segment);
+                    current_point_segment = new Segment.Instance();
+                    current_point_segment.Add_Part(command);
+                }
+                if (!current_part_segment.Try_Add_Part(command)) {
+                    this.part_segments.push(current_part_segment);
+                    current_part_segment = new Segment.Instance();
+                    current_part_segment.Add_Part(command);
+                }
+
                 it = new Unicode.Iterator(
                     {
                         text: it.Text(),
@@ -169,38 +194,72 @@ export class Instance
                 );
 
                 if (dictionary.Has_Letter(this_point)) {
-                    this.points.push(
-                        new Letter.Instance(
-                            {
-                                value: this_point,
-                                style: current_style,
-                            },
-                        ),
+                    const point: Letter.Instance = new Letter.Instance(
+                        {
+                            value: this_point,
+                            style: current_style,
+                        },
                     );
+
+                    this.points.push(point);
+
+                    if (!current_point_segment.Try_Add_Part(point)) {
+                        this.point_segments.push(current_point_segment);
+                        current_point_segment = new Segment.Instance();
+                        current_point_segment.Add_Part(point);
+                    }
 
                     current_type = Current_Type.WORD;
                 } else if (dictionary.Has_Marker(this_point)) {
-                    this.points.push(
-                        new Marker.Instance(
-                            {
-                                value: this_point,
-                                style: current_style,
-                            },
-                        ),
+                    const point: Marker.Instance = new Marker.Instance(
+                        {
+                            value: this_point,
+                            style: current_style,
+                        },
                     );
+
+                    this.points.push(point);
+
+                    if (!current_point_segment.Try_Add_Part(point)) {
+                        this.point_segments.push(current_point_segment);
+                        current_point_segment = new Segment.Instance();
+                        current_point_segment.Add_Part(point);
+                    }
 
                     current_type = Current_Type.BREAK;
                 } else {
-                    this.points.push(
-                        new Point.Instance(
-                            {
-                                value: this_point,
-                                style: current_style,
-                            },
-                        ),
+                    const point: Point.Instance = new Point.Instance(
+                        {
+                            value: this_point,
+                            style: current_style,
+                        },
                     );
 
+                    this.points.push(point);
+
+                    if (!current_point_segment.Try_Add_Part(point)) {
+                        this.point_segments.push(current_point_segment);
+                        current_point_segment = new Segment.Instance();
+                        current_point_segment.Add_Part(point);
+                    }
+
                     current_type = Current_Type.POINT;
+
+                    // Saves us memory to do this here rather than
+                    // create another part for this point below.
+                    if (first_non_command_index == null) {
+                        first_non_command_index = it.Index();
+                    }
+
+                    this.parts.push(point);
+
+                    if (!current_part_segment.Try_Add_Part(point)) {
+                        this.part_segments.push(current_part_segment);
+                        current_part_segment = new Segment.Instance();
+                        current_part_segment.Add_Part(point);
+                    }
+
+                    current_start = it.Next();
                 }
 
                 if (current_type === Current_Type.WORD) {
@@ -223,15 +282,21 @@ export class Instance
                                 Status.ERROR :
                                 Status.UNKNOWN;
 
-                        this.parts.push(
-                            new Word.Instance(
-                                {
-                                    value: word,
-                                    status: status,
-                                    style: current_style,
-                                },
-                            ),
+                        const part: Word.Instance = new Word.Instance(
+                            {
+                                value: word,
+                                status: status,
+                                style: current_style,
+                            },
                         );
+
+                        this.parts.push(part);
+
+                        if (!current_part_segment.Try_Add_Part(part)) {
+                            this.part_segments.push(current_part_segment);
+                            current_part_segment = new Segment.Instance();
+                            current_part_segment.Add_Part(part);
+                        }
 
                         current_start = it.Next();
                     }
@@ -268,47 +333,32 @@ export class Instance
                                 Status.ERROR :
                                 Status.UNKNOWN;
 
-                        this.parts.push(
-                            new Break.Instance(
-                                {
-                                    value: break_,
-                                    status: status,
-                                    style: current_style,
-                                },
-                            ),
+                        const part: Break.Instance = new Break.Instance(
+                            {
+                                value: break_,
+                                status: status,
+                                style: current_style,
+                            },
                         );
+
+                        this.parts.push(part);
+
+                        if (!current_part_segment.Try_Add_Part(part)) {
+                            this.part_segments.push(current_part_segment);
+                            current_part_segment = new Segment.Instance();
+                            current_part_segment.Add_Part(part);
+                        }
 
                         current_start = it.Next();
                     }
-                } else if (current_type === Current_Type.POINT) {
-                    if (first_non_command_index == null) {
-                        first_non_command_index = it.Index();
-                    }
-
-                    const point: Value = this_point;
-
-                    this.parts.push(
-                        new Point.Instance(
-                            {
-                                value: point,
-                                style: current_style,
-                            },
-                        ),
-                    );
-
-                    current_start = it.Next();
                 }
 
                 it = it.Next();
             }
         }
-        // We can either iterator over parts to create segments or try to create segments
-        // in the one loop, as confusing as that will make it. I think the problem is that
-        // the first part determines the algorithm, because if it's a word, we combine it with
-        // the following break, and potentially recurse, that is if the break touches the next word
-        // with a non-space. However, if we start with a break, we combine that with the next word.
-        // I suppose we could assume that it starts with break always, and if the first part is a word
-        // then it's its own segment, which is safe, but not when we assume it starts with a word.
+
+        this.point_segments.push(current_point_segment);
+        this.part_segments.push(current_part_segment);
     }
 
     Points():

@@ -21,7 +21,7 @@ export class Instance {
         this.text = text;
         this.lines = new Lines.Instance({
             file: this,
-            text: text.Lines(),
+            text: text.Lines(), // we should just pass the text and let the lines iterate it
         });
     }
     Reader() {
