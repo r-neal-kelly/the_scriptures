@@ -75,7 +75,16 @@ export class Instance {
     }
     Restyle() {
         if (this.Is_Alive()) {
-            this.Element().setAttribute(`style`, this.On_Restyle());
+            const styles = this.On_Restyle();
+            if (styles instanceof Object) {
+                const element = this.Element();
+                for (const style of Object.entries(styles)) {
+                    element.style[style[0]] = style[1];
+                }
+            }
+            else {
+                this.Element().setAttribute(`style`, styles);
+            }
             for (const child of this.children.values()) {
                 child.Restyle();
             }

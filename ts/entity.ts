@@ -36,31 +36,32 @@ export interface Info_API
 export interface Life_Cycle_Sender_API
 {
     /*
-        Automatically queued when the entity is constructed.
+        Automatically called after the entity is constructed.
     */
     // private Live(
     //    parent: Instance | null,
     //): void;
 
     /*
-        Automatically queued through Live.
-
-        Should not be waited on in any of the event listeners,
-        it will dead-lock the queue.
+        Automatically called through Live.
+        You can call this to refresh an entity and all of its children.
     */
     Refresh(): void;
 
     /*
-        Should not be waited on in any of the event listeners,
-        it will dead-lock the queue.
+        Automatically called through Refresh.
+        You can call this to restyle an entity and all of its children.
+        Calling this does not fully refresh entities, but only updates
+        their styles.
     */
     Restyle(): void;
 
     /*
-        Automatically queued when the parent of the entity dies.
+        Automatically called when the parent of the entity dies,
+        or when the entity is aborted.
 
-        Should not be waited on in any of the event listeners,
-        it will dead-lock the queue.
+        Typically, you only need to call this directly for the top
+        entity of your entity tree, e.g. before unloading the window.
     */
     Die(): void;
 }
@@ -88,14 +89,15 @@ export interface Life_Cycle_Listener_API
 
     /*
         Providing this event handler allows you to return CSS styles that will
-        be applied to the entity's underlying element immediately.
-        The returned styles completely replace all styles on the entity.
+        be applied to the entity's underlying element.
+        Styles returned as a string completely replace all styles on the entity.
+        Styles returned as an object only override styles on the entity.
         The returned string should have valid CSS code within it, as if you were
         writing the interior of a valid CSS class, without the '{' and '}'.
         Children get this event after their parents.
         If a child is aborted in the Refresh event, it does not receive the event.
     */
-    On_Restyle(): string;
+    On_Restyle(): string | { [index: string]: string };
 
     /*
         Providing this event handler allows you to work with an entity
@@ -324,10 +326,19 @@ export class Instance implements
         void
     {
         if (this.Is_Alive()) {
-            this.Element().setAttribute(
-                `style`,
-                this.On_Restyle(),
-            );
+            const styles: string | { [index: string]: string } = this.On_Restyle();
+
+            if (styles as any instanceof Object) {
+                const element: HTMLElement = this.Element();
+                for (const style of Object.entries(styles)) {
+                    (element.style as any)[style[0]] = style[1];
+                }
+            } else {
+                this.Element().setAttribute(
+                    `style`,
+                    styles as string,
+                );
+            }
 
             for (const child of this.children.values()) {
                 child.Restyle();
@@ -376,7 +387,7 @@ export class Instance implements
     }
 
     On_Restyle():
-        string
+        string | { [index: string]: string }
     {
         return ``;
     }
