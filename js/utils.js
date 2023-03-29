@@ -42,9 +42,12 @@ export function Resolve_Path(path_from_root) {
     }
 }
 export function Create_Style_Element(inner_css) {
-    const style = document.createElement(`style`);
-    style.setAttribute(`type`, `text/css`);
-    style.appendChild(document.createTextNode(inner_css));
-    document.head.appendChild(style);
-    return style;
+    const style_element = document.createElement(`style`);
+    style_element.setAttribute(`type`, `text/css`);
+    style_element.appendChild(document.createTextNode(inner_css));
+    document.head.appendChild(style_element);
+    return style_element;
+}
+export function Destroy_Style_Element(style_element) {
+    document.head.removeChild(style_element);
 }

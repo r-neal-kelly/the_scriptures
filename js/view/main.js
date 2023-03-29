@@ -22,46 +22,46 @@ class Body extends Entity.Instance {
         this.model = model;
     }
     On_Life() {
-        Utils.Create_Style_Element(`
-            * {
-                box-sizing: border-box;
-                margin: 0;
-                padding: 0;
-            }
+        this.Add_CSS(`
+                * {
+                    box-sizing: border-box;
+                    margin: 0;
+                    padding: 0;
+                }
 
-            *:focus {
-                outline: 0;
-            }
-            
-            html, body {
-                width: 100%;
-                height: 100%;
+                *:focus {
+                    outline: 0;
+                }
+                
+                body {
+                    width: 100vw;
+                    height: 100vh;
 
-                background-color: black;
+                    background-color: black;
 
-                font-family: sans-serif;
-            }
+                    font-family: sans-serif;
+                }
 
-            span {
-                display: inline-block;
-            }
+                span {
+                    display: inline-block;
+                }
 
-            .ITALIC {
-                font-style: italic;
-            }
+                .ITALIC {
+                    font-style: italic;
+                }
 
-            .BOLD {
-                font-weight: bold;
-            }
+                .BOLD {
+                    font-weight: bold;
+                }
 
-            .UNDERLINE {
-                text-decoration: underline;
-            }
-            
-            .SMALL_CAPS {
-                font-variant: small-caps;
-            }
-        `);
+                .UNDERLINE {
+                    text-decoration: underline;
+                }
+                
+                .SMALL_CAPS {
+                    font-variant: small-caps;
+                }
+            `);
         this.Window().addEventListener(`beforeunload`, function (event) {
             this.Die();
         }.bind(this));

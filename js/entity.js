@@ -34,6 +34,8 @@ export class Instance {
             element :
             document.createElement(element);
         this.event_grid = event_grid;
+        this.css = null;
+        this.css_to_add = null;
         this.parent = null;
         this.children = new Map();
         this.may_adopt_and_abort = false;
@@ -42,8 +44,13 @@ export class Instance {
     Live(parent) {
         if (!this.Is_Alive()) {
             this.is_alive = true;
-            this.element.setAttribute(`id`, `Entity_${Instance.origin_id}_${this.ID()}`);
+            this.element.setAttribute(`id`, this.HTML_ID());
+            this.css_to_add = ``;
             this.Event_Grid().Add_Many_Listeners(this, this.On_Life());
+            if (this.css_to_add !== ``) {
+                this.css = Utils.Create_Style_Element(this.css_to_add);
+            }
+            this.css_to_add = null;
             // We only refresh when there is no parent
             // because the parent itself will refresh
             // its children through this event.
@@ -106,6 +113,9 @@ export class Instance {
                 this.parent = null;
                 parent.children.delete(child_element);
             }
+            if (this.css != null) {
+                Utils.Destroy_Style_Element(this.css);
+            }
             this.Event_Grid().Remove(this);
             this.element = document.body;
             this.is_alive = false;
@@ -130,9 +140,78 @@ export class Instance {
         Utils.Assert(this.Is_Alive(), `Cannot get an ID from a dead entity.`);
         return this.id;
     }
+    HTML_ID() {
+        Utils.Assert(this.Is_Alive(), `Cannot get an html ID from a dead entity.`);
+        return `Entity_${Instance.class_id}_${this.ID()}`;
+    }
     Element() {
         Utils.Assert(this.Is_Alive(), `Cannot get an element from a dead entity.`);
         return this.element;
+    }
+    // We still need to handle things like is:() and where:() I think
+    Add_CSS(css) {
+        Utils.Assert(this.css_to_add != null, `You can only add css during On_Life().`);
+        const html_id = this.HTML_ID();
+        this.css_to_add += `
+            /* CSS for ${html_id} and its Children: */
+        `;
+        this.css_to_add += css.replace(/(}\s*|^\s*)([^@{]+)({)/g, function (match, left, selector_list, right) {
+            let result = ``;
+            const selectors = selector_list.trim().split(/\s*,\s*/g);
+            for (let idx = 0, end = selectors.length; idx < end; idx += 1) {
+                const selector = selectors[idx];
+                result += `${selector.replace(/^([^\s>~+|]*)/, `$1#${html_id}`)}, `;
+                if (idx !== end - 1) {
+                    result += `#${html_id} ${selector}, `;
+                }
+                else {
+                    result += `#${html_id} ${selector} `;
+                }
+            }
+            return `${left}${result}${right}`;
+        });
+    }
+    Add_This_CSS(this_css) {
+        Utils.Assert(this.css_to_add != null, `You can only add this_css during On_Life().`);
+        const html_id = this.HTML_ID();
+        this.css_to_add += `
+            /* CSS for ${html_id}: */
+        `;
+        this.css_to_add += this_css.replace(/(}\s*|^\s*)([^@{]+)({)/g, function (match, left, selector_list, right) {
+            let result = ``;
+            const selectors = selector_list.trim().split(/\s*,\s*/g);
+            for (let idx = 0, end = selectors.length; idx < end; idx += 1) {
+                const selector = selectors[idx];
+                if (idx !== end - 1) {
+                    result += `${selector.replace(/^([^\s>~+|]*)/, `$1#${html_id}`)}, `;
+                }
+                else {
+                    result += `${selector.replace(/^([^\s>~+|]*)/, `$1#${html_id}`)} `;
+                }
+            }
+            return `${left}${result}${right}`;
+        });
+    }
+    Add_Children_CSS(children_css) {
+        Utils.Assert(this.css_to_add != null, `You can only add children_css during On_Life().`);
+        const html_id = this.HTML_ID();
+        this.css_to_add += `
+            /* CSS for ${html_id}'s Children: */
+        `;
+        this.css_to_add += children_css.replace(/(}\s*|^\s*)([^@{]+)({)/g, function (match, left, selector_list, right) {
+            let result = ``;
+            const selectors = selector_list.trim().split(/\s*,\s*/g);
+            for (let idx = 0, end = selectors.length; idx < end; idx += 1) {
+                const selector = selectors[idx];
+                if (idx !== end - 1) {
+                    result += `#${html_id} ${selector}, `;
+                }
+                else {
+                    result += `#${html_id} ${selector} `;
+                }
+            }
+            return `${left}${result}${right}`;
+        });
     }
     Has_Parent() {
         Utils.Assert(this.Is_Alive(), `Cannot know if a dead entity has a parent.`);
@@ -299,5 +378,5 @@ export class Instance {
         });
     }
 }
-Instance.origin_id = new Date().getTime();
+Instance.class_id = `${new Date().getTime()}${Math.random().toString().replace(/\./g, ``)}`;
 Instance.next_id = 0;

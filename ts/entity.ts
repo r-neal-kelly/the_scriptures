@@ -1,4 +1,3 @@
-import { Integer } from "./types.js";
 import { Count } from "./types.js";
 import { Index } from "./types.js";
 import { ID } from "./types.js";
@@ -29,6 +28,8 @@ export interface Info_API
     Is_Alive(): boolean;
 
     ID(): ID;
+
+    HTML_ID(): string;
 
     Element(): HTMLElement;
 }
@@ -106,6 +107,30 @@ export interface Life_Cycle_Listener_API
         Children get this event before their parents.
     */
     Before_Death(): void;
+}
+
+export interface CSS_API
+{
+    /*
+        Adds css that is localized to this entity and its children.
+    */
+    Add_CSS(
+        css: string,
+    ): void;
+
+    /*
+        Adds css that is localized only to this entity.
+    */
+    Add_This_CSS(
+        css: string,
+    ): void;
+
+    /*
+        Adds css that is localized only to this entity's children.
+    */
+    Add_Children_CSS(
+        css: string,
+    ): void;
 }
 
 export interface Parent_API
@@ -221,18 +246,23 @@ export class Instance implements
     Info_API,
     Life_Cycle_Sender_API,
     Life_Cycle_Listener_API,
+    CSS_API,
     Parent_API,
     Child_API,
     Event_API,
     Animation_API
 {
-    private static origin_id: Integer = new Date().getTime();
+    private static class_id: string =
+        `${new Date().getTime()}${Math.random().toString().replace(/\./g, ``)}`;
     private static next_id: ID = 0;
 
     private is_alive: boolean;
     private id: ID;
     private element: HTMLElement;
     private event_grid: Event.Grid;
+
+    private css: HTMLStyleElement | null;
+    private css_to_add: string | null;
 
     private parent: Instance | null;
     private children: Map<HTMLElement, Instance>;
@@ -262,6 +292,9 @@ export class Instance implements
             document.createElement(element);
         this.event_grid = event_grid;
 
+        this.css = null;
+        this.css_to_add = null;
+
         this.parent = null;
         this.children = new Map();
         this.may_adopt_and_abort = false;
@@ -279,10 +312,15 @@ export class Instance implements
 
             this.element.setAttribute(
                 `id`,
-                `Entity_${Instance.origin_id}_${this.ID()}`,
+                this.HTML_ID(),
             );
 
+            this.css_to_add = ``;
             this.Event_Grid().Add_Many_Listeners(this, this.On_Life());
+            if (this.css_to_add !== ``) {
+                this.css = Utils.Create_Style_Element(this.css_to_add);
+            }
+            this.css_to_add = null;
 
             // We only refresh when there is no parent
             // because the parent itself will refresh
@@ -368,6 +406,10 @@ export class Instance implements
                 parent.children.delete(child_element);
             }
 
+            if (this.css != null) {
+                Utils.Destroy_Style_Element(this.css);
+            }
+
             this.Event_Grid().Remove(this);
             this.element = document.body;
             this.is_alive = false;
@@ -415,6 +457,17 @@ export class Instance implements
         return this.id;
     }
 
+    HTML_ID():
+        string
+    {
+        Utils.Assert(
+            this.Is_Alive(),
+            `Cannot get an html ID from a dead entity.`,
+        );
+
+        return `Entity_${Instance.class_id}_${this.ID()}`;
+    }
+
     Element():
         HTMLElement
     {
@@ -424,6 +477,134 @@ export class Instance implements
         );
 
         return this.element;
+    }
+
+    // We still need to handle things like is:() and where:() I think
+    Add_CSS(
+        css: string,
+    ):
+        void
+    {
+        Utils.Assert(
+            this.css_to_add != null,
+            `You can only add css during On_Life().`,
+        );
+
+        const html_id: string = this.HTML_ID();
+
+        this.css_to_add += `
+            /* CSS for ${html_id} and its Children: */
+        `;
+        this.css_to_add += css.replace(
+            /(}\s*|^\s*)([^@{]+)({)/g,
+            function (
+                match: string,
+                left: string,
+                selector_list: string,
+                right: string,
+            ):
+                string
+            {
+                let result: string = ``;
+
+                const selectors: Array<string> = selector_list.trim().split(/\s*,\s*/g);
+                for (let idx = 0, end = selectors.length; idx < end; idx += 1) {
+                    const selector: string = selectors[idx];
+                    result += `${selector.replace(/^([^\s>~+|]*)/, `$1#${html_id}`)}, `;
+                    if (idx !== end - 1) {
+                        result += `#${html_id} ${selector}, `;
+                    } else {
+                        result += `#${html_id} ${selector} `;
+                    }
+                }
+
+                return `${left}${result}${right}`;
+            },
+        );
+    }
+
+    Add_This_CSS(
+        this_css: string,
+    ):
+        void
+    {
+        Utils.Assert(
+            this.css_to_add != null,
+            `You can only add this_css during On_Life().`,
+        );
+
+        const html_id: string = this.HTML_ID();
+
+        this.css_to_add += `
+            /* CSS for ${html_id}: */
+        `;
+        this.css_to_add += this_css.replace(
+            /(}\s*|^\s*)([^@{]+)({)/g,
+            function (
+                match: string,
+                left: string,
+                selector_list: string,
+                right: string,
+            ):
+                string
+            {
+                let result: string = ``;
+
+                const selectors: Array<string> = selector_list.trim().split(/\s*,\s*/g);
+                for (let idx = 0, end = selectors.length; idx < end; idx += 1) {
+                    const selector: string = selectors[idx];
+                    if (idx !== end - 1) {
+                        result += `${selector.replace(/^([^\s>~+|]*)/, `$1#${html_id}`)}, `;
+                    } else {
+                        result += `${selector.replace(/^([^\s>~+|]*)/, `$1#${html_id}`)} `;
+                    }
+                }
+
+                return `${left}${result}${right}`;
+            },
+        );
+    }
+
+    Add_Children_CSS(
+        children_css: string,
+    ):
+        void
+    {
+        Utils.Assert(
+            this.css_to_add != null,
+            `You can only add children_css during On_Life().`,
+        );
+
+        const html_id: string = this.HTML_ID();
+
+        this.css_to_add += `
+            /* CSS for ${html_id}'s Children: */
+        `;
+        this.css_to_add += children_css.replace(
+            /(}\s*|^\s*)([^@{]+)({)/g,
+            function (
+                match: string,
+                left: string,
+                selector_list: string,
+                right: string,
+            ):
+                string
+            {
+                let result: string = ``;
+
+                const selectors: Array<string> = selector_list.trim().split(/\s*,\s*/g);
+                for (let idx = 0, end = selectors.length; idx < end; idx += 1) {
+                    const selector: string = selectors[idx];
+                    if (idx !== end - 1) {
+                        result += `#${html_id} ${selector}, `;
+                    } else {
+                        result += `#${html_id} ${selector} `;
+                    }
+                }
+
+                return `${left}${result}${right}`;
+            },
+        );
     }
 
     Has_Parent():

@@ -88,18 +88,27 @@ export function Create_Style_Element(
 ):
     HTMLStyleElement
 {
-    const style: HTMLStyleElement = document.createElement(`style`);
+    const style_element: HTMLStyleElement =
+        document.createElement(`style`);
 
-    style.setAttribute(
+    style_element.setAttribute(
         `type`,
         `text/css`,
     );
 
-    style.appendChild(
+    style_element.appendChild(
         document.createTextNode(inner_css),
     );
 
-    document.head.appendChild(style);
+    document.head.appendChild(style_element);
 
-    return style;
+    return style_element;
+}
+
+export function Destroy_Style_Element(
+    style_element: HTMLStyleElement,
+):
+    void
+{
+    document.head.removeChild(style_element);
 }
