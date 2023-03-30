@@ -10,8 +10,8 @@ import * as Lines from "./lines.js";
 
 export class Instance
 {
-    private static min_line_count: Count = 40;
-    private static min_segment_count: Count = 50;
+    private static min_line_count: Count = 50;
+    private static min_segment_count: Count = 100;
     private static min_part_count: Count = 2;
 
     static Min_Line_Count():

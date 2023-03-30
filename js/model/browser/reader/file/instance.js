@@ -48,6 +48,6 @@ export class Instance {
         return this.lines;
     }
 }
-Instance.min_line_count = 40;
-Instance.min_segment_count = 50;
+Instance.min_line_count = 50;
+Instance.min_segment_count = 100;
 Instance.min_part_count = 2;

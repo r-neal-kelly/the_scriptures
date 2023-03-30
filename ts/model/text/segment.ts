@@ -130,7 +130,13 @@ export class Instance
                         return false;
                     }
                 } else {
-                    return false;
+                    if (part.Is_Command()) {
+                        this.parts.push(part);
+
+                        return true;
+                    } else {
+                        return false;
+                    }
                 }
             }
         }

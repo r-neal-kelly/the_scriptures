@@ -64,7 +64,13 @@ export class Instance {
                     }
                 }
                 else {
-                    return false;
+                    if (part.Is_Command()) {
+                        this.parts.push(part);
+                        return true;
+                    }
+                    else {
+                        return false;
+                    }
                 }
             }
         }
