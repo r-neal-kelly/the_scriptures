@@ -2,7 +2,7 @@ import * as Entity from "../../../../entity.js";
 
 import * as Model from "../../../../model/browser/reader/file/part.js";
 
-import * as Parts from "./parts.js";
+import * as Segment from "./segment.js";
 
 export class Instance extends Entity.Instance
 {
@@ -11,18 +11,18 @@ export class Instance extends Entity.Instance
     constructor(
         {
             model,
-            parts,
+            segment,
         }: {
             model: () => Model.Instance,
-            parts: Parts.Instance,
+            segment: Segment.Instance,
         },
     )
     {
         super(
             {
                 element: `span`,
-                parent: parts,
-                event_grid: parts.Event_Grid(),
+                parent: segment,
+                event_grid: segment.Event_Grid(),
             },
         );
 
@@ -87,9 +87,9 @@ export class Instance extends Entity.Instance
         return this.model();
     }
 
-    Parts():
-        Parts.Instance
+    Segment():
+        Segment.Instance
     {
-        return this.Parent() as Parts.Instance;
+        return this.Parent() as Segment.Instance;
     }
 }

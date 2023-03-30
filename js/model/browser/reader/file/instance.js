@@ -1,5 +1,5 @@
 import * as Utils from "../../../../utils.js";
-import * as Lines from "./lines.js";
+import * as Line from "./line.js";
 export class Instance {
     static Min_Line_Count() {
         return Instance.min_line_count;
@@ -26,10 +26,14 @@ export class Instance {
         this.reader = reader;
         this.data = data;
         this.text = text;
-        this.lines = new Lines.Instance({
-            file: this,
-            text: text,
-        });
+        this.lines = [];
+        for (let idx = 0, end = text.Line_Count(); idx < end; idx += 1) {
+            this.lines.push(new Line.Instance({
+                file: this,
+                index: idx,
+                text: text.Line(idx),
+            }));
+        }
     }
     Reader() {
         return this.reader;
@@ -44,10 +48,24 @@ export class Instance {
     Text() {
         return this.text;
     }
-    Lines() {
-        return this.lines;
+    Line_Count() {
+        return this.lines.length;
+    }
+    Line_At(line_index) {
+        Utils.Assert(line_index > -1, `line_index (${line_index}) must be greater than -1.`);
+        if (line_index < this.Line_Count()) {
+            return this.lines[line_index];
+        }
+        else {
+            return Instance.blank_line;
+        }
     }
 }
 Instance.min_line_count = 50;
 Instance.min_segment_count = 100;
 Instance.min_part_count = 2;
+Instance.blank_line = new Line.Instance({
+    file: null,
+    index: null,
+    text: null,
+});

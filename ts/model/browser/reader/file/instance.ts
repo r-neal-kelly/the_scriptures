@@ -1,4 +1,5 @@
 import { Count } from "../../../../types.js";
+import { Index } from "../../../../types.js";
 
 import * as Utils from "../../../../utils.js";
 
@@ -6,13 +7,21 @@ import * as Text from "../../../text.js";
 import * as Data from "../../data.js";
 import * as Reader from "../instance.js";
 
-import * as Lines from "./lines.js";
+import * as Line from "./line.js";
 
 export class Instance
 {
     private static min_line_count: Count = 50;
     private static min_segment_count: Count = 100;
     private static min_part_count: Count = 2;
+
+    private static blank_line: Line.Instance = new Line.Instance(
+        {
+            file: null,
+            index: null,
+            text: null,
+        },
+    );
 
     static Min_Line_Count():
         Count
@@ -74,7 +83,7 @@ export class Instance
     private reader: Reader.Instance;
     private data: Data.File.Instance | null;
     private text: Text.Instance;
-    private lines: Lines.Instance;
+    private lines: Array<Line.Instance>;
 
     constructor(
         {
@@ -91,12 +100,19 @@ export class Instance
         this.reader = reader;
         this.data = data;
         this.text = text;
-        this.lines = new Lines.Instance(
-            {
-                file: this,
-                text: text,
-            },
-        );
+        this.lines = [];
+
+        for (let idx = 0, end = text.Line_Count(); idx < end; idx += 1) {
+            this.lines.push(
+                new Line.Instance(
+                    {
+                        file: this,
+                        index: idx,
+                        text: text.Line(idx),
+                    },
+                ),
+            );
+        }
     }
 
     Reader():
@@ -128,9 +144,26 @@ export class Instance
         return this.text;
     }
 
-    Lines():
-        Lines.Instance
+    Line_Count():
+        Count
     {
-        return this.lines;
+        return this.lines.length;
+    }
+
+    Line_At(
+        line_index: Index,
+    ):
+        Line.Instance
+    {
+        Utils.Assert(
+            line_index > -1,
+            `line_index (${line_index}) must be greater than -1.`,
+        );
+
+        if (line_index < this.Line_Count()) {
+            return this.lines[line_index];
+        } else {
+            return Instance.blank_line;
+        }
     }
 }

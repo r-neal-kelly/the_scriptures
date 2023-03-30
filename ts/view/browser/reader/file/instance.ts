@@ -1,11 +1,12 @@
-import * as Utils from "../../../../utils.js";
+import { Count } from "../../../../types.js";
+
 import * as Event from "../../../../event.js";
 import * as Entity from "../../../../entity.js";
 
 import * as Model from "../../../../model/browser/reader/file.js";
 
 import * as Reader from "../instance.js";
-import * as Lines from "./lines.js";
+import * as Line from "./line.js";
 
 export class Instance extends Entity.Instance
 {
@@ -128,12 +129,14 @@ export class Instance extends Entity.Instance
     override On_Refresh():
         void
     {
-        if (!this.Has_Lines()) {
-            this.Abort_All_Children();
+        const model: Model.Instance = this.Model();
+        const target: Count = Math.max(Model.Instance.Min_Line_Count(), model.Line_Count());
+        const count: Count = this.Child_Count();
 
-            new Lines.Instance(
+        for (let idx = count, end = target; idx < end; idx += 1) {
+            new Line.Instance(
                 {
-                    model: () => this.Model().Lines(),
+                    model: () => this.Model().Line_At(idx),
                     file: this,
                 },
             );
@@ -153,25 +156,5 @@ export class Instance extends Entity.Instance
         Model.Instance
     {
         return this.model();
-    }
-
-    Has_Lines():
-        boolean
-    {
-        return (
-            this.Has_Child(0) &&
-            this.Child(0) instanceof Lines.Instance
-        );
-    }
-
-    Lines():
-        Lines.Instance
-    {
-        Utils.Assert(
-            this.Has_Lines(),
-            `Doesn't have lines.`,
-        );
-
-        return this.Child(0) as Lines.Instance;
     }
 }

@@ -1,45 +1,56 @@
+import { Count } from "../../../../types.js";
 import { Index } from "../../../../types.js";
 
 import * as Utils from "../../../../utils.js";
 
 import * as Text from "../../../text.js";
 
-import * as Segments from "./segments.js";
-import * as Parts from "./parts.js";
+import * as File from "./instance.js";
+import * as Line from "./line.js";
+import * as Part from "./part.js";
 
 export class Instance
 {
-    private segments: Segments.Instance | null;
+    private static blank_part: Part.Instance = new Part.Instance(
+        {
+            segment: null,
+            index: null,
+            text: null,
+        },
+    );
+
+    static Min_Part_Count():
+        Count
+    {
+        return File.Instance.Min_Part_Count();
+    }
+
+    private line: Line.Instance | null;
     private index: Index | null;
     private text: Text.Segment.Instance | null;
-    private parts: Parts.Instance;
+    private parts: Array<Part.Instance>;
 
     constructor(
         {
-            segments,
+            line,
             index,
             text,
         }: {
-            segments: Segments.Instance | null,
+            line: Line.Instance | null,
             index: Index | null,
             text: Text.Segment.Instance | null,
         },
     )
     {
-        this.segments = segments;
+        this.line = line;
         this.index = index;
         this.text = text;
-        this.parts = new Parts.Instance(
-            {
-                segment: this,
-                text: text,
-            },
-        );
+        this.parts = [];
 
         if (text == null) {
             Utils.Assert(
-                segments == null,
-                `segments must be null.`,
+                line == null,
+                `line must be null.`,
             );
             Utils.Assert(
                 index == null,
@@ -47,25 +58,43 @@ export class Instance
             );
         } else {
             Utils.Assert(
-                segments != null,
-                `segments must not be null.`,
+                line != null,
+                `line must not be null.`,
             );
             Utils.Assert(
                 index != null && index > -1,
                 `index must not be null, and must be greater than -1.`,
             );
+
+            for (let idx = 0, end = text.Part_Count(); idx < end; idx += 1) {
+                this.parts.push(
+                    new Part.Instance(
+                        {
+                            segment: this,
+                            index: idx,
+                            text: text.Part(idx),
+                        },
+                    ),
+                );
+            }
         }
     }
 
-    Segments():
-        Segments.Instance
+    Is_Blank():
+        boolean
+    {
+        return this.text == null;
+    }
+
+    Line():
+        Line.Instance
     {
         Utils.Assert(
-            this.segments != null,
-            `Doesn't have segments.`,
+            this.line != null,
+            `Doesn't have line.`,
         );
 
-        return this.segments as Segments.Instance;
+        return this.line as Line.Instance;
     }
 
     Index():
@@ -90,15 +119,26 @@ export class Instance
         return this.text as Text.Segment.Instance;
     }
 
-    Parts():
-        Parts.Instance
+    Part_Count():
+        Count
     {
-        return this.parts;
+        return this.parts.length;
     }
 
-    Is_Blank():
-        boolean
+    Part_At(
+        part_index: Index,
+    ):
+        Part.Instance
     {
-        return this.text == null;
+        Utils.Assert(
+            part_index > -1,
+            `part_index (${part_index}) must be greater than -1.`,
+        );
+
+        if (part_index < this.Part_Count()) {
+            return this.parts[part_index];
+        } else {
+            return Instance.blank_part;
+        }
     }
 }

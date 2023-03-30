@@ -1,10 +1,10 @@
 import * as Entity from "../../../../entity.js";
 export class Instance extends Entity.Instance {
-    constructor({ model, parts, }) {
+    constructor({ model, segment, }) {
         super({
             element: `span`,
-            parent: parts,
-            event_grid: parts.Event_Grid(),
+            parent: segment,
+            event_grid: segment.Event_Grid(),
         });
         this.model = model;
     }
@@ -54,7 +54,7 @@ export class Instance extends Entity.Instance {
     Model() {
         return this.model();
     }
-    Parts() {
+    Segment() {
         return this.Parent();
     }
 }

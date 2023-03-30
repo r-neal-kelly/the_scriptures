@@ -1,21 +1,22 @@
-import * as Utils from "../../../../utils.js";
 import * as Entity from "../../../../entity.js";
-import * as Segments from "./segments.js";
+import * as Model from "../../../../model/browser/reader/file/line.js";
+import * as Segment from "./segment.js";
 export class Instance extends Entity.Instance {
-    constructor({ model, lines, }) {
+    constructor({ model, file, }) {
         super({
             element: `div`,
-            parent: lines,
-            event_grid: lines.Event_Grid(),
+            parent: file,
+            event_grid: file.Event_Grid(),
         });
         this.model = model;
     }
     On_Refresh() {
         const model = this.Model();
-        if (!this.Has_Segments()) {
-            this.Abort_All_Children();
-            new Segments.Instance({
-                model: () => this.Model().Segments(),
+        const target = Math.max(Model.Instance.Min_Segment_Count(), model.Segment_Count());
+        const count = this.Child_Count();
+        for (let idx = count, end = target; idx < end; idx += 1) {
+            new Segment.Instance({
+                model: () => this.Model().Segment_At(idx),
                 line: this,
             });
         }
@@ -38,15 +39,7 @@ export class Instance extends Entity.Instance {
     Model() {
         return this.model();
     }
-    Lines() {
+    File() {
         return this.Parent();
-    }
-    Has_Segments() {
-        return (this.Has_Child(0) &&
-            this.Child(0) instanceof Segments.Instance);
-    }
-    Segments() {
-        Utils.Assert(this.Has_Segments(), `Doesn't have segments.`);
-        return this.Child(0);
     }
 }

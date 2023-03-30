@@ -1,11 +1,11 @@
-import * as Utils from "../../../../utils.js";
+import { Count } from "../../../../types.js";
 
 import * as Entity from "../../../../entity.js";
 
 import * as Model from "../../../../model/browser/reader/file/line.js";
 
-import * as Lines from "./lines.js";
-import * as Segments from "./segments.js";
+import * as File from "./instance.js";
+import * as Segment from "./segment.js";
 
 export class Instance extends Entity.Instance
 {
@@ -14,18 +14,18 @@ export class Instance extends Entity.Instance
     constructor(
         {
             model,
-            lines,
+            file,
         }: {
             model: () => Model.Instance,
-            lines: Lines.Instance,
+            file: File.Instance,
         },
     )
     {
         super(
             {
                 element: `div`,
-                parent: lines,
-                event_grid: lines.Event_Grid(),
+                parent: file,
+                event_grid: file.Event_Grid(),
             },
         );
 
@@ -36,13 +36,13 @@ export class Instance extends Entity.Instance
         void
     {
         const model: Model.Instance = this.Model();
+        const target: Count = Math.max(Model.Instance.Min_Segment_Count(), model.Segment_Count());
+        const count: Count = this.Child_Count();
 
-        if (!this.Has_Segments()) {
-            this.Abort_All_Children();
-
-            new Segments.Instance(
+        for (let idx = count, end = target; idx < end; idx += 1) {
+            new Segment.Instance(
                 {
-                    model: () => this.Model().Segments(),
+                    model: () => this.Model().Segment_At(idx),
                     line: this,
                 },
             );
@@ -73,29 +73,9 @@ export class Instance extends Entity.Instance
         return this.model();
     }
 
-    Lines():
-        Lines.Instance
+    File():
+        File.Instance
     {
-        return this.Parent() as Lines.Instance;
-    }
-
-    Has_Segments():
-        boolean
-    {
-        return (
-            this.Has_Child(0) &&
-            this.Child(0) instanceof Segments.Instance
-        );
-    }
-
-    Segments():
-        Segments.Instance
-    {
-        Utils.Assert(
-            this.Has_Segments(),
-            `Doesn't have segments.`,
-        );
-
-        return this.Child(0) as Segments.Instance;
+        return this.Parent() as File.Instance;
     }
 }

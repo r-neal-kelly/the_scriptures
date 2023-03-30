@@ -1,6 +1,6 @@
-import * as Utils from "../../../../utils.js";
 import * as Entity from "../../../../entity.js";
-import * as Lines from "./lines.js";
+import * as Model from "../../../../model/browser/reader/file.js";
+import * as Line from "./line.js";
 export class Instance extends Entity.Instance {
     constructor({ model, reader, }) {
         super({
@@ -98,10 +98,12 @@ export class Instance extends Entity.Instance {
         return [];
     }
     On_Refresh() {
-        if (!this.Has_Lines()) {
-            this.Abort_All_Children();
-            new Lines.Instance({
-                model: () => this.Model().Lines(),
+        const model = this.Model();
+        const target = Math.max(Model.Instance.Min_Line_Count(), model.Line_Count());
+        const count = this.Child_Count();
+        for (let idx = count, end = target; idx < end; idx += 1) {
+            new Line.Instance({
+                model: () => this.Model().Line_At(idx),
                 file: this,
             });
         }
@@ -114,13 +116,5 @@ export class Instance extends Entity.Instance {
     }
     Model() {
         return this.model();
-    }
-    Has_Lines() {
-        return (this.Has_Child(0) &&
-            this.Child(0) instanceof Lines.Instance);
-    }
-    Lines() {
-        Utils.Assert(this.Has_Lines(), `Doesn't have lines.`);
-        return this.Child(0);
     }
 }

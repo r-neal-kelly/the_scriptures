@@ -1,11 +1,11 @@
-import * as Utils from "../../../../utils.js";
+import { Count } from "../../../../types.js";
 
 import * as Entity from "../../../../entity.js";
 
 import * as Model from "../../../../model/browser/reader/file/segment.js";
 
-import * as Segments from "./segments.js";
-import * as Parts from "./parts.js";
+import * as Line from "./line.js";
+import * as Part from "./part.js";
 
 export class Instance extends Entity.Instance
 {
@@ -14,18 +14,18 @@ export class Instance extends Entity.Instance
     constructor(
         {
             model,
-            segments,
+            line,
         }: {
             model: () => Model.Instance,
-            segments: Segments.Instance,
+            line: Line.Instance,
         },
     )
     {
         super(
             {
                 element: `div`,
-                parent: segments,
-                event_grid: segments.Event_Grid(),
+                parent: line,
+                event_grid: line.Event_Grid(),
             },
         );
 
@@ -36,13 +36,13 @@ export class Instance extends Entity.Instance
         void
     {
         const model: Model.Instance = this.Model();
+        const target: Count = Math.max(Model.Instance.Min_Part_Count(), model.Part_Count());
+        const count: Count = this.Child_Count();
 
-        if (!this.Has_Parts()) {
-            this.Abort_All_Children();
-
-            new Parts.Instance(
+        for (let idx = count, end = target; idx < end; idx += 1) {
+            new Part.Instance(
                 {
-                    model: () => this.Model().Parts(),
+                    model: () => this.Model().Part_At(idx),
                     segment: this,
                 },
             );
@@ -69,29 +69,9 @@ export class Instance extends Entity.Instance
         return this.model();
     }
 
-    Segments():
-        Segments.Instance
+    Line():
+        Line.Instance
     {
-        return this.Parent() as Segments.Instance;
-    }
-
-    Has_Parts():
-        boolean
-    {
-        return (
-            this.Has_Child(0) &&
-            this.Child(0) instanceof Parts.Instance
-        );
-    }
-
-    Parts():
-        Parts.Instance
-    {
-        Utils.Assert(
-            this.Has_Parts(),
-            `Doesn't have parts.`,
-        );
-
-        return this.Child(0) as Parts.Instance;
+        return this.Parent() as Line.Instance;
     }
 }

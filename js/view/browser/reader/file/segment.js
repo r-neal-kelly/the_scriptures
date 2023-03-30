@@ -1,21 +1,22 @@
-import * as Utils from "../../../../utils.js";
 import * as Entity from "../../../../entity.js";
-import * as Parts from "./parts.js";
+import * as Model from "../../../../model/browser/reader/file/segment.js";
+import * as Part from "./part.js";
 export class Instance extends Entity.Instance {
-    constructor({ model, segments, }) {
+    constructor({ model, line, }) {
         super({
             element: `div`,
-            parent: segments,
-            event_grid: segments.Event_Grid(),
+            parent: line,
+            event_grid: line.Event_Grid(),
         });
         this.model = model;
     }
     On_Refresh() {
         const model = this.Model();
-        if (!this.Has_Parts()) {
-            this.Abort_All_Children();
-            new Parts.Instance({
-                model: () => this.Model().Parts(),
+        const target = Math.max(Model.Instance.Min_Part_Count(), model.Part_Count());
+        const count = this.Child_Count();
+        for (let idx = count, end = target; idx < end; idx += 1) {
+            new Part.Instance({
+                model: () => this.Model().Part_At(idx),
                 segment: this,
             });
         }
@@ -32,15 +33,7 @@ export class Instance extends Entity.Instance {
     Model() {
         return this.model();
     }
-    Segments() {
+    Line() {
         return this.Parent();
-    }
-    Has_Parts() {
-        return (this.Has_Child(0) &&
-            this.Child(0) instanceof Parts.Instance);
-    }
-    Parts() {
-        Utils.Assert(this.Has_Parts(), `Doesn't have parts.`);
-        return this.Child(0);
     }
 }
