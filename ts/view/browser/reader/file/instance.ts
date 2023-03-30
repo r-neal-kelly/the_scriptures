@@ -59,6 +59,8 @@ export class Instance extends Entity.Instance
                     display: flex;
                     flex-wrap: wrap;
                     justify-content: center;
+
+                    text-align: center;
                 }
 
                 /* Segments */

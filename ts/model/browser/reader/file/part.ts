@@ -11,6 +11,7 @@ export class Instance
     private segment: Segment.Instance | null;
     private index: Index | null;
     private text: Text.Part.Instance | null;
+    private value: string;
 
     constructor(
         {
@@ -37,6 +38,8 @@ export class Instance
                 index == null,
                 `index must be null.`,
             );
+
+            this.value = ``;
         } else {
             Utils.Assert(
                 segment != null,
@@ -46,6 +49,15 @@ export class Instance
                 index != null && index > -1,
                 `index must not be null, and must be greater than -1.`,
             );
+
+            if (text.Is_Command()) {
+                this.value = ``;
+            } else {
+                this.value = text.Value()
+                    .replace(/^ /, ` `)
+                    .replace(/ $/, ` `)
+                    .replace(/  /g, `  `);
+            }
         }
     }
 
@@ -101,5 +113,11 @@ export class Instance
             this.Segment().Index() === 0 &&
             this.Segment().Line().Text().Is_Indented()
         );
+    }
+
+    Value():
+        string
+    {
+        return this.value;
     }
 }

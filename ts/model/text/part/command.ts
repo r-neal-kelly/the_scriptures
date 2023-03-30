@@ -1,3 +1,7 @@
+import { Index } from "../../../types.js";
+
+import * as Unicode from "../../../unicode.js";
+
 import { Value } from "../value.js";
 
 import * as Part from "./instance.js";
@@ -96,6 +100,41 @@ export function Maybe_Valid_Value_From(
     const matches: RegExpMatchArray | null = text.match(/^⸨[^⸩]*⸩/);
     if (matches != null) {
         return matches[0];
+    } else {
+        return null;
+    }
+}
+
+export function Last_Non_Value_Index(
+    text: string,
+):
+    Index | null
+{
+    if (text.length > 0) {
+        const matches: RegExpMatchArray | null = text.match(/(⸨[^⸩]*⸩)*$/);
+        if (
+            matches != null &&
+            matches[0].length > 0
+        ) {
+            const iterator: Unicode.Iterator = new Unicode.Iterator(
+                {
+                    text: text,
+                    index: text.length - matches[0].length,
+                },
+            );
+            if (iterator.Is_At_Start()) {
+                return null;
+            } else {
+                return iterator.Previous().Index();
+            }
+        } else {
+            return new Unicode.Iterator(
+                {
+                    text: text,
+                    index: text.length,
+                },
+            ).Previous().Index();
+        }
     } else {
         return null;
     }

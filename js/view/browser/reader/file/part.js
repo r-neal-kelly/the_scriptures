@@ -10,16 +10,7 @@ export class Instance extends Entity.Instance {
     }
     On_Refresh() {
         const model = this.Model();
-        const is_blank = model.Is_Blank();
-        if (is_blank || model.Text().Is_Command()) {
-            this.Element().textContent = ``;
-        }
-        else {
-            // Doing this in reader causes the dictionary to think some things are
-            // errors, because the dictionary doesn't recognize the non-breaking space.
-            // So we're currently doing it here, although we could move it to model I suppose.
-            this.Element().textContent = model.Text().Value().replace(/ /g, ` `);
-        }
+        this.Element().textContent = model.Value();
     }
     On_Reclass() {
         const model = this.Model();

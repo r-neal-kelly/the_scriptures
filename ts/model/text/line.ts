@@ -101,6 +101,7 @@ export class Instance
         );
 
         let first_non_command_index: Index | null = null;
+        const last_non_command_index: Index | null = Command.Last_Non_Value_Index(this.value);
 
         let current_point_segment: Segment.Instance = new Segment.Instance();
         let current_part_segment: Segment.Instance = new Segment.Instance();
@@ -278,15 +279,7 @@ export class Instance
                         );
                         const boundary: Dictionary.Boundary = it.Index() === first_non_command_index ?
                             Dictionary.Boundary.START :
-                            // This check fails when one or more commands are the end of the string.
-                            // We'll need to read the string backwards, so we'll need to update
-                            // the iterator and make a function probably in Command that tells us
-                            // the index of the last point in the string that is not part of a
-                            // command value. Then we'll need to compare that with the next point's
-                            // index, which means we'll need to keep it as an iterator | null.
-                            // So the command function can simply return an iterator also.
-                            // In the even that the whole string is a command, it should return null.
-                            next_point == null ?
+                            it.Index() === last_non_command_index ?
                                 Dictionary.Boundary.END :
                                 Dictionary.Boundary.MIDDLE;
                         const status: Status = dictionary.Has_Break(break_, boundary) ?

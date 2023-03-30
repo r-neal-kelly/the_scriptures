@@ -7,10 +7,20 @@ export class Instance {
         if (text == null) {
             Utils.Assert(segment == null, `segment must be null.`);
             Utils.Assert(index == null, `index must be null.`);
+            this.value = ``;
         }
         else {
             Utils.Assert(segment != null, `segment must not be null.`);
             Utils.Assert(index != null && index > -1, `index must not be null, and must be greater than -1.`);
+            if (text.Is_Command()) {
+                this.value = ``;
+            }
+            else {
+                this.value = text.Value()
+                    .replace(/^ /, ` `)
+                    .replace(/ $/, ` `)
+                    .replace(/  /g, `  `);
+            }
         }
     }
     Is_Blank() {
@@ -33,5 +43,8 @@ export class Instance {
         return (this.Index() === 0 &&
             this.Segment().Index() === 0 &&
             this.Segment().Line().Text().Is_Indented());
+    }
+    Value() {
+        return this.value;
     }
 }
