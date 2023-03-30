@@ -20,24 +20,20 @@ export class Instance extends Entity.Instance {
             });
         }
     }
-    On_Restyle() {
+    On_Reclass() {
         const model = this.Model();
-        const is_blank = model.Is_Blank();
-        const display = is_blank ?
-            `none` :
-            model.Text().Is_Centered() ?
-                `flex` :
-                `block`;
-        const color = is_blank || model.Text().Value() === `` ?
-            `transparent` :
-            `inherit`;
-        return `
-            display: ${display};
-            flex-wrap: wrap;
-            justify-content: center;
-
-            color: ${color};
-        `;
+        const classes = [];
+        classes.push(`Line`);
+        if (model.Is_Blank()) {
+            classes.push(`Blank_Line`);
+        }
+        else if (model.Text().Value() === ``) {
+            classes.push(`New_Line`);
+        }
+        else if (model.Text().Is_Centered()) {
+            classes.push(`Centered_Line`);
+        }
+        return classes;
     }
     Model() {
         return this.model();

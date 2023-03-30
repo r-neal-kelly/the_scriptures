@@ -8,6 +8,34 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import * as Utils from "./utils.js";
+/*
+    Life-Cycle:
+        Live:
+            On_Life
+            On_Refresh
+            On_Reclass
+            On_Restyle
+        Refresh:
+            On_Refresh
+            On_Reclass
+            On_Restyle
+        Reclass:
+            On_Reclass
+            On_Restyle
+        Restyle:
+            On_Restyle
+        Die:
+            Before_Death
+*/
+var Life_Cycle_Listener;
+(function (Life_Cycle_Listener) {
+    Life_Cycle_Listener[Life_Cycle_Listener["_NONE_"] = 0] = "_NONE_";
+    Life_Cycle_Listener[Life_Cycle_Listener["ON_LIFE"] = 1] = "ON_LIFE";
+    Life_Cycle_Listener[Life_Cycle_Listener["ON_REFRESH"] = 2] = "ON_REFRESH";
+    Life_Cycle_Listener[Life_Cycle_Listener["ON_RECLASS"] = 3] = "ON_RECLASS";
+    Life_Cycle_Listener[Life_Cycle_Listener["ON_RESTYLE"] = 4] = "ON_RESTYLE";
+    Life_Cycle_Listener[Life_Cycle_Listener["BEFORE_DEATH"] = 5] = "BEFORE_DEATH";
+})(Life_Cycle_Listener || (Life_Cycle_Listener = {}));
 export class Animation_Frame {
     constructor({ now, start, elapsed, }) {
         this.now = now;
@@ -38,19 +66,23 @@ export class Instance {
         this.css_to_add = null;
         this.parent = null;
         this.children = new Map();
-        this.may_adopt_and_abort = false;
+        this.life_cycle_listener = Life_Cycle_Listener._NONE_;
         this.Live(parent);
     }
     Live(parent) {
         if (!this.Is_Alive()) {
             this.is_alive = true;
             this.element.setAttribute(`id`, this.HTML_ID());
-            this.css_to_add = ``;
-            this.Event_Grid().Add_Many_Listeners(this, this.On_Life());
-            if (this.css_to_add !== ``) {
-                this.css = Utils.Create_Style_Element(this.css_to_add);
+            if (Object.getPrototypeOf(this).hasOwnProperty(`On_Life`)) {
+                this.life_cycle_listener = Life_Cycle_Listener.ON_LIFE;
+                this.css_to_add = ``;
+                this.Event_Grid().Add_Many_Listeners(this, this.On_Life());
+                if (this.css_to_add !== ``) {
+                    this.css = Utils.Create_Style_Element(this.css_to_add);
+                }
+                this.css_to_add = null;
+                this.life_cycle_listener = Life_Cycle_Listener._NONE_;
             }
-            this.css_to_add = null;
             // We only refresh when there is no parent
             // because the parent itself will refresh
             // its children through this event.
@@ -69,20 +101,66 @@ export class Instance {
             }
         }
     }
+    // This algorithm for the different Life-Cycle Senders is extremely efficient
+    // because it only goes over the tree once, instead of once per Sender.
     Refresh() {
         if (this.Is_Alive()) {
-            this.may_adopt_and_abort = true;
-            this.On_Refresh();
-            this.may_adopt_and_abort = false;
+            this.Refresh_This();
+            this.Reclass_This();
+            this.Restyle_This();
             for (const child of this.children.values()) {
                 child.Refresh();
             }
-            this.Restyle();
+        }
+    }
+    Refresh_This() {
+        if (this.Is_Alive() &&
+            Object.getPrototypeOf(this).hasOwnProperty(`On_Refresh`)) {
+            this.life_cycle_listener = Life_Cycle_Listener.ON_REFRESH;
+            this.On_Refresh();
+            this.life_cycle_listener = Life_Cycle_Listener._NONE_;
+        }
+    }
+    Reclass() {
+        if (this.Is_Alive()) {
+            this.Reclass_This();
+            this.Restyle_This();
+            for (const child of this.children.values()) {
+                child.Reclass();
+            }
+        }
+    }
+    Reclass_This() {
+        if (this.Is_Alive() &&
+            Object.getPrototypeOf(this).hasOwnProperty(`On_Reclass`)) {
+            this.life_cycle_listener = Life_Cycle_Listener.ON_RECLASS;
+            const classes = this.On_Reclass().join(` `);
+            this.life_cycle_listener = Life_Cycle_Listener._NONE_;
+            // This might not be necessary, but we're trying to avoid internal browser slowdown.
+            // It's probably already doing this internally, so we can relax it. However,
+            // we can't just use the classList on element, it's way too slow sometimes.
+            const element = this.Element();
+            const current_classes = element.getAttribute(`class`);
+            if (current_classes == null ||
+                current_classes !== classes) {
+                element.setAttribute(`class`, classes);
+            }
         }
     }
     Restyle() {
         if (this.Is_Alive()) {
+            this.Restyle_This();
+            for (const child of this.children.values()) {
+                child.Restyle();
+            }
+        }
+    }
+    Restyle_This() {
+        if (this.Is_Alive() &&
+            Object.getPrototypeOf(this).hasOwnProperty(`On_Restyle`)) {
+            this.life_cycle_listener = Life_Cycle_Listener.ON_RESTYLE;
             const styles = this.On_Restyle();
+            this.life_cycle_listener = Life_Cycle_Listener._NONE_;
             if (styles instanceof Object) {
                 const element = this.Element();
                 for (const style of Object.entries(styles)) {
@@ -92,14 +170,15 @@ export class Instance {
             else {
                 this.Element().setAttribute(`style`, styles);
             }
-            for (const child of this.children.values()) {
-                child.Restyle();
-            }
         }
     }
     Die() {
         if (this.Is_Alive()) {
-            this.Before_Death();
+            if (Object.getPrototypeOf(this).hasOwnProperty(`Before_Death`)) {
+                this.life_cycle_listener = Life_Cycle_Listener.BEFORE_DEATH;
+                this.Before_Death();
+                this.life_cycle_listener = Life_Cycle_Listener._NONE_;
+            }
             for (const child of this.children.values()) {
                 child.Die();
             }
@@ -127,6 +206,9 @@ export class Instance {
     On_Refresh() {
         return;
     }
+    On_Reclass() {
+        return [];
+    }
     On_Restyle() {
         return ``;
     }
@@ -150,7 +232,8 @@ export class Instance {
     }
     // We still need to handle things like is:() and where:() I think
     Add_CSS(css) {
-        Utils.Assert(this.css_to_add != null, `You can only add css during On_Life().`);
+        Utils.Assert(this.Is_Alive(), `Cannot add css on a dead entity.`);
+        Utils.Assert(this.life_cycle_listener === Life_Cycle_Listener.ON_LIFE, `You can only add css during On_Life().`);
         const html_id = this.HTML_ID();
         this.css_to_add += `
             /* CSS for ${html_id} and its Children: */
@@ -172,7 +255,8 @@ export class Instance {
         });
     }
     Add_This_CSS(this_css) {
-        Utils.Assert(this.css_to_add != null, `You can only add this_css during On_Life().`);
+        Utils.Assert(this.Is_Alive(), `Cannot add this_css on a dead entity.`);
+        Utils.Assert(this.life_cycle_listener === Life_Cycle_Listener.ON_LIFE, `You can only add this_css during On_Life().`);
         const html_id = this.HTML_ID();
         this.css_to_add += `
             /* CSS for ${html_id}: */
@@ -193,7 +277,8 @@ export class Instance {
         });
     }
     Add_Children_CSS(children_css) {
-        Utils.Assert(this.css_to_add != null, `You can only add children_css during On_Life().`);
+        Utils.Assert(this.Is_Alive(), `Cannot add children_css on a dead entity.`);
+        Utils.Assert(this.life_cycle_listener === Life_Cycle_Listener.ON_LIFE, `You can only add children_css during On_Life().`);
         const html_id = this.HTML_ID();
         this.css_to_add += `
             /* CSS for ${html_id}'s Children: */
@@ -257,7 +342,7 @@ export class Instance {
     }
     Adopt_Child(child) {
         Utils.Assert(this.Is_Alive(), `A parent must be alive to adopt a child.`);
-        Utils.Assert(this.may_adopt_and_abort === true, `You can only adopt a child during On_Refresh().`);
+        Utils.Assert(this.life_cycle_listener === Life_Cycle_Listener.ON_REFRESH, `You can only adopt a child during On_Refresh().`);
         Utils.Assert(child.Is_Alive(), `A child must be alive to be adopted.`);
         Utils.Assert(!child.Has_Parent(), `A child must not have a parent to be adopted.`);
         Utils.Assert(this.Child_Count() + 1 < Infinity, `Can not add any more children!`);
@@ -267,7 +352,7 @@ export class Instance {
     }
     Abort_Child(child) {
         Utils.Assert(this.Is_Alive(), `A parent must be alive to abort a child.`);
-        Utils.Assert(this.may_adopt_and_abort === true, `You can only abort a child during On_Refresh().`);
+        Utils.Assert(this.life_cycle_listener === Life_Cycle_Listener.ON_REFRESH, `You can only abort a child during On_Refresh().`);
         Utils.Assert(child.Is_Alive(), `A child must be alive to be aborted.`);
         Utils.Assert(child.Parent() === this, `A child must have this parent to be aborted.`);
         child.Die();

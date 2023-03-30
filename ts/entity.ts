@@ -2,6 +2,7 @@ import { Count } from "./types.js";
 import { Index } from "./types.js";
 import { ID } from "./types.js";
 import { Float } from "./types.js";
+import { Name } from "./types.js";
 
 import * as Utils from "./utils.js";
 import * as Event from "./event.js";
@@ -13,15 +14,31 @@ export { ID } from "./types.js";
         Live:
             On_Life
             On_Refresh
+            On_Reclass
             On_Restyle
         Refresh:
             On_Refresh
+            On_Reclass
+            On_Restyle
+        Reclass:
+            On_Reclass
             On_Restyle
         Restyle:
             On_Restyle
         Die:
             Before_Death
 */
+
+enum Life_Cycle_Listener
+{
+    _NONE_ = 0,
+
+    ON_LIFE,
+    ON_REFRESH,
+    ON_RECLASS,
+    ON_RESTYLE,
+    BEFORE_DEATH,
+}
 
 export interface Info_API
 {
@@ -50,7 +67,12 @@ export interface Life_Cycle_Sender_API
     Refresh(): void;
 
     /*
-        Automatically called through Refresh.
+        Automatically called through Live and Refresh.
+    */
+    Reclass(): void;
+
+    /*
+        Automatically called through Live, Reclass, and Refresh.
         You can call this to restyle an entity and all of its children.
         Calling this does not fully refresh entities, but only updates
         their styles.
@@ -89,6 +111,16 @@ export interface Life_Cycle_Listener_API
     On_Refresh(): void;
 
     /*
+        Providing this event handler allows you to return CSS classes that will
+        be applied to the entity's underlying element.
+        The returned classes completely replace all classes on the entity.
+        Returned classes should simply be a class_name.
+        Children get this event after their parents.
+        If a child is aborted in the Refresh event, it does not receive this event.
+    */
+    On_Reclass(): Array<string>;
+
+    /*
         Providing this event handler allows you to return CSS styles that will
         be applied to the entity's underlying element.
         Styles returned as a string completely replace all styles on the entity.
@@ -96,7 +128,7 @@ export interface Life_Cycle_Listener_API
         The returned string should have valid CSS code within it, as if you were
         writing the interior of a valid CSS class, without the '{' and '}'.
         Children get this event after their parents.
-        If a child is aborted in the Refresh event, it does not receive the event.
+        If a child is aborted in the Refresh event, it does not receive this event.
     */
     On_Restyle(): string | { [index: string]: string };
 
@@ -266,7 +298,8 @@ export class Instance implements
 
     private parent: Instance | null;
     private children: Map<HTMLElement, Instance>;
-    private may_adopt_and_abort: boolean;
+
+    private life_cycle_listener: Life_Cycle_Listener;
 
     constructor(
         {
@@ -297,7 +330,8 @@ export class Instance implements
 
         this.parent = null;
         this.children = new Map();
-        this.may_adopt_and_abort = false;
+
+        this.life_cycle_listener = Life_Cycle_Listener._NONE_;
 
         this.Live(parent);
     }
@@ -315,12 +349,16 @@ export class Instance implements
                 this.HTML_ID(),
             );
 
-            this.css_to_add = ``;
-            this.Event_Grid().Add_Many_Listeners(this, this.On_Life());
-            if (this.css_to_add !== ``) {
-                this.css = Utils.Create_Style_Element(this.css_to_add);
+            if (Object.getPrototypeOf(this).hasOwnProperty(`On_Life`)) {
+                this.life_cycle_listener = Life_Cycle_Listener.ON_LIFE;
+                this.css_to_add = ``;
+                this.Event_Grid().Add_Many_Listeners(this, this.On_Life());
+                if (this.css_to_add !== ``) {
+                    this.css = Utils.Create_Style_Element(this.css_to_add);
+                }
+                this.css_to_add = null;
+                this.life_cycle_listener = Life_Cycle_Listener._NONE_;
             }
-            this.css_to_add = null;
 
             // We only refresh when there is no parent
             // because the parent itself will refresh
@@ -344,19 +382,73 @@ export class Instance implements
         }
     }
 
+    // This algorithm for the different Life-Cycle Senders is extremely efficient
+    // because it only goes over the tree once, instead of once per Sender.
     Refresh():
         void
     {
         if (this.Is_Alive()) {
-            this.may_adopt_and_abort = true;
-            this.On_Refresh();
-            this.may_adopt_and_abort = false;
+            this.Refresh_This();
+            this.Reclass_This();
+            this.Restyle_This();
 
             for (const child of this.children.values()) {
                 child.Refresh();
             }
+        }
+    }
 
-            this.Restyle();
+    private Refresh_This():
+        void
+    {
+        if (
+            this.Is_Alive() &&
+            Object.getPrototypeOf(this).hasOwnProperty(`On_Refresh`)
+        ) {
+            this.life_cycle_listener = Life_Cycle_Listener.ON_REFRESH;
+            this.On_Refresh();
+            this.life_cycle_listener = Life_Cycle_Listener._NONE_;
+        }
+    }
+
+    Reclass():
+        void
+    {
+        if (this.Is_Alive()) {
+            this.Reclass_This();
+            this.Restyle_This();
+
+            for (const child of this.children.values()) {
+                child.Reclass();
+            }
+        }
+    }
+
+    private Reclass_This():
+        void
+    {
+        if (
+            this.Is_Alive() &&
+            Object.getPrototypeOf(this).hasOwnProperty(`On_Reclass`)
+        ) {
+            this.life_cycle_listener = Life_Cycle_Listener.ON_RECLASS;
+            const classes: string = this.On_Reclass().join(` `);
+            this.life_cycle_listener = Life_Cycle_Listener._NONE_;
+
+            // This might not be necessary, but we're trying to avoid internal browser slowdown.
+            // It's probably already doing this internally, so we can relax it. However,
+            // we can't just use the classList on element, it's way too slow sometimes.
+            const element: HTMLElement = this.Element();
+            const current_classes: string | null = element.getAttribute(`class`);
+            if (
+                current_classes == null ||
+                current_classes !== classes
+            ) {
+                element.setAttribute(
+                    `class`,
+                    classes,
+                );
+            }
         }
     }
 
@@ -364,7 +456,24 @@ export class Instance implements
         void
     {
         if (this.Is_Alive()) {
+            this.Restyle_This();
+
+            for (const child of this.children.values()) {
+                child.Restyle();
+            }
+        }
+    }
+
+    private Restyle_This():
+        void
+    {
+        if (
+            this.Is_Alive() &&
+            Object.getPrototypeOf(this).hasOwnProperty(`On_Restyle`)
+        ) {
+            this.life_cycle_listener = Life_Cycle_Listener.ON_RESTYLE;
             const styles: string | { [index: string]: string } = this.On_Restyle();
+            this.life_cycle_listener = Life_Cycle_Listener._NONE_;
 
             if (styles as any instanceof Object) {
                 const element: HTMLElement = this.Element();
@@ -377,10 +486,6 @@ export class Instance implements
                     styles as string,
                 );
             }
-
-            for (const child of this.children.values()) {
-                child.Restyle();
-            }
         }
     }
 
@@ -388,7 +493,11 @@ export class Instance implements
         void
     {
         if (this.Is_Alive()) {
-            this.Before_Death();
+            if (Object.getPrototypeOf(this).hasOwnProperty(`Before_Death`)) {
+                this.life_cycle_listener = Life_Cycle_Listener.BEFORE_DEATH;
+                this.Before_Death();
+                this.life_cycle_listener = Life_Cycle_Listener._NONE_;
+            }
 
             for (const child of this.children.values()) {
                 child.Die();
@@ -426,6 +535,12 @@ export class Instance implements
         void
     {
         return;
+    }
+
+    On_Reclass():
+        Array<string>
+    {
+        return [];
     }
 
     On_Restyle():
@@ -486,7 +601,11 @@ export class Instance implements
         void
     {
         Utils.Assert(
-            this.css_to_add != null,
+            this.Is_Alive(),
+            `Cannot add css on a dead entity.`,
+        );
+        Utils.Assert(
+            this.life_cycle_listener === Life_Cycle_Listener.ON_LIFE,
             `You can only add css during On_Life().`,
         );
 
@@ -529,7 +648,11 @@ export class Instance implements
         void
     {
         Utils.Assert(
-            this.css_to_add != null,
+            this.Is_Alive(),
+            `Cannot add this_css on a dead entity.`,
+        );
+        Utils.Assert(
+            this.life_cycle_listener === Life_Cycle_Listener.ON_LIFE,
             `You can only add this_css during On_Life().`,
         );
 
@@ -571,7 +694,11 @@ export class Instance implements
         void
     {
         Utils.Assert(
-            this.css_to_add != null,
+            this.Is_Alive(),
+            `Cannot add children_css on a dead entity.`,
+        );
+        Utils.Assert(
+            this.life_cycle_listener === Life_Cycle_Listener.ON_LIFE,
             `You can only add children_css during On_Life().`,
         );
 
@@ -735,7 +862,7 @@ export class Instance implements
             `A parent must be alive to adopt a child.`,
         );
         Utils.Assert(
-            this.may_adopt_and_abort === true,
+            this.life_cycle_listener === Life_Cycle_Listener.ON_REFRESH,
             `You can only adopt a child during On_Refresh().`,
         );
         Utils.Assert(
@@ -766,7 +893,7 @@ export class Instance implements
             `A parent must be alive to abort a child.`,
         );
         Utils.Assert(
-            this.may_adopt_and_abort === true,
+            this.life_cycle_listener === Life_Cycle_Listener.ON_REFRESH,
             `You can only abort a child during On_Refresh().`,
         );
         Utils.Assert(

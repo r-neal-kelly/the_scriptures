@@ -21,51 +21,35 @@ export class Instance extends Entity.Instance {
             this.Element().textContent = model.Text().Value().replace(/ /g, ` `);
         }
     }
-    On_Restyle() {
+    On_Reclass() {
         const model = this.Model();
-        const is_blank = model.Is_Blank();
-        const is_error = !is_blank &&
-            (model.Text().Is_Error() ||
-                model.Text().Has_Error_Style());
-        const display = is_blank ?
-            `none` :
-            `inline-block`;
-        const width = !is_blank && model.Is_Indented() ?
-            `3em` :
-            `auto`;
-        const border_color = is_error ?
-            `#ffcbcb` :
-            `transparent`;
-        const color = is_error ?
-            `#ffcbcb` :
-            `inherit`;
-        const font_style = !is_blank && model.Text().Has_Italic_Style() ?
-            `italic` :
-            `normal`;
-        const font_weight = !is_blank && model.Text().Has_Bold_Style() ?
-            `bold` :
-            `normal`;
-        const font_variant = !is_blank && model.Text().Has_Small_Caps_Style() ?
-            `small-caps` :
-            `normal`;
-        const text_decoration = !is_blank && model.Text().Has_Underline_Style() ?
-            `underline` :
-            `none`;
-        return `
-            display: ${display};
-
-            width: ${width};
-
-            border-style: solid;
-            border-width: 0 0 2px 0;
-            border-color: ${border_color};
-
-            color: ${color};
-            font-style: ${font_style};
-            font-weight: ${font_weight};
-            font-variant: ${font_variant};
-            text-decoration: ${text_decoration};
-        `;
+        const classes = [];
+        classes.push(`Part`);
+        if (model.Is_Blank()) {
+            classes.push(`Blank_Part`);
+        }
+        else {
+            if (model.Is_Indented()) {
+                classes.push(`Indented_Part`);
+            }
+            if (model.Text().Has_Italic_Style()) {
+                classes.push(`Italic_Part`);
+            }
+            if (model.Text().Has_Bold_Style()) {
+                classes.push(`Bold_Part`);
+            }
+            if (model.Text().Has_Underline_Style()) {
+                classes.push(`Underline_Part`);
+            }
+            if (model.Text().Has_Small_Caps_Style()) {
+                classes.push(`Small_Caps_Part`);
+            }
+            if (model.Text().Is_Error() ||
+                model.Text().Has_Error_Style()) {
+                classes.push(`Error_Part`);
+            }
+        }
+        return classes;
     }
     Model() {
         return this.model();

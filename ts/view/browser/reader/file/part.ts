@@ -45,62 +45,40 @@ export class Instance extends Entity.Instance
         }
     }
 
-    override On_Restyle():
-        string
+    override On_Reclass():
+        Array<string>
     {
         const model: Model.Instance = this.Model();
-        const is_blank: boolean = model.Is_Blank();
-        const is_error: boolean =
-            !is_blank &&
-            (
+        const classes: Array<string> = [];
+
+        classes.push(`Part`);
+        if (model.Is_Blank()) {
+            classes.push(`Blank_Part`);
+        } else {
+            if (model.Is_Indented()) {
+                classes.push(`Indented_Part`);
+            }
+            if (model.Text().Has_Italic_Style()) {
+                classes.push(`Italic_Part`);
+            }
+            if (model.Text().Has_Bold_Style()) {
+                classes.push(`Bold_Part`);
+            }
+            if (model.Text().Has_Underline_Style()) {
+                classes.push(`Underline_Part`);
+            }
+            if (model.Text().Has_Small_Caps_Style()) {
+                classes.push(`Small_Caps_Part`);
+            }
+            if (
                 model.Text().Is_Error() ||
                 model.Text().Has_Error_Style()
-            );
+            ) {
+                classes.push(`Error_Part`);
+            }
+        }
 
-        const display: string = is_blank ?
-            `none` :
-            `inline-block`;
-
-        const width: string =
-            !is_blank && model.Is_Indented() ?
-                `3em` :
-                `auto`;
-
-        const border_color: string = is_error ?
-            `#ffcbcb` :
-            `transparent`;
-
-        const color: string = is_error ?
-            `#ffcbcb` :
-            `inherit`;
-        const font_style: string = !is_blank && model.Text().Has_Italic_Style() ?
-            `italic` :
-            `normal`;
-        const font_weight: string = !is_blank && model.Text().Has_Bold_Style() ?
-            `bold` :
-            `normal`;
-        const font_variant: string = !is_blank && model.Text().Has_Small_Caps_Style() ?
-            `small-caps` :
-            `normal`;
-        const text_decoration: string = !is_blank && model.Text().Has_Underline_Style() ?
-            `underline` :
-            `none`;
-
-        return `
-            display: ${display};
-
-            width: ${width};
-
-            border-style: solid;
-            border-width: 0 0 2px 0;
-            border-color: ${border_color};
-
-            color: ${color};
-            font-style: ${font_style};
-            font-weight: ${font_weight};
-            font-variant: ${font_variant};
-            text-decoration: ${text_decoration};
-        `;
+        return classes;
     }
 
     Model():

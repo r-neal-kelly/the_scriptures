@@ -20,20 +20,14 @@ export class Instance extends Entity.Instance {
             });
         }
     }
-    On_Restyle() {
+    On_Reclass() {
         const model = this.Model();
-        const is_blank = model.Is_Blank();
-        const display = is_blank ?
-            `none` :
-            `inline-block`;
-        const color = is_blank ?
-            `transparent` :
-            `inherit`;
-        return `
-            display: ${display};
-
-            color: ${color};
-        `;
+        const classes = [];
+        classes.push(`Segment`);
+        if (model.Is_Blank()) {
+            classes.push(`Blank_Segment`);
+        }
+        return classes;
     }
     Model() {
         return this.model();

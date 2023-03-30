@@ -49,25 +49,18 @@ export class Instance extends Entity.Instance
         }
     }
 
-    override On_Restyle():
-        string
+    override On_Reclass():
+        Array<string>
     {
         const model: Model.Instance = this.Model();
-        const is_blank: boolean = model.Is_Blank();
+        const classes: Array<string> = [];
 
-        const display: string = is_blank ?
-            `none` :
-            `inline-block`;
+        classes.push(`Segment`);
+        if (model.Is_Blank()) {
+            classes.push(`Blank_Segment`);
+        }
 
-        const color: string = is_blank ?
-            `transparent` :
-            `inherit`;
-
-        return `
-            display: ${display};
-
-            color: ${color};
-        `;
+        return classes;
     }
 
     Model():

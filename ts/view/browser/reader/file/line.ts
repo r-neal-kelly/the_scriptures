@@ -49,29 +49,22 @@ export class Instance extends Entity.Instance
         }
     }
 
-    override On_Restyle():
-        string
+    override On_Reclass():
+        Array<string>
     {
         const model: Model.Instance = this.Model();
-        const is_blank: boolean = model.Is_Blank();
+        const classes: Array<string> = [];
 
-        const display: string = is_blank ?
-            `none` :
-            model.Text().Is_Centered() ?
-                `flex` :
-                `block`;
+        classes.push(`Line`);
+        if (model.Is_Blank()) {
+            classes.push(`Blank_Line`);
+        } else if (model.Text().Value() === ``) {
+            classes.push(`New_Line`);
+        } else if (model.Text().Is_Centered()) {
+            classes.push(`Centered_Line`);
+        }
 
-        const color: string = is_blank || model.Text().Value() === `` ?
-            `transparent` :
-            `inherit`;
-
-        return `
-            display: ${display};
-            flex-wrap: wrap;
-            justify-content: center;
-
-            color: ${color};
-        `;
+        return classes;
     }
 
     Model():

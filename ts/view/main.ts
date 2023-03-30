@@ -42,34 +42,22 @@ class Body extends Entity.Instance
                 *:focus {
                     outline: 0;
                 }
-                
-                body {
+
+                span {
+                    display: inline-block;
+                }
+            `,
+        );
+
+        this.Add_This_CSS(
+            `
+                .Main {
                     width: 100vw;
                     height: 100vh;
 
                     background-color: black;
 
                     font-family: sans-serif;
-                }
-
-                span {
-                    display: inline-block;
-                }
-
-                .ITALIC {
-                    font-style: italic;
-                }
-
-                .BOLD {
-                    font-weight: bold;
-                }
-
-                .UNDERLINE {
-                    text-decoration: underline;
-                }
-                
-                .SMALL_CAPS {
-                    font-variant: small-caps;
                 }
             `,
         );
@@ -102,6 +90,12 @@ class Body extends Entity.Instance
                 },
             );
         }
+    }
+
+    override On_Reclass():
+        Array<string>
+    {
+        return [`Main`];
     }
 
     Model():
