@@ -20,6 +20,92 @@ export class Instance extends Entity.Instance {
         this.model = model;
     }
     On_Life() {
+        this.Add_This_CSS(`
+                .Selector {
+                    display: grid;
+                    grid-template-rows: 1fr;
+                    grid-template-columns: repeat(4, auto);
+                    justify-content: start;
+
+                    width: 100%;
+                    height: 100%;
+
+                    overflow-x: hidden;
+                    overflow-y: hidden;
+                }
+            `);
+        this.Add_Children_CSS(`
+                .Slot {
+                    display: grid;
+                    grid-template-rows: auto auto;
+                    grid-template-columns: 1fr;
+                    align-content: start;
+
+                    width: 100%;
+                    height: 100%;
+                    padding: 0 3px;
+
+                    border-color: white;
+                    border-style: solid;
+                    border-width: 0 1px 0 0;
+
+                    overflow-x: hidden;
+                    overflow-y: hidden;
+                }
+
+                .Slot_Title {
+                    width: 100%;
+                
+                    overflow-x: hidden;
+                    overflow-y: hidden;
+
+                    background-color: black;
+                    color: white;
+
+                    border-color: white;
+                    border-style: solid;
+                    border-width: 0 0 1px 0;
+
+                    font-variant: small-caps;
+
+                    cursor: default;
+                    -webkit-user-select: none;
+                    -moz-user-select: none;
+                    -ms-user-select: none;
+                    user-select: none;
+                }
+
+                .Slot_Items {
+                    width: 100%;
+
+                    padding: 2px 2px;
+
+                    overflow-x: auto;
+                    overflow-y: auto;
+                }
+
+                .Slot_Item {
+                    width: 100%;
+                    padding: 2px 2px;
+                    
+                    overflow-x: hidden;
+                    overflow-y: hidden;
+
+                    background-color: black;
+                    color: white;
+
+                    cursor: pointer;
+                    -webkit-user-select: none;
+                    -moz-user-select: none;
+                    -ms-user-select: none;
+                    user-select: none;
+                }
+                
+                .Slot_Item_Selected {
+                    background-color: white;
+                    color: black;
+                }
+            `);
         return [
             new Event.Listener_Info({
                 event_name: new Event.Name(Event.Prefix.AFTER, "Selector_Slot_Item_Select"),
@@ -30,38 +116,26 @@ export class Instance extends Entity.Instance {
     }
     On_Refresh() {
         const model = this.Model();
-        const slot_count = model.Slot_Count();
-        const child_count = this.Child_Count();
-        const slot_delta = slot_count - child_count;
-        if (slot_delta > 0) {
-            for (let idx = child_count, end = slot_count; idx < end;) {
-                new Slot.Instance({
-                    model: model.Slot(idx),
-                    selector: this,
-                });
-                idx += 1;
-            }
-        }
-        else if (slot_delta < 0) {
-            for (let idx = this.Child_Count(), end = 0; idx > end;) {
+        const target = model.Slot_Count();
+        const count = this.Child_Count();
+        const delta = target - count;
+        if (delta < 0) {
+            for (let idx = count, end = count + delta; idx > end;) {
                 idx -= 1;
                 this.Abort_Child(this.Child(idx));
             }
         }
+        else if (delta > 0) {
+            for (let idx = count, end = count + delta; idx < end; idx += 1) {
+                new Slot.Instance({
+                    model: model.Slot(idx),
+                    selector: this,
+                });
+            }
+        }
     }
-    On_Restyle() {
-        return `
-            display: grid;
-            grid-template-rows: 1fr;
-            grid-template-columns: repeat(4, auto);
-            justify-content: start;
-
-            width: 100%;
-            height: 100%;
-
-            overflow-x: hidden;
-            overflow-y: hidden;
-        `;
+    On_Reclass() {
+        return [`Selector`];
     }
     After_Selector_Slot_Item_Select() {
         return __awaiter(this, void 0, void 0, function* () {

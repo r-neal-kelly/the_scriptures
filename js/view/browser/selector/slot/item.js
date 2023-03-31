@@ -29,35 +29,17 @@ export class Instance extends Entity.Instance {
         ];
     }
     On_Refresh() {
-        this.Element().textContent = this.Model().Title();
+        const model = this.Model();
+        this.Element().textContent = model.Title();
     }
-    On_Restyle() {
-        let color;
-        let background_color;
-        if (this.Model().Is_Selected()) {
-            color = `black`;
-            background_color = `white`;
+    On_Reclass() {
+        const model = this.Model();
+        const classes = [];
+        classes.push(`Slot_Item`);
+        if (model.Is_Selected()) {
+            classes.push(`Slot_Item_Selected`);
         }
-        else {
-            color = `white`;
-            background_color = `black`;
-        }
-        return `
-            width: 100%;
-            padding: 2px 2px;
-            
-            overflow-x: hidden;
-            overflow-y: hidden;
-
-            background-color: ${background_color};
-            color: ${color};
-
-            cursor: pointer;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-        `;
+        return classes;
     }
     On_Click(event) {
         return __awaiter(this, void 0, void 0, function* () {

@@ -57,7 +57,7 @@ export class Instance {
         return this.text == null;
     }
 }
-Instance.min_segment_count = 100;
+Instance.min_segment_count = 70;
 Instance.blank_segment = new Segment.Instance({
     line: null,
     index: null,

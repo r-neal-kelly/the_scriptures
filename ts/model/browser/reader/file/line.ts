@@ -10,7 +10,7 @@ import * as Segment from "./segment.js";
 
 export class Instance
 {
-    private static min_segment_count: Count = 100;
+    private static min_segment_count: Count = 70;
 
     private static blank_segment: Segment.Instance = new Segment.Instance(
         {

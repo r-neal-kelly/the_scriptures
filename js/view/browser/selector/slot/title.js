@@ -12,28 +12,8 @@ export class Instance extends Entity.Instance {
         const model = this.Model();
         this.Element().textContent = model.Value();
     }
-    On_Restyle() {
-        return `
-            width: 100%;
-                
-            overflow-x: hidden;
-            overflow-y: hidden;
-
-            background-color: black;
-            color: white;
-
-            border-color: white;
-            border-style: solid;
-            border-width: 0 0 1px 0;
-
-            font-variant: small-caps;
-
-            cursor: default;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-        `;
+    On_Reclass() {
+        return [`Slot_Title`];
     }
     Model() {
         return this.model;

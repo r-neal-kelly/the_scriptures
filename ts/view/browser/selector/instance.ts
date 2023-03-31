@@ -37,6 +37,98 @@ export class Instance extends Entity.Instance
     override On_Life():
         Array<Event.Listener_Info>
     {
+        this.Add_This_CSS(
+            `
+                .Selector {
+                    display: grid;
+                    grid-template-rows: 1fr;
+                    grid-template-columns: repeat(4, auto);
+                    justify-content: start;
+
+                    width: 100%;
+                    height: 100%;
+
+                    overflow-x: hidden;
+                    overflow-y: hidden;
+                }
+            `,
+        );
+
+        this.Add_Children_CSS(
+            `
+                .Slot {
+                    display: grid;
+                    grid-template-rows: auto auto;
+                    grid-template-columns: 1fr;
+                    align-content: start;
+
+                    width: 100%;
+                    height: 100%;
+                    padding: 0 3px;
+
+                    border-color: white;
+                    border-style: solid;
+                    border-width: 0 1px 0 0;
+
+                    overflow-x: hidden;
+                    overflow-y: hidden;
+                }
+
+                .Slot_Title {
+                    width: 100%;
+                
+                    overflow-x: hidden;
+                    overflow-y: hidden;
+
+                    background-color: black;
+                    color: white;
+
+                    border-color: white;
+                    border-style: solid;
+                    border-width: 0 0 1px 0;
+
+                    font-variant: small-caps;
+
+                    cursor: default;
+                    -webkit-user-select: none;
+                    -moz-user-select: none;
+                    -ms-user-select: none;
+                    user-select: none;
+                }
+
+                .Slot_Items {
+                    width: 100%;
+
+                    padding: 2px 2px;
+
+                    overflow-x: auto;
+                    overflow-y: auto;
+                }
+
+                .Slot_Item {
+                    width: 100%;
+                    padding: 2px 2px;
+                    
+                    overflow-x: hidden;
+                    overflow-y: hidden;
+
+                    background-color: black;
+                    color: white;
+
+                    cursor: pointer;
+                    -webkit-user-select: none;
+                    -moz-user-select: none;
+                    -ms-user-select: none;
+                    user-select: none;
+                }
+                
+                .Slot_Item_Selected {
+                    background-color: white;
+                    color: black;
+                }
+            `,
+        );
+
         return [
             new Event.Listener_Info(
                 {
@@ -52,45 +144,32 @@ export class Instance extends Entity.Instance
         void
     {
         const model: Model.Instance = this.Model();
-        const slot_count: Count = model.Slot_Count();
-        const child_count: Count = this.Child_Count();
-        const slot_delta: Delta = slot_count - child_count;
+        const target: Count = model.Slot_Count();
+        const count: Count = this.Child_Count();
+        const delta: Delta = target - count;
 
-        if (slot_delta > 0) {
-            for (let idx = child_count, end = slot_count; idx < end;) {
+        if (delta < 0) {
+            for (let idx = count, end = count + delta; idx > end;) {
+                idx -= 1;
+
+                this.Abort_Child(this.Child(idx));
+            }
+        } else if (delta > 0) {
+            for (let idx = count, end = count + delta; idx < end; idx += 1) {
                 new Slot.Instance(
                     {
                         model: model.Slot(idx),
                         selector: this,
                     },
                 );
-
-                idx += 1;
-            }
-        } else if (slot_delta < 0) {
-            for (let idx = this.Child_Count(), end = 0; idx > end;) {
-                idx -= 1;
-
-                this.Abort_Child(this.Child(idx));
             }
         }
     }
 
-    override On_Restyle():
-        string
+    override On_Reclass():
+        Array<string>
     {
-        return `
-            display: grid;
-            grid-template-rows: 1fr;
-            grid-template-columns: repeat(4, auto);
-            justify-content: start;
-
-            width: 100%;
-            height: 100%;
-
-            overflow-x: hidden;
-            overflow-y: hidden;
-        `;
+        return [`Selector`];
     }
 
     async After_Selector_Slot_Item_Select():

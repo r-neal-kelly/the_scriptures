@@ -33,7 +33,10 @@ export class Instance extends Entity.Instance
     override On_Life():
         Array<Event.Listener_Info>
     {
-        this.Element().addEventListener(`click`, this.On_Click.bind(this));
+        this.Element().addEventListener(
+            `click`,
+            this.On_Click.bind(this),
+        );
 
         return [
             new Event.Listener_Info(
@@ -53,38 +56,23 @@ export class Instance extends Entity.Instance
     override On_Refresh():
         void
     {
-        this.Element().textContent = this.Model().Title();
+        const model: Model.Instance = this.Model();
+
+        this.Element().textContent = model.Title();
     }
 
-    override On_Restyle():
-        string
+    override On_Reclass():
+        Array<string>
     {
-        let color: string;
-        let background_color: string;
-        if (this.Model().Is_Selected()) {
-            color = `black`;
-            background_color = `white`;
-        } else {
-            color = `white`;
-            background_color = `black`;
+        const model: Model.Instance = this.Model();
+        const classes: Array<string> = [];
+
+        classes.push(`Slot_Item`);
+        if (model.Is_Selected()) {
+            classes.push(`Slot_Item_Selected`);
         }
 
-        return `
-            width: 100%;
-            padding: 2px 2px;
-            
-            overflow-x: hidden;
-            overflow-y: hidden;
-
-            background-color: ${background_color};
-            color: ${color};
-
-            cursor: pointer;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-        `;
+        return classes;
     }
 
     async On_Click(

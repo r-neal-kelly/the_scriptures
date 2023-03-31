@@ -1,3 +1,6 @@
+import { Count } from "../../../../types.js";
+import { Delta } from "../../../../types.js";
+
 import * as Entity from "../../../../entity.js";
 
 import * as Model from "../../../../model/browser/selector/slot/items.js";
@@ -34,24 +37,9 @@ export class Instance extends Entity.Instance
         void
     {
         const model: Model.Instance = this.Model();
-
-        if (this.Child_Count() !== model.Count()) {
-            this.Abort_All_Children();
-
-            for (const item_model of this.Model().Array()) {
-                new Item.Instance(
-                    {
-                        model: item_model,
-                        items: this,
-                    },
-                );
-            }
-        }
-
-        /*
-        const model: Model.Instance = this.Model();
+        const target: Count = model.Count();
         const count: Count = this.Child_Count();
-        const delta: Delta = model.Count() - count;
+        const delta: Delta = target - count;
 
         if (delta < 0) {
             for (let idx = count, end = count + delta; idx > end;) {
@@ -61,28 +49,20 @@ export class Instance extends Entity.Instance
             }
         } else if (delta > 0) {
             for (let idx = count, end = count + delta; idx < end; idx += 1) {
-                new Line.Instance(
+                new Item.Instance(
                     {
-                        model: () => this.Model().At(idx),
-                        lines: this,
+                        model: model.At(idx),
+                        items: this,
                     },
                 );
             }
         }
-        */
     }
 
-    override On_Restyle():
-        string
+    override On_Reclass():
+        Array<string>
     {
-        return `
-            width: 100%;
-
-            padding: 2px 2px;
-
-            overflow-x: auto;
-            overflow-y: auto;
-        `;
+        return [`Slot_Items`];
     }
 
     Model():

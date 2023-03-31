@@ -26,24 +26,8 @@ export class Instance extends Entity.Instance {
             });
         }
     }
-    On_Restyle() {
-        return `
-            display: grid;
-            grid-template-rows: auto auto;
-            grid-template-columns: 1fr;
-            align-content: start;
-
-            width: 100%;
-            height: 100%;
-            padding: 0 3px;
-
-            border-color: white;
-            border-style: solid;
-            border-width: 0 1px 0 0;
-
-            overflow-x: hidden;
-            overflow-y: hidden;
-        `;
+    On_Reclass() {
+        return [`Slot`];
     }
     Model() {
         return this.model;
