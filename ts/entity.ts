@@ -29,17 +29,6 @@ export { ID } from "./types.js";
             Before_Death
 */
 
-enum Life_Cycle_Listener
-{
-    _NONE_ = 0,
-
-    ON_LIFE,
-    ON_REFRESH,
-    ON_RECLASS,
-    ON_RESTYLE,
-    BEFORE_DEATH,
-}
-
 export interface Info_API
 {
     Is_Alive(): boolean;
@@ -201,6 +190,26 @@ export interface Child_API
     ): void;
 
     Abort_All_Children(): void;
+
+    /*
+        Works during On_Refresh(), On_Reclass(), and On_Restyle().
+        Allows you to completely skip the above three listeners
+        on the children of an entity.
+
+        Is reset after being checked, so the next cycle will not
+        skip children unless this is called again.
+    */
+    Skip_Children(): void;
+
+    /*
+        Works during On_Refresh(), On_Reclass(), and On_Restyle().
+        Allows you to completely skip the above three listeners
+        on the remaining siblings of an entity.
+
+        Is reset after being checked, so the next cycle will not
+        skip remaining siblings unless this is called again.
+    */
+    Skip_Remaining_Siblings(): void;
 }
 
 export interface Event_API
@@ -274,6 +283,25 @@ export type Animation_Frame_Callback<User_State> = (
     state: User_State,
 ) => boolean | Promise<boolean>;
 
+enum Life_Cycle_Listener
+{
+    _NONE_ = 0,
+
+    ON_LIFE,
+    ON_REFRESH,
+    ON_RECLASS,
+    ON_RESTYLE,
+    BEFORE_DEATH,
+}
+
+enum Life_Cycle_Skip
+{
+    _NONE_ = 0,
+
+    CHILDREN = 1 << 0,
+    REMAINING_SIBLINGS = 1 << 1,
+}
+
 export class Instance implements
     Info_API,
     Life_Cycle_Sender_API,
@@ -300,6 +328,7 @@ export class Instance implements
     private children: Map<HTMLElement, Instance>;
 
     private life_cycle_listener: Life_Cycle_Listener;
+    private life_cycle_skip: Life_Cycle_Skip;
 
     constructor(
         {
@@ -332,6 +361,7 @@ export class Instance implements
         this.children = new Map();
 
         this.life_cycle_listener = Life_Cycle_Listener._NONE_;
+        this.life_cycle_skip = Life_Cycle_Skip._NONE_;
 
         this.Live(parent);
     }
@@ -388,12 +418,20 @@ export class Instance implements
         void
     {
         if (this.Is_Alive()) {
+            this.life_cycle_skip &= ~Life_Cycle_Skip.CHILDREN;
             this.Refresh_This();
             this.Reclass_This();
             this.Restyle_This();
+            if (this.life_cycle_skip & Life_Cycle_Skip.CHILDREN) {
+                return;
+            }
 
             for (const child of this.children.values()) {
+                child.life_cycle_skip &= ~Life_Cycle_Skip.REMAINING_SIBLINGS;
                 child.Refresh();
+                if (child.life_cycle_skip & Life_Cycle_Skip.REMAINING_SIBLINGS) {
+                    return;
+                }
             }
         }
     }
@@ -415,11 +453,19 @@ export class Instance implements
         void
     {
         if (this.Is_Alive()) {
+            this.life_cycle_skip &= ~Life_Cycle_Skip.CHILDREN;
             this.Reclass_This();
             this.Restyle_This();
+            if (this.life_cycle_skip & Life_Cycle_Skip.CHILDREN) {
+                return;
+            }
 
             for (const child of this.children.values()) {
+                child.life_cycle_skip &= ~Life_Cycle_Skip.REMAINING_SIBLINGS;
                 child.Reclass();
+                if (child.life_cycle_skip & Life_Cycle_Skip.REMAINING_SIBLINGS) {
+                    return;
+                }
             }
         }
     }
@@ -456,10 +502,18 @@ export class Instance implements
         void
     {
         if (this.Is_Alive()) {
+            this.life_cycle_skip &= ~Life_Cycle_Skip.CHILDREN;
             this.Restyle_This();
+            if (this.life_cycle_skip & Life_Cycle_Skip.CHILDREN) {
+                return;
+            }
 
             for (const child of this.children.values()) {
+                child.life_cycle_skip &= ~Life_Cycle_Skip.REMAINING_SIBLINGS;
                 child.Restyle();
+                if (child.life_cycle_skip & Life_Cycle_Skip.REMAINING_SIBLINGS) {
+                    return;
+                }
             }
         }
     }
@@ -939,6 +993,32 @@ export class Instance implements
         for (const child of Array.from(this.children.values())) {
             this.Abort_Child(child);
         }
+    }
+
+    Skip_Children():
+        void
+    {
+        Utils.Assert(
+            this.life_cycle_listener === Life_Cycle_Listener.ON_REFRESH ||
+            this.life_cycle_listener === Life_Cycle_Listener.ON_RECLASS ||
+            this.life_cycle_listener === Life_Cycle_Listener.ON_RESTYLE,
+            `You can only skip children during On_Refresh(), On_Reclass(), or On_Restyle().`,
+        );
+
+        this.life_cycle_skip |= Life_Cycle_Skip.CHILDREN;
+    }
+
+    Skip_Remaining_Siblings():
+        void
+    {
+        Utils.Assert(
+            this.life_cycle_listener === Life_Cycle_Listener.ON_REFRESH ||
+            this.life_cycle_listener === Life_Cycle_Listener.ON_RECLASS ||
+            this.life_cycle_listener === Life_Cycle_Listener.ON_RESTYLE,
+            `You can only skip remaining siblings during On_Refresh(), On_Reclass(), or On_Restyle().`,
+        );
+
+        this.life_cycle_skip |= Life_Cycle_Skip.REMAINING_SIBLINGS;
     }
 
     Event_Grid():

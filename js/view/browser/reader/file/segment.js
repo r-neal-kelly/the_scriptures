@@ -12,13 +12,21 @@ export class Instance extends Entity.Instance {
     }
     On_Refresh() {
         const model = this.Model();
-        const target = Math.max(Model.Instance.Min_Item_Count(), model.Item_Count());
-        const count = this.Child_Count();
-        for (let idx = count, end = target; idx < end; idx += 1) {
-            new Item.Instance({
-                model: () => this.Model().Item_At(idx),
-                segment: this,
-            });
+        if (model.Is_Blank()) {
+            this.Skip_Children();
+            if (this.Element().classList.contains(`Blank`)) {
+                this.Skip_Remaining_Siblings();
+            }
+        }
+        else {
+            const target = Math.max(Model.Instance.Min_Item_Count(), model.Item_Count());
+            const count = this.Child_Count();
+            for (let idx = count, end = target; idx < end; idx += 1) {
+                new Item.Instance({
+                    model: () => this.Model().Item_At(idx),
+                    segment: this,
+                });
+            }
         }
     }
     On_Reclass() {

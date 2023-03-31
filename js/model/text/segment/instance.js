@@ -134,8 +134,7 @@ export class Instance {
                         return true;
                     }
                     else if (previous_part.Is_Marker()) {
-                        if (/\S+/.test(previous_part.Value()) ||
-                            part.Is_Closing()) {
+                        if (/\S+/.test(previous_part.Value())) {
                             this.items.push(part);
                             return true;
                         }
@@ -261,8 +260,7 @@ export class Instance {
                         }
                         else if (previous_item.Is_Split()) {
                             const previous_split = previous_item;
-                            if (/\S+/.test(previous_split.Value()) ||
-                                part.Is_Closing()) {
+                            if (/\S+/.test(previous_split.Value())) {
                                 this.items.push(part);
                                 return true;
                             }

@@ -8,34 +8,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import * as Utils from "./utils.js";
-/*
-    Life-Cycle:
-        Live:
-            On_Life
-            On_Refresh
-            On_Reclass
-            On_Restyle
-        Refresh:
-            On_Refresh
-            On_Reclass
-            On_Restyle
-        Reclass:
-            On_Reclass
-            On_Restyle
-        Restyle:
-            On_Restyle
-        Die:
-            Before_Death
-*/
-var Life_Cycle_Listener;
-(function (Life_Cycle_Listener) {
-    Life_Cycle_Listener[Life_Cycle_Listener["_NONE_"] = 0] = "_NONE_";
-    Life_Cycle_Listener[Life_Cycle_Listener["ON_LIFE"] = 1] = "ON_LIFE";
-    Life_Cycle_Listener[Life_Cycle_Listener["ON_REFRESH"] = 2] = "ON_REFRESH";
-    Life_Cycle_Listener[Life_Cycle_Listener["ON_RECLASS"] = 3] = "ON_RECLASS";
-    Life_Cycle_Listener[Life_Cycle_Listener["ON_RESTYLE"] = 4] = "ON_RESTYLE";
-    Life_Cycle_Listener[Life_Cycle_Listener["BEFORE_DEATH"] = 5] = "BEFORE_DEATH";
-})(Life_Cycle_Listener || (Life_Cycle_Listener = {}));
 export class Animation_Frame {
     constructor({ now, start, elapsed, }) {
         this.now = now;
@@ -53,6 +25,21 @@ export class Animation_Frame {
         return this.elapsed;
     }
 }
+var Life_Cycle_Listener;
+(function (Life_Cycle_Listener) {
+    Life_Cycle_Listener[Life_Cycle_Listener["_NONE_"] = 0] = "_NONE_";
+    Life_Cycle_Listener[Life_Cycle_Listener["ON_LIFE"] = 1] = "ON_LIFE";
+    Life_Cycle_Listener[Life_Cycle_Listener["ON_REFRESH"] = 2] = "ON_REFRESH";
+    Life_Cycle_Listener[Life_Cycle_Listener["ON_RECLASS"] = 3] = "ON_RECLASS";
+    Life_Cycle_Listener[Life_Cycle_Listener["ON_RESTYLE"] = 4] = "ON_RESTYLE";
+    Life_Cycle_Listener[Life_Cycle_Listener["BEFORE_DEATH"] = 5] = "BEFORE_DEATH";
+})(Life_Cycle_Listener || (Life_Cycle_Listener = {}));
+var Life_Cycle_Skip;
+(function (Life_Cycle_Skip) {
+    Life_Cycle_Skip[Life_Cycle_Skip["_NONE_"] = 0] = "_NONE_";
+    Life_Cycle_Skip[Life_Cycle_Skip["CHILDREN"] = 1] = "CHILDREN";
+    Life_Cycle_Skip[Life_Cycle_Skip["REMAINING_SIBLINGS"] = 2] = "REMAINING_SIBLINGS";
+})(Life_Cycle_Skip || (Life_Cycle_Skip = {}));
 export class Instance {
     constructor({ element, parent, event_grid, }) {
         Utils.Assert(Instance.next_id !== Infinity, `Can't create another ID!`);
@@ -67,6 +54,7 @@ export class Instance {
         this.parent = null;
         this.children = new Map();
         this.life_cycle_listener = Life_Cycle_Listener._NONE_;
+        this.life_cycle_skip = Life_Cycle_Skip._NONE_;
         this.Live(parent);
     }
     Live(parent) {
@@ -105,11 +93,19 @@ export class Instance {
     // because it only goes over the tree once, instead of once per Sender.
     Refresh() {
         if (this.Is_Alive()) {
+            this.life_cycle_skip &= ~Life_Cycle_Skip.CHILDREN;
             this.Refresh_This();
             this.Reclass_This();
             this.Restyle_This();
+            if (this.life_cycle_skip & Life_Cycle_Skip.CHILDREN) {
+                return;
+            }
             for (const child of this.children.values()) {
+                child.life_cycle_skip &= ~Life_Cycle_Skip.REMAINING_SIBLINGS;
                 child.Refresh();
+                if (child.life_cycle_skip & Life_Cycle_Skip.REMAINING_SIBLINGS) {
+                    return;
+                }
             }
         }
     }
@@ -123,10 +119,18 @@ export class Instance {
     }
     Reclass() {
         if (this.Is_Alive()) {
+            this.life_cycle_skip &= ~Life_Cycle_Skip.CHILDREN;
             this.Reclass_This();
             this.Restyle_This();
+            if (this.life_cycle_skip & Life_Cycle_Skip.CHILDREN) {
+                return;
+            }
             for (const child of this.children.values()) {
+                child.life_cycle_skip &= ~Life_Cycle_Skip.REMAINING_SIBLINGS;
                 child.Reclass();
+                if (child.life_cycle_skip & Life_Cycle_Skip.REMAINING_SIBLINGS) {
+                    return;
+                }
             }
         }
     }
@@ -149,9 +153,17 @@ export class Instance {
     }
     Restyle() {
         if (this.Is_Alive()) {
+            this.life_cycle_skip &= ~Life_Cycle_Skip.CHILDREN;
             this.Restyle_This();
+            if (this.life_cycle_skip & Life_Cycle_Skip.CHILDREN) {
+                return;
+            }
             for (const child of this.children.values()) {
+                child.life_cycle_skip &= ~Life_Cycle_Skip.REMAINING_SIBLINGS;
                 child.Restyle();
+                if (child.life_cycle_skip & Life_Cycle_Skip.REMAINING_SIBLINGS) {
+                    return;
+                }
             }
         }
     }
@@ -366,6 +378,18 @@ export class Instance {
         for (const child of Array.from(this.children.values())) {
             this.Abort_Child(child);
         }
+    }
+    Skip_Children() {
+        Utils.Assert(this.life_cycle_listener === Life_Cycle_Listener.ON_REFRESH ||
+            this.life_cycle_listener === Life_Cycle_Listener.ON_RECLASS ||
+            this.life_cycle_listener === Life_Cycle_Listener.ON_RESTYLE, `You can only skip children during On_Refresh(), On_Reclass(), or On_Restyle().`);
+        this.life_cycle_skip |= Life_Cycle_Skip.CHILDREN;
+    }
+    Skip_Remaining_Siblings() {
+        Utils.Assert(this.life_cycle_listener === Life_Cycle_Listener.ON_REFRESH ||
+            this.life_cycle_listener === Life_Cycle_Listener.ON_RECLASS ||
+            this.life_cycle_listener === Life_Cycle_Listener.ON_RESTYLE, `You can only skip remaining siblings during On_Refresh(), On_Reclass(), or On_Restyle().`);
+        this.life_cycle_skip |= Life_Cycle_Skip.REMAINING_SIBLINGS;
     }
     Event_Grid() {
         Utils.Assert(this.Is_Alive(), `Cannot get an event grid from a dead entity.`);

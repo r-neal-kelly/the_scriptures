@@ -36,16 +36,24 @@ export class Instance extends Entity.Instance
         void
     {
         const model: Model.Instance = this.Model();
-        const target: Count = Math.max(Model.Instance.Min_Item_Count(), model.Item_Count());
-        const count: Count = this.Child_Count();
+        if (model.Is_Blank()) {
+            this.Skip_Children();
 
-        for (let idx = count, end = target; idx < end; idx += 1) {
-            new Item.Instance(
-                {
-                    model: () => this.Model().Item_At(idx),
-                    segment: this,
-                },
-            );
+            if (this.Element().classList.contains(`Blank`)) {
+                this.Skip_Remaining_Siblings();
+            }
+        } else {
+            const target: Count = Math.max(Model.Instance.Min_Item_Count(), model.Item_Count());
+            const count: Count = this.Child_Count();
+
+            for (let idx = count, end = target; idx < end; idx += 1) {
+                new Item.Instance(
+                    {
+                        model: () => this.Model().Item_At(idx),
+                        segment: this,
+                    },
+                );
+            }
         }
     }
 
