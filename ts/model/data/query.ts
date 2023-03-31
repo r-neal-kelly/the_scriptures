@@ -1,4 +1,4 @@
-import { Name } from "../../../types.js";
+import { Name } from "../../types.js";
 
 import { Type } from "./type.js";
 

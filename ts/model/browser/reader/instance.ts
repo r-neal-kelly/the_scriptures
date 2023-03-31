@@ -1,10 +1,9 @@
-import * as Utils from "../../../utils.js";
 import * as Async from "../../../async.js";
 
+import * as Data from "../../data.js";
 import * as Text from "../../text.js";
 
 import * as Browser from "../instance.js";
-import * as Data from "../data.js";
 import * as File from "./file.js";
 
 export class Instance extends Async.Instance

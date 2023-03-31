@@ -7,7 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import * as Utils from "../../../utils.js";
+import * as Utils from "../../utils.js";
 export class Instance {
     constructor({ files, name, }) {
         this.files = files;

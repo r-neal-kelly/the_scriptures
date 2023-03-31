@@ -1,12 +1,12 @@
-import { Count } from "../../../types.js";
-import { Index } from "../../../types.js";
-import { Name } from "../../../types.js";
-import { Path } from "../../../types.js";
+import { Count } from "../../types.js";
+import { Index } from "../../types.js";
+import { Name } from "../../types.js";
+import { Path } from "../../types.js";
 
-import * as Utils from "../../../utils.js";
+import * as Utils from "../../utils.js";
 
-import * as Data from "./instance.js";
 import * as Book from "./book.js";
+import * as Language from "./language.js";
 
 type Info = {
     names: Array<Name>,
@@ -14,31 +14,31 @@ type Info = {
 
 export class Instance
 {
-    private data: Data.Instance;
+    private book: Book.Instance;
     private name: Name;
     private path: Path;
     private info: Info | null;
-    private books: Array<Book.Instance>;
+    private languages: Array<Language.Instance>;
 
     constructor(
         {
-            data,
+            book,
         }: {
-            data: Data.Instance,
+            book: Book.Instance,
         },
     )
     {
-        this.data = data;
-        this.name = `Books`;
-        this.path = `${data.Path()}/${this.name}`;
+        this.book = book;
+        this.name = `Languages`;
+        this.path = `${book.Path()}/${this.name}`;
         this.info = null;
-        this.books = [];
+        this.languages = [];
     }
 
-    Data():
-        Data.Instance
+    Book():
+        Book.Instance
     {
-        return this.data;
+        return this.book;
     }
 
     Name():
@@ -74,55 +74,55 @@ export class Instance
     {
         await this.Download();
 
-        return this.books.length;
+        return this.languages.length;
     }
 
     async At(
-        book_index: Index,
+        language_index: Index,
     ):
-        Promise<Book.Instance>
+        Promise<Language.Instance>
     {
         await this.Download();
 
         Utils.Assert(
-            book_index > -1,
-            `book_index must be greater than -1.`,
+            language_index > -1,
+            `language_index must be greater than -1.`,
         );
         Utils.Assert(
-            book_index < await this.Count(),
-            `book_index must be less than book_count.`,
+            language_index < await this.Count(),
+            `language_index must be less than language_count.`,
         );
 
-        return this.books[book_index];
+        return this.languages[language_index];
     }
 
     async Get(
-        book_name: Name,
+        language_name: Name,
     ):
-        Promise<Book.Instance>
+        Promise<Language.Instance>
     {
         await this.Download();
 
-        for (const book of this.books) {
-            if (book.Name() === book_name) {
-                return book;
+        for (const language of this.languages) {
+            if (language.Name() === language_name) {
+                return language;
             }
         }
 
         Utils.Assert(
             false,
-            `Invalid book_name.`,
+            `Invalid language_name.`,
         );
 
-        return this.books[0];
+        return this.languages[0];
     }
 
     async Array():
-        Promise<Array<Book.Instance>>
+        Promise<Array<Language.Instance>>
     {
         await this.Download();
 
-        return Array.from(this.books);
+        return Array.from(this.languages);
     }
 
     private async Download():
@@ -135,10 +135,10 @@ export class Instance
                 this.info = JSON.parse(await response.text()) as Info;
 
                 for (const name of this.info.names) {
-                    this.books.push(
-                        new Book.Instance(
+                    this.languages.push(
+                        new Language.Instance(
                             {
-                                books: this,
+                                languages: this,
                                 name: name,
                             },
                         ),

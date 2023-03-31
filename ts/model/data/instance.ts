@@ -1,10 +1,9 @@
-import { Name } from "../../../types.js";
-import { Path } from "../../../types.js";
+import { Name } from "../../types.js";
+import { Path } from "../../types.js";
 
-import * as Utils from "../../../utils.js";
-import * as Async from "../../../async.js";
+import * as Utils from "../../utils.js";
+import * as Async from "../../async.js";
 
-import * as Browser from "../instance.js";
 import { Type } from "./type.js";
 import * as Query from "./query.js";
 import * as Books from "./books.js";
@@ -16,7 +15,6 @@ import * as File from "./file.js";
 
 export class Instance extends Async.Instance
 {
-    private browser: Browser.Instance;
     private name: Name;
     private path: Path;
     private books: Books.Instance;
@@ -25,18 +23,11 @@ export class Instance extends Async.Instance
     private language_names: Array<Name> | null;
     private version_names: Array<Name> | null;
 
-    constructor(
-        {
-            browser,
-        }: {
-            browser: Browser.Instance,
-        },
-    )
+    constructor()
     {
         super();
 
-        this.browser = browser;
-        this.name = `Browser`;
+        this.name = `Data`;
         this.path = this.name;
         this.books = new Books.Instance(
             {
@@ -47,12 +38,6 @@ export class Instance extends Async.Instance
         this.book_names = null;
         this.language_names = null;
         this.version_names = null;
-    }
-
-    Browser():
-        Browser.Instance
-    {
-        return this.browser;
     }
 
     Name():

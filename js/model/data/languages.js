@@ -7,18 +7,18 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import * as Utils from "../../../utils.js";
-import * as Version from "./version.js";
+import * as Utils from "../../utils.js";
+import * as Language from "./language.js";
 export class Instance {
-    constructor({ language, }) {
-        this.language = language;
-        this.name = `Versions`;
-        this.path = `${language.Path()}/${this.name}`;
+    constructor({ book, }) {
+        this.book = book;
+        this.name = `Languages`;
+        this.path = `${book.Path()}/${this.name}`;
         this.info = null;
-        this.versions = [];
+        this.languages = [];
     }
-    Language() {
-        return this.language;
+    Book() {
+        return this.book;
     }
     Name() {
         return this.name;
@@ -42,33 +42,33 @@ export class Instance {
     Count() {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.Download();
-            return this.versions.length;
+            return this.languages.length;
         });
     }
-    At(version_index) {
+    At(language_index) {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.Download();
-            Utils.Assert(version_index > -1, `version_index must be greater than -1.`);
-            Utils.Assert(version_index < (yield this.Count()), `version_index must be less than version_count.`);
-            return this.versions[version_index];
+            Utils.Assert(language_index > -1, `language_index must be greater than -1.`);
+            Utils.Assert(language_index < (yield this.Count()), `language_index must be less than language_count.`);
+            return this.languages[language_index];
         });
     }
-    Get(version_name) {
+    Get(language_name) {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.Download();
-            for (const version of this.versions) {
-                if (version.Name() === version_name) {
-                    return version;
+            for (const language of this.languages) {
+                if (language.Name() === language_name) {
+                    return language;
                 }
             }
-            Utils.Assert(false, `Invalid version_name.`);
-            return this.versions[0];
+            Utils.Assert(false, `Invalid language_name.`);
+            return this.languages[0];
         });
     }
     Array() {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.Download();
-            return Array.from(this.versions);
+            return Array.from(this.languages);
         });
     }
     Download() {
@@ -78,8 +78,8 @@ export class Instance {
                 if (response.ok) {
                     this.info = JSON.parse(yield response.text());
                     for (const name of this.info.names) {
-                        this.versions.push(new Version.Instance({
-                            versions: this,
+                        this.languages.push(new Language.Instance({
+                            languages: this,
                             name: name,
                         }));
                     }

@@ -1,9 +1,9 @@
-import { Count } from "../../../types.js";
-import { Index } from "../../../types.js";
-import { Name } from "../../../types.js";
-import { Path } from "../../../types.js";
+import { Count } from "../../types.js";
+import { Index } from "../../types.js";
+import { Name } from "../../types.js";
+import { Path } from "../../types.js";
 
-import * as Utils from "../../../utils.js";
+import * as Utils from "../../utils.js";
 
 import * as Version from "./version.js";
 import * as Dictionary from "./dictionary.js";

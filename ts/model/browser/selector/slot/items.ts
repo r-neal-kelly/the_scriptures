@@ -4,7 +4,8 @@ import { Name } from "../../../../types.js";
 
 import * as Utils from "../../../../utils.js";
 
-import * as Data from "../../data.js";
+import * as Data from "../../../data.js";
+
 import * as Slot from "./instance.js";
 import * as Item from "./item.js";
 

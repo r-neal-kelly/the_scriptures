@@ -7,15 +7,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import * as Utils from "../../../utils.js";
-import * as Async from "../../../async.js";
+import * as Utils from "../../utils.js";
+import * as Async from "../../async.js";
 import { Type } from "./type.js";
 import * as Books from "./books.js";
 export class Instance extends Async.Instance {
-    constructor({ browser, }) {
+    constructor() {
         super();
-        this.browser = browser;
-        this.name = `Browser`;
+        this.name = `Data`;
         this.path = this.name;
         this.books = new Books.Instance({
             data: this,
@@ -23,9 +22,6 @@ export class Instance extends Async.Instance {
         this.book_names = null;
         this.language_names = null;
         this.version_names = null;
-    }
-    Browser() {
-        return this.browser;
     }
     Name() {
         return this.name;

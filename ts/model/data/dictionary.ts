@@ -1,11 +1,11 @@
-import { Name } from "../../../types.js";
-import { Path } from "../../../types.js";
+import { Name } from "../../types.js";
+import { Path } from "../../types.js";
 
-import * as Utils from "../../../utils.js";
+import * as Utils from "../../utils.js";
 
-import * as Async from "../../../async.js";
+import * as Async from "../../async.js";
 
-import * as Text from "../../text.js";
+import * as Text from "../text.js";
 import * as Files from "./files.js";
 
 export class Instance extends Async.Instance

@@ -1,7 +1,8 @@
 import { Index } from "../../../../types.js";
 import { Name } from "../../../../types.js";
 
-import * as Data from "../../data.js";
+import * as Data from "../../../data.js";
+
 import * as Selector from "../instance.js";
 import { Type } from "./type.js";
 import * as Title from "./title.js";

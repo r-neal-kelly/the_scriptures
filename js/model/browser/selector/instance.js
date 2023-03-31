@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import * as Utils from "../../../utils.js";
 import * as Async from "../../../async.js";
-import * as Data from "../data.js";
+import * as Data from "../../data.js";
 import { Order } from "./order.js";
 import * as Slot from "./slot.js";
 export class Instance extends Async.Instance {
