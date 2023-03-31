@@ -528,30 +528,55 @@ export class Instance implements
     On_Life():
         Array<Event.Listener_Info>
     {
+        Utils.Assert(
+            false,
+            `This method must be overridden to be used.`,
+        );
+
         return [];
     }
 
     On_Refresh():
         void
     {
+        Utils.Assert(
+            false,
+            `This method must be overridden to be used.`,
+        );
+
         return;
     }
 
     On_Reclass():
         Array<string>
     {
+        Utils.Assert(
+            false,
+            `This method must be overridden to be used.`,
+        );
+
         return [];
     }
 
     On_Restyle():
         string | { [index: string]: string }
     {
+        Utils.Assert(
+            false,
+            `This method must be overridden to be used.`,
+        );
+
         return ``;
     }
 
     Before_Death():
         void
     {
+        Utils.Assert(
+            false,
+            `This method must be overridden to be used.`,
+        );
+
         return;
     }
 

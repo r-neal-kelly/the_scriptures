@@ -1,6 +1,6 @@
 import * as Entity from "../../../../entity.js";
 import * as Model from "../../../../model/browser/reader/file/line.js";
-import * as Segment from "./segment.js";
+import * as Item from "./item.js";
 export class Instance extends Entity.Instance {
     constructor({ model, file, }) {
         super({
@@ -12,11 +12,11 @@ export class Instance extends Entity.Instance {
     }
     On_Refresh() {
         const model = this.Model();
-        const target = Math.max(Model.Instance.Min_Segment_Count(), model.Segment_Count());
+        const target = Math.max(Model.Instance.Min_Item_Count(), model.Item_Count());
         const count = this.Child_Count();
         for (let idx = count, end = target; idx < end; idx += 1) {
-            new Segment.Instance({
-                model: () => this.Model().Segment_At(idx),
+            new Item.Instance({
+                model: () => this.Model().Item_At(idx),
                 line: this,
             });
         }
@@ -26,10 +26,10 @@ export class Instance extends Entity.Instance {
         const classes = [];
         classes.push(`Line`);
         if (model.Is_Blank()) {
-            classes.push(`Blank_Line`);
+            classes.push(`Blank`);
         }
         else if (model.Text().Value() === ``) {
-            classes.push(`New_Line`);
+            classes.push(`Transparent`);
         }
         else if (model.Text().Is_Centered()) {
             classes.push(`Centered_Line`);

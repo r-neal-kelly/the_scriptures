@@ -12,8 +12,7 @@ import * as Line from "./line.js";
 export class Instance
 {
     private static min_line_count: Count = 50;
-    private static min_segment_count: Count = 100;
-    private static min_part_count: Count = 2;
+    private static min_item_count: Count = 100;
 
     private static blank_line: Line.Instance = new Line.Instance(
         {
@@ -42,42 +41,23 @@ export class Instance
         Instance.min_line_count = min_line_count;
     }
 
-    static Min_Segment_Count():
+    static Min_Item_Count():
         Count
     {
-        return Instance.min_segment_count;
+        return Instance.min_item_count;
     }
 
-    static Set_Min_Segment_Count(
-        min_segment_count: Count,
+    static Set_Min_Item_Count(
+        min_item_count: Count,
     ):
         void
     {
         Utils.Assert(
-            min_segment_count >= 0,
-            `min_segment_count must be greater than or equal to 0.`,
+            min_item_count >= 0,
+            `min_item_count must be greater than or equal to 0.`,
         );
 
-        Instance.min_segment_count = min_segment_count;
-    }
-
-    static Min_Part_Count():
-        Count
-    {
-        return Instance.min_part_count;
-    }
-
-    static Set_Min_Part_Count(
-        min_part_count: Count,
-    ):
-        void
-    {
-        Utils.Assert(
-            min_part_count >= 0,
-            `min_part_count must be greater than or equal to 0.`,
-        );
-
-        Instance.min_part_count = min_part_count;
+        Instance.min_item_count = min_item_count;
     }
 
     private reader: Reader.Instance;

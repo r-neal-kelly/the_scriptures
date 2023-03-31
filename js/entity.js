@@ -201,18 +201,23 @@ export class Instance {
         }
     }
     On_Life() {
+        Utils.Assert(false, `This method must be overridden to be used.`);
         return [];
     }
     On_Refresh() {
+        Utils.Assert(false, `This method must be overridden to be used.`);
         return;
     }
     On_Reclass() {
+        Utils.Assert(false, `This method must be overridden to be used.`);
         return [];
     }
     On_Restyle() {
+        Utils.Assert(false, `This method must be overridden to be used.`);
         return ``;
     }
     Before_Death() {
+        Utils.Assert(false, `This method must be overridden to be used.`);
         return;
     }
     Is_Alive() {

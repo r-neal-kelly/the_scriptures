@@ -8,19 +8,12 @@ export class Instance {
         Utils.Assert(min_line_count >= 0, `min_line_count must be greater than or equal to 0.`);
         Instance.min_line_count = min_line_count;
     }
-    static Min_Segment_Count() {
-        return Instance.min_segment_count;
+    static Min_Item_Count() {
+        return Instance.min_item_count;
     }
-    static Set_Min_Segment_Count(min_segment_count) {
-        Utils.Assert(min_segment_count >= 0, `min_segment_count must be greater than or equal to 0.`);
-        Instance.min_segment_count = min_segment_count;
-    }
-    static Min_Part_Count() {
-        return Instance.min_part_count;
-    }
-    static Set_Min_Part_Count(min_part_count) {
-        Utils.Assert(min_part_count >= 0, `min_part_count must be greater than or equal to 0.`);
-        Instance.min_part_count = min_part_count;
+    static Set_Min_Item_Count(min_item_count) {
+        Utils.Assert(min_item_count >= 0, `min_item_count must be greater than or equal to 0.`);
+        Instance.min_item_count = min_item_count;
     }
     constructor({ reader, data, text, }) {
         this.reader = reader;
@@ -62,8 +55,7 @@ export class Instance {
     }
 }
 Instance.min_line_count = 50;
-Instance.min_segment_count = 100;
-Instance.min_part_count = 2;
+Instance.min_item_count = 100;
 Instance.blank_line = new Line.Instance({
     file: null,
     index: null,

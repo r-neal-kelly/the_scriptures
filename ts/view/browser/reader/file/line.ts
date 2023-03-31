@@ -5,7 +5,7 @@ import * as Entity from "../../../../entity.js";
 import * as Model from "../../../../model/browser/reader/file/line.js";
 
 import * as File from "./instance.js";
-import * as Segment from "./segment.js";
+import * as Item from "./item.js";
 
 export class Instance extends Entity.Instance
 {
@@ -36,13 +36,13 @@ export class Instance extends Entity.Instance
         void
     {
         const model: Model.Instance = this.Model();
-        const target: Count = Math.max(Model.Instance.Min_Segment_Count(), model.Segment_Count());
+        const target: Count = Math.max(Model.Instance.Min_Item_Count(), model.Item_Count());
         const count: Count = this.Child_Count();
 
         for (let idx = count, end = target; idx < end; idx += 1) {
-            new Segment.Instance(
+            new Item.Instance(
                 {
-                    model: () => this.Model().Segment_At(idx),
+                    model: () => this.Model().Item_At(idx),
                     line: this,
                 },
             );
@@ -57,9 +57,9 @@ export class Instance extends Entity.Instance
 
         classes.push(`Line`);
         if (model.Is_Blank()) {
-            classes.push(`Blank_Line`);
+            classes.push(`Blank`);
         } else if (model.Text().Value() === ``) {
-            classes.push(`New_Line`);
+            classes.push(`Transparent`);
         } else if (model.Text().Is_Centered()) {
             classes.push(`Centered_Line`);
         }

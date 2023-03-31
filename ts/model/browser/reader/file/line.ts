@@ -6,11 +6,11 @@ import * as Utils from "../../../../utils.js";
 import * as Text from "../../../text.js";
 
 import * as File from "./instance.js";
-import * as Segment from "./segment.js";
+import * as Item from "./item.js";
 
 export class Instance
 {
-    private static blank_segment: Segment.Instance = new Segment.Instance(
+    private static blank_item: Item.Instance = new Item.Instance(
         {
             line: null,
             index: null,
@@ -18,16 +18,16 @@ export class Instance
         },
     );
 
-    static Min_Segment_Count():
+    static Min_Item_Count():
         Count
     {
-        return File.Instance.Min_Segment_Count();
+        return File.Instance.Min_Item_Count();
     }
 
     private file: File.Instance | null;
     private index: Index | null;
     private text: Text.Line.Instance | null;
-    private segments: Array<Segment.Instance>;
+    private items: Array<Item.Instance>;
 
     constructor(
         {
@@ -44,7 +44,7 @@ export class Instance
         this.file = file;
         this.index = index;
         this.text = text;
-        this.segments = [];
+        this.items = [];
 
         if (text == null) {
             Utils.Assert(
@@ -65,13 +65,13 @@ export class Instance
                 `index must not be null, and must be greater than -1.`,
             );
 
-            for (let idx = 0, end = text.Part_Segment_Count(); idx < end; idx += 1) {
-                this.segments.push(
-                    new Segment.Instance(
+            for (let idx = 0, end = text.Macro_Item_Count(); idx < end; idx += 1) {
+                this.items.push(
+                    new Item.Instance(
                         {
                             line: this,
                             index: idx,
-                            text: text.Part_Segment(idx),
+                            text: text.Macro_Item(idx),
                         },
                     ),
                 );
@@ -118,26 +118,26 @@ export class Instance
         return this.text as Text.Line.Instance;
     }
 
-    Segment_Count():
+    Item_Count():
         Count
     {
-        return this.segments.length;
+        return this.items.length;
     }
 
-    Segment_At(
-        segment_index: Index,
+    Item_At(
+        item_index: Index,
     ):
-        Segment.Instance
+        Item.Instance
     {
         Utils.Assert(
-            segment_index > -1,
-            `segment_index (${segment_index}) must be greater than -1.`,
+            item_index > -1,
+            `item_index (${item_index}) must be greater than -1.`,
         );
 
-        if (segment_index < this.Segment_Count()) {
-            return this.segments[segment_index];
+        if (item_index < this.Item_Count()) {
+            return this.items[item_index];
         } else {
-            return Instance.blank_segment;
+            return Instance.blank_item;
         }
     }
 }
