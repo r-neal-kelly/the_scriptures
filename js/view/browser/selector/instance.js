@@ -41,6 +41,8 @@ export class Instance extends Entity.Instance {
                     display: flex;
                     align-items: center;
 
+                    padding: 4px;
+
                     border-color: white;
                     border-style: solid;
                     border-width: 0 1px 0 0;

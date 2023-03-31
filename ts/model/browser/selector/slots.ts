@@ -431,7 +431,9 @@ export class Instance extends Async.Instance
     override async Ready():
         Promise<void>
     {
-        await super.Ready();
-        await this.Push_Slot();
+        if (!this.Is_Ready()) {
+            await super.Ready();
+            await this.Push_Slot();
+        }
     }
 }

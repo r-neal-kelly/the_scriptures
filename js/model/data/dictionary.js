@@ -45,18 +45,20 @@ export class Instance extends Async.Instance {
             Ready: { get: () => super.Ready }
         });
         return __awaiter(this, void 0, void 0, function* () {
-            yield _super.Ready.call(this);
-            let text_dictionary_json;
-            const response = yield fetch(Utils.Resolve_Path(this.Path()));
-            if (response.ok) {
-                text_dictionary_json = yield response.text();
+            if (!this.Is_Ready()) {
+                yield _super.Ready.call(this);
+                let text_dictionary_json;
+                const response = yield fetch(Utils.Resolve_Path(this.Path()));
+                if (response.ok) {
+                    text_dictionary_json = yield response.text();
+                }
+                else {
+                    text_dictionary_json = null;
+                }
+                this.text_dictionary = new Text.Dictionary.Instance({
+                    json: text_dictionary_json,
+                });
             }
-            else {
-                text_dictionary_json = null;
-            }
-            this.text_dictionary = new Text.Dictionary.Instance({
-                json: text_dictionary_json,
-            });
         });
     }
 }

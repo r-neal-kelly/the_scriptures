@@ -83,22 +83,24 @@ export class Instance extends Async.Instance
     async Ready():
         Promise<void>
     {
-        await super.Ready();
+        if (!this.Is_Ready()) {
+            await super.Ready();
 
-        let text_dictionary_json: string | null;
+            let text_dictionary_json: string | null;
 
-        const response: Response =
-            await fetch(Utils.Resolve_Path(this.Path()));
-        if (response.ok) {
-            text_dictionary_json = await response.text();
-        } else {
-            text_dictionary_json = null;
+            const response: Response =
+                await fetch(Utils.Resolve_Path(this.Path()));
+            if (response.ok) {
+                text_dictionary_json = await response.text();
+            } else {
+                text_dictionary_json = null;
+            }
+
+            this.text_dictionary = new Text.Dictionary.Instance(
+                {
+                    json: text_dictionary_json,
+                },
+            );
         }
-
-        this.text_dictionary = new Text.Dictionary.Instance(
-            {
-                json: text_dictionary_json,
-            },
-        );
     }
 }

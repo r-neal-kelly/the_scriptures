@@ -232,8 +232,10 @@ export class Instance extends Async.Instance {
             Ready: { get: () => super.Ready }
         });
         return __awaiter(this, void 0, void 0, function* () {
-            yield _super.Ready.call(this);
-            yield this.Push_Slot();
+            if (!this.Is_Ready()) {
+                yield _super.Ready.call(this);
+                yield this.Push_Slot();
+            }
         });
     }
 }
