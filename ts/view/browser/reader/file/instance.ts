@@ -36,6 +36,15 @@ export class Instance extends Entity.Instance
     override On_Life():
         Array<Event.Listener_Info>
     {
+        this.Add_This_CSS(
+            `
+                .File {
+                    width: 100%;
+                    padding: 0 4px;
+                }
+            `,
+        );
+
         this.Add_Children_CSS(
             `
                 .Line {
@@ -58,7 +67,7 @@ export class Instance extends Entity.Instance
                     color: inherit;
                 }
 
-                .Part {
+                .Item {
                     display: inline-block;
 
                     width: auto;
@@ -74,7 +83,7 @@ export class Instance extends Entity.Instance
                     text-decoration: none;
                 }
                 
-                .Indented_Part {
+                .Indented_Item {
                     width: 3em;
                 }
 
@@ -132,18 +141,21 @@ export class Instance extends Entity.Instance
         }
     }
 
-    override On_Restyle():
-        string
+    override On_Reclass():
+        Array<string>
     {
-        return `
-            width: 100%;
-            padding: 0 4px;
-        `;
+        return [`File`];
     }
 
     Model():
         Model.Instance
     {
         return this.model();
+    }
+
+    Reader():
+        Reader.Instance
+    {
+        return this.Parent() as Reader.Instance;
     }
 }

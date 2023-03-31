@@ -15,13 +15,13 @@ export class Instance extends Entity.Instance {
     On_Reclass() {
         const model = this.Model();
         const classes = [];
-        classes.push(`Part`);
+        classes.push(`Item`);
         if (model.Is_Blank()) {
             classes.push(`Blank`);
         }
         else {
             if (model.Is_Indented()) {
-                classes.push(`Indented_Part`);
+                classes.push(`Indented_Item`);
             }
             if (model.Has_Italic_Style()) {
                 classes.push(`Italic`);

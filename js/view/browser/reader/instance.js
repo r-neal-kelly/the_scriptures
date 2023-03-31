@@ -21,6 +21,14 @@ export class Instance extends Entity.Instance {
         this.model = model;
     }
     On_Life() {
+        this.Add_This_CSS(`
+                .Reader {
+                    width: 100%;
+            
+                    overflow-x: auto;
+                    overflow-y: auto;
+                }
+            `);
         return [
             new Event.Listener_Info({
                 event_name: new Event.Name(Event.Prefix.AFTER, "Selector_Slot_Item_Select"),
@@ -30,7 +38,6 @@ export class Instance extends Entity.Instance {
         ];
     }
     On_Refresh() {
-        const model = this.Model();
         if (!this.Has_File()) {
             new File.Instance({
                 model: () => this.Model().File(),
@@ -39,13 +46,8 @@ export class Instance extends Entity.Instance {
         }
         this.Element().scrollTo(0, 0);
     }
-    On_Restyle() {
-        return `
-            width: 100%;
-            
-            overflow-x: auto;
-            overflow-y: auto;
-        `;
+    On_Reclass() {
+        return [`Reader`];
     }
     After_Selector_Slot_Item_Select() {
         return __awaiter(this, void 0, void 0, function* () {

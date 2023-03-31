@@ -35,6 +35,17 @@ export class Instance extends Entity.Instance
     override On_Life():
         Array<Event.Listener_Info>
     {
+        this.Add_This_CSS(
+            `
+                .Reader {
+                    width: 100%;
+            
+                    overflow-x: auto;
+                    overflow-y: auto;
+                }
+            `,
+        );
+
         return [
             new Event.Listener_Info(
                 {
@@ -49,8 +60,6 @@ export class Instance extends Entity.Instance
     override On_Refresh():
         void
     {
-        const model: Model.Instance = this.Model();
-
         if (!this.Has_File()) {
             new File.Instance(
                 {
@@ -63,15 +72,10 @@ export class Instance extends Entity.Instance
         this.Element().scrollTo(0, 0);
     }
 
-    override On_Restyle():
-        string
+    override On_Reclass():
+        Array<string>
     {
-        return `
-            width: 100%;
-            
-            overflow-x: auto;
-            overflow-y: auto;
-        `;
+        return [`Reader`];
     }
 
     async After_Selector_Slot_Item_Select():

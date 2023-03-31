@@ -11,6 +11,12 @@ export class Instance extends Entity.Instance {
         this.model = model;
     }
     On_Life() {
+        this.Add_This_CSS(`
+                .File {
+                    width: 100%;
+                    padding: 0 4px;
+                }
+            `);
         this.Add_Children_CSS(`
                 .Line {
                     display: block;
@@ -32,7 +38,7 @@ export class Instance extends Entity.Instance {
                     color: inherit;
                 }
 
-                .Part {
+                .Item {
                     display: inline-block;
 
                     width: auto;
@@ -48,7 +54,7 @@ export class Instance extends Entity.Instance {
                     text-decoration: none;
                 }
                 
-                .Indented_Part {
+                .Indented_Item {
                     width: 3em;
                 }
 
@@ -97,13 +103,13 @@ export class Instance extends Entity.Instance {
             });
         }
     }
-    On_Restyle() {
-        return `
-            width: 100%;
-            padding: 0 4px;
-        `;
+    On_Reclass() {
+        return [`File`];
     }
     Model() {
         return this.model();
+    }
+    Reader() {
+        return this.Parent();
     }
 }

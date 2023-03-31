@@ -10,35 +10,42 @@ export class Instance extends Entity.Instance {
             event_grid: root.Event_Grid(),
         });
         this.model = model;
-        this.selector = null;
-        this.reader = null;
+    }
+    On_Life() {
+        this.Add_This_CSS(`
+                .Browser {
+                    display: grid;
+                    grid-template-rows: 1fr;
+                    grid-template-columns: auto auto;
+                    justify-content: start;
+                
+                    width: 100%;
+                    height: 100%;
+
+                    overflow-x: hidden;
+                    overflow-y: hidden;
+
+                    color: white;
+                }
+            `);
+        return [];
     }
     On_Refresh() {
-        this.Abort_All_Children();
-        this.selector = new Selector.Instance({
-            model: this.Model().Selector(),
-            browser: this,
-        });
-        this.reader = new Reader.Instance({
-            model: this.Model().Reader(),
-            browser: this,
-        });
+        if (!this.Has_Selector() ||
+            !this.Has_Reader()) {
+            this.Abort_All_Children();
+            new Selector.Instance({
+                model: this.Model().Selector(),
+                browser: this,
+            });
+            new Reader.Instance({
+                model: this.Model().Reader(),
+                browser: this,
+            });
+        }
     }
-    On_Restyle() {
-        return `
-            display: grid;
-            grid-template-rows: 1fr;
-            grid-template-columns: auto auto;
-            justify-content: start;
-        
-            width: 100%;
-            height: 100%;
-
-            overflow-x: hidden;
-            overflow-y: hidden;
-
-            color: white;
-        `;
+    On_Reclass() {
+        return [`Browser`];
     }
     Model() {
         return this.model;
@@ -46,12 +53,20 @@ export class Instance extends Entity.Instance {
     Root() {
         return this.Parent();
     }
+    Has_Selector() {
+        return (this.Has_Child(0) &&
+            this.Child(0) instanceof Selector.Instance);
+    }
     Selector() {
-        Utils.Assert(this.selector != null, `Does not have selector.`);
-        return this.selector;
+        Utils.Assert(this.Has_Selector(), `Does not have a selector.`);
+        return this.Child(0);
+    }
+    Has_Reader() {
+        return (this.Has_Child(0) &&
+            this.Child(0) instanceof Reader.Instance);
     }
     Reader() {
-        Utils.Assert(this.reader != null, `Does not have reader.`);
-        return this.reader;
+        Utils.Assert(this.Has_Reader(), `Does not have a reader.`);
+        return this.Child(0);
     }
 }

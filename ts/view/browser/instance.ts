@@ -1,4 +1,5 @@
 import * as Utils from "../../utils.js";
+import * as Event from "../../event.js";
 import * as Entity from "../../entity.js";
 
 import * as Model from "../../model/browser/instance.js";
@@ -9,8 +10,6 @@ import * as Reader from "./reader.js";
 export class Instance extends Entity.Instance
 {
     private model: Model.Instance;
-    private selector: Selector.Instance | null;
-    private reader: Reader.Instance | null;
 
     constructor(
         {
@@ -31,46 +30,61 @@ export class Instance extends Entity.Instance
         );
 
         this.model = model;
-        this.selector = null;
-        this.reader = null;
+    }
+
+    override On_Life():
+        Array<Event.Listener_Info>
+    {
+        this.Add_This_CSS(
+            `
+                .Browser {
+                    display: grid;
+                    grid-template-rows: 1fr;
+                    grid-template-columns: auto auto;
+                    justify-content: start;
+                
+                    width: 100%;
+                    height: 100%;
+
+                    overflow-x: hidden;
+                    overflow-y: hidden;
+
+                    color: white;
+                }
+            `,
+        );
+
+        return [];
     }
 
     override On_Refresh():
         void
     {
-        this.Abort_All_Children();
+        if (
+            !this.Has_Selector() ||
+            !this.Has_Reader()
+        ) {
+            this.Abort_All_Children();
 
-        this.selector = new Selector.Instance(
-            {
-                model: this.Model().Selector(),
-                browser: this,
-            },
-        );
-        this.reader = new Reader.Instance(
-            {
-                model: this.Model().Reader(),
-                browser: this,
-            },
-        );
+            new Selector.Instance(
+                {
+                    model: this.Model().Selector(),
+                    browser: this,
+                },
+            );
+            new Reader.Instance(
+                {
+                    model: this.Model().Reader(),
+                    browser: this,
+                },
+            );
+        }
     }
 
-    override On_Restyle():
-        string
+    override On_Reclass():
+        Array<string>
     {
-        return `
-            display: grid;
-            grid-template-rows: 1fr;
-            grid-template-columns: auto auto;
-            justify-content: start;
-        
-            width: 100%;
-            height: 100%;
-
-            overflow-x: hidden;
-            overflow-y: hidden;
-
-            color: white;
-        `;
+        return [`Browser`];
     }
 
     Model():
@@ -85,25 +99,43 @@ export class Instance extends Entity.Instance
         return this.Parent();
     }
 
+    Has_Selector():
+        boolean
+    {
+        return (
+            this.Has_Child(0) &&
+            this.Child(0) instanceof Selector.Instance
+        );
+    }
+
     Selector():
         Selector.Instance
     {
         Utils.Assert(
-            this.selector != null,
-            `Does not have selector.`,
+            this.Has_Selector(),
+            `Does not have a selector.`,
         );
 
-        return this.selector as Selector.Instance;
+        return this.Child(0) as Selector.Instance;
+    }
+
+    Has_Reader():
+        boolean
+    {
+        return (
+            this.Has_Child(0) &&
+            this.Child(0) instanceof Reader.Instance
+        );
     }
 
     Reader():
         Reader.Instance
     {
         Utils.Assert(
-            this.reader != null,
-            `Does not have reader.`,
+            this.Has_Reader(),
+            `Does not have a reader.`,
         );
 
-        return this.reader as Reader.Instance;
+        return this.Child(0) as Reader.Instance;
     }
 }

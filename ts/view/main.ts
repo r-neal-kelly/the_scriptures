@@ -42,10 +42,6 @@ class Body extends Entity.Instance
                 *:focus {
                     outline: 0;
                 }
-
-                span {
-                    display: inline-block;
-                }
             `,
         );
 
