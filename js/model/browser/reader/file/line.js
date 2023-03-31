@@ -1,15 +1,18 @@
 import * as Utils from "../../../../utils.js";
-import * as File from "./instance.js";
-import * as Item from "./item.js";
+import * as Segment from "./segment.js";
 export class Instance {
-    static Min_Item_Count() {
-        return File.Instance.Min_Item_Count();
+    static Min_Segment_Count() {
+        return Instance.min_segment_count;
+    }
+    static Set_Min_Segment_Count(min_segment_count) {
+        Utils.Assert(min_segment_count >= 0, `min_segment_count must be greater than or equal to 0.`);
+        Instance.min_segment_count = min_segment_count;
     }
     constructor({ file, index, text, }) {
         this.file = file;
         this.index = index;
         this.text = text;
-        this.items = [];
+        this.segments = [];
         if (text == null) {
             Utils.Assert(file == null, `file must be null.`);
             Utils.Assert(index == null, `index must be null.`);
@@ -17,17 +20,14 @@ export class Instance {
         else {
             Utils.Assert(file != null, `file must not be null.`);
             Utils.Assert(index != null && index > -1, `index must not be null, and must be greater than -1.`);
-            for (let idx = 0, end = text.Macro_Item_Count(); idx < end; idx += 1) {
-                this.items.push(new Item.Instance({
+            for (let idx = 0, end = text.Macro_Segment_Count(); idx < end; idx += 1) {
+                this.segments.push(new Segment.Instance({
                     line: this,
                     index: idx,
-                    text: text.Macro_Item(idx),
+                    text: text.Macro_Segment(idx),
                 }));
             }
         }
-    }
-    Is_Blank() {
-        return this.text == null;
     }
     File() {
         Utils.Assert(this.file != null, `Doesn't have file.`);
@@ -41,20 +41,24 @@ export class Instance {
         Utils.Assert(this.text != null, `Doesn't have text.`);
         return this.text;
     }
-    Item_Count() {
-        return this.items.length;
+    Segment_Count() {
+        return this.segments.length;
     }
-    Item_At(item_index) {
-        Utils.Assert(item_index > -1, `item_index (${item_index}) must be greater than -1.`);
-        if (item_index < this.Item_Count()) {
-            return this.items[item_index];
+    Segment_At(segment_index) {
+        Utils.Assert(segment_index > -1, `segment_index (${segment_index}) must be greater than -1.`);
+        if (segment_index < this.Segment_Count()) {
+            return this.segments[segment_index];
         }
         else {
-            return Instance.blank_item;
+            return Instance.blank_segment;
         }
     }
+    Is_Blank() {
+        return this.text == null;
+    }
 }
-Instance.blank_item = new Item.Instance({
+Instance.min_segment_count = 100;
+Instance.blank_segment = new Segment.Instance({
     line: null,
     index: null,
     text: null,

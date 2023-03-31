@@ -1,12 +1,7 @@
-import * as Utils from "../../../../utils.js";
-import * as Item from "../instance.js";
-import { Type as Item_Type } from "../type.js";
+import * as Utils from "../../../utils.js";
 import { Type } from "./type.js";
-export class Instance extends Item.Instance {
+export class Instance {
     constructor({ segment_type, }) {
-        super({
-            item_type: Item_Type.SEGMENT,
-        });
         this.segment_type = segment_type;
         this.items = [];
     }

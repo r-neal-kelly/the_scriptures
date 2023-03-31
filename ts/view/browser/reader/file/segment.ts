@@ -2,10 +2,10 @@ import { Count } from "../../../../types.js";
 
 import * as Entity from "../../../../entity.js";
 
-import * as Model from "../../../../model/browser/reader/file/line.js";
+import * as Model from "../../../../model/browser/reader/file/segment.js";
 
-import * as File from "./instance.js";
-import * as Segment from "./segment.js";
+import * as Line from "./line.js";
+import * as Item from "./item.js";
 
 export class Instance extends Entity.Instance
 {
@@ -14,18 +14,18 @@ export class Instance extends Entity.Instance
     constructor(
         {
             model,
-            file,
+            line,
         }: {
             model: () => Model.Instance,
-            file: File.Instance,
+            line: Line.Instance,
         },
     )
     {
         super(
             {
                 element: `div`,
-                parent: file,
-                event_grid: file.Event_Grid(),
+                parent: line,
+                event_grid: line.Event_Grid(),
             },
         );
 
@@ -36,14 +36,14 @@ export class Instance extends Entity.Instance
         void
     {
         const model: Model.Instance = this.Model();
-        const target: Count = Math.max(Model.Instance.Min_Segment_Count(), model.Segment_Count());
+        const target: Count = Math.max(Model.Instance.Min_Item_Count(), model.Item_Count());
         const count: Count = this.Child_Count();
 
         for (let idx = count, end = target; idx < end; idx += 1) {
-            new Segment.Instance(
+            new Item.Instance(
                 {
-                    model: () => this.Model().Segment_At(idx),
-                    line: this,
+                    model: () => this.Model().Item_At(idx),
+                    segment: this,
                 },
             );
         }
@@ -55,13 +55,9 @@ export class Instance extends Entity.Instance
         const model: Model.Instance = this.Model();
         const classes: Array<string> = [];
 
-        classes.push(`Line`);
+        classes.push(`Segment`);
         if (model.Is_Blank()) {
             classes.push(`Blank`);
-        } else if (model.Text().Value() === ``) {
-            classes.push(`Transparent`);
-        } else if (model.Text().Is_Centered()) {
-            classes.push(`Centered_Line`);
         }
 
         return classes;
@@ -73,9 +69,9 @@ export class Instance extends Entity.Instance
         return this.model();
     }
 
-    File():
-        File.Instance
+    Line():
+        Line.Instance
     {
-        return this.Parent() as File.Instance;
+        return this.Parent() as Line.Instance;
     }
 }

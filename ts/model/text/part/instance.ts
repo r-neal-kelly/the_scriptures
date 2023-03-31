@@ -1,9 +1,7 @@
-import * as Utils from "../../../../utils.js";
+import * as Utils from "../../../utils.js";
 
-import { Value } from "../../value.js";
-
-import * as Item from "../instance.js";
-import { Type as Item_Type } from "../type.js";
+import { Value } from "../value.js";
+import * as Item from "../item.js";
 
 import { Type } from "./type.js";
 import { Status } from "./status.js";
@@ -32,7 +30,7 @@ export class Instance extends Item.Instance
     {
         super(
             {
-                item_type: Item_Type.PART,
+                item_type: Item.Type.PART,
             },
         );
 

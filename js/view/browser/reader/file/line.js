@@ -1,6 +1,6 @@
 import * as Entity from "../../../../entity.js";
 import * as Model from "../../../../model/browser/reader/file/line.js";
-import * as Item from "./item.js";
+import * as Segment from "./segment.js";
 export class Instance extends Entity.Instance {
     constructor({ model, file, }) {
         super({
@@ -12,11 +12,11 @@ export class Instance extends Entity.Instance {
     }
     On_Refresh() {
         const model = this.Model();
-        const target = Math.max(Model.Instance.Min_Item_Count(), model.Item_Count());
+        const target = Math.max(Model.Instance.Min_Segment_Count(), model.Segment_Count());
         const count = this.Child_Count();
         for (let idx = count, end = target; idx < end; idx += 1) {
-            new Item.Instance({
-                model: () => this.Model().Item_At(idx),
+            new Segment.Instance({
+                model: () => this.Model().Segment_At(idx),
                 line: this,
             });
         }

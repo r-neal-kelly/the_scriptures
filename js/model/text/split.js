@@ -1,5 +1,4 @@
-import * as Item from "./instance.js";
-import { Type } from "./type.js";
+import * as Item from "./item.js";
 export function From(break_) {
     const results = [];
     const matches = break_.Value().match(/\S+|\s/g);
@@ -18,7 +17,7 @@ export function From(break_) {
 export class Instance extends Item.Instance {
     constructor({ break_, from, to, }) {
         super({
-            item_type: Type.SPLIT,
+            item_type: Item.Type.SPLIT,
         });
         this.break_ = break_;
         this.from = from;

@@ -8,13 +8,6 @@ export class Instance {
         Utils.Assert(min_line_count >= 0, `min_line_count must be greater than or equal to 0.`);
         Instance.min_line_count = min_line_count;
     }
-    static Min_Item_Count() {
-        return Instance.min_item_count;
-    }
-    static Set_Min_Item_Count(min_item_count) {
-        Utils.Assert(min_item_count >= 0, `min_item_count must be greater than or equal to 0.`);
-        Instance.min_item_count = min_item_count;
-    }
     constructor({ reader, data, text, }) {
         this.reader = reader;
         this.data = data;
@@ -55,7 +48,6 @@ export class Instance {
     }
 }
 Instance.min_line_count = 50;
-Instance.min_item_count = 100;
 Instance.blank_line = new Line.Instance({
     file: null,
     index: null,

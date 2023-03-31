@@ -31,12 +31,6 @@ export class Instance
         return this.item_type === Type.PART;
     }
 
-    Is_Segment():
-        boolean
-    {
-        return this.item_type === Type.SEGMENT;
-    }
-
     Is_Split():
         boolean
     {

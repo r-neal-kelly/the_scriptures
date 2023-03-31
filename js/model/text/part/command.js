@@ -1,5 +1,5 @@
-import * as Utils from "../../../../utils.js";
-import * as Unicode from "../../../../unicode.js";
+import * as Utils from "../../../utils.js";
+import * as Unicode from "../../../unicode.js";
 import * as Part from "./instance.js";
 import { Type } from "./type.js";
 import { Status } from "./status.js";

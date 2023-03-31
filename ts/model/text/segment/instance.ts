@@ -1,18 +1,16 @@
-import { Count } from "../../../../types.js";
-import { Index } from "../../../../types.js";
+import { Count } from "../../../types.js";
+import { Index } from "../../../types.js";
 
-import * as Utils from "../../../../utils.js";
+import * as Utils from "../../../utils.js";
 
-import { Value } from "../../value.js";
-
-import * as Item from "../instance.js";
-import { Type as Item_Type } from "../type.js";
+import { Value } from "../value.js";
+import * as Item from "../item.js";
 import * as Part from "../part.js";
 import * as Split from "../split.js";
 
 import { Type } from "./type.js";
 
-export class Instance extends Item.Instance
+export class Instance
 {
     private segment_type: Type;
     private items: Array<Item.Instance>;
@@ -25,12 +23,6 @@ export class Instance extends Item.Instance
         },
     )
     {
-        super(
-            {
-                item_type: Item_Type.SEGMENT,
-            },
-        );
-
         this.segment_type = segment_type;
         this.items = [];
     }
@@ -471,7 +463,7 @@ export class Instance extends Item.Instance
         );
     }
 
-    override Value():
+    Value():
         Value
     {
         let value: string = ``;

@@ -1,13 +1,12 @@
-import * as Utils from "../../../../utils.js";
-import * as Item from "../instance.js";
-import { Type as Item_Type } from "../type.js";
+import * as Utils from "../../../utils.js";
+import * as Item from "../item.js";
 import { Type } from "./type.js";
 import { Status } from "./status.js";
 import { Style } from "./style.js";
 export class Instance extends Item.Instance {
     constructor({ part_type, value, status, style, }) {
         super({
-            item_type: Item_Type.PART,
+            item_type: Item.Type.PART,
         });
         Utils.Assert(value.length > 0, `value must have a length greater than 0.`);
         this.part_type = part_type;

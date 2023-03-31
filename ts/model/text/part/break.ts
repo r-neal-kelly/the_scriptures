@@ -1,4 +1,4 @@
-import { Value } from "../../value.js";
+import { Value } from "../value.js";
 
 import * as Part from "./instance.js";
 import { Type } from "./type.js";
@@ -10,18 +10,20 @@ export class Instance extends Part.Instance
     constructor(
         {
             value,
+            status,
             style,
         }: {
             value: Value,
+            status: Status,
             style: Style | Array<Style>,
         },
     )
     {
         super(
             {
-                part_type: Type.LETTER,
+                part_type: Type.BREAK,
                 value: value,
-                status: Status.GOOD,
+                status: status,
                 style: style,
             }
         );

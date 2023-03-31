@@ -1,9 +1,9 @@
-import { Index } from "../../../../types.js";
+import { Index } from "../../../types.js";
 
-import * as Utils from "../../../../utils.js";
-import * as Unicode from "../../../../unicode.js";
+import * as Utils from "../../../utils.js";
+import * as Unicode from "../../../unicode.js";
 
-import { Value } from "../../value.js";
+import { Value } from "../value.js";
 
 import * as Part from "./instance.js";
 import { Type } from "./type.js";

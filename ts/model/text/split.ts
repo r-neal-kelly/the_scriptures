@@ -1,9 +1,7 @@
-import { Index } from "../../../types.js";
+import { Index } from "../../types.js";
 
-import { Value } from "../value.js";
-
-import * as Item from "./instance.js";
-import { Type } from "./type.js";
+import { Value } from "./value.js";
+import * as Item from "./item.js";
 import * as Part from "./part";
 
 export function From(
@@ -54,7 +52,7 @@ export class Instance extends Item.Instance
     {
         super(
             {
-                item_type: Type.SPLIT,
+                item_type: Item.Type.SPLIT,
             },
         );
 

@@ -10,9 +10,6 @@ export class Instance {
     Is_Part() {
         return this.item_type === Type.PART;
     }
-    Is_Segment() {
-        return this.item_type === Type.SEGMENT;
-    }
     Is_Split() {
         return this.item_type === Type.SPLIT;
     }

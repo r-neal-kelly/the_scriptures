@@ -1,17 +1,17 @@
 import * as Utils from "../../utils.js";
 import * as Unicode from "../../unicode.js";
 import * as Dictionary from "./dictionary.js";
-import * as Part from "./item/part.js";
-import * as Split from "./item/split.js";
-import * as Segment from "./item/segment.js";
+import * as Part from "./part.js";
+import * as Split from "./split.js";
+import * as Segment from "./segment.js";
 export class Instance {
     constructor({ text, value, }) {
         this.text = text;
         this.value = ``;
         this.micro_parts = [];
         this.macro_parts = [];
-        this.micro_items = [];
-        this.macro_items = [];
+        this.micro_segments = [];
+        this.macro_segments = [];
         this.is_centered = false;
         this.is_indented = false;
         this.Set_Value(value);
@@ -30,8 +30,8 @@ export class Instance {
         this.value = value;
         this.micro_parts = [];
         this.macro_parts = [];
-        this.micro_items = [];
-        this.macro_items = [];
+        this.micro_segments = [];
+        this.macro_segments = [];
         this.is_centered =
             this.value.slice(0, Part.Command.Known_Value.CENTER.length) === Part.Command.Known_Value.CENTER;
         this.is_indented =
@@ -56,28 +56,18 @@ export class Instance {
         let current_macro_segment = new Segment.Instance({
             segment_type: Segment.Type.MACRO,
         });
-        const Update_With_Micro_Item = function (item) {
+        const Update_Micro_Segments = function (item) {
             if (!current_micro_segment.Try_Add_Item(item)) {
-                if (current_micro_segment.Item_Count() > 1) {
-                    this.micro_items.push(current_micro_segment);
-                }
-                else {
-                    this.micro_items.push(current_micro_segment.Item(0));
-                }
+                this.micro_segments.push(current_micro_segment);
                 current_micro_segment = new Segment.Instance({
                     segment_type: Segment.Type.MICRO,
                 });
                 current_micro_segment.Add_Item(item);
             }
         }.bind(this);
-        const Update_With_Macro_Item = function (item) {
+        const Update_Macro_Segments = function (item) {
             if (!current_macro_segment.Try_Add_Item(item)) {
-                if (current_macro_segment.Item_Count() > 1) {
-                    this.macro_items.push(current_macro_segment);
-                }
-                else {
-                    this.macro_items.push(current_macro_segment.Item(0));
-                }
+                this.macro_segments.push(current_macro_segment);
                 current_macro_segment = new Segment.Instance({
                     segment_type: Segment.Type.MACRO,
                 });
@@ -122,8 +112,8 @@ export class Instance {
                 }
                 this.micro_parts.push(command);
                 this.macro_parts.push(command);
-                Update_With_Micro_Item(command);
-                Update_With_Macro_Item(command);
+                Update_Micro_Segments(command);
+                Update_Macro_Segments(command);
                 it = new Unicode.Iterator({
                     text: it.Text(),
                     index: it.Index() + maybe_valid_command.length,
@@ -140,7 +130,7 @@ export class Instance {
                         style: current_style,
                     });
                     this.micro_parts.push(point);
-                    Update_With_Micro_Item(point);
+                    Update_Micro_Segments(point);
                     current_type = Current_Type.WORD;
                 }
                 else if (dictionary.Has_Marker(this_point)) {
@@ -149,7 +139,7 @@ export class Instance {
                         style: current_style,
                     });
                     this.micro_parts.push(point);
-                    Update_With_Micro_Item(point);
+                    Update_Micro_Segments(point);
                     current_type = Current_Type.BREAK;
                 }
                 else {
@@ -158,13 +148,13 @@ export class Instance {
                         style: current_style,
                     });
                     this.micro_parts.push(point);
-                    Update_With_Micro_Item(point);
+                    Update_Micro_Segments(point);
                     current_type = Current_Type.POINT;
                     if (first_non_command_index == null) {
                         first_non_command_index = it.Index();
                     }
                     this.macro_parts.push(point);
-                    Update_With_Macro_Item(point);
+                    Update_Macro_Segments(point);
                     current_start = it.Next();
                 }
                 if (current_type === Current_Type.WORD) {
@@ -186,7 +176,7 @@ export class Instance {
                             style: current_style,
                         });
                         this.macro_parts.push(part);
-                        Update_With_Macro_Item(part);
+                        Update_Macro_Segments(part);
                         current_start = it.Next();
                     }
                 }
@@ -216,7 +206,7 @@ export class Instance {
                         this.macro_parts.push(part);
                         const splits = Split.From(part);
                         for (const split of splits) {
-                            Update_With_Macro_Item(split);
+                            Update_Macro_Segments(split);
                         }
                         current_start = it.Next();
                     }
@@ -224,17 +214,11 @@ export class Instance {
                 it = it.Next();
             }
         }
-        if (current_micro_segment.Item_Count() > 1) {
-            this.micro_items.push(current_micro_segment);
+        if (current_micro_segment.Item_Count() > 0) {
+            this.micro_segments.push(current_micro_segment);
         }
-        else if (current_micro_segment.Item_Count() > 0) {
-            this.micro_items.push(current_micro_segment.Item(0));
-        }
-        if (current_macro_segment.Item_Count() > 1) {
-            this.macro_items.push(current_macro_segment);
-        }
-        else if (current_macro_segment.Item_Count() > 0) {
-            this.macro_items.push(current_macro_segment.Item(0));
+        if (current_macro_segment.Item_Count() > 0) {
+            this.macro_segments.push(current_macro_segment);
         }
     }
     Micro_Part_Count() {
@@ -253,21 +237,21 @@ export class Instance {
         Utils.Assert(macro_part_index < this.Macro_Part_Count(), `macro_part_index must be less than macro_part_count.`);
         return this.macro_parts[macro_part_index];
     }
-    Micro_Item_Count() {
-        return this.micro_items.length;
+    Micro_Segment_Count() {
+        return this.micro_segments.length;
     }
-    Micro_Item(micro_item_index) {
-        Utils.Assert(micro_item_index > -1, `micro_item_index must be greater than -1.`);
-        Utils.Assert(micro_item_index < this.Micro_Item_Count(), `micro_item_index must be less than micro_item_count.`);
-        return this.micro_items[micro_item_index];
+    Micro_Segment(micro_segment_index) {
+        Utils.Assert(micro_segment_index > -1, `micro_segment_index must be greater than -1.`);
+        Utils.Assert(micro_segment_index < this.Micro_Segment_Count(), `micro_segment_index must be less than micro_segment_count.`);
+        return this.micro_segments[micro_segment_index];
     }
-    Macro_Item_Count() {
-        return this.macro_items.length;
+    Macro_Segment_Count() {
+        return this.macro_segments.length;
     }
-    Macro_Item(macro_item_index) {
-        Utils.Assert(macro_item_index > -1, `macro_item_index must be greater than -1.`);
-        Utils.Assert(macro_item_index < this.Macro_Item_Count(), `macro_item_index must be less than macro_item_count.`);
-        return this.macro_items[macro_item_index];
+    Macro_Segment(macro_segment_index) {
+        Utils.Assert(macro_segment_index > -1, `macro_segment_index must be greater than -1.`);
+        Utils.Assert(macro_segment_index < this.Macro_Segment_Count(), `macro_segment_index must be less than macro_segment_count.`);
+        return this.macro_segments[macro_segment_index];
     }
     Is_Centered() {
         return this.is_centered;

@@ -6,11 +6,13 @@ import * as Utils from "../../../../utils.js";
 import * as Text from "../../../text.js";
 
 import * as File from "./instance.js";
-import * as Item from "./item.js";
+import * as Segment from "./segment.js";
 
 export class Instance
 {
-    private static blank_item: Item.Instance = new Item.Instance(
+    private static min_segment_count: Count = 100;
+
+    private static blank_segment: Segment.Instance = new Segment.Instance(
         {
             line: null,
             index: null,
@@ -18,16 +20,29 @@ export class Instance
         },
     );
 
-    static Min_Item_Count():
+    static Min_Segment_Count():
         Count
     {
-        return File.Instance.Min_Item_Count();
+        return Instance.min_segment_count;
+    }
+
+    static Set_Min_Segment_Count(
+        min_segment_count: Count,
+    ):
+        void
+    {
+        Utils.Assert(
+            min_segment_count >= 0,
+            `min_segment_count must be greater than or equal to 0.`,
+        );
+
+        Instance.min_segment_count = min_segment_count;
     }
 
     private file: File.Instance | null;
     private index: Index | null;
     private text: Text.Line.Instance | null;
-    private items: Array<Item.Instance>;
+    private segments: Array<Segment.Instance>;
 
     constructor(
         {
@@ -44,7 +59,7 @@ export class Instance
         this.file = file;
         this.index = index;
         this.text = text;
-        this.items = [];
+        this.segments = [];
 
         if (text == null) {
             Utils.Assert(
@@ -65,24 +80,18 @@ export class Instance
                 `index must not be null, and must be greater than -1.`,
             );
 
-            for (let idx = 0, end = text.Macro_Item_Count(); idx < end; idx += 1) {
-                this.items.push(
-                    new Item.Instance(
+            for (let idx = 0, end = text.Macro_Segment_Count(); idx < end; idx += 1) {
+                this.segments.push(
+                    new Segment.Instance(
                         {
                             line: this,
                             index: idx,
-                            text: text.Macro_Item(idx),
+                            text: text.Macro_Segment(idx),
                         },
                     ),
                 );
             }
         }
-    }
-
-    Is_Blank():
-        boolean
-    {
-        return this.text == null;
     }
 
     File():
@@ -118,26 +127,32 @@ export class Instance
         return this.text as Text.Line.Instance;
     }
 
-    Item_Count():
+    Segment_Count():
         Count
     {
-        return this.items.length;
+        return this.segments.length;
     }
 
-    Item_At(
-        item_index: Index,
+    Segment_At(
+        segment_index: Index,
     ):
-        Item.Instance
+        Segment.Instance
     {
         Utils.Assert(
-            item_index > -1,
-            `item_index (${item_index}) must be greater than -1.`,
+            segment_index > -1,
+            `segment_index (${segment_index}) must be greater than -1.`,
         );
 
-        if (item_index < this.Item_Count()) {
-            return this.items[item_index];
+        if (segment_index < this.Segment_Count()) {
+            return this.segments[segment_index];
         } else {
-            return Instance.blank_item;
+            return Instance.blank_segment;
         }
+    }
+
+    Is_Blank():
+        boolean
+    {
+        return this.text == null;
     }
 }

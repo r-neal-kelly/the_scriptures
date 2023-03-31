@@ -1,4 +1,4 @@
-import { Value } from "../../value.js";
+import { Value } from "../value.js";
 
 import * as Part from "./instance.js";
 import { Type } from "./type.js";
@@ -19,9 +19,9 @@ export class Instance extends Part.Instance
     {
         super(
             {
-                part_type: Type.MARKER,
+                part_type: Type.POINT,
                 value: value,
-                status: Status.GOOD,
+                status: Status.UNKNOWN,
                 style: style,
             }
         );
