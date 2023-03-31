@@ -129,7 +129,7 @@ async function File_Names(
 }
 
 const FOLDER_TYPES = [
-    `Browser`,
+    `Data`,
     `Books`,
     `Book`,
     `Languages`,
@@ -150,7 +150,7 @@ async function Generate_Info(
 {
     const info = {};
 
-    if (FOLDER_TYPES[folder_type] === `Browser`) {
+    if (FOLDER_TYPES[folder_type] === `Data`) {
         await Generate_Info(folder_type + 1, `${folder_path}/Books`);
 
     } else if (FOLDER_TYPES[folder_type] === `Books`) {
