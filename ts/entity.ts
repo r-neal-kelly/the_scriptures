@@ -379,6 +379,12 @@ export class Instance implements
                 this.HTML_ID(),
             );
 
+            // This needs to happen before On_Life so that
+            // the listener has access to their parent.
+            if (parent != null) {
+                parent.Adopt_Child(this);
+            }
+
             if (Object.getPrototypeOf(this).hasOwnProperty(`On_Life`)) {
                 this.life_cycle_listener = Life_Cycle_Listener.ON_LIFE;
                 this.css_to_add = ``;
@@ -393,9 +399,7 @@ export class Instance implements
             // We only refresh when there is no parent
             // because the parent itself will refresh
             // its children through this event.
-            if (parent != null) {
-                parent.Adopt_Child(this);
-            } else {
+            if (parent == null) {
                 // Waiting here allows the derived type to
                 // finish its constructor before Refresh.
                 (

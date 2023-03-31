@@ -52,4 +52,14 @@ export class Instance extends Async.Instance
     {
         this.is_open = false;
     }
+
+    Toggle():
+        void
+    {
+        if (this.Is_Open()) {
+            this.Close();
+        } else {
+            this.Open();
+        }
+    }
 }

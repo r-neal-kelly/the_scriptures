@@ -11,26 +11,37 @@ export class Instance extends Entity.Instance {
     }
     On_Refresh() {
         const model = this.Model();
-        const target = model.Slot_Count();
-        const count = this.Child_Count();
-        const delta = target - count;
-        if (delta < 0) {
-            for (let idx = count, end = count + delta; idx > end;) {
-                idx -= 1;
-                this.Abort_Child(this.Child(idx));
+        if (model.Selector().Toggle().Is_Open()) {
+            const target = model.Slot_Count();
+            const count = this.Child_Count();
+            const delta = target - count;
+            if (delta < 0) {
+                for (let idx = count, end = count + delta; idx > end;) {
+                    idx -= 1;
+                    this.Abort_Child(this.Child(idx));
+                }
+            }
+            else if (delta > 0) {
+                for (let idx = count, end = count + delta; idx < end; idx += 1) {
+                    new Slot.Instance({
+                        model: model.Slot(idx),
+                        slots: this,
+                    });
+                }
             }
         }
-        else if (delta > 0) {
-            for (let idx = count, end = count + delta; idx < end; idx += 1) {
-                new Slot.Instance({
-                    model: model.Slot(idx),
-                    slots: this,
-                });
-            }
+        else {
+            this.Skip_Children();
         }
     }
     On_Reclass() {
-        return [`Slots`];
+        const model = this.Model();
+        const classes = [];
+        classes.push(`Slots`);
+        if (model.Selector().Toggle().Is_Closed()) {
+            classes.push(`Hidden`);
+        }
+        return classes;
     }
     Model() {
         return this.model;

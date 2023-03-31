@@ -22,8 +22,8 @@ export class Instance extends Entity.Instance {
         this.Element().addEventListener(`click`, this.On_Click.bind(this));
         return [
             new Event.Listener_Info({
-                event_name: new Event.Name(Event.Prefix.ON, "Selector_Slot_Item_Select", this.ID().toString()),
-                event_handler: this.On_Selector_Slot_Item_Select.bind(this),
+                event_name: new Event.Name(Event.Prefix.ON, `Selector_Slot_Item_Select`, `${this.ID()}`),
+                event_handler: this.On_Selector_Slot_Item_Select,
                 event_priority: 0,
             }),
         ];
@@ -46,7 +46,8 @@ export class Instance extends Entity.Instance {
             yield this.Send(new Event.Info({
                 affix: `Selector_Slot_Item_Select`,
                 suffixes: [
-                    this.ID().toString(),
+                    `${this.Items().Slot().Slots().Selector().Browser().ID()}`,
+                    `${this.ID()}`,
                 ],
                 type: Event.Type.EXCLUSIVE,
                 data: {},

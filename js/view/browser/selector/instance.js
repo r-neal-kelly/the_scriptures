@@ -38,7 +38,18 @@ export class Instance extends Entity.Instance {
             `);
         this.Add_Children_CSS(`
                 .Toggle {
+                    display: flex;
+                    align-items: center;
 
+                    border-color: white;
+                    border-style: solid;
+                    border-width: 0 1px 0 0;
+
+                    cursor: pointer;
+                    -webkit-user-select: none;
+                    -moz-user-select: none;
+                    -ms-user-select: none;
+                    user-select: none;
                 }
                 
                 .Slots {
@@ -124,11 +135,20 @@ export class Instance extends Entity.Instance {
                     background-color: white;
                     color: black;
                 }
+
+                .Hidden {
+                    display: none;
+                }
             `);
         return [
             new Event.Listener_Info({
-                event_name: new Event.Name(Event.Prefix.AFTER, "Selector_Slot_Item_Select"),
-                event_handler: this.After_Selector_Slot_Item_Select.bind(this),
+                event_name: new Event.Name(Event.Prefix.AFTER, `Selector_Toggle`, `${this.Browser().ID()}`),
+                event_handler: this.After_Selector_Toggle,
+                event_priority: 0,
+            }),
+            new Event.Listener_Info({
+                event_name: new Event.Name(Event.Prefix.AFTER, `Selector_Slot_Item_Select`, `${this.Browser().ID()}`),
+                event_handler: this.After_Selector_Slot_Item_Select,
                 event_priority: 0,
             }),
         ];
@@ -150,6 +170,11 @@ export class Instance extends Entity.Instance {
     }
     On_Reclass() {
         return [`Selector`];
+    }
+    After_Selector_Toggle() {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.Refresh();
+        });
     }
     After_Selector_Slot_Item_Select() {
         return __awaiter(this, void 0, void 0, function* () {

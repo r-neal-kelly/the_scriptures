@@ -37,32 +37,44 @@ export class Instance extends Entity.Instance
         void
     {
         const model: Model.Instance = this.Model();
-        const target: Count = model.Slot_Count();
-        const count: Count = this.Child_Count();
-        const delta: Delta = target - count;
+        if (model.Selector().Toggle().Is_Open()) {
+            const target: Count = model.Slot_Count();
+            const count: Count = this.Child_Count();
+            const delta: Delta = target - count;
 
-        if (delta < 0) {
-            for (let idx = count, end = count + delta; idx > end;) {
-                idx -= 1;
+            if (delta < 0) {
+                for (let idx = count, end = count + delta; idx > end;) {
+                    idx -= 1;
 
-                this.Abort_Child(this.Child(idx));
+                    this.Abort_Child(this.Child(idx));
+                }
+            } else if (delta > 0) {
+                for (let idx = count, end = count + delta; idx < end; idx += 1) {
+                    new Slot.Instance(
+                        {
+                            model: model.Slot(idx),
+                            slots: this,
+                        },
+                    );
+                }
             }
-        } else if (delta > 0) {
-            for (let idx = count, end = count + delta; idx < end; idx += 1) {
-                new Slot.Instance(
-                    {
-                        model: model.Slot(idx),
-                        slots: this,
-                    },
-                );
-            }
+        } else {
+            this.Skip_Children();
         }
     }
 
     override On_Reclass():
         Array<string>
     {
-        return [`Slots`];
+        const model: Model.Instance = this.Model();
+        const classes: Array<string> = [];
+
+        classes.push(`Slots`);
+        if (model.Selector().Toggle().Is_Closed()) {
+            classes.push(`Hidden`);
+        }
+
+        return classes;
     }
 
     Model():
