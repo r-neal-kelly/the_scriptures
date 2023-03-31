@@ -149,7 +149,7 @@ export class Instance
             if (response.ok) {
                 this.info = JSON.parse(await response.text()) as Info;
 
-                this.dictionary.Ready();
+                await this.dictionary.Ready();
 
                 for (const name of this.info.names) {
                     this.files.push(
