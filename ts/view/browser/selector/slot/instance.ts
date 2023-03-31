@@ -3,7 +3,7 @@ import * as Entity from "../../../../entity.js";
 
 import * as Model from "../../../../model/browser/selector/slot/instance.js";
 
-import * as Selector from "../instance.js";
+import * as Slots from "../slots.js";
 import * as Title from "./title.js";
 import * as Items from "./items.js";
 
@@ -14,18 +14,18 @@ export class Instance extends Entity.Instance
     constructor(
         {
             model,
-            selector,
+            slots,
         }: {
             model: Model.Instance,
-            selector: Selector.Instance,
+            slots: Slots.Instance,
         },
     )
     {
         super(
             {
                 element: `div`,
-                parent: selector,
-                event_grid: selector.Event_Grid(),
+                parent: slots,
+                event_grid: slots.Event_Grid(),
             },
         );
 
@@ -70,10 +70,10 @@ export class Instance extends Entity.Instance
         return this.model;
     }
 
-    Selector():
-        Selector.Instance
+    Slots():
+        Slots.Instance
     {
-        return this.Parent() as Selector.Instance;
+        return this.Parent() as Slots.Instance;
     }
 
     Has_Title():

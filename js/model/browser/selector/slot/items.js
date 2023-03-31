@@ -53,7 +53,7 @@ export class Instance {
         return __awaiter(this, void 0, void 0, function* () {
             Utils.Assert(this.Has(item), `The item does not belong to this slot.`);
             this.selected = item;
-            yield this.Slot().Selector().Select_Item_Internally({
+            yield this.Slot().Slots().Select_Item_Internally({
                 slot: this.Slot(),
                 item: item,
             });

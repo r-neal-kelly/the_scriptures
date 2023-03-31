@@ -3,14 +3,14 @@ import { Name } from "../../../../types.js";
 
 import * as Data from "../../../data.js";
 
-import * as Selector from "../instance.js";
+import * as Slots from "../slots.js";
 import { Type } from "./type.js";
 import * as Title from "./title.js";
 import * as Items from "./items.js";
 
 export class Instance
 {
-    private selector: Selector.Instance;
+    private slots: Slots.Instance;
     private index: Index;
     private type: Type;
     private title: Title.Instance;
@@ -18,13 +18,13 @@ export class Instance
 
     constructor(
         {
-            selector,
+            slots,
             index,
             type,
             item_names,
             item_files,
         }: {
-            selector: Selector.Instance,
+            slots: Slots.Instance,
             index: Index,
             type: Type,
             item_names: Array<Name>,
@@ -32,7 +32,7 @@ export class Instance
         },
     )
     {
-        this.selector = selector;
+        this.slots = slots;
         this.index = index;
         this.type = type;
         this.title = new Title.Instance(
@@ -50,10 +50,10 @@ export class Instance
         );
     }
 
-    Selector():
-        Selector.Instance
+    Slots():
+        Slots.Instance
     {
-        return this.selector;
+        return this.slots;
     }
 
     Index():

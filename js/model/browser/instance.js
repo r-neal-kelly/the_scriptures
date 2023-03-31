@@ -8,7 +8,8 @@ export class Instance extends Async.Instance {
         this.data = new Data.Instance();
         this.selector = new Selector.Instance({
             browser: this,
-            order: Selector.Order.BOOKS_LANGUAGES_VERSIONS,
+            is_open: true,
+            slot_order: Selector.Slot.Order.BOOKS_LANGUAGES_VERSIONS,
         });
         this.reader = new Reader.Instance({
             browser: this,

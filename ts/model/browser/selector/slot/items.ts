@@ -119,7 +119,7 @@ export class Instance
 
         this.selected = item;
 
-        await this.Slot().Selector().Select_Item_Internally(
+        await this.Slot().Slots().Select_Item_Internally(
             {
                 slot: this.Slot(),
                 item: item,

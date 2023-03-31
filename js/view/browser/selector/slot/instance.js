@@ -3,11 +3,11 @@ import * as Entity from "../../../../entity.js";
 import * as Title from "./title.js";
 import * as Items from "./items.js";
 export class Instance extends Entity.Instance {
-    constructor({ model, selector, }) {
+    constructor({ model, slots, }) {
         super({
             element: `div`,
-            parent: selector,
-            event_grid: selector.Event_Grid(),
+            parent: slots,
+            event_grid: slots.Event_Grid(),
         });
         this.model = model;
     }
@@ -32,7 +32,7 @@ export class Instance extends Entity.Instance {
     Model() {
         return this.model;
     }
-    Selector() {
+    Slots() {
         return this.Parent();
     }
     Has_Title() {

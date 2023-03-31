@@ -1,13 +1,12 @@
-import { Count } from "../../../types.js";
-import { Delta } from "../../../types.js";
-
+import * as Utils from "../../../utils.js";
 import * as Entity from "../../../entity.js";
 import * as Event from "../../../event.js";
 
 import * as Model from "../../../model/browser/selector/instance.js";
 
 import * as Browser from "../instance.js";
-import * as Slot from "./slot.js";
+import * as Toggle from "./toggle.js";
+import * as Slots from "./slots.js";
 
 export class Instance extends Entity.Instance
 {
@@ -42,7 +41,7 @@ export class Instance extends Entity.Instance
                 .Selector {
                     display: grid;
                     grid-template-rows: 1fr;
-                    grid-template-columns: repeat(4, auto);
+                    grid-template-columns: repeat(2, auto);
                     justify-content: start;
 
                     width: 100%;
@@ -56,6 +55,23 @@ export class Instance extends Entity.Instance
 
         this.Add_Children_CSS(
             `
+                .Toggle {
+
+                }
+                
+                .Slots {
+                    display: grid;
+                    grid-template-rows: 1fr;
+                    grid-template-columns: repeat(4, auto);
+                    justify-content: start;
+
+                    width: 100%;
+                    height: 100%;
+
+                    overflow-x: hidden;
+                    overflow-y: hidden;
+                }
+
                 .Slot {
                     display: grid;
                     grid-template-rows: auto auto;
@@ -144,25 +160,25 @@ export class Instance extends Entity.Instance
         void
     {
         const model: Model.Instance = this.Model();
-        const target: Count = model.Slot_Count();
-        const count: Count = this.Child_Count();
-        const delta: Delta = target - count;
 
-        if (delta < 0) {
-            for (let idx = count, end = count + delta; idx > end;) {
-                idx -= 1;
+        if (
+            !this.Has_Toggle() ||
+            !this.Has_Slots()
+        ) {
+            this.Abort_All_Children();
 
-                this.Abort_Child(this.Child(idx));
-            }
-        } else if (delta > 0) {
-            for (let idx = count, end = count + delta; idx < end; idx += 1) {
-                new Slot.Instance(
-                    {
-                        model: model.Slot(idx),
-                        selector: this,
-                    },
-                );
-            }
+            new Toggle.Instance(
+                {
+                    model: model.Toggle(),
+                    selector: this,
+                },
+            );
+            new Slots.Instance(
+                {
+                    model: model.Slots(),
+                    selector: this,
+                },
+            );
         }
     }
 
@@ -188,5 +204,45 @@ export class Instance extends Entity.Instance
         Browser.Instance
     {
         return this.Parent() as Browser.Instance;
+    }
+
+    Has_Toggle():
+        boolean
+    {
+        return (
+            this.Has_Child(0) &&
+            this.Child(0) instanceof Toggle.Instance
+        );
+    }
+
+    Toggle():
+        Toggle.Instance
+    {
+        Utils.Assert(
+            this.Has_Toggle(),
+            `Does not have toggle.`,
+        );
+
+        return this.Child(0) as Toggle.Instance;
+    }
+
+    Has_Slots():
+        boolean
+    {
+        return (
+            this.Has_Child(1) &&
+            this.Child(1) instanceof Slots.Instance
+        );
+    }
+
+    Slots():
+        Slots.Instance
+    {
+        Utils.Assert(
+            this.Has_Slots(),
+            `Does not have slots.`,
+        );
+
+        return this.Child(1) as Slots.Instance;
     }
 }

@@ -1,8 +1,8 @@
 import * as Title from "./title.js";
 import * as Items from "./items.js";
 export class Instance {
-    constructor({ selector, index, type, item_names, item_files, }) {
-        this.selector = selector;
+    constructor({ slots, index, type, item_names, item_files, }) {
+        this.slots = slots;
         this.index = index;
         this.type = type;
         this.title = new Title.Instance({
@@ -15,8 +15,8 @@ export class Instance {
             item_files: item_files,
         });
     }
-    Selector() {
-        return this.selector;
+    Slots() {
+        return this.slots;
     }
     Index() {
         return this.index;
