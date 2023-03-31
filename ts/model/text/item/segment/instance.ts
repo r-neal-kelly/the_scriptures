@@ -142,13 +142,9 @@ export class Instance extends Item.Instance
                             return false;
                         }
                     } else if (previous_part.Is_Command()) {
-                        if ((previous_part as Part.Command.Instance).Is_Opening()) {
-                            this.items.push(part);
+                        this.items.push(part);
 
-                            return true;
-                        } else {
-                            return false;
-                        }
+                        return true;
                     } else {
                         Utils.Assert(
                             false,
@@ -173,13 +169,9 @@ export class Instance extends Item.Instance
                             return false;
                         }
                     } else if (previous_part.Is_Command()) {
-                        if ((previous_part as Part.Command.Instance).Is_Opening()) {
-                            this.items.push(part);
+                        this.items.push(part);
 
-                            return true;
-                        } else {
-                            return false;
-                        }
+                        return true;
                     } else {
                         Utils.Assert(
                             false,
@@ -219,34 +211,23 @@ export class Instance extends Item.Instance
                     }
                 } else if (part.Is_Command()) {
                     if (previous_part.Is_Point()) {
-                        if ((part as Part.Command.Instance).Is_Closing()) {
-                            this.items.push(part);
+                        this.items.push(part);
 
-                            return true;
-                        } else {
-                            return false;
-                        }
+                        return true;
                     } else if (previous_part.Is_Letter()) {
-                        if ((part as Part.Command.Instance).Is_Closing()) {
+                        this.items.push(part);
+
+                        return true;
+                    } else if (previous_part.Is_Marker()) {
+                        if (
+                            /\S+/.test(previous_part.Value()) ||
+                            (part as Part.Command.Instance).Is_Closing()
+                        ) {
                             this.items.push(part);
 
                             return true;
                         } else {
                             return false;
-                        }
-                    } else if (previous_part.Is_Marker()) {
-                        if ((part as Part.Command.Instance).Is_Closing()) {
-                            this.items.push(part);
-
-                            return true;
-                        } else {
-                            if (/\S+/.test(previous_part.Value())) {
-                                this.items.push(part);
-
-                                return true;
-                            } else {
-                                return false;
-                            }
                         }
                     } else if (previous_part.Is_Command()) {
                         this.items.push(part);
@@ -302,13 +283,9 @@ export class Instance extends Item.Instance
                             } else if (previous_part.Is_Word()) {
                                 return false;
                             } else if (previous_part.Is_Command()) {
-                                if ((previous_part as Part.Command.Instance).Is_Opening()) {
-                                    this.items.push(part);
+                                this.items.push(part);
 
-                                    return true;
-                                } else {
-                                    return false;
-                                }
+                                return true;
                             } else {
                                 Utils.Assert(
                                     false,
@@ -342,13 +319,9 @@ export class Instance extends Item.Instance
                             } else if (previous_part.Is_Word()) {
                                 return false;
                             } else if (previous_part.Is_Command()) {
-                                if ((previous_part as Part.Command.Instance).Is_Opening()) {
-                                    this.items.push(part);
+                                this.items.push(part);
 
-                                    return true;
-                                } else {
-                                    return false;
-                                }
+                                return true;
                             } else {
                                 Utils.Assert(
                                     false,
@@ -378,21 +351,13 @@ export class Instance extends Item.Instance
                         if (previous_item.Is_Part()) {
                             const previous_part: Part.Instance = previous_item as Part.Instance;
                             if (previous_part.Is_Point()) {
-                                if ((part as Part.Command.Instance).Is_Closing()) {
-                                    this.items.push(part);
+                                this.items.push(part);
 
-                                    return true;
-                                } else {
-                                    return false;
-                                }
+                                return true;
                             } else if (previous_part.Is_Word()) {
-                                if ((part as Part.Command.Instance).Is_Closing()) {
-                                    this.items.push(part);
+                                this.items.push(part);
 
-                                    return true;
-                                } else {
-                                    return false;
-                                }
+                                return true;
                             } else if (previous_part.Is_Command()) {
                                 this.items.push(part);
 
@@ -407,18 +372,15 @@ export class Instance extends Item.Instance
                             }
                         } else if (previous_item.Is_Split()) {
                             const previous_split: Split.Instance = previous_item as Split.Instance;
-                            if ((part as Part.Command.Instance).Is_Closing()) {
+                            if (
+                                /\S+/.test(previous_split.Value()) ||
+                                (part as Part.Command.Instance).Is_Closing()
+                            ) {
                                 this.items.push(part);
 
                                 return true;
                             } else {
-                                if (/\S+/.test(previous_split.Value())) {
-                                    this.items.push(part);
-
-                                    return true;
-                                } else {
-                                    return false;
-                                }
+                                return false;
                             }
                         } else {
                             Utils.Assert(

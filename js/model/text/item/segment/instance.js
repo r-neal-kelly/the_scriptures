@@ -68,13 +68,8 @@ export class Instance extends Item.Instance {
                         }
                     }
                     else if (previous_part.Is_Command()) {
-                        if (previous_part.Is_Opening()) {
-                            this.items.push(part);
-                            return true;
-                        }
-                        else {
-                            return false;
-                        }
+                        this.items.push(part);
+                        return true;
                     }
                     else {
                         Utils.Assert(false, `Invalid previous_part_type.`);
@@ -99,13 +94,8 @@ export class Instance extends Item.Instance {
                         }
                     }
                     else if (previous_part.Is_Command()) {
-                        if (previous_part.Is_Opening()) {
-                            this.items.push(part);
-                            return true;
-                        }
-                        else {
-                            return false;
-                        }
+                        this.items.push(part);
+                        return true;
                     }
                     else {
                         Utils.Assert(false, `Invalid previous_part_type.`);
@@ -141,36 +131,21 @@ export class Instance extends Item.Instance {
                 }
                 else if (part.Is_Command()) {
                     if (previous_part.Is_Point()) {
-                        if (part.Is_Closing()) {
-                            this.items.push(part);
-                            return true;
-                        }
-                        else {
-                            return false;
-                        }
+                        this.items.push(part);
+                        return true;
                     }
                     else if (previous_part.Is_Letter()) {
-                        if (part.Is_Closing()) {
+                        this.items.push(part);
+                        return true;
+                    }
+                    else if (previous_part.Is_Marker()) {
+                        if (/\S+/.test(previous_part.Value()) ||
+                            part.Is_Closing()) {
                             this.items.push(part);
                             return true;
                         }
                         else {
                             return false;
-                        }
-                    }
-                    else if (previous_part.Is_Marker()) {
-                        if (part.Is_Closing()) {
-                            this.items.push(part);
-                            return true;
-                        }
-                        else {
-                            if (/\S+/.test(previous_part.Value())) {
-                                this.items.push(part);
-                                return true;
-                            }
-                            else {
-                                return false;
-                            }
                         }
                     }
                     else if (previous_part.Is_Command()) {
@@ -213,13 +188,8 @@ export class Instance extends Item.Instance {
                                 return false;
                             }
                             else if (previous_part.Is_Command()) {
-                                if (previous_part.Is_Opening()) {
-                                    this.items.push(part);
-                                    return true;
-                                }
-                                else {
-                                    return false;
-                                }
+                                this.items.push(part);
+                                return true;
                             }
                             else {
                                 Utils.Assert(false, `Invalid previous_part_type.`);
@@ -251,13 +221,8 @@ export class Instance extends Item.Instance {
                                 return false;
                             }
                             else if (previous_part.Is_Command()) {
-                                if (previous_part.Is_Opening()) {
-                                    this.items.push(part);
-                                    return true;
-                                }
-                                else {
-                                    return false;
-                                }
+                                this.items.push(part);
+                                return true;
                             }
                             else {
                                 Utils.Assert(false, `Invalid previous_part_type.`);
@@ -283,22 +248,12 @@ export class Instance extends Item.Instance {
                         if (previous_item.Is_Part()) {
                             const previous_part = previous_item;
                             if (previous_part.Is_Point()) {
-                                if (part.Is_Closing()) {
-                                    this.items.push(part);
-                                    return true;
-                                }
-                                else {
-                                    return false;
-                                }
+                                this.items.push(part);
+                                return true;
                             }
                             else if (previous_part.Is_Word()) {
-                                if (part.Is_Closing()) {
-                                    this.items.push(part);
-                                    return true;
-                                }
-                                else {
-                                    return false;
-                                }
+                                this.items.push(part);
+                                return true;
                             }
                             else if (previous_part.Is_Command()) {
                                 this.items.push(part);
@@ -311,18 +266,13 @@ export class Instance extends Item.Instance {
                         }
                         else if (previous_item.Is_Split()) {
                             const previous_split = previous_item;
-                            if (part.Is_Closing()) {
+                            if (/\S+/.test(previous_split.Value()) ||
+                                part.Is_Closing()) {
                                 this.items.push(part);
                                 return true;
                             }
                             else {
-                                if (/\S+/.test(previous_split.Value())) {
-                                    this.items.push(part);
-                                    return true;
-                                }
-                                else {
-                                    return false;
-                                }
+                                return false;
                             }
                         }
                         else {
