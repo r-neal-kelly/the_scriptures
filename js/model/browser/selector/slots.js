@@ -52,13 +52,13 @@ export class Instance extends Async.Instance {
             // else we could have a Select_Slots method to pass in the four, after reorder?
         });
     }
-    Slot_Count() {
+    Count() {
         return this.slots.length;
     }
-    Has_Slot(slot) {
+    Has(slot) {
         return this.slots.includes(slot);
     }
-    Has_Slot_Type(slot_type) {
+    Has_Type(slot_type) {
         for (const slot of this.slots) {
             if (slot.Type() === slot_type) {
                 return true;
@@ -66,7 +66,7 @@ export class Instance extends Async.Instance {
         }
         return false;
     }
-    Slot(slot_type) {
+    From_Type(slot_type) {
         for (const slot of this.slots) {
             if (slot.Type() === slot_type) {
                 return slot;
@@ -75,15 +75,15 @@ export class Instance extends Async.Instance {
         Utils.Assert(false, `Does not have slot with that type.`);
         return this.slots[0];
     }
-    Slot_At(slot_index) {
+    At(slot_index) {
         Utils.Assert(slot_index > -1, `slot_index must be greater than -1.`);
-        Utils.Assert(slot_index < this.Slot_Count(), `slot_index must be less than slot_count.`);
+        Utils.Assert(slot_index < this.Count(), `slot_index must be less than slot_count.`);
         return this.slots[slot_index];
     }
-    Slots() {
+    Array() {
         return Array.from(this.slots);
     }
-    Slot_Types() {
+    Types() {
         const order = this.Order();
         const slot_types = [];
         if (order === Slot.Order.BOOKS_LANGUAGES_VERSIONS) {
@@ -123,14 +123,14 @@ export class Instance extends Async.Instance {
         Utils.Assert(slot_types.length === Instance.Max_Slot_Count(), `slot_types must have all types.`);
         return slot_types;
     }
-    Push_Slot() {
+    Push() {
         return __awaiter(this, void 0, void 0, function* () {
             const max_slot_count = Instance.Max_Slot_Count();
-            const slot_count = this.Slot_Count();
+            const slot_count = this.Count();
             Utils.Assert(slot_count < max_slot_count, `All slots have been pushed already.`);
             const slot_index = slot_count;
-            const slot_type = this.Slot_Types()[slot_index];
-            const slot_query = this.Slots().map(function (slot, slot_index) {
+            const slot_type = this.Types()[slot_index];
+            const slot_query = this.Array().map(function (slot, slot_index) {
                 let query_name;
                 if (slot_index === 0 &&
                     slot_count === 0) {
@@ -167,32 +167,32 @@ export class Instance extends Async.Instance {
         });
     }
     Has_Books() {
-        return this.Has_Slot_Type(Slot.Type.BOOKS);
+        return this.Has_Type(Slot.Type.BOOKS);
     }
     Books() {
         Utils.Assert(this.Has_Books(), `Doesn't have books.`);
-        return this.Slot(Slot.Type.BOOKS);
+        return this.From_Type(Slot.Type.BOOKS);
     }
     Has_Languages() {
-        return this.Has_Slot_Type(Slot.Type.LANGUAGES);
+        return this.Has_Type(Slot.Type.LANGUAGES);
     }
     Languages() {
         Utils.Assert(this.Has_Languages(), `Doesn't have languages.`);
-        return this.Slot(Slot.Type.LANGUAGES);
+        return this.From_Type(Slot.Type.LANGUAGES);
     }
     Has_Versions() {
-        return this.Has_Slot_Type(Slot.Type.VERSIONS);
+        return this.Has_Type(Slot.Type.VERSIONS);
     }
     Versions() {
         Utils.Assert(this.Has_Versions(), `Doesn't have versions.`);
-        return this.Slot(Slot.Type.VERSIONS);
+        return this.From_Type(Slot.Type.VERSIONS);
     }
     Has_Files() {
-        return this.Has_Slot_Type(Slot.Type.FILES);
+        return this.Has_Type(Slot.Type.FILES);
     }
     Files() {
         Utils.Assert(this.Has_Files(), `Doesn't have files.`);
-        return this.Slot(Slot.Type.FILES);
+        return this.From_Type(Slot.Type.FILES);
     }
     Select_Item(type, name) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -200,7 +200,7 @@ export class Instance extends Async.Instance {
     }
     Select_Item_Internally({ slot, item, }) {
         return __awaiter(this, void 0, void 0, function* () {
-            Utils.Assert(this.Has_Slot(slot), `The slot does not belong to this selector.`);
+            Utils.Assert(this.Has(slot), `The slot does not belong to this selector.`);
             // How are we going to handle when selecting item in non-files slot
             // while the files slot is open? Do we try to match it with the new
             // slots that might have to be created, or do we just unselect the
@@ -214,8 +214,8 @@ export class Instance extends Async.Instance {
                 });
                 yield this.Selector().Browser().Reader().Open_File(file);
             }
-            else if (this.Slot_At(this.Slot_Count() - 1) === slot) {
-                yield this.Push_Slot();
+            else if (this.At(this.Count() - 1) === slot) {
+                yield this.Push();
             }
         });
     }
@@ -234,7 +234,7 @@ export class Instance extends Async.Instance {
         return __awaiter(this, void 0, void 0, function* () {
             if (!this.Is_Ready()) {
                 yield _super.Ready.call(this);
-                yield this.Push_Slot();
+                yield this.Push();
             }
         });
     }

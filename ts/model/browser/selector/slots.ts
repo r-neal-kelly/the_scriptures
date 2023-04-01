@@ -86,13 +86,13 @@ export class Instance extends Async.Instance
         // else we could have a Select_Slots method to pass in the four, after reorder?
     }
 
-    Slot_Count():
+    Count():
         Count
     {
         return this.slots.length;
     }
 
-    Has_Slot(
+    Has(
         slot: Slot.Instance,
     ):
         boolean
@@ -100,7 +100,7 @@ export class Instance extends Async.Instance
         return this.slots.includes(slot);
     }
 
-    Has_Slot_Type(
+    Has_Type(
         slot_type: Slot.Type,
     ):
         boolean
@@ -114,7 +114,7 @@ export class Instance extends Async.Instance
         return false;
     }
 
-    Slot(
+    From_Type(
         slot_type: Slot.Type,
     ):
         Slot.Instance
@@ -133,7 +133,7 @@ export class Instance extends Async.Instance
         return this.slots[0];
     }
 
-    Slot_At(
+    At(
         slot_index: Index,
     ):
         Slot.Instance
@@ -143,20 +143,20 @@ export class Instance extends Async.Instance
             `slot_index must be greater than -1.`,
         );
         Utils.Assert(
-            slot_index < this.Slot_Count(),
+            slot_index < this.Count(),
             `slot_index must be less than slot_count.`,
         );
 
         return this.slots[slot_index];
     }
 
-    Slots():
+    Array():
         Array<Slot.Instance>
     {
         return Array.from(this.slots);
     }
 
-    Slot_Types():
+    Types():
         Array<Slot.Type>
     {
         const order: Slot.Order = this.Order();
@@ -203,11 +203,11 @@ export class Instance extends Async.Instance
         return slot_types;
     }
 
-    private async Push_Slot():
+    private async Push():
         Promise<void>
     {
         const max_slot_count: Count = Instance.Max_Slot_Count();
-        const slot_count: Count = this.Slot_Count();
+        const slot_count: Count = this.Count();
 
         Utils.Assert(
             slot_count < max_slot_count,
@@ -215,8 +215,8 @@ export class Instance extends Async.Instance
         );
 
         const slot_index: Index = slot_count;
-        const slot_type: Slot.Type = this.Slot_Types()[slot_index];
-        const slot_query: Array<Data.Query.Type_And_Name> = this.Slots().map(
+        const slot_type: Slot.Type = this.Types()[slot_index];
+        const slot_query: Array<Data.Query.Type_And_Name> = this.Array().map(
             function (
                 this: Instance,
                 slot: Slot.Instance,
@@ -286,7 +286,7 @@ export class Instance extends Async.Instance
     Has_Books():
         boolean
     {
-        return this.Has_Slot_Type(Slot.Type.BOOKS);
+        return this.Has_Type(Slot.Type.BOOKS);
     }
 
     Books():
@@ -297,13 +297,13 @@ export class Instance extends Async.Instance
             `Doesn't have books.`,
         );
 
-        return this.Slot(Slot.Type.BOOKS);
+        return this.From_Type(Slot.Type.BOOKS);
     }
 
     Has_Languages():
         boolean
     {
-        return this.Has_Slot_Type(Slot.Type.LANGUAGES);
+        return this.Has_Type(Slot.Type.LANGUAGES);
     }
 
     Languages():
@@ -314,13 +314,13 @@ export class Instance extends Async.Instance
             `Doesn't have languages.`,
         );
 
-        return this.Slot(Slot.Type.LANGUAGES);
+        return this.From_Type(Slot.Type.LANGUAGES);
     }
 
     Has_Versions():
         boolean
     {
-        return this.Has_Slot_Type(Slot.Type.VERSIONS);
+        return this.Has_Type(Slot.Type.VERSIONS);
     }
 
     Versions():
@@ -331,13 +331,13 @@ export class Instance extends Async.Instance
             `Doesn't have versions.`,
         );
 
-        return this.Slot(Slot.Type.VERSIONS);
+        return this.From_Type(Slot.Type.VERSIONS);
     }
 
     Has_Files():
         boolean
     {
-        return this.Has_Slot_Type(Slot.Type.FILES);
+        return this.Has_Type(Slot.Type.FILES);
     }
 
     Files():
@@ -348,7 +348,7 @@ export class Instance extends Async.Instance
             `Doesn't have files.`,
         );
 
-        return this.Slot(Slot.Type.FILES);
+        return this.From_Type(Slot.Type.FILES);
     }
 
     async Select_Item(
@@ -371,7 +371,7 @@ export class Instance extends Async.Instance
         Promise<void>
     {
         Utils.Assert(
-            this.Has_Slot(slot),
+            this.Has(slot),
             `The slot does not belong to this selector.`,
         );
 
@@ -389,8 +389,8 @@ export class Instance extends Async.Instance
                 },
             );
             await this.Selector().Browser().Reader().Open_File(file);
-        } else if (this.Slot_At(this.Slot_Count() - 1) === slot) {
-            await this.Push_Slot();
+        } else if (this.At(this.Count() - 1) === slot) {
+            await this.Push();
         }
     }
 
@@ -433,7 +433,7 @@ export class Instance extends Async.Instance
     {
         if (!this.Is_Ready()) {
             await super.Ready();
-            await this.Push_Slot();
+            await this.Push();
         }
     }
 }

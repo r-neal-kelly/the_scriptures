@@ -2,8 +2,11 @@ import * as Utils from "../utils.js";
 import * as Event from "../event.js";
 import * as Entity from "../entity.js";
 
-import * as Model from "../model/browser.js";
-import * as View from "./browser.js";
+import * as Model from "../model/layout.js";
+import * as View from "./layout.js";
+
+import * as Browser_Model from "../model/browser.js";
+import * as Browser_View from "./browser.js";
 
 class Body extends Entity.Instance
 {
@@ -47,7 +50,7 @@ class Body extends Entity.Instance
 
         this.Add_This_CSS(
             `
-                .Main {
+                .Body {
                     width: 100vw;
                     height: 100vh;
 
@@ -91,7 +94,7 @@ class Body extends Entity.Instance
     override On_Reclass():
         Array<string>
     {
-        return [`Main`];
+        return [`Body`];
     }
 
     Model():
@@ -138,7 +141,72 @@ async function Main():
 {
     const model: Model.Instance = new Model.Instance();
 
-    await model.Ready();
+    // Once we set up our save file structure, or at least prototype it,
+    // we'll pull each window's model's data from there and pass it along.
+    await Promise.all(
+        [
+            model.Add_Window(
+                {
+                    model_class: Browser_Model.Instance,
+                    view_class: Browser_View.Instance,
+                    model_data: {
+                        selector_slot_order:
+                            Browser_Model.Selector.Slot.Order.BOOKS_LANGUAGES_VERSIONS,
+                    },
+                },
+            ),
+            model.Add_Window(
+                {
+                    model_class: Browser_Model.Instance,
+                    view_class: Browser_View.Instance,
+                    model_data: {
+                        selector_slot_order:
+                            Browser_Model.Selector.Slot.Order.BOOKS_VERSIONS_LANGUAGES,
+                    },
+                },
+            ),
+            model.Add_Window(
+                {
+                    model_class: Browser_Model.Instance,
+                    view_class: Browser_View.Instance,
+                    model_data: {
+                        selector_slot_order:
+                            Browser_Model.Selector.Slot.Order.LANGUAGES_BOOKS_VERSIONS,
+                    },
+                },
+            ),
+            model.Add_Window(
+                {
+                    model_class: Browser_Model.Instance,
+                    view_class: Browser_View.Instance,
+                    model_data: {
+                        selector_slot_order:
+                            Browser_Model.Selector.Slot.Order.LANGUAGES_VERSIONS_BOOKS,
+                    },
+                },
+            ),
+            model.Add_Window(
+                {
+                    model_class: Browser_Model.Instance,
+                    view_class: Browser_View.Instance,
+                    model_data: {
+                        selector_slot_order:
+                            Browser_Model.Selector.Slot.Order.VERSIONS_BOOKS_LANGUAGES,
+                    },
+                },
+            ),
+            model.Add_Window(
+                {
+                    model_class: Browser_Model.Instance,
+                    view_class: Browser_View.Instance,
+                    model_data: {
+                        selector_slot_order:
+                            Browser_Model.Selector.Slot.Order.VERSIONS_LANGUAGES_BOOKS,
+                    },
+                },
+            ),
+        ],
+    );
 
     new Body(
         {

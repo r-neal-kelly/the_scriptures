@@ -8,9 +8,13 @@ import * as Wall from "./wall.js";
 
 export { ID } from "../../types.js";
 
+export type Model_Data = any;
+
 export interface Model_Class
 {
-    new(): Model_Instance;
+    new(
+        data: Model_Data,
+    ): Model_Instance;
 }
 
 export interface Model_Instance extends Async.Instance
@@ -24,7 +28,16 @@ export interface View_Class
             model,
             root,
         }: {
-            model: () => Model_Instance,
+            // Not sure how to avoid using any here. It think
+            // because we store the model instance on window,
+            // when we pass it to the view class, it gets
+            // a model instance instead of the actual type.
+            // What we could do is change browser to accept the
+            // model_instance and then it can cast it. But if we
+            // do that we should move these interfaces out of window
+            // so that they remain generic. Possibly we can pass
+            // template parameters or whatever they're called in typescript.
+            model: () => Model_Instance | any,
             root: View_Instance,
         },
     ): View_Instance;
@@ -70,10 +83,12 @@ export class Instance extends Async.Instance
             wall,
             model_class,
             view_class,
+            model_data = undefined,
         }: {
             wall: Wall.Instance | null,
             model_class: Model_Class,
             view_class: View_Class,
+            model_data?: Model_Data,
         },
     )
     {
@@ -84,7 +99,7 @@ export class Instance extends Async.Instance
         this.state = State._NONE_;
         this.model_class = model_class;
         this.view_class = view_class;
-        this.model = new model_class();
+        this.model = new model_class(model_data);
 
         this.Is_Ready_After(
             [

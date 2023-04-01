@@ -21,14 +21,14 @@ export class Instance extends Async.Instance {
         Utils.Assert(Instance.next_id + 1 < Infinity, `Can't make a new id!`);
         return Instance.next_id++;
     }
-    constructor({ wall, model_class, view_class, }) {
+    constructor({ wall, model_class, view_class, model_data = undefined, }) {
         super();
         this.wall = wall;
         this.id = Instance.New_ID();
         this.state = State._NONE_;
         this.model_class = model_class;
         this.view_class = view_class;
-        this.model = new model_class();
+        this.model = new model_class(model_data);
         this.Is_Ready_After([
             this.model,
         ]);

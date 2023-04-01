@@ -11,7 +11,13 @@ export class Instance extends Async.Instance
     private selector: Selector.Instance;
     private reader: Reader.Instance;
 
-    constructor()
+    constructor(
+        {
+            selector_slot_order = Selector.Slot.Order.BOOKS_LANGUAGES_VERSIONS,
+        }: {
+            selector_slot_order?: Selector.Slot.Order,
+        } = {},
+    )
     {
         super();
 
@@ -20,7 +26,7 @@ export class Instance extends Async.Instance
             {
                 browser: this,
                 is_open: true,
-                slot_order: Selector.Slot.Order.BOOKS_LANGUAGES_VERSIONS,
+                slot_order: selector_slot_order,
             },
         );
         this.reader = new Reader.Instance(

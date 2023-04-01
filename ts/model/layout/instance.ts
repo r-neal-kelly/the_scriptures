@@ -36,10 +36,12 @@ export class Instance
     async Add_Window(
         {
             model_class,
-            view_class
+            view_class,
+            model_data = undefined,
         }: {
             model_class: Window.Model_Class,
             view_class: Window.View_Class,
+            model_data?: Window.Model_Data,
         },
     ):
         Promise<Window.ID>
@@ -48,6 +50,7 @@ export class Instance
             {
                 model_class,
                 view_class,
+                model_data,
             },
         );
     }

@@ -24,11 +24,12 @@ export class Instance {
     Bar() {
         return this.bar;
     }
-    Add_Window({ model_class, view_class }) {
+    Add_Window({ model_class, view_class, model_data = undefined, }) {
         return __awaiter(this, void 0, void 0, function* () {
             return this.Wall().Add_With({
                 model_class,
                 view_class,
+                model_data,
             });
         });
     }

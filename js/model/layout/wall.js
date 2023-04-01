@@ -59,12 +59,13 @@ export class Instance {
         this.Layout().Bar().Tabs().Remove_Window(this.From_ID(window_id));
         this.windows.delete(window_id);
     }
-    Add_With({ model_class, view_class }) {
+    Add_With({ model_class, view_class, model_data = undefined, }) {
         return __awaiter(this, void 0, void 0, function* () {
             const window = new Window.Instance({
                 wall: this,
                 model_class: model_class,
                 view_class: view_class,
+                model_data: model_data,
             });
             yield window.Ready();
             return window.ID();

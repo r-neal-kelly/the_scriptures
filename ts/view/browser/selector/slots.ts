@@ -38,7 +38,7 @@ export class Instance extends Entity.Instance
     {
         const model: Model.Instance = this.Model();
         if (model.Selector().Toggle().Is_Open()) {
-            const target: Count = model.Slot_Count();
+            const target: Count = model.Count();
             const count: Count = this.Child_Count();
             const delta: Delta = target - count;
 
@@ -52,7 +52,7 @@ export class Instance extends Entity.Instance
                 for (let idx = count, end = count + delta; idx < end; idx += 1) {
                     new Slot.Instance(
                         {
-                            model: model.Slot(idx),
+                            model: model.At(idx),
                             slots: this,
                         },
                     );
