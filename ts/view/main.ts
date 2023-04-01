@@ -81,7 +81,7 @@ class Body extends Entity.Instance
 
             new View.Instance(
                 {
-                    model: this.Model(),
+                    model: () => this.Model(),
                     root: this,
                 },
             );

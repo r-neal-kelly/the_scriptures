@@ -2,10 +2,37 @@ import { ID } from "../../types.js";
 
 import * as Utils from "../../utils.js";
 import * as Async from "../../async.js";
+import * as Entity from "../../entity.js";
 
-import * as Layout from "./instance.js";
+import * as Wall from "./wall.js";
 
 export { ID } from "../../types.js";
+
+export interface Model_Class
+{
+    new(): Model_Instance;
+}
+
+export interface Model_Instance extends Async.Instance
+{
+}
+
+export interface View_Class
+{
+    new(
+        {
+            model,
+            root,
+        }: {
+            model: () => Model_Instance,
+            root: View_Instance,
+        },
+    ): View_Instance;
+}
+
+export interface View_Instance extends Entity.Instance
+{
+}
 
 export enum State
 {
@@ -31,110 +58,116 @@ export class Instance extends Async.Instance
         return Instance.next_id++;
     }
 
-    private layout: Layout.Instance | null;
+    private wall: Wall.Instance | null;
     private id: ID;
     private state: State;
-    private program: Async.Instance;
+    private model_class: Model_Class;
+    private view_class: View_Class;
+    private model: Model_Instance;
 
     constructor(
         {
-            layout,
-            program,
+            wall,
+            model_class,
+            view_class,
         }: {
-            layout: Layout.Instance | null,
-            program: Async.Instance,
+            wall: Wall.Instance | null,
+            model_class: Model_Class,
+            view_class: View_Class,
         },
     )
     {
         super();
 
-        this.layout = layout;
+        this.wall = wall;
         this.id = Instance.New_ID();
         this.state = State._NONE_;
-        this.program = program;
+        this.model_class = model_class;
+        this.view_class = view_class;
+        this.model = new model_class();
 
         this.Is_Ready_After(
             [
-                program,
+                this.model,
             ],
         );
     }
 
-    Has_Layout():
+    Is_In_Wall():
         boolean
     {
         Utils.Assert(
             this.Is_Alive(),
-            `Cannot know if a dead window has a layout.`,
+            `Cannot know if a dead window is in a wall.`,
         );
 
-        return this.layout != null;
+        return this.wall != null;
     }
 
-    Layout():
-        Layout.Instance
+    Wall():
+        Wall.Instance
     {
         Utils.Assert(
             this.Is_Alive(),
-            `Window must be alive to get a layout.`,
+            `Window must be alive to get its wall.`,
         );
         Utils.Assert(
-            this.Has_Layout(),
-            `Doesn't have a layout.`,
+            this.Is_In_Wall(),
+            `Isn't in a wall.`,
         );
 
-        return this.layout as Layout.Instance;
+        return this.wall as Wall.Instance;
     }
 
-    Add_Layout(
-        layout: Layout.Instance,
+    Add_To_Wall(
+        wall: Wall.Instance,
     ):
         void
     {
         Utils.Assert(
             this.Is_Alive(),
-            `Window must be alive to add a layout.`,
+            `Window must be alive to be added to a wall.`,
         );
         Utils.Assert(
-            !this.Has_Layout(),
-            `Already has a layout.`,
+            !this.Is_In_Wall(),
+            `Is already in a wall.`,
         );
 
-        layout.Add_Window(this);
-        this.layout = layout;
+        wall.Add(this);
+        this.wall = wall;
     }
 
-    Remove_Layout():
+    Remove_From_Wall():
         void
     {
         Utils.Assert(
             this.Is_Alive(),
-            `Window must be alive to remove a layout.`,
+            `Window must be alive to be removed from a wall.`,
         );
         Utils.Assert(
-            this.Has_Layout(),
-            `Doesn't have a layout to remove.`,
+            this.Is_In_Wall(),
+            `Isn't in a wall.`,
         );
 
-        this.Layout().Remove_Window(this.ID());
-        this.layout = null;
+        this.Wall().Remove(this.ID());
+        this.wall = null;
     }
 
-    Change_Layout(
-        layout: Layout.Instance | null,
+    Move_To_Wall(
+        wall: Wall.Instance | null,
     ):
         void
     {
         Utils.Assert(
             this.Is_Alive(),
-            `Window must be alive to change layout.`,
+            `Window must be alive to be moved to a wall.`,
         );
 
-        if (this.Has_Layout()) {
-            this.Remove_Layout();
+        if (this.Is_In_Wall()) {
+            this.Remove_From_Wall();
         }
-        if (layout != null) {
-            this.Add_Layout(layout);
+        if (wall != null) {
+            this.Add_To_Wall(wall);
         }
     }
 
@@ -150,15 +183,37 @@ export class Instance extends Async.Instance
         return this.state;
     }
 
-    Program():
-        Async.Instance
+    Model_Class():
+        Model_Class
     {
         Utils.Assert(
             this.Is_Alive(),
-            `Window must be alive to get its program.`,
+            `Window must be alive to get its model_class.`,
         );
 
-        return this.program;
+        return this.model_class;
+    }
+
+    View_Class():
+        View_Class
+    {
+        Utils.Assert(
+            this.Is_Alive(),
+            `Window must be alive to get its view_class.`,
+        );
+
+        return this.view_class;
+    }
+
+    Model():
+        Model_Instance
+    {
+        Utils.Assert(
+            this.Is_Alive(),
+            `Window must be alive to get its model.`,
+        );
+
+        return this.model;
     }
 
     Is_Alive():
@@ -177,10 +232,10 @@ export class Instance extends Async.Instance
 
         this.state |= State.IS_ALIVE;
 
-        if (this.layout != null) {
-            const layout = this.layout;
-            this.layout = null;
-            this.Add_Layout(layout);
+        if (this.wall != null) {
+            const wall = this.wall;
+            this.wall = null;
+            this.Add_To_Wall(wall);
         }
     }
 
@@ -192,7 +247,7 @@ export class Instance extends Async.Instance
             `Window is already dead.`,
         );
 
-        this.Change_Layout(null);
+        this.Move_To_Wall(null);
         this.state &= ~State.IS_ALIVE;
     }
 

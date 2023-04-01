@@ -2,10 +2,10 @@ import * as Utils from "../../utils.js";
 import * as Event from "../../event.js";
 import * as Entity from "../../entity.js";
 
-import * as Model from "../../model/browser/instance.js";
+import * as Model from "../../model/layout/instance.js";
 
-import * as Selector from "./selector.js";
-import * as Reader from "./reader.js";
+import * as Wall from "./wall.js";
+import * as Bar from "./bar.js";
 
 export class Instance extends Entity.Instance
 {
@@ -37,12 +37,7 @@ export class Instance extends Entity.Instance
     {
         this.Add_This_CSS(
             `
-                .Browser {
-                    display: grid;
-                    grid-template-rows: 1fr;
-                    grid-template-columns: auto auto;
-                    justify-content: start;
-                
+                .Layout {
                     width: 100%;
                     height: 100%;
 
@@ -54,6 +49,30 @@ export class Instance extends Entity.Instance
             `,
         );
 
+        this.Add_Children_CSS(
+            `
+                .Wall {
+
+                }
+
+                .Window {
+
+                }
+
+                .Bar {
+
+                }
+
+                .Tabs {
+
+                }
+
+                .Tab {
+
+                }
+            `,
+        );
+
         return [];
     }
 
@@ -61,21 +80,21 @@ export class Instance extends Entity.Instance
         void
     {
         if (
-            !this.Has_Selector() ||
-            !this.Has_Reader()
+            !this.Has_Wall() ||
+            !this.Has_Bar()
         ) {
             this.Abort_All_Children();
 
-            new Selector.Instance(
+            new Wall.Instance(
                 {
-                    model: this.Model().Selector(),
-                    browser: this,
+                    model: () => this.Model().Wall(),
+                    layout: this,
                 },
             );
-            new Reader.Instance(
+            new Bar.Instance(
                 {
-                    model: this.Model().Reader(),
-                    browser: this,
+                    model: () => this.Model().Bar(),
+                    layout: this,
                 },
             );
         }
@@ -84,7 +103,7 @@ export class Instance extends Entity.Instance
     override On_Reclass():
         Array<string>
     {
-        return [`Browser`];
+        return [`Layout`];
     }
 
     Model():
@@ -99,43 +118,43 @@ export class Instance extends Entity.Instance
         return this.Parent();
     }
 
-    Has_Selector():
+    Has_Wall():
         boolean
     {
         return (
             this.Has_Child(0) &&
-            this.Child(0) instanceof Selector.Instance
+            this.Child(0) instanceof Wall.Instance
         );
     }
 
-    Selector():
-        Selector.Instance
+    Wall():
+        Wall.Instance
     {
         Utils.Assert(
-            this.Has_Selector(),
-            `Does not have a selector.`,
+            this.Has_Wall(),
+            `Does not have a wall.`,
         );
 
-        return this.Child(0) as Selector.Instance;
+        return this.Child(0) as Wall.Instance;
     }
 
-    Has_Reader():
+    Has_Bar():
         boolean
     {
         return (
-            this.Has_Child(0) &&
-            this.Child(0) instanceof Reader.Instance
+            this.Has_Child(1) &&
+            this.Child(1) instanceof Bar.Instance
         );
     }
 
-    Reader():
-        Reader.Instance
+    Bar():
+        Bar.Instance
     {
         Utils.Assert(
-            this.Has_Reader(),
-            `Does not have a reader.`,
+            this.Has_Bar(),
+            `Does not have a bar.`,
         );
 
-        return this.Child(0) as Reader.Instance;
+        return this.Child(1) as Bar.Instance;
     }
 }

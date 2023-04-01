@@ -48,7 +48,7 @@ export class Instance extends Entity.Instance {
         return [`Browser`];
     }
     Model() {
-        return this.model;
+        return this.model();
     }
     Root() {
         return this.Parent();

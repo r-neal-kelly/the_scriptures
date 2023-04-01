@@ -21,44 +21,46 @@ export class Instance extends Async.Instance {
         Utils.Assert(Instance.next_id + 1 < Infinity, `Can't make a new id!`);
         return Instance.next_id++;
     }
-    constructor({ layout, program, }) {
+    constructor({ wall, model_class, view_class, }) {
         super();
-        this.layout = layout;
+        this.wall = wall;
         this.id = Instance.New_ID();
         this.state = State._NONE_;
-        this.program = program;
+        this.model_class = model_class;
+        this.view_class = view_class;
+        this.model = new model_class();
         this.Is_Ready_After([
-            program,
+            this.model,
         ]);
     }
-    Has_Layout() {
-        Utils.Assert(this.Is_Alive(), `Cannot know if a dead window has a layout.`);
-        return this.layout != null;
+    Is_In_Wall() {
+        Utils.Assert(this.Is_Alive(), `Cannot know if a dead window is in a wall.`);
+        return this.wall != null;
     }
-    Layout() {
-        Utils.Assert(this.Is_Alive(), `Window must be alive to get a layout.`);
-        Utils.Assert(this.Has_Layout(), `Doesn't have a layout.`);
-        return this.layout;
+    Wall() {
+        Utils.Assert(this.Is_Alive(), `Window must be alive to get its wall.`);
+        Utils.Assert(this.Is_In_Wall(), `Isn't in a wall.`);
+        return this.wall;
     }
-    Add_Layout(layout) {
-        Utils.Assert(this.Is_Alive(), `Window must be alive to add a layout.`);
-        Utils.Assert(!this.Has_Layout(), `Already has a layout.`);
-        layout.Add_Window(this);
-        this.layout = layout;
+    Add_To_Wall(wall) {
+        Utils.Assert(this.Is_Alive(), `Window must be alive to be added to a wall.`);
+        Utils.Assert(!this.Is_In_Wall(), `Is already in a wall.`);
+        wall.Add(this);
+        this.wall = wall;
     }
-    Remove_Layout() {
-        Utils.Assert(this.Is_Alive(), `Window must be alive to remove a layout.`);
-        Utils.Assert(this.Has_Layout(), `Doesn't have a layout to remove.`);
-        this.Layout().Remove_Window(this.ID());
-        this.layout = null;
+    Remove_From_Wall() {
+        Utils.Assert(this.Is_Alive(), `Window must be alive to be removed from a wall.`);
+        Utils.Assert(this.Is_In_Wall(), `Isn't in a wall.`);
+        this.Wall().Remove(this.ID());
+        this.wall = null;
     }
-    Change_Layout(layout) {
-        Utils.Assert(this.Is_Alive(), `Window must be alive to change layout.`);
-        if (this.Has_Layout()) {
-            this.Remove_Layout();
+    Move_To_Wall(wall) {
+        Utils.Assert(this.Is_Alive(), `Window must be alive to be moved to a wall.`);
+        if (this.Is_In_Wall()) {
+            this.Remove_From_Wall();
         }
-        if (layout != null) {
-            this.Add_Layout(layout);
+        if (wall != null) {
+            this.Add_To_Wall(wall);
         }
     }
     ID() {
@@ -67,9 +69,17 @@ export class Instance extends Async.Instance {
     State() {
         return this.state;
     }
-    Program() {
-        Utils.Assert(this.Is_Alive(), `Window must be alive to get its program.`);
-        return this.program;
+    Model_Class() {
+        Utils.Assert(this.Is_Alive(), `Window must be alive to get its model_class.`);
+        return this.model_class;
+    }
+    View_Class() {
+        Utils.Assert(this.Is_Alive(), `Window must be alive to get its view_class.`);
+        return this.view_class;
+    }
+    Model() {
+        Utils.Assert(this.Is_Alive(), `Window must be alive to get its model.`);
+        return this.model;
     }
     Is_Alive() {
         return (this.state & State.IS_ALIVE) !== 0;
@@ -77,15 +87,15 @@ export class Instance extends Async.Instance {
     Live() {
         Utils.Assert(!this.Is_Alive(), `Window is already alive.`);
         this.state |= State.IS_ALIVE;
-        if (this.layout != null) {
-            const layout = this.layout;
-            this.layout = null;
-            this.Add_Layout(layout);
+        if (this.wall != null) {
+            const wall = this.wall;
+            this.wall = null;
+            this.Add_To_Wall(wall);
         }
     }
     Kill() {
         Utils.Assert(this.Is_Alive(), `Window is already dead.`);
-        this.Change_Layout(null);
+        this.Move_To_Wall(null);
         this.state &= ~State.IS_ALIVE;
     }
     Is_Minimized() {

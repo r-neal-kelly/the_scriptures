@@ -52,7 +52,7 @@ class Body extends Entity.Instance {
         if (!this.Has_View()) {
             this.Abort_All_Children();
             new View.Instance({
-                model: this.Model(),
+                model: () => this.Model(),
                 root: this,
             });
         }
