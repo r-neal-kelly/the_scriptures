@@ -140,79 +140,41 @@ async function Main():
     Promise<void>
 {
     const model: Model.Instance = new Model.Instance();
-
-    // Once we set up our save file structure, or at least prototype it,
-    // we'll pull each window's model's data from there and pass it along.
-    await Promise.all(
-        [
-            model.Add_Window(
-                {
-                    model_class: Browser_Model.Instance,
-                    view_class: Browser_View.Instance,
-                    model_data: {
-                        selector_slot_order:
-                            Browser_Model.Selector.Slot.Order.BOOKS_LANGUAGES_VERSIONS,
-                    },
-                },
-            ),
-            model.Add_Window(
-                {
-                    model_class: Browser_Model.Instance,
-                    view_class: Browser_View.Instance,
-                    model_data: {
-                        selector_slot_order:
-                            Browser_Model.Selector.Slot.Order.BOOKS_VERSIONS_LANGUAGES,
-                    },
-                },
-            ),
-            model.Add_Window(
-                {
-                    model_class: Browser_Model.Instance,
-                    view_class: Browser_View.Instance,
-                    model_data: {
-                        selector_slot_order:
-                            Browser_Model.Selector.Slot.Order.LANGUAGES_BOOKS_VERSIONS,
-                    },
-                },
-            ),
-            model.Add_Window(
-                {
-                    model_class: Browser_Model.Instance,
-                    view_class: Browser_View.Instance,
-                    model_data: {
-                        selector_slot_order:
-                            Browser_Model.Selector.Slot.Order.LANGUAGES_VERSIONS_BOOKS,
-                    },
-                },
-            ),
-            model.Add_Window(
-                {
-                    model_class: Browser_Model.Instance,
-                    view_class: Browser_View.Instance,
-                    model_data: {
-                        selector_slot_order:
-                            Browser_Model.Selector.Slot.Order.VERSIONS_BOOKS_LANGUAGES,
-                    },
-                },
-            ),
-            model.Add_Window(
-                {
-                    model_class: Browser_Model.Instance,
-                    view_class: Browser_View.Instance,
-                    model_data: {
-                        selector_slot_order:
-                            Browser_Model.Selector.Slot.Order.VERSIONS_LANGUAGES_BOOKS,
-                    },
-                },
-            ),
-        ],
-    );
-
-    new Body(
+    const view = new Body(
         {
             model: model,
         },
     );
+
+    // Once we set up our save file structure, or at least prototype it,
+    // we'll pull each window's model's data from there and pass it along.
+    const data: Array<[Browser_Model.Selector.Slot.Order, string]> = [
+        [Browser_Model.Selector.Slot.Order.BOOKS_LANGUAGES_VERSIONS, `Chapter 01.txt`],
+        [Browser_Model.Selector.Slot.Order.BOOKS_VERSIONS_LANGUAGES, `Chapter 02.txt`],
+        [Browser_Model.Selector.Slot.Order.LANGUAGES_BOOKS_VERSIONS, `Chapter 03.txt`],
+        [Browser_Model.Selector.Slot.Order.LANGUAGES_VERSIONS_BOOKS, `Chapter 04.txt`],
+        //[Browser_Model.Selector.Slot.Order.VERSIONS_BOOKS_LANGUAGES, `Chapter 05.txt`],
+        //[Browser_Model.Selector.Slot.Order.VERSIONS_LANGUAGES_BOOKS, `Chapter 06.txt`],
+    ];
+    for (const [order, file_name] of data) {
+        model.Add_Window(
+            {
+                model_class: Browser_Model.Instance,
+                view_class: Browser_View.Instance,
+                model_data: {
+                    selector_slot_order: order,
+                    selection: new Browser_Model.Selection.Name(
+                        {
+                            book: `Jubilees`,
+                            language: `English`,
+                            version: `R. H. Charles`,
+                            file: file_name,
+                        },
+                    ),
+                },
+            },
+        )
+    }
 }
 
 Main();

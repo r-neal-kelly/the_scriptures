@@ -8,6 +8,7 @@ import * as Async from "../../../async.js";
 import * as Data from "../../data.js";
 
 import * as Selector from "./instance.js";
+import * as Selection from "../selection.js";
 import * as Slot from "./slot.js";
 
 export class Instance extends Async.Instance
@@ -45,15 +46,18 @@ export class Instance extends Async.Instance
 
     private selector: Selector.Instance;
     private order: Slot.Order;
+    private first_selection: Selection.Name | Selection.Index | null;
     private slots: Array<Slot.Instance>;
 
     constructor(
         {
             selector,
             order,
+            selection = null,
         }: {
             selector: Selector.Instance,
             order: Slot.Order,
+            selection?: Selection.Name | Selection.Index | null,
         },
     )
     {
@@ -61,6 +65,7 @@ export class Instance extends Async.Instance
 
         this.selector = selector;
         this.order = order;
+        this.first_selection = selection;
         this.slots = [];
     }
 
@@ -351,14 +356,6 @@ export class Instance extends Async.Instance
         return this.From_Type(Slot.Type.FILES);
     }
 
-    async Select_Item(
-        type: Slot.Type,
-        name: Name,
-    ):
-        Promise<void>
-    {
-    }
-
     async Select_Item_Internally(
         {
             slot,
@@ -394,38 +391,52 @@ export class Instance extends Async.Instance
         }
     }
 
-    async Select_Items(
-        {
-            book_name,
-            language_name,
-            version_name,
-            file_name,
-        }: {
-            book_name: Name,
-            language_name: Name,
-            version_name: Name,
-            file_name: Name,
-        },
+    async Select(
+        selection: Selection.Name,
     ):
         Promise<void>
     {
+        const types: Array<Slot.Type> = this.Types();
+        for (let idx = 0, end = Instance.Max_Slot_Count(); idx < end; idx += 1) {
+            if (idx === this.Count()) {
+                await this.Push();
+            }
+
+            const type: Slot.Type = types[idx];
+            if (type === Slot.Type.BOOKS) {
+                await this.Books().Items().From(selection.Book()).Select();
+            } else if (type === Slot.Type.LANGUAGES) {
+                await this.Languages().Items().From(selection.Language()).Select();
+            } else if (type === Slot.Type.VERSIONS) {
+                await this.Versions().Items().From(selection.Version()).Select();
+            } else if (type === Slot.Type.FILES) {
+                await this.Files().Items().From(selection.File()).Select();
+            }
+        }
     }
 
-    async Select_Items_At(
-        {
-            book_index,
-            language_index,
-            version_index,
-            file_index,
-        }: {
-            book_index: Index,
-            language_index: Index,
-            version_index: Index,
-            file_index: Index,
-        },
+    async Select_At(
+        selection: Selection.Index,
     ):
         Promise<void>
     {
+        const types: Array<Slot.Type> = this.Types();
+        for (let idx = 0, end = Instance.Max_Slot_Count(); idx < end; idx += 1) {
+            if (idx === this.Count()) {
+                await this.Push();
+            }
+
+            const type: Slot.Type = types[idx];
+            if (type === Slot.Type.BOOKS) {
+                await this.Books().Items().At(selection.Book()).Select();
+            } else if (type === Slot.Type.LANGUAGES) {
+                await this.Languages().Items().At(selection.Language()).Select();
+            } else if (type === Slot.Type.VERSIONS) {
+                await this.Versions().Items().At(selection.Version()).Select();
+            } else if (type === Slot.Type.FILES) {
+                await this.Files().Items().At(selection.File()).Select();
+            }
+        }
     }
 
     override async Ready():
@@ -433,7 +444,13 @@ export class Instance extends Async.Instance
     {
         if (!this.Is_Ready()) {
             await super.Ready();
-            await this.Push();
+            if (this.first_selection instanceof Selection.Name) {
+                await this.Select(this.first_selection);
+            } else if (this.first_selection instanceof Selection.Index) {
+                await this.Select_At(this.first_selection);
+            } else {
+                await this.Push();
+            }
         }
     }
 }

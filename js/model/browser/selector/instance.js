@@ -2,7 +2,7 @@ import * as Async from "../../../async.js";
 import * as Toggle from "./toggle.js";
 import * as Slots from "./slots.js";
 export class Instance extends Async.Instance {
-    constructor({ browser, is_open, slot_order, }) {
+    constructor({ browser, is_open, slot_order, selection = null, }) {
         super();
         this.browser = browser;
         this.toggle = new Toggle.Instance({
@@ -12,6 +12,7 @@ export class Instance extends Async.Instance {
         this.slots = new Slots.Instance({
             selector: this,
             order: slot_order,
+            selection: selection,
         });
         this.Is_Ready_After([
             this.toggle,

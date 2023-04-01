@@ -32,6 +32,55 @@ export class Instance extends Entity.Instance {
     On_Reclass() {
         return [`Wall`];
     }
+    On_Restyle() {
+        // This is just dumb logic, but I want something working
+        // and my brain is having a hard time cooperating. I
+        // can barely get this right.
+        const model = this.Model();
+        const window_count = model.Count();
+        if (window_count === 1) {
+            return `
+                grid-template-columns: repeat(1, 1fr);
+                grid-template-rows: repeat(1, 1fr);
+            `;
+        }
+        else if (window_count === 2) {
+            return `
+                grid-template-columns: repeat(2, 1fr);
+                grid-template-rows: repeat(1, 1fr);
+            `;
+        }
+        else if (window_count === 3) {
+            return `
+                grid-template-columns: repeat(2, 1fr);
+                grid-template-rows: repeat(2, 1fr);
+            `;
+        }
+        else if (window_count === 4) {
+            return `
+                grid-template-columns: repeat(2, 1fr);
+                grid-template-rows: repeat(2, 1fr);
+            `;
+        }
+        else if (window_count === 5) {
+            return `
+                grid-template-columns: repeat(3, 1fr);
+                grid-template-rows: repeat(2, 1fr);
+            `;
+        }
+        else if (window_count === 6) {
+            return `
+                grid-template-columns: repeat(3, 1fr);
+                grid-template-rows: repeat(2, 1fr);
+            `;
+        }
+        else {
+            return `
+                grid-template-columns: auto;
+                grid-template-rows: auto;
+            `;
+        }
+    }
     Model() {
         return this.model();
     }

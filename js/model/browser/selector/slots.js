@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import * as Utils from "../../../utils.js";
 import * as Async from "../../../async.js";
 import * as Data from "../../data.js";
+import * as Selection from "../selection.js";
 import * as Slot from "./slot.js";
 export class Instance extends Async.Instance {
     static Max_Slot_Count() {
@@ -33,10 +34,11 @@ export class Instance extends Async.Instance {
             return Data.Type.BOOKS;
         }
     }
-    constructor({ selector, order, }) {
+    constructor({ selector, order, selection = null, }) {
         super();
         this.selector = selector;
         this.order = order;
+        this.first_selection = selection;
         this.slots = [];
     }
     Selector() {
@@ -194,10 +196,6 @@ export class Instance extends Async.Instance {
         Utils.Assert(this.Has_Files(), `Doesn't have files.`);
         return this.From_Type(Slot.Type.FILES);
     }
-    Select_Item(type, name) {
-        return __awaiter(this, void 0, void 0, function* () {
-        });
-    }
     Select_Item_Internally({ slot, item, }) {
         return __awaiter(this, void 0, void 0, function* () {
             Utils.Assert(this.Has(slot), `The slot does not belong to this selector.`);
@@ -219,12 +217,50 @@ export class Instance extends Async.Instance {
             }
         });
     }
-    Select_Items({ book_name, language_name, version_name, file_name, }) {
+    Select(selection) {
         return __awaiter(this, void 0, void 0, function* () {
+            const types = this.Types();
+            for (let idx = 0, end = Instance.Max_Slot_Count(); idx < end; idx += 1) {
+                if (idx === this.Count()) {
+                    yield this.Push();
+                }
+                const type = types[idx];
+                if (type === Slot.Type.BOOKS) {
+                    yield this.Books().Items().From(selection.Book()).Select();
+                }
+                else if (type === Slot.Type.LANGUAGES) {
+                    yield this.Languages().Items().From(selection.Language()).Select();
+                }
+                else if (type === Slot.Type.VERSIONS) {
+                    yield this.Versions().Items().From(selection.Version()).Select();
+                }
+                else if (type === Slot.Type.FILES) {
+                    yield this.Files().Items().From(selection.File()).Select();
+                }
+            }
         });
     }
-    Select_Items_At({ book_index, language_index, version_index, file_index, }) {
+    Select_At(selection) {
         return __awaiter(this, void 0, void 0, function* () {
+            const types = this.Types();
+            for (let idx = 0, end = Instance.Max_Slot_Count(); idx < end; idx += 1) {
+                if (idx === this.Count()) {
+                    yield this.Push();
+                }
+                const type = types[idx];
+                if (type === Slot.Type.BOOKS) {
+                    yield this.Books().Items().At(selection.Book()).Select();
+                }
+                else if (type === Slot.Type.LANGUAGES) {
+                    yield this.Languages().Items().At(selection.Language()).Select();
+                }
+                else if (type === Slot.Type.VERSIONS) {
+                    yield this.Versions().Items().At(selection.Version()).Select();
+                }
+                else if (type === Slot.Type.FILES) {
+                    yield this.Files().Items().At(selection.File()).Select();
+                }
+            }
         });
     }
     Ready() {
@@ -234,7 +270,15 @@ export class Instance extends Async.Instance {
         return __awaiter(this, void 0, void 0, function* () {
             if (!this.Is_Ready()) {
                 yield _super.Ready.call(this);
-                yield this.Push();
+                if (this.first_selection instanceof Selection.Name) {
+                    yield this.Select(this.first_selection);
+                }
+                else if (this.first_selection instanceof Selection.Index) {
+                    yield this.Select_At(this.first_selection);
+                }
+                else {
+                    yield this.Push();
+                }
             }
         });
     }

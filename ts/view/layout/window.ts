@@ -1,4 +1,5 @@
 import * as Utils from "../../utils.js";
+import * as Event from "../../event.js";
 import * as Entity from "../../entity.js";
 
 import * as Model from "../../model/layout/window.js";
@@ -30,18 +31,31 @@ export class Instance extends Entity.Instance
         this.model = model;
     }
 
+    override On_Life():
+        Array<Event.Listener_Info>
+    {
+        this.Refresh_After_Has_Model();
+
+        return [];
+    }
+
     override On_Refresh():
         void
     {
-        if (!this.Has_View()) {
-            this.Abort_All_Children();
+        const model: Model.Instance = this.Model();
 
-            new (this.Model().View_Class())(
-                {
-                    model: () => this.Model().Model(),
-                    root: this,
-                },
-            );
+        if (model.Has_Model()) {
+            if (!this.Has_View()) {
+                this.Abort_All_Children();
+                this.Element().textContent = ``;
+
+                new (this.Model().View_Class())(
+                    {
+                        model: () => this.Model().Model(),
+                        root: this,
+                    },
+                );
+            }
         }
     }
 
@@ -49,6 +63,29 @@ export class Instance extends Entity.Instance
         Array<string>
     {
         return [`Window`];
+    }
+
+    async Refresh_After_Has_Model():
+        Promise<void>
+    {
+        // Need to wait to make sure derived type's constructor is done.
+        await Utils.Wait_Milliseconds(1);
+
+        while (this.Is_Alive() && !this.Model().Has_Model()) {
+            const element: HTMLElement = this.Element();
+
+            if (element.textContent === `Loading.`) {
+                element.textContent = `Loading..`;
+            } else if (element.textContent === `Loading..`) {
+                element.textContent = `Loading...`;
+            } else {
+                element.textContent = `Loading.`;
+            }
+
+            await Utils.Wait_Milliseconds(50);
+        }
+
+        this.Refresh();
     }
 
     Model():

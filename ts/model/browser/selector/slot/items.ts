@@ -84,6 +84,26 @@ export class Instance
         return this.items[item_index];
     }
 
+    From(
+        name: Name,
+    ):
+        Item.Instance
+    {
+        for (let idx = 0, end = this.Count(); idx < end; idx += 1) {
+            const item: Item.Instance = this.At(idx);
+            if (item.Name() === name) {
+                return item;
+            }
+        }
+
+        Utils.Assert(
+            false,
+            `Does not have an item with the name of ${name}.`,
+        );
+
+        return this.At(0);
+    }
+
     Array():
         Array<Item.Instance>
     {

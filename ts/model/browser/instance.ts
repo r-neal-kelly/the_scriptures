@@ -1,7 +1,10 @@
+import { Name } from "../../types.js";
+
 import * as Async from "../../async.js";
 
 import * as Data from "../data.js";
 
+import * as Selection from "./selection.js";
 import * as Selector from "./selector.js";
 import * as Reader from "./reader.js";
 
@@ -14,8 +17,17 @@ export class Instance extends Async.Instance
     constructor(
         {
             selector_slot_order = Selector.Slot.Order.BOOKS_LANGUAGES_VERSIONS,
+            selection = new Selection.Name(
+                {
+                    book: `Jubilees`,
+                    language: `English`,
+                    version: `R. H. Charles`,
+                    file: `Chapter 01.txt`,
+                },
+            ),
         }: {
             selector_slot_order?: Selector.Slot.Order,
+            selection?: Selection.Name | Selection.Index | null,
         } = {},
     )
     {
@@ -27,6 +39,7 @@ export class Instance extends Async.Instance
                 browser: this,
                 is_open: true,
                 slot_order: selector_slot_order,
+                selection: selection,
             },
         );
         this.reader = new Reader.Instance(

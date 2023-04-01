@@ -1,6 +1,7 @@
 import * as Async from "../../../async.js";
 
 import * as Browser from "../instance.js";
+import * as Selection from "../selection.js";
 import * as Toggle from "./toggle.js";
 import * as Slots from "./slots.js";
 import * as Slot from "./slot.js";
@@ -16,10 +17,12 @@ export class Instance extends Async.Instance
             browser,
             is_open,
             slot_order,
+            selection = null,
         }: {
             browser: Browser.Instance,
             is_open: boolean,
             slot_order: Slot.Order,
+            selection?: Selection.Name | Selection.Index | null,
         },
     )
     {
@@ -36,6 +39,7 @@ export class Instance extends Async.Instance
             {
                 selector: this,
                 order: slot_order,
+                selection: selection,
             }
         );
 

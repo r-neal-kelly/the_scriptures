@@ -15,6 +15,7 @@ export var State;
     State[State["IS_ALIVE"] = 1] = "IS_ALIVE";
     State[State["IS_MINIMIZED"] = 2] = "IS_MINIMIZED";
     State[State["IS_MAXIMIZED"] = 4] = "IS_MAXIMIZED";
+    State[State["HAS_MODEL"] = 8] = "HAS_MODEL";
 })(State || (State = {}));
 export class Instance extends Async.Instance {
     static New_ID() {
@@ -77,8 +78,13 @@ export class Instance extends Async.Instance {
         Utils.Assert(this.Is_Alive(), `Window must be alive to get its view_class.`);
         return this.view_class;
     }
+    Has_Model() {
+        Utils.Assert(this.Is_Alive(), `Window must be alive to know if it has its model.`);
+        return (this.state & State.HAS_MODEL) !== 0;
+    }
     Model() {
         Utils.Assert(this.Is_Alive(), `Window must be alive to get its model.`);
+        Utils.Assert(this.Has_Model(), `Window does not have its model, it's probably still loading in.`);
         return this.model;
     }
     Is_Alive() {
@@ -136,8 +142,11 @@ export class Instance extends Async.Instance {
         });
         return __awaiter(this, void 0, void 0, function* () {
             if (!this.Is_Ready()) {
-                yield _super.Ready.call(this);
                 this.Live();
+                // We do this after Live so that the window can
+                // get anchored to its wall synchronously.
+                yield _super.Ready.call(this);
+                this.state |= State.HAS_MODEL;
             }
         });
     }

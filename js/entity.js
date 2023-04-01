@@ -58,37 +58,45 @@ export class Instance {
         this.Live(parent);
     }
     Live(parent) {
-        if (!this.Is_Alive()) {
-            this.is_alive = true;
-            this.element.setAttribute(`id`, this.HTML_ID());
-            // This needs to happen before On_Life so that
-            // the listener has access to their parent.
-            if (parent != null) {
-                parent.Adopt_Child(this);
-            }
-            if (Object.getPrototypeOf(this).hasOwnProperty(`On_Life`)) {
-                this.life_cycle_listener = Life_Cycle_Listener.ON_LIFE;
-                this.css_to_add = ``;
-                this.Event_Grid().Add_Many_Listeners(this, this.On_Life());
-                if (this.css_to_add !== ``) {
-                    this.css = Utils.Create_Style_Element(this.css_to_add);
+        return __awaiter(this, void 0, void 0, function* () {
+            if (!this.Is_Alive()) {
+                this.is_alive = true;
+                this.element.setAttribute(`id`, this.HTML_ID());
+                // We only refresh when there is no parent
+                // because the parent itself will refresh
+                // its children through this event.
+                if (parent != null) {
+                    // This needs to happen before On_Life so that
+                    // the listener has access to their parent.
+                    parent.Adopt_Child(this);
+                    this.Life_This();
                 }
-                this.css_to_add = null;
-                this.life_cycle_listener = Life_Cycle_Listener._NONE_;
+                else {
+                    this.Life_This();
+                    // Waiting here allows the derived type to
+                    // finish its constructor before On_Refresh().
+                    yield Utils.Wait_Milliseconds(1);
+                    this.Refresh();
+                }
+                // Notice that we are not waiting before On_Life().
+                // Testing showed that this had strange results in combination
+                // with the refresh event of the parent. Currently
+                // the deriver can just wait through an async call
+                // in On_Life, but perhaps we can have an after life call?
             }
-            // We only refresh when there is no parent
-            // because the parent itself will refresh
-            // its children through this event.
-            if (parent == null) {
-                // Waiting here allows the derived type to
-                // finish its constructor before Refresh.
-                (function () {
-                    return __awaiter(this, void 0, void 0, function* () {
-                        yield Utils.Wait_Milliseconds(1);
-                        this.Refresh();
-                    });
-                }).bind(this)();
+        });
+    }
+    Life_This() {
+        if (this.Is_Alive() &&
+            Object.getPrototypeOf(this).hasOwnProperty(`On_Life`)) {
+            this.life_cycle_listener = Life_Cycle_Listener.ON_LIFE;
+            this.css_to_add = ``;
+            this.Event_Grid().Add_Many_Listeners(this, this.On_Life());
+            if (this.css_to_add !== ``) {
+                this.css = Utils.Create_Style_Element(this.css_to_add);
             }
+            this.css_to_add = null;
+            this.life_cycle_listener = Life_Cycle_Listener._NONE_;
         }
     }
     // This algorithm for the different Life-Cycle Senders is extremely efficient

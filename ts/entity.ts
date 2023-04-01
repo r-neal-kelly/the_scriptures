@@ -47,7 +47,7 @@ export interface Life_Cycle_Sender_API
     */
     // private Live(
     //    parent: Instance | null,
-    //): void;
+    //): Promise<void>;
 
     /*
         Automatically called through Live.
@@ -366,10 +366,10 @@ export class Instance implements
         this.Live(parent);
     }
 
-    private Live(
+    private async Live(
         parent: Instance | null,
     ):
-        void
+        Promise<void>
     {
         if (!this.Is_Alive()) {
             this.is_alive = true;
@@ -379,40 +379,44 @@ export class Instance implements
                 this.HTML_ID(),
             );
 
-            // This needs to happen before On_Life so that
-            // the listener has access to their parent.
-            if (parent != null) {
-                parent.Adopt_Child(this);
-            }
-
-            if (Object.getPrototypeOf(this).hasOwnProperty(`On_Life`)) {
-                this.life_cycle_listener = Life_Cycle_Listener.ON_LIFE;
-                this.css_to_add = ``;
-                this.Event_Grid().Add_Many_Listeners(this, this.On_Life());
-                if (this.css_to_add !== ``) {
-                    this.css = Utils.Create_Style_Element(this.css_to_add);
-                }
-                this.css_to_add = null;
-                this.life_cycle_listener = Life_Cycle_Listener._NONE_;
-            }
-
             // We only refresh when there is no parent
             // because the parent itself will refresh
             // its children through this event.
-            if (parent == null) {
+            if (parent != null) {
+                // This needs to happen before On_Life so that
+                // the listener has access to their parent.
+                parent.Adopt_Child(this);
+                this.Life_This();
+            } else {
+                this.Life_This();
                 // Waiting here allows the derived type to
-                // finish its constructor before Refresh.
-                (
-                    async function (
-                        this: Instance,
-                    ):
-                        Promise<void>
-                    {
-                        await Utils.Wait_Milliseconds(1);
-                        this.Refresh();
-                    }
-                ).bind(this)();
+                // finish its constructor before On_Refresh().
+                await Utils.Wait_Milliseconds(1);
+                this.Refresh();
             }
+            // Notice that we are not waiting before On_Life().
+            // Testing showed that this had strange results in combination
+            // with the refresh event of the parent. Currently
+            // the deriver can just wait through an async call
+            // in On_Life, but perhaps we can have an after life call?
+        }
+    }
+
+    private Life_This():
+        void
+    {
+        if (
+            this.Is_Alive() &&
+            Object.getPrototypeOf(this).hasOwnProperty(`On_Life`)
+        ) {
+            this.life_cycle_listener = Life_Cycle_Listener.ON_LIFE;
+            this.css_to_add = ``;
+            this.Event_Grid().Add_Many_Listeners(this, this.On_Life());
+            if (this.css_to_add !== ``) {
+                this.css = Utils.Create_Style_Element(this.css_to_add);
+            }
+            this.css_to_add = null;
+            this.life_cycle_listener = Life_Cycle_Listener._NONE_;
         }
     }
 

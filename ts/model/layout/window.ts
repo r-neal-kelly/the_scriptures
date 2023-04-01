@@ -54,6 +54,7 @@ export enum State
     IS_ALIVE = 1 << 0,
     IS_MINIMIZED = 1 << 1,
     IS_MAXIMIZED = 1 << 2,
+    HAS_MODEL = 1 << 3,
 }
 
 export class Instance extends Async.Instance
@@ -220,6 +221,17 @@ export class Instance extends Async.Instance
         return this.view_class;
     }
 
+    Has_Model():
+        boolean
+    {
+        Utils.Assert(
+            this.Is_Alive(),
+            `Window must be alive to know if it has its model.`,
+        );
+
+        return (this.state & State.HAS_MODEL) !== 0;
+    }
+
     Model():
         Model_Instance
     {
@@ -227,6 +239,10 @@ export class Instance extends Async.Instance
             this.Is_Alive(),
             `Window must be alive to get its model.`,
         );
+        Utils.Assert(
+            this.Has_Model(),
+            `Window does not have its model, it's probably still loading in.`,
+        )
 
         return this.model;
     }
@@ -358,8 +374,11 @@ export class Instance extends Async.Instance
         Promise<void>
     {
         if (!this.Is_Ready()) {
-            await super.Ready();
             this.Live();
+            // We do this after Live so that the window can
+            // get anchored to its wall synchronously.
+            await super.Ready();
+            this.state |= State.HAS_MODEL;
         }
     }
 }

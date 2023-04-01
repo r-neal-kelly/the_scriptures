@@ -39,6 +39,16 @@ export class Instance {
         Utils.Assert(item_index < this.Count(), `item_index must be less than item_count.`);
         return this.items[item_index];
     }
+    From(name) {
+        for (let idx = 0, end = this.Count(); idx < end; idx += 1) {
+            const item = this.At(idx);
+            if (item.Name() === name) {
+                return item;
+            }
+        }
+        Utils.Assert(false, `Does not have an item with the name of ${name}.`);
+        return this.At(0);
+    }
     Array() {
         return Array.from(this.items);
     }
