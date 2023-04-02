@@ -1,3 +1,3 @@
 export { Instance } from "./browser/instance.js";
-export * as Selector from "./browser/selector.js";
-export * as Reader from "./browser/reader.js";
+export * as Commander from "./browser/commander.js";
+export * as Body from "./browser/body.js";

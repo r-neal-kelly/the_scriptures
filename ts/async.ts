@@ -36,9 +36,6 @@ export class Instance
         Promise<void>
     {
         if (this.is_ready === false) {
-            // Might as well set this first, just in case this is somehow called again.
-            this.is_ready = true;
-
             await Promise.all(
                 this.dependencies.map(
                     function (
@@ -50,6 +47,8 @@ export class Instance
                     },
                 ),
             );
+
+            this.is_ready = true;
         }
     }
 }

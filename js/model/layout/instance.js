@@ -24,13 +24,9 @@ export class Instance {
     Bar() {
         return this.bar;
     }
-    Add_Window({ model_class, view_class, model_data = undefined, }) {
+    Add_Program(program) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.Wall().Add_With({
-                model_class,
-                view_class,
-                model_data,
-            });
+            return yield this.Wall().Add_Program(program);
         });
     }
 }

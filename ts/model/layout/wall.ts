@@ -144,25 +144,15 @@ export class Instance
         this.windows.delete(window_id);
     }
 
-    async Add_With(
-        {
-            model_class,
-            view_class,
-            model_data = undefined,
-        }: {
-            model_class: Window.Model_Class,
-            view_class: Window.View_Class,
-            model_data?: Window.Model_Data,
-        },
+    async Add_Program(
+        program: Window.Program.Instance,
     ):
         Promise<Window.ID>
     {
         const window: Window.Instance = new Window.Instance(
             {
                 wall: this,
-                model_class: model_class,
-                view_class: view_class,
-                model_data: model_data,
+                program: program,
             },
         );
         await window.Ready();

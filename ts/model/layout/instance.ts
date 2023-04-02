@@ -33,25 +33,11 @@ export class Instance
         return this.bar;
     }
 
-    async Add_Window(
-        {
-            model_class,
-            view_class,
-            model_data = undefined,
-        }: {
-            model_class: Window.Model_Class,
-            view_class: Window.View_Class,
-            model_data?: Window.Model_Data,
-        },
+    async Add_Program(
+        program: Window.Program.Instance
     ):
         Promise<Window.ID>
     {
-        return this.Wall().Add_With(
-            {
-                model_class,
-                view_class,
-                model_data,
-            },
-        );
+        return await this.Wall().Add_Program(program);
     }
 }

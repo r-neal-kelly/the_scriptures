@@ -25,11 +25,10 @@ export class Instance {
     Ready() {
         return __awaiter(this, void 0, void 0, function* () {
             if (this.is_ready === false) {
-                // Might as well set this first, just in case this is somehow called again.
-                this.is_ready = true;
                 yield Promise.all(this.dependencies.map(function (dependency) {
                     return dependency.Ready();
                 }));
+                this.is_ready = true;
             }
         });
     }

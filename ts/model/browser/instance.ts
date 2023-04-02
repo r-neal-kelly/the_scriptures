@@ -1,22 +1,19 @@
-import { Name } from "../../types.js";
-
 import * as Async from "../../async.js";
 
 import * as Data from "../data.js";
 
 import * as Selection from "./selection.js";
-import * as Selector from "./selector.js";
-import * as Reader from "./reader.js";
+import * as Commander from "./commander.js";
+import * as Body from "./body.js";
 
 export class Instance extends Async.Instance
 {
     private data: Data.Instance;
-    private selector: Selector.Instance;
-    private reader: Reader.Instance;
+    private commander: Commander.Instance;
+    private body: Body.Instance;
 
     constructor(
         {
-            selector_slot_order = Selector.Slot.Order.BOOKS_LANGUAGES_VERSIONS,
             selection = new Selection.Name(
                 {
                     book: `Jubilees`,
@@ -25,34 +22,37 @@ export class Instance extends Async.Instance
                     file: `Chapter 01.txt`,
                 },
             ),
+            selector_slot_order = Body.Selector.Slot.Order.BOOKS_LANGUAGES_VERSIONS,
+            is_selector_open = true,
         }: {
-            selector_slot_order?: Selector.Slot.Order,
             selection?: Selection.Name | Selection.Index | null,
+            selector_slot_order?: Body.Selector.Slot.Order,
+            is_selector_open?: boolean,
         } = {},
     )
     {
         super();
 
         this.data = new Data.Instance();
-        this.selector = new Selector.Instance(
+        this.commander = new Commander.Instance(
             {
                 browser: this,
-                is_open: true,
-                slot_order: selector_slot_order,
-                selection: selection,
+                is_selector_open: is_selector_open,
             },
         );
-        this.reader = new Reader.Instance(
+        this.body = new Body.Instance(
             {
                 browser: this,
+                selection: selection,
+                selector_slot_order: selector_slot_order,
             },
         );
 
         this.Is_Ready_After(
             [
                 this.data,
-                this.selector,
-                this.reader,
+                this.commander,
+                this.body,
             ],
         );
     }
@@ -63,15 +63,15 @@ export class Instance extends Async.Instance
         return this.data;
     }
 
-    Selector():
-        Selector.Instance
+    Commander():
+        Commander.Instance
     {
-        return this.selector;
+        return this.commander;
     }
 
-    Reader():
-        Reader.Instance
+    Body():
+        Body.Instance
     {
-        return this.reader;
+        return this.body;
     }
 }

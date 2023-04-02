@@ -3,9 +3,10 @@ import * as Event from "../../event.js";
 import * as Entity from "../../entity.js";
 
 import * as Model from "../../model/browser/instance.js";
+import * as Layout from "../../model/layout.js";
 
-import * as Selector from "./selector.js";
-import * as Reader from "./reader.js";
+import * as Commander from "./commander.js";
+import * as Body from "./body.js";
 
 export class Instance extends Entity.Instance
 {
@@ -16,7 +17,7 @@ export class Instance extends Entity.Instance
             model,
             root,
         }: {
-            model: () => Model.Instance,
+            model: () => Model.Instance | Layout.Window.Program.Model_Instance,
             root: Entity.Instance,
         },
     )
@@ -29,7 +30,7 @@ export class Instance extends Entity.Instance
             },
         );
 
-        this.model = model;
+        this.model = model as () => Model.Instance;
     }
 
     override On_Life():
@@ -42,7 +43,7 @@ export class Instance extends Entity.Instance
                     grid-template-rows: 1fr;
                     grid-template-columns: auto auto;
                     justify-content: start;
-                
+
                     width: 100%;
                     height: 100%;
 
@@ -54,6 +55,153 @@ export class Instance extends Entity.Instance
             `,
         );
 
+        this.Add_Children_CSS(
+            `
+                .Commander {
+                    display: flex;
+                    align-items: center;
+
+                    padding: 4px;
+
+                    border-color: white;
+                    border-style: solid;
+                    border-width: 0 1px 0 0;
+
+                    cursor: pointer;
+                    -webkit-user-select: none;
+                    -moz-user-select: none;
+                    -ms-user-select: none;
+                    user-select: none;
+                }
+
+                .Body {
+                    display: grid;
+                    grid-template-rows: 1fr;
+                    grid-template-columns: auto;
+                    justify-content: start;
+
+                    position: relative;
+
+                    width: 100%;
+                    height: 100%;
+
+                    overflow-x: hidden;
+                    overflow-y: hidden;
+                }
+
+                .Selector {
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                    z-index: 1;
+
+                    height: 100%;
+
+                    background-color: hsl(0, 0%, 0%, 0.7);
+
+                    overflow-x: hidden;
+                    overflow-y: hidden;
+                }
+
+                .Slots {
+                    display: grid;
+                    grid-template-rows: 1fr;
+                    grid-template-columns: repeat(4, 1fr);
+                    justify-content: start;
+
+                    width: 100%;
+                    height: 100%;
+
+                    overflow-x: hidden;
+                    overflow-y: hidden;
+                }
+
+                .Slot {
+                    display: grid;
+                    grid-template-rows: auto auto;
+                    grid-template-columns: auto;
+                    align-content: start;
+
+                    width: 100%;
+                    height: 100%;
+                    padding: 0 3px;
+
+                    border-color: white;
+                    border-style: solid;
+                    border-width: 0 1px 0 0;
+
+                    overflow-x: hidden;
+                    overflow-y: hidden;
+                }
+
+                .Slot_Title {
+                    width: 100%;
+                
+                    overflow-x: hidden;
+                    overflow-y: hidden;
+
+                    background-color: transparent;
+                    color: white;
+
+                    border-color: white;
+                    border-style: solid;
+                    border-width: 0 0 1px 0;
+
+                    font-variant: small-caps;
+
+                    cursor: default;
+                    -webkit-user-select: none;
+                    -moz-user-select: none;
+                    -ms-user-select: none;
+                    user-select: none;
+                }
+
+                .Slot_Items {
+                    width: 100%;
+
+                    padding: 2px 2px;
+
+                    overflow-x: auto;
+                    overflow-y: auto;
+                }
+
+                .Slot_Item {
+                    width: 100%;
+                    padding: 2px 2px;
+                    
+                    overflow-x: hidden;
+                    overflow-y: hidden;
+
+                    background-color: transparent;
+                    color: white;
+
+                    cursor: pointer;
+                    -webkit-user-select: none;
+                    -moz-user-select: none;
+                    -ms-user-select: none;
+                    user-select: none;
+                }
+                
+                .Slot_Item_Selected {
+                    background-color: white;
+                    color: black;
+                }
+
+                .Reader {
+                    z-index: 0;
+
+                    width: 100%;
+
+                    overflow-x: auto;
+                    overflow-y: auto;
+                }
+
+                .Hidden {
+                    display: none;
+                }
+            `,
+        );
+
         return [];
     }
 
@@ -61,20 +209,20 @@ export class Instance extends Entity.Instance
         void
     {
         if (
-            !this.Has_Selector() ||
-            !this.Has_Reader()
+            !this.Has_Commander() ||
+            !this.Has_Body()
         ) {
             this.Abort_All_Children();
 
-            new Selector.Instance(
+            new Commander.Instance(
                 {
-                    model: this.Model().Selector(),
+                    model: this.Model().Commander(),
                     browser: this,
                 },
             );
-            new Reader.Instance(
+            new Body.Instance(
                 {
-                    model: this.Model().Reader(),
+                    model: () => this.Model().Body(),
                     browser: this,
                 },
             );
@@ -99,43 +247,43 @@ export class Instance extends Entity.Instance
         return this.Parent();
     }
 
-    Has_Selector():
+    Has_Commander():
         boolean
     {
         return (
             this.Has_Child(0) &&
-            this.Child(0) instanceof Selector.Instance
+            this.Child(0) instanceof Commander.Instance
         );
     }
 
-    Selector():
-        Selector.Instance
+    Commander():
+        Commander.Instance
     {
         Utils.Assert(
-            this.Has_Selector(),
-            `Does not have a selector.`,
+            this.Has_Commander(),
+            `Does not have a commander.`,
         );
 
-        return this.Child(0) as Selector.Instance;
+        return this.Child(0) as Commander.Instance;
     }
 
-    Has_Reader():
+    Has_Body():
         boolean
     {
         return (
-            this.Has_Child(0) &&
-            this.Child(0) instanceof Reader.Instance
+            this.Has_Child(1) &&
+            this.Child(1) instanceof Body.Instance
         );
     }
 
-    Reader():
-        Reader.Instance
+    Body():
+        Body.Instance
     {
         Utils.Assert(
-            this.Has_Reader(),
-            `Does not have a reader.`,
+            this.Has_Body(),
+            `Does not have a body.`,
         );
 
-        return this.Child(0) as Reader.Instance;
+        return this.Child(1) as Body.Instance;
     }
 }
