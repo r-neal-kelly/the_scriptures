@@ -1,0 +1,103 @@
+import * as Event from "../../../../event.js";
+import * as Entity from "../../../../entity.js";
+
+import * as Model from "../../../../model/layout/window/bar/maximize.js";
+
+import * as Commands from "./commands.js";
+
+export class Instance extends Entity.Instance
+{
+    private model: () => Model.Instance;
+
+    constructor(
+        {
+            model,
+            commands,
+        }: {
+            model: () => Model.Instance;
+            commands: Commands.Instance,
+        },
+    )
+    {
+        super(
+            {
+                element: `div`,
+                parent: commands,
+                event_grid: commands.Event_Grid(),
+            },
+        );
+
+        this.model = model;
+    }
+
+    override On_Life():
+        Array<Event.Listener_Info>
+    {
+        this.Element().addEventListener(
+            `click`,
+            this.On_Click.bind(this),
+        );
+
+        return [
+            new Event.Listener_Info(
+                {
+                    event_name: new Event.Name(Event.Prefix.ON, `Window_Toggle_Maximization`, `${this.ID()}`),
+                    event_handler: this.On_Window_Toggle_Maximization,
+                    event_priority: 0,
+                },
+            ),
+        ];
+    }
+
+    override On_Refresh():
+        void
+    {
+        const model: Model.Instance = this.Model();
+
+        this.Element().textContent = model.Symbol();
+    }
+
+    override On_Reclass():
+        Array<string>
+    {
+        return [`Button`];
+    }
+
+    async On_Click(
+        event: MouseEvent,
+    ):
+        Promise<void>
+    {
+        await this.Send(
+            new Event.Info(
+                {
+                    affix: `Window_Toggle_Maximization`,
+                    suffixes: [
+                        `${this.Commands().Bar().Window().Wall().Layout().ID()}`,
+                        `${this.ID()}`,
+                    ],
+                    type: Event.Type.EXCLUSIVE,
+                    data: {},
+                },
+            ),
+        );
+    }
+
+    async On_Window_Toggle_Maximization():
+        Promise<void>
+    {
+        await this.Model().Click();
+    }
+
+    Model():
+        Model.Instance
+    {
+        return this.model();
+    }
+
+    Commands():
+        Commands.Instance
+    {
+        return this.Parent() as Commands.Instance;
+    }
+}

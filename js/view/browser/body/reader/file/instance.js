@@ -14,7 +14,7 @@ export class Instance extends Entity.Instance {
         this.Add_This_CSS(`
                 .File {
                     width: 100%;
-                    padding: 0 4px;
+                    padding: 12px 4px 36px 4px;
                 }
             `);
         this.Add_Children_CSS(`

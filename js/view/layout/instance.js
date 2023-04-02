@@ -1,4 +1,14 @@
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 import * as Utils from "../../utils.js";
+import * as Event from "../../event.js";
 import * as Entity from "../../entity.js";
 import * as Wall from "./wall.js";
 import * as Bar from "./bar.js";
@@ -30,18 +40,22 @@ export class Instance extends Entity.Instance {
         this.Add_Children_CSS(`
                 .Wall {
                     display: grid;
-                    grid-row-gap: 1px;
-                    grid-column-gap: 1px;
+                    grid-row-gap: 2px;
+                    grid-column-gap: 2px;
 
                     width: 100%;
                     height: 100%;
-                    padding: 0 1px;
+                    padding: 0 2px;
 
                     overflow-x: hidden;
                     overflow-y: hidden;
                 }
 
                 .Window {
+                    display: grid;
+                    grid-template-rows: auto 1fr;
+                    grid-template-columns: auto;
+
                     width: 100%;
                     height: 100%;
 
@@ -52,47 +66,14 @@ export class Instance extends Entity.Instance {
                     border-style: solid;
                     border-width: 1px;
                 }
-
-                .Bar {
-                    width: 100%;
-                    height: 100%;
-
-                    overflow-x: hidden;
-                    overflow-y: hidden;
-
-                    border-color: white;
-                    border-style: solid;
-                    border-width: 1px 0 0 0;
-                }
-
-                .Tabs {
-                    display: flex;
-                    flex-direction: row;
-                    justify-content: center;
-
-                    width: 100%;
-                    height: 100%;
-
-                    overflow-x: auto;
-                    overflow-y: hidden;
-                }
-
-                .Tab {
-                    margin: 0 7px 0 0;
-                    padding: 2px;
-
-                    border-color: white;
-                    border-style: solid;
-                    border-width: 0 1px;
-
-                    cursor: pointer;
-                    -webkit-user-select: none;
-                    -moz-user-select: none;
-                    -ms-user-select: none;
-                    user-select: none;
-                }
             `);
-        return [];
+        return [
+            new Event.Listener_Info({
+                event_name: new Event.Name(Event.Prefix.AFTER, `Window_Close`, `${this.ID()}`),
+                event_handler: this.After_Window_Close,
+                event_priority: 0,
+            }),
+        ];
     }
     On_Refresh() {
         if (!this.Has_Wall() ||
@@ -110,6 +91,11 @@ export class Instance extends Entity.Instance {
     }
     On_Reclass() {
         return [`Layout`];
+    }
+    After_Window_Close() {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.Refresh();
+        });
     }
     Model() {
         return this.model();

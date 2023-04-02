@@ -9,6 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import * as Utils from "../../../utils.js";
 import * as Entity from "../../../entity.js";
+import * as Bar from "./bar.js";
 export class Instance extends Entity.Instance {
     constructor({ model, wall, }) {
         super({
@@ -25,9 +26,14 @@ export class Instance extends Entity.Instance {
     On_Refresh() {
         const model = this.Model();
         if (model.Is_Ready()) {
-            if (!this.Has_View()) {
+            if (!this.Has_Bar() ||
+                !this.Has_View()) {
                 this.Abort_All_Children();
                 this.Element().textContent = ``;
+                new Bar.Instance({
+                    model: () => this.Model().Bar(),
+                    window: this,
+                });
                 new (this.Model().Program().View_Class())({
                     model: () => this.Model().Program().Model_Instance(),
                     root: this,
@@ -64,12 +70,20 @@ export class Instance extends Entity.Instance {
     Wall() {
         return this.Parent();
     }
-    Has_View() {
+    Has_Bar() {
         return (this.Has_Child(0) &&
-            this.Child(0) instanceof this.Model().Program().View_Class());
+            this.Child(0) instanceof Bar.Instance);
+    }
+    Bar() {
+        Utils.Assert(this.Has_Bar(), `Does not have a bar.`);
+        return this.Child(0);
+    }
+    Has_View() {
+        return (this.Has_Child(1) &&
+            this.Child(1) instanceof this.Model().Program().View_Class());
     }
     View() {
         Utils.Assert(this.Has_View(), `Does not have a view.`);
-        return this.Child(0);
+        return this.Child(1);
     }
 }

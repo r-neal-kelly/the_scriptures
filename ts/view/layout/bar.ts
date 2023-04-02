@@ -1,4 +1,5 @@
 import * as Utils from "../../utils.js";
+import * as Event from "../../event.js";
 import * as Entity from "../../entity.js";
 
 import * as Model from "../../model/layout/bar.js";
@@ -29,6 +30,59 @@ export class Instance extends Entity.Instance
         );
 
         this.model = model;
+    }
+
+    override On_Life():
+        Array<Event.Listener_Info>
+    {
+        this.Add_This_CSS(
+            `
+                .Bar {
+                    width: 100%;
+                    height: 100%;
+
+                    overflow-x: hidden;
+                    overflow-y: hidden;
+
+                    border-color: white;
+                    border-style: solid;
+                    border-width: 1px 0 0 0;
+                }
+            `,
+        );
+
+        this.Add_Children_CSS(
+            `
+                .Tabs {
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: center;
+
+                    width: 100%;
+                    height: 100%;
+
+                    overflow-x: auto;
+                    overflow-y: hidden;
+                }
+
+                .Tab {
+                    margin: 0 7px 0 0;
+                    padding: 2px;
+
+                    border-color: white;
+                    border-style: solid;
+                    border-width: 0 1px;
+
+                    cursor: pointer;
+                    -webkit-user-select: none;
+                    -moz-user-select: none;
+                    -ms-user-select: none;
+                    user-select: none;
+                }
+            `,
+        );
+
+        return [];
     }
 
     override On_Refresh():

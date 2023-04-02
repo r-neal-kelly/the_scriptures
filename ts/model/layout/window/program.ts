@@ -1,3 +1,5 @@
+import { Name } from "../../../types.js";
+
 import * as Utils from "../../../utils.js";
 import * as Async from "../../../async.js";
 import * as Entity from "../../../entity.js";
@@ -13,6 +15,7 @@ export interface Model_Class
 
 export interface Model_Instance extends Async.Instance
 {
+    Title(): Name;
 }
 
 export interface View_Class

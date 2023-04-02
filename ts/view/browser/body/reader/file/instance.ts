@@ -40,7 +40,7 @@ export class Instance extends Entity.Instance
             `
                 .File {
                     width: 100%;
-                    padding: 0 4px;
+                    padding: 12px 4px 36px 4px;
                 }
             `,
         );

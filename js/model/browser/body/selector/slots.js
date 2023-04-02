@@ -196,6 +196,30 @@ export class Instance extends Async.Instance {
         Utils.Assert(this.Has_Files(), `Doesn't have files.`);
         return this.From_Type(Slot.Type.FILES);
     }
+    As_String() {
+        const types = this.Types();
+        const count = this.Count();
+        if (count > 0) {
+            let result = ``;
+            for (let idx = 0, end = count; idx < end;) {
+                const slot = this.At(idx);
+                if (slot.Items().Has_Selected()) {
+                    result += slot.Items().Selected().Title();
+                }
+                else {
+                    result += slot.Title().Value();
+                }
+                idx += 1;
+                if (idx < end) {
+                    result += ` — `;
+                }
+            }
+            return result;
+        }
+        else {
+            return null;
+        }
+    }
     Select_Item_Internally({ slot, item, }) {
         return __awaiter(this, void 0, void 0, function* () {
             Utils.Assert(this.Has(slot), `The slot does not belong to this selector.`);

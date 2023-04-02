@@ -5,6 +5,7 @@ import * as Wall from "../wall.js";
 import { ID } from "./id.js";
 import { State } from "./state.js";
 import * as Program from "./program.js";
+import * as Bar from "./bar.js";
 
 export class Instance extends Async.Instance
 {
@@ -25,6 +26,7 @@ export class Instance extends Async.Instance
     private id: ID;
     private state: State;
     private program: Program.Instance;
+    private bar: Bar.Instance;
 
     constructor(
         {
@@ -42,6 +44,11 @@ export class Instance extends Async.Instance
         this.id = Instance.New_ID();
         this.state = State._NONE_;
         this.program = program;
+        this.bar = new Bar.Instance(
+            {
+                window: this,
+            },
+        );
 
         this.Is_Ready_After(
             [
@@ -153,6 +160,12 @@ export class Instance extends Async.Instance
         )
 
         return this.program;
+    }
+
+    Bar():
+        Bar.Instance
+    {
+        return this.bar;
     }
 
     Is_Alive():

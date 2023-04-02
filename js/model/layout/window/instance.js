@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import * as Utils from "../../../utils.js";
 import * as Async from "../../../async.js";
 import { State } from "./state.js";
+import * as Bar from "./bar.js";
 export class Instance extends Async.Instance {
     static New_ID() {
         Utils.Assert(Instance.next_id + 1 < Infinity, `Can't make a new id!`);
@@ -21,6 +22,9 @@ export class Instance extends Async.Instance {
         this.id = Instance.New_ID();
         this.state = State._NONE_;
         this.program = program;
+        this.bar = new Bar.Instance({
+            window: this,
+        });
         this.Is_Ready_After([
             this.program,
         ]);
@@ -65,6 +69,9 @@ export class Instance extends Async.Instance {
         Utils.Assert(this.Is_Alive(), `Window must be alive to get its model.`);
         Utils.Assert(this.Is_Ready(), `Window does not have a ready program, it's probably still loading in.`);
         return this.program;
+    }
+    Bar() {
+        return this.bar;
     }
     Is_Alive() {
         return (this.state & State.IS_ALIVE) !== 0;

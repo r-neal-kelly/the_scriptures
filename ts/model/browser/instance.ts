@@ -1,3 +1,5 @@
+import { Name } from "../../types.js";
+
 import * as Async from "../../async.js";
 
 import * as Data from "../data.js";
@@ -23,7 +25,7 @@ export class Instance extends Async.Instance
                 },
             ),
             selector_slot_order = Body.Selector.Slot.Order.BOOKS_LANGUAGES_VERSIONS,
-            is_selector_open = true,
+            is_selector_open = false,
         }: {
             selection?: Selection.Name | Selection.Index | null,
             selector_slot_order?: Body.Selector.Slot.Order,
@@ -73,5 +75,17 @@ export class Instance extends Async.Instance
         Body.Instance
     {
         return this.body;
+    }
+
+    Title():
+        Name
+    {
+        const slots_as_string: string | null =
+            this.Body().Selector().Slots().As_String();
+        if (slots_as_string != null) {
+            return slots_as_string;
+        } else {
+            return `Browser`;
+        }
     }
 }

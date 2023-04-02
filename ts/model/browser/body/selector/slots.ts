@@ -357,6 +357,35 @@ export class Instance extends Async.Instance
         return this.From_Type(Slot.Type.FILES);
     }
 
+    As_String():
+        string | null
+    {
+        const types: Array<Slot.Type> = this.Types();
+        const count: Count = this.Count();
+
+        if (count > 0) {
+            let result: string = ``;
+
+            for (let idx = 0, end = count; idx < end;) {
+                const slot: Slot.Instance = this.At(idx);
+                if (slot.Items().Has_Selected()) {
+                    result += slot.Items().Selected().Title();
+                } else {
+                    result += slot.Title().Value();
+                }
+
+                idx += 1;
+                if (idx < end) {
+                    result += ` — `;
+                }
+            }
+
+            return result;
+        } else {
+            return null;
+        }
+    }
+
     async Select_Item_Internally(
         {
             slot,

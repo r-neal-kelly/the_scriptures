@@ -57,18 +57,22 @@ export class Instance extends Entity.Instance
             `
                 .Wall {
                     display: grid;
-                    grid-row-gap: 1px;
-                    grid-column-gap: 1px;
+                    grid-row-gap: 2px;
+                    grid-column-gap: 2px;
 
                     width: 100%;
                     height: 100%;
-                    padding: 0 1px;
+                    padding: 0 2px;
 
                     overflow-x: hidden;
                     overflow-y: hidden;
                 }
 
                 .Window {
+                    display: grid;
+                    grid-template-rows: auto 1fr;
+                    grid-template-columns: auto;
+
                     width: 100%;
                     height: 100%;
 
@@ -79,49 +83,18 @@ export class Instance extends Entity.Instance
                     border-style: solid;
                     border-width: 1px;
                 }
-
-                .Bar {
-                    width: 100%;
-                    height: 100%;
-
-                    overflow-x: hidden;
-                    overflow-y: hidden;
-
-                    border-color: white;
-                    border-style: solid;
-                    border-width: 1px 0 0 0;
-                }
-
-                .Tabs {
-                    display: flex;
-                    flex-direction: row;
-                    justify-content: center;
-
-                    width: 100%;
-                    height: 100%;
-
-                    overflow-x: auto;
-                    overflow-y: hidden;
-                }
-
-                .Tab {
-                    margin: 0 7px 0 0;
-                    padding: 2px;
-
-                    border-color: white;
-                    border-style: solid;
-                    border-width: 0 1px;
-
-                    cursor: pointer;
-                    -webkit-user-select: none;
-                    -moz-user-select: none;
-                    -ms-user-select: none;
-                    user-select: none;
-                }
             `,
         );
 
-        return [];
+        return [
+            new Event.Listener_Info(
+                {
+                    event_name: new Event.Name(Event.Prefix.AFTER, `Window_Close`, `${this.ID()}`),
+                    event_handler: this.After_Window_Close,
+                    event_priority: 0,
+                },
+            ),
+        ];
     }
 
     override On_Refresh():
@@ -152,6 +125,12 @@ export class Instance extends Entity.Instance
         Array<string>
     {
         return [`Layout`];
+    }
+
+    async After_Window_Close():
+        Promise<void>
+    {
+        this.Refresh();
     }
 
     Model():

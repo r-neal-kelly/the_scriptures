@@ -109,7 +109,7 @@ function Main() {
                         file: file_name,
                     }),
                     selector_slot_order: order,
-                    is_selector_open: true,
+                    is_selector_open: false,
                 },
                 view_class: Browser_View.Instance,
             }));

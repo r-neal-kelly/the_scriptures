@@ -9,7 +9,7 @@ export class Instance extends Async.Instance {
         language: `English`,
         version: `R. H. Charles`,
         file: `Chapter 01.txt`,
-    }), selector_slot_order = Body.Selector.Slot.Order.BOOKS_LANGUAGES_VERSIONS, is_selector_open = true, } = {}) {
+    }), selector_slot_order = Body.Selector.Slot.Order.BOOKS_LANGUAGES_VERSIONS, is_selector_open = false, } = {}) {
         super();
         this.data = new Data.Instance();
         this.commander = new Commander.Instance({
@@ -35,5 +35,14 @@ export class Instance extends Async.Instance {
     }
     Body() {
         return this.body;
+    }
+    Title() {
+        const slots_as_string = this.Body().Selector().Slots().As_String();
+        if (slots_as_string != null) {
+            return slots_as_string;
+        }
+        else {
+            return `Browser`;
+        }
     }
 }
