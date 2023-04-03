@@ -48,6 +48,7 @@ Latin.Symbols_s :=  { "p": "¶" ; Pilcrow Sign
                     , "]": "’" ; U+2019 RIGHT SINGLE QUOTATION MARK
                     , "t": "†" ; U+2020 DAGGER
                     , ".": "⸼" ; U+2E3C STENOGRAPHIC FULL STOP
+                    , "d": "·" ; U+00B7 MIDDLE DOT
                     , "\": "…" ; U+2026 HORIZONTAL ELLIPSIS
                     ,   9: "⟦" ; U+27E6 MATHEMATICAL LEFT WHITE SQUARE BRACKET
                     ,   0: "⟧" ; U+27E7 MATHEMATICAL RIGHT WHITE SQUARE BRACKET
@@ -164,6 +165,7 @@ Latin.Sups_c  := { "a": "ᴬ" ; A
                  , "u": "ᵁ" ; U
                  , "v": "ⱽ" ; V
                  , "w": "ᵂ" ; W
+                 , "+": "⁺" ; U+207A SUPERSCRIPT PLUS SIGN
                  , "": "" }
 
 Latin.Subs_s  := { "a": "ₐ" ; A
@@ -183,6 +185,16 @@ Latin.Subs_s  := { "a": "ₐ" ; A
                  , "u": "ᵤ" ; U
                  , "v": "ᵥ" ; V
                  , "x": "ₓ" ; X
+                 ,   0: "₀" ; U+2080 SUBSCRIPT ZERO
+                 ,   1: "₁" ; U+2081 SUBSCRIPT ONE
+                 ,   2: "₂" ; U+2082 SUBSCRIPT TWO
+                 ,   3: "₃" ; U+2083 SUBSCRIPT THREE
+                 ,   4: "₄" ; U+2084 SUBSCRIPT FOUR
+                 ,   5: "₅" ; U+2085 SUBSCRIPT FIVE
+                 ,   6: "₆" ; U+2086 SUBSCRIPT SIX
+                 ,   7: "₇" ; U+2087 SUBSCRIPT SEVEN
+                 ,   8: "₈" ; U+2088 SUBSCRIPT EIGHT
+                 ,   9: "₉" ; U+2089 SUBSCRIPT NINE
                  , "": "" }
 
 Latin.SupsC_s := { "a": "ͣ" ; A

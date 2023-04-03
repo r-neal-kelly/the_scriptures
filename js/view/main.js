@@ -105,7 +105,7 @@ function Main() {
                     selection: new Browser_Model.Selection.Name({
                         book: `Jubilees`,
                         language: `English`,
-                        version: `R. H. Charles`,
+                        version: `R. H. Charles 1913`,
                         file: file_name,
                     }),
                     selector_slot_order: order,

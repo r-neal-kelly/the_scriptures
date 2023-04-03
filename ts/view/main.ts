@@ -169,7 +169,7 @@ async function Main():
                             {
                                 book: `Jubilees`,
                                 language: `English`,
-                                version: `R. H. Charles`,
+                                version: `R. H. Charles 1913`,
                                 file: file_name,
                             },
                         ),
