@@ -35,11 +35,11 @@ export class Instance extends Entity.Instance {
             !this.Has_Reader()) {
             this.Abort_All_Children();
             new Selector.Instance({
-                model: this.Model().Selector(),
+                model: () => this.Model().Selector(),
                 body: this,
             });
             new Reader.Instance({
-                model: this.Model().Reader(),
+                model: () => this.Model().Reader(),
                 body: this,
             });
         }

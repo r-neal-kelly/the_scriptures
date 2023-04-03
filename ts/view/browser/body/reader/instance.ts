@@ -8,14 +8,14 @@ import * as File from "./file.js";
 
 export class Instance extends Entity.Instance
 {
-    private model: Model.Instance;
+    private model: () => Model.Instance;
 
     constructor(
         {
             model,
             body,
         }: {
-            model: Model.Instance,
+            model: () => Model.Instance,
             body: Body.Instance,
         },
     )
@@ -57,7 +57,7 @@ export class Instance extends Entity.Instance
     Model():
         Model.Instance
     {
-        return this.model;
+        return this.model();
     }
 
     Body():

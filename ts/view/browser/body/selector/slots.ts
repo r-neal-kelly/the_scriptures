@@ -10,14 +10,14 @@ import * as Slot from "./slot.js";
 
 export class Instance extends Entity.Instance
 {
-    private model: Model.Instance;
+    private model: () => Model.Instance;
 
     constructor(
         {
             model,
             selector,
         }: {
-            model: Model.Instance,
+            model: () => Model.Instance,
             selector: Selector.Instance,
         },
     )
@@ -52,7 +52,7 @@ export class Instance extends Entity.Instance
                 for (let idx = count, end = count + delta; idx < end; idx += 1) {
                     new Slot.Instance(
                         {
-                            model: model.At(idx),
+                            model: () => this.Model().At(idx),
                             slots: this,
                         },
                     );
@@ -80,7 +80,7 @@ export class Instance extends Entity.Instance
     Model():
         Model.Instance
     {
-        return this.model;
+        return this.model();
     }
 
     Selector():

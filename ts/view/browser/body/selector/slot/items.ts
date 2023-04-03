@@ -10,14 +10,14 @@ import * as Item from "./item.js";
 
 export class Instance extends Entity.Instance
 {
-    private model: Model.Instance;
+    private model: () => Model.Instance;
 
     constructor(
         {
             model,
             slot,
         }: {
-            model: Model.Instance,
+            model: () => Model.Instance,
             slot: Slot.Instance,
         },
     )
@@ -51,7 +51,7 @@ export class Instance extends Entity.Instance
             for (let idx = count, end = count + delta; idx < end; idx += 1) {
                 new Item.Instance(
                     {
-                        model: model.At(idx),
+                        model: () => this.Model().At(idx),
                         items: this,
                     },
                 );
@@ -68,7 +68,7 @@ export class Instance extends Entity.Instance
     Model():
         Model.Instance
     {
-        return this.model;
+        return this.model();
     }
 
     Slot():

@@ -24,7 +24,7 @@ export class Instance extends Entity.Instance {
             else if (delta > 0) {
                 for (let idx = count, end = count + delta; idx < end; idx += 1) {
                     new Slot.Instance({
-                        model: model.At(idx),
+                        model: () => this.Model().At(idx),
                         slots: this,
                     });
                 }
@@ -44,7 +44,7 @@ export class Instance extends Entity.Instance {
         return classes;
     }
     Model() {
-        return this.model;
+        return this.model();
     }
     Selector() {
         return this.Parent();

@@ -6,14 +6,14 @@ import * as Slot from "./instance.js";
 
 export class Instance extends Entity.Instance
 {
-    private model: Model.Instance;
+    private model: () => Model.Instance;
 
     constructor(
         {
             model,
             slot,
         }: {
-            model: Model.Instance,
+            model: () => Model.Instance,
             slot: Slot.Instance,
         },
     )
@@ -46,7 +46,7 @@ export class Instance extends Entity.Instance
     Model():
         Model.Instance
     {
-        return this.model;
+        return this.model();
     }
 
     Slot():

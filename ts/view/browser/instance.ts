@@ -216,7 +216,7 @@ export class Instance extends Entity.Instance
 
             new Commander.Instance(
                 {
-                    model: this.Model().Commander(),
+                    model: () => this.Model().Commander(),
                     browser: this,
                 },
             );

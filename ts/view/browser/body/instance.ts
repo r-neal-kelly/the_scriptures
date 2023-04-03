@@ -58,13 +58,13 @@ export class Instance extends Entity.Instance
 
             new Selector.Instance(
                 {
-                    model: this.Model().Selector(),
+                    model: () => this.Model().Selector(),
                     body: this,
                 },
             );
             new Reader.Instance(
                 {
-                    model: this.Model().Reader(),
+                    model: () => this.Model().Reader(),
                     body: this,
                 },
             );

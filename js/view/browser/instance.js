@@ -179,7 +179,7 @@ export class Instance extends Entity.Instance {
             !this.Has_Body()) {
             this.Abort_All_Children();
             new Commander.Instance({
-                model: this.Model().Commander(),
+                model: () => this.Model().Commander(),
                 browser: this,
             });
             new Body.Instance({

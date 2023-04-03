@@ -24,7 +24,7 @@ export class Instance extends Entity.Instance {
         return [`Reader`];
     }
     Model() {
-        return this.model;
+        return this.model();
     }
     Body() {
         return this.Parent();

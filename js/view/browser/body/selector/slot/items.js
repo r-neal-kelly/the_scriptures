@@ -23,7 +23,7 @@ export class Instance extends Entity.Instance {
         else if (delta > 0) {
             for (let idx = count, end = count + delta; idx < end; idx += 1) {
                 new Item.Instance({
-                    model: model.At(idx),
+                    model: () => this.Model().At(idx),
                     items: this,
                 });
             }
@@ -33,7 +33,7 @@ export class Instance extends Entity.Instance {
         return [`Slot_Items`];
     }
     Model() {
-        return this.model;
+        return this.model();
     }
     Slot() {
         return this.Parent();

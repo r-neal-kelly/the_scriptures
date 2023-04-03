@@ -16,7 +16,7 @@ export class Instance extends Entity.Instance {
         return [`Slot_Title`];
     }
     Model() {
-        return this.model;
+        return this.model();
     }
     Slot() {
         return this.Parent();

@@ -9,14 +9,14 @@ import * as Items from "./items.js";
 
 export class Instance extends Entity.Instance
 {
-    private model: Model.Instance;
+    private model: () => Model.Instance;
 
     constructor(
         {
             model,
             slots,
         }: {
-            model: Model.Instance,
+            model: () => Model.Instance,
             slots: Slots.Instance,
         },
     )
@@ -45,13 +45,13 @@ export class Instance extends Entity.Instance
 
             new Title.Instance(
                 {
-                    model: model.Title(),
+                    model: () => this.Model().Title(),
                     slot: this,
                 },
             );
             new Items.Instance(
                 {
-                    model: model.Items(),
+                    model: () => this.Model().Items(),
                     slot: this,
                 },
             );
@@ -67,7 +67,7 @@ export class Instance extends Entity.Instance
     Model():
         Model.Instance
     {
-        return this.model;
+        return this.model();
     }
 
     Slots():

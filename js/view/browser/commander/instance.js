@@ -69,7 +69,7 @@ export class Instance extends Entity.Instance {
         });
     }
     Model() {
-        return this.model;
+        return this.model();
     }
     Browser() {
         return this.Parent();

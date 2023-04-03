@@ -34,7 +34,7 @@ export class Instance extends Entity.Instance {
         if (!this.Has_Slots()) {
             this.Abort_All_Children();
             new Slots.Instance({
-                model: model.Slots(),
+                model: () => model.Slots(),
                 selector: this,
             });
         }
@@ -48,7 +48,7 @@ export class Instance extends Entity.Instance {
         });
     }
     Model() {
-        return this.model;
+        return this.model();
     }
     Body() {
         return this.Parent();

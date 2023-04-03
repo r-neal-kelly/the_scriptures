@@ -17,11 +17,11 @@ export class Instance extends Entity.Instance {
             !this.Has_Items()) {
             this.Abort_All_Children();
             new Title.Instance({
-                model: model.Title(),
+                model: () => this.Model().Title(),
                 slot: this,
             });
             new Items.Instance({
-                model: model.Items(),
+                model: () => this.Model().Items(),
                 slot: this,
             });
         }
@@ -30,7 +30,7 @@ export class Instance extends Entity.Instance {
         return [`Slot`];
     }
     Model() {
-        return this.model;
+        return this.model();
     }
     Slots() {
         return this.Parent();

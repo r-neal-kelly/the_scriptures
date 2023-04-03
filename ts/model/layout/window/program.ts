@@ -26,7 +26,7 @@ export interface View_Class
             root,
         }: {
             model: () => Model_Instance,
-            root: View_Instance,
+            root: Entity.Instance,
         },
     ): View_Instance;
 }
