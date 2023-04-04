@@ -371,7 +371,6 @@ export class Instance extends Entity.Instance
     As_String():
         string | null
     {
-        const types: Array<Slot.Type> = this.Types();
         const count: Count = this.Count();
 
         if (count > 0) {
@@ -392,6 +391,23 @@ export class Instance extends Entity.Instance
             }
 
             return result;
+        } else {
+            return null;
+        }
+    }
+
+    As_Short_String():
+        string | null
+    {
+        const count: Count = this.Count();
+
+        if (count > 0) {
+            const slot: Slot.Instance = this.At(0);
+            if (slot.Items().Has_Selected()) {
+                return slot.Items().Selected().Title();
+            } else {
+                return slot.Title().Value();
+            }
         } else {
             return null;
         }

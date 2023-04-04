@@ -202,7 +202,6 @@ export class Instance extends Entity.Instance {
         return this.From_Type(Slot.Type.FILES);
     }
     As_String() {
-        const types = this.Types();
         const count = this.Count();
         if (count > 0) {
             let result = ``;
@@ -220,6 +219,21 @@ export class Instance extends Entity.Instance {
                 }
             }
             return result;
+        }
+        else {
+            return null;
+        }
+    }
+    As_Short_String() {
+        const count = this.Count();
+        if (count > 0) {
+            const slot = this.At(0);
+            if (slot.Items().Has_Selected()) {
+                return slot.Items().Selected().Title();
+            }
+            else {
+                return slot.Title().Value();
+            }
         }
         else {
             return null;

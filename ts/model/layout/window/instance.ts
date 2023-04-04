@@ -270,6 +270,12 @@ export class Instance extends Entity.Instance
         this.state ^= State.IS_MAXIMIZED;
     }
 
+    Is_Active():
+        boolean
+    {
+        return this.Wall().Layout().Maybe_Active_Window() === this;
+    }
+
     override async Ready():
         Promise<void>
     {

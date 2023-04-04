@@ -28,12 +28,24 @@ export class Instance extends Entity.Instance {
                     border-style: solid;
                     border-width: 0 0 1px 0;
                 }
+
+                .Active_Bar {
+                    color: black;
+                    background-color: white;
+                    border-color: black;
+                }
             `);
         this.Add_Children_CSS(`
                 .Title {
                     padding: 4px;
 
                     font-size: .8em;
+
+                    cursor: default;
+                    -webkit-user-select: none;
+                    -moz-user-select: none;
+                    -ms-user-select: none;
+                    user-select: none;
                 }
 
                 .Commands {
@@ -84,7 +96,13 @@ export class Instance extends Entity.Instance {
         }
     }
     On_Reclass() {
-        return [`Bar`];
+        const model = this.Model();
+        const classes = [];
+        classes.push(`Bar`);
+        if (model.Window().Is_Active()) {
+            classes.push(`Active_Bar`);
+        }
+        return classes;
     }
     Model() {
         return this.model();

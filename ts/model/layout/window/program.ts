@@ -17,6 +17,7 @@ export interface Model_Class
 export interface Model_Instance extends Model_Entity.Instance
 {
     Title(): Name;
+    Short_Title(): Name;
 }
 
 export interface View_Class

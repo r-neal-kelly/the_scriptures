@@ -38,5 +38,14 @@ export class Instance extends Entity.Instance {
             return `Browser`;
         }
     }
+    Short_Title() {
+        const slots_as_short_string = this.Body().Selector().Slots().As_Short_String();
+        if (slots_as_short_string != null) {
+            return slots_as_short_string;
+        }
+        else {
+            return `Browser`;
+        }
+    }
 }
 Instance.data = new Data.Instance();

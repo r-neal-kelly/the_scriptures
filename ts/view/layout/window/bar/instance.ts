@@ -53,6 +53,12 @@ export class Instance extends Entity.Instance
                     border-style: solid;
                     border-width: 0 0 1px 0;
                 }
+
+                .Active_Bar {
+                    color: black;
+                    background-color: white;
+                    border-color: black;
+                }
             `,
         );
 
@@ -62,6 +68,12 @@ export class Instance extends Entity.Instance
                     padding: 4px;
 
                     font-size: .8em;
+
+                    cursor: default;
+                    -webkit-user-select: none;
+                    -moz-user-select: none;
+                    -ms-user-select: none;
+                    user-select: none;
                 }
 
                 .Commands {
@@ -128,7 +140,15 @@ export class Instance extends Entity.Instance
     override On_Reclass():
         Array<string>
     {
-        return [`Bar`];
+        const model: Model.Instance = this.Model();
+        const classes: Array<string> = [];
+
+        classes.push(`Bar`);
+        if (model.Window().Is_Active()) {
+            classes.push(`Active_Bar`)
+        }
+
+        return classes;
     }
 
     Model():

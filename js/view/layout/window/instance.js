@@ -20,6 +20,7 @@ export class Instance extends Entity.Instance {
         this.model = model;
     }
     On_Life() {
+        this.Element().addEventListener(`click`, this.On_Click.bind(this));
         this.Refresh_After_Has_Model();
         return [];
     }
@@ -44,6 +45,12 @@ export class Instance extends Entity.Instance {
     On_Reclass() {
         return [`Window`];
     }
+    On_Click() {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.Model().Wall().Layout().Set_Active_Window(this.Model());
+            this.Wall().Layout().Refresh();
+        });
+    }
     Refresh_After_Has_Model() {
         return __awaiter(this, void 0, void 0, function* () {
             // Need to wait to make sure derived type's constructor is done.
@@ -61,7 +68,7 @@ export class Instance extends Entity.Instance {
                 }
                 yield Utils.Wait_Milliseconds(200);
             }
-            this.Refresh();
+            this.Wall().Layout().Refresh();
         });
     }
     Model() {

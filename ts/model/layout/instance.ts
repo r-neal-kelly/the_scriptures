@@ -9,6 +9,7 @@ export class Instance extends Entity.Instance
 {
     private wall: Wall.Instance;
     private bar: Bar.Instance;
+    private active_window: Window.Instance | null;
 
     constructor()
     {
@@ -24,6 +25,7 @@ export class Instance extends Entity.Instance
                 layout: this,
             },
         );
+        this.active_window = null;
 
         this.Is_Ready_After(
             [
@@ -51,5 +53,19 @@ export class Instance extends Entity.Instance
         Promise<ID>
     {
         return await this.Wall().Add_Program(program);
+    }
+
+    Maybe_Active_Window():
+        Window.Instance | null
+    {
+        return this.active_window;
+    }
+
+    Set_Active_Window(
+        active_window: Window.Instance | null,
+    ):
+        void
+    {
+        this.active_window = active_window;
     }
 }

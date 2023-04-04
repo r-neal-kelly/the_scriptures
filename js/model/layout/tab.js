@@ -12,4 +12,15 @@ export class Instance extends Entity.Instance {
     Window() {
         return this.window;
     }
+    Title() {
+        if (this.Window().Is_Ready()) {
+            return this.Window().Program().Model_Instance().Short_Title();
+        }
+        else {
+            return `Loading`;
+        }
+    }
+    Is_Active() {
+        return this.Tabs().Bar().Layout().Maybe_Active_Window() === this.Window();
+    }
 }

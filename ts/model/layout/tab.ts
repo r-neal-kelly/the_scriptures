@@ -1,3 +1,5 @@
+import { Name } from "../../types.js";
+
 import * as Entity from "../entity.js";
 import * as Window from "./window.js";
 import * as Tabs from "./tabs.js";
@@ -38,5 +40,21 @@ export class Instance extends Entity.Instance
         Window.Instance
     {
         return this.window;
+    }
+
+    Title():
+        Name
+    {
+        if (this.Window().Is_Ready()) {
+            return this.Window().Program().Model_Instance().Short_Title();
+        } else {
+            return `Loading`;
+        }
+    }
+
+    Is_Active():
+        boolean
+    {
+        return this.Tabs().Bar().Layout().Maybe_Active_Window() === this.Window();
     }
 }

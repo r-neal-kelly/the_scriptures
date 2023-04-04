@@ -115,6 +115,9 @@ export class Instance extends Entity.Instance {
         Utils.Assert(this.Is_Alive(), `Cannot toggle maximization of a dead window.`);
         this.state ^= State.IS_MAXIMIZED;
     }
+    Is_Active() {
+        return this.Wall().Layout().Maybe_Active_Window() === this;
+    }
     Ready() {
         const _super = Object.create(null, {
             Ready: { get: () => super.Ready }

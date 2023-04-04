@@ -1,3 +1,5 @@
+import * as Event from "../../event.js";
+
 import * as Model from "../../model/layout/tab.js";
 
 import * as Entity from "../entity.js";
@@ -28,16 +30,42 @@ export class Instance extends Entity.Instance
         this.model = model;
     }
 
+    override On_Life():
+        Array<Event.Listener_Info>
+    {
+        this.Element().addEventListener(
+            `click`,
+            this.On_Click.bind(this),
+        );
+
+        return [];
+    }
+
     override On_Refresh():
         void
     {
-        this.Element().textContent = `Tab`;
+        this.Element().textContent = this.Model().Title();
     }
 
     override On_Reclass():
         Array<string>
     {
-        return [`Tab`];
+        const model: Model.Instance = this.Model();
+        const classes: Array<string> = [];
+
+        classes.push(`Tab`);
+        if (model.Window().Is_Active()) {
+            classes.push(`Active_Tab`)
+        }
+
+        return classes;
+    }
+
+    async On_Click():
+        Promise<void>
+    {
+        this.Model().Tabs().Bar().Layout().Set_Active_Window(this.Model().Window());
+        this.Tabs().Bar().Layout().Refresh();
     }
 
     Model():

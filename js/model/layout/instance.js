@@ -19,6 +19,7 @@ export class Instance extends Entity.Instance {
         this.bar = new Bar.Instance({
             layout: this,
         });
+        this.active_window = null;
         this.Is_Ready_After([
             this.wall,
             this.bar,
@@ -34,5 +35,11 @@ export class Instance extends Entity.Instance {
         return __awaiter(this, void 0, void 0, function* () {
             return yield this.Wall().Add_Program(program);
         });
+    }
+    Maybe_Active_Window() {
+        return this.active_window;
+    }
+    Set_Active_Window(active_window) {
+        this.active_window = active_window;
     }
 }

@@ -35,6 +35,11 @@ export class Instance extends Entity.Instance
     override On_Life():
         Array<Event.Listener_Info>
     {
+        this.Element().addEventListener(
+            `click`,
+            this.On_Click.bind(this),
+        );
+
         this.Refresh_After_Has_Model();
 
         return [];
@@ -76,6 +81,13 @@ export class Instance extends Entity.Instance
         return [`Window`];
     }
 
+    async On_Click():
+        Promise<void>
+    {
+        this.Model().Wall().Layout().Set_Active_Window(this.Model());
+        this.Wall().Layout().Refresh();
+    }
+
     async Refresh_After_Has_Model():
         Promise<void>
     {
@@ -96,7 +108,7 @@ export class Instance extends Entity.Instance
             await Utils.Wait_Milliseconds(200);
         }
 
-        this.Refresh();
+        this.Wall().Layout().Refresh();
     }
 
     Model():

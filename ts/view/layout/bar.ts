@@ -79,6 +79,12 @@ export class Instance extends Entity.Instance
                     -ms-user-select: none;
                     user-select: none;
                 }
+
+                .Active_Tab {
+                    color: black;
+                    background-color: white;
+                    border-color: black;
+                }
             `,
         );
 
