@@ -8,7 +8,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import * as Event from "../../../../event.js";
-import * as Entity from "../../../../entity.js";
+import * as Entity from "../../../entity.js";
 export class Instance extends Entity.Instance {
     constructor({ model, commands, }) {
         super({
@@ -22,15 +22,14 @@ export class Instance extends Entity.Instance {
         this.Element().addEventListener(`click`, this.On_Click.bind(this));
         return [
             new Event.Listener_Info({
-                event_name: new Event.Name(Event.Prefix.ON, `Window_Toggle_Minimization`, `${this.ID()}`),
+                event_name: new Event.Name(Event.Prefix.ON, `Window_Toggle_Minimization`, this.ID()),
                 event_handler: this.On_Window_Toggle_Minimization,
                 event_priority: 0,
             }),
         ];
     }
     On_Refresh() {
-        const model = this.Model();
-        this.Element().textContent = model.Symbol();
+        this.Element().textContent = this.Model().Symbol();
     }
     On_Reclass() {
         return [`Button`];
@@ -40,8 +39,8 @@ export class Instance extends Entity.Instance {
             yield this.Send(new Event.Info({
                 affix: `Window_Toggle_Minimization`,
                 suffixes: [
-                    `${this.Commands().Bar().Window().Wall().Layout().ID()}`,
                     `${this.ID()}`,
+                    `${this.Commands().Bar().Window().Wall().Layout().ID()}`,
                 ],
                 type: Event.Type.EXCLUSIVE,
                 data: {},

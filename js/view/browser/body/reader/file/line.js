@@ -1,5 +1,5 @@
-import * as Entity from "../../../../../entity.js";
 import * as Model from "../../../../../model/browser/body/reader/file/line.js";
+import * as Entity from "../../../../entity.js";
 import * as Segment from "./segment.js";
 export class Instance extends Entity.Instance {
     constructor({ model, file, }) {

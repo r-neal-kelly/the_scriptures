@@ -1,10 +1,9 @@
 import { Count } from "../../types.js";
 import { Delta } from "../../types.js";
 
-import * as Entity from "../../entity.js";
-
 import * as Model from "../../model/layout/tabs.js";
 
+import * as Entity from "../entity.js";
 import * as Bar from "./bar.js";
 import * as Tab from "./tab.js";
 

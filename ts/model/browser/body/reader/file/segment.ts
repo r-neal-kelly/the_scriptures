@@ -5,10 +5,11 @@ import * as Utils from "../../../../../utils.js";
 
 import * as Text from "../../../../text.js";
 
+import * as Entity from "../../../../entity.js";
 import * as Line from "./line.js";
 import * as Item from "./item.js";
 
-export class Instance
+export class Instance extends Entity.Instance
 {
     private static min_item_count: Count = 2;
 
@@ -56,6 +57,8 @@ export class Instance
         },
     )
     {
+        super();
+
         this.line = line;
         this.index = index;
         this.text = text;
@@ -92,6 +95,10 @@ export class Instance
                 );
             }
         }
+
+        this.Is_Ready_After(
+            this.items,
+        );
     }
 
     Line():

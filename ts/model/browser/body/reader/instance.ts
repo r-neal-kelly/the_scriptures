@@ -1,12 +1,11 @@
-import * as Async from "../../../../async.js";
-
 import * as Data from "../../../data.js";
 import * as Text from "../../../text.js";
 
+import * as Entity from "../../../entity.js";
 import * as Body from "../instance.js";
 import * as File from "./file.js";
 
-export class Instance extends Async.Instance
+export class Instance extends Entity.Instance
 {
     private body: Body.Instance;
     private blank_file: File.Instance;
@@ -40,6 +39,12 @@ export class Instance extends Async.Instance
             },
         );
         this.current_file = this.blank_file;
+
+        this.Is_Ready_After(
+            [
+                this.current_file,
+            ],
+        );
     }
 
     Body():
@@ -77,6 +82,8 @@ export class Instance extends Async.Instance
                     ),
                 },
             );
+
+            await this.current_file.Ready();
         }
     }
 }

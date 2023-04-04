@@ -36,17 +36,19 @@ export class Instance
         Promise<void>
     {
         if (this.is_ready === false) {
-            await Promise.all(
-                this.dependencies.map(
-                    function (
-                        dependency: Instance,
-                    ):
-                        Promise<void>
-                    {
-                        return dependency.Ready();
-                    },
-                ),
-            );
+            if (this.dependencies.length > 0) {
+                await Promise.all(
+                    this.dependencies.map(
+                        function (
+                            dependency: Instance,
+                        ):
+                            Promise<void>
+                        {
+                            return dependency.Ready();
+                        },
+                    ),
+                );
+            }
 
             this.is_ready = true;
         }

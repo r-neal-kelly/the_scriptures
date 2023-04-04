@@ -1,9 +1,11 @@
-import * as Entity from "../../../../../entity.js";
 import * as Event from "../../../../../event.js";
 
 import * as Model from "../../../../../model/browser/body/selector/slot/item.js";
 
+import * as Entity from "../../../../entity.js";
 import * as Items from "./items.js";
+
+import * as Temp from "../../../../../unique_id.js";
 
 export class Instance extends Entity.Instance
 {
@@ -41,7 +43,11 @@ export class Instance extends Entity.Instance
         return [
             new Event.Listener_Info(
                 {
-                    event_name: new Event.Name(Event.Prefix.ON, `Selector_Slot_Item_Select`, `${this.ID()}`),
+                    event_name: new Event.Name(
+                        Event.Prefix.ON,
+                        `Selector_Slot_Item_Select`,
+                        this.ID(),
+                    ),
                     event_handler: this.On_Selector_Slot_Item_Select,
                     event_priority: 0,
                 },
@@ -52,9 +58,7 @@ export class Instance extends Entity.Instance
     override On_Refresh():
         void
     {
-        const model: Model.Instance = this.Model();
-
-        this.Element().textContent = model.Title();
+        this.Element().textContent = this.Model().Title();
     }
 
     override On_Reclass():
@@ -81,8 +85,8 @@ export class Instance extends Entity.Instance
                 {
                     affix: `Selector_Slot_Item_Select`,
                     suffixes: [
-                        `${this.Items().Slot().Slots().Selector().Body().Browser().ID()}`,
-                        `${this.ID()}`,
+                        this.ID(),
+                        this.Items().Slot().Slots().Selector().Body().Browser().ID(),
                     ],
                     type: Event.Type.EXCLUSIVE,
                     data: {},

@@ -1,5 +1,5 @@
 import * as Utils from "../../../../utils.js";
-import * as Entity from "../../../../entity.js";
+import * as Entity from "../../../entity.js";
 import * as Minimize from "./minimize.js";
 import * as Maximize from "./maximize.js";
 import * as Close from "./close.js";

@@ -1,7 +1,7 @@
-import * as Async from "../../../async.js";
+import * as Entity from "../../entity.js";
 import * as Selector from "./selector.js";
 import * as Reader from "./reader.js";
-export class Instance extends Async.Instance {
+export class Instance extends Entity.Instance {
     constructor({ browser, selection = null, selector_slot_order, }) {
         super();
         this.browser = browser;

@@ -1,11 +1,10 @@
-import * as Async from "../../../../async.js";
-
+import * as Entity from "../../../entity.js";
 import * as Body from "../instance.js";
 import * as Selection from "../../selection.js";
 import * as Slots from "./slots.js";
 import * as Slot from "./slot.js";
 
-export class Instance extends Async.Instance
+export class Instance extends Entity.Instance
 {
     private body: Body.Instance;
     private slots: Slots.Instance;

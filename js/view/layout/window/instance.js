@@ -8,7 +8,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import * as Utils from "../../../utils.js";
-import * as Entity from "../../../entity.js";
+import * as Entity from "../../entity.js";
 import * as Bar from "./bar.js";
 export class Instance extends Entity.Instance {
     constructor({ model, wall, }) {

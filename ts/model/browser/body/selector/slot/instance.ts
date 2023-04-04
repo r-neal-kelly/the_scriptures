@@ -3,12 +3,13 @@ import { Name } from "../../../../../types.js";
 
 import * as Data from "../../../../data.js";
 
+import * as Entity from "../../../../entity.js";
 import * as Slots from "../slots.js";
 import { Type } from "./type.js";
 import * as Title from "./title.js";
 import * as Items from "./items.js";
 
-export class Instance
+export class Instance extends Entity.Instance
 {
     private slots: Slots.Instance;
     private index: Index;
@@ -32,6 +33,8 @@ export class Instance
         },
     )
     {
+        super();
+
         this.slots = slots;
         this.index = index;
         this.type = type;
@@ -47,6 +50,13 @@ export class Instance
                 item_names: item_names,
                 item_files: item_files,
             },
+        );
+
+        this.Is_Ready_After(
+            [
+                this.title,
+                this.items,
+            ],
         );
     }
 

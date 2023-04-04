@@ -1,14 +1,12 @@
 import { Name } from "../../types.js";
 
-import * as Async from "../../async.js";
-
+import * as Entity from "../entity.js";
 import * as Data from "../data.js";
-
 import * as Selection from "./selection.js";
 import * as Commander from "./commander.js";
 import * as Body from "./body.js";
 
-export class Instance extends Async.Instance
+export class Instance extends Entity.Instance
 {
     private data: Data.Instance;
     private commander: Commander.Instance;
@@ -35,7 +33,7 @@ export class Instance extends Async.Instance
     {
         super();
 
-        this.data = new Data.Instance();
+        this.data = new Data.Instance(); // this maybe should be global...?
         this.commander = new Commander.Instance(
             {
                 browser: this,

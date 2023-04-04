@@ -7,12 +7,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-export class Instance {
+import * as Entity from "../../../../entity.js";
+export class Instance extends Entity.Instance {
     constructor({ items, index, name, file, }) {
+        super();
         this.items = items;
         this.index = index;
         this.name = name;
         this.file = file;
+        this.Is_Ready_After([]);
     }
     Items() {
         return this.items;

@@ -1,6 +1,8 @@
 import * as Utils from "../../../../../utils.js";
-export class Instance {
+import * as Entity from "../../../../entity.js";
+export class Instance extends Entity.Instance {
     constructor({ segment, index, text, }) {
+        super();
         this.segment = segment;
         this.index = index;
         this.text = text;
@@ -22,6 +24,7 @@ export class Instance {
                     .replace(/  /g, `  `);
             }
         }
+        this.Is_Ready_After([]);
     }
     Segment() {
         Utils.Assert(this.segment != null, `Doesn't have segment.`);

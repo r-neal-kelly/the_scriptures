@@ -1,5 +1,5 @@
 import * as Utils from "../../utils.js";
-import * as Entity from "../../entity.js";
+import * as Entity from "../entity.js";
 import * as Commander from "./commander.js";
 import * as Body from "./body.js";
 export class Instance extends Entity.Instance {

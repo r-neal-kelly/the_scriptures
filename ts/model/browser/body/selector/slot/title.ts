@@ -2,10 +2,11 @@ import { Name } from "../../../../../types.js";
 
 import * as Utils from "../../../../../utils.js";
 
+import * as Entity from "../../../../entity.js";
 import * as Slot from "./instance.js";
 import { Type } from "./type.js";
 
-export class Instance
+export class Instance extends Entity.Instance
 {
     private slot: Slot.Instance;
     private value: Name;
@@ -20,6 +21,8 @@ export class Instance
         },
     )
     {
+        super();
+
         this.slot = slot;
 
         if (type === Type.BOOKS) {
@@ -38,6 +41,11 @@ export class Instance
 
             this.value = ``;
         }
+
+        this.Is_Ready_After(
+            [
+            ],
+        );
     }
 
     Slot():

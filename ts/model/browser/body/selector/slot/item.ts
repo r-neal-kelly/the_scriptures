@@ -3,9 +3,10 @@ import { Name } from "../../../../../types.js";
 
 import * as Data from "../../../../data.js";
 
+import * as Entity from "../../../../entity.js";
 import * as Items from "./items.js";
 
-export class Instance
+export class Instance extends Entity.Instance
 {
     private items: Items.Instance;
     private index: Index;
@@ -26,10 +27,17 @@ export class Instance
         },
     )
     {
+        super();
+
         this.items = items;
         this.index = index;
         this.name = name;
         this.file = file;
+
+        this.Is_Ready_After(
+            [
+            ],
+        );
     }
 
     Items():

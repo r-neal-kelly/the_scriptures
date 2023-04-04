@@ -1,8 +1,8 @@
 import * as Event from "../../../../event.js";
-import * as Entity from "../../../../entity.js";
 
 import * as Model from "../../../../model/layout/window/bar/maximize.js";
 
+import * as Entity from "../../../entity.js";
 import * as Commands from "./commands.js";
 
 export class Instance extends Entity.Instance
@@ -41,7 +41,11 @@ export class Instance extends Entity.Instance
         return [
             new Event.Listener_Info(
                 {
-                    event_name: new Event.Name(Event.Prefix.ON, `Window_Toggle_Maximization`, `${this.ID()}`),
+                    event_name: new Event.Name(
+                        Event.Prefix.ON,
+                        `Window_Toggle_Maximization`,
+                        this.ID(),
+                    ),
                     event_handler: this.On_Window_Toggle_Maximization,
                     event_priority: 0,
                 },
@@ -52,9 +56,7 @@ export class Instance extends Entity.Instance
     override On_Refresh():
         void
     {
-        const model: Model.Instance = this.Model();
-
-        this.Element().textContent = model.Symbol();
+        this.Element().textContent = this.Model().Symbol();
     }
 
     override On_Reclass():
@@ -73,8 +75,8 @@ export class Instance extends Entity.Instance
                 {
                     affix: `Window_Toggle_Maximization`,
                     suffixes: [
-                        `${this.Commands().Bar().Window().Wall().Layout().ID()}`,
                         `${this.ID()}`,
+                        `${this.Commands().Bar().Window().Wall().Layout().ID()}`,
                     ],
                     type: Event.Type.EXCLUSIVE,
                     data: {},

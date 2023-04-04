@@ -8,9 +8,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import * as Utils from "../../../../utils.js";
-export class Instance {
+import * as Entity from "../../../entity.js";
+export class Instance extends Entity.Instance {
     constructor({ commands, }) {
+        super();
         this.commands = commands;
+        this.Is_Ready_After([]);
     }
     Commands() {
         return this.commands;

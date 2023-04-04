@@ -1,9 +1,10 @@
-import * as Async from "../../../async.js";
-export class Instance extends Async.Instance {
+import * as Entity from "../../entity.js";
+export class Instance extends Entity.Instance {
     constructor({ browser, is_selector_open, }) {
         super();
         this.browser = browser;
         this.is_selector_open = is_selector_open;
+        this.Is_Ready_After([]);
     }
     Browser() {
         return this.browser;

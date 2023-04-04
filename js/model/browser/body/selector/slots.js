@@ -8,11 +8,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import * as Utils from "../../../../utils.js";
-import * as Async from "../../../../async.js";
 import * as Data from "../../../data.js";
+import * as Entity from "../../../entity.js";
 import * as Selection from "../../selection.js";
 import * as Slot from "./slot.js";
-export class Instance extends Async.Instance {
+export class Instance extends Entity.Instance {
     static Max_Slot_Count() {
         return Instance.MAX_SLOT_COUNT;
     }
@@ -40,6 +40,7 @@ export class Instance extends Async.Instance {
         this.order = order;
         this.first_selection = selection;
         this.slots = [];
+        this.Is_Ready_After(this.slots);
     }
     Selector() {
         return this.selector;

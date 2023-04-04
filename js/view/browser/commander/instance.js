@@ -8,7 +8,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import * as Event from "../../../event.js";
-import * as Entity from "../../../entity.js";
+import * as Entity from "../../entity.js";
 export class Instance extends Entity.Instance {
     constructor({ model, browser, }) {
         super({
@@ -22,12 +22,12 @@ export class Instance extends Entity.Instance {
         this.Element().addEventListener(`click`, this.On_Click.bind(this));
         return [
             new Event.Listener_Info({
-                event_name: new Event.Name(Event.Prefix.ON, `Selector_Toggle`, `${this.ID()}`),
+                event_name: new Event.Name(Event.Prefix.ON, `Selector_Toggle`, this.ID()),
                 event_handler: this.On_Selector_Toggle,
                 event_priority: 0,
             }),
             new Event.Listener_Info({
-                event_name: new Event.Name(Event.Prefix.AFTER, `Selector_Toggle`, `${this.ID()}`),
+                event_name: new Event.Name(Event.Prefix.AFTER, `Selector_Toggle`, this.ID()),
                 event_handler: this.After_Selector_Toggle,
                 event_priority: 0,
             }),
@@ -50,8 +50,8 @@ export class Instance extends Entity.Instance {
             yield this.Send(new Event.Info({
                 affix: `Selector_Toggle`,
                 suffixes: [
-                    `${this.Browser().ID()}`,
                     `${this.ID()}`,
+                    `${this.Browser().ID()}`,
                 ],
                 type: Event.Type.EXCLUSIVE,
                 data: {},

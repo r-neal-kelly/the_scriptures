@@ -1,16 +1,18 @@
 import { Count } from "../../types.js";
 import { Index } from "../../types.js";
+import { ID } from "../../types.js";
 
 import * as Utils from "../../utils.js";
 
+import * as Entity from "../entity.js";
 import * as Window from "./window.js";
 import * as Bar from "./bar.js";
 import * as Tab from "./tab.js";
 
-export class Instance
+export class Instance extends Entity.Instance
 {
     private bar: Bar.Instance;
-    private ids: Array<Tab.ID>;
+    private window_ids: Array<ID>;
     private tabs: Array<Tab.Instance>;
 
     constructor(
@@ -21,9 +23,15 @@ export class Instance
         },
     )
     {
+        super();
+
         this.bar = bar;
-        this.ids = [];
+        this.window_ids = [];
         this.tabs = [];
+
+        this.Is_Ready_After(
+            this.tabs,
+        );
     }
 
     Bar():
@@ -85,7 +93,7 @@ export class Instance
     ):
         boolean
     {
-        return this.ids.indexOf(window.ID()) > -1;
+        return this.window_ids.indexOf(window.ID()) > -1;
     }
 
     Add_Window(
@@ -98,7 +106,7 @@ export class Instance
             `Already has window with id of ${window.ID()}.`,
         );
 
-        this.ids.push(window.ID());
+        this.window_ids.push(window.ID());
         this.tabs.push(
             new Tab.Instance(
                 {
@@ -114,13 +122,13 @@ export class Instance
     ):
         void
     {
-        const index: Index = this.ids.indexOf(window.ID());
+        const index: Index = this.window_ids.indexOf(window.ID());
         Utils.Assert(
             index > -1,
             `Does not have window with id of ${window.ID()}.`,
         );
 
-        this.ids.splice(index, 1);
+        this.window_ids.splice(index, 1);
         this.tabs.splice(index, 1);
     }
 

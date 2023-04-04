@@ -1,6 +1,7 @@
 import * as Utils from "../utils.js";
 import * as Event from "../event.js";
-import * as Entity from "../entity.js";
+
+import * as Entity from "./entity.js";
 
 import * as Model from "../model/layout.js";
 import * as View from "./layout.js";

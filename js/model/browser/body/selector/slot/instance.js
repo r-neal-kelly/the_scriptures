@@ -1,7 +1,9 @@
+import * as Entity from "../../../../entity.js";
 import * as Title from "./title.js";
 import * as Items from "./items.js";
-export class Instance {
+export class Instance extends Entity.Instance {
     constructor({ slots, index, type, item_names, item_files, }) {
+        super();
         this.slots = slots;
         this.index = index;
         this.type = type;
@@ -14,6 +16,10 @@ export class Instance {
             item_names: item_names,
             item_files: item_files,
         });
+        this.Is_Ready_After([
+            this.title,
+            this.items,
+        ]);
     }
     Slots() {
         return this.slots;

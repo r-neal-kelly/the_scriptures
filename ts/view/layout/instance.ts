@@ -1,9 +1,9 @@
 import * as Utils from "../../utils.js";
 import * as Event from "../../event.js";
-import * as Entity from "../../entity.js";
 
 import * as Model from "../../model/layout/instance.js";
 
+import * as Entity from "../entity.js";
 import * as Wall from "./wall.js";
 import * as Bar from "./bar.js";
 
@@ -89,7 +89,11 @@ export class Instance extends Entity.Instance
         return [
             new Event.Listener_Info(
                 {
-                    event_name: new Event.Name(Event.Prefix.AFTER, `Window_Close`, `${this.ID()}`),
+                    event_name: new Event.Name(
+                        Event.Prefix.AFTER,
+                        `Window_Close`,
+                        this.ID(),
+                    ),
                     event_handler: this.After_Window_Close,
                     event_priority: 0,
                 },

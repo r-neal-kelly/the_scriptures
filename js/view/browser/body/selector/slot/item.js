@@ -7,8 +7,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import * as Entity from "../../../../../entity.js";
 import * as Event from "../../../../../event.js";
+import * as Entity from "../../../../entity.js";
 export class Instance extends Entity.Instance {
     constructor({ model, items, }) {
         super({
@@ -22,15 +22,14 @@ export class Instance extends Entity.Instance {
         this.Element().addEventListener(`click`, this.On_Click.bind(this));
         return [
             new Event.Listener_Info({
-                event_name: new Event.Name(Event.Prefix.ON, `Selector_Slot_Item_Select`, `${this.ID()}`),
+                event_name: new Event.Name(Event.Prefix.ON, `Selector_Slot_Item_Select`, this.ID()),
                 event_handler: this.On_Selector_Slot_Item_Select,
                 event_priority: 0,
             }),
         ];
     }
     On_Refresh() {
-        const model = this.Model();
-        this.Element().textContent = model.Title();
+        this.Element().textContent = this.Model().Title();
     }
     On_Reclass() {
         const model = this.Model();
@@ -46,8 +45,8 @@ export class Instance extends Entity.Instance {
             yield this.Send(new Event.Info({
                 affix: `Selector_Slot_Item_Select`,
                 suffixes: [
-                    `${this.Items().Slot().Slots().Selector().Body().Browser().ID()}`,
-                    `${this.ID()}`,
+                    this.ID(),
+                    this.Items().Slot().Slots().Selector().Body().Browser().ID(),
                 ],
                 type: Event.Type.EXCLUSIVE,
                 data: {},

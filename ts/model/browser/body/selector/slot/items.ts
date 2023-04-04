@@ -6,10 +6,11 @@ import * as Utils from "../../../../../utils.js";
 
 import * as Data from "../../../../data.js";
 
+import * as Entity from "../../../../entity.js";
 import * as Slot from "./instance.js";
 import * as Item from "./item.js";
 
-export class Instance
+export class Instance extends Entity.Instance
 {
     private slot: Slot.Instance;
     private items: Array<Item.Instance>;
@@ -27,6 +28,8 @@ export class Instance
         },
     )
     {
+        super();
+
         this.slot = slot;
         this.items = [];
         this.selected = null;
@@ -45,6 +48,10 @@ export class Instance
                 ),
             );
         }
+
+        this.Is_Ready_After(
+            this.items,
+        );
     }
 
     Slot():

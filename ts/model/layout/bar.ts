@@ -1,7 +1,8 @@
+import * as Entity from "../entity.js";
 import * as Layout from "./instance.js";
 import * as Tabs from "./tabs.js";
 
-export class Instance
+export class Instance extends Entity.Instance
 {
     private layout: Layout.Instance;
     private tabs: Tabs.Instance;
@@ -14,11 +15,19 @@ export class Instance
         },
     )
     {
+        super();
+
         this.layout = layout;
         this.tabs = new Tabs.Instance(
             {
                 bar: this,
             },
+        );
+
+        this.Is_Ready_After(
+            [
+                this.tabs,
+            ],
         );
     }
 

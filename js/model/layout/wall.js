@@ -8,11 +8,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import * as Utils from "../../utils.js";
+import * as Entity from "../entity.js";
 import * as Window from "./window.js";
-export class Instance {
+export class Instance extends Entity.Instance {
     constructor({ layout, }) {
+        super();
         this.layout = layout;
         this.windows = new Map();
+        this.Is_Ready_After([]);
     }
     Layout() {
         return this.layout;
@@ -50,7 +53,6 @@ export class Instance {
         Utils.Assert(!window.Is_In_Wall(), `Window is already in a wall.`);
         this.windows.set(window_id, window);
         this.Layout().Bar().Tabs().Add_Window(window);
-        return window_id;
     }
     Remove(window_id) {
         Utils.Assert(this.Has_ID(window_id), `Doesn't have window with id of ${window_id}.`);

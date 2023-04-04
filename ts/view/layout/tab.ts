@@ -1,7 +1,6 @@
-import * as Entity from "../../entity.js";
-
 import * as Model from "../../model/layout/tab.js";
 
+import * as Entity from "../entity.js";
 import * as Tabs from "./tabs.js";
 
 export class Instance extends Entity.Instance

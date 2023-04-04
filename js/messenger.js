@@ -9,6 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import * as Utils from "./utils.js";
 import * as Execution from "./execution.js";
+import * as Unique_ID from "./unique_id.js";
 export { Type as Publication_Type } from "./execution.js";
 /* Used when publishing an event. */
 export class Publication_Info {
@@ -43,13 +44,11 @@ class Publisher {
     constructor() {
         this.subscribers = {};
         this.priorities = {};
-        this.next_subscriber_id = 0;
         this.execution_frame = new Execution.Frame();
     }
     Subscribe(subscriber_info) {
-        Utils.Assert(this.next_subscriber_id !== Infinity, `Ran out of unique subscriber_ids!`);
         const subscriber = new Subscriber(subscriber_info);
-        const subscriber_id = this.next_subscriber_id++;
+        const subscriber_id = Unique_ID.New();
         const subscriber_priority = subscriber.Priority();
         this.subscribers[subscriber_id] = subscriber;
         if (this.priorities[subscriber_priority] == null) {

@@ -1,8 +1,9 @@
+import * as Entity from "../../../entity.js";
 import * as Window from "../instance.js";
 import * as Title from "./title.js";
 import * as Commands from "./commands.js";
 
-export class Instance
+export class Instance extends Entity.Instance
 {
     private window: Window.Instance;
     private title: Title.Instance;
@@ -16,6 +17,8 @@ export class Instance
         },
     )
     {
+        super();
+
         this.window = window;
         this.title = new Title.Instance(
             {
@@ -26,6 +29,13 @@ export class Instance
             {
                 bar: this,
             },
+        );
+
+        this.Is_Ready_After(
+            [
+                this.title,
+                this.commands,
+            ],
         );
     }
 

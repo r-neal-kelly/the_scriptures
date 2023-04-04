@@ -1,9 +1,9 @@
 import * as Utils from "../../../../utils.js";
 import * as Event from "../../../../event.js";
-import * as Entity from "../../../../entity.js";
 
 import * as Model from "../../../../model/layout/window/bar/commands.js";
 
+import * as Entity from "../../../entity.js";
 import * as Bar from "./instance.js";
 import * as Minimize from "./minimize.js";
 import * as Maximize from "./maximize.js";

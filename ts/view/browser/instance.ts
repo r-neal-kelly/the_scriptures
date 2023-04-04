@@ -1,10 +1,10 @@
 import * as Utils from "../../utils.js";
 import * as Event from "../../event.js";
-import * as Entity from "../../entity.js";
 
 import * as Model from "../../model/browser/instance.js";
 import * as Layout from "../../model/layout.js";
 
+import * as Entity from "../entity.js";
 import * as Commander from "./commander.js";
 import * as Body from "./body.js";
 

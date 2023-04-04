@@ -1,7 +1,9 @@
 import * as Utils from "../../../../../utils.js";
+import * as Entity from "../../../../entity.js";
 import { Type } from "./type.js";
-export class Instance {
+export class Instance extends Entity.Instance {
     constructor({ slot, type, }) {
+        super();
         this.slot = slot;
         if (type === Type.BOOKS) {
             this.value = `Books`;
@@ -19,6 +21,7 @@ export class Instance {
             Utils.Assert(false, `Invalid type.`);
             this.value = ``;
         }
+        this.Is_Ready_After([]);
     }
     Slot() {
         return this.slot;

@@ -7,7 +7,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import * as Utils from "./utils.js";
+import * as Utils from "../utils.js";
+import * as Unique_ID from "../unique_id.js";
 export class Animation_Frame {
     constructor({ now, start, elapsed, }) {
         this.now = now;
@@ -42,9 +43,8 @@ var Life_Cycle_Skip;
 })(Life_Cycle_Skip || (Life_Cycle_Skip = {}));
 export class Instance {
     constructor({ element, parent, event_grid, }) {
-        Utils.Assert(Instance.next_id !== Infinity, `Can't create another ID!`);
         this.is_alive = false;
-        this.id = Instance.next_id++;
+        this.id = Unique_ID.New();
         this.element = element instanceof HTMLElement ?
             element :
             document.createElement(element);
@@ -81,8 +81,7 @@ export class Instance {
                 // Notice that we are not waiting before On_Life().
                 // Testing showed that this had strange results in combination
                 // with the refresh event of the parent. Currently
-                // the deriver can just wait through an async call
-                // in On_Life, but perhaps we can have an after life call?
+                // the deriver can just wait through an async call.
             }
         });
     }
@@ -405,6 +404,16 @@ export class Instance {
         Utils.Assert(this.Is_Alive(), `Cannot get an event grid from a dead entity.`);
         return this.event_grid;
     }
+    Add_Listeners(listener_infos) {
+        this.Event_Grid().Add_Many_Listeners(this, listener_infos);
+    }
+    Remove_Listeners() {
+        this.Event_Grid().Remove_All_Listeners(this);
+    }
+    Set_Listeners(listener_infos) {
+        this.Remove_Listeners();
+        this.Add_Listeners(listener_infos);
+    }
     Send(event_info) {
         return __awaiter(this, void 0, void 0, function* () {
             return this.Event_Grid().Send(event_info);
@@ -503,4 +512,3 @@ export class Instance {
     }
 }
 Instance.class_id = `${new Date().getTime()}${Math.random().toString().replace(/\./g, ``)}`;
-Instance.next_id = 0;

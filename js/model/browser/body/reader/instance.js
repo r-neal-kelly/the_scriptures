@@ -7,10 +7,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import * as Async from "../../../../async.js";
 import * as Text from "../../../text.js";
+import * as Entity from "../../../entity.js";
 import * as File from "./file.js";
-export class Instance extends Async.Instance {
+export class Instance extends Entity.Instance {
     constructor({ body, }) {
         super();
         this.body = body;
@@ -25,6 +25,9 @@ export class Instance extends Async.Instance {
             }),
         });
         this.current_file = this.blank_file;
+        this.Is_Ready_After([
+            this.current_file,
+        ]);
     }
     Body() {
         return this.body;
@@ -45,6 +48,7 @@ export class Instance extends Async.Instance {
                         value: file_value,
                     }),
                 });
+                yield this.current_file.Ready();
             }
         });
     }

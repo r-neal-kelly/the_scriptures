@@ -1,5 +1,5 @@
 import * as Utils from "../../../../utils.js";
-import * as Entity from "../../../../entity.js";
+import * as Entity from "../../../entity.js";
 import * as Title from "./title.js";
 import * as Commands from "./commands.js";
 export class Instance extends Entity.Instance {

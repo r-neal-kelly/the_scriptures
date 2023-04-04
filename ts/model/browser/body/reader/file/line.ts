@@ -5,10 +5,11 @@ import * as Utils from "../../../../../utils.js";
 
 import * as Text from "../../../../text.js";
 
+import * as Entity from "../../../../entity.js";
 import * as File from "./instance.js";
 import * as Segment from "./segment.js";
 
-export class Instance
+export class Instance extends Entity.Instance
 {
     private static min_segment_count: Count = 70;
 
@@ -56,6 +57,8 @@ export class Instance
         },
     )
     {
+        super();
+
         this.file = file;
         this.index = index;
         this.text = text;
@@ -92,6 +95,10 @@ export class Instance
                 );
             }
         }
+
+        this.Is_Ready_After(
+            this.segments,
+        );
     }
 
     File():

@@ -8,7 +8,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import * as Event from "../../../../event.js";
-import * as Entity from "../../../../entity.js";
+import * as Entity from "../../../entity.js";
 export class Instance extends Entity.Instance {
     constructor({ model, bar, }) {
         super({
@@ -21,15 +21,14 @@ export class Instance extends Entity.Instance {
     On_Life() {
         return [
             new Event.Listener_Info({
-                event_name: new Event.Name(Event.Prefix.AFTER, `Selector_Slot_Item_Select`, `${this.Bar().Window().View().ID()}`),
+                event_name: new Event.Name(Event.Prefix.AFTER, `Selector_Slot_Item_Select`, this.Bar().Window().View().ID()),
                 event_handler: this.After_Selector_Slot_Item_Select,
                 event_priority: 0,
             }),
         ];
     }
     On_Refresh() {
-        const model = this.Model();
-        this.Element().textContent = model.Value();
+        this.Element().textContent = this.Model().Value();
     }
     On_Reclass() {
         return [`Title`];

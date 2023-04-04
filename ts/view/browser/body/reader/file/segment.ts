@@ -1,9 +1,8 @@
 import { Count } from "../../../../../types.js";
 
-import * as Entity from "../../../../../entity.js";
-
 import * as Model from "../../../../../model/browser/body/reader/file/segment.js";
 
+import * as Entity from "../../../../entity.js";
 import * as Line from "./line.js";
 import * as Item from "./item.js";
 

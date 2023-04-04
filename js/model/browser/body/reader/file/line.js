@@ -1,6 +1,7 @@
 import * as Utils from "../../../../../utils.js";
+import * as Entity from "../../../../entity.js";
 import * as Segment from "./segment.js";
-export class Instance {
+export class Instance extends Entity.Instance {
     static Min_Segment_Count() {
         return Instance.min_segment_count;
     }
@@ -9,6 +10,7 @@ export class Instance {
         Instance.min_segment_count = min_segment_count;
     }
     constructor({ file, index, text, }) {
+        super();
         this.file = file;
         this.index = index;
         this.text = text;
@@ -28,6 +30,7 @@ export class Instance {
                 }));
             }
         }
+        this.Is_Ready_After(this.segments);
     }
     File() {
         Utils.Assert(this.file != null, `Doesn't have file.`);

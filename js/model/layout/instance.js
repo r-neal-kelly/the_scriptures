@@ -7,16 +7,22 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+import * as Entity from "../entity.js";
 import * as Wall from "./wall.js";
 import * as Bar from "./bar.js";
-export class Instance {
+export class Instance extends Entity.Instance {
     constructor() {
+        super();
         this.wall = new Wall.Instance({
             layout: this,
         });
         this.bar = new Bar.Instance({
             layout: this,
         });
+        this.Is_Ready_After([
+            this.wall,
+            this.bar,
+        ]);
     }
     Wall() {
         return this.wall;

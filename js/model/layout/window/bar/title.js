@@ -1,6 +1,9 @@
-export class Instance {
+import * as Entity from "../../../entity.js";
+export class Instance extends Entity.Instance {
     constructor({ bar, }) {
+        super();
         this.bar = bar;
+        this.Is_Ready_After([]);
     }
     Bar() {
         return this.bar;

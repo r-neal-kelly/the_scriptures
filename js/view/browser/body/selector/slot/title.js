@@ -1,4 +1,4 @@
-import * as Entity from "../../../../../entity.js";
+import * as Entity from "../../../../entity.js";
 export class Instance extends Entity.Instance {
     constructor({ model, slot, }) {
         super({

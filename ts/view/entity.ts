@@ -1,13 +1,11 @@
-import { Count } from "./types.js";
-import { Index } from "./types.js";
-import { ID } from "./types.js";
-import { Float } from "./types.js";
-import { Name } from "./types.js";
+import { Count } from "../types.js";
+import { Index } from "../types.js";
+import { Float } from "../types.js";
+import { ID } from "../types.js";
 
-import * as Utils from "./utils.js";
-import * as Event from "./event.js";
-
-export { ID } from "./types.js";
+import * as Utils from "../utils.js";
+import * as Event from "../event.js";
+import * as Unique_ID from "../unique_id.js";
 
 /*
     Life-Cycle:
@@ -35,7 +33,7 @@ export interface Info_API
 
     ID(): ID;
 
-    HTML_ID(): string;
+    HTML_ID(): ID;
 
     Element(): HTMLElement;
 }
@@ -216,9 +214,19 @@ export interface Event_API
 {
     Event_Grid(): Event.Grid;
 
+    Add_Listeners(
+        listener_infos: Array<Event.Listener_Info>,
+    ): void;
+
+    Remove_Listeners(): void;
+
+    Set_Listeners(
+        listener_infos: Array<Event.Listener_Info>,
+    ): void;
+
     Send(
         event_info: Event.Info,
-    ): Promise<void>
+    ): Promise<void>;
 }
 
 export interface Animation_API
@@ -312,9 +320,8 @@ export class Instance implements
     Event_API,
     Animation_API
 {
-    private static class_id: string =
+    private static class_id: ID =
         `${new Date().getTime()}${Math.random().toString().replace(/\./g, ``)}`;
-    private static next_id: ID = 0;
 
     private is_alive: boolean;
     private id: ID;
@@ -342,13 +349,8 @@ export class Instance implements
         },
     )
     {
-        Utils.Assert(
-            Instance.next_id !== Infinity,
-            `Can't create another ID!`,
-        );
-
         this.is_alive = false;
-        this.id = Instance.next_id++;
+        this.id = Unique_ID.New();
         this.element = element instanceof HTMLElement ?
             element :
             document.createElement(element);
@@ -397,8 +399,7 @@ export class Instance implements
             // Notice that we are not waiting before On_Life().
             // Testing showed that this had strange results in combination
             // with the refresh event of the parent. Currently
-            // the deriver can just wait through an async call
-            // in On_Life, but perhaps we can have an after life call?
+            // the deriver can just wait through an async call.
         }
     }
 
@@ -660,7 +661,7 @@ export class Instance implements
     }
 
     HTML_ID():
-        string
+        ID
     {
         Utils.Assert(
             this.Is_Alive(),
@@ -696,7 +697,7 @@ export class Instance implements
             `You can only add css during On_Life().`,
         );
 
-        const html_id: string = this.HTML_ID();
+        const html_id: ID = this.HTML_ID();
 
         this.css_to_add += `
             /* CSS for ${html_id} and its Children: */
@@ -743,7 +744,7 @@ export class Instance implements
             `You can only add this_css during On_Life().`,
         );
 
-        const html_id: string = this.HTML_ID();
+        const html_id: ID = this.HTML_ID();
 
         this.css_to_add += `
             /* CSS for ${html_id}: */
@@ -789,7 +790,7 @@ export class Instance implements
             `You can only add children_css during On_Life().`,
         );
 
-        const html_id: string = this.HTML_ID();
+        const html_id: ID = this.HTML_ID();
 
         this.css_to_add += `
             /* CSS for ${html_id}'s Children: */
@@ -1038,6 +1039,29 @@ export class Instance implements
         );
 
         return this.event_grid;
+    }
+
+    Add_Listeners(
+        listener_infos: Array<Event.Listener_Info>,
+    ):
+        void
+    {
+        this.Event_Grid().Add_Many_Listeners(this, listener_infos);
+    }
+
+    Remove_Listeners():
+        void
+    {
+        this.Event_Grid().Remove_All_Listeners(this);
+    }
+
+    Set_Listeners(
+        listener_infos: Array<Event.Listener_Info>,
+    ):
+        void
+    {
+        this.Remove_Listeners();
+        this.Add_Listeners(listener_infos);
     }
 
     async Send(

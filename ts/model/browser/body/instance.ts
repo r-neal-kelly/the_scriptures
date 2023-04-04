@@ -1,11 +1,10 @@
-import * as Async from "../../../async.js";
-
+import * as Entity from "../../entity.js";
 import * as Browser from "../instance.js";
 import * as Selection from "../selection.js";
 import * as Selector from "./selector.js";
 import * as Reader from "./reader.js";
 
-export class Instance extends Async.Instance
+export class Instance extends Entity.Instance
 {
     private browser: Browser.Instance;
     private selector: Selector.Instance;

@@ -1,6 +1,6 @@
 import * as Utils from "../../../utils.js";
-import * as Async from "../../../async.js";
-export class Instance extends Async.Instance {
+import * as Model_Entity from "../../../model/entity.js";
+export class Instance extends Model_Entity.Instance {
     constructor({ model_class, model_data = undefined, view_class, }) {
         super();
         this.model_class = model_class;

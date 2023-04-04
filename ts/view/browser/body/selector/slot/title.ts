@@ -1,7 +1,6 @@
-import * as Entity from "../../../../../entity.js";
-
 import * as Model from "../../../../../model/browser/body/selector/slot/title.js";
 
+import * as Entity from "../../../../entity.js";
 import * as Slot from "./instance.js";
 
 export class Instance extends Entity.Instance

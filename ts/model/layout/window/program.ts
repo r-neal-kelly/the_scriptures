@@ -1,8 +1,9 @@
 import { Name } from "../../../types.js";
 
 import * as Utils from "../../../utils.js";
-import * as Async from "../../../async.js";
-import * as Entity from "../../../entity.js";
+
+import * as Model_Entity from "../../../model/entity.js";
+import * as View_Entity from "../../../view/entity.js";
 
 export type Model_Data = any;
 
@@ -13,7 +14,7 @@ export interface Model_Class
     ): Model_Instance;
 }
 
-export interface Model_Instance extends Async.Instance
+export interface Model_Instance extends Model_Entity.Instance
 {
     Title(): Name;
 }
@@ -26,16 +27,17 @@ export interface View_Class
             root,
         }: {
             model: () => Model_Instance,
-            root: Entity.Instance,
+            root: View_Entity.Instance,
         },
     ): View_Instance;
 }
 
-export interface View_Instance extends Entity.Instance
+export interface View_Instance extends View_Entity.Instance
 {
+    Model(): Model_Instance;
 }
 
-export class Instance extends Async.Instance
+export class Instance extends Model_Entity.Instance
 {
     private model_class: Model_Class;
     private model_instance: Model_Instance;

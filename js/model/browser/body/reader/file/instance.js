@@ -1,6 +1,7 @@
 import * as Utils from "../../../../../utils.js";
+import * as Entity from "../../../../entity.js";
 import * as Line from "./line.js";
-export class Instance {
+export class Instance extends Entity.Instance {
     static Min_Line_Count() {
         return Instance.min_line_count;
     }
@@ -9,6 +10,7 @@ export class Instance {
         Instance.min_line_count = min_line_count;
     }
     constructor({ reader, data, text, }) {
+        super();
         this.reader = reader;
         this.data = data;
         this.text = text;
@@ -20,6 +22,7 @@ export class Instance {
                 text: text.Line(idx),
             }));
         }
+        this.Is_Ready_After(this.lines);
     }
     Reader() {
         return this.reader;

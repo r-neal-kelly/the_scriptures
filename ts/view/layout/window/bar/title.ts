@@ -1,8 +1,8 @@
 import * as Event from "../../../../event.js";
-import * as Entity from "../../../../entity.js";
 
 import * as Model from "../../../../model/layout/window/bar/title.js";
 
+import * as Entity from "../../../entity.js";
 import * as Bar from "./instance.js";
 
 export class Instance extends Entity.Instance
@@ -36,7 +36,11 @@ export class Instance extends Entity.Instance
         return [
             new Event.Listener_Info(
                 {
-                    event_name: new Event.Name(Event.Prefix.AFTER, `Selector_Slot_Item_Select`, `${this.Bar().Window().View().ID()}`),
+                    event_name: new Event.Name(
+                        Event.Prefix.AFTER,
+                        `Selector_Slot_Item_Select`,
+                        this.Bar().Window().View().ID(),
+                    ),
                     event_handler: this.After_Selector_Slot_Item_Select,
                     event_priority: 0,
                 },
@@ -47,9 +51,7 @@ export class Instance extends Entity.Instance
     override On_Refresh():
         void
     {
-        const model: Model.Instance = this.Model();
-
-        this.Element().textContent = model.Value();
+        this.Element().textContent = this.Model().Value();
     }
 
     override On_Reclass():

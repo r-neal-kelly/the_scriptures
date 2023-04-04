@@ -8,8 +8,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import * as Utils from "../../../../utils.js";
-import * as Entity from "../../../../entity.js";
 import * as Event from "../../../../event.js";
+import * as Entity from "../../../entity.js";
 import * as Slots from "./slots.js";
 export class Instance extends Entity.Instance {
     constructor({ model, body, }) {
@@ -23,18 +23,17 @@ export class Instance extends Entity.Instance {
     On_Life() {
         return [
             new Event.Listener_Info({
-                event_name: new Event.Name(Event.Prefix.AFTER, `Selector_Toggle`, `${this.Body().Browser().ID()}`),
+                event_name: new Event.Name(Event.Prefix.AFTER, `Selector_Toggle`, this.Body().Browser().ID()),
                 event_handler: this.After_Selector_Toggle,
                 event_priority: 0,
             }),
         ];
     }
     On_Refresh() {
-        const model = this.Model();
         if (!this.Has_Slots()) {
             this.Abort_All_Children();
             new Slots.Instance({
-                model: () => model.Slots(),
+                model: () => this.Model().Slots(),
                 selector: this,
             });
         }

@@ -1,8 +1,8 @@
 import * as Utils from "../../../../../utils.js";
-import * as Entity from "../../../../../entity.js";
 
 import * as Model from "../../../../../model/browser/body/selector/slot/instance.js";
 
+import * as Entity from "../../../../entity.js";
 import * as Slots from "../slots.js";
 import * as Title from "./title.js";
 import * as Items from "./items.js";

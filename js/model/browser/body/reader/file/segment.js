@@ -1,6 +1,7 @@
 import * as Utils from "../../../../../utils.js";
+import * as Entity from "../../../../entity.js";
 import * as Item from "./item.js";
-export class Instance {
+export class Instance extends Entity.Instance {
     static Min_Item_Count() {
         return Instance.min_item_count;
     }
@@ -9,6 +10,7 @@ export class Instance {
         Instance.min_item_count = min_item_count;
     }
     constructor({ line, index, text, }) {
+        super();
         this.line = line;
         this.index = index;
         this.text = text;
@@ -28,6 +30,7 @@ export class Instance {
                 }));
             }
         }
+        this.Is_Ready_After(this.items);
     }
     Line() {
         Utils.Assert(this.line != null, `Doesn't have line.`);

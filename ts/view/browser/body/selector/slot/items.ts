@@ -1,10 +1,9 @@
 import { Count } from "../../../../../types.js";
 import { Delta } from "../../../../../types.js";
 
-import * as Entity from "../../../../../entity.js";
-
 import * as Model from "../../../../../model/browser/body/selector/slot/items.js";
 
+import * as Entity from "../../../../entity.js";
 import * as Slot from "./instance.js";
 import * as Item from "./item.js";
 

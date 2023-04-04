@@ -1,6 +1,6 @@
-import * as Async from "../../../../async.js";
+import * as Entity from "../../../entity.js";
 import * as Slots from "./slots.js";
-export class Instance extends Async.Instance {
+export class Instance extends Entity.Instance {
     constructor({ body, selection = null, slot_order, }) {
         super();
         this.body = body;

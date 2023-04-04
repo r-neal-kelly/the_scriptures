@@ -1,9 +1,9 @@
-import * as Async from "../../async.js";
+import * as Entity from "../entity.js";
 import * as Data from "../data.js";
 import * as Selection from "./selection.js";
 import * as Commander from "./commander.js";
 import * as Body from "./body.js";
-export class Instance extends Async.Instance {
+export class Instance extends Entity.Instance {
     constructor({ selection = new Selection.Name({
         book: `Jubilees`,
         language: `English`,
@@ -11,7 +11,7 @@ export class Instance extends Async.Instance {
         file: `Chapter 01.txt`,
     }), selector_slot_order = Body.Selector.Slot.Order.BOOKS_LANGUAGES_VERSIONS, is_selector_open = false, } = {}) {
         super();
-        this.data = new Data.Instance();
+        this.data = new Data.Instance(); // this maybe should be global...?
         this.commander = new Commander.Instance({
             browser: this,
             is_selector_open: is_selector_open,

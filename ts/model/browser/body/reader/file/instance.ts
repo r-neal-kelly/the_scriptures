@@ -6,11 +6,11 @@ import * as Utils from "../../../../../utils.js";
 import * as Data from "../../../../data.js";
 import * as Text from "../../../../text.js";
 
+import * as Entity from "../../../../entity.js";
 import * as Reader from "../instance.js";
-
 import * as Line from "./line.js";
 
-export class Instance
+export class Instance extends Entity.Instance
 {
     private static min_line_count: Count = 50;
 
@@ -58,6 +58,8 @@ export class Instance
         },
     )
     {
+        super();
+
         this.reader = reader;
         this.data = data;
         this.text = text;
@@ -74,6 +76,10 @@ export class Instance
                 ),
             );
         }
+
+        this.Is_Ready_After(
+            this.lines,
+        );
     }
 
     Reader():

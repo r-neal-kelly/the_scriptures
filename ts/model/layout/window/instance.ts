@@ -1,29 +1,14 @@
 import * as Utils from "../../../utils.js";
-import * as Async from "../../../async.js";
 
+import * as Entity from "../../entity.js";
 import * as Wall from "../wall.js";
-import { ID } from "./id.js";
 import { State } from "./state.js";
 import * as Program from "./program.js";
 import * as Bar from "./bar.js";
 
-export class Instance extends Async.Instance
+export class Instance extends Entity.Instance
 {
-    private static next_id: ID = 0;
-
-    private static New_ID():
-        ID
-    {
-        Utils.Assert(
-            Instance.next_id + 1 < Infinity,
-            `Can't make a new id!`,
-        );
-
-        return Instance.next_id++;
-    }
-
     private wall: Wall.Instance | null;
-    private id: ID;
     private state: State;
     private program: Program.Instance;
     private bar: Bar.Instance;
@@ -41,7 +26,6 @@ export class Instance extends Async.Instance
         super();
 
         this.wall = wall;
-        this.id = Instance.New_ID();
         this.state = State._NONE_;
         this.program = program;
         this.bar = new Bar.Instance(
@@ -53,6 +37,7 @@ export class Instance extends Async.Instance
         this.Is_Ready_After(
             [
                 this.program,
+                this.bar,
             ],
         );
     }
@@ -133,12 +118,6 @@ export class Instance extends Async.Instance
         if (wall != null) {
             this.Add_To_Wall(wall);
         }
-    }
-
-    ID():
-        ID
-    {
-        return this.id;
     }
 
     State():

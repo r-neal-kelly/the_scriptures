@@ -1,9 +1,10 @@
+import * as Entity from "../../../entity.js";
 import * as Bar from "./instance.js";
 import * as Minimize from "./minimize.js";
 import * as Maximize from "./maximize.js";
 import * as Close from "./close.js";
 
-export class Instance
+export class Instance extends Entity.Instance
 {
     private bar: Bar.Instance;
     private minimize: Minimize.Instance;
@@ -18,6 +19,8 @@ export class Instance
         },
     )
     {
+        super();
+
         this.bar = bar;
         this.minimize = new Minimize.Instance(
             {
@@ -33,6 +36,14 @@ export class Instance
             {
                 commands: this,
             },
+        );
+
+        this.Is_Ready_After(
+            [
+                this.minimize,
+                this.maximize,
+                this.close,
+            ],
         );
     }
 

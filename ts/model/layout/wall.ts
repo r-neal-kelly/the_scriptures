@@ -1,15 +1,17 @@
 import { Count } from "../../types.js";
 import { Index } from "../../types.js";
+import { ID } from "../../types.js";
 
 import * as Utils from "../../utils.js";
 
+import * as Entity from "../entity.js";
 import * as Layout from "./instance.js";
 import * as Window from "./window.js";
 
-export class Instance
+export class Instance extends Entity.Instance
 {
     private layout: Layout.Instance;
-    private windows: Map<Window.ID, Window.Instance>;
+    private windows: Map<ID, Window.Instance>;
 
     constructor(
         {
@@ -19,8 +21,15 @@ export class Instance
         },
     )
     {
+        super();
+
         this.layout = layout;
         this.windows = new Map();
+
+        this.Is_Ready_After(
+            [
+            ],
+        );
     }
 
     Layout():
@@ -44,7 +53,7 @@ export class Instance
     }
 
     Has_ID(
-        window_id: Window.ID,
+        window_id: ID,
     ):
         boolean
     {
@@ -52,7 +61,7 @@ export class Instance
     }
 
     From_ID(
-        window_id: Window.ID,
+        window_id: ID,
     ):
         Window.Instance
     {
@@ -100,9 +109,9 @@ export class Instance
     Add(
         window: Window.Instance,
     ):
-        Window.ID
+        void
     {
-        const window_id: Window.ID = window.ID();
+        const window_id: ID = window.ID();
         Utils.Assert(
             !this.Has_ID(window_id),
             `Already has a window with id of ${window_id}.`,
@@ -118,12 +127,10 @@ export class Instance
 
         this.windows.set(window_id, window);
         this.Layout().Bar().Tabs().Add_Window(window);
-
-        return window_id;
     }
 
     Remove(
-        window_id: Window.ID,
+        window_id: ID,
     ):
         void
     {
@@ -147,7 +154,7 @@ export class Instance
     async Add_Program(
         program: Window.Program.Instance,
     ):
-        Promise<Window.ID>
+        Promise<ID>
     {
         const window: Window.Instance = new Window.Instance(
             {

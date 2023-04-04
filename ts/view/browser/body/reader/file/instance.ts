@@ -1,10 +1,10 @@
 import { Count } from "../../../../../types.js";
 
 import * as Event from "../../../../../event.js";
-import * as Entity from "../../../../../entity.js";
 
 import * as Model from "../../../../../model/browser/body/reader/file.js";
 
+import * as Entity from "../../../../entity.js";
 import * as Reader from "../instance.js";
 import * as Line from "./line.js";
 

@@ -8,9 +8,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import * as Utils from "../../../../../utils.js";
+import * as Entity from "../../../../entity.js";
 import * as Item from "./item.js";
-export class Instance {
+export class Instance extends Entity.Instance {
     constructor({ slot, item_names, item_files, }) {
+        super();
         this.slot = slot;
         this.items = [];
         this.selected = null;
@@ -24,6 +26,7 @@ export class Instance {
                     null,
             }));
         }
+        this.Is_Ready_After(this.items);
     }
     Slot() {
         return this.slot;

@@ -1,10 +1,9 @@
 import { Count } from "../../types.js";
 import { Delta } from "../../types.js";
 
-import * as Entity from "../../entity.js";
-
 import * as Model from "../../model/layout/wall.js";
 
+import * as Entity from "../entity.js";
 import * as Layout from "./instance.js";
 import * as Window from "./window.js";
 

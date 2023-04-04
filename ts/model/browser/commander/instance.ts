@@ -1,8 +1,7 @@
-import * as Async from "../../../async.js";
-
+import * as Entity from "../../entity.js";
 import * as Browser from "../instance.js";
 
-export class Instance extends Async.Instance
+export class Instance extends Entity.Instance
 {
     private browser: Browser.Instance;
     private is_selector_open: boolean;
@@ -21,6 +20,11 @@ export class Instance extends Async.Instance
 
         this.browser = browser;
         this.is_selector_open = is_selector_open;
+
+        this.Is_Ready_After(
+            [
+            ],
+        );
     }
 
     Browser():

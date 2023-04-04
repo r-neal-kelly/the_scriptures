@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import * as Utils from "../utils.js";
 import * as Event from "../event.js";
-import * as Entity from "../entity.js";
+import * as Entity from "./entity.js";
 import * as Model from "../model/layout.js";
 import * as View from "./layout.js";
 import * as Browser_Model from "../model/browser.js";

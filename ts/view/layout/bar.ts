@@ -1,9 +1,9 @@
 import * as Utils from "../../utils.js";
 import * as Event from "../../event.js";
-import * as Entity from "../../entity.js";
 
 import * as Model from "../../model/layout/bar.js";
 
+import * as Entity from "../entity.js";
 import * as Layout from "./instance.js";
 import * as Tabs from "./tabs.js";
 

@@ -1,8 +1,8 @@
 import * as Utils from "../../../../utils.js";
-import * as Entity from "../../../../entity.js";
 
 import * as Model from "../../../../model/browser/body/reader/instance.js";
 
+import * as Entity from "../../../entity.js";
 import * as Body from "../instance.js";
 import * as File from "./file.js";
 

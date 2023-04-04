@@ -1,8 +1,8 @@
 import * as Event from "../../../event.js";
-import * as Entity from "../../../entity.js";
 
 import * as Model from "../../../model/browser/commander.js";
 
+import * as Entity from "../../entity.js";
 import * as Browser from "../instance.js";
 
 export class Instance extends Entity.Instance
@@ -41,14 +41,22 @@ export class Instance extends Entity.Instance
         return [
             new Event.Listener_Info(
                 {
-                    event_name: new Event.Name(Event.Prefix.ON, `Selector_Toggle`, `${this.ID()}`,),
+                    event_name: new Event.Name(
+                        Event.Prefix.ON,
+                        `Selector_Toggle`,
+                        this.ID(),
+                    ),
                     event_handler: this.On_Selector_Toggle,
                     event_priority: 0,
                 },
             ),
             new Event.Listener_Info(
                 {
-                    event_name: new Event.Name(Event.Prefix.AFTER, `Selector_Toggle`, `${this.ID()}`,),
+                    event_name: new Event.Name(
+                        Event.Prefix.AFTER,
+                        `Selector_Toggle`,
+                        this.ID(),
+                    ),
                     event_handler: this.After_Selector_Toggle,
                     event_priority: 0,
                 },
@@ -84,8 +92,8 @@ export class Instance extends Entity.Instance
                 {
                     affix: `Selector_Toggle`,
                     suffixes: [
-                        `${this.Browser().ID()}`,
                         `${this.ID()}`,
+                        `${this.Browser().ID()}`,
                     ],
                     type: Event.Type.EXCLUSIVE,
                     data: {},

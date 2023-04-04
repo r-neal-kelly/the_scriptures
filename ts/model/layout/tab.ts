@@ -1,10 +1,8 @@
+import * as Entity from "../entity.js";
 import * as Window from "./window.js";
-import { ID } from "./window.js";
 import * as Tabs from "./tabs.js";
 
-export { ID } from "./window.js";
-
-export class Instance
+export class Instance extends Entity.Instance
 {
     private tabs: Tabs.Instance;
     private window: Window.Instance;
@@ -19,20 +17,21 @@ export class Instance
         },
     )
     {
+        super();
+
         this.tabs = tabs;
         this.window = window;
+
+        this.Is_Ready_After(
+            [
+            ],
+        );
     }
 
     Tabs():
         Tabs.Instance
     {
         return this.tabs;
-    }
-
-    ID():
-        ID
-    {
-        return this.window.ID();
     }
 
     Window():

@@ -4,9 +4,10 @@ import * as Utils from "../../../../../utils.js";
 
 import * as Text from "../../../../text.js";
 
+import * as Entity from "../../../../entity.js";
 import * as Segment from "./segment.js";
 
-export class Instance
+export class Instance extends Entity.Instance
 {
     private segment: Segment.Instance | null;
     private index: Index | null;
@@ -25,6 +26,8 @@ export class Instance
         },
     )
     {
+        super();
+
         this.segment = segment;
         this.index = index;
         this.text = text;
@@ -59,6 +62,11 @@ export class Instance
                     .replace(/  /g, `  `);
             }
         }
+
+        this.Is_Ready_After(
+            [
+            ],
+        );
     }
 
     Segment():

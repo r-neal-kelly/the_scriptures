@@ -1,9 +1,10 @@
 import { Integer } from "./types.js";
-import { ID } from "./types.js";
 import { Name } from "./types.js";
+import { ID } from "./types.js";
 
 import * as Utils from "./utils.js";
 import * as Execution from "./execution.js";
+import * as Unique_ID from "./unique_id.js";
 
 /* Used both to subscribe and publish events. */
 export type Publisher_Name = Name;
@@ -103,14 +104,12 @@ class Publisher
 {
     private subscribers: { [index: Subscriber_ID]: Subscriber };
     private priorities: { [index: Subscriber_Priority]: Array<Subscriber> };
-    private next_subscriber_id: Subscriber_ID;
     private execution_frame: Execution.Frame;
 
     constructor()
     {
         this.subscribers = {};
         this.priorities = {};
-        this.next_subscriber_id = 0;
         this.execution_frame = new Execution.Frame();
     }
 
@@ -119,13 +118,8 @@ class Publisher
     ):
         Subscriber_ID
     {
-        Utils.Assert(
-            this.next_subscriber_id !== Infinity,
-            `Ran out of unique subscriber_ids!`,
-        );
-
         const subscriber: Subscriber = new Subscriber(subscriber_info);
-        const subscriber_id: Subscriber_ID = this.next_subscriber_id++;
+        const subscriber_id: Subscriber_ID = Unique_ID.New();
         const subscriber_priority: Subscriber_Priority = subscriber.Priority();
 
         this.subscribers[subscriber_id] = subscriber;

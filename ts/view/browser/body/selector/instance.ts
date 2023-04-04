@@ -1,9 +1,9 @@
 import * as Utils from "../../../../utils.js";
-import * as Entity from "../../../../entity.js";
 import * as Event from "../../../../event.js";
 
 import * as Model from "../../../../model/browser/body/selector/instance.js";
 
+import * as Entity from "../../../entity.js";
 import * as Body from "../instance.js";
 import * as Slots from "./slots.js";
 
@@ -38,7 +38,11 @@ export class Instance extends Entity.Instance
         return [
             new Event.Listener_Info(
                 {
-                    event_name: new Event.Name(Event.Prefix.AFTER, `Selector_Toggle`, `${this.Body().Browser().ID()}`),
+                    event_name: new Event.Name(
+                        Event.Prefix.AFTER,
+                        `Selector_Toggle`,
+                        this.Body().Browser().ID(),
+                    ),
                     event_handler: this.After_Selector_Toggle,
                     event_priority: 0,
                 },
@@ -49,14 +53,12 @@ export class Instance extends Entity.Instance
     override On_Refresh():
         void
     {
-        const model: Model.Instance = this.Model();
-
         if (!this.Has_Slots()) {
             this.Abort_All_Children();
 
             new Slots.Instance(
                 {
-                    model: () => model.Slots(),
+                    model: () => this.Model().Slots(),
                     selector: this,
                 },
             );

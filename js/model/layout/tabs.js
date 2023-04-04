@@ -1,10 +1,13 @@
 import * as Utils from "../../utils.js";
+import * as Entity from "../entity.js";
 import * as Tab from "./tab.js";
-export class Instance {
+export class Instance extends Entity.Instance {
     constructor({ bar, }) {
+        super();
         this.bar = bar;
-        this.ids = [];
+        this.window_ids = [];
         this.tabs = [];
+        this.Is_Ready_After(this.tabs);
     }
     Bar() {
         return this.bar;
@@ -28,20 +31,20 @@ export class Instance {
         return Array.from(this.tabs);
     }
     Has_Window(window) {
-        return this.ids.indexOf(window.ID()) > -1;
+        return this.window_ids.indexOf(window.ID()) > -1;
     }
     Add_Window(window) {
         Utils.Assert(!this.Has_Window(window), `Already has window with id of ${window.ID()}.`);
-        this.ids.push(window.ID());
+        this.window_ids.push(window.ID());
         this.tabs.push(new Tab.Instance({
             tabs: this,
             window: window,
         }));
     }
     Remove_Window(window) {
-        const index = this.ids.indexOf(window.ID());
+        const index = this.window_ids.indexOf(window.ID());
         Utils.Assert(index > -1, `Does not have window with id of ${window.ID()}.`);
-        this.ids.splice(index, 1);
+        this.window_ids.splice(index, 1);
         this.tabs.splice(index, 1);
     }
     Windows() {
