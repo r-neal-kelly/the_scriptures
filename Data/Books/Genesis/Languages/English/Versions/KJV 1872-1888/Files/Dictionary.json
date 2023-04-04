@@ -1,11 +1,370 @@
 {
-    "letters": [],
-    "markers": [],
-    "words": {},
+    "letters": [
+        "A",
+        "C",
+        "D",
+        "E",
+        "G",
+        "H",
+        "I",
+        "L",
+        "N",
+        "P",
+        "R",
+        "S",
+        "T",
+        "a",
+        "b",
+        "c",
+        "d",
+        "e",
+        "f",
+        "g",
+        "h",
+        "i",
+        "k",
+        "l",
+        "m",
+        "n",
+        "o",
+        "p",
+        "r",
+        "s",
+        "t",
+        "u",
+        "v",
+        "w",
+        "y",
+        "ʰ",
+        "ᵃ",
+        "ᵇ",
+        "ᵈ",
+        "ᵉ",
+        "ᵍ",
+        "ᶜ",
+        "ᶠ",
+        "ⁱ",
+        "₀",
+        "₁",
+        "₂",
+        "₃",
+        "₄",
+        "₅",
+        "₆",
+        "₇",
+        "₈",
+        "₉",
+        "⸼"
+    ],
+    "markers": [
+        " ",
+        ",",
+        ".",
+        ":",
+        ";",
+        "¶",
+        "⁺"
+    ],
+    "words": {
+        "A": [
+            "And"
+        ],
+        "C": [
+            "CHAPTER"
+        ],
+        "D": [
+            "Day"
+        ],
+        "E": [
+            "Earth"
+        ],
+        "G": [
+            "God"
+        ],
+        "H": [
+            "Heaven"
+        ],
+        "I": [
+            "In",
+            "I⸼"
+        ],
+        "L": [
+            "Let"
+        ],
+        "N": [
+            "Night"
+        ],
+        "P": [],
+        "R": [],
+        "S": [
+            "Seas",
+            "Spirit"
+        ],
+        "T": [],
+        "a": [
+            "a",
+            "above",
+            "abundantly",
+            "after",
+            "also",
+            "and",
+            "appear"
+        ],
+        "b": [
+            "be",
+            "beginning",
+            "bring",
+            "brought"
+        ],
+        "c": [
+            "called",
+            "created",
+            "creature"
+        ],
+        "d": [
+            "darkness",
+            "day",
+            "days",
+            "deep",
+            "divide",
+            "divided",
+            "dry"
+        ],
+        "e": [
+            "earth",
+            "evening",
+            "every"
+        ],
+        "f": [
+            "face",
+            "firmament",
+            "first",
+            "fly",
+            "for",
+            "forth",
+            "fourth",
+            "fowl",
+            "from",
+            "fruit"
+        ],
+        "g": [
+            "gathered",
+            "gathering",
+            "give",
+            "good",
+            "grass",
+            "great",
+            "greater"
+        ],
+        "h": [
+            "hath",
+            "he",
+            "heaven",
+            "herb",
+            "his"
+        ],
+        "i": [
+            "in",
+            "is",
+            "it",
+            "itself"
+        ],
+        "k": [
+            "kind"
+        ],
+        "l": [
+            "land",
+            "lesser",
+            "let",
+            "life",
+            "light",
+            "lights",
+            "living"
+        ],
+        "m": [
+            "made",
+            "may",
+            "midst",
+            "morning",
+            "moved",
+            "moveth",
+            "moving"
+        ],
+        "n": [
+            "night"
+        ],
+        "o": [
+            "of",
+            "one",
+            "open",
+            "over"
+        ],
+        "p": [
+            "place"
+        ],
+        "r": [
+            "rule"
+        ],
+        "s": [
+            "said",
+            "saw",
+            "seasons",
+            "second",
+            "seed",
+            "set",
+            "signs",
+            "so",
+            "stars"
+        ],
+        "t": [
+            "that",
+            "the",
+            "their",
+            "them",
+            "there",
+            "third",
+            "to",
+            "together",
+            "tree",
+            "two"
+        ],
+        "u": [
+            "under",
+            "unto",
+            "upon"
+        ],
+        "v": [
+            "void"
+        ],
+        "w": [
+            "was",
+            "waters",
+            "were",
+            "whales",
+            "which",
+            "whose",
+            "winged"
+        ],
+        "y": [
+            "years",
+            "yielding"
+        ],
+        "ʰ": [
+            "ʰ"
+        ],
+        "ᵃ": [
+            "ᵃ"
+        ],
+        "ᵇ": [
+            "ᵇ"
+        ],
+        "ᵈ": [
+            "ᵈ"
+        ],
+        "ᵉ": [
+            "ᵉ"
+        ],
+        "ᵍ": [
+            "ᵍ"
+        ],
+        "ᶜ": [
+            "ᶜ"
+        ],
+        "ᶠ": [
+            "ᶠ"
+        ],
+        "ⁱ": [
+            "ⁱ"
+        ],
+        "₀": [],
+        "₁": [
+            "₁",
+            "₁₀",
+            "₁₁",
+            "₁₂",
+            "₁₃",
+            "₁₄",
+            "₁₅",
+            "₁₆",
+            "₁₇",
+            "₁₈",
+            "₁₉"
+        ],
+        "₂": [
+            "₂",
+            "₂₀",
+            "₂₁"
+        ],
+        "₃": [
+            "₃"
+        ],
+        "₄": [
+            "₄"
+        ],
+        "₅": [
+            "₅"
+        ],
+        "₆": [
+            "₆"
+        ],
+        "₇": [
+            "₇"
+        ],
+        "₈": [
+            "₈"
+        ],
+        "₉": [
+            "₉"
+        ],
+        "⸼": []
+    },
     "breaks": {
-        "START": {},
-        "MIDDLE": {},
-        "END": {}
+        "START": {
+            " ": [],
+            ",": [],
+            ".": [],
+            ":": [],
+            ";": [],
+            "¶": [],
+            "⁺": []
+        },
+        "MIDDLE": {
+            " ": [
+                " ",
+                " ¶ ",
+                " ⁺"
+            ],
+            ",": [
+                ", "
+            ],
+            ".": [
+                ". ",
+                ". ⁺"
+            ],
+            ":": [
+                ": "
+            ],
+            ";": [
+                "; "
+            ],
+            "¶": [],
+            "⁺": []
+        },
+        "END": {
+            " ": [],
+            ",": [
+                ","
+            ],
+            ".": [
+                "."
+            ],
+            ":": [
+                ":"
+            ],
+            ";": [],
+            "¶": [],
+            "⁺": []
+        }
     },
     "word_errors": [],
     "break_errors": {
