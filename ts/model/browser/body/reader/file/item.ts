@@ -138,10 +138,10 @@ export class Instance extends Entity.Instance
             `Item is blank and can't be indented.`,
         );
 
+        const part: Text.Part.Instance = this.Part();
         return (
-            this.Index() === 0 &&
-            this.Segment().Index() === 0 &&
-            this.Segment().Line().Text().Is_Indented()
+            part.Is_Command() &&
+            (part as Text.Part.Command.Instance).Is_Indent()
         );
     }
 

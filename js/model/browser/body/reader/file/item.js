@@ -56,9 +56,9 @@ export class Instance extends Entity.Instance {
     }
     Is_Indented() {
         Utils.Assert(!this.Is_Blank(), `Item is blank and can't be indented.`);
-        return (this.Index() === 0 &&
-            this.Segment().Index() === 0 &&
-            this.Segment().Line().Text().Is_Indented());
+        const part = this.Part();
+        return (part.Is_Command() &&
+            part.Is_Indent());
     }
     Is_Error() {
         return this.Part().Is_Error();
