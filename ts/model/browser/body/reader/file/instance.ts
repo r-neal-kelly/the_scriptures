@@ -41,7 +41,7 @@ export class Instance extends Entity.Instance
         Instance.min_line_count = min_line_count;
     }
 
-    private reader: Reader.Instance;
+    private reader: Reader.Instance | null;
     private data: Data.File.Instance | null;
     private text: Text.Instance;
     private lines: Array<Line.Instance>;
@@ -52,7 +52,7 @@ export class Instance extends Entity.Instance
             data,
             text,
         }: {
-            reader: Reader.Instance,
+            reader: Reader.Instance | null,
             data: Data.File.Instance | null,
             text: Text.Instance,
         },
@@ -85,7 +85,12 @@ export class Instance extends Entity.Instance
     Reader():
         Reader.Instance
     {
-        return this.reader;
+        Utils.Assert(
+            this.reader != null,
+            `Has no reader.`,
+        );
+
+        return this.reader as Reader.Instance;
     }
 
     Data():

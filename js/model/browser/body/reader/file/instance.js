@@ -25,6 +25,7 @@ export class Instance extends Entity.Instance {
         this.Is_Ready_After(this.lines);
     }
     Reader() {
+        Utils.Assert(this.reader != null, `Has no reader.`);
         return this.reader;
     }
     Data() {

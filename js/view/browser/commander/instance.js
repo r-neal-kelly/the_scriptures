@@ -50,8 +50,8 @@ export class Instance extends Entity.Instance {
             yield this.Send(new Event.Info({
                 affix: `Selector_Toggle`,
                 suffixes: [
-                    `${this.ID()}`,
-                    `${this.Browser().ID()}`,
+                    this.ID(),
+                    this.Browser().ID(),
                 ],
                 type: Event.Type.EXCLUSIVE,
                 data: {},

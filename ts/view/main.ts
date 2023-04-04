@@ -149,18 +149,32 @@ async function Main():
 
     // Once we set up our save file structure, or at least prototype it,
     // we'll pull each window's model's data from there and pass it along.
-    const data: Array<[Browser_Model.Body.Selector.Slot.Order, string]> = [
-        //[Browser_Model.Body.Selector.Slot.Order.BOOKS_LANGUAGES_VERSIONS, `Chapter 01.txt`],
-        //[Browser_Model.Body.Selector.Slot.Order.BOOKS_VERSIONS_LANGUAGES, `Chapter 02.txt`],
-        //[Browser_Model.Body.Selector.Slot.Order.LANGUAGES_BOOKS_VERSIONS, `Chapter 03.txt`],
-        //[Browser_Model.Body.Selector.Slot.Order.LANGUAGES_VERSIONS_BOOKS, `Chapter 04.txt`],
-        //[Browser_Model.Body.Selector.Slot.Order.VERSIONS_BOOKS_LANGUAGES, `Chapter 05.txt`],
-        //[Browser_Model.Body.Selector.Slot.Order.VERSIONS_LANGUAGES_BOOKS, `Chapter 06.txt`],
-
-        [Browser_Model.Body.Selector.Slot.Order.BOOKS_LANGUAGES_VERSIONS, `Chapter 01.txt`],
-        [Browser_Model.Body.Selector.Slot.Order.VERSIONS_LANGUAGES_BOOKS, `Chapter 02.txt`],
+    type Data = Array<
+        [
+            Browser_Model.Body.Selector.Slot.Order,
+            string,
+            string,
+            string,
+            string,
+        ]
+    >;
+    const data: Data = [
+        [
+            Browser_Model.Body.Selector.Slot.Order.BOOKS_LANGUAGES_VERSIONS,
+            `Genesis`,
+            `English`,
+            `KJV 1872-1888`,
+            `Chapter 01.txt`,
+        ],
+        [
+            Browser_Model.Body.Selector.Slot.Order.VERSIONS_LANGUAGES_BOOKS,
+            `Jubilees`,
+            `English`,
+            `R. H. Charles 1913`,
+            `Chapter 01.txt`,
+        ],
     ];
-    for (const [order, file_name] of data) {
+    for (const [order, book_name, language_name, version_name, file_name] of data) {
         model.Add_Program(
             new Model.Window.Program.Instance(
                 {
@@ -168,9 +182,9 @@ async function Main():
                     model_data: {
                         selection: new Browser_Model.Selection.Name(
                             {
-                                book: `Jubilees`,
-                                language: `English`,
-                                version: `R. H. Charles 1913`,
+                                book: book_name,
+                                language: language_name,
+                                version: version_name,
                                 file: file_name,
                             },
                         ),

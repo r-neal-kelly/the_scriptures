@@ -75,8 +75,8 @@ export class Instance extends Entity.Instance
                 {
                     affix: `Window_Close`,
                     suffixes: [
-                        `${this.ID()}`,
-                        `${this.Commands().Bar().Window().Wall().Layout().ID()}`,
+                        this.ID(),
+                        this.Commands().Bar().Window().Wall().Layout().ID(),
                     ],
                     type: Event.Type.EXCLUSIVE,
                     data: {},

@@ -10,10 +10,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import * as Utils from "../../../../utils.js";
 import * as Data from "../../../data.js";
 import * as Entity from "../../../entity.js";
+import * as Browser from "../../../browser.js";
 import * as Selection from "../../selection.js";
 import * as Slot from "./slot.js";
 export class Instance extends Entity.Instance {
-    static Max_Slot_Count() {
+    static Max_Count() {
         return Instance.MAX_SLOT_COUNT;
     }
     static Slot_To_Data_Type(slot_type) {
@@ -123,12 +124,12 @@ export class Instance extends Entity.Instance {
             Utils.Assert(false, `Unknown slot_type.`);
         }
         slot_types.push(Slot.Type.FILES);
-        Utils.Assert(slot_types.length === Instance.Max_Slot_Count(), `slot_types must have all types.`);
+        Utils.Assert(slot_types.length === Instance.Max_Count(), `slot_types must have all types.`);
         return slot_types;
     }
     Push() {
         return __awaiter(this, void 0, void 0, function* () {
-            const max_slot_count = Instance.Max_Slot_Count();
+            const max_slot_count = Instance.Max_Count();
             const slot_count = this.Count();
             Utils.Assert(slot_count < max_slot_count, `All slots have been pushed already.`);
             const slot_index = slot_count;
@@ -152,9 +153,9 @@ export class Instance extends Entity.Instance {
                 type: Instance.Slot_To_Data_Type(slot_type),
                 name: null,
             }));
-            const slot_item_names = yield this.Selector().Body().Browser().Data().Names(slot_query);
+            const slot_item_names = yield Browser.Instance.Data().Names(slot_query);
             const slot_item_files = slot_type === Slot.Type.FILES ?
-                yield (yield this.Selector().Body().Browser().Data().Files({
+                yield (yield Browser.Instance.Data().Files({
                     book_name: this.Books().Items().Selected().Name(),
                     language_name: this.Languages().Items().Selected().Name(),
                     version_name: this.Versions().Items().Selected().Name(),
@@ -168,6 +169,9 @@ export class Instance extends Entity.Instance {
                 item_files: slot_item_files,
             }));
         });
+    }
+    Pop() {
+        this.slots.pop();
     }
     Has_Books() {
         return this.Has_Type(Slot.Type.BOOKS);
@@ -221,15 +225,11 @@ export class Instance extends Entity.Instance {
             return null;
         }
     }
-    Select_Item_Internally({ slot, item, }) {
+    Select_Item_Internally({ slot, }) {
         return __awaiter(this, void 0, void 0, function* () {
             Utils.Assert(this.Has(slot), `The slot does not belong to this selector.`);
-            // How are we going to handle when selecting item in non-files slot
-            // while the files slot is open? Do we try to match it with the new
-            // slots that might have to be created, or do we just unselect the
-            // discarded slots?
             if (slot.Type() === Slot.Type.FILES) {
-                const file = yield this.Selector().Body().Browser().Data().File({
+                const file = yield Browser.Instance.Data().File({
                     book_name: this.Books().Items().Selected().Name(),
                     language_name: this.Languages().Items().Selected().Name(),
                     version_name: this.Versions().Items().Selected().Name(),
@@ -239,13 +239,61 @@ export class Instance extends Entity.Instance {
             }
             else if (this.At(this.Count() - 1) === slot) {
                 yield this.Push();
+                yield this.Selector().Body().Browser().Body().Reader().Open_File(null);
+            }
+            else {
+                const book_name = this.Has_Books() && this.Books().Items().Has_Selected() ?
+                    this.Books().Items().Selected().Name() :
+                    null;
+                const language_name = this.Has_Languages() && this.Languages().Items().Has_Selected() ?
+                    this.Languages().Items().Selected().Name() :
+                    null;
+                const version_name = this.Has_Versions() && this.Versions().Items().Has_Selected() ?
+                    this.Versions().Items().Selected().Name() :
+                    null;
+                const file_name = this.Has_Files() && this.Files().Items().Has_Selected() ?
+                    this.Files().Items().Selected().Name() :
+                    null;
+                while (this.Count() > slot.Index() + 1) {
+                    this.Pop();
+                }
+                yield this.Push();
+                while (this.Count() < Instance.Max_Count()) {
+                    const last_slot = this.At(this.Count() - 1);
+                    let maybe_item = null;
+                    if (last_slot.Type() === Slot.Type.BOOKS && book_name != null) {
+                        maybe_item = last_slot.Items().Maybe_From(book_name);
+                    }
+                    else if (last_slot.Type() === Slot.Type.LANGUAGES && language_name != null) {
+                        maybe_item = last_slot.Items().Maybe_From(language_name);
+                    }
+                    else if (last_slot.Type() === Slot.Type.VERSIONS && version_name != null) {
+                        maybe_item = last_slot.Items().Maybe_From(version_name);
+                    }
+                    if (maybe_item != null) {
+                        yield maybe_item.Select();
+                    }
+                    else {
+                        return;
+                    }
+                }
+                const last_slot = this.At(this.Count() - 1);
+                if (last_slot.Type() === Slot.Type.FILES && file_name != null) {
+                    const maybe_item = last_slot.Items().Maybe_From(file_name);
+                    if (maybe_item != null) {
+                        yield maybe_item.Select();
+                    }
+                    else {
+                        return;
+                    }
+                }
             }
         });
     }
     Select(selection) {
         return __awaiter(this, void 0, void 0, function* () {
             const types = this.Types();
-            for (let idx = 0, end = Instance.Max_Slot_Count(); idx < end; idx += 1) {
+            for (let idx = 0, end = Instance.Max_Count(); idx < end; idx += 1) {
                 if (idx === this.Count()) {
                     yield this.Push();
                 }
@@ -268,7 +316,7 @@ export class Instance extends Entity.Instance {
     Select_At(selection) {
         return __awaiter(this, void 0, void 0, function* () {
             const types = this.Types();
-            for (let idx = 0, end = Instance.Max_Slot_Count(); idx < end; idx += 1) {
+            for (let idx = 0, end = Instance.Max_Count(); idx < end; idx += 1) {
                 if (idx === this.Count()) {
                     yield this.Push();
                 }

@@ -42,15 +42,19 @@ export class Instance extends Entity.Instance {
         Utils.Assert(item_index < this.Count(), `item_index must be less than item_count.`);
         return this.items[item_index];
     }
-    From(name) {
+    Maybe_From(name) {
         for (let idx = 0, end = this.Count(); idx < end; idx += 1) {
             const item = this.At(idx);
             if (item.Name() === name) {
                 return item;
             }
         }
-        Utils.Assert(false, `Does not have an item with the name of ${name}.`);
-        return this.At(0);
+        return null;
+    }
+    From(name) {
+        const maybe_item = this.Maybe_From(name);
+        Utils.Assert(maybe_item != null, `Does not have an item with the name of ${name}.`);
+        return maybe_item;
     }
     Array() {
         return Array.from(this.items);
@@ -68,7 +72,6 @@ export class Instance extends Entity.Instance {
             this.selected = item;
             yield this.Slot().Slots().Select_Item_Internally({
                 slot: this.Slot(),
-                item: item,
             });
         });
     }

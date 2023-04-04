@@ -1,17 +1,13 @@
 import * as Entity from "../entity.js";
 import * as Data from "../data.js";
-import * as Selection from "./selection.js";
 import * as Commander from "./commander.js";
 import * as Body from "./body.js";
 export class Instance extends Entity.Instance {
-    constructor({ selection = new Selection.Name({
-        book: `Jubilees`,
-        language: `English`,
-        version: `R. H. Charles`,
-        file: `Chapter 01.txt`,
-    }), selector_slot_order = Body.Selector.Slot.Order.BOOKS_LANGUAGES_VERSIONS, is_selector_open = false, } = {}) {
+    static Data() {
+        return this.data;
+    }
+    constructor({ selection = null, selector_slot_order = Body.Selector.Slot.Order.BOOKS_LANGUAGES_VERSIONS, is_selector_open = false, } = {}) {
         super();
-        this.data = new Data.Instance(); // this maybe should be global...?
         this.commander = new Commander.Instance({
             browser: this,
             is_selector_open: is_selector_open,
@@ -22,13 +18,10 @@ export class Instance extends Entity.Instance {
             selector_slot_order: selector_slot_order,
         });
         this.Is_Ready_After([
-            this.data,
+            Instance.data,
             this.commander,
             this.body,
         ]);
-    }
-    Data() {
-        return this.data;
     }
     Commander() {
         return this.commander;
@@ -46,3 +39,4 @@ export class Instance extends Entity.Instance {
         }
     }
 }
+Instance.data = new Data.Instance();

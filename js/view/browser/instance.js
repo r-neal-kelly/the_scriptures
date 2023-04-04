@@ -16,7 +16,7 @@ export class Instance extends Entity.Instance {
                 .Browser {
                     display: grid;
                     grid-template-rows: 1fr;
-                    grid-template-columns: auto auto;
+                    grid-template-columns: auto 1fr;
                     justify-content: start;
 
                     width: 100%;

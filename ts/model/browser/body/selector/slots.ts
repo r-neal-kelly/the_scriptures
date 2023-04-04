@@ -7,6 +7,7 @@ import * as Utils from "../../../../utils.js";
 import * as Data from "../../../data.js";
 
 import * as Entity from "../../../entity.js";
+import * as Browser from "../../../browser.js";
 import * as Selection from "../../selection.js";
 import * as Selector from "./instance.js";
 import * as Slot from "./slot.js";
@@ -15,7 +16,7 @@ export class Instance extends Entity.Instance
 {
     private static MAX_SLOT_COUNT: Count = 4;
 
-    static Max_Slot_Count():
+    static Max_Count():
         Count
     {
         return Instance.MAX_SLOT_COUNT;
@@ -205,7 +206,7 @@ export class Instance extends Entity.Instance
         slot_types.push(Slot.Type.FILES);
 
         Utils.Assert(
-            slot_types.length === Instance.Max_Slot_Count(),
+            slot_types.length === Instance.Max_Count(),
             `slot_types must have all types.`,
         );
 
@@ -215,7 +216,7 @@ export class Instance extends Entity.Instance
     private async Push():
         Promise<void>
     {
-        const max_slot_count: Count = Instance.Max_Slot_Count();
+        const max_slot_count: Count = Instance.Max_Count();
         const slot_count: Count = this.Count();
 
         Utils.Assert(
@@ -266,11 +267,11 @@ export class Instance extends Entity.Instance
         );
 
         const slot_item_names: Array<Name> =
-            await this.Selector().Body().Browser().Data().Names(slot_query);
+            await Browser.Instance.Data().Names(slot_query);
         const slot_item_files: Array<Data.File.Instance> | null =
             slot_type === Slot.Type.FILES ?
                 await (
-                    await this.Selector().Body().Browser().Data().Files(
+                    await Browser.Instance.Data().Files(
                         {
                             book_name: this.Books().Items().Selected().Name(),
                             language_name: this.Languages().Items().Selected().Name(),
@@ -291,6 +292,12 @@ export class Instance extends Entity.Instance
                 },
             ),
         );
+    }
+
+    private Pop():
+        void
+    {
+        this.slots.pop();
     }
 
     Has_Books():
@@ -393,10 +400,8 @@ export class Instance extends Entity.Instance
     async Select_Item_Internally(
         {
             slot,
-            item,
         }: {
             slot: Slot.Instance,
-            item: Slot.Item.Instance,
         },
     ):
         Promise<void>
@@ -406,12 +411,8 @@ export class Instance extends Entity.Instance
             `The slot does not belong to this selector.`,
         );
 
-        // How are we going to handle when selecting item in non-files slot
-        // while the files slot is open? Do we try to match it with the new
-        // slots that might have to be created, or do we just unselect the
-        // discarded slots?
         if (slot.Type() === Slot.Type.FILES) {
-            const file: Data.File.Instance = await this.Selector().Body().Browser().Data().File(
+            const file: Data.File.Instance = await Browser.Instance.Data().File(
                 {
                     book_name: this.Books().Items().Selected().Name(),
                     language_name: this.Languages().Items().Selected().Name(),
@@ -422,6 +423,55 @@ export class Instance extends Entity.Instance
             await this.Selector().Body().Browser().Body().Reader().Open_File(file);
         } else if (this.At(this.Count() - 1) === slot) {
             await this.Push();
+            await this.Selector().Body().Browser().Body().Reader().Open_File(null);
+        } else {
+            const book_name: Name | null = this.Has_Books() && this.Books().Items().Has_Selected() ?
+                this.Books().Items().Selected().Name() :
+                null;
+            const language_name: Name | null = this.Has_Languages() && this.Languages().Items().Has_Selected() ?
+                this.Languages().Items().Selected().Name() :
+                null;
+            const version_name: Name | null = this.Has_Versions() && this.Versions().Items().Has_Selected() ?
+                this.Versions().Items().Selected().Name() :
+                null;
+            const file_name: Name | null = this.Has_Files() && this.Files().Items().Has_Selected() ?
+                this.Files().Items().Selected().Name() :
+                null;
+
+            while (this.Count() > slot.Index() + 1) {
+                this.Pop();
+            }
+            await this.Push();
+
+            while (this.Count() < Instance.Max_Count()) {
+                const last_slot: Slot.Instance = this.At(this.Count() - 1);
+
+                let maybe_item: Slot.Item.Instance | null = null;
+                if (last_slot.Type() === Slot.Type.BOOKS && book_name != null) {
+                    maybe_item = last_slot.Items().Maybe_From(book_name);
+                } else if (last_slot.Type() === Slot.Type.LANGUAGES && language_name != null) {
+                    maybe_item = last_slot.Items().Maybe_From(language_name);
+                } else if (last_slot.Type() === Slot.Type.VERSIONS && version_name != null) {
+                    maybe_item = last_slot.Items().Maybe_From(version_name);
+                }
+
+                if (maybe_item != null) {
+                    await maybe_item.Select();
+                } else {
+                    return;
+                }
+            }
+
+            const last_slot: Slot.Instance = this.At(this.Count() - 1);
+            if (last_slot.Type() === Slot.Type.FILES && file_name != null) {
+                const maybe_item: Slot.Item.Instance | null =
+                    last_slot.Items().Maybe_From(file_name);
+                if (maybe_item != null) {
+                    await maybe_item.Select();
+                } else {
+                    return;
+                }
+            }
         }
     }
 
@@ -431,7 +481,7 @@ export class Instance extends Entity.Instance
         Promise<void>
     {
         const types: Array<Slot.Type> = this.Types();
-        for (let idx = 0, end = Instance.Max_Slot_Count(); idx < end; idx += 1) {
+        for (let idx = 0, end = Instance.Max_Count(); idx < end; idx += 1) {
             if (idx === this.Count()) {
                 await this.Push();
             }
@@ -455,7 +505,7 @@ export class Instance extends Entity.Instance
         Promise<void>
     {
         const types: Array<Slot.Type> = this.Types();
-        for (let idx = 0, end = Instance.Max_Slot_Count(); idx < end; idx += 1) {
+        for (let idx = 0, end = Instance.Max_Count(); idx < end; idx += 1) {
             if (idx === this.Count()) {
                 await this.Push();
             }

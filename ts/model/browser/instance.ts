@@ -8,20 +8,20 @@ import * as Body from "./body.js";
 
 export class Instance extends Entity.Instance
 {
-    private data: Data.Instance;
+    private static data: Data.Instance = new Data.Instance();
+
+    static Data():
+        Data.Instance
+    {
+        return this.data;
+    }
+
     private commander: Commander.Instance;
     private body: Body.Instance;
 
     constructor(
         {
-            selection = new Selection.Name(
-                {
-                    book: `Jubilees`,
-                    language: `English`,
-                    version: `R. H. Charles`,
-                    file: `Chapter 01.txt`,
-                },
-            ),
+            selection = null,
             selector_slot_order = Body.Selector.Slot.Order.BOOKS_LANGUAGES_VERSIONS,
             is_selector_open = false,
         }: {
@@ -33,7 +33,6 @@ export class Instance extends Entity.Instance
     {
         super();
 
-        this.data = new Data.Instance(); // this maybe should be global...?
         this.commander = new Commander.Instance(
             {
                 browser: this,
@@ -50,17 +49,11 @@ export class Instance extends Entity.Instance
 
         this.Is_Ready_After(
             [
-                this.data,
+                Instance.data,
                 this.commander,
                 this.body,
             ],
         );
-    }
-
-    Data():
-        Data.Instance
-    {
-        return this.data;
     }
 
     Commander():

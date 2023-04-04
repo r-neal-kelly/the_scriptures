@@ -11,20 +11,13 @@ import * as Text from "../../../text.js";
 import * as Entity from "../../../entity.js";
 import * as File from "./file.js";
 export class Instance extends Entity.Instance {
+    static Blank_File() {
+        return this.blank_file;
+    }
     constructor({ body, }) {
         super();
         this.body = body;
-        this.blank_file = new File.Instance({
-            reader: this,
-            data: null,
-            text: new Text.Instance({
-                dictionary: new Text.Dictionary.Instance({
-                    json: null,
-                }),
-                value: ``,
-            }),
-        });
-        this.current_file = this.blank_file;
+        this.current_file = Instance.Blank_File();
         this.Is_Ready_After([
             this.current_file,
         ]);
@@ -38,18 +31,34 @@ export class Instance extends Entity.Instance {
     Open_File(file) {
         return __awaiter(this, void 0, void 0, function* () {
             if (this.current_file.Maybe_Data() != file) {
-                const file_dictionary = (yield file.Files().Dictionary()).Text_Dictionary();
-                const file_value = ((yield file.Maybe_Text()) || ``).replace(/\r?\n\r?\n/g, `\n \n`);
-                this.current_file = new File.Instance({
-                    reader: this,
-                    data: file,
-                    text: new Text.Instance({
-                        dictionary: file_dictionary,
-                        value: file_value,
-                    }),
-                });
-                yield this.current_file.Ready();
+                if (file != null) {
+                    const file_dictionary = (yield file.Files().Dictionary()).Text_Dictionary();
+                    const file_value = ((yield file.Maybe_Text()) || ``).replace(/\r?\n\r?\n/g, `\n \n`);
+                    this.current_file = new File.Instance({
+                        reader: this,
+                        data: file,
+                        text: new Text.Instance({
+                            dictionary: file_dictionary,
+                            value: file_value,
+                        }),
+                    });
+                    yield this.current_file.Ready();
+                }
+                else {
+                    this.current_file = Instance.Blank_File();
+                    yield this.current_file.Ready();
+                }
             }
         });
     }
 }
+Instance.blank_file = new File.Instance({
+    reader: null,
+    data: null,
+    text: new Text.Instance({
+        dictionary: new Text.Dictionary.Instance({
+            json: null,
+        }),
+        value: ``,
+    }),
+});

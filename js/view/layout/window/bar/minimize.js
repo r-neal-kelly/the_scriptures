@@ -39,8 +39,8 @@ export class Instance extends Entity.Instance {
             yield this.Send(new Event.Info({
                 affix: `Window_Toggle_Minimization`,
                 suffixes: [
-                    `${this.ID()}`,
-                    `${this.Commands().Bar().Window().Wall().Layout().ID()}`,
+                    this.ID(),
+                    this.Commands().Bar().Window().Wall().Layout().ID(),
                 ],
                 type: Event.Type.EXCLUSIVE,
                 data: {},

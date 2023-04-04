@@ -91,10 +91,10 @@ export class Instance extends Entity.Instance
         return this.items[item_index];
     }
 
-    From(
+    Maybe_From(
         name: Name,
     ):
-        Item.Instance
+        Item.Instance | null
     {
         for (let idx = 0, end = this.Count(); idx < end; idx += 1) {
             const item: Item.Instance = this.At(idx);
@@ -103,12 +103,22 @@ export class Instance extends Entity.Instance
             }
         }
 
+        return null;
+    }
+
+    From(
+        name: Name,
+    ):
+        Item.Instance
+    {
+        const maybe_item: Item.Instance | null = this.Maybe_From(name);
+
         Utils.Assert(
-            false,
+            maybe_item != null,
             `Does not have an item with the name of ${name}.`,
         );
 
-        return this.At(0);
+        return maybe_item as Item.Instance;
     }
 
     Array():
@@ -149,7 +159,6 @@ export class Instance extends Entity.Instance
         await this.Slot().Slots().Select_Item_Internally(
             {
                 slot: this.Slot(),
-                item: item,
             },
         );
     }
