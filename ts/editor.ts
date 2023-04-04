@@ -1,4 +1,7 @@
 import * as Utils from "./utils.js";
+import * as Unicode from "./unicode.js";
+
+import * as Model from "./model/text.js";
 
 function Escape_Text(
     text: String,
@@ -210,12 +213,7 @@ function Set_Text_Offset(
     }
 }
 
-type Letter = string;
-type Marker = string;
-type Word = string;
-type Break = string;
-
-enum Dictionary_Class
+enum Part_Class
 {
     _NONE_ = -1,
 
@@ -233,36 +231,10 @@ enum Dictionary_Class
     KNOWN_BREAK_ERROR,
 };
 
-enum Dictionary_Boundary
-{
-    START = `START`,
-    MIDDLE = `MIDDLE`,
-    END = `END`,
-};
-
-type Dictionary_Data = {
-    letters: Array<Letter>;
-    markers: Array<Marker>;
-
-    words: { [index: Letter]: Array<Word> };
-    breaks: {
-        [Dictionary_Boundary.START]: { [index: Marker]: Array<Break> },
-        [Dictionary_Boundary.MIDDLE]: { [index: Marker]: Array<Break> },
-        [Dictionary_Boundary.END]: { [index: Marker]: Array<Break> },
-    };
-
-    word_errors: Array<Word>;
-    break_errors: {
-        [Dictionary_Boundary.START]: Array<Break>,
-        [Dictionary_Boundary.MIDDLE]: Array<Break>,
-        [Dictionary_Boundary.END]: Array<Break>,
-    };
-};
-
 type Dictionary_Entry = {
     text: string,
-    class: Dictionary_Class,
-    boundary: Dictionary_Boundary,
+    class: Part_Class,
+    boundary: Model.Dictionary.Boundary,
 };
 
 type Dictionary_Treatment = {
@@ -270,135 +242,97 @@ type Dictionary_Treatment = {
     is_centered: boolean,
 };
 
-class Dictionary
+function First_Part_Index(
+    element: HTMLElement,
+):
+    number | null
 {
-    static Is_Point(
-        text: string,
-    ):
-        boolean
-    {
-        return (
-            text.length === 1 ||
-            (
-                text.length === 2 &&
-                text.charCodeAt(0) >= 0xD800 &&
-                text.charCodeAt(0) <= 0xDBFF &&
-                text.charCodeAt(1) >= 0xDC00 &&
-                text.charCodeAt(1) <= 0xDFFF
-            )
-        );
+    for (let idx = 0, end = element.children.length; idx < end;) {
+        if (!element.children[idx].classList.contains(`COMMAND`)) {
+            return idx;
+        }
+        idx += 1;
     }
 
-    static First_Point(
-        text: string,
-    ):
-        string
-    {
-        if (text.length === 0) {
-            return ``;
-        } else {
-            if (text.charCodeAt(0) < 0xD800 || text.charCodeAt(0) > 0xDFFF) {
-                return text.slice(0, 1);
-            } else {
-                return text.slice(0, 2);
-            }
+    return null;
+}
+
+function Last_Part_Index(
+    element: HTMLElement,
+):
+    number | null
+{
+    for (let idx = element.children.length, end = 0; idx > end;) {
+        idx -= 1;
+        if (!element.children[idx].classList.contains(`COMMAND`)) {
+            return idx;
         }
     }
 
-    static First_Entry_Index(
-        element: HTMLElement,
-    ):
-        number | null
-    {
-        for (let idx = 0, end = element.children.length; idx < end;) {
-            if (!element.children[idx].classList.contains(`COMMAND`)) {
-                return idx;
-            }
-            idx += 1;
-        }
+    return null;
+}
 
-        return null;
-    }
-
-    static Last_Entry_Index(
-        element: HTMLElement,
-    ):
-        number | null
-    {
-        for (let idx = element.children.length, end = 0; idx > end;) {
-            idx -= 1;
-            if (!element.children[idx].classList.contains(`COMMAND`)) {
-                return idx;
-            }
-        }
-
-        return null;
-    }
-
-    static Selected_Entry():
-        Dictionary_Entry | null
-    {
-        const selection: Selection | null = document.getSelection();
+function Selected_Part():
+    Dictionary_Entry | null
+{
+    const selection: Selection | null = document.getSelection();
+    if (
+        selection &&
+        !selection.isCollapsed &&
+        selection.anchorNode != null &&
+        selection.focusNode != null &&
+        selection.anchorNode === selection.focusNode &&
+        selection.getRangeAt(0).startOffset === 0 &&
+        selection.getRangeAt(0).endOffset === 1
+    ) {
         if (
-            selection &&
-            !selection.isCollapsed &&
-            selection.anchorNode != null &&
-            selection.focusNode != null &&
-            selection.anchorNode === selection.focusNode &&
-            selection.getRangeAt(0).startOffset === 0 &&
-            selection.getRangeAt(0).endOffset === 1
+            selection.anchorNode instanceof HTMLSpanElement
         ) {
+            const span: HTMLSpanElement = selection.anchorNode as HTMLSpanElement;
             if (
-                selection.anchorNode instanceof HTMLSpanElement
+                span.parentElement != null &&
+                span.textContent != null
             ) {
-                const span: HTMLSpanElement = selection.anchorNode as HTMLSpanElement;
-                if (
-                    span.parentElement != null &&
-                    span.textContent != null
-                ) {
-                    const dictionary_text: string = span.textContent.replaceAll(/ /g, ` `);
-                    if (dictionary_text !== ``) {
-                        let dictionary_class: Dictionary_Class = Dictionary_Class._NONE_;
-                        if (span.classList.contains(`UNKNOWN_POINT`)) {
-                            dictionary_class = Dictionary_Class.UNKNOWN_POINT;
-                        } else if (span.classList.contains(`KNOWN_LETTER`)) {
-                            dictionary_class = Dictionary_Class.KNOWN_LETTER;
-                        } else if (span.classList.contains(`KNOWN_MARKER`)) {
-                            dictionary_class = Dictionary_Class.KNOWN_MARKER;
+                const dictionary_text: string = span.textContent.replaceAll(/ /g, ` `);
+                if (dictionary_text !== ``) {
+                    let dictionary_class: Part_Class = Part_Class._NONE_;
+                    if (span.classList.contains(`UNKNOWN_POINT`)) {
+                        dictionary_class = Part_Class.UNKNOWN_POINT;
+                    } else if (span.classList.contains(`KNOWN_LETTER`)) {
+                        dictionary_class = Part_Class.KNOWN_LETTER;
+                    } else if (span.classList.contains(`KNOWN_MARKER`)) {
+                        dictionary_class = Part_Class.KNOWN_MARKER;
 
-                        } else if (span.classList.contains(`UNKNOWN_WORD`)) {
-                            dictionary_class = Dictionary_Class.UNKNOWN_WORD;
-                        } else if (span.classList.contains(`KNOWN_WORD`)) {
-                            dictionary_class = Dictionary_Class.KNOWN_WORD;
+                    } else if (span.classList.contains(`UNKNOWN_WORD`)) {
+                        dictionary_class = Part_Class.UNKNOWN_WORD;
+                    } else if (span.classList.contains(`KNOWN_WORD`)) {
+                        dictionary_class = Part_Class.KNOWN_WORD;
 
-                        } else if (span.classList.contains(`UNKNOWN_BREAK`)) {
-                            dictionary_class = Dictionary_Class.UNKNOWN_BREAK;
-                        } else if (span.classList.contains(`KNOWN_BREAK`)) {
-                            dictionary_class = Dictionary_Class.KNOWN_BREAK;
+                    } else if (span.classList.contains(`UNKNOWN_BREAK`)) {
+                        dictionary_class = Part_Class.UNKNOWN_BREAK;
+                    } else if (span.classList.contains(`KNOWN_BREAK`)) {
+                        dictionary_class = Part_Class.KNOWN_BREAK;
 
-                        } else if (span.classList.contains(`KNOWN_WORD_ERROR`)) {
-                            dictionary_class = Dictionary_Class.KNOWN_WORD_ERROR;
-                        } else if (span.classList.contains(`KNOWN_BREAK_ERROR`)) {
-                            dictionary_class = Dictionary_Class.KNOWN_BREAK_ERROR;
+                    } else if (span.classList.contains(`KNOWN_WORD_ERROR`)) {
+                        dictionary_class = Part_Class.KNOWN_WORD_ERROR;
+                    } else if (span.classList.contains(`KNOWN_BREAK_ERROR`)) {
+                        dictionary_class = Part_Class.KNOWN_BREAK_ERROR;
+                    }
+
+                    if (dictionary_class !== Part_Class._NONE_) {
+                        const span_index: number = Array.from(span.parentElement.children).indexOf(span);
+                        let dictionary_boundary: Model.Dictionary.Boundary = Model.Dictionary.Boundary.MIDDLE;
+                        if (span_index === First_Part_Index(span.parentElement)) {
+                            dictionary_boundary = Model.Dictionary.Boundary.START;
+                        } else if (span_index === Last_Part_Index(span.parentElement)) {
+                            dictionary_boundary = Model.Dictionary.Boundary.END;
                         }
 
-                        if (dictionary_class !== Dictionary_Class._NONE_) {
-                            const span_index: number = Array.from(span.parentElement.children).indexOf(span);
-                            let dictionary_boundary: Dictionary_Boundary = Dictionary_Boundary.MIDDLE;
-                            if (span_index === Dictionary.First_Entry_Index(span.parentElement)) {
-                                dictionary_boundary = Dictionary_Boundary.START;
-                            } else if (span_index === Dictionary.Last_Entry_Index(span.parentElement)) {
-                                dictionary_boundary = Dictionary_Boundary.END;
-                            }
-
-                            return {
-                                text: dictionary_text,
-                                class: dictionary_class,
-                                boundary: dictionary_boundary,
-                            };
-                        } else {
-                            return null;
-                        }
+                        return {
+                            text: dictionary_text,
+                            class: dictionary_class,
+                            boundary: dictionary_boundary,
+                        };
                     } else {
                         return null;
                     }
@@ -411,783 +345,8 @@ class Dictionary
         } else {
             return null;
         }
-    }
-
-    private data: Dictionary_Data;
-
-    constructor(
-        {
-            json = null,
-        }: {
-            json?: string | null,
-        },
-    )
-    {
-        if (json) {
-            this.data = JSON.parse(json);
-        } else {
-            this.data = {
-                letters: [],
-                markers: [],
-
-                words: {},
-                breaks: {
-                    [Dictionary_Boundary.START]: {},
-                    [Dictionary_Boundary.MIDDLE]: {},
-                    [Dictionary_Boundary.END]: {},
-                },
-
-                word_errors: [],
-                break_errors: {
-                    [Dictionary_Boundary.START]: [],
-                    [Dictionary_Boundary.MIDDLE]: [],
-                    [Dictionary_Boundary.END]: [],
-                },
-            };
-        }
-    }
-
-    Has_Letter(
-        letter: Letter,
-    ):
-        boolean
-    {
-        Utils.Assert(Dictionary.Is_Point(letter));
-
-        return this.data.letters.includes(letter);
-    }
-
-    Add_Letter(
-        letter: Letter,
-    ):
-        void
-    {
-        Utils.Assert(Dictionary.Is_Point(letter));
-
-        if (!this.data.letters.includes(letter)) {
-            this.data.letters.push(letter);
-
-            this.data.words[letter] = [];
-        }
-    }
-
-    Remove_Letter(
-        letter: Letter,
-    ):
-        void
-    {
-        Utils.Assert(Dictionary.Is_Point(letter));
-
-        const index: number = this.data.letters.indexOf(letter);
-        if (index > -1) {
-            this.data.letters[index] = this.data.letters[this.data.letters.length - 1];
-            this.data.letters.pop();
-
-            delete this.data.words[letter];
-        }
-    }
-
-    Has_Marker(
-        marker: Marker,
-    ):
-        boolean
-    {
-        Utils.Assert(Dictionary.Is_Point(marker));
-
-        return this.data.markers.includes(marker);
-    }
-
-    Add_Marker(
-        marker: Marker,
-    ):
-        void
-    {
-        Utils.Assert(Dictionary.Is_Point(marker));
-
-        if (!this.data.markers.includes(marker)) {
-            this.data.markers.push(marker);
-
-            this.data.breaks[Dictionary_Boundary.START][marker] = [];
-            this.data.breaks[Dictionary_Boundary.MIDDLE][marker] = [];
-            this.data.breaks[Dictionary_Boundary.END][marker] = [];
-        }
-    }
-
-    Remove_Marker(
-        marker: Marker,
-    ):
-        void
-    {
-        Utils.Assert(Dictionary.Is_Point(marker));
-
-        const index: number = this.data.markers.indexOf(marker);
-        if (index > -1) {
-            this.data.markers[index] = this.data.markers[this.data.markers.length - 1];
-            this.data.markers.pop();
-
-            delete this.data.breaks[Dictionary_Boundary.START][marker];
-            delete this.data.breaks[Dictionary_Boundary.MIDDLE][marker];
-            delete this.data.breaks[Dictionary_Boundary.END][marker];
-        }
-    }
-
-    Has_Word(
-        word: Word,
-    ):
-        boolean
-    {
-        Utils.Assert(word.length > 0);
-
-        const first_point: string = Dictionary.First_Point(word);
-
-        return (
-            this.data.words[first_point] != null &&
-            this.data.words[first_point].includes(word)
-        );
-    }
-
-    Add_Word(
-        word: Word,
-    ):
-        void
-    {
-        Utils.Assert(word.length > 0);
-        Utils.Assert(!this.Has_Word_Error(word));
-
-        const first_point: string = Dictionary.First_Point(word);
-
-        if (this.data.words[first_point] == null) {
-            this.Add_Letter(first_point);
-            this.data.words[first_point].push(word);
-        } else {
-            if (!this.data.words[first_point].includes(word)) {
-                this.data.words[first_point].push(word);
-            }
-        }
-    }
-
-    Remove_Word(
-        word: Word,
-    ):
-        void
-    {
-        Utils.Assert(word.length > 0);
-
-        const first_point: string = Dictionary.First_Point(word);
-
-        if (this.data.words[first_point] != null) {
-            const index: number = this.data.words[first_point].indexOf(word);
-            if (index > -1) {
-                this.data.words[first_point][index] =
-                    this.data.words[first_point][this.data.words[first_point].length - 1];
-                this.data.words[first_point].pop();
-            }
-        }
-    }
-
-    Has_Break(
-        break_: Break,
-        boundary: Dictionary_Boundary,
-    ):
-        boolean
-    {
-        Utils.Assert(break_.length > 0);
-
-        const first_point: string = Dictionary.First_Point(break_);
-
-        return (
-            this.data.breaks[boundary][first_point] != null &&
-            this.data.breaks[boundary][first_point].includes(break_)
-        );
-    }
-
-    Add_Break(
-        break_: Break,
-        boundary: Dictionary_Boundary,
-    ):
-        void
-    {
-        Utils.Assert(break_.length > 0);
-        Utils.Assert(!this.Has_Break_Error(break_, boundary));
-
-        const first_point: string = Dictionary.First_Point(break_);
-
-        if (this.data.breaks[boundary][first_point] == null) {
-            this.Add_Marker(first_point);
-            this.data.breaks[boundary][first_point].push(break_);
-        } else {
-            if (!this.data.breaks[boundary][first_point].includes(break_)) {
-                this.data.breaks[boundary][first_point].push(break_);
-            }
-        }
-    }
-
-    Remove_Break(
-        break_: Break,
-        boundary: Dictionary_Boundary,
-    ):
-        void
-    {
-        Utils.Assert(break_.length > 0);
-
-        const first_point: string = Dictionary.First_Point(break_);
-
-        if (this.data.breaks[boundary][first_point] != null) {
-            const index: number = this.data.breaks[boundary][first_point].indexOf(break_);
-            if (index > -1) {
-                this.data.breaks[boundary][first_point][index] =
-                    this.data.breaks[boundary][first_point][this.data.breaks[boundary][first_point].length - 1];
-                this.data.breaks[boundary][first_point].pop();
-            }
-        }
-    }
-
-    Has_Word_Error(
-        word_error: Word,
-    ):
-        boolean
-    {
-        Utils.Assert(word_error.length > 0);
-
-        return this.data.word_errors.includes(word_error);
-    }
-
-    Add_Word_Error(
-        word_error: Word,
-    ):
-        void
-    {
-        Utils.Assert(word_error.length > 0);
-        Utils.Assert(!this.Has_Word(word_error));
-
-        if (!this.data.word_errors.includes(word_error)) {
-            this.data.word_errors.push(word_error);
-        }
-    }
-
-    Remove_Word_Error(
-        word_error: Word,
-    ):
-        void
-    {
-        Utils.Assert(word_error.length > 0);
-
-        const index: number = this.data.word_errors.indexOf(word_error);
-        if (index > -1) {
-            this.data.word_errors[index] = this.data.word_errors[this.data.word_errors.length - 1];
-            this.data.word_errors.pop();
-        }
-    }
-
-    Has_Break_Error(
-        break_error: Break,
-        boundary: Dictionary_Boundary,
-    ):
-        boolean
-    {
-        Utils.Assert(break_error.length > 0);
-
-        return this.data.break_errors[boundary].includes(break_error);
-    }
-
-    Add_Break_Error(
-        break_error: Break,
-        boundary: Dictionary_Boundary,
-    ):
-        void
-    {
-        Utils.Assert(break_error.length > 0);
-        Utils.Assert(!this.Has_Break(break_error, boundary));
-
-        if (!this.data.break_errors[boundary].includes(break_error)) {
-            this.data.break_errors[boundary].push(break_error);
-        }
-    }
-
-    Remove_Break_Error(
-        break_error: Break,
-        boundary: Dictionary_Boundary,
-    ):
-        void
-    {
-        Utils.Assert(break_error.length > 0);
-
-        const index: number = this.data.break_errors[boundary].indexOf(break_error);
-        if (index > -1) {
-            this.data.break_errors[boundary][index] =
-                this.data.break_errors[boundary][this.data.break_errors[boundary].length - 1];
-            this.data.break_errors[boundary].pop();
-        }
-    }
-
-    Treat(
-        text: string,
-    ):
-        Dictionary_Treatment
-    {
-        enum Type
-        {
-            _NONE_ = -1,
-
-            POINT,
-            LETTERS,
-            MARKERS,
-            COMMAND,
-        };
-
-        type Part = {
-            subtext: string,
-            type: Type,
-            has_italic: boolean,
-            has_bold: boolean,
-            has_underline: boolean,
-            has_small_caps: boolean,
-            has_error: boolean,
-        };
-
-        const is_centered: boolean = /^⸨cen⸩/.test(text);
-        const parts: Array<Part> = [];
-
-        let current_start_index: number = 0;
-        let current_type: Type = Type._NONE_;
-        let has_italic: boolean = false;
-        let has_bold: boolean = false;
-        let has_underline: boolean = false;
-        let has_small_caps: boolean = false;
-        let has_error: boolean = false;
-        let first_part: number | null = null;
-        let last_part: number | null = null;
-
-        for (let idx = 0, end = text.length; idx < end;) {
-            const maybe_command: string = text.slice(idx);
-            if (/^⸨i⸩/.test(maybe_command)) {
-                has_italic = true;
-
-                parts.push(
-                    {
-                        subtext: `⸨i⸩`,
-                        type: Type.COMMAND,
-                        has_italic: false,
-                        has_bold: false,
-                        has_underline: false,
-                        has_small_caps: false,
-                        has_error: false,
-                    },
-                );
-                current_start_index = idx + `⸨i⸩`.length;
-
-                idx += `⸨i⸩`.length;
-            } else if (/^⸨\/i⸩/.test(maybe_command)) {
-                has_italic = false;
-
-                parts.push(
-                    {
-                        subtext: `⸨/i⸩`,
-                        type: Type.COMMAND,
-                        has_italic: false,
-                        has_bold: false,
-                        has_underline: false,
-                        has_small_caps: false,
-                        has_error: false,
-                    },
-                );
-                current_start_index = idx + `⸨/i⸩`.length;
-
-                idx += `⸨/i⸩`.length;
-            } else if (/^⸨b⸩/.test(maybe_command)) {
-                has_bold = true;
-
-                parts.push(
-                    {
-                        subtext: `⸨b⸩`,
-                        type: Type.COMMAND,
-                        has_italic: false,
-                        has_bold: false,
-                        has_underline: false,
-                        has_small_caps: false,
-                        has_error: false,
-                    },
-                );
-                current_start_index = idx + `⸨b⸩`.length;
-
-                idx += `⸨b⸩`.length;
-            } else if (/^⸨\/b⸩/.test(maybe_command)) {
-                has_bold = false;
-
-                parts.push(
-                    {
-                        subtext: `⸨/b⸩`,
-                        type: Type.COMMAND,
-                        has_italic: false,
-                        has_bold: false,
-                        has_underline: false,
-                        has_small_caps: false,
-                        has_error: false,
-                    },
-                );
-                current_start_index = idx + `⸨/b⸩`.length;
-
-                idx += `⸨/b⸩`.length;
-            } else if (/^⸨u⸩/.test(maybe_command)) {
-                has_underline = true;
-
-                parts.push(
-                    {
-                        subtext: `⸨u⸩`,
-                        type: Type.COMMAND,
-                        has_italic: false,
-                        has_bold: false,
-                        has_underline: false,
-                        has_small_caps: false,
-                        has_error: false,
-                    },
-                );
-                current_start_index = idx + `⸨u⸩`.length;
-
-                idx += `⸨u⸩`.length;
-            } else if (/^⸨\/u⸩/.test(maybe_command)) {
-                has_underline = false;
-
-                parts.push(
-                    {
-                        subtext: `⸨/u⸩`,
-                        type: Type.COMMAND,
-                        has_italic: false,
-                        has_bold: false,
-                        has_underline: false,
-                        has_small_caps: false,
-                        has_error: false,
-                    },
-                );
-                current_start_index = idx + `⸨/u⸩`.length;
-
-                idx += `⸨/u⸩`.length;
-            } else if (/^⸨sc⸩/.test(maybe_command)) {
-                has_small_caps = true;
-
-                parts.push(
-                    {
-                        subtext: `⸨sc⸩`,
-                        type: Type.COMMAND,
-                        has_italic: false,
-                        has_bold: false,
-                        has_underline: false,
-                        has_small_caps: false,
-                        has_error: false,
-                    },
-                );
-                current_start_index = idx + `⸨sc⸩`.length;
-
-                idx += `⸨sc⸩`.length;
-            } else if (/^⸨\/sc⸩/.test(maybe_command)) {
-                has_small_caps = false;
-
-                parts.push(
-                    {
-                        subtext: `⸨/sc⸩`,
-                        type: Type.COMMAND,
-                        has_italic: false,
-                        has_bold: false,
-                        has_underline: false,
-                        has_small_caps: false,
-                        has_error: false,
-                    },
-                );
-                current_start_index = idx + `⸨/sc⸩`.length;
-
-                idx += `⸨/sc⸩`.length;
-            } else if (/^⸨err⸩/.test(maybe_command)) {
-                has_error = true;
-
-                parts.push(
-                    {
-                        subtext: `⸨err⸩`,
-                        type: Type.COMMAND,
-                        has_italic: false,
-                        has_bold: false,
-                        has_underline: false,
-                        has_small_caps: false,
-                        has_error: false,
-                    },
-                );
-                current_start_index = idx + `⸨err⸩`.length;
-
-                idx += `⸨err⸩`.length;
-            } else if (/^⸨\/err⸩/.test(maybe_command)) {
-                has_error = false;
-
-                parts.push(
-                    {
-                        subtext: `⸨/err⸩`,
-                        type: Type.COMMAND,
-                        has_italic: false,
-                        has_bold: false,
-                        has_underline: false,
-                        has_small_caps: false,
-                        has_error: false,
-                    },
-                );
-                current_start_index = idx + `⸨/err⸩`.length;
-
-                idx += `⸨/err⸩`.length;
-            } else if (/^⸨in⸩/.test(maybe_command)) {
-                parts.push(
-                    {
-                        subtext: `⸨in⸩`,
-                        type: Type.COMMAND,
-                        has_italic: false,
-                        has_bold: false,
-                        has_underline: false,
-                        has_small_caps: false,
-                        has_error: false,
-                    },
-                );
-                current_start_index = idx + `⸨in⸩`.length;
-
-                idx += `⸨in⸩`.length;
-            } else if (/^⸨cen⸩/.test(maybe_command)) {
-                parts.push(
-                    {
-                        subtext: `⸨cen⸩`,
-                        type: Type.COMMAND,
-                        has_italic: false,
-                        has_bold: false,
-                        has_underline: false,
-                        has_small_caps: false,
-                        has_error: false,
-                    },
-                );
-                current_start_index = idx + `⸨cen⸩`.length;
-
-                idx += `⸨cen⸩`.length;
-            } else {
-                const point: string = Dictionary.First_Point(maybe_command);
-                const next_point: string = Dictionary.First_Point(maybe_command.slice(point.length));
-
-                if (this.data.letters.includes(point)) {
-                    current_type = Type.LETTERS;
-                } else if (this.data.markers.includes(point)) {
-                    current_type = Type.MARKERS;
-                } else {
-                    current_type = Type.POINT;
-                }
-
-                if (current_type === Type.POINT) {
-                    if (first_part === null) {
-                        first_part = parts.length;
-                    }
-                    last_part = parts.length;
-
-                    parts.push(
-                        {
-                            subtext: text.slice(current_start_index, idx + point.length),
-                            type: Type.POINT,
-                            has_italic,
-                            has_bold,
-                            has_underline,
-                            has_small_caps,
-                            has_error,
-                        },
-                    );
-                    current_start_index = idx + point.length;
-                } else if (current_type === Type.LETTERS) {
-                    if (
-                        idx + point.length === end ||
-                        (point.length === 1 && /^.⸨\/?[^⸩]*⸩/.test(maybe_command)) ||
-                        (point.length === 2 && /^..⸨\/?[^⸩]*⸩/.test(maybe_command)) ||
-                        !this.data.letters.includes(next_point)
-                    ) {
-                        if (first_part === null) {
-                            first_part = parts.length;
-                        }
-                        last_part = parts.length;
-
-                        parts.push(
-                            {
-                                subtext: text.slice(current_start_index, idx + point.length),
-                                type: Type.LETTERS,
-                                has_italic,
-                                has_bold,
-                                has_underline,
-                                has_small_caps,
-                                has_error,
-                            },
-                        );
-                        current_start_index = idx + point.length;
-                    }
-                } else if (current_type === Type.MARKERS) {
-                    if (
-                        idx + point.length === end ||
-                        (point.length === 1 && /^.⸨\/?[^⸩]*⸩/.test(maybe_command)) ||
-                        (point.length === 2 && /^..⸨\/?[^⸩]*⸩/.test(maybe_command)) ||
-                        !this.data.markers.includes(next_point)
-                    ) {
-                        if (first_part === null) {
-                            first_part = parts.length;
-                        }
-                        last_part = parts.length;
-
-                        parts.push(
-                            {
-                                subtext: text.slice(current_start_index, idx + point.length),
-                                type: Type.MARKERS,
-                                has_italic,
-                                has_bold,
-                                has_underline,
-                                has_small_caps,
-                                has_error,
-                            },
-                        );
-                        current_start_index = idx + point.length;
-                    }
-                } else {
-                    Utils.Assert(false);
-                }
-
-                idx += point.length;
-            }
-        }
-
-        let inner_html: string = ``;
-        for (let idx = 0, end = parts.length; idx < end; idx += 1) {
-            const part = parts[idx];
-            if (part.type === Type.COMMAND) {
-                let command_classes: string = ``;
-                if (part.subtext === `⸨in⸩`) {
-                    command_classes += ` INDENT`;
-                }
-
-                inner_html += `<span class="COMMAND${command_classes}">${Escape_Text(part.subtext)}</span>`;
-            } else {
-                let command_classes: string = ``;
-                if (part.has_italic) {
-                    command_classes += ` ITALIC`;
-                }
-                if (part.has_bold) {
-                    command_classes += ` BOLD`;
-                }
-                if (part.has_underline) {
-                    command_classes += ` UNDERLINE`;
-                }
-                if (part.has_small_caps) {
-                    command_classes += ` SMALL_CAPS`;
-                }
-                if (part.has_error) {
-                    command_classes += ` ERROR`;
-                }
-
-                const boundary: Dictionary_Boundary = (
-                    idx === first_part ? Dictionary_Boundary.START : (
-                        idx === last_part ? Dictionary_Boundary.END :
-                            Dictionary_Boundary.MIDDLE
-                    )
-                );
-
-                if (part.type === Type.POINT) {
-                    if (this.Has_Word_Error(part.subtext)) {
-                        inner_html += `<span class="KNOWN_WORD_ERROR${command_classes}">${Escape_Text(part.subtext)}</span>`;
-                    } else if (this.Has_Break_Error(part.subtext, boundary)) {
-                        inner_html += `<span class="KNOWN_BREAK_ERROR${command_classes}">${Escape_Text(part.subtext)}</span>`;
-                    } else {
-                        inner_html += `<span class="UNKNOWN_POINT${command_classes}">${Escape_Text(part.subtext)}</span>`;
-                    }
-                } else if (part.type === Type.LETTERS) {
-                    if (this.Has_Word_Error(part.subtext)) {
-                        inner_html += `<span class="KNOWN_WORD_ERROR${command_classes}">${Escape_Text(part.subtext)}</span>`;
-                    } else if (this.Has_Word(part.subtext)) {
-                        inner_html += `<span class="KNOWN_WORD${command_classes}">${Escape_Text(part.subtext)}</span>`;
-                    } else {
-                        inner_html += `<span class="UNKNOWN_WORD${command_classes}">${Escape_Text(part.subtext)}</span>`;
-                    }
-                } else if (part.type === Type.MARKERS) {
-                    if (this.Has_Break_Error(part.subtext, boundary)) {
-                        inner_html += `<span class="KNOWN_BREAK_ERROR${command_classes}">${Escape_Text(part.subtext)}</span>`;
-                    } else if (this.Has_Break(part.subtext, boundary)) {
-                        inner_html += `<span class="KNOWN_BREAK${command_classes}">${Escape_Text(part.subtext)}</span>`;
-                    } else {
-                        inner_html += `<span class="UNKNOWN_BREAK${command_classes}">${Escape_Text(part.subtext)}</span>`;
-                    }
-                } else {
-                    Utils.Assert(false);
-                }
-            }
-        }
-
-        return ({
-            html: inner_html,
-            is_centered: is_centered,
-        });
-    }
-
-    Treat_As_Points(
-        text: string,
-    ):
-        string
-    {
-        let inner_html: string = ``;
-        for (let idx = 0, end = text.length; idx < end;) {
-            const maybe_command: Array<string> | null =
-                text.slice(idx).match(/^(⸨\/?(i|b|u|sc|err)⸩|⸨(in|cen)⸩)/);
-            if (maybe_command && maybe_command[0]) {
-                for (const end = idx + maybe_command[0].length; idx < end;) {
-                    const point: string = Dictionary.First_Point(text.slice(idx));
-
-                    inner_html += `<span class="COMMAND SEPARATE_POINT">${Escape_Text(point)}</span>`;
-
-                    idx += point.length;
-                }
-            } else {
-                const point: string = Dictionary.First_Point(text.slice(idx));
-
-                if (this.data.letters.includes(point)) {
-                    inner_html += `<span class="KNOWN_LETTER SEPARATE_POINT">${Escape_Text(point)}</span>`;
-                } else if (this.data.markers.includes(point)) {
-                    inner_html += `<span class="KNOWN_MARKER SEPARATE_POINT">${Escape_Text(point)}</span>`;
-                } else {
-                    inner_html += `<span class="UNKNOWN_POINT SEPARATE_POINT">${Escape_Text(point)}</span>`;
-                }
-
-                idx += point.length;
-            }
-        }
-
-        return inner_html;
-    }
-
-    JSON():
-        string
-    {
-        this.data.letters.sort();
-        this.data.markers.sort();
-
-        const sorted_words: { [index: Letter]: Array<Word> } = {};
-        for (const letter of Object.keys(this.data.words).sort()) {
-            sorted_words[letter] = this.data.words[letter].sort();
-        }
-        this.data.words = sorted_words;
-
-        const sorted_breaks: {
-            [Dictionary_Boundary.START]: { [index: Marker]: Array<Break> },
-            [Dictionary_Boundary.MIDDLE]: { [index: Marker]: Array<Break> },
-            [Dictionary_Boundary.END]: { [index: Marker]: Array<Break> },
-        } = {
-            [Dictionary_Boundary.START]: {},
-            [Dictionary_Boundary.MIDDLE]: {},
-            [Dictionary_Boundary.END]: {},
-        };
-        for (const boundary of [Dictionary_Boundary.START, Dictionary_Boundary.MIDDLE, Dictionary_Boundary.END]) {
-            for (const marker of Object.keys(this.data.breaks[boundary]).sort()) {
-                sorted_breaks[boundary][marker] = this.data.breaks[boundary][marker].sort();
-            }
-        }
-        this.data.breaks = sorted_breaks;
-
-        this.data.word_errors.sort();
-        for (const boundary of [Dictionary_Boundary.START, Dictionary_Boundary.MIDDLE, Dictionary_Boundary.END]) {
-            this.data.break_errors[boundary].sort();
-        }
-
-        return JSON.stringify(this.data, null, 4);
+    } else {
+        return null;
     }
 }
 
@@ -1469,19 +628,19 @@ class Line
                     event.preventDefault();
 
                     if (this.Editor().Is_Meta_Key_Active()) {
-                        const selected: Dictionary_Entry | null = Dictionary.Selected_Entry();
+                        const selected: Dictionary_Entry | null = Selected_Part();
                         if (selected) {
-                            if (selected.class === Dictionary_Class.UNKNOWN_POINT) {
+                            if (selected.class === Part_Class.UNKNOWN_POINT) {
                                 this.Editor().Dictionary().Add_Letter(selected.text);
                                 this.Editor().Touch();
-                            } else if (selected.class === Dictionary_Class.KNOWN_LETTER) {
+                            } else if (selected.class === Part_Class.KNOWN_LETTER) {
                                 this.Editor().Dictionary().Remove_Letter(selected.text);
                                 this.Editor().Touch();
                             } else if (
-                                selected.class === Dictionary_Class.UNKNOWN_WORD ||
-                                selected.class === Dictionary_Class.KNOWN_WORD
+                                selected.class === Part_Class.UNKNOWN_WORD ||
+                                selected.class === Part_Class.KNOWN_WORD
                             ) {
-                                if (Dictionary.Is_Point(selected.text)) {
+                                if (Unicode.Is_Point(selected.text)) {
                                     this.Editor().Dictionary().Remove_Letter(selected.text);
                                     this.Editor().Touch();
                                 }
@@ -1492,19 +651,19 @@ class Line
                     event.preventDefault();
 
                     if (this.Editor().Is_Meta_Key_Active()) {
-                        const selected: Dictionary_Entry | null = Dictionary.Selected_Entry();
+                        const selected: Dictionary_Entry | null = Selected_Part();
                         if (selected) {
-                            if (selected.class === Dictionary_Class.UNKNOWN_POINT) {
+                            if (selected.class === Part_Class.UNKNOWN_POINT) {
                                 this.Editor().Dictionary().Add_Marker(selected.text);
                                 this.Editor().Touch();
-                            } else if (selected.class === Dictionary_Class.KNOWN_MARKER) {
+                            } else if (selected.class === Part_Class.KNOWN_MARKER) {
                                 this.Editor().Dictionary().Remove_Marker(selected.text);
                                 this.Editor().Touch();
                             } else if (
-                                selected.class === Dictionary_Class.UNKNOWN_BREAK ||
-                                selected.class === Dictionary_Class.KNOWN_BREAK
+                                selected.class === Part_Class.UNKNOWN_BREAK ||
+                                selected.class === Part_Class.KNOWN_BREAK
                             ) {
-                                if (Dictionary.Is_Point(selected.text)) {
+                                if (Unicode.Is_Point(selected.text)) {
                                     this.Editor().Dictionary().Remove_Marker(selected.text);
                                     this.Editor().Touch();
                                 }
@@ -1515,15 +674,15 @@ class Line
                     event.preventDefault();
 
                     if (this.Editor().Is_Meta_Key_Active()) {
-                        const selected: Dictionary_Entry | null = Dictionary.Selected_Entry();
+                        const selected: Dictionary_Entry | null = Selected_Part();
                         if (selected) {
-                            if (selected.class === Dictionary_Class.UNKNOWN_WORD) {
+                            if (selected.class === Part_Class.UNKNOWN_WORD) {
                                 this.Editor().Dictionary().Add_Word(selected.text);
                                 this.Editor().Touch();
-                            } else if (selected.class === Dictionary_Class.KNOWN_WORD) {
+                            } else if (selected.class === Part_Class.KNOWN_WORD) {
                                 this.Editor().Dictionary().Remove_Word(selected.text);
                                 this.Editor().Touch();
-                            } else if (selected.class === Dictionary_Class.KNOWN_WORD_ERROR) {
+                            } else if (selected.class === Part_Class.KNOWN_WORD_ERROR) {
                                 this.Editor().Dictionary().Remove_Word_Error(selected.text);
                                 this.Editor().Dictionary().Add_Word(selected.text);
                                 this.Editor().Touch();
@@ -1534,15 +693,15 @@ class Line
                     event.preventDefault();
 
                     if (this.Editor().Is_Meta_Key_Active()) {
-                        const selected: Dictionary_Entry | null = Dictionary.Selected_Entry();
+                        const selected: Dictionary_Entry | null = Selected_Part();
                         if (selected) {
-                            if (selected.class === Dictionary_Class.UNKNOWN_BREAK) {
+                            if (selected.class === Part_Class.UNKNOWN_BREAK) {
                                 this.Editor().Dictionary().Add_Break(selected.text, selected.boundary);
                                 this.Editor().Touch();
-                            } else if (selected.class === Dictionary_Class.KNOWN_BREAK) {
+                            } else if (selected.class === Part_Class.KNOWN_BREAK) {
                                 this.Editor().Dictionary().Remove_Break(selected.text, selected.boundary);
                                 this.Editor().Touch();
-                            } else if (selected.class === Dictionary_Class.KNOWN_BREAK_ERROR) {
+                            } else if (selected.class === Part_Class.KNOWN_BREAK_ERROR) {
                                 this.Editor().Dictionary().Remove_Break_Error(selected.text, selected.boundary);
                                 this.Editor().Dictionary().Add_Break(selected.text, selected.boundary);
                                 this.Editor().Touch();
@@ -1553,26 +712,26 @@ class Line
                     if (this.Editor().Is_Meta_Key_Active()) {
                         event.preventDefault();
 
-                        const selected: Dictionary_Entry | null = Dictionary.Selected_Entry();
+                        const selected: Dictionary_Entry | null = Selected_Part();
                         if (selected) {
-                            if (selected.class === Dictionary_Class.UNKNOWN_WORD) {
+                            if (selected.class === Part_Class.UNKNOWN_WORD) {
                                 this.Editor().Dictionary().Add_Word_Error(selected.text);
                                 this.Editor().Touch();
-                            } else if (selected.class === Dictionary_Class.KNOWN_WORD) {
+                            } else if (selected.class === Part_Class.KNOWN_WORD) {
                                 this.Editor().Dictionary().Remove_Word(selected.text);
                                 this.Editor().Dictionary().Add_Word_Error(selected.text);
                                 this.Editor().Touch();
-                            } else if (selected.class === Dictionary_Class.UNKNOWN_BREAK) {
+                            } else if (selected.class === Part_Class.UNKNOWN_BREAK) {
                                 this.Editor().Dictionary().Add_Break_Error(selected.text, selected.boundary);
                                 this.Editor().Touch();
-                            } else if (selected.class === Dictionary_Class.KNOWN_BREAK) {
+                            } else if (selected.class === Part_Class.KNOWN_BREAK) {
                                 this.Editor().Dictionary().Remove_Break(selected.text, selected.boundary);
                                 this.Editor().Dictionary().Add_Break_Error(selected.text, selected.boundary);
                                 this.Editor().Touch();
-                            } else if (selected.class === Dictionary_Class.KNOWN_WORD_ERROR) {
+                            } else if (selected.class === Part_Class.KNOWN_WORD_ERROR) {
                                 this.Editor().Dictionary().Remove_Word_Error(selected.text);
                                 this.Editor().Touch();
-                            } else if (selected.class === Dictionary_Class.KNOWN_BREAK_ERROR) {
+                            } else if (selected.class === Part_Class.KNOWN_BREAK_ERROR) {
                                 this.Editor().Dictionary().Remove_Break_Error(selected.text, selected.boundary);
                                 this.Editor().Touch();
                             }
@@ -1582,19 +741,19 @@ class Line
                     if (this.Editor().Is_Meta_Key_Active()) {
                         event.preventDefault();
 
-                        const selected: Dictionary_Entry | null = Dictionary.Selected_Entry();
+                        const selected: Dictionary_Entry | null = Selected_Part();
                         if (selected) {
-                            if (selected.class === Dictionary_Class.UNKNOWN_POINT) {
+                            if (selected.class === Part_Class.UNKNOWN_POINT) {
                                 this.Editor().Dictionary().Add_Word_Error(selected.text);
                                 this.Editor().Touch();
-                            } else if (selected.class === Dictionary_Class.UNKNOWN_WORD) {
+                            } else if (selected.class === Part_Class.UNKNOWN_WORD) {
                                 this.Editor().Dictionary().Add_Word_Error(selected.text);
                                 this.Editor().Touch();
-                            } else if (selected.class === Dictionary_Class.KNOWN_WORD) {
+                            } else if (selected.class === Part_Class.KNOWN_WORD) {
                                 this.Editor().Dictionary().Remove_Word(selected.text);
                                 this.Editor().Dictionary().Add_Word_Error(selected.text);
                                 this.Editor().Touch();
-                            } else if (selected.class === Dictionary_Class.KNOWN_WORD_ERROR) {
+                            } else if (selected.class === Part_Class.KNOWN_WORD_ERROR) {
                                 this.Editor().Dictionary().Remove_Word_Error(selected.text);
                                 this.Editor().Touch();
                             }
@@ -1604,19 +763,19 @@ class Line
                     if (this.Editor().Is_Meta_Key_Active()) {
                         event.preventDefault();
 
-                        const selected: Dictionary_Entry | null = Dictionary.Selected_Entry();
+                        const selected: Dictionary_Entry | null = Selected_Part();
                         if (selected) {
-                            if (selected.class === Dictionary_Class.UNKNOWN_POINT) {
+                            if (selected.class === Part_Class.UNKNOWN_POINT) {
                                 this.Editor().Dictionary().Add_Break_Error(selected.text, selected.boundary);
                                 this.Editor().Touch();
-                            } else if (selected.class === Dictionary_Class.UNKNOWN_BREAK) {
+                            } else if (selected.class === Part_Class.UNKNOWN_BREAK) {
                                 this.Editor().Dictionary().Add_Break_Error(selected.text, selected.boundary);
                                 this.Editor().Touch();
-                            } else if (selected.class === Dictionary_Class.KNOWN_BREAK) {
+                            } else if (selected.class === Part_Class.KNOWN_BREAK) {
                                 this.Editor().Dictionary().Remove_Break(selected.text, selected.boundary);
                                 this.Editor().Dictionary().Add_Break_Error(selected.text, selected.boundary);
                                 this.Editor().Touch();
-                            } else if (selected.class === Dictionary_Class.KNOWN_BREAK_ERROR) {
+                            } else if (selected.class === Part_Class.KNOWN_BREAK_ERROR) {
                                 this.Editor().Dictionary().Remove_Break_Error(selected.text, selected.boundary);
                                 this.Editor().Touch();
                             }
@@ -1756,10 +915,10 @@ class Line
         // such a thing, because it's an annoying problem that doesn't need to be dealt
         // with just yet.
         if (this.Editor().Is_In_Point_Mode()) {
-            this.element.innerHTML = this.Editor().Dictionary().Treat_As_Points(text);
+            this.element.innerHTML = this.Treat_As_Points(text);
             this.element.style.display = `block`;
         } else {
-            const treatment: Dictionary_Treatment = this.Editor().Dictionary().Treat(text);
+            const treatment: Dictionary_Treatment = this.Treat(text);
             this.element.innerHTML = treatment.html;
             if (treatment.is_centered) {
                 this.element.style.display = `flex`;
@@ -1779,11 +938,161 @@ class Line
             Set_Text_Offset(this.Element(), text_offset);
         }
     }
+
+    Treat(
+        text: string,
+    ):
+        Dictionary_Treatment
+    {
+        const model: Model.Instance = new Model.Instance(
+            {
+                dictionary: this.Editor().Dictionary(),
+                value: text,
+            },
+        );
+        Utils.Assert(
+            model.Line_Count() === 1,
+            `model's line count should be 1.`,
+        );
+        const line: Model.Line.Instance = model.Line(0);
+
+        let inner_html: string = ``;
+        for (let idx = 0, end = line.Macro_Part_Count(); idx < end; idx += 1) {
+            const part = line.Macro_Part(idx);
+            if (part.Is_Command()) {
+                const command = part as Model.Part.Command.Instance;
+                let command_classes: string = ``;
+                if (command.Is_Indent()) {
+                    command_classes += ` INDENT`;
+                }
+
+                inner_html +=
+                    `<span class="COMMAND${command_classes}">${Escape_Text(command.Value())}</span>`;
+            } else {
+                let command_classes: string = ``;
+                if (part.Has_Italic_Style()) {
+                    command_classes += ` ITALIC`;
+                }
+                if (part.Has_Bold_Style()) {
+                    command_classes += ` BOLD`;
+                }
+                if (part.Has_Underline_Style()) {
+                    command_classes += ` UNDERLINE`;
+                }
+                if (part.Has_Small_Caps_Style()) {
+                    command_classes += ` SMALL_CAPS`;
+                }
+                if (part.Has_Error_Style()) {
+                    command_classes += ` ERROR`;
+                }
+
+                if (part.Is_Point()) {
+                    inner_html +=
+                        `<span class="UNKNOWN_POINT${command_classes}">${Escape_Text(part.Value())}</span>`;
+                } else if (part.Is_Word()) {
+                    if (part.Is_Good()) {
+                        inner_html +=
+                            `<span class="KNOWN_WORD${command_classes}">${Escape_Text(part.Value())}</span>`;
+                    } else if (part.Is_Error()) {
+                        inner_html +=
+                            `<span class="KNOWN_WORD_ERROR${command_classes}">${Escape_Text(part.Value())}</span>`;
+                    } else if (part.Is_Unknown()) {
+                        inner_html +=
+                            `<span class="UNKNOWN_WORD${command_classes}">${Escape_Text(part.Value())}</span>`;
+                    } else {
+                        Utils.Assert(
+                            false,
+                            `unknown part state.`,
+                        );
+                    }
+                } else if (part.Is_Break()) {
+                    if (part.Is_Good()) {
+                        inner_html +=
+                            `<span class="KNOWN_BREAK${command_classes}">${Escape_Text(part.Value())}</span>`;
+                    } else if (part.Is_Error()) {
+                        inner_html +=
+                            `<span class="KNOWN_BREAK_ERROR${command_classes}">${Escape_Text(part.Value())}</span>`;
+                    } else if (part.Is_Unknown()) {
+                        inner_html +=
+                            `<span class="UNKNOWN_BREAK${command_classes}">${Escape_Text(part.Value())}</span>`;
+                    } else {
+                        Utils.Assert(
+                            false,
+                            `unknown part state.`,
+                        );
+                    }
+                } else {
+                    Utils.Assert(
+                        false,
+                        `invalid macro part.`,
+                    );
+                }
+            }
+        }
+
+        return ({
+            html: inner_html,
+            is_centered: line.Is_Centered(),
+        });
+    }
+
+    Treat_As_Points(
+        text: string,
+    ):
+        string
+    {
+        const model: Model.Instance = new Model.Instance(
+            {
+                dictionary: this.Editor().Dictionary(),
+                value: text,
+            },
+        );
+        Utils.Assert(
+            model.Line_Count() === 1,
+            `model's line count should be 1.`,
+        );
+        const line: Model.Line.Instance = model.Line(0);
+
+        let inner_html: string = ``;
+        for (let idx = 0, end = line.Micro_Part_Count(); idx < end; idx += 1) {
+            const part = line.Micro_Part(idx);
+            if (part.Is_Command()) {
+                let it: Unicode.Iterator = new Unicode.Iterator(
+                    {
+                        text: part.Value(),
+                        index: 0,
+                    },
+                );
+                for (; !it.Is_At_End(); it = it.Next()) {
+                    inner_html +=
+                        `<span class="COMMAND SEPARATE_POINT">${Escape_Text(it.Point())}</span>`;
+                }
+            } else {
+                if (part.Is_Letter()) {
+                    inner_html +=
+                        `<span class="KNOWN_LETTER SEPARATE_POINT">${Escape_Text(part.Value())}</span>`;
+                } else if (part.Is_Marker()) {
+                    inner_html +=
+                        `<span class="KNOWN_MARKER SEPARATE_POINT">${Escape_Text(part.Value())}</span>`;
+                } else if (part.Is_Point()) {
+                    inner_html +=
+                        `<span class="UNKNOWN_POINT SEPARATE_POINT">${Escape_Text(part.Value())}</span>`;
+                } else {
+                    Utils.Assert(
+                        false,
+                        `invalid micro part.`,
+                    );
+                }
+            }
+        }
+
+        return inner_html;
+    }
 }
 
 class Editor
 {
-    private dictionary: Dictionary;
+    private dictionary: Model.Dictionary.Instance;
     private lines: Array<Line>;
 
     private saved_dictionary: string | null;
@@ -2053,8 +1362,8 @@ class Editor
             {
                 if (
                     this.saved_dictionary === null ?
-                        this.Dictionary().JSON() !== new Dictionary({}).JSON() :
-                        this.saved_dictionary !== this.Dictionary().JSON()
+                        this.Dictionary().To_JSON() !== new Model.Dictionary.Instance({}).To_JSON() :
+                        this.saved_dictionary !== this.Dictionary().To_JSON()
                 ) {
                     if (!await this.Try_To_Save_Dictionary()) {
                         return;
@@ -2062,7 +1371,7 @@ class Editor
                 }
 
                 this.Set_Dictionary_Name(`New Dictionary`);
-                this.dictionary = new Dictionary({});
+                this.dictionary = new Model.Dictionary.Instance({});
                 this.Touch();
                 this.saved_dictionary = null;
             }.bind(this),
@@ -2097,7 +1406,7 @@ class Editor
                     this.Set_Dictionary_JSON(file_text);
                     this.children.dictionary_load_input.value = ``;
 
-                    this.saved_dictionary = this.Dictionary().JSON();
+                    this.saved_dictionary = this.Dictionary().To_JSON();
                 }
             }.bind(this),
         );
@@ -2117,8 +1426,8 @@ class Editor
             {
                 if (
                     this.saved_dictionary === null ?
-                        this.Dictionary().JSON() !== new Dictionary({}).JSON() :
-                        this.saved_dictionary !== this.Dictionary().JSON()
+                        this.Dictionary().To_JSON() !== new Model.Dictionary.Instance({}).To_JSON() :
+                        this.saved_dictionary !== this.Dictionary().To_JSON()
                 ) {
                     if (!await this.Try_To_Save_Dictionary()) {
                         return;
@@ -2338,7 +1647,7 @@ class Editor
             `,
         );
 
-        this.dictionary = new Dictionary({});
+        this.dictionary = new Model.Dictionary.Instance({});
         this.lines = [];
 
         this.children.controls.appendChild(this.children.dictionary_label);
@@ -2379,7 +1688,7 @@ class Editor
     }
 
     Dictionary():
-        Dictionary
+        Model.Dictionary.Instance
     {
         return this.dictionary;
     }
@@ -2405,7 +1714,7 @@ class Editor
     Dictionary_JSON():
         string
     {
-        return this.Dictionary().JSON();
+        return this.Dictionary().To_JSON();
     }
 
     Set_Dictionary_JSON(
@@ -2413,7 +1722,7 @@ class Editor
     ):
         void
     {
-        this.dictionary = new Dictionary(
+        this.dictionary = new Model.Dictionary.Instance(
             {
                 json: json,
             },
@@ -3183,10 +2492,18 @@ class Editor
         }
 
         .KNOWN_LETTER {
+            border-width: 0 0 2px 0;
+            border-style: solid;
+            border-color: transparent;
+
             overflow-wrap: normal;
         }
 
         .KNOWN_MARKER {
+            border-width: 0 0 2px 0;
+            border-style: solid;
+            border-color: transparent;
+
             overflow-wrap: normal;
         }
 
@@ -3199,6 +2516,10 @@ class Editor
         }
 
         .KNOWN_WORD {
+            border-width: 0 0 2px 0;
+            border-style: solid;
+            border-color: transparent;
+
             overflow-wrap: normal;
         }
 
@@ -3211,6 +2532,10 @@ class Editor
         }
 
         .KNOWN_BREAK {
+            border-width: 0 0 2px 0;
+            border-style: solid;
+            border-color: transparent;
+
             overflow-wrap: normal;
         }
 
@@ -3231,6 +2556,10 @@ class Editor
         }
 
         .COMMAND {
+            border-width: 0 0 2px 0;
+            border-style: solid;
+            border-color: transparent;
+            
             overflow-wrap: normal;
         }
     `);

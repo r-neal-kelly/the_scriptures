@@ -8,6 +8,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import * as Utils from "./utils.js";
+import * as Unicode from "./unicode.js";
+import * as Model from "./model/text.js";
 function Escape_Text(text) {
     return text.replaceAll(/./g, function (point) {
         if (point === ` `) {
@@ -159,128 +161,95 @@ function Set_Text_Offset(element, offset) {
         }
     }
 }
-var Dictionary_Class;
-(function (Dictionary_Class) {
-    Dictionary_Class[Dictionary_Class["_NONE_"] = -1] = "_NONE_";
-    Dictionary_Class[Dictionary_Class["UNKNOWN_POINT"] = 0] = "UNKNOWN_POINT";
-    Dictionary_Class[Dictionary_Class["KNOWN_LETTER"] = 1] = "KNOWN_LETTER";
-    Dictionary_Class[Dictionary_Class["KNOWN_MARKER"] = 2] = "KNOWN_MARKER";
-    Dictionary_Class[Dictionary_Class["UNKNOWN_WORD"] = 3] = "UNKNOWN_WORD";
-    Dictionary_Class[Dictionary_Class["KNOWN_WORD"] = 4] = "KNOWN_WORD";
-    Dictionary_Class[Dictionary_Class["UNKNOWN_BREAK"] = 5] = "UNKNOWN_BREAK";
-    Dictionary_Class[Dictionary_Class["KNOWN_BREAK"] = 6] = "KNOWN_BREAK";
-    Dictionary_Class[Dictionary_Class["KNOWN_WORD_ERROR"] = 7] = "KNOWN_WORD_ERROR";
-    Dictionary_Class[Dictionary_Class["KNOWN_BREAK_ERROR"] = 8] = "KNOWN_BREAK_ERROR";
-})(Dictionary_Class || (Dictionary_Class = {}));
+var Part_Class;
+(function (Part_Class) {
+    Part_Class[Part_Class["_NONE_"] = -1] = "_NONE_";
+    Part_Class[Part_Class["UNKNOWN_POINT"] = 0] = "UNKNOWN_POINT";
+    Part_Class[Part_Class["KNOWN_LETTER"] = 1] = "KNOWN_LETTER";
+    Part_Class[Part_Class["KNOWN_MARKER"] = 2] = "KNOWN_MARKER";
+    Part_Class[Part_Class["UNKNOWN_WORD"] = 3] = "UNKNOWN_WORD";
+    Part_Class[Part_Class["KNOWN_WORD"] = 4] = "KNOWN_WORD";
+    Part_Class[Part_Class["UNKNOWN_BREAK"] = 5] = "UNKNOWN_BREAK";
+    Part_Class[Part_Class["KNOWN_BREAK"] = 6] = "KNOWN_BREAK";
+    Part_Class[Part_Class["KNOWN_WORD_ERROR"] = 7] = "KNOWN_WORD_ERROR";
+    Part_Class[Part_Class["KNOWN_BREAK_ERROR"] = 8] = "KNOWN_BREAK_ERROR";
+})(Part_Class || (Part_Class = {}));
 ;
-var Dictionary_Boundary;
-(function (Dictionary_Boundary) {
-    Dictionary_Boundary["START"] = "START";
-    Dictionary_Boundary["MIDDLE"] = "MIDDLE";
-    Dictionary_Boundary["END"] = "END";
-})(Dictionary_Boundary || (Dictionary_Boundary = {}));
-;
-class Dictionary {
-    static Is_Point(text) {
-        return (text.length === 1 ||
-            (text.length === 2 &&
-                text.charCodeAt(0) >= 0xD800 &&
-                text.charCodeAt(0) <= 0xDBFF &&
-                text.charCodeAt(1) >= 0xDC00 &&
-                text.charCodeAt(1) <= 0xDFFF));
-    }
-    static First_Point(text) {
-        if (text.length === 0) {
-            return ``;
+function First_Part_Index(element) {
+    for (let idx = 0, end = element.children.length; idx < end;) {
+        if (!element.children[idx].classList.contains(`COMMAND`)) {
+            return idx;
         }
-        else {
-            if (text.charCodeAt(0) < 0xD800 || text.charCodeAt(0) > 0xDFFF) {
-                return text.slice(0, 1);
-            }
-            else {
-                return text.slice(0, 2);
-            }
+        idx += 1;
+    }
+    return null;
+}
+function Last_Part_Index(element) {
+    for (let idx = element.children.length, end = 0; idx > end;) {
+        idx -= 1;
+        if (!element.children[idx].classList.contains(`COMMAND`)) {
+            return idx;
         }
     }
-    static First_Entry_Index(element) {
-        for (let idx = 0, end = element.children.length; idx < end;) {
-            if (!element.children[idx].classList.contains(`COMMAND`)) {
-                return idx;
-            }
-            idx += 1;
-        }
-        return null;
-    }
-    static Last_Entry_Index(element) {
-        for (let idx = element.children.length, end = 0; idx > end;) {
-            idx -= 1;
-            if (!element.children[idx].classList.contains(`COMMAND`)) {
-                return idx;
-            }
-        }
-        return null;
-    }
-    static Selected_Entry() {
-        const selection = document.getSelection();
-        if (selection &&
-            !selection.isCollapsed &&
-            selection.anchorNode != null &&
-            selection.focusNode != null &&
-            selection.anchorNode === selection.focusNode &&
-            selection.getRangeAt(0).startOffset === 0 &&
-            selection.getRangeAt(0).endOffset === 1) {
-            if (selection.anchorNode instanceof HTMLSpanElement) {
-                const span = selection.anchorNode;
-                if (span.parentElement != null &&
-                    span.textContent != null) {
-                    const dictionary_text = span.textContent.replaceAll(/ /g, ` `);
-                    if (dictionary_text !== ``) {
-                        let dictionary_class = Dictionary_Class._NONE_;
-                        if (span.classList.contains(`UNKNOWN_POINT`)) {
-                            dictionary_class = Dictionary_Class.UNKNOWN_POINT;
+    return null;
+}
+function Selected_Part() {
+    const selection = document.getSelection();
+    if (selection &&
+        !selection.isCollapsed &&
+        selection.anchorNode != null &&
+        selection.focusNode != null &&
+        selection.anchorNode === selection.focusNode &&
+        selection.getRangeAt(0).startOffset === 0 &&
+        selection.getRangeAt(0).endOffset === 1) {
+        if (selection.anchorNode instanceof HTMLSpanElement) {
+            const span = selection.anchorNode;
+            if (span.parentElement != null &&
+                span.textContent != null) {
+                const dictionary_text = span.textContent.replaceAll(/ /g, ` `);
+                if (dictionary_text !== ``) {
+                    let dictionary_class = Part_Class._NONE_;
+                    if (span.classList.contains(`UNKNOWN_POINT`)) {
+                        dictionary_class = Part_Class.UNKNOWN_POINT;
+                    }
+                    else if (span.classList.contains(`KNOWN_LETTER`)) {
+                        dictionary_class = Part_Class.KNOWN_LETTER;
+                    }
+                    else if (span.classList.contains(`KNOWN_MARKER`)) {
+                        dictionary_class = Part_Class.KNOWN_MARKER;
+                    }
+                    else if (span.classList.contains(`UNKNOWN_WORD`)) {
+                        dictionary_class = Part_Class.UNKNOWN_WORD;
+                    }
+                    else if (span.classList.contains(`KNOWN_WORD`)) {
+                        dictionary_class = Part_Class.KNOWN_WORD;
+                    }
+                    else if (span.classList.contains(`UNKNOWN_BREAK`)) {
+                        dictionary_class = Part_Class.UNKNOWN_BREAK;
+                    }
+                    else if (span.classList.contains(`KNOWN_BREAK`)) {
+                        dictionary_class = Part_Class.KNOWN_BREAK;
+                    }
+                    else if (span.classList.contains(`KNOWN_WORD_ERROR`)) {
+                        dictionary_class = Part_Class.KNOWN_WORD_ERROR;
+                    }
+                    else if (span.classList.contains(`KNOWN_BREAK_ERROR`)) {
+                        dictionary_class = Part_Class.KNOWN_BREAK_ERROR;
+                    }
+                    if (dictionary_class !== Part_Class._NONE_) {
+                        const span_index = Array.from(span.parentElement.children).indexOf(span);
+                        let dictionary_boundary = Model.Dictionary.Boundary.MIDDLE;
+                        if (span_index === First_Part_Index(span.parentElement)) {
+                            dictionary_boundary = Model.Dictionary.Boundary.START;
                         }
-                        else if (span.classList.contains(`KNOWN_LETTER`)) {
-                            dictionary_class = Dictionary_Class.KNOWN_LETTER;
+                        else if (span_index === Last_Part_Index(span.parentElement)) {
+                            dictionary_boundary = Model.Dictionary.Boundary.END;
                         }
-                        else if (span.classList.contains(`KNOWN_MARKER`)) {
-                            dictionary_class = Dictionary_Class.KNOWN_MARKER;
-                        }
-                        else if (span.classList.contains(`UNKNOWN_WORD`)) {
-                            dictionary_class = Dictionary_Class.UNKNOWN_WORD;
-                        }
-                        else if (span.classList.contains(`KNOWN_WORD`)) {
-                            dictionary_class = Dictionary_Class.KNOWN_WORD;
-                        }
-                        else if (span.classList.contains(`UNKNOWN_BREAK`)) {
-                            dictionary_class = Dictionary_Class.UNKNOWN_BREAK;
-                        }
-                        else if (span.classList.contains(`KNOWN_BREAK`)) {
-                            dictionary_class = Dictionary_Class.KNOWN_BREAK;
-                        }
-                        else if (span.classList.contains(`KNOWN_WORD_ERROR`)) {
-                            dictionary_class = Dictionary_Class.KNOWN_WORD_ERROR;
-                        }
-                        else if (span.classList.contains(`KNOWN_BREAK_ERROR`)) {
-                            dictionary_class = Dictionary_Class.KNOWN_BREAK_ERROR;
-                        }
-                        if (dictionary_class !== Dictionary_Class._NONE_) {
-                            const span_index = Array.from(span.parentElement.children).indexOf(span);
-                            let dictionary_boundary = Dictionary_Boundary.MIDDLE;
-                            if (span_index === Dictionary.First_Entry_Index(span.parentElement)) {
-                                dictionary_boundary = Dictionary_Boundary.START;
-                            }
-                            else if (span_index === Dictionary.Last_Entry_Index(span.parentElement)) {
-                                dictionary_boundary = Dictionary_Boundary.END;
-                            }
-                            return {
-                                text: dictionary_text,
-                                class: dictionary_class,
-                                boundary: dictionary_boundary,
-                            };
-                        }
-                        else {
-                            return null;
-                        }
+                        return {
+                            text: dictionary_text,
+                            class: dictionary_class,
+                            boundary: dictionary_boundary,
+                        };
                     }
                     else {
                         return null;
@@ -298,564 +267,8 @@ class Dictionary {
             return null;
         }
     }
-    constructor({ json = null, }) {
-        if (json) {
-            this.data = JSON.parse(json);
-        }
-        else {
-            this.data = {
-                letters: [],
-                markers: [],
-                words: {},
-                breaks: {
-                    [Dictionary_Boundary.START]: {},
-                    [Dictionary_Boundary.MIDDLE]: {},
-                    [Dictionary_Boundary.END]: {},
-                },
-                word_errors: [],
-                break_errors: {
-                    [Dictionary_Boundary.START]: [],
-                    [Dictionary_Boundary.MIDDLE]: [],
-                    [Dictionary_Boundary.END]: [],
-                },
-            };
-        }
-    }
-    Has_Letter(letter) {
-        Utils.Assert(Dictionary.Is_Point(letter));
-        return this.data.letters.includes(letter);
-    }
-    Add_Letter(letter) {
-        Utils.Assert(Dictionary.Is_Point(letter));
-        if (!this.data.letters.includes(letter)) {
-            this.data.letters.push(letter);
-            this.data.words[letter] = [];
-        }
-    }
-    Remove_Letter(letter) {
-        Utils.Assert(Dictionary.Is_Point(letter));
-        const index = this.data.letters.indexOf(letter);
-        if (index > -1) {
-            this.data.letters[index] = this.data.letters[this.data.letters.length - 1];
-            this.data.letters.pop();
-            delete this.data.words[letter];
-        }
-    }
-    Has_Marker(marker) {
-        Utils.Assert(Dictionary.Is_Point(marker));
-        return this.data.markers.includes(marker);
-    }
-    Add_Marker(marker) {
-        Utils.Assert(Dictionary.Is_Point(marker));
-        if (!this.data.markers.includes(marker)) {
-            this.data.markers.push(marker);
-            this.data.breaks[Dictionary_Boundary.START][marker] = [];
-            this.data.breaks[Dictionary_Boundary.MIDDLE][marker] = [];
-            this.data.breaks[Dictionary_Boundary.END][marker] = [];
-        }
-    }
-    Remove_Marker(marker) {
-        Utils.Assert(Dictionary.Is_Point(marker));
-        const index = this.data.markers.indexOf(marker);
-        if (index > -1) {
-            this.data.markers[index] = this.data.markers[this.data.markers.length - 1];
-            this.data.markers.pop();
-            delete this.data.breaks[Dictionary_Boundary.START][marker];
-            delete this.data.breaks[Dictionary_Boundary.MIDDLE][marker];
-            delete this.data.breaks[Dictionary_Boundary.END][marker];
-        }
-    }
-    Has_Word(word) {
-        Utils.Assert(word.length > 0);
-        const first_point = Dictionary.First_Point(word);
-        return (this.data.words[first_point] != null &&
-            this.data.words[first_point].includes(word));
-    }
-    Add_Word(word) {
-        Utils.Assert(word.length > 0);
-        Utils.Assert(!this.Has_Word_Error(word));
-        const first_point = Dictionary.First_Point(word);
-        if (this.data.words[first_point] == null) {
-            this.Add_Letter(first_point);
-            this.data.words[first_point].push(word);
-        }
-        else {
-            if (!this.data.words[first_point].includes(word)) {
-                this.data.words[first_point].push(word);
-            }
-        }
-    }
-    Remove_Word(word) {
-        Utils.Assert(word.length > 0);
-        const first_point = Dictionary.First_Point(word);
-        if (this.data.words[first_point] != null) {
-            const index = this.data.words[first_point].indexOf(word);
-            if (index > -1) {
-                this.data.words[first_point][index] =
-                    this.data.words[first_point][this.data.words[first_point].length - 1];
-                this.data.words[first_point].pop();
-            }
-        }
-    }
-    Has_Break(break_, boundary) {
-        Utils.Assert(break_.length > 0);
-        const first_point = Dictionary.First_Point(break_);
-        return (this.data.breaks[boundary][first_point] != null &&
-            this.data.breaks[boundary][first_point].includes(break_));
-    }
-    Add_Break(break_, boundary) {
-        Utils.Assert(break_.length > 0);
-        Utils.Assert(!this.Has_Break_Error(break_, boundary));
-        const first_point = Dictionary.First_Point(break_);
-        if (this.data.breaks[boundary][first_point] == null) {
-            this.Add_Marker(first_point);
-            this.data.breaks[boundary][first_point].push(break_);
-        }
-        else {
-            if (!this.data.breaks[boundary][first_point].includes(break_)) {
-                this.data.breaks[boundary][first_point].push(break_);
-            }
-        }
-    }
-    Remove_Break(break_, boundary) {
-        Utils.Assert(break_.length > 0);
-        const first_point = Dictionary.First_Point(break_);
-        if (this.data.breaks[boundary][first_point] != null) {
-            const index = this.data.breaks[boundary][first_point].indexOf(break_);
-            if (index > -1) {
-                this.data.breaks[boundary][first_point][index] =
-                    this.data.breaks[boundary][first_point][this.data.breaks[boundary][first_point].length - 1];
-                this.data.breaks[boundary][first_point].pop();
-            }
-        }
-    }
-    Has_Word_Error(word_error) {
-        Utils.Assert(word_error.length > 0);
-        return this.data.word_errors.includes(word_error);
-    }
-    Add_Word_Error(word_error) {
-        Utils.Assert(word_error.length > 0);
-        Utils.Assert(!this.Has_Word(word_error));
-        if (!this.data.word_errors.includes(word_error)) {
-            this.data.word_errors.push(word_error);
-        }
-    }
-    Remove_Word_Error(word_error) {
-        Utils.Assert(word_error.length > 0);
-        const index = this.data.word_errors.indexOf(word_error);
-        if (index > -1) {
-            this.data.word_errors[index] = this.data.word_errors[this.data.word_errors.length - 1];
-            this.data.word_errors.pop();
-        }
-    }
-    Has_Break_Error(break_error, boundary) {
-        Utils.Assert(break_error.length > 0);
-        return this.data.break_errors[boundary].includes(break_error);
-    }
-    Add_Break_Error(break_error, boundary) {
-        Utils.Assert(break_error.length > 0);
-        Utils.Assert(!this.Has_Break(break_error, boundary));
-        if (!this.data.break_errors[boundary].includes(break_error)) {
-            this.data.break_errors[boundary].push(break_error);
-        }
-    }
-    Remove_Break_Error(break_error, boundary) {
-        Utils.Assert(break_error.length > 0);
-        const index = this.data.break_errors[boundary].indexOf(break_error);
-        if (index > -1) {
-            this.data.break_errors[boundary][index] =
-                this.data.break_errors[boundary][this.data.break_errors[boundary].length - 1];
-            this.data.break_errors[boundary].pop();
-        }
-    }
-    Treat(text) {
-        let Type;
-        (function (Type) {
-            Type[Type["_NONE_"] = -1] = "_NONE_";
-            Type[Type["POINT"] = 0] = "POINT";
-            Type[Type["LETTERS"] = 1] = "LETTERS";
-            Type[Type["MARKERS"] = 2] = "MARKERS";
-            Type[Type["COMMAND"] = 3] = "COMMAND";
-        })(Type || (Type = {}));
-        ;
-        const is_centered = /^⸨cen⸩/.test(text);
-        const parts = [];
-        let current_start_index = 0;
-        let current_type = Type._NONE_;
-        let has_italic = false;
-        let has_bold = false;
-        let has_underline = false;
-        let has_small_caps = false;
-        let has_error = false;
-        let first_part = null;
-        let last_part = null;
-        for (let idx = 0, end = text.length; idx < end;) {
-            const maybe_command = text.slice(idx);
-            if (/^⸨i⸩/.test(maybe_command)) {
-                has_italic = true;
-                parts.push({
-                    subtext: `⸨i⸩`,
-                    type: Type.COMMAND,
-                    has_italic: false,
-                    has_bold: false,
-                    has_underline: false,
-                    has_small_caps: false,
-                    has_error: false,
-                });
-                current_start_index = idx + `⸨i⸩`.length;
-                idx += `⸨i⸩`.length;
-            }
-            else if (/^⸨\/i⸩/.test(maybe_command)) {
-                has_italic = false;
-                parts.push({
-                    subtext: `⸨/i⸩`,
-                    type: Type.COMMAND,
-                    has_italic: false,
-                    has_bold: false,
-                    has_underline: false,
-                    has_small_caps: false,
-                    has_error: false,
-                });
-                current_start_index = idx + `⸨/i⸩`.length;
-                idx += `⸨/i⸩`.length;
-            }
-            else if (/^⸨b⸩/.test(maybe_command)) {
-                has_bold = true;
-                parts.push({
-                    subtext: `⸨b⸩`,
-                    type: Type.COMMAND,
-                    has_italic: false,
-                    has_bold: false,
-                    has_underline: false,
-                    has_small_caps: false,
-                    has_error: false,
-                });
-                current_start_index = idx + `⸨b⸩`.length;
-                idx += `⸨b⸩`.length;
-            }
-            else if (/^⸨\/b⸩/.test(maybe_command)) {
-                has_bold = false;
-                parts.push({
-                    subtext: `⸨/b⸩`,
-                    type: Type.COMMAND,
-                    has_italic: false,
-                    has_bold: false,
-                    has_underline: false,
-                    has_small_caps: false,
-                    has_error: false,
-                });
-                current_start_index = idx + `⸨/b⸩`.length;
-                idx += `⸨/b⸩`.length;
-            }
-            else if (/^⸨u⸩/.test(maybe_command)) {
-                has_underline = true;
-                parts.push({
-                    subtext: `⸨u⸩`,
-                    type: Type.COMMAND,
-                    has_italic: false,
-                    has_bold: false,
-                    has_underline: false,
-                    has_small_caps: false,
-                    has_error: false,
-                });
-                current_start_index = idx + `⸨u⸩`.length;
-                idx += `⸨u⸩`.length;
-            }
-            else if (/^⸨\/u⸩/.test(maybe_command)) {
-                has_underline = false;
-                parts.push({
-                    subtext: `⸨/u⸩`,
-                    type: Type.COMMAND,
-                    has_italic: false,
-                    has_bold: false,
-                    has_underline: false,
-                    has_small_caps: false,
-                    has_error: false,
-                });
-                current_start_index = idx + `⸨/u⸩`.length;
-                idx += `⸨/u⸩`.length;
-            }
-            else if (/^⸨sc⸩/.test(maybe_command)) {
-                has_small_caps = true;
-                parts.push({
-                    subtext: `⸨sc⸩`,
-                    type: Type.COMMAND,
-                    has_italic: false,
-                    has_bold: false,
-                    has_underline: false,
-                    has_small_caps: false,
-                    has_error: false,
-                });
-                current_start_index = idx + `⸨sc⸩`.length;
-                idx += `⸨sc⸩`.length;
-            }
-            else if (/^⸨\/sc⸩/.test(maybe_command)) {
-                has_small_caps = false;
-                parts.push({
-                    subtext: `⸨/sc⸩`,
-                    type: Type.COMMAND,
-                    has_italic: false,
-                    has_bold: false,
-                    has_underline: false,
-                    has_small_caps: false,
-                    has_error: false,
-                });
-                current_start_index = idx + `⸨/sc⸩`.length;
-                idx += `⸨/sc⸩`.length;
-            }
-            else if (/^⸨err⸩/.test(maybe_command)) {
-                has_error = true;
-                parts.push({
-                    subtext: `⸨err⸩`,
-                    type: Type.COMMAND,
-                    has_italic: false,
-                    has_bold: false,
-                    has_underline: false,
-                    has_small_caps: false,
-                    has_error: false,
-                });
-                current_start_index = idx + `⸨err⸩`.length;
-                idx += `⸨err⸩`.length;
-            }
-            else if (/^⸨\/err⸩/.test(maybe_command)) {
-                has_error = false;
-                parts.push({
-                    subtext: `⸨/err⸩`,
-                    type: Type.COMMAND,
-                    has_italic: false,
-                    has_bold: false,
-                    has_underline: false,
-                    has_small_caps: false,
-                    has_error: false,
-                });
-                current_start_index = idx + `⸨/err⸩`.length;
-                idx += `⸨/err⸩`.length;
-            }
-            else if (/^⸨in⸩/.test(maybe_command)) {
-                parts.push({
-                    subtext: `⸨in⸩`,
-                    type: Type.COMMAND,
-                    has_italic: false,
-                    has_bold: false,
-                    has_underline: false,
-                    has_small_caps: false,
-                    has_error: false,
-                });
-                current_start_index = idx + `⸨in⸩`.length;
-                idx += `⸨in⸩`.length;
-            }
-            else if (/^⸨cen⸩/.test(maybe_command)) {
-                parts.push({
-                    subtext: `⸨cen⸩`,
-                    type: Type.COMMAND,
-                    has_italic: false,
-                    has_bold: false,
-                    has_underline: false,
-                    has_small_caps: false,
-                    has_error: false,
-                });
-                current_start_index = idx + `⸨cen⸩`.length;
-                idx += `⸨cen⸩`.length;
-            }
-            else {
-                const point = Dictionary.First_Point(maybe_command);
-                const next_point = Dictionary.First_Point(maybe_command.slice(point.length));
-                if (this.data.letters.includes(point)) {
-                    current_type = Type.LETTERS;
-                }
-                else if (this.data.markers.includes(point)) {
-                    current_type = Type.MARKERS;
-                }
-                else {
-                    current_type = Type.POINT;
-                }
-                if (current_type === Type.POINT) {
-                    if (first_part === null) {
-                        first_part = parts.length;
-                    }
-                    last_part = parts.length;
-                    parts.push({
-                        subtext: text.slice(current_start_index, idx + point.length),
-                        type: Type.POINT,
-                        has_italic,
-                        has_bold,
-                        has_underline,
-                        has_small_caps,
-                        has_error,
-                    });
-                    current_start_index = idx + point.length;
-                }
-                else if (current_type === Type.LETTERS) {
-                    if (idx + point.length === end ||
-                        (point.length === 1 && /^.⸨\/?[^⸩]*⸩/.test(maybe_command)) ||
-                        (point.length === 2 && /^..⸨\/?[^⸩]*⸩/.test(maybe_command)) ||
-                        !this.data.letters.includes(next_point)) {
-                        if (first_part === null) {
-                            first_part = parts.length;
-                        }
-                        last_part = parts.length;
-                        parts.push({
-                            subtext: text.slice(current_start_index, idx + point.length),
-                            type: Type.LETTERS,
-                            has_italic,
-                            has_bold,
-                            has_underline,
-                            has_small_caps,
-                            has_error,
-                        });
-                        current_start_index = idx + point.length;
-                    }
-                }
-                else if (current_type === Type.MARKERS) {
-                    if (idx + point.length === end ||
-                        (point.length === 1 && /^.⸨\/?[^⸩]*⸩/.test(maybe_command)) ||
-                        (point.length === 2 && /^..⸨\/?[^⸩]*⸩/.test(maybe_command)) ||
-                        !this.data.markers.includes(next_point)) {
-                        if (first_part === null) {
-                            first_part = parts.length;
-                        }
-                        last_part = parts.length;
-                        parts.push({
-                            subtext: text.slice(current_start_index, idx + point.length),
-                            type: Type.MARKERS,
-                            has_italic,
-                            has_bold,
-                            has_underline,
-                            has_small_caps,
-                            has_error,
-                        });
-                        current_start_index = idx + point.length;
-                    }
-                }
-                else {
-                    Utils.Assert(false);
-                }
-                idx += point.length;
-            }
-        }
-        let inner_html = ``;
-        for (let idx = 0, end = parts.length; idx < end; idx += 1) {
-            const part = parts[idx];
-            if (part.type === Type.COMMAND) {
-                let command_classes = ``;
-                if (part.subtext === `⸨in⸩`) {
-                    command_classes += ` INDENT`;
-                }
-                inner_html += `<span class="COMMAND${command_classes}">${Escape_Text(part.subtext)}</span>`;
-            }
-            else {
-                let command_classes = ``;
-                if (part.has_italic) {
-                    command_classes += ` ITALIC`;
-                }
-                if (part.has_bold) {
-                    command_classes += ` BOLD`;
-                }
-                if (part.has_underline) {
-                    command_classes += ` UNDERLINE`;
-                }
-                if (part.has_small_caps) {
-                    command_classes += ` SMALL_CAPS`;
-                }
-                if (part.has_error) {
-                    command_classes += ` ERROR`;
-                }
-                const boundary = (idx === first_part ? Dictionary_Boundary.START : (idx === last_part ? Dictionary_Boundary.END :
-                    Dictionary_Boundary.MIDDLE));
-                if (part.type === Type.POINT) {
-                    if (this.Has_Word_Error(part.subtext)) {
-                        inner_html += `<span class="KNOWN_WORD_ERROR${command_classes}">${Escape_Text(part.subtext)}</span>`;
-                    }
-                    else if (this.Has_Break_Error(part.subtext, boundary)) {
-                        inner_html += `<span class="KNOWN_BREAK_ERROR${command_classes}">${Escape_Text(part.subtext)}</span>`;
-                    }
-                    else {
-                        inner_html += `<span class="UNKNOWN_POINT${command_classes}">${Escape_Text(part.subtext)}</span>`;
-                    }
-                }
-                else if (part.type === Type.LETTERS) {
-                    if (this.Has_Word_Error(part.subtext)) {
-                        inner_html += `<span class="KNOWN_WORD_ERROR${command_classes}">${Escape_Text(part.subtext)}</span>`;
-                    }
-                    else if (this.Has_Word(part.subtext)) {
-                        inner_html += `<span class="KNOWN_WORD${command_classes}">${Escape_Text(part.subtext)}</span>`;
-                    }
-                    else {
-                        inner_html += `<span class="UNKNOWN_WORD${command_classes}">${Escape_Text(part.subtext)}</span>`;
-                    }
-                }
-                else if (part.type === Type.MARKERS) {
-                    if (this.Has_Break_Error(part.subtext, boundary)) {
-                        inner_html += `<span class="KNOWN_BREAK_ERROR${command_classes}">${Escape_Text(part.subtext)}</span>`;
-                    }
-                    else if (this.Has_Break(part.subtext, boundary)) {
-                        inner_html += `<span class="KNOWN_BREAK${command_classes}">${Escape_Text(part.subtext)}</span>`;
-                    }
-                    else {
-                        inner_html += `<span class="UNKNOWN_BREAK${command_classes}">${Escape_Text(part.subtext)}</span>`;
-                    }
-                }
-                else {
-                    Utils.Assert(false);
-                }
-            }
-        }
-        return ({
-            html: inner_html,
-            is_centered: is_centered,
-        });
-    }
-    Treat_As_Points(text) {
-        let inner_html = ``;
-        for (let idx = 0, end = text.length; idx < end;) {
-            const maybe_command = text.slice(idx).match(/^(⸨\/?(i|b|u|sc|err)⸩|⸨(in|cen)⸩)/);
-            if (maybe_command && maybe_command[0]) {
-                for (const end = idx + maybe_command[0].length; idx < end;) {
-                    const point = Dictionary.First_Point(text.slice(idx));
-                    inner_html += `<span class="COMMAND SEPARATE_POINT">${Escape_Text(point)}</span>`;
-                    idx += point.length;
-                }
-            }
-            else {
-                const point = Dictionary.First_Point(text.slice(idx));
-                if (this.data.letters.includes(point)) {
-                    inner_html += `<span class="KNOWN_LETTER SEPARATE_POINT">${Escape_Text(point)}</span>`;
-                }
-                else if (this.data.markers.includes(point)) {
-                    inner_html += `<span class="KNOWN_MARKER SEPARATE_POINT">${Escape_Text(point)}</span>`;
-                }
-                else {
-                    inner_html += `<span class="UNKNOWN_POINT SEPARATE_POINT">${Escape_Text(point)}</span>`;
-                }
-                idx += point.length;
-            }
-        }
-        return inner_html;
-    }
-    JSON() {
-        this.data.letters.sort();
-        this.data.markers.sort();
-        const sorted_words = {};
-        for (const letter of Object.keys(this.data.words).sort()) {
-            sorted_words[letter] = this.data.words[letter].sort();
-        }
-        this.data.words = sorted_words;
-        const sorted_breaks = {
-            [Dictionary_Boundary.START]: {},
-            [Dictionary_Boundary.MIDDLE]: {},
-            [Dictionary_Boundary.END]: {},
-        };
-        for (const boundary of [Dictionary_Boundary.START, Dictionary_Boundary.MIDDLE, Dictionary_Boundary.END]) {
-            for (const marker of Object.keys(this.data.breaks[boundary]).sort()) {
-                sorted_breaks[boundary][marker] = this.data.breaks[boundary][marker].sort();
-            }
-        }
-        this.data.breaks = sorted_breaks;
-        this.data.word_errors.sort();
-        for (const boundary of [Dictionary_Boundary.START, Dictionary_Boundary.MIDDLE, Dictionary_Boundary.END]) {
-            this.data.break_errors[boundary].sort();
-        }
-        return JSON.stringify(this.data, null, 4);
+    else {
+        return null;
     }
 }
 var Line_Event_Key;
@@ -1065,19 +478,19 @@ class Line {
             else if (event.key === Line_Event_Key.LETTER) {
                 event.preventDefault();
                 if (this.Editor().Is_Meta_Key_Active()) {
-                    const selected = Dictionary.Selected_Entry();
+                    const selected = Selected_Part();
                     if (selected) {
-                        if (selected.class === Dictionary_Class.UNKNOWN_POINT) {
+                        if (selected.class === Part_Class.UNKNOWN_POINT) {
                             this.Editor().Dictionary().Add_Letter(selected.text);
                             this.Editor().Touch();
                         }
-                        else if (selected.class === Dictionary_Class.KNOWN_LETTER) {
+                        else if (selected.class === Part_Class.KNOWN_LETTER) {
                             this.Editor().Dictionary().Remove_Letter(selected.text);
                             this.Editor().Touch();
                         }
-                        else if (selected.class === Dictionary_Class.UNKNOWN_WORD ||
-                            selected.class === Dictionary_Class.KNOWN_WORD) {
-                            if (Dictionary.Is_Point(selected.text)) {
+                        else if (selected.class === Part_Class.UNKNOWN_WORD ||
+                            selected.class === Part_Class.KNOWN_WORD) {
+                            if (Unicode.Is_Point(selected.text)) {
                                 this.Editor().Dictionary().Remove_Letter(selected.text);
                                 this.Editor().Touch();
                             }
@@ -1088,19 +501,19 @@ class Line {
             else if (event.key === Line_Event_Key.MARKER) {
                 event.preventDefault();
                 if (this.Editor().Is_Meta_Key_Active()) {
-                    const selected = Dictionary.Selected_Entry();
+                    const selected = Selected_Part();
                     if (selected) {
-                        if (selected.class === Dictionary_Class.UNKNOWN_POINT) {
+                        if (selected.class === Part_Class.UNKNOWN_POINT) {
                             this.Editor().Dictionary().Add_Marker(selected.text);
                             this.Editor().Touch();
                         }
-                        else if (selected.class === Dictionary_Class.KNOWN_MARKER) {
+                        else if (selected.class === Part_Class.KNOWN_MARKER) {
                             this.Editor().Dictionary().Remove_Marker(selected.text);
                             this.Editor().Touch();
                         }
-                        else if (selected.class === Dictionary_Class.UNKNOWN_BREAK ||
-                            selected.class === Dictionary_Class.KNOWN_BREAK) {
-                            if (Dictionary.Is_Point(selected.text)) {
+                        else if (selected.class === Part_Class.UNKNOWN_BREAK ||
+                            selected.class === Part_Class.KNOWN_BREAK) {
+                            if (Unicode.Is_Point(selected.text)) {
                                 this.Editor().Dictionary().Remove_Marker(selected.text);
                                 this.Editor().Touch();
                             }
@@ -1111,17 +524,17 @@ class Line {
             else if (event.key === Line_Event_Key.WORD) {
                 event.preventDefault();
                 if (this.Editor().Is_Meta_Key_Active()) {
-                    const selected = Dictionary.Selected_Entry();
+                    const selected = Selected_Part();
                     if (selected) {
-                        if (selected.class === Dictionary_Class.UNKNOWN_WORD) {
+                        if (selected.class === Part_Class.UNKNOWN_WORD) {
                             this.Editor().Dictionary().Add_Word(selected.text);
                             this.Editor().Touch();
                         }
-                        else if (selected.class === Dictionary_Class.KNOWN_WORD) {
+                        else if (selected.class === Part_Class.KNOWN_WORD) {
                             this.Editor().Dictionary().Remove_Word(selected.text);
                             this.Editor().Touch();
                         }
-                        else if (selected.class === Dictionary_Class.KNOWN_WORD_ERROR) {
+                        else if (selected.class === Part_Class.KNOWN_WORD_ERROR) {
                             this.Editor().Dictionary().Remove_Word_Error(selected.text);
                             this.Editor().Dictionary().Add_Word(selected.text);
                             this.Editor().Touch();
@@ -1132,17 +545,17 @@ class Line {
             else if (event.key === Line_Event_Key.BREAK) {
                 event.preventDefault();
                 if (this.Editor().Is_Meta_Key_Active()) {
-                    const selected = Dictionary.Selected_Entry();
+                    const selected = Selected_Part();
                     if (selected) {
-                        if (selected.class === Dictionary_Class.UNKNOWN_BREAK) {
+                        if (selected.class === Part_Class.UNKNOWN_BREAK) {
                             this.Editor().Dictionary().Add_Break(selected.text, selected.boundary);
                             this.Editor().Touch();
                         }
-                        else if (selected.class === Dictionary_Class.KNOWN_BREAK) {
+                        else if (selected.class === Part_Class.KNOWN_BREAK) {
                             this.Editor().Dictionary().Remove_Break(selected.text, selected.boundary);
                             this.Editor().Touch();
                         }
-                        else if (selected.class === Dictionary_Class.KNOWN_BREAK_ERROR) {
+                        else if (selected.class === Part_Class.KNOWN_BREAK_ERROR) {
                             this.Editor().Dictionary().Remove_Break_Error(selected.text, selected.boundary);
                             this.Editor().Dictionary().Add_Break(selected.text, selected.boundary);
                             this.Editor().Touch();
@@ -1153,31 +566,31 @@ class Line {
             else if (event.key === Line_Event_Key.ERROR) {
                 if (this.Editor().Is_Meta_Key_Active()) {
                     event.preventDefault();
-                    const selected = Dictionary.Selected_Entry();
+                    const selected = Selected_Part();
                     if (selected) {
-                        if (selected.class === Dictionary_Class.UNKNOWN_WORD) {
+                        if (selected.class === Part_Class.UNKNOWN_WORD) {
                             this.Editor().Dictionary().Add_Word_Error(selected.text);
                             this.Editor().Touch();
                         }
-                        else if (selected.class === Dictionary_Class.KNOWN_WORD) {
+                        else if (selected.class === Part_Class.KNOWN_WORD) {
                             this.Editor().Dictionary().Remove_Word(selected.text);
                             this.Editor().Dictionary().Add_Word_Error(selected.text);
                             this.Editor().Touch();
                         }
-                        else if (selected.class === Dictionary_Class.UNKNOWN_BREAK) {
+                        else if (selected.class === Part_Class.UNKNOWN_BREAK) {
                             this.Editor().Dictionary().Add_Break_Error(selected.text, selected.boundary);
                             this.Editor().Touch();
                         }
-                        else if (selected.class === Dictionary_Class.KNOWN_BREAK) {
+                        else if (selected.class === Part_Class.KNOWN_BREAK) {
                             this.Editor().Dictionary().Remove_Break(selected.text, selected.boundary);
                             this.Editor().Dictionary().Add_Break_Error(selected.text, selected.boundary);
                             this.Editor().Touch();
                         }
-                        else if (selected.class === Dictionary_Class.KNOWN_WORD_ERROR) {
+                        else if (selected.class === Part_Class.KNOWN_WORD_ERROR) {
                             this.Editor().Dictionary().Remove_Word_Error(selected.text);
                             this.Editor().Touch();
                         }
-                        else if (selected.class === Dictionary_Class.KNOWN_BREAK_ERROR) {
+                        else if (selected.class === Part_Class.KNOWN_BREAK_ERROR) {
                             this.Editor().Dictionary().Remove_Break_Error(selected.text, selected.boundary);
                             this.Editor().Touch();
                         }
@@ -1187,22 +600,22 @@ class Line {
             else if (event.key === Line_Event_Key.WORD_ERROR) {
                 if (this.Editor().Is_Meta_Key_Active()) {
                     event.preventDefault();
-                    const selected = Dictionary.Selected_Entry();
+                    const selected = Selected_Part();
                     if (selected) {
-                        if (selected.class === Dictionary_Class.UNKNOWN_POINT) {
+                        if (selected.class === Part_Class.UNKNOWN_POINT) {
                             this.Editor().Dictionary().Add_Word_Error(selected.text);
                             this.Editor().Touch();
                         }
-                        else if (selected.class === Dictionary_Class.UNKNOWN_WORD) {
+                        else if (selected.class === Part_Class.UNKNOWN_WORD) {
                             this.Editor().Dictionary().Add_Word_Error(selected.text);
                             this.Editor().Touch();
                         }
-                        else if (selected.class === Dictionary_Class.KNOWN_WORD) {
+                        else if (selected.class === Part_Class.KNOWN_WORD) {
                             this.Editor().Dictionary().Remove_Word(selected.text);
                             this.Editor().Dictionary().Add_Word_Error(selected.text);
                             this.Editor().Touch();
                         }
-                        else if (selected.class === Dictionary_Class.KNOWN_WORD_ERROR) {
+                        else if (selected.class === Part_Class.KNOWN_WORD_ERROR) {
                             this.Editor().Dictionary().Remove_Word_Error(selected.text);
                             this.Editor().Touch();
                         }
@@ -1212,22 +625,22 @@ class Line {
             else if (event.key === Line_Event_Key.BREAK_ERROR) {
                 if (this.Editor().Is_Meta_Key_Active()) {
                     event.preventDefault();
-                    const selected = Dictionary.Selected_Entry();
+                    const selected = Selected_Part();
                     if (selected) {
-                        if (selected.class === Dictionary_Class.UNKNOWN_POINT) {
+                        if (selected.class === Part_Class.UNKNOWN_POINT) {
                             this.Editor().Dictionary().Add_Break_Error(selected.text, selected.boundary);
                             this.Editor().Touch();
                         }
-                        else if (selected.class === Dictionary_Class.UNKNOWN_BREAK) {
+                        else if (selected.class === Part_Class.UNKNOWN_BREAK) {
                             this.Editor().Dictionary().Add_Break_Error(selected.text, selected.boundary);
                             this.Editor().Touch();
                         }
-                        else if (selected.class === Dictionary_Class.KNOWN_BREAK) {
+                        else if (selected.class === Part_Class.KNOWN_BREAK) {
                             this.Editor().Dictionary().Remove_Break(selected.text, selected.boundary);
                             this.Editor().Dictionary().Add_Break_Error(selected.text, selected.boundary);
                             this.Editor().Touch();
                         }
-                        else if (selected.class === Dictionary_Class.KNOWN_BREAK_ERROR) {
+                        else if (selected.class === Part_Class.KNOWN_BREAK_ERROR) {
                             this.Editor().Dictionary().Remove_Break_Error(selected.text, selected.boundary);
                             this.Editor().Touch();
                         }
@@ -1320,11 +733,11 @@ class Line {
         // such a thing, because it's an annoying problem that doesn't need to be dealt
         // with just yet.
         if (this.Editor().Is_In_Point_Mode()) {
-            this.element.innerHTML = this.Editor().Dictionary().Treat_As_Points(text);
+            this.element.innerHTML = this.Treat_As_Points(text);
             this.element.style.display = `block`;
         }
         else {
-            const treatment = this.Editor().Dictionary().Treat(text);
+            const treatment = this.Treat(text);
             this.element.innerHTML = treatment.html;
             if (treatment.is_centered) {
                 this.element.style.display = `flex`;
@@ -1340,6 +753,130 @@ class Line {
         if (text_offset) {
             Set_Text_Offset(this.Element(), text_offset);
         }
+    }
+    Treat(text) {
+        const model = new Model.Instance({
+            dictionary: this.Editor().Dictionary(),
+            value: text,
+        });
+        Utils.Assert(model.Line_Count() === 1, `model's line count should be 1.`);
+        const line = model.Line(0);
+        let inner_html = ``;
+        for (let idx = 0, end = line.Macro_Part_Count(); idx < end; idx += 1) {
+            const part = line.Macro_Part(idx);
+            if (part.Is_Command()) {
+                const command = part;
+                let command_classes = ``;
+                if (command.Is_Indent()) {
+                    command_classes += ` INDENT`;
+                }
+                inner_html +=
+                    `<span class="COMMAND${command_classes}">${Escape_Text(command.Value())}</span>`;
+            }
+            else {
+                let command_classes = ``;
+                if (part.Has_Italic_Style()) {
+                    command_classes += ` ITALIC`;
+                }
+                if (part.Has_Bold_Style()) {
+                    command_classes += ` BOLD`;
+                }
+                if (part.Has_Underline_Style()) {
+                    command_classes += ` UNDERLINE`;
+                }
+                if (part.Has_Small_Caps_Style()) {
+                    command_classes += ` SMALL_CAPS`;
+                }
+                if (part.Has_Error_Style()) {
+                    command_classes += ` ERROR`;
+                }
+                if (part.Is_Point()) {
+                    inner_html +=
+                        `<span class="UNKNOWN_POINT${command_classes}">${Escape_Text(part.Value())}</span>`;
+                }
+                else if (part.Is_Word()) {
+                    if (part.Is_Good()) {
+                        inner_html +=
+                            `<span class="KNOWN_WORD${command_classes}">${Escape_Text(part.Value())}</span>`;
+                    }
+                    else if (part.Is_Error()) {
+                        inner_html +=
+                            `<span class="KNOWN_WORD_ERROR${command_classes}">${Escape_Text(part.Value())}</span>`;
+                    }
+                    else if (part.Is_Unknown()) {
+                        inner_html +=
+                            `<span class="UNKNOWN_WORD${command_classes}">${Escape_Text(part.Value())}</span>`;
+                    }
+                    else {
+                        Utils.Assert(false, `unknown part state.`);
+                    }
+                }
+                else if (part.Is_Break()) {
+                    if (part.Is_Good()) {
+                        inner_html +=
+                            `<span class="KNOWN_BREAK${command_classes}">${Escape_Text(part.Value())}</span>`;
+                    }
+                    else if (part.Is_Error()) {
+                        inner_html +=
+                            `<span class="KNOWN_BREAK_ERROR${command_classes}">${Escape_Text(part.Value())}</span>`;
+                    }
+                    else if (part.Is_Unknown()) {
+                        inner_html +=
+                            `<span class="UNKNOWN_BREAK${command_classes}">${Escape_Text(part.Value())}</span>`;
+                    }
+                    else {
+                        Utils.Assert(false, `unknown part state.`);
+                    }
+                }
+                else {
+                    Utils.Assert(false, `invalid macro part.`);
+                }
+            }
+        }
+        return ({
+            html: inner_html,
+            is_centered: line.Is_Centered(),
+        });
+    }
+    Treat_As_Points(text) {
+        const model = new Model.Instance({
+            dictionary: this.Editor().Dictionary(),
+            value: text,
+        });
+        Utils.Assert(model.Line_Count() === 1, `model's line count should be 1.`);
+        const line = model.Line(0);
+        let inner_html = ``;
+        for (let idx = 0, end = line.Micro_Part_Count(); idx < end; idx += 1) {
+            const part = line.Micro_Part(idx);
+            if (part.Is_Command()) {
+                let it = new Unicode.Iterator({
+                    text: part.Value(),
+                    index: 0,
+                });
+                for (; !it.Is_At_End(); it = it.Next()) {
+                    inner_html +=
+                        `<span class="COMMAND SEPARATE_POINT">${Escape_Text(it.Point())}</span>`;
+                }
+            }
+            else {
+                if (part.Is_Letter()) {
+                    inner_html +=
+                        `<span class="KNOWN_LETTER SEPARATE_POINT">${Escape_Text(part.Value())}</span>`;
+                }
+                else if (part.Is_Marker()) {
+                    inner_html +=
+                        `<span class="KNOWN_MARKER SEPARATE_POINT">${Escape_Text(part.Value())}</span>`;
+                }
+                else if (part.Is_Point()) {
+                    inner_html +=
+                        `<span class="UNKNOWN_POINT SEPARATE_POINT">${Escape_Text(part.Value())}</span>`;
+                }
+                else {
+                    Utils.Assert(false, `invalid micro part.`);
+                }
+            }
+        }
+        return inner_html;
     }
 }
 class Editor {
@@ -1504,14 +1041,14 @@ class Editor {
         this.children.dictionary_new_button.addEventListener(`click`, function (event) {
             return __awaiter(this, void 0, void 0, function* () {
                 if (this.saved_dictionary === null ?
-                    this.Dictionary().JSON() !== new Dictionary({}).JSON() :
-                    this.saved_dictionary !== this.Dictionary().JSON()) {
+                    this.Dictionary().To_JSON() !== new Model.Dictionary.Instance({}).To_JSON() :
+                    this.saved_dictionary !== this.Dictionary().To_JSON()) {
                     if (!(yield this.Try_To_Save_Dictionary())) {
                         return;
                     }
                 }
                 this.Set_Dictionary_Name(`New Dictionary`);
-                this.dictionary = new Dictionary({});
+                this.dictionary = new Model.Dictionary.Instance({});
                 this.Touch();
                 this.saved_dictionary = null;
             });
@@ -1529,7 +1066,7 @@ class Editor {
                     this.Set_Dictionary_Name(file.name.replace(/\.[^.]+$/, ``));
                     this.Set_Dictionary_JSON(file_text);
                     this.children.dictionary_load_input.value = ``;
-                    this.saved_dictionary = this.Dictionary().JSON();
+                    this.saved_dictionary = this.Dictionary().To_JSON();
                 }
             });
         }.bind(this));
@@ -1538,8 +1075,8 @@ class Editor {
         this.children.dictionary_load_button.addEventListener(`click`, function (event) {
             return __awaiter(this, void 0, void 0, function* () {
                 if (this.saved_dictionary === null ?
-                    this.Dictionary().JSON() !== new Dictionary({}).JSON() :
-                    this.saved_dictionary !== this.Dictionary().JSON()) {
+                    this.Dictionary().To_JSON() !== new Model.Dictionary.Instance({}).To_JSON() :
+                    this.saved_dictionary !== this.Dictionary().To_JSON()) {
                     if (!(yield this.Try_To_Save_Dictionary())) {
                         return;
                     }
@@ -1651,7 +1188,7 @@ class Editor {
 
                 overflow-y: auto;
             `);
-        this.dictionary = new Dictionary({});
+        this.dictionary = new Model.Dictionary.Instance({});
         this.lines = [];
         this.children.controls.appendChild(this.children.dictionary_label);
         this.children.controls.appendChild(this.children.dictionary_name);
@@ -1693,10 +1230,10 @@ class Editor {
         this.children.dictionary_name.innerHTML = Escape_Text(name);
     }
     Dictionary_JSON() {
-        return this.Dictionary().JSON();
+        return this.Dictionary().To_JSON();
     }
     Set_Dictionary_JSON(json) {
-        this.dictionary = new Dictionary({
+        this.dictionary = new Model.Dictionary.Instance({
             json: json,
         });
         this.Touch();
@@ -2219,10 +1756,18 @@ class Editor {
         }
 
         .KNOWN_LETTER {
+            border-width: 0 0 2px 0;
+            border-style: solid;
+            border-color: transparent;
+
             overflow-wrap: normal;
         }
 
         .KNOWN_MARKER {
+            border-width: 0 0 2px 0;
+            border-style: solid;
+            border-color: transparent;
+
             overflow-wrap: normal;
         }
 
@@ -2235,6 +1780,10 @@ class Editor {
         }
 
         .KNOWN_WORD {
+            border-width: 0 0 2px 0;
+            border-style: solid;
+            border-color: transparent;
+
             overflow-wrap: normal;
         }
 
@@ -2247,6 +1796,10 @@ class Editor {
         }
 
         .KNOWN_BREAK {
+            border-width: 0 0 2px 0;
+            border-style: solid;
+            border-color: transparent;
+
             overflow-wrap: normal;
         }
 
@@ -2267,6 +1820,10 @@ class Editor {
         }
 
         .COMMAND {
+            border-width: 0 0 2px 0;
+            border-style: solid;
+            border-color: transparent;
+            
             overflow-wrap: normal;
         }
     `);

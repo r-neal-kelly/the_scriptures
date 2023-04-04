@@ -59,6 +59,47 @@ export async function Wait_Seconds(
     return Wait_Milliseconds(seconds * 1000);
 }
 
+function Is_Type(
+    type: RegExp,
+    instance: any,
+):
+    boolean
+{
+    return type.test(
+        Object.prototype.toString.call(instance).replace(/^[^ ]+ |.$/g, ``),
+    );
+}
+
+export const Is = {
+    Type: Is_Type,
+
+    Undefined: (x: any) => Is_Type(/^Undefined$/, x),
+    Null: (x: any) => Is_Type(/^Null$/, x),
+    Undefined_Or_Null: (x: any) => Is_Type(/^Undefined$|^Null$/, x),
+
+    Boolean: (x: any) => Is_Type(/^Boolean$/, x),
+    Number: (x: any) => Is_Type(/^Number$/, x) && x === x && x !== Infinity && x !== -Infinity,
+    Infinity: (x: any) => Is_Type(/^Number$/, x) && x === Infinity || x === -Infinity,
+    Number_Or_Infinity: (x: any) => Is_Type(/^Number$/, x) && x === x,
+    NaN: (x: any) => Is_Type(/^Number$/, x) && x !== x,
+
+    Object: (x: any) => Is_Type(/^Object$/, x),
+    Array: (x: any) => Is_Type(/^Array$/, x),
+    String: (x: any) => Is_Type(/^String$/, x),
+    Function: (x: any) => Is_Type(/^Function$/, x),
+
+    Symbol: (x: any) => Is_Type(/^Symbol$/, x),
+    Date: (x: any) => Is_Type(/^Date$/, x),
+    RegExp: (x: any) => Is_Type(/^RegExp$/, x),
+    Set: (x: any) => Is_Type(/^Set$/, x),
+    Map: (x: any) => Is_Type(/^Map$/, x),
+
+    Window: (x: any) => Is_Type(/^Window$/, x),
+    Global: (x: any) => Is_Type(/^global$/, x),
+    Window_Or_Global: (x: any) => Is_Type(/^Window$|^global$/, x),
+};
+Object.freeze(Is);
+
 export function Resolve_Path(
     path_from_root: Path,
 ):

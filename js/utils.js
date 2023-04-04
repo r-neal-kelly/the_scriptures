@@ -29,6 +29,33 @@ export function Wait_Seconds(seconds) {
         return Wait_Milliseconds(seconds * 1000);
     });
 }
+function Is_Type(type, instance) {
+    return type.test(Object.prototype.toString.call(instance).replace(/^[^ ]+ |.$/g, ``));
+}
+export const Is = {
+    Type: Is_Type,
+    Undefined: (x) => Is_Type(/^Undefined$/, x),
+    Null: (x) => Is_Type(/^Null$/, x),
+    Undefined_Or_Null: (x) => Is_Type(/^Undefined$|^Null$/, x),
+    Boolean: (x) => Is_Type(/^Boolean$/, x),
+    Number: (x) => Is_Type(/^Number$/, x) && x === x && x !== Infinity && x !== -Infinity,
+    Infinity: (x) => Is_Type(/^Number$/, x) && x === Infinity || x === -Infinity,
+    Number_Or_Infinity: (x) => Is_Type(/^Number$/, x) && x === x,
+    NaN: (x) => Is_Type(/^Number$/, x) && x !== x,
+    Object: (x) => Is_Type(/^Object$/, x),
+    Array: (x) => Is_Type(/^Array$/, x),
+    String: (x) => Is_Type(/^String$/, x),
+    Function: (x) => Is_Type(/^Function$/, x),
+    Symbol: (x) => Is_Type(/^Symbol$/, x),
+    Date: (x) => Is_Type(/^Date$/, x),
+    RegExp: (x) => Is_Type(/^RegExp$/, x),
+    Set: (x) => Is_Type(/^Set$/, x),
+    Map: (x) => Is_Type(/^Map$/, x),
+    Window: (x) => Is_Type(/^Window$/, x),
+    Global: (x) => Is_Type(/^global$/, x),
+    Window_Or_Global: (x) => Is_Type(/^Window$|^global$/, x),
+};
+Object.freeze(Is);
 export function Resolve_Path(path_from_root) {
     Assert(!/^\.\//.test(path_from_root), `Path must be relative to the root, and not anything else.`);
     Assert(!/^\.\.\//.test(path_from_root), `Path must be relative to the root, and can't go above root.`);

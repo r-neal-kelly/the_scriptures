@@ -9,11 +9,9 @@ export var Boundary;
 ;
 export class Instance {
     constructor({ json = null, }) {
-        if (json != null) {
-            this.info = JSON.parse(json);
-        }
-        else {
-            this.info = {
+        this.info = json != null ?
+            JSON.parse(json) :
+            {
                 letters: [],
                 markers: [],
                 words: {},
@@ -29,6 +27,53 @@ export class Instance {
                     [Boundary.END]: [],
                 },
             };
+        // letters, markers
+        for (const property of [`letters`, `markers`]) {
+            Utils.Assert(this.info.hasOwnProperty(property) &&
+                Utils.Is.Array(this.info[property]), `info.${property} is missing or is invalid.`);
+            for (const value of this.info[property]) {
+                Utils.Assert(Utils.Is.String(value), `info.${property} is missing or is invalid.`);
+            }
+        }
+        // words
+        Utils.Assert(this.info.hasOwnProperty(`words`) &&
+            Utils.Is.Object(this.info[`words`]), `info.words is missing or is invalid.`);
+        for (const [key, value] of Object.entries(this.info[`words`])) {
+            Utils.Assert(Utils.Is.String(key) &&
+                Utils.Is.Array(value), `info.words is missing or is invalid.`);
+            for (const value_value of value) {
+                Utils.Assert(Utils.Is.String(value_value), `info.words is missing or is invalid.`);
+            }
+        }
+        // breaks
+        Utils.Assert(this.info.hasOwnProperty(`breaks`) &&
+            Utils.Is.Object(this.info[`breaks`]), `info.breaks is missing or is invalid.`);
+        for (const boundary of [Boundary.START, Boundary.MIDDLE, Boundary.END]) {
+            Utils.Assert(this.info[`breaks`].hasOwnProperty(boundary) &&
+                Utils.Is.Object(this.info[`breaks`][boundary]), `info.breaks is missing or is invalid.`);
+            for (const [key, value] of Object.entries(this.info[`breaks`][boundary])) {
+                Utils.Assert(Utils.Is.String(key) &&
+                    Utils.Is.Array(value), `info.breaks is missing or is invalid.`);
+                for (const value_value of value) {
+                    Utils.Assert(Utils.Is.String(value_value), `info.breaks is missing or is invalid.`);
+                }
+            }
+        }
+        // word_errors
+        Utils.Assert(this.info.hasOwnProperty(`word_errors`) &&
+            Utils.Is.Array(this.info[`word_errors`]), `info.word_errors is missing or is invalid.`);
+        for (const value of this.info[`word_errors`]) {
+            Utils.Assert(Utils.Is.String(value), `info.word_errors is missing or is invalid.`);
+        }
+        // break_errors
+        Utils.Assert(this.info.hasOwnProperty(`break_errors`) &&
+            Utils.Is.Object(this.info[`break_errors`]), `info.break_errors is missing or is invalid.`);
+        for (const boundary of [Boundary.START, Boundary.MIDDLE, Boundary.END]) {
+            Utils.Assert(this.info[`break_errors`].hasOwnProperty(boundary) &&
+                Utils.Is.Array(this.info[`break_errors`][boundary]), `info.break_errors is missing or is invalid.`);
+            for (const value of this.info[`break_errors`][boundary]) {
+                Utils.Assert(Utils.Is.String(value), `info.break_errors is missing or is invalid.`);
+            }
         }
     }
     Has_Letter(letter) {
@@ -178,5 +223,30 @@ export class Instance {
                 this.info.break_errors[boundary][this.info.break_errors[boundary].length - 1];
             this.info.break_errors[boundary].pop();
         }
+    }
+    To_JSON() {
+        this.info.letters.sort();
+        this.info.markers.sort();
+        const sorted_words = {};
+        for (const letter of Object.keys(this.info.words).sort()) {
+            sorted_words[letter] = this.info.words[letter].sort();
+        }
+        this.info.words = sorted_words;
+        const sorted_breaks = {
+            [Boundary.START]: {},
+            [Boundary.MIDDLE]: {},
+            [Boundary.END]: {},
+        };
+        for (const boundary of [Boundary.START, Boundary.MIDDLE, Boundary.END]) {
+            for (const marker of Object.keys(this.info.breaks[boundary]).sort()) {
+                sorted_breaks[boundary][marker] = this.info.breaks[boundary][marker].sort();
+            }
+        }
+        this.info.breaks = sorted_breaks;
+        this.info.word_errors.sort();
+        for (const boundary of [Boundary.START, Boundary.MIDDLE, Boundary.END]) {
+            this.info.break_errors[boundary].sort();
+        }
+        return JSON.stringify(this.info, null, 4);
     }
 }
