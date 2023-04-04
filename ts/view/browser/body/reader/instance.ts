@@ -1,4 +1,5 @@
 import * as Utils from "../../../../utils.js";
+import * as Event from "../../../../event.js";
 
 import * as Model from "../../../../model/browser/body/reader/instance.js";
 
@@ -31,6 +32,24 @@ export class Instance extends Entity.Instance
         this.model = model;
     }
 
+    override On_Life():
+        Array<Event.Listener_Info>
+    {
+        return [
+            new Event.Listener_Info(
+                {
+                    event_name: new Event.Name(
+                        Event.Prefix.AFTER,
+                        `Selector_Slot_Item_Select`,
+                        this.Body().Browser().ID(),
+                    ),
+                    event_handler: this.After_Selector_Slot_Item_Select,
+                    event_priority: 10,
+                },
+            ),
+        ];
+    }
+
     override On_Refresh():
         void
     {
@@ -44,14 +63,18 @@ export class Instance extends Entity.Instance
                 },
             );
         }
-
-        this.Element().scrollTo(0, 0);
     }
 
     override On_Reclass():
         Array<string>
     {
         return [`Reader`];
+    }
+
+    async After_Selector_Slot_Item_Select():
+        Promise<void>
+    {
+        this.Element().scrollTo(0, 0);
     }
 
     Model():
