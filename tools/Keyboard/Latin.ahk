@@ -166,6 +166,7 @@ Latin.Sups_c  := { "a": "ᴬ" ; A
                  , "v": "ⱽ" ; V
                  , "w": "ᵂ" ; W
                  , "+": "⁺" ; U+207A SUPERSCRIPT PLUS SIGN
+                 , "|": "ˈ" ; U+02C8 MODIFIER LETTER VERTICAL LINE
                  , "": "" }
 
 Latin.Subs_s  := { "a": "ₐ" ; A
