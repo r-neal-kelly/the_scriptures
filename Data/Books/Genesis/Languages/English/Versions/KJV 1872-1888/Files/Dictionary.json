@@ -571,6 +571,8 @@
     },
     "word_errors": [
         "4",
+        "6",
+        "8",
         "Col",
         "everything",
         "moses",
