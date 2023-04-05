@@ -52,7 +52,6 @@
         "w",
         "x",
         "y",
-        "·",
         "ʰ",
         "ˡ",
         "ᵃ",
@@ -416,7 +415,6 @@
             "yielding",
             "you"
         ],
-        "·": [],
         "ʰ": [
             "ʰ"
         ],
@@ -579,8 +577,7 @@
         "Col",
         "everything",
         "moses",
-        "reation",
-        "·····"
+        "reation"
     ],
     "break_errors": {
         "START": [],
