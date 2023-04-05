@@ -91,7 +91,7 @@ function Main() {
                 Browser_Model.Body.Selector.Slot.Order.BOOKS_LANGUAGES_VERSIONS,
                 `Genesis`,
                 `English`,
-                `KJV 1872-1888`,
+                `KJV 1872-1888+`,
                 `Chapter 01.txt`,
             ],
             [
