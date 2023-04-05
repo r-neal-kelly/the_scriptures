@@ -1,18 +1,34 @@
 {
     "letters": [
+        "&",
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
         "A",
+        "B",
         "C",
         "D",
         "E",
         "G",
         "H",
         "I",
+        "J",
         "L",
+        "M",
         "N",
+        "O",
         "P",
         "R",
         "S",
         "T",
+        "W",
         "a",
         "b",
         "c",
@@ -34,16 +50,24 @@
         "u",
         "v",
         "w",
+        "x",
         "y",
+        "·",
         "ʰ",
+        "ʲ",
+        "ˡ",
         "ᵃ",
         "ᵇ",
         "ᵈ",
         "ᵉ",
         "ᵍ",
+        "ᵏ",
+        "ᵐ",
+        "ᵒ",
         "ᶜ",
         "ᶠ",
         "ⁱ",
+        "ⁿ",
         "₀",
         "₁",
         "₂",
@@ -63,63 +87,163 @@
         ":",
         ";",
         "¶",
+        "—",
         "⁺"
     ],
     "words": {
+        "0": [],
+        "1": [
+            "1",
+            "10⸼",
+            "11⸼",
+            "12⸼",
+            "136⸼",
+            "14⸼",
+            "15⸼",
+            "16⸼",
+            "17⸼",
+            "19⸼",
+            "1⸼"
+        ],
+        "2": [
+            "2",
+            "23⸼",
+            "24⸼",
+            "2⸼"
+        ],
+        "3": [
+            "31⸼",
+            "33⸼",
+            "35⸼",
+            "38⸼",
+            "39⸼",
+            "3⸼"
+        ],
+        "4": [
+            "47⸼",
+            "4⸼"
+        ],
+        "5": [
+            "51⸼",
+            "5⸼"
+        ],
+        "6": [
+            "6⸼"
+        ],
+        "7": [
+            "7⸼"
+        ],
+        "8": [
+            "8⸼"
+        ],
+        "9": [
+            "9⸼"
+        ],
+        "&": [
+            "&",
+            "&c⸼"
+        ],
         "A": [
+            "Acts",
+            "Also",
             "And"
         ],
+        "B": [
+            "Be",
+            "Behold"
+        ],
         "C": [
-            "CHAPTER"
+            "CHAPTER",
+            "Cor⸼"
         ],
         "D": [
-            "Day"
+            "Day",
+            "Deut⸼"
         ],
         "E": [
-            "Earth"
+            "Earth",
+            "Ecclus⸼",
+            "Ephes⸼",
+            "Esdr⸼"
         ],
         "G": [
+            "GENESIS",
             "God"
         ],
         "H": [
-            "Heaven"
+            "Heaven",
+            "Hebr⸼",
+            "Heb⸼"
         ],
         "I": [
+            "I",
             "In",
             "I⸼"
+        ],
+        "J": [
+            "Jer⸼",
+            "Job"
         ],
         "L": [
             "Let"
         ],
+        "M": [
+            "Matt⸼"
+        ],
         "N": [
             "Night"
         ],
-        "P": [],
+        "O": [
+            "Or"
+        ],
+        "P": [
+            "Psal⸼"
+        ],
         "R": [],
         "S": [
             "Seas",
+            "So",
             "Spirit"
         ],
-        "T": [],
+        "T": [
+            "The"
+        ],
+        "W": [
+            "Wisd⸼"
+        ],
         "a": [
             "a",
             "above",
             "abundantly",
             "after",
+            "air",
+            "all",
             "also",
             "and",
-            "appear"
+            "appear",
+            "appointment"
         ],
         "b": [
             "be",
+            "bearing",
+            "beast",
+            "beasts",
             "beginning",
+            "behold",
+            "between",
+            "blessed",
+            "book",
             "bring",
             "brought"
         ],
         "c": [
             "called",
+            "cattle",
+            "chap⸼",
             "created",
-            "creature"
+            "creature",
+            "creepeth",
+            "creeping"
         ],
         "d": [
             "darkness",
@@ -128,42 +252,57 @@
             "deep",
             "divide",
             "divided",
+            "dominion",
             "dry"
         ],
         "e": [
             "earth",
             "evening",
-            "every"
+            "every",
+            "expansion"
         ],
         "f": [
             "face",
+            "female",
+            "fifth",
+            "fill",
             "firmament",
             "first",
+            "fish",
             "fly",
+            "food",
             "for",
+            "form",
             "forth",
             "fourth",
             "fowl",
             "from",
-            "fruit"
+            "fruit",
+            "fruitful"
         ],
         "g": [
             "gathered",
             "gathering",
             "give",
+            "given",
             "good",
             "grass",
             "great",
-            "greater"
+            "greater",
+            "green"
         ],
         "h": [
+            "had",
             "hath",
+            "have",
             "he",
             "heaven",
             "herb",
+            "him",
             "his"
         ],
         "i": [
+            "image",
             "in",
             "is",
             "it",
@@ -179,16 +318,23 @@
             "life",
             "light",
             "lights",
+            "likeness",
             "living"
         ],
         "m": [
             "made",
+            "make",
+            "male",
+            "man",
             "may",
+            "meat",
             "midst",
+            "moon",
             "morning",
             "moved",
             "moveth",
-            "moving"
+            "moving",
+            "multiply"
         ],
         "n": [
             "night"
@@ -197,31 +343,46 @@
             "of",
             "one",
             "open",
-            "over"
+            "our",
+            "over",
+            "own"
         ],
         "p": [
             "place"
         ],
         "r": [
+            "replenish",
             "rule"
         ],
         "s": [
             "said",
             "saw",
+            "saying",
+            "sea",
+            "seas",
             "seasons",
             "second",
             "seed",
+            "seeding",
+            "separated",
             "set",
+            "shall",
             "signs",
+            "sixth",
             "so",
-            "stars"
+            "soul",
+            "stars",
+            "subdue",
+            "sun"
         ],
         "t": [
+            "tender",
             "that",
             "the",
             "their",
             "them",
             "there",
+            "thing",
             "third",
             "to",
             "together",
@@ -231,9 +392,11 @@
         "u": [
             "under",
             "unto",
-            "upon"
+            "upon",
+            "us"
         ],
         "v": [
+            "very",
             "void"
         ],
         "w": [
@@ -241,16 +404,27 @@
             "waters",
             "were",
             "whales",
+            "wherein",
             "which",
             "whose",
-            "winged"
+            "winged",
+            "without"
         ],
+        "x": [],
         "y": [
             "years",
-            "yielding"
+            "yielding",
+            "you"
         ],
+        "·": [],
         "ʰ": [
             "ʰ"
+        ],
+        "ʲ": [
+            "ʲ"
+        ],
+        "ˡ": [
+            "ˡ"
         ],
         "ᵃ": [
             "ᵃ"
@@ -267,6 +441,15 @@
         "ᵍ": [
             "ᵍ"
         ],
+        "ᵏ": [
+            "ᵏ"
+        ],
+        "ᵐ": [
+            "ᵐ"
+        ],
+        "ᵒ": [
+            "ᵒ"
+        ],
         "ᶜ": [
             "ᶜ"
         ],
@@ -275,6 +458,9 @@
         ],
         "ⁱ": [
             "ⁱ"
+        ],
+        "ⁿ": [
+            "ⁿ"
         ],
         "₀": [],
         "₁": [
@@ -293,10 +479,20 @@
         "₂": [
             "₂",
             "₂₀",
-            "₂₁"
+            "₂₁",
+            "₂₂",
+            "₂₃",
+            "₂₄",
+            "₂₅",
+            "₂₆",
+            "₂₇",
+            "₂₈",
+            "₂₉"
         ],
         "₃": [
-            "₃"
+            "₃",
+            "₃₀",
+            "₃₁"
         ],
         "₄": [
             "₄"
@@ -326,7 +522,12 @@
             ":": [],
             ";": [],
             "¶": [],
-            "⁺": []
+            "—": [
+                "————"
+            ],
+            "⁺": [
+                "⁺ "
+            ]
         },
         "MIDDLE": {
             " ": [
@@ -348,6 +549,7 @@
                 "; "
             ],
             "¶": [],
+            "—": [],
             "⁺": []
         },
         "END": {
@@ -363,10 +565,18 @@
             ],
             ";": [],
             "¶": [],
+            "—": [],
             "⁺": []
         }
     },
-    "word_errors": [],
+    "word_errors": [
+        "4",
+        "Col",
+        "everything",
+        "moses",
+        "reation",
+        "·····"
+    ],
     "break_errors": {
         "START": [],
         "MIDDLE": [],

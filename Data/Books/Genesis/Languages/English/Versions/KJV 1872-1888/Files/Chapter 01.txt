@@ -1,4 +1,4 @@
-⸨cen⸩⸨sc⸩the first book of moses,⸨/sc⸩
+⸨cen⸩⸨sc⸩the first book of ⸨err⸩moses⸨/err⸩,⸨/sc⸩
 ⸨cen⸩⸨sc⸩called⸨/sc⸩
 ⸨cen⸩GENESIS.
 ⸨cen⸩————
@@ -35,7 +35,7 @@
 ₂₇ So God created man in his ⸨i⸩own⸨/i⸩ image, in the image of God created he him; ⸨i⸩ˡ⸨/i⸩ male and female created he them.
 ₂₈ And God blessed them, and God said unto them, ⸨i⸩ᵐ⸨/i⸩ Be fruitful, and multiply, and replenish the earth, and subdue it: and have dominion over the fish of the sea, and over the fowl of the air, and over every living thing that ⁺moveth upon the earth.
 ₂₉ ¶ And God said, Behold, I have given you every herb ⁺bearing seed, which ⸨i⸩is⸨/i⸩ upon the face of all the earth, and every tree, in the which ⸨i⸩is⸨/i⸩ the fruit of a tree yielding seed; ⸨i⸩ⁿ⸨/i⸩ to you it shall be for meat.
-₃₀ And to every beast of the earth, and to every fowl of the air, and to everything that creepeth upon the earth, wherein ⸨i⸩there is⸨/i⸩ ⁺life, ⸨i⸩I have given⸨/i⸩ every green  herb for meat: and it was so.
+₃₀ And to every beast of the earth, and to every fowl of the air, and to ⸨err⸩everything⸨/err⸩ that creepeth upon the earth, wherein ⸨i⸩there is⸨/i⸩ ⁺life, ⸨i⸩I have given⸨/i⸩ every green herb for meat: and it was so.
 ₃₁ And ⸨i⸩ᵒ⸨/i⸩ God saw every thing that he had made, and, behold, ⸨i⸩it was⸨/i⸩ very good. And the evening and the morning were the sixth day.
 
 ⸨i⸩ᵃ⸨/i⸩ Psal⸼ 33⸼ 6⸼
@@ -46,14 +46,14 @@ Hebr⸼ 11⸼ 3⸼
 
 ⸨i⸩ᵇ⸨/i⸩ 2 Cor⸼ 4⸼ 6⸼
 
-⸨i⸩ᶜ⸨/i⸩ Psal⸼ 136⸼ 5⸼
+⸨i⸩ᶜ⸨/i⸩ Psal⸼ 136⸼ ⸨err⸩5⸼⸨/err⸩
 Jer⸼ 10⸼ 12⸼
 & 51⸼ 15⸼
 
 ⸨i⸩ᵈ⸨/i⸩ Jer⸼ 51⸼ 15⸼
 
 ⸨i⸩ᵉ⸨/i⸩ Psal⸼ 33⸼ 7⸼
-& 136⸼ 5⸼
+& 136⸼ ⸨err⸩5⸼⸨/err⸩
 Job 38⸼ 8⸼
 
 ⸨i⸩ᶠ⸨/i⸩ Deut⸼ 4⸼ 19⸼
@@ -61,7 +61,7 @@ Psal⸼ 136⸼ 7⸼
 
 ⸨i⸩ᵍ⸨/i⸩ Jer⸼ 31⸼ 35⸼
 
-⸨i⸩ʰ⸨/i⸩ 4 Esdr⸼ 6⸼ 47⸼
+⸨i⸩ʰ⸨/i⸩ ⸨err⸩4⸨/err⸩ Esdr⸼ 6⸼ 47⸼
 
 ⸨i⸩ⁱ⸨/i⸩ Or, ⸨i⸩creeping.⸨/i⸩
 
@@ -71,8 +71,8 @@ Psal⸼ 136⸼ 7⸼
 ⸨i⸩ᵏ⸨/i⸩ chap⸼ 5⸼ 1⸼
 & 9⸼ 6⸼
 1 Cor⸼ 11⸼ 7⸼
-Ephes⸼ 4⸼ 14⸼
-Col⸼ 3⸼ 10⸼
+Ephes⸼ 4⸼ ⸨err⸩14⸼⸨/err⸩
+⸨err⸩Col⸨/err⸩ 3⸼ 10⸼
 
 ⸨i⸩ˡ⸨/i⸩ Matt⸼ 19⸼ 4⸼
 Wisd⸼ 2⸼ 23⸼
