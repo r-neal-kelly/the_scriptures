@@ -30,13 +30,13 @@
 ⸨i⸩ᵃ⸨/i⸩ Exod⸼ 20⸼ 11⸼
 & 31⸼ 17⸼
 Deut⸼ 5⸼ 14⸼
-⸨err⸩Heb⸼⸨/err⸩ 4⸼ 4⸼
+Hebr⸼ 4⸼ 4⸼
 
 ⸨i⸩ᵇ⸨/i⸩ 1 Cor⸼ 15⸼ 47⸼
 
 ⸨i⸩ᶜ⸨/i⸩ 1 Cor⸼ 15⸼ 45⸼
 
-⸨i⸩ᵈ⸨/i⸩ Ecclus⸼ 24⸼ ⸨err⸩29⸼⸨/err⸩
+⸨i⸩ᵈ⸨/i⸩ Ecclus⸼ 24⸼ 30⸼
 
 ⸨i⸩ᵉ⸨/i⸩ Ecclus⸼ 17⸼ 5⸼
 
@@ -45,12 +45,12 @@ Deut⸼ 5⸼ 14⸼
 ⸨i⸩ᵍ⸨/i⸩ Matt⸼ 19⸼ 5⸼
 Mark 10⸼ 7⸼
 1 Cor⸼ 6⸼ 16⸼
-⸨err⸩Eph⸼⸨/err⸩ 5⸼ 31⸼
+Ephes⸼ 5⸼ 31⸼
 
 ⁺ Heb⸼ ⸨i⸩created to make.⸨/i⸩
 ⁺ Heb⸼ ⸨i⸩dust of the ground.⸨/i⸩
 ⁺ Heb⸼ ⸨i⸩Cush.⸨/i⸩
-⁺ Heb⸼ ⸨i⸩eating thou ⸨err⸩shal⸨/err⸩ eat.⸨/i⸩
+⁺ Heb⸼ ⸨i⸩eating thou shalt eat.⸨/i⸩
 ⁺ Heb⸼ ⸨i⸩dying thou shalt die.⸨/i⸩
 ⁺ Heb⸼ ⸨i⸩as before him.⸨/i⸩
 ⁺ Heb⸼ ⸨i⸩called.⸨/i⸩
