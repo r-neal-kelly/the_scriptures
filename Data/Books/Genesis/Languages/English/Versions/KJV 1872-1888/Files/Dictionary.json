@@ -149,7 +149,8 @@
         ],
         "B": [
             "Be",
-            "Behold"
+            "Behold",
+            "But"
         ],
         "C": [
             "CHAPTER",
@@ -162,6 +163,7 @@
         "E": [
             "Earth",
             "Ecclus⸼",
+            "Eden",
             "Ephes⸼",
             "Esdr⸼"
         ],
@@ -176,6 +178,7 @@
         ],
         "I": [
             "I",
+            "II⸼",
             "In",
             "I⸼"
         ],
@@ -184,7 +187,8 @@
             "Job"
         ],
         "L": [
-            "Let"
+            "Let",
+            "Lord"
         ],
         "M": [
             "Matt⸼"
@@ -205,7 +209,9 @@
             "Spirit"
         ],
         "T": [
-            "The"
+            "The",
+            "These",
+            "Thus"
         ],
         "W": [
             "Wisd⸼"
@@ -220,27 +226,36 @@
             "also",
             "and",
             "appear",
-            "appointment"
+            "appointment",
+            "are"
         ],
         "b": [
             "be",
             "bearing",
             "beast",
             "beasts",
+            "became",
+            "because",
+            "before",
             "beginning",
             "behold",
             "between",
             "blessed",
             "book",
+            "breath",
+            "breathed",
             "bring",
             "brought"
         ],
         "c": [
             "called",
             "cattle",
+            "caused",
             "chap⸼",
             "created",
+            "creation",
             "creature",
+            "creatures",
             "creepeth",
             "creeping"
         ],
@@ -252,26 +267,34 @@
             "divide",
             "divided",
             "dominion",
-            "dry"
+            "dry",
+            "dust"
         ],
         "e": [
             "earth",
+            "eastward",
+            "ended",
             "evening",
             "every",
+            "evil",
             "expansion"
         ],
         "f": [
             "face",
             "female",
+            "field",
             "fifth",
             "fill",
+            "finished",
             "firmament",
             "first",
             "fish",
             "fly",
             "food",
             "for",
+            "forbidden",
             "form",
+            "formed",
             "forth",
             "fourth",
             "fowl",
@@ -280,15 +303,20 @@
             "fruitful"
         ],
         "g": [
+            "garden",
             "gathered",
             "gathering",
+            "generations",
             "give",
             "given",
             "good",
             "grass",
             "great",
             "greater",
-            "green"
+            "green",
+            "grew",
+            "ground",
+            "grow"
         ],
         "h": [
             "had",
@@ -296,19 +324,24 @@
             "have",
             "he",
             "heaven",
+            "heavens",
             "herb",
             "him",
-            "his"
+            "his",
+            "host"
         ],
         "i": [
             "image",
             "in",
+            "institution",
+            "into",
             "is",
             "it",
             "itself"
         ],
         "k": [
-            "kind"
+            "kind",
+            "knowledge"
         ],
         "l": [
             "land",
@@ -323,11 +356,15 @@
         "m": [
             "made",
             "make",
+            "making",
             "male",
             "man",
+            "manner",
+            "marriage",
             "may",
             "meat",
             "midst",
+            "mist",
             "moon",
             "morning",
             "moved",
@@ -336,25 +373,41 @@
             "multiply"
         ],
         "n": [
-            "night"
+            "naming",
+            "night",
+            "nostrils",
+            "not"
         ],
         "o": [
             "of",
+            "on",
             "one",
+            "only",
             "open",
             "our",
+            "out",
             "over",
             "own"
         ],
         "p": [
-            "place"
+            "place",
+            "plant",
+            "planted",
+            "planting",
+            "pleasant",
+            "put"
         ],
         "r": [
+            "rain",
             "replenish",
+            "rested",
+            "river",
             "rule"
         ],
         "s": [
+            "sabbath",
             "said",
+            "sanctified",
             "saw",
             "saying",
             "sea",
@@ -365,7 +418,9 @@
             "seeding",
             "separated",
             "set",
+            "seventh",
             "shall",
+            "sight",
             "signs",
             "sixth",
             "so",
@@ -381,8 +436,11 @@
             "their",
             "them",
             "there",
+            "thereof",
+            "they",
             "thing",
             "third",
+            "till",
             "to",
             "together",
             "tree",
@@ -391,6 +449,7 @@
         "u": [
             "under",
             "unto",
+            "up",
             "upon",
             "us"
         ],
@@ -400,14 +459,22 @@
         ],
         "w": [
             "was",
+            "water",
+            "watered",
             "waters",
+            "went",
             "were",
             "whales",
+            "when",
             "wherein",
             "which",
+            "whole",
+            "whom",
             "whose",
             "winged",
-            "without"
+            "without",
+            "woman",
+            "work"
         ],
         "x": [],
         "y": [
