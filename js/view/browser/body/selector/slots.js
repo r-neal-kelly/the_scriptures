@@ -11,7 +11,7 @@ export class Instance extends Entity.Instance {
     }
     On_Refresh() {
         const model = this.Model();
-        if (model.Selector().Body().Browser().Commander().Is_Selector_Open()) {
+        if (model.Selector().Body().Browser().Commander().Selector().Is_Activated()) {
             const target = model.Count();
             const count = this.Child_Count();
             const delta = target - count;
@@ -38,7 +38,7 @@ export class Instance extends Entity.Instance {
         const model = this.Model();
         const classes = [];
         classes.push(`Slots`);
-        if (model.Selector().Body().Browser().Commander().Is_Selector_Closed()) {
+        if (model.Selector().Body().Browser().Commander().Selector().Is_Deactivated()) {
             classes.push(`Hidden`);
         }
         return classes;

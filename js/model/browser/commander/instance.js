@@ -1,32 +1,37 @@
 import * as Entity from "../../entity.js";
+import * as Previous from "./previous.js";
+import * as Selector from "./selector.js";
+import * as Next from "./next.js";
 export class Instance extends Entity.Instance {
     constructor({ browser, is_selector_open, }) {
         super();
         this.browser = browser;
-        this.is_selector_open = is_selector_open;
-        this.Is_Ready_After([]);
+        this.previous = new Previous.Instance({
+            commander: this,
+        });
+        this.selector = new Selector.Instance({
+            commander: this,
+            is_activated: is_selector_open,
+        });
+        this.next = new Next.Instance({
+            commander: this,
+        });
+        this.Is_Ready_After([
+            this.previous,
+            this.selector,
+            this.next,
+        ]);
     }
     Browser() {
         return this.browser;
     }
-    Is_Selector_Open() {
-        return this.is_selector_open;
+    Previous() {
+        return this.previous;
     }
-    Is_Selector_Closed() {
-        return !this.Is_Selector_Open();
+    Selector() {
+        return this.selector;
     }
-    Open_Selector() {
-        this.is_selector_open = true;
-    }
-    Close_Selector() {
-        this.is_selector_open = false;
-    }
-    Toggle_Selector() {
-        if (this.Is_Selector_Open()) {
-            this.Close_Selector();
-        }
-        else {
-            this.Open_Selector();
-        }
+    Next() {
+        return this.next;
     }
 }

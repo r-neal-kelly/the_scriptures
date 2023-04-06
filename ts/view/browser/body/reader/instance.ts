@@ -3,6 +3,7 @@ import * as Event from "../../../../event.js";
 
 import * as Model from "../../../../model/browser/body/reader/instance.js";
 
+import * as Events from "../../../events.js";
 import * as Entity from "../../../entity.js";
 import * as Body from "../instance.js";
 import * as File from "./file.js";
@@ -44,6 +45,28 @@ export class Instance extends Entity.Instance
                         this.Body().Browser().ID(),
                     ),
                     event_handler: this.After_Selector_Slot_Item_Select,
+                    event_priority: 10,
+                },
+            ),
+            new Event.Listener_Info(
+                {
+                    event_name: new Event.Name(
+                        Event.Prefix.AFTER,
+                        Events.BROWSER_COMMANDER_PREVIOUS,
+                        this.Body().Browser().ID(),
+                    ),
+                    event_handler: () => this.Element().scrollTo(0, 0),
+                    event_priority: 10,
+                },
+            ),
+            new Event.Listener_Info(
+                {
+                    event_name: new Event.Name(
+                        Event.Prefix.AFTER,
+                        Events.BROWSER_COMMANDER_NEXT,
+                        this.Body().Browser().ID(),
+                    ),
+                    event_handler: () => this.Element().scrollTo(0, 0),
                     event_priority: 10,
                 },
             ),

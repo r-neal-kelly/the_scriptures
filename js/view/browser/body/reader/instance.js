@@ -9,6 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import * as Utils from "../../../../utils.js";
 import * as Event from "../../../../event.js";
+import * as Events from "../../../events.js";
 import * as Entity from "../../../entity.js";
 import * as File from "./file.js";
 export class Instance extends Entity.Instance {
@@ -25,6 +26,16 @@ export class Instance extends Entity.Instance {
             new Event.Listener_Info({
                 event_name: new Event.Name(Event.Prefix.AFTER, `Selector_Slot_Item_Select`, this.Body().Browser().ID()),
                 event_handler: this.After_Selector_Slot_Item_Select,
+                event_priority: 10,
+            }),
+            new Event.Listener_Info({
+                event_name: new Event.Name(Event.Prefix.AFTER, Events.BROWSER_COMMANDER_PREVIOUS, this.Body().Browser().ID()),
+                event_handler: () => this.Element().scrollTo(0, 0),
+                event_priority: 10,
+            }),
+            new Event.Listener_Info({
+                event_name: new Event.Name(Event.Prefix.AFTER, Events.BROWSER_COMMANDER_NEXT, this.Body().Browser().ID()),
+                event_handler: () => this.Element().scrollTo(0, 0),
                 event_priority: 10,
             }),
         ];

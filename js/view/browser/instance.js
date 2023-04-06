@@ -1,4 +1,15 @@
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 import * as Utils from "../../utils.js";
+import * as Event from "../../event.js";
+import * as Events from "../events.js";
 import * as Entity from "../entity.js";
 import * as Commander from "./commander.js";
 import * as Body from "./body.js";
@@ -29,23 +40,6 @@ export class Instance extends Entity.Instance {
                 }
             `);
         this.Add_Children_CSS(`
-                .Commander {
-                    display: flex;
-                    align-items: center;
-
-                    padding: 4px;
-
-                    border-color: white;
-                    border-style: solid;
-                    border-width: 0 1px 0 0;
-
-                    cursor: pointer;
-                    -webkit-user-select: none;
-                    -moz-user-select: none;
-                    -ms-user-select: none;
-                    user-select: none;
-                }
-
                 .Body {
                     display: grid;
                     grid-template-rows: 1fr;
@@ -172,7 +166,18 @@ export class Instance extends Entity.Instance {
                     display: none;
                 }
             `);
-        return [];
+        return [
+            new Event.Listener_Info({
+                event_name: new Event.Name(Event.Prefix.AFTER, Events.BROWSER_COMMANDER_PREVIOUS, this.ID()),
+                event_handler: this.After_Browser_Commander_Previous,
+                event_priority: 0,
+            }),
+            new Event.Listener_Info({
+                event_name: new Event.Name(Event.Prefix.AFTER, Events.BROWSER_COMMANDER_NEXT, this.ID()),
+                event_handler: this.After_Browser_Commander_Next,
+                event_priority: 0,
+            }),
+        ];
     }
     On_Refresh() {
         if (!this.Has_Commander() ||
@@ -190,6 +195,16 @@ export class Instance extends Entity.Instance {
     }
     On_Reclass() {
         return [`Browser`];
+    }
+    After_Browser_Commander_Previous() {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.Refresh();
+        });
+    }
+    After_Browser_Commander_Next() {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.Refresh();
+        });
     }
     Model() {
         return this.model();

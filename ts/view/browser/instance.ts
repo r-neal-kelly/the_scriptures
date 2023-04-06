@@ -4,6 +4,7 @@ import * as Event from "../../event.js";
 import * as Model from "../../model/browser/instance.js";
 import * as Layout from "../../model/layout.js";
 
+import * as Events from "../events.js";
 import * as Entity from "../entity.js";
 import * as Commander from "./commander.js";
 import * as Body from "./body.js";
@@ -57,23 +58,6 @@ export class Instance extends Entity.Instance
 
         this.Add_Children_CSS(
             `
-                .Commander {
-                    display: flex;
-                    align-items: center;
-
-                    padding: 4px;
-
-                    border-color: white;
-                    border-style: solid;
-                    border-width: 0 1px 0 0;
-
-                    cursor: pointer;
-                    -webkit-user-select: none;
-                    -moz-user-select: none;
-                    -ms-user-select: none;
-                    user-select: none;
-                }
-
                 .Body {
                     display: grid;
                     grid-template-rows: 1fr;
@@ -202,7 +186,30 @@ export class Instance extends Entity.Instance
             `,
         );
 
-        return [];
+        return [
+            new Event.Listener_Info(
+                {
+                    event_name: new Event.Name(
+                        Event.Prefix.AFTER,
+                        Events.BROWSER_COMMANDER_PREVIOUS,
+                        this.ID(),
+                    ),
+                    event_handler: this.After_Browser_Commander_Previous,
+                    event_priority: 0,
+                },
+            ),
+            new Event.Listener_Info(
+                {
+                    event_name: new Event.Name(
+                        Event.Prefix.AFTER,
+                        Events.BROWSER_COMMANDER_NEXT,
+                        this.ID(),
+                    ),
+                    event_handler: this.After_Browser_Commander_Next,
+                    event_priority: 0,
+                },
+            ),
+        ];
     }
 
     override On_Refresh():
@@ -233,6 +240,18 @@ export class Instance extends Entity.Instance
         Array<string>
     {
         return [`Browser`];
+    }
+
+    private async After_Browser_Commander_Previous():
+        Promise<void>
+    {
+        this.Refresh();
+    }
+
+    private async After_Browser_Commander_Next():
+        Promise<void>
+    {
+        this.Refresh();
     }
 
     Model():

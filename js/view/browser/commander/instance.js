@@ -1,14 +1,8 @@
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-import * as Event from "../../../event.js";
+import * as Utils from "../../../utils.js";
 import * as Entity from "../../entity.js";
+import * as Previous from "./previous.js";
+import * as Selector from "./selector.js";
+import * as Next from "./next.js";
 export class Instance extends Entity.Instance {
     constructor({ model, browser, }) {
         super({
@@ -19,59 +13,104 @@ export class Instance extends Entity.Instance {
         this.model = model;
     }
     On_Life() {
-        this.Element().addEventListener(`click`, this.On_Click.bind(this));
-        return [
-            new Event.Listener_Info({
-                event_name: new Event.Name(Event.Prefix.ON, `Selector_Toggle`, this.ID()),
-                event_handler: this.On_Selector_Toggle,
-                event_priority: 0,
-            }),
-            new Event.Listener_Info({
-                event_name: new Event.Name(Event.Prefix.AFTER, `Selector_Toggle`, this.ID()),
-                event_handler: this.After_Selector_Toggle,
-                event_priority: 0,
-            }),
-        ];
+        this.Add_This_CSS(`
+                .Commander {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: space-around;
+                    justify-items: center;
+                    align-content: space-around;
+                    align-items: center;
+
+                    padding: 4px;
+
+                    border-color: white;
+                    border-style: solid;
+                    border-width: 0 1px 0 0;
+
+                    -webkit-user-select: none;
+                    -moz-user-select: none;
+                    -ms-user-select: none;
+                    user-select: none;
+                }
+            `);
+        this.Add_Children_CSS(`
+                .Commander_Previous {
+                    width: 100%;
+
+                    text-align: center;
+
+                    cursor: pointer;
+                }
+
+                .Commander_Selector {
+                    width: 100%;
+
+                    text-align: center;
+
+                    cursor: pointer;
+                }
+
+                .Commander_Next {
+                    width: 100%;
+
+                    text-align: center;
+
+                    cursor: pointer;
+                }
+            `);
+        return [];
     }
     On_Refresh() {
-        const model = this.Model();
-        if (model.Is_Selector_Open()) {
-            this.Element().textContent = `<<`;
-        }
-        else {
-            this.Element().textContent = `>>`;
+        if (!this.Has_Previous() ||
+            !this.Has_Selector() ||
+            !this.Has_Next()) {
+            this.Abort_All_Children();
+            new Previous.Instance({
+                model: () => this.Model().Previous(),
+                commander: this,
+            });
+            new Selector.Instance({
+                model: () => this.Model().Selector(),
+                commander: this,
+            });
+            new Next.Instance({
+                model: () => this.Model().Next(),
+                commander: this,
+            });
         }
     }
     On_Reclass() {
         return [`Commander`];
-    }
-    On_Click(event) {
-        return __awaiter(this, void 0, void 0, function* () {
-            yield this.Send(new Event.Info({
-                affix: `Selector_Toggle`,
-                suffixes: [
-                    this.ID(),
-                    this.Browser().ID(),
-                ],
-                type: Event.Type.EXCLUSIVE,
-                data: {},
-            }));
-        });
-    }
-    On_Selector_Toggle() {
-        return __awaiter(this, void 0, void 0, function* () {
-            this.Model().Toggle_Selector();
-        });
-    }
-    After_Selector_Toggle() {
-        return __awaiter(this, void 0, void 0, function* () {
-            this.Refresh();
-        });
     }
     Model() {
         return this.model();
     }
     Browser() {
         return this.Parent();
+    }
+    Has_Previous() {
+        return (this.Has_Child(0) &&
+            this.Child(0) instanceof Previous.Instance);
+    }
+    Previous() {
+        Utils.Assert(this.Has_Previous(), `Doesn't have previous.`);
+        return this.Child(0);
+    }
+    Has_Selector() {
+        return (this.Has_Child(1) &&
+            this.Child(1) instanceof Selector.Instance);
+    }
+    Selector() {
+        Utils.Assert(this.Has_Selector(), `Doesn't have selector.`);
+        return this.Child(1);
+    }
+    Has_Next() {
+        return (this.Has_Child(2) &&
+            this.Child(2) instanceof Next.Instance);
+    }
+    Next() {
+        Utils.Assert(this.Has_Next(), `Doesn't have next.`);
+        return this.Child(2);
     }
 }

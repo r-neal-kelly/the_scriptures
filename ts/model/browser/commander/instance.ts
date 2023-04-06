@@ -1,10 +1,15 @@
 import * as Entity from "../../entity.js";
 import * as Browser from "../instance.js";
+import * as Previous from "./previous.js";
+import * as Selector from "./selector.js";
+import * as Next from "./next.js";
 
 export class Instance extends Entity.Instance
 {
     private browser: Browser.Instance;
-    private is_selector_open: boolean;
+    private previous: Previous.Instance;
+    private selector: Selector.Instance;
+    private next: Next.Instance;
 
     constructor(
         {
@@ -19,10 +24,28 @@ export class Instance extends Entity.Instance
         super();
 
         this.browser = browser;
-        this.is_selector_open = is_selector_open;
+        this.previous = new Previous.Instance(
+            {
+                commander: this,
+            },
+        );
+        this.selector = new Selector.Instance(
+            {
+                commander: this,
+                is_activated: is_selector_open,
+            },
+        );
+        this.next = new Next.Instance(
+            {
+                commander: this,
+            },
+        );
 
         this.Is_Ready_After(
             [
+                this.previous,
+                this.selector,
+                this.next,
             ],
         );
     }
@@ -33,37 +56,21 @@ export class Instance extends Entity.Instance
         return this.browser;
     }
 
-    Is_Selector_Open():
-        boolean
+    Previous():
+        Previous.Instance
     {
-        return this.is_selector_open;
+        return this.previous;
     }
 
-    Is_Selector_Closed():
-        boolean
+    Selector():
+        Selector.Instance
     {
-        return !this.Is_Selector_Open();
+        return this.selector;
     }
 
-    Open_Selector():
-        void
+    Next():
+        Next.Instance
     {
-        this.is_selector_open = true;
-    }
-
-    Close_Selector():
-        void
-    {
-        this.is_selector_open = false;
-    }
-
-    Toggle_Selector():
-        void
-    {
-        if (this.Is_Selector_Open()) {
-            this.Close_Selector();
-        } else {
-            this.Open_Selector();
-        }
+        return this.next;
     }
 }
