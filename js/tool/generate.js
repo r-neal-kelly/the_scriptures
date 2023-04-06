@@ -8,6 +8,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import * as fs from "fs";
+import * as Text from "../model/text.js";
 function Read_Directory(directory_path) {
     return __awaiter(this, void 0, void 0, function* () {
         return new Promise(function (resolve, reject) {
@@ -161,13 +162,17 @@ function Generate_Files(folder_path) {
 }
 function Generate_Search(folder_path, file_names) {
     return __awaiter(this, void 0, void 0, function* () {
-        return;
-        console.log(folder_path);
-        console.log(file_names);
         const search = {};
         for (let idx = 0, end = file_names.length; idx < end; idx += 1) {
+            const dictionary = new Text.Dictionary.Instance({
+                json: yield Read_File(`${folder_path}/Dictionary.json`),
+            });
+            const text = new Text.Instance({
+                dictionary: dictionary,
+                value: yield Read_File(`${folder_path}/${file_names[idx]}`),
+            });
         }
-        //console.log(await Read_File(`${folder_path}/${file_names[0]}`));
+        yield Write_File(`${folder_path}/Search.json`, JSON.stringify(search, null, 4));
     });
 }
 // This really should read and write to the info file instead of

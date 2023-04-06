@@ -3,6 +3,8 @@ import * as fs from "fs";
 import { Name } from "../types.js";
 import { Path } from "../types.js";
 
+import * as Text from "../model/text.js";
+
 async function Read_Directory(
     directory_path: Path,
 ):
@@ -156,6 +158,9 @@ type Version_Info = {
 
 type Files_Info = {
     names: Array<Name>,
+}
+
+type Search = {
 }
 
 async function Generate_Data(
@@ -342,18 +347,27 @@ async function Generate_Search(
     file_names: Array<Name>,
 )
 {
-    return;
-
-    console.log(folder_path);
-    console.log(file_names);
-
-    const search = {};
+    const search: Search = {
+    };
 
     for (let idx = 0, end = file_names.length; idx < end; idx += 1) {
-
+        const dictionary: Text.Dictionary.Instance = new Text.Dictionary.Instance(
+            {
+                json: await Read_File(`${folder_path}/Dictionary.json`),
+            },
+        );
+        const text: Text.Instance = new Text.Instance(
+            {
+                dictionary: dictionary,
+                value: await Read_File(`${folder_path}/${file_names[idx]}`),
+            },
+        );
     }
 
-    //console.log(await Read_File(`${folder_path}/${file_names[0]}`));
+    await Write_File(
+        `${folder_path}/Search.json`,
+        JSON.stringify(search, null, 4), // minify for production.
+    );
 }
 
 // This really should read and write to the info file instead of
