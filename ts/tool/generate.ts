@@ -1,7 +1,10 @@
 import * as fs from "fs";
 
+import { Index } from "../types.js";
 import { Name } from "../types.js";
 import { Path } from "../types.js";
+
+import * as Unicode from "../unicode.js";
 
 import * as Text from "../model/text.js";
 
@@ -303,7 +306,9 @@ async function Generate_Version(
     const info: Version_Info = {
     };
 
-    await Generate_Files(`${folder_path}/Files`);
+    const files_info: Files_Info = await Generate_Files(`${folder_path}/Files`);
+
+    await Generate_Search(folder_path, files_info.names);
 
     await Write_File(
         `${folder_path}/Info.json`,
@@ -314,7 +319,7 @@ async function Generate_Version(
 async function Generate_Files(
     folder_path: Path,
 ):
-    Promise<void>
+    Promise<Files_Info>
 {
     const info: Files_Info = {
         names: [],
@@ -334,40 +339,150 @@ async function Generate_Files(
         },
     ).sort();
 
-    await Generate_Search(folder_path, info.names);
-
     await Write_File(
         `${folder_path}/Info.json`,
         JSON.stringify(info, null, 4),
     );
+
+    return info;
 }
 
 async function Generate_Search(
-    folder_path: Path,
+    version_folder_path: Path,
     file_names: Array<Name>,
-)
+):
+    Promise<void>
 {
-    const search: Search = {
-    };
+    // Maybe this code should be in its own module so that the code to write and read it
+    // are in the same location. However, wed want to supply it the dictionary data and
+    // and the data for each file through node .js, and it can remain agnostic to the
+    // environment.
 
-    for (let idx = 0, end = file_names.length; idx < end; idx += 1) {
+    // ----------------------------------------------------------------------------------
+
+    // We cache data it bite-sized chunks to diminish band-width usage for the serverless
+    // client, and at the same time make searching overall more efficient than brute-force.
+
+    // We need a file that lists out all the unique parts by first-point, sorted.
+
+    // We need a set of files, one per first-point, that caches all the places that a
+    // unique part appears in the text, by file_index, line_index, and part_index.
+
+    // While a user is typing in the search input, the searcher takes the string,
+    // and splits it by word and break using the dictionary of the currently searched
+    // version, which can be looped for multiple versions at a time.
+
+    // It then finds all the possible words/breaks it can be, from the unique-word cache.
+    // For each successive part in the query, it filters down the possibilities by looking
+    // at the occurrence cache, to see if the query actually exists.
+
+    // So if the user has typed a word, and a break, and begins typing another word,
+    // the first word's occurrence cache is looked up, as well as the break's. If it's
+    // determined that there are occurrences of the break following the first word,
+    // then the searcher knows that it's possible there is a query. The second word
+    // is getting suggestions from the unique list comparing just the second word,
+    // and we may simply wait to do its occurrence check after the search is initiated.
+    // But we can do the first two and simply tell the user no results are possible at that
+    // point. But we could start comparing to the break's occurrence cache with the second
+    // word's occurrence cache, because we'll have downloaded the file of the first point,
+    // and from there it's hot in memory. Unless the user changes the first point of the
+    // second word, we'd be able to quickly do occurrence check based off of all the possible
+    // unique-parts the word could be.
+
+    // ----------------------------------------------------------------------------------
+
+    type Point = string;
+    type Unique = string;
+    type File_Index = Index;
+    type Line_Index = Index;
+    type Part_index = Index;
+
+    const uniques: {
+        [index: Point]: Array<Unique>,
+    } = {};
+    const occurrences: {
+        [index: Point]: {
+            [index: Unique]: {
+                [index: File_Index]: {
+                    [index: Line_Index]: Array<Part_index>,
+                },
+            },
+        },
+    } = {};
+
+    for (let file_idx = 0, end = file_names.length; file_idx < end; file_idx += 1) {
         const dictionary: Text.Dictionary.Instance = new Text.Dictionary.Instance(
             {
-                json: await Read_File(`${folder_path}/Dictionary.json`),
+                json: await Read_File(`${version_folder_path}/Files/Dictionary.json`),
             },
         );
         const text: Text.Instance = new Text.Instance(
             {
                 dictionary: dictionary,
-                value: await Read_File(`${folder_path}/${file_names[idx]}`),
+                value: await Read_File(`${version_folder_path}/Files/${file_names[file_idx]}`),
+            },
+        );
+        for (let line_idx = 0, end = text.Line_Count(); line_idx < end; line_idx += 1) {
+            const line: Text.Line.Instance = text.Line(line_idx);
+            for (let part_idx = 0, end = line.Macro_Part_Count(); part_idx < end; part_idx += 1) {
+                const part: Text.Part.Instance = line.Macro_Part(part_idx);
+                const value: Text.Value = part.Value();
+                const point: Text.Value = Unicode.First_Point(value);
+
+                if (!uniques.hasOwnProperty(point)) {
+                    uniques[point] = [];
+                }
+                if (!uniques[point].includes(value)) {
+                    uniques[point].push(value);
+                }
+
+                if (!occurrences.hasOwnProperty(point)) {
+                    occurrences[point] = {};
+                }
+                if (!occurrences[point].hasOwnProperty(value)) {
+                    occurrences[point][value] = {};
+                }
+                if (!occurrences[point][value].hasOwnProperty(file_idx)) {
+                    occurrences[point][value][file_idx] = {};
+                }
+                if (!occurrences[point][value][file_idx].hasOwnProperty(line_idx)) {
+                    occurrences[point][value][file_idx][line_idx] = [];
+                }
+                occurrences[point][value][file_idx][line_idx].push(part_idx);
+            }
+        }
+    }
+
+    for (const point of Object.keys(uniques)) {
+        uniques[point].sort();
+    }
+
+    if (fs.existsSync(`${version_folder_path}/Search`)) {
+        fs.rmSync(
+            `${version_folder_path}/Search`,
+            {
+                recursive: true,
+                force: true,
             },
         );
     }
+    fs.mkdirSync(`${version_folder_path}/Search`);
+    fs.mkdirSync(`${version_folder_path}/Search/Occurrences`);
 
     await Write_File(
-        `${folder_path}/Search.json`,
-        JSON.stringify(search, null, 4), // minify for production.
+        `${version_folder_path}/Search/Uniques.json`,
+        JSON.stringify(uniques),
     );
+
+    for (const point of Object.keys(occurrences)) {
+        await Write_File(
+            `${version_folder_path}/Search/Occurrences/${point.codePointAt(0)?.toString(16)}.json`,
+            JSON.stringify(occurrences[point]),
+        );
+    }
+
+    // At some point, we can create a search cache above the versions so it becomes
+    // possible to quickly and efficiently search through multiple versions at a time.
 }
 
 // This really should read and write to the info file instead of

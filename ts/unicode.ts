@@ -34,6 +34,7 @@ export function Is_Point(
     );
 }
 
+// we could use String.prototype.codePointAt
 export function First_Point(
     text: string,
 ):

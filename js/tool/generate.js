@@ -8,6 +8,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import * as fs from "fs";
+import * as Unicode from "../unicode.js";
 import * as Text from "../model/text.js";
 function Read_Directory(directory_path) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -143,7 +144,8 @@ function Generate_Versions(folder_path) {
 function Generate_Version(folder_path) {
     return __awaiter(this, void 0, void 0, function* () {
         const info = {};
-        yield Generate_Files(`${folder_path}/Files`);
+        const files_info = yield Generate_Files(`${folder_path}/Files`);
+        yield Generate_Search(folder_path, files_info.names);
         yield Write_File(`${folder_path}/Info.json`, JSON.stringify(info, null, 4));
     });
 }
@@ -156,23 +158,66 @@ function Generate_Files(folder_path) {
             return (/\.txt$/.test(name) &&
                 !/COPY\.txt$/.test(name));
         }).sort();
-        yield Generate_Search(folder_path, info.names);
         yield Write_File(`${folder_path}/Info.json`, JSON.stringify(info, null, 4));
+        return info;
     });
 }
-function Generate_Search(folder_path, file_names) {
+function Generate_Search(version_folder_path, file_names) {
+    var _a;
     return __awaiter(this, void 0, void 0, function* () {
-        const search = {};
-        for (let idx = 0, end = file_names.length; idx < end; idx += 1) {
+        const uniques = {};
+        const occurrences = {};
+        for (let file_idx = 0, end = file_names.length; file_idx < end; file_idx += 1) {
             const dictionary = new Text.Dictionary.Instance({
-                json: yield Read_File(`${folder_path}/Dictionary.json`),
+                json: yield Read_File(`${version_folder_path}/Files/Dictionary.json`),
             });
             const text = new Text.Instance({
                 dictionary: dictionary,
-                value: yield Read_File(`${folder_path}/${file_names[idx]}`),
+                value: yield Read_File(`${version_folder_path}/Files/${file_names[file_idx]}`),
+            });
+            for (let line_idx = 0, end = text.Line_Count(); line_idx < end; line_idx += 1) {
+                const line = text.Line(line_idx);
+                for (let part_idx = 0, end = line.Macro_Part_Count(); part_idx < end; part_idx += 1) {
+                    const part = line.Macro_Part(part_idx);
+                    const value = part.Value();
+                    const point = Unicode.First_Point(value);
+                    if (!uniques.hasOwnProperty(point)) {
+                        uniques[point] = [];
+                    }
+                    if (!uniques[point].includes(value)) {
+                        uniques[point].push(value);
+                    }
+                    if (!occurrences.hasOwnProperty(point)) {
+                        occurrences[point] = {};
+                    }
+                    if (!occurrences[point].hasOwnProperty(value)) {
+                        occurrences[point][value] = {};
+                    }
+                    if (!occurrences[point][value].hasOwnProperty(file_idx)) {
+                        occurrences[point][value][file_idx] = {};
+                    }
+                    if (!occurrences[point][value][file_idx].hasOwnProperty(line_idx)) {
+                        occurrences[point][value][file_idx][line_idx] = [];
+                    }
+                    occurrences[point][value][file_idx][line_idx].push(part_idx);
+                }
+            }
+        }
+        for (const point of Object.keys(uniques)) {
+            uniques[point].sort();
+        }
+        if (fs.existsSync(`${version_folder_path}/Search`)) {
+            fs.rmSync(`${version_folder_path}/Search`, {
+                recursive: true,
+                force: true,
             });
         }
-        yield Write_File(`${folder_path}/Search.json`, JSON.stringify(search, null, 4));
+        fs.mkdirSync(`${version_folder_path}/Search`);
+        fs.mkdirSync(`${version_folder_path}/Search/Occurrences`);
+        yield Write_File(`${version_folder_path}/Search/Uniques.json`, JSON.stringify(uniques));
+        for (const point of Object.keys(occurrences)) {
+            yield Write_File(`${version_folder_path}/Search/Occurrences/${(_a = point.codePointAt(0)) === null || _a === void 0 ? void 0 : _a.toString(16)}.json`, JSON.stringify(occurrences[point]));
+        }
     });
 }
 // This really should read and write to the info file instead of

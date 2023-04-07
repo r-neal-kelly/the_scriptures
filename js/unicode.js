@@ -19,6 +19,7 @@ export function Is_Point(text) {
             text.charCodeAt(1) >= TRAILING_SURROGATE.FIRST &&
             text.charCodeAt(1) <= TRAILING_SURROGATE.LAST));
 }
+// we could use String.prototype.codePointAt
 export function First_Point(text) {
     if (text.length === 0) {
         return ``;
