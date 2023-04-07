@@ -6,6 +6,7 @@ import { Path } from "../types.js";
 
 import * as Unicode from "../unicode.js";
 
+import * as Data from "../model/data.js";
 import * as Text from "../model/text.js";
 
 async function Read_Directory(
@@ -135,43 +136,12 @@ async function File_Names(
     return names;
 }
 
-type Data_Info = {
-}
-
-type Books_Info = {
-    names: Array<Name>,
-}
-
-type Book_Info = {
-}
-
-type Languages_Info = {
-    names: Array<Name>,
-}
-
-type Language_Info = {
-}
-
-type Versions_Info = {
-    names: Array<Name>,
-}
-
-type Version_Info = {
-}
-
-type Files_Info = {
-    names: Array<Name>,
-}
-
-type Search = {
-}
-
 async function Generate_Data(
     folder_path: Path,
 ):
     Promise<void>
 {
-    const info: Data_Info = {
+    const info: Data.Info = {
     };
 
     await Generate_Books(`${folder_path}/Books`);
@@ -187,7 +157,7 @@ async function Generate_Books(
 ):
     Promise<void>
 {
-    const info: Books_Info = {
+    const info: Data.Books.Info = {
         names: [],
     };
 
@@ -215,7 +185,7 @@ async function Generate_Book(
 ):
     Promise<void>
 {
-    const info: Book_Info = {
+    const info: Data.Book.Info = {
     };
 
     await Generate_Languages(`${folder_path}/Languages`);
@@ -231,7 +201,7 @@ async function Generate_Languages(
 ):
     Promise<void>
 {
-    const info: Languages_Info = {
+    const info: Data.Languages.Info = {
         names: [],
     };
 
@@ -259,7 +229,7 @@ async function Generate_Language(
 ):
     Promise<void>
 {
-    const info: Language_Info = {
+    const info: Data.Language.Info = {
     };
 
     await Generate_Versions(`${folder_path}/Versions`);
@@ -275,7 +245,7 @@ async function Generate_Versions(
 ):
     Promise<void>
 {
-    const info: Versions_Info = {
+    const info: Data.Versions.Info = {
         names: [],
     };
 
@@ -303,10 +273,10 @@ async function Generate_Version(
 ):
     Promise<void>
 {
-    const info: Version_Info = {
+    const info: Data.Version.Info = {
     };
 
-    const files_info: Files_Info = await Generate_Files(`${folder_path}/Files`);
+    const files_info: Data.Files.Info = await Generate_Files(`${folder_path}/Files`);
 
     await Generate_Search(folder_path, files_info.names);
 
@@ -319,9 +289,9 @@ async function Generate_Version(
 async function Generate_Files(
     folder_path: Path,
 ):
-    Promise<Files_Info>
+    Promise<Data.Files.Info>
 {
-    const info: Files_Info = {
+    const info: Data.Files.Info = {
         names: [],
     };
 
@@ -391,24 +361,14 @@ async function Generate_Search(
 
     // ----------------------------------------------------------------------------------
 
-    type Point = string;
-    type Unique = string;
-    type File_Index = Index;
-    type Line_Index = Index;
-    type Part_index = Index;
+    const uniques: Data.Search.Uniques.Info = {};
 
-    const uniques: {
-        [index: Point]: Array<Unique>,
-    } = {};
     const occurrences: {
-        [index: Point]: {
-            [index: Unique]: {
-                [index: File_Index]: {
-                    [index: Line_Index]: Array<Part_index>,
-                },
-            },
-        },
+        [index: Data.Search.Uniques.First_Point]: Data.Search.Partition.Info,
     } = {};
+    const occurrences_info: Data.Search.Occurrences.Info = {
+        names: [],
+    };
 
     for (let file_idx = 0, end = file_names.length; file_idx < end; file_idx += 1) {
         const dictionary: Text.Dictionary.Instance = new Text.Dictionary.Instance(
@@ -470,16 +430,24 @@ async function Generate_Search(
     fs.mkdirSync(`${version_folder_path}/Search/Occurrences`);
 
     await Write_File(
-        `${version_folder_path}/Search/Uniques.json`,
+        `${version_folder_path}/Search/${Data.Search.Uniques.Instance.Name()}`,
         JSON.stringify(uniques),
     );
 
     for (const point of Object.keys(occurrences)) {
+        const name: Name = (point.codePointAt(0) as number).toString();
+        occurrences_info.names.push(name);
+
         await Write_File(
-            `${version_folder_path}/Search/Occurrences/${point.codePointAt(0)?.toString(16)}.json`,
+            `${version_folder_path}/Search/Occurrences/${name}.json`,
             JSON.stringify(occurrences[point]),
         );
     }
+
+    await Write_File(
+        `${version_folder_path}/Search/Occurrences/Info.json`,
+        JSON.stringify(occurrences_info, null, 4),
+    );
 
     // At some point, we can create a search cache above the versions so it becomes
     // possible to quickly and efficiently search through multiple versions at a time.

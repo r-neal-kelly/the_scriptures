@@ -4,6 +4,9 @@ import { Path } from "../../types.js";
 import * as Books from "./books.js";
 import * as Languages from "./languages.js";
 
+export type Info = {
+}
+
 export class Instance
 {
     private books: Books.Instance;

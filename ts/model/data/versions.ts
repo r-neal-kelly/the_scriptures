@@ -8,7 +8,7 @@ import * as Utils from "../../utils.js";
 import * as Language from "./language.js";
 import * as Version from "./version.js";
 
-type Info = {
+export type Info = {
     names: Array<Name>,
 }
 

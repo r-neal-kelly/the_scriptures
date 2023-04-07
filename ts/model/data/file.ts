@@ -5,6 +5,9 @@ import * as Utils from "../../utils.js";
 
 import * as Files from "./files.js";
 
+export type Info = {
+}
+
 export class Instance
 {
     private files: Files.Instance;

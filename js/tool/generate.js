@@ -9,6 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import * as fs from "fs";
 import * as Unicode from "../unicode.js";
+import * as Data from "../model/data.js";
 import * as Text from "../model/text.js";
 function Read_Directory(directory_path) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -163,10 +164,41 @@ function Generate_Files(folder_path) {
     });
 }
 function Generate_Search(version_folder_path, file_names) {
-    var _a;
     return __awaiter(this, void 0, void 0, function* () {
+        // Maybe this code should be in its own module so that the code to write and read it
+        // are in the same location. However, wed want to supply it the dictionary data and
+        // and the data for each file through node .js, and it can remain agnostic to the
+        // environment.
+        // ----------------------------------------------------------------------------------
+        // We cache data it bite-sized chunks to diminish band-width usage for the serverless
+        // client, and at the same time make searching overall more efficient than brute-force.
+        // We need a file that lists out all the unique parts by first-point, sorted.
+        // We need a set of files, one per first-point, that caches all the places that a
+        // unique part appears in the text, by file_index, line_index, and part_index.
+        // While a user is typing in the search input, the searcher takes the string,
+        // and splits it by word and break using the dictionary of the currently searched
+        // version, which can be looped for multiple versions at a time.
+        // It then finds all the possible words/breaks it can be, from the unique-word cache.
+        // For each successive part in the query, it filters down the possibilities by looking
+        // at the occurrence cache, to see if the query actually exists.
+        // So if the user has typed a word, and a break, and begins typing another word,
+        // the first word's occurrence cache is looked up, as well as the break's. If it's
+        // determined that there are occurrences of the break following the first word,
+        // then the searcher knows that it's possible there is a query. The second word
+        // is getting suggestions from the unique list comparing just the second word,
+        // and we may simply wait to do its occurrence check after the search is initiated.
+        // But we can do the first two and simply tell the user no results are possible at that
+        // point. But we could start comparing to the break's occurrence cache with the second
+        // word's occurrence cache, because we'll have downloaded the file of the first point,
+        // and from there it's hot in memory. Unless the user changes the first point of the
+        // second word, we'd be able to quickly do occurrence check based off of all the possible
+        // unique-parts the word could be.
+        // ----------------------------------------------------------------------------------
         const uniques = {};
         const occurrences = {};
+        const occurrences_info = {
+            names: [],
+        };
         for (let file_idx = 0, end = file_names.length; file_idx < end; file_idx += 1) {
             const dictionary = new Text.Dictionary.Instance({
                 json: yield Read_File(`${version_folder_path}/Files/Dictionary.json`),
@@ -214,10 +246,15 @@ function Generate_Search(version_folder_path, file_names) {
         }
         fs.mkdirSync(`${version_folder_path}/Search`);
         fs.mkdirSync(`${version_folder_path}/Search/Occurrences`);
-        yield Write_File(`${version_folder_path}/Search/Uniques.json`, JSON.stringify(uniques));
+        yield Write_File(`${version_folder_path}/Search/${Data.Search.Uniques.Instance.Name()}`, JSON.stringify(uniques));
         for (const point of Object.keys(occurrences)) {
-            yield Write_File(`${version_folder_path}/Search/Occurrences/${(_a = point.codePointAt(0)) === null || _a === void 0 ? void 0 : _a.toString(16)}.json`, JSON.stringify(occurrences[point]));
+            const name = point.codePointAt(0).toString();
+            occurrences_info.names.push(name);
+            yield Write_File(`${version_folder_path}/Search/Occurrences/${name}.json`, JSON.stringify(occurrences[point]));
         }
+        yield Write_File(`${version_folder_path}/Search/Occurrences/Info.json`, JSON.stringify(occurrences_info, null, 4));
+        // At some point, we can create a search cache above the versions so it becomes
+        // possible to quickly and efficiently search through multiple versions at a time.
     });
 }
 // This really should read and write to the info file instead of

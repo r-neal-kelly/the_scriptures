@@ -3,6 +3,10 @@ import { Path } from "../../types.js";
 
 import * as Versions from "./versions.js";
 import * as Files from "./files.js";
+import * as Search from "./search.js";
+
+export type Info = {
+}
 
 export class Instance
 {
@@ -10,6 +14,7 @@ export class Instance
     private name: Name;
     private path: Path;
     private files: Files.Instance;
+    private search: Search.Instance;
 
     constructor(
         {
@@ -25,6 +30,11 @@ export class Instance
         this.name = name;
         this.path = `${versions.Path()}/${name}`;
         this.files = new Files.Instance(
+            {
+                version: this,
+            },
+        );
+        this.search = new Search.Instance(
             {
                 version: this,
             },
@@ -53,5 +63,11 @@ export class Instance
         Files.Instance
     {
         return this.files;
+    }
+
+    Search():
+        Search.Instance
+    {
+        return this.search;
     }
 }

@@ -8,7 +8,7 @@ import * as Utils from "../../utils.js";
 import * as Data from "./instance.js";
 import * as Book from "./book.js";
 
-type Info = {
+export type Info = {
     names: Array<Name>,
 }
 

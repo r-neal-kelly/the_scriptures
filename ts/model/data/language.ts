@@ -4,6 +4,9 @@ import { Path } from "../../types.js";
 import * as Languages from "./languages.js";
 import * as Versions from "./versions.js";
 
+export type Info = {
+}
+
 export class Instance
 {
     private languages: Languages.Instance;

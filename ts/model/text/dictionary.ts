@@ -18,6 +18,7 @@ export enum Boundary
     END = `END`,
 };
 
+// this should probably go in data
 type Info = {
     letters: Array<Letter>;
     markers: Array<Marker>;

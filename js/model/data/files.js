@@ -87,7 +87,6 @@ export class Instance {
                 const response = yield fetch(Utils.Resolve_Path(`${this.Path()}/Info.json`));
                 if (response.ok) {
                     this.info = JSON.parse(yield response.text());
-                    yield this.dictionary.Ready();
                     for (const name of this.info.names) {
                         this.files.push(new File.Instance({
                             files: this,
@@ -95,6 +94,7 @@ export class Instance {
                         }));
                     }
                 }
+                yield this.dictionary.Ready();
             }
         });
     }

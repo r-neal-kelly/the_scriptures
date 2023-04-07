@@ -9,3 +9,4 @@ export * as Versions from "./data/versions.js";
 export * as Version from "./data/version.js";
 export * as Files from "./data/files.js";
 export * as File from "./data/file.js";
+export * as Search from "./data/search.js";

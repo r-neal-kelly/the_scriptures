@@ -13,6 +13,9 @@ import * as Version from "./version.js";
 import * as Files from "./files.js";
 import * as File from "./file.js";
 
+export type Info = {
+}
+
 export class Instance extends Async.Instance
 {
     private name: Name;

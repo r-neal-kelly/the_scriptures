@@ -9,7 +9,7 @@ import * as Version from "./version.js";
 import * as Dictionary from "./dictionary.js";
 import * as File from "./file.js";
 
-type Info = {
+export type Info = {
     names: Array<Name>,
 }
 
@@ -149,8 +149,6 @@ export class Instance
             if (response.ok) {
                 this.info = JSON.parse(await response.text()) as Info;
 
-                await this.dictionary.Ready();
-
                 for (const name of this.info.names) {
                     this.files.push(
                         new File.Instance(
@@ -162,6 +160,8 @@ export class Instance
                     );
                 }
             }
+
+            await this.dictionary.Ready();
         }
     }
 }
