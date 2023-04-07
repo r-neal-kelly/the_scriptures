@@ -249,7 +249,7 @@ function Generate_Search(version_folder_path, file_names) {
         yield Write_File(`${version_folder_path}/Search/${Data.Search.Uniques.Instance.Name()}`, JSON.stringify(uniques));
         for (const point of Object.keys(occurrences)) {
             const name = point.codePointAt(0).toString();
-            occurrences_info.names.push(name);
+            occurrences_info.names.push(`${name}.json`);
             yield Write_File(`${version_folder_path}/Search/Occurrences/${name}.json`, JSON.stringify(occurrences[point]));
         }
         yield Write_File(`${version_folder_path}/Search/Occurrences/Info.json`, JSON.stringify(occurrences_info, null, 4));

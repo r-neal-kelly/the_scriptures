@@ -85,4 +85,15 @@ export class Instance
             return null;
         }
     }
+
+    async Info():
+        Promise<Info>
+    {
+        const json: string | null = await this.Maybe_JSON();
+        if (json != null) {
+            return JSON.parse(json);
+        } else {
+            return {};
+        }
+    }
 }

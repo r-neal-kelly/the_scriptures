@@ -12,6 +12,8 @@ import * as Language from "./language.js";
 import * as Version from "./version.js";
 import * as Files from "./files.js";
 import * as File from "./file.js";
+import * as Search from "./search.js";
+import * as Selection from "./selection.js"
 
 export type Info = {
 }
@@ -891,6 +893,45 @@ export class Instance extends Async.Instance
         return Array.from(book_names).sort();
     }
 
+    async Version(
+        selection: Selection.Version.Name,
+    ):
+        Promise<Version.Instance>
+    {
+        const book: Book.Instance = await this.Books().Get(selection.Book());
+        const language: Language.Instance = await book.Languages().Get(selection.Language());
+
+        return await language.Versions().Get(selection.Version());
+    }
+
+    async Search(
+        selection: Selection.Version.Name,
+    ):
+        Promise<Search.Instance>
+    {
+        return (await this.Version(selection)).Search();
+    }
+
+    async Files(
+        {
+            book_name,
+            language_name,
+            version_name,
+        }: {
+            book_name: Name,
+            language_name: Name,
+            version_name: Name,
+        },
+    ):
+        Promise<Files.Instance>
+    {
+        const book: Book.Instance = await this.Books().Get(book_name);
+        const language: Language.Instance = await book.Languages().Get(language_name);
+        const version: Version.Instance = await language.Versions().Get(version_name);
+
+        return version.Files();
+    }
+
     async File(
         {
             book_name,
@@ -912,26 +953,6 @@ export class Instance extends Async.Instance
         const file: File.Instance = await version.Files().Get(file_name);
 
         return file;
-    }
-
-    async Files(
-        {
-            book_name,
-            language_name,
-            version_name,
-        }: {
-            book_name: Name,
-            language_name: Name,
-            version_name: Name,
-        },
-    ):
-        Promise<Files.Instance>
-    {
-        const book: Book.Instance = await this.Books().Get(book_name);
-        const language: Language.Instance = await book.Languages().Get(language_name);
-        const version: Version.Instance = await language.Versions().Get(version_name);
-
-        return version.Files();
     }
 
     async File_Names(
@@ -965,4 +986,12 @@ export class Instance extends Async.Instance
             },
         );
     }
+}
+
+const singleton = new Instance();
+
+export function Singleton():
+    Instance
+{
+    return singleton;
 }

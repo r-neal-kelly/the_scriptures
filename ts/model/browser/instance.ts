@@ -8,7 +8,7 @@ import * as Body from "./body.js";
 
 export class Instance extends Entity.Instance
 {
-    private static data: Data.Instance = new Data.Instance();
+    private static data: Data.Instance = Data.Singleton();
 
     static Data():
         Data.Instance

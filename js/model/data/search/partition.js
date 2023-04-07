@@ -42,4 +42,15 @@ export class Instance {
             }
         });
     }
+    Info() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const json = yield this.Maybe_JSON();
+            if (json != null) {
+                return JSON.parse(json);
+            }
+            else {
+                return {};
+            }
+        });
+    }
 }

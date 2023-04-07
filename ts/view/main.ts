@@ -199,3 +199,30 @@ async function Main():
 }
 
 Main();
+
+// temp
+import * as Data from "../model/data.js";
+import * as Search from "../model/search.js"
+(
+    async function ()
+    {
+        const search: Search.Instance = new Search.Instance(
+            {
+                versions: [
+                    new Data.Selection.Version.Name(
+                        {
+                            book: `Genesis`,
+                            language: `English`,
+                            version: `KJV 1872-1888`,
+                        },
+                    ),
+                ],
+            },
+        );
+
+        await search.Ready();
+
+        (window as any).Test = search;
+    }
+)();
+//

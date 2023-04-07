@@ -436,7 +436,7 @@ async function Generate_Search(
 
     for (const point of Object.keys(occurrences)) {
         const name: Name = (point.codePointAt(0) as number).toString();
-        occurrences_info.names.push(name);
+        occurrences_info.names.push(`${name}.json`);
 
         await Write_File(
             `${version_folder_path}/Search/Occurrences/${name}.json`,

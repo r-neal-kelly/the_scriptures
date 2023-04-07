@@ -48,4 +48,4 @@ export class Instance extends Entity.Instance {
         }
     }
 }
-Instance.data = new Data.Instance();
+Instance.data = Data.Singleton();

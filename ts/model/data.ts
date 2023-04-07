@@ -11,3 +11,6 @@ export * as Version from "./data/version.js";
 export * as Files from "./data/files.js";
 export * as File from "./data/file.js";
 export * as Search from "./data/search.js";
+export * as Selection from "./data/selection.js";
+
+export { Singleton } from "./data/instance.js";

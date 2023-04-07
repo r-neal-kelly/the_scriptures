@@ -531,13 +531,16 @@ export class Instance extends Async.Instance {
             return Array.from(book_names).sort();
         });
     }
-    File({ book_name, language_name, version_name, file_name, }) {
+    Version(selection) {
         return __awaiter(this, void 0, void 0, function* () {
-            const book = yield this.Books().Get(book_name);
-            const language = yield book.Languages().Get(language_name);
-            const version = yield language.Versions().Get(version_name);
-            const file = yield version.Files().Get(file_name);
-            return file;
+            const book = yield this.Books().Get(selection.Book());
+            const language = yield book.Languages().Get(selection.Language());
+            return yield language.Versions().Get(selection.Version());
+        });
+    }
+    Search(selection) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return (yield this.Version(selection)).Search();
         });
     }
     Files({ book_name, language_name, version_name, }) {
@@ -546,6 +549,15 @@ export class Instance extends Async.Instance {
             const language = yield book.Languages().Get(language_name);
             const version = yield language.Versions().Get(version_name);
             return version.Files();
+        });
+    }
+    File({ book_name, language_name, version_name, file_name, }) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const book = yield this.Books().Get(book_name);
+            const language = yield book.Languages().Get(language_name);
+            const version = yield language.Versions().Get(version_name);
+            const file = yield version.Files().Get(file_name);
+            return file;
         });
     }
     File_Names({ book_name, language_name, version_name, }) {
@@ -560,4 +572,8 @@ export class Instance extends Async.Instance {
             });
         });
     }
+}
+const singleton = new Instance();
+export function Singleton() {
+    return singleton;
 }

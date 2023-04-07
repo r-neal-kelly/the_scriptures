@@ -37,12 +37,27 @@ export class Instance {
             }
         });
     }
+    Has(first_point) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return (yield this.Info()).hasOwnProperty(first_point);
+        });
+    }
+    Get(first_point) {
+        return __awaiter(this, void 0, void 0, function* () {
+            Utils.Assert(yield this.Has(first_point), `Doesn't have first_point.`);
+            return (yield this.Info())[first_point];
+        });
+    }
     Download() {
         return __awaiter(this, void 0, void 0, function* () {
             if (this.info == null) {
                 const response = yield fetch(Utils.Resolve_Path(this.Path()));
                 if (response.ok) {
                     this.info = JSON.parse(yield response.text());
+                    for (const key of Object.keys(this.info)) {
+                        Object.freeze(this.info[key]);
+                    }
+                    Object.freeze(this.info);
                 }
             }
         });

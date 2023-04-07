@@ -67,6 +67,27 @@ export class Instance
         }
     }
 
+    async Has(
+        first_point: First_Point,
+    ):
+        Promise<boolean>
+    {
+        return (await this.Info()).hasOwnProperty(first_point);
+    }
+
+    async Get(
+        first_point: First_Point,
+    ):
+        Promise<Array<Part>>
+    {
+        Utils.Assert(
+            await this.Has(first_point),
+            `Doesn't have first_point.`,
+        );
+
+        return (await this.Info())[first_point];
+    }
+
     private async Download():
         Promise<void>
     {
@@ -75,6 +96,10 @@ export class Instance
                 await fetch(Utils.Resolve_Path(this.Path()));
             if (response.ok) {
                 this.info = JSON.parse(await response.text()) as Info;
+                for (const key of Object.keys(this.info)) {
+                    Object.freeze(this.info[key]);
+                }
+                Object.freeze(this.info);
             }
         }
     }
