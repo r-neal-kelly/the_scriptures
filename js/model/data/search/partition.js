@@ -42,14 +42,26 @@ export class Instance {
             }
         });
     }
-    Info() {
+    Maybe_Info() {
         return __awaiter(this, void 0, void 0, function* () {
             const json = yield this.Maybe_JSON();
             if (json != null) {
                 return JSON.parse(json);
             }
             else {
-                return {};
+                return null;
+            }
+        });
+    }
+    Maybe_Part(uniques_part) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const info = yield this.Maybe_Info();
+            if (info != null &&
+                info.hasOwnProperty(uniques_part)) {
+                return info[uniques_part];
+            }
+            else {
+                return null;
             }
         });
     }

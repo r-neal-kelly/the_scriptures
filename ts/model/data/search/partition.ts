@@ -7,16 +7,18 @@ import * as Utils from "../../../utils.js";
 import * as Uniques from "./uniques.js";
 import * as Occurrences from "./occurrences.js";
 
-export type File_Index = Index;
-export type Line_Index = Index;
+export type File_Index = string;
+export type Line_Index = string;
 export type Part_Index = Index;
 
-export type Info = {
-    [index: Uniques.Part]: {
-        [index: File_Index]: {
-            [index: Line_Index]: Array<Part_Index>,
-        },
+export type Part = {
+    [index: File_Index]: {
+        [index: Line_Index]: Array<Part_Index>,
     },
+};
+
+export type Info = {
+    [index: Uniques.Part]: Part,
 }
 
 export class Instance
@@ -86,14 +88,30 @@ export class Instance
         }
     }
 
-    async Info():
-        Promise<Info>
+    async Maybe_Info():
+        Promise<Info | null>
     {
         const json: string | null = await this.Maybe_JSON();
         if (json != null) {
             return JSON.parse(json);
         } else {
-            return {};
+            return null;
+        }
+    }
+
+    async Maybe_Part(
+        uniques_part: Uniques.Part,
+    ):
+        Promise<Part | null>
+    {
+        const info: Info | null = await this.Maybe_Info();
+        if (
+            info != null &&
+            info.hasOwnProperty(uniques_part)
+        ) {
+            return info[uniques_part];
+        } else {
+            return null;
         }
     }
 }
