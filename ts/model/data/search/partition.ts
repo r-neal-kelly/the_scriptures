@@ -17,7 +17,7 @@ export type Part = {
     },
 };
 
-export type Info = {
+export type Parts = {
     [index: Uniques.Part]: Part,
 }
 
@@ -88,8 +88,8 @@ export class Instance
         }
     }
 
-    async Maybe_Info():
-        Promise<Info | null>
+    async Maybe_Parts():
+        Promise<Parts | null>
     {
         const json: string | null = await this.Maybe_JSON();
         if (json != null) {
@@ -104,12 +104,12 @@ export class Instance
     ):
         Promise<Part | null>
     {
-        const info: Info | null = await this.Maybe_Info();
+        const parts: Parts | null = await this.Maybe_Parts();
         if (
-            info != null &&
-            info.hasOwnProperty(uniques_part)
+            parts != null &&
+            parts.hasOwnProperty(uniques_part)
         ) {
-            return info[uniques_part];
+            return parts[uniques_part];
         } else {
             return null;
         }

@@ -1,10 +1,12 @@
 export class Instance {
-    constructor({ search, file_index, line_index, first_part_index, end_part_index, }) {
+    constructor({ search, file_index, line_index, first_part_index, end_part_index, first_part_offset, last_part_offset, }) {
         this.search = search;
         this.file_index = file_index;
         this.line_index = line_index;
         this.first_part_index = first_part_index;
         this.end_part_index = end_part_index;
+        this.first_part_offset = first_part_offset;
+        this.last_part_offset = last_part_offset;
         Object.freeze(this);
     }
     Book_Name() {
@@ -27,5 +29,11 @@ export class Instance {
     }
     End_Part_Index() {
         return this.end_part_index;
+    }
+    First_Part_Offset() {
+        return this.first_part_offset;
+    }
+    Last_Part_Offset() {
+        return this.last_part_offset;
     }
 }

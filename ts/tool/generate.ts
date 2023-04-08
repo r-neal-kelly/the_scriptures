@@ -364,7 +364,7 @@ async function Generate_Search(
     const uniques: Data.Search.Uniques.Info = {};
 
     const occurrences: {
-        [index: Data.Search.Uniques.First_Point]: Data.Search.Partition.Info,
+        [index: Data.Search.Uniques.First_Point]: Data.Search.Partition.Parts,
     } = {};
     const occurrences_info: Data.Search.Occurrences.Info = {
         names: [],

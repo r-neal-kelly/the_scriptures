@@ -90,6 +90,20 @@ export class Instance
         }
     }
 
+    async Maybe_Partition_Parts(
+        first_point: Uniques.First_Point,
+    ):
+        Promise<Partition.Parts | null>
+    {
+        const partition: Partition.Instance | null =
+            await this.Maybe_Partition(first_point);
+        if (partition) {
+            return await partition.Maybe_Parts();
+        } else {
+            return null;
+        }
+    }
+
     async Maybe_Partition_Part(
         part: Uniques.Part,
     ):

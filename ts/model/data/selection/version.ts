@@ -42,4 +42,10 @@ export class Name
     {
         return this.version;
     }
+
+    String():
+        Types.Name
+    {
+        return `${this.Book()} - ${this.Language()} - ${this.Version()}`;
+    }
 }

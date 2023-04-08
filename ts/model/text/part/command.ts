@@ -10,6 +10,12 @@ import { Type } from "./type.js";
 import { Status } from "./status.js";
 import { Style } from "./style.js";
 
+export enum Brace
+{
+    OPEN = `⸨`,
+    CLOSE = `⸩`,
+}
+
 export enum Known_Value
 {
     CENTER = `⸨cen⸩`,

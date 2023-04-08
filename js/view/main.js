@@ -131,7 +131,7 @@ import * as Search from "../model/search.js";
                 new Data.Selection.Version.Name({
                     book: `Genesis`,
                     language: `English`,
-                    version: `KJV 1872-1888`,
+                    version: `KJV 1872-1888+`,
                 }),
             ],
         });

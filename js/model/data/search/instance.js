@@ -54,6 +54,17 @@ export class Instance {
             }
         });
     }
+    Maybe_Partition_Parts(first_point) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const partition = yield this.Maybe_Partition(first_point);
+            if (partition) {
+                return yield partition.Maybe_Parts();
+            }
+            else {
+                return null;
+            }
+        });
+    }
     Maybe_Partition_Part(part) {
         return __awaiter(this, void 0, void 0, function* () {
             const partition = yield this.Maybe_Partition(Unicode.First_Point(part));

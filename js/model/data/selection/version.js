@@ -14,4 +14,7 @@ export class Name {
     Version() {
         return this.version;
     }
+    String() {
+        return `${this.Book()} - ${this.Language()} - ${this.Version()}`;
+    }
 }

@@ -1,3 +1,4 @@
+import { Count } from "../../types.js";
 import { Index } from "../../types.js";
 import { Name } from "../../types.js";
 
@@ -10,6 +11,8 @@ export class Instance
     private line_index: Index;
     private first_part_index: Index;
     private end_part_index: Index;
+    private first_part_offset: Count;
+    private last_part_offset: Count;
 
     constructor(
         {
@@ -18,12 +21,16 @@ export class Instance
             line_index,
             first_part_index,
             end_part_index,
+            first_part_offset,
+            last_part_offset,
         }: {
             search: Data.Search.Instance,
             file_index: Index,
             line_index: Index,
             first_part_index: Index,
             end_part_index: Index,
+            first_part_offset: Count,
+            last_part_offset: Count,
         },
     )
     {
@@ -32,6 +39,8 @@ export class Instance
         this.line_index = line_index;
         this.first_part_index = first_part_index;
         this.end_part_index = end_part_index;
+        this.first_part_offset = first_part_offset;
+        this.last_part_offset = last_part_offset;
 
         Object.freeze(this);
     }
@@ -76,5 +85,17 @@ export class Instance
         Index
     {
         return this.end_part_index;
+    }
+
+    First_Part_Offset():
+        Count
+    {
+        return this.first_part_offset;
+    }
+
+    Last_Part_Offset():
+        Count
+    {
+        return this.last_part_offset;
     }
 }

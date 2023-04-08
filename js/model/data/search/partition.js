@@ -42,7 +42,7 @@ export class Instance {
             }
         });
     }
-    Maybe_Info() {
+    Maybe_Parts() {
         return __awaiter(this, void 0, void 0, function* () {
             const json = yield this.Maybe_JSON();
             if (json != null) {
@@ -55,10 +55,10 @@ export class Instance {
     }
     Maybe_Part(uniques_part) {
         return __awaiter(this, void 0, void 0, function* () {
-            const info = yield this.Maybe_Info();
-            if (info != null &&
-                info.hasOwnProperty(uniques_part)) {
-                return info[uniques_part];
+            const parts = yield this.Maybe_Parts();
+            if (parts != null &&
+                parts.hasOwnProperty(uniques_part)) {
+                return parts[uniques_part];
             }
             else {
                 return null;

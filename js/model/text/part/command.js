@@ -4,6 +4,11 @@ import * as Part from "./instance.js";
 import { Type } from "./type.js";
 import { Status } from "./status.js";
 import { Style } from "./style.js";
+export var Brace;
+(function (Brace) {
+    Brace["OPEN"] = "\u2E28";
+    Brace["CLOSE"] = "\u2E29";
+})(Brace || (Brace = {}));
 export var Known_Value;
 (function (Known_Value) {
     Known_Value["CENTER"] = "\u2E28cen\u2E29";
