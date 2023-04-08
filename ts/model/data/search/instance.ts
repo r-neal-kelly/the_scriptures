@@ -66,6 +66,19 @@ export class Instance
         return this.uniques;
     }
 
+    async Maybe_Unique_Parts(
+        first_point: Uniques.First_Point,
+    ):
+        Promise<Array<Uniques.Part> | null>
+    {
+        const uniques: Uniques.Instance = this.Uniques();
+        if (await uniques.Has(first_point)) {
+            return await uniques.Get(first_point);
+        } else {
+            return null;
+        }
+    }
+
     Occurrences():
         Occurrences.Instance
     {

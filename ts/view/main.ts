@@ -208,6 +208,8 @@ import * as Search from "../model/search.js"
         const search: Search.Instance = new Search.Instance(
             {
                 ignore_markup: true,
+                respect_case: false,
+                align_on_word: false,
             },
         );
 

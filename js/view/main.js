@@ -127,6 +127,8 @@ import * as Search from "../model/search.js";
     return __awaiter(this, void 0, void 0, function* () {
         const search = new Search.Instance({
             ignore_markup: true,
+            respect_case: false,
+            align_on_word: false,
         });
         yield search.Ready();
         window.Test = search;

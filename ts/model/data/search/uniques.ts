@@ -57,7 +57,7 @@ export class Instance
         return this.path;
     }
 
-    private async Info():
+    async Info():
         Promise<Info>
     {
         await this.Download();

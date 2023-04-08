@@ -34,6 +34,17 @@ export class Instance {
     Uniques() {
         return this.uniques;
     }
+    Maybe_Unique_Parts(first_point) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const uniques = this.Uniques();
+            if (yield uniques.Has(first_point)) {
+                return yield uniques.Get(first_point);
+            }
+            else {
+                return null;
+            }
+        });
+    }
     Occurrences() {
         return this.occurrences;
     }
