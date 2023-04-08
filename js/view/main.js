@@ -122,18 +122,11 @@ function Main() {
 }
 Main();
 // temp
-import * as Data from "../model/data.js";
 import * as Search from "../model/search.js";
 (function () {
     return __awaiter(this, void 0, void 0, function* () {
         const search = new Search.Instance({
-            versions: [
-                new Data.Selection.Version.Name({
-                    book: `Genesis`,
-                    language: `English`,
-                    version: `KJV 1872-1888+`,
-                }),
-            ],
+            ignore_markup: true,
         });
         yield search.Ready();
         window.Test = search;

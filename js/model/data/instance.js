@@ -22,6 +22,7 @@ export class Instance extends Async.Instance {
         this.book_names = null;
         this.language_names = null;
         this.version_names = null;
+        this.is_caching = false;
     }
     Name() {
         return this.name;
@@ -37,6 +38,10 @@ export class Instance extends Async.Instance {
     // for right now we're doing it here till we get it working.
     Cache_Names() {
         return __awaiter(this, void 0, void 0, function* () {
+            while (this.is_caching) {
+                yield Utils.Wait_Milliseconds(1);
+            }
+            this.is_caching = true;
             if (this.book_names == null ||
                 this.language_names == null ||
                 this.version_names == null) {
@@ -56,12 +61,14 @@ export class Instance extends Async.Instance {
                 this.language_names = Array.from(language_names).sort();
                 this.version_names = Array.from(version_names).sort();
             }
+            this.is_caching = false;
         });
     }
     Names(of) {
         return __awaiter(this, void 0, void 0, function* () {
             if (of.length === 1) {
-                Utils.Assert(of[0].Name() == null, `Unusable name.`);
+                Utils.Assert(of[0].Name() == null, `Unusable name.
+                A query length of 1 only requires a type.`);
                 if (of[0].Type() === Type.BOOKS ||
                     of[0].Type() === Type.BOOK) {
                     return yield this.Book_Names();
@@ -75,13 +82,16 @@ export class Instance extends Async.Instance {
                     return yield this.Version_Names();
                 }
                 else {
-                    Utils.Assert(false, `Invalid type.`);
+                    Utils.Assert(false, `Invalid type.
+                    A query length of 1 can only gather Books, Languages, or Versions.`);
                     return [];
                 }
             }
             else if (of.length === 2) {
-                Utils.Assert(of[0].Name() != null, `Missing name.`);
-                Utils.Assert(of[1].Name() == null, `Unusable name.`);
+                Utils.Assert(of[0].Name() != null, `Missing name.
+                A query length of 2 requires a name at index 0.`);
+                Utils.Assert(of[1].Name() == null, `Unusable name.
+                A query length of 2 only requires a type at index 1.`);
                 if ((of[0].Type() === Type.BOOKS ||
                     of[0].Type() === Type.BOOK) &&
                     (of[1].Type() === Type.LANGUAGES ||
@@ -131,14 +141,18 @@ export class Instance extends Async.Instance {
                     });
                 }
                 else {
-                    Utils.Assert(false, `Invalid type.`);
+                    Utils.Assert(false, `Invalid type.
+                    A query length of 2 can only gather a combination of Books, Languages, or Versions.
+                    Each index in the query must have a unique type, and cannot contain repeats.`);
                     return [];
                 }
             }
             else if (of.length === 3) {
                 Utils.Assert(of[0].Name() != null &&
-                    of[1].Name() != null, `Missing name.`);
-                Utils.Assert(of[2].Name() == null, `Unusable name.`);
+                    of[1].Name() != null, `Missing name.
+                A query length of 3 requires a name for indices 0 and 1.`);
+                Utils.Assert(of[2].Name() == null, `Unusable name.
+                A query length of 3 only requires a type at index 2.`);
                 if ((of[0].Type() === Type.BOOKS ||
                     of[0].Type() === Type.BOOK) &&
                     (of[1].Type() === Type.LANGUAGES ||
@@ -206,17 +220,22 @@ export class Instance extends Async.Instance {
                     });
                 }
                 else {
-                    Utils.Assert(false, `Invalid type.`);
+                    Utils.Assert(false, `Invalid type.
+                    A query length of 3 can only gather a combination of Books, Languages, or Versions.
+                    Each index in the query must have a unique type, and cannot contain repeats.`);
                     return [];
                 }
             }
             else if (of.length === 4) {
                 Utils.Assert(of[0].Name() != null &&
                     of[1].Name() != null &&
-                    of[2].Name() != null, `Missing name.`);
-                Utils.Assert(of[3].Name() == null, `Unusable name.`);
+                    of[2].Name() != null, `Missing name.
+                A query length of 4 must have a name for indices 0, 1, and 2.`);
+                Utils.Assert(of[3].Name() == null, `Unusable name.
+                A query length of 4 only requires a type at index 3.`);
                 Utils.Assert(of[3].Type() === Type.FILES ||
-                    of[3].Type() === Type.FILE, `Invalid type.`);
+                    of[3].Type() === Type.FILE, `Invalid type.
+                A query length of 4 requires index 3 to have a type indicated Files.`);
                 if ((of[0].Type() === Type.BOOKS ||
                     of[0].Type() === Type.BOOK) &&
                     (of[1].Type() === Type.LANGUAGES ||
@@ -290,12 +309,16 @@ export class Instance extends Async.Instance {
                     });
                 }
                 else {
-                    Utils.Assert(false, `Invalid type.`);
+                    Utils.Assert(false, `Invalid type.
+                    A query length of 4 must have a combination of Books, Languages, Versions, and Files.
+                    Each index in the query must have a unique type, and cannot contain repeats.
+                    The last index must indicate Files.`);
                     return [];
                 }
             }
             else {
-                Utils.Assert(false, `Invalid query length.`);
+                Utils.Assert(false, `Invalid query length.
+                A query must have a length from 1 to 4.`);
                 return [];
             }
         });
@@ -531,11 +554,67 @@ export class Instance extends Async.Instance {
             return Array.from(book_names).sort();
         });
     }
+    Versions({ book_names = null, language_names = null, version_names = null, }) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const versions = [];
+            if (book_names == null) {
+                book_names = yield this.Book_Names();
+            }
+            if (language_names == null) {
+                language_names = yield this.Language_Names();
+            }
+            if (version_names == null) {
+                version_names = yield this.Version_Names();
+            }
+            for (const book of yield this.Books().Array()) {
+                if (book_names.includes(book.Name())) {
+                    for (const language of yield book.Languages().Array()) {
+                        if (language_names.includes(language.Name())) {
+                            for (const version of yield language.Versions().Array()) {
+                                if (version_names.includes(version.Name())) {
+                                    versions.push(version);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return versions;
+        });
+    }
     Version(selection) {
         return __awaiter(this, void 0, void 0, function* () {
             const book = yield this.Books().Get(selection.Book());
             const language = yield book.Languages().Get(selection.Language());
             return yield language.Versions().Get(selection.Version());
+        });
+    }
+    Searches({ book_names = null, language_names = null, version_names = null, }) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const searches = [];
+            if (book_names == null) {
+                book_names = yield this.Book_Names();
+            }
+            if (language_names == null) {
+                language_names = yield this.Language_Names();
+            }
+            if (version_names == null) {
+                version_names = yield this.Version_Names();
+            }
+            for (const book of yield this.Books().Array()) {
+                if (book_names.includes(book.Name())) {
+                    for (const language of yield book.Languages().Array()) {
+                        if (language_names.includes(language.Name())) {
+                            for (const version of yield language.Versions().Array()) {
+                                if (version_names.includes(version.Name())) {
+                                    searches.push(version.Search());
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return searches;
         });
     }
     Search(selection) {

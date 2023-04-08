@@ -16,6 +16,7 @@ export class Instance {
         this.path = `${data.Path()}/${this.name}`;
         this.info = null;
         this.books = [];
+        this.is_downloading = false;
     }
     Data() {
         return this.data;
@@ -73,6 +74,10 @@ export class Instance {
     }
     Download() {
         return __awaiter(this, void 0, void 0, function* () {
+            while (this.is_downloading) {
+                yield Utils.Wait_Milliseconds(1);
+            }
+            this.is_downloading = true;
             if (this.info == null) {
                 const response = yield fetch(Utils.Resolve_Path(`${this.Path()}/Info.json`));
                 if (response.ok) {
@@ -85,6 +90,7 @@ export class Instance {
                     }
                 }
             }
+            this.is_downloading = false;
         });
     }
 }

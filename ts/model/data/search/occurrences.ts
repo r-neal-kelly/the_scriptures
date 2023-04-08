@@ -23,6 +23,7 @@ export class Instance
     private path: Path;
     private info: Info | null;
     private partitions: { [index: Uniques.First_Point]: Partition.Instance };
+    private is_downloading: boolean;
 
     constructor(
         {
@@ -36,6 +37,7 @@ export class Instance
         this.path = `${search.Path()}/${Instance.Name()}`;
         this.info = null;
         this.partitions = {};
+        this.is_downloading = false;
     }
 
     Search():
@@ -100,6 +102,11 @@ export class Instance
     private async Download():
         Promise<void>
     {
+        while (this.is_downloading) {
+            await Utils.Wait_Milliseconds(1);
+        }
+        this.is_downloading = true;
+
         if (this.info == null) {
             const response: Response =
                 await fetch(Utils.Resolve_Path(`${this.Path()}/Info.json`));
@@ -119,5 +126,7 @@ export class Instance
                 }
             }
         }
+
+        this.is_downloading = false;
     }
 }

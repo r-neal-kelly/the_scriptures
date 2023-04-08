@@ -13,28 +13,38 @@ import * as Data from "../data.js";
 import * as Text from "../text.js";
 import * as Result from "./result.js";
 export class Instance extends Entity.Instance {
-    constructor({ versions, ignore_markup = true, align_on_word = true, }) {
+    constructor({ book_names = null, language_names = null, version_names = null, ignore_markup = true, align_on_word = true, respect_sequence = true, }) {
         super();
-        this.searches = {};
+        this.book_names = book_names;
+        this.language_names = language_names;
+        this.version_names = version_names;
         this.ignore_markup = ignore_markup;
         this.align_on_word = align_on_word;
-        for (const version of versions) {
-            this.Add_Version(version);
-        }
+        this.respect_sequence = respect_sequence;
+        this.searches = [];
         this.Is_Ready_After([
             Data.Singleton(),
         ]);
     }
-    Add_Version(selection) {
+    Set({ book_names = null, language_names = null, version_names = null, }) {
         return __awaiter(this, void 0, void 0, function* () {
-            const selection_string = selection.String();
-            if (!this.searches.hasOwnProperty(selection_string)) {
-                this.searches[selection_string] = yield Data.Singleton().Search(selection);
-            }
+            this.book_names = book_names != null ?
+                Array.from(book_names) : null;
+            this.language_names = language_names != null ?
+                Array.from(language_names) : null;
+            this.version_names = version_names != null ?
+                Array.from(version_names) : null;
+            yield this.Refresh_Searches();
         });
     }
-    Remove_Version(selection) {
-        delete this.searches[selection.String()];
+    Refresh_Searches() {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.searches = yield Data.Singleton().Searches({
+                book_names: this.book_names,
+                language_names: this.language_names,
+                version_names: this.version_names,
+            });
+        });
     }
     // For right now, we're just going to match parts exactly, but
     // we could add a mode that actually looks within parts, which
@@ -42,16 +52,11 @@ export class Instance extends Entity.Instance {
     // be used to match `¶ `. The problem is that the uniques would
     // have to be searched completely, instead of just in the first
     // point array.
-    // We also need to be able to essentially ignore commands. That
-    // logic should be done when the partition does not include the
-    // part_index of a match. And instead of increasing end_part_index
-    // by 1, we would increase it by 1 and the number of commands
-    // after it.
     Execute(query) {
         return __awaiter(this, void 0, void 0, function* () {
             Utils.Assert(!/\r?\n/.test(query), `query cannot have any newlines.`);
             const results = [];
-            for (const search of Object.values(this.searches)) {
+            for (const search of this.searches) {
                 const line = new Text.Instance({
                     dictionary: (yield search.Version().Files().Dictionary()).Text_Dictionary(),
                     value: query,
@@ -142,6 +147,15 @@ export class Instance extends Entity.Instance {
                 }
             }
             return results;
+        });
+    }
+    Ready() {
+        const _super = Object.create(null, {
+            Ready: { get: () => super.Ready }
+        });
+        return __awaiter(this, void 0, void 0, function* () {
+            yield _super.Ready.call(this);
+            yield this.Refresh_Searches();
         });
     }
 }

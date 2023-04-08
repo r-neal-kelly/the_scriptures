@@ -1,4 +1,4 @@
-import { Index, Name } from "../../types.js";
+import { Name } from "../../types.js";
 
 import * as Utils from "../../utils.js";
 
@@ -9,31 +9,47 @@ import * as Result from "./result.js";
 
 export class Instance extends Entity.Instance
 {
-    private searches: { [index: Name]: Data.Search.Instance };
+    private book_names: Array<Name> | null;
+    private language_names: Array<Name> | null;
+    private version_names: Array<Name> | null;
+
     private ignore_markup: boolean;
     private align_on_word: boolean;
+    private respect_sequence: boolean;
+
+    private searches: Array<Data.Search.Instance>;
 
     constructor(
         {
-            versions,
+            book_names = null,
+            language_names = null,
+            version_names = null,
+
             ignore_markup = true,
             align_on_word = true,
+            respect_sequence = true,
         }: {
-            versions: Array<Data.Selection.Version.Name>,
+            book_names?: Array<Name> | null,
+            language_names?: Array<Name> | null,
+            version_names?: Array<Name> | null,
+
             ignore_markup?: boolean,
             align_on_word?: boolean,
+            respect_sequence?: boolean,
         },
     )
     {
         super();
 
-        this.searches = {};
+        this.book_names = book_names;
+        this.language_names = language_names;
+        this.version_names = version_names;
+
         this.ignore_markup = ignore_markup;
         this.align_on_word = align_on_word;
+        this.respect_sequence = respect_sequence;
 
-        for (const version of versions) {
-            this.Add_Version(version);
-        }
+        this.searches = [];
 
         this.Is_Ready_After(
             [
@@ -42,24 +58,39 @@ export class Instance extends Entity.Instance
         );
     }
 
-    async Add_Version(
-        selection: Data.Selection.Version.Name,
+    async Set(
+        {
+            book_names = null,
+            language_names = null,
+            version_names = null,
+        }: {
+            book_names: Array<Name> | null,
+            language_names: Array<Name> | null,
+            version_names: Array<Name> | null,
+        },
     ):
         Promise<void>
     {
-        const selection_string: Name = selection.String();
+        this.book_names = book_names != null ?
+            Array.from(book_names) : null;
+        this.language_names = language_names != null ?
+            Array.from(language_names) : null;
+        this.version_names = version_names != null ?
+            Array.from(version_names) : null;
 
-        if (!this.searches.hasOwnProperty(selection_string)) {
-            this.searches[selection_string] = await Data.Singleton().Search(selection);
-        }
+        await this.Refresh_Searches();
     }
 
-    Remove_Version(
-        selection: Data.Selection.Version.Name,
-    ):
-        void
+    private async Refresh_Searches():
+        Promise<void>
     {
-        delete this.searches[selection.String()];
+        this.searches = await Data.Singleton().Searches(
+            {
+                book_names: this.book_names,
+                language_names: this.language_names,
+                version_names: this.version_names,
+            },
+        );
     }
 
     // For right now, we're just going to match parts exactly, but
@@ -68,12 +99,6 @@ export class Instance extends Entity.Instance
     // be used to match `¶ `. The problem is that the uniques would
     // have to be searched completely, instead of just in the first
     // point array.
-
-    // We also need to be able to essentially ignore commands. That
-    // logic should be done when the partition does not include the
-    // part_index of a match. And instead of increasing end_part_index
-    // by 1, we would increase it by 1 and the number of commands
-    // after it.
 
     async Execute(
         query: string,
@@ -87,7 +112,7 @@ export class Instance extends Entity.Instance
 
         const results: Array<Result.Instance> = [];
 
-        for (const search of Object.values(this.searches)) {
+        for (const search of this.searches) {
             const line: Text.Line.Instance = new Text.Instance(
                 {
                     dictionary: (await search.Version().Files().Dictionary()).Text_Dictionary(),
@@ -215,5 +240,13 @@ export class Instance extends Entity.Instance
         }
 
         return results;
+    }
+
+    async Ready():
+        Promise<void>
+    {
+        await super.Ready();
+
+        await this.Refresh_Searches();
     }
 }

@@ -27,6 +27,7 @@ export class Instance extends Async.Instance
     private book_names: Array<Name> | null;
     private language_names: Array<Name> | null;
     private version_names: Array<Name> | null;
+    private is_caching: boolean;
 
     constructor()
     {
@@ -43,6 +44,7 @@ export class Instance extends Async.Instance
         this.book_names = null;
         this.language_names = null;
         this.version_names = null;
+        this.is_caching = false;
     }
 
     Name():
@@ -69,6 +71,11 @@ export class Instance extends Async.Instance
     private async Cache_Names():
         Promise<void>
     {
+        while (this.is_caching) {
+            await Utils.Wait_Milliseconds(1);
+        }
+        this.is_caching = true;
+
         if (
             this.book_names == null ||
             this.language_names == null ||
@@ -92,6 +99,8 @@ export class Instance extends Async.Instance
             this.language_names = Array.from(language_names).sort();
             this.version_names = Array.from(version_names).sort();
         }
+
+        this.is_caching = false;
     }
 
     async Names(
@@ -102,7 +111,8 @@ export class Instance extends Async.Instance
         if (of.length === 1) {
             Utils.Assert(
                 of[0].Name() == null,
-                `Unusable name.`,
+                `Unusable name.
+                A query length of 1 only requires a type.`,
             );
 
             if (
@@ -123,7 +133,8 @@ export class Instance extends Async.Instance
             } else {
                 Utils.Assert(
                     false,
-                    `Invalid type.`,
+                    `Invalid type.
+                    A query length of 1 can only gather Books, Languages, or Versions.`,
                 );
 
                 return [];
@@ -131,11 +142,13 @@ export class Instance extends Async.Instance
         } else if (of.length === 2) {
             Utils.Assert(
                 of[0].Name() != null,
-                `Missing name.`,
+                `Missing name.
+                A query length of 2 requires a name at index 0.`,
             );
             Utils.Assert(
                 of[1].Name() == null,
-                `Unusable name.`,
+                `Unusable name.
+                A query length of 2 only requires a type at index 1.`,
             );
 
             if (
@@ -231,7 +244,9 @@ export class Instance extends Async.Instance
             } else {
                 Utils.Assert(
                     false,
-                    `Invalid type.`,
+                    `Invalid type.
+                    A query length of 2 can only gather a combination of Books, Languages, or Versions.
+                    Each index in the query must have a unique type, and cannot contain repeats.`,
                 );
 
                 return [];
@@ -240,11 +255,13 @@ export class Instance extends Async.Instance
             Utils.Assert(
                 of[0].Name() != null &&
                 of[1].Name() != null,
-                `Missing name.`,
+                `Missing name.
+                A query length of 3 requires a name for indices 0 and 1.`,
             );
             Utils.Assert(
                 of[2].Name() == null,
-                `Unusable name.`,
+                `Unusable name.
+                A query length of 3 only requires a type at index 2.`,
             );
 
             if (
@@ -370,7 +387,9 @@ export class Instance extends Async.Instance
             } else {
                 Utils.Assert(
                     false,
-                    `Invalid type.`,
+                    `Invalid type.
+                    A query length of 3 can only gather a combination of Books, Languages, or Versions.
+                    Each index in the query must have a unique type, and cannot contain repeats.`,
                 );
 
                 return [];
@@ -380,16 +399,19 @@ export class Instance extends Async.Instance
                 of[0].Name() != null &&
                 of[1].Name() != null &&
                 of[2].Name() != null,
-                `Missing name.`,
+                `Missing name.
+                A query length of 4 must have a name for indices 0, 1, and 2.`,
             );
             Utils.Assert(
                 of[3].Name() == null,
-                `Unusable name.`,
+                `Unusable name.
+                A query length of 4 only requires a type at index 3.`,
             );
             Utils.Assert(
                 of[3].Type() === Type.FILES ||
                 of[3].Type() === Type.FILE,
-                `Invalid type.`,
+                `Invalid type.
+                A query length of 4 requires index 3 to have a type indicated Files.`,
             );
 
             if (
@@ -521,7 +543,10 @@ export class Instance extends Async.Instance
             } else {
                 Utils.Assert(
                     false,
-                    `Invalid type.`,
+                    `Invalid type.
+                    A query length of 4 must have a combination of Books, Languages, Versions, and Files.
+                    Each index in the query must have a unique type, and cannot contain repeats.
+                    The last index must indicate Files.`,
                 );
 
                 return [];
@@ -529,7 +554,8 @@ export class Instance extends Async.Instance
         } else {
             Utils.Assert(
                 false,
-                `Invalid query length.`,
+                `Invalid query length.
+                A query must have a length from 1 to 4.`,
             );
 
             return [];
@@ -893,6 +919,48 @@ export class Instance extends Async.Instance
         return Array.from(book_names).sort();
     }
 
+    async Versions(
+        {
+            book_names = null,
+            language_names = null,
+            version_names = null,
+        }: {
+            book_names: Array<Name> | null,
+            language_names: Array<Name> | null,
+            version_names: Array<Name> | null,
+        },
+    ):
+        Promise<Array<Version.Instance>>
+    {
+        const versions: Array<Version.Instance> = [];
+
+        if (book_names == null) {
+            book_names = await this.Book_Names();
+        }
+        if (language_names == null) {
+            language_names = await this.Language_Names();
+        }
+        if (version_names == null) {
+            version_names = await this.Version_Names();
+        }
+
+        for (const book of await this.Books().Array()) {
+            if (book_names.includes(book.Name())) {
+                for (const language of await book.Languages().Array()) {
+                    if (language_names.includes(language.Name())) {
+                        for (const version of await language.Versions().Array()) {
+                            if (version_names.includes(version.Name())) {
+                                versions.push(version);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return versions;
+    }
+
     async Version(
         selection: Selection.Version.Name,
     ):
@@ -902,6 +970,48 @@ export class Instance extends Async.Instance
         const language: Language.Instance = await book.Languages().Get(selection.Language());
 
         return await language.Versions().Get(selection.Version());
+    }
+
+    async Searches(
+        {
+            book_names = null,
+            language_names = null,
+            version_names = null,
+        }: {
+            book_names: Array<Name> | null,
+            language_names: Array<Name> | null,
+            version_names: Array<Name> | null,
+        },
+    ):
+        Promise<Array<Search.Instance>>
+    {
+        const searches: Array<Search.Instance> = [];
+
+        if (book_names == null) {
+            book_names = await this.Book_Names();
+        }
+        if (language_names == null) {
+            language_names = await this.Language_Names();
+        }
+        if (version_names == null) {
+            version_names = await this.Version_Names();
+        }
+
+        for (const book of await this.Books().Array()) {
+            if (book_names.includes(book.Name())) {
+                for (const language of await book.Languages().Array()) {
+                    if (language_names.includes(language.Name())) {
+                        for (const version of await language.Versions().Array()) {
+                            if (version_names.includes(version.Name())) {
+                                searches.push(version.Search());
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return searches;
     }
 
     async Search(

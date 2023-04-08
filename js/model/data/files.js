@@ -20,6 +20,7 @@ export class Instance {
             files: this,
         });
         this.files = [];
+        this.is_downloading = false;
     }
     Version() {
         return this.version;
@@ -83,6 +84,10 @@ export class Instance {
     }
     Download() {
         return __awaiter(this, void 0, void 0, function* () {
+            while (this.is_downloading) {
+                yield Utils.Wait_Milliseconds(1);
+            }
+            this.is_downloading = true;
             if (this.info == null) {
                 const response = yield fetch(Utils.Resolve_Path(`${this.Path()}/Info.json`));
                 if (response.ok) {
@@ -96,6 +101,7 @@ export class Instance {
                 }
                 yield this.dictionary.Ready();
             }
+            this.is_downloading = false;
         });
     }
 }

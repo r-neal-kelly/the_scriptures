@@ -23,6 +23,7 @@ export class Instance
     private search: Search.Instance;
     private path: Path;
     private info: Info | null;
+    private is_downloading: boolean;
 
     constructor(
         {
@@ -35,6 +36,7 @@ export class Instance
         this.search = search;
         this.path = `${search.Path()}/${Instance.Name()}`;
         this.info = null;
+        this.is_downloading = false;
     }
 
     Search():
@@ -91,6 +93,11 @@ export class Instance
     private async Download():
         Promise<void>
     {
+        while (this.is_downloading) {
+            await Utils.Wait_Milliseconds(1);
+        }
+        this.is_downloading = true;
+
         if (this.info == null) {
             const response: Response =
                 await fetch(Utils.Resolve_Path(this.Path()));
@@ -102,5 +109,7 @@ export class Instance
                 Object.freeze(this.info);
             }
         }
+
+        this.is_downloading = false;
     }
 }

@@ -11,6 +11,7 @@ import * as Utils from "./utils.js";
 export class Instance {
     constructor() {
         this.is_ready = false;
+        this.is_readying = false;
         this.dependencies = [];
     }
     Is_Ready_After(dependencies) {
@@ -24,6 +25,10 @@ export class Instance {
     }
     Ready() {
         return __awaiter(this, void 0, void 0, function* () {
+            while (this.is_readying) {
+                yield Utils.Wait_Milliseconds(1);
+            }
+            this.is_readying = true;
             if (this.is_ready === false) {
                 if (this.dependencies.length > 0) {
                     yield Promise.all(this.dependencies.map(function (dependency) {
@@ -32,6 +37,7 @@ export class Instance {
                 }
                 this.is_ready = true;
             }
+            this.is_readying = false;
         });
     }
 }

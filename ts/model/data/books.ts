@@ -19,6 +19,7 @@ export class Instance
     private path: Path;
     private info: Info | null;
     private books: Array<Book.Instance>;
+    private is_downloading: boolean;
 
     constructor(
         {
@@ -33,6 +34,7 @@ export class Instance
         this.path = `${data.Path()}/${this.name}`;
         this.info = null;
         this.books = [];
+        this.is_downloading = false;
     }
 
     Data():
@@ -128,6 +130,11 @@ export class Instance
     private async Download():
         Promise<void>
     {
+        while (this.is_downloading) {
+            await Utils.Wait_Milliseconds(1);
+        }
+        this.is_downloading = true;
+
         if (this.info == null) {
             const response: Response =
                 await fetch(Utils.Resolve_Path(`${this.Path()}/Info.json`));
@@ -146,5 +153,7 @@ export class Instance
                 }
             }
         }
+
+        this.is_downloading = false;
     }
 }

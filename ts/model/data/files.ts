@@ -21,6 +21,7 @@ export class Instance
     private info: Info | null;
     private dictionary: Dictionary.Instance;
     private files: Array<File.Instance>;
+    private is_downloading: boolean;
 
     constructor(
         {
@@ -40,6 +41,7 @@ export class Instance
             },
         );
         this.files = [];
+        this.is_downloading = false;
     }
 
     Version():
@@ -143,6 +145,11 @@ export class Instance
     private async Download():
         Promise<void>
     {
+        while (this.is_downloading) {
+            await Utils.Wait_Milliseconds(1);
+        }
+        this.is_downloading = true;
+
         if (this.info == null) {
             const response: Response =
                 await fetch(Utils.Resolve_Path(`${this.Path()}/Info.json`));
@@ -163,5 +170,7 @@ export class Instance
 
             await this.dictionary.Ready();
         }
+
+        this.is_downloading = false;
     }
 }
