@@ -1,3 +1,4 @@
+import { Count } from "../../types.js";
 import { Name } from "../../types.js";
 import { Path } from "../../types.js";
 
@@ -6,6 +7,8 @@ import * as Utils from "../../utils.js";
 import * as Files from "./files.js";
 
 export type Info = {
+    line_count: Count,
+    line_names: Array<Name>,
 }
 
 export class Instance

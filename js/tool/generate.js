@@ -159,41 +159,56 @@ function Generate_Files(folder_path) {
             return (/\.txt$/.test(name) &&
                 !/COPY\.txt$/.test(name));
         }).sort();
+        yield Promise.all(info.names.map(function (file_name) {
+            return __awaiter(this, void 0, void 0, function* () {
+                yield Generate_File(folder_path, file_name);
+            });
+        }));
         yield Write_File(`${folder_path}/Info.json`, JSON.stringify(info, null, 4));
         return info;
     });
 }
+function Generate_File(files_folder_path, file_name) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const file_info = {
+            line_count: 0,
+            line_names: [],
+        };
+        const file_folder_path = `${files_folder_path}/${file_name.replace(/\.[^.]*$/, ``)}`;
+        if (fs.existsSync(file_folder_path)) {
+            fs.rmSync(file_folder_path, {
+                recursive: true,
+                force: true,
+            });
+        }
+        fs.mkdirSync(file_folder_path);
+        const dictionary = new Text.Dictionary.Instance({
+            json: yield Read_File(`${files_folder_path}/Dictionary.json`),
+        });
+        const text = new Text.Instance({
+            dictionary: dictionary,
+            value: yield Read_File(`${files_folder_path}/${file_name}`),
+        });
+        for (let line_idx = 0, end = text.Line_Count(); line_idx < end; line_idx += 1) {
+            const line = text.Line(line_idx);
+            const value = line.Value();
+            file_info.line_count += 1;
+            if (value != ``) {
+                file_info.line_names.push(`${line_idx}.txt`);
+                yield Write_File(`${file_folder_path}/${line_idx}.txt`, line.Value());
+            }
+        }
+        yield Write_File(`${file_folder_path}/Info.json`, JSON.stringify(file_info, null, 4));
+    });
+}
 function Generate_Search(version_folder_path, file_names) {
     return __awaiter(this, void 0, void 0, function* () {
+        // We cache data it bite-sized chunks to diminish band-width usage for the serverless
+        // client, and at the same time make searching overall more efficient than brute-force.
         // Maybe this code should be in its own module so that the code to write and read it
         // are in the same location. However, wed want to supply it the dictionary data and
         // and the data for each file through node .js, and it can remain agnostic to the
         // environment.
-        // ----------------------------------------------------------------------------------
-        // We cache data it bite-sized chunks to diminish band-width usage for the serverless
-        // client, and at the same time make searching overall more efficient than brute-force.
-        // We need a file that lists out all the unique parts by first-point, sorted.
-        // We need a set of files, one per first-point, that caches all the places that a
-        // unique part appears in the text, by file_index, line_index, and part_index.
-        // While a user is typing in the search input, the searcher takes the string,
-        // and splits it by word and break using the dictionary of the currently searched
-        // version, which can be looped for multiple versions at a time.
-        // It then finds all the possible words/breaks it can be, from the unique-word cache.
-        // For each successive part in the query, it filters down the possibilities by looking
-        // at the occurrence cache, to see if the query actually exists.
-        // So if the user has typed a word, and a break, and begins typing another word,
-        // the first word's occurrence cache is looked up, as well as the break's. If it's
-        // determined that there are occurrences of the break following the first word,
-        // then the searcher knows that it's possible there is a query. The second word
-        // is getting suggestions from the unique list comparing just the second word,
-        // and we may simply wait to do its occurrence check after the search is initiated.
-        // But we can do the first two and simply tell the user no results are possible at that
-        // point. But we could start comparing to the break's occurrence cache with the second
-        // word's occurrence cache, because we'll have downloaded the file of the first point,
-        // and from there it's hot in memory. Unless the user changes the first point of the
-        // second word, we'd be able to quickly do occurrence check based off of all the possible
-        // unique-parts the word could be.
-        // ----------------------------------------------------------------------------------
         const uniques = {};
         const occurrences = {};
         const occurrences_info = {
@@ -253,13 +268,15 @@ function Generate_Search(version_folder_path, file_names) {
             yield Write_File(`${version_folder_path}/Search/Occurrences/${name}.json`, JSON.stringify(occurrences[point]));
         }
         yield Write_File(`${version_folder_path}/Search/Occurrences/Info.json`, JSON.stringify(occurrences_info, null, 4));
-        // At some point, we can create a search cache above the versions so it becomes
-        // possible to quickly and efficiently search through multiple versions at a time.
     });
 }
-// This really should read and write to the info file instead of
+// This maybe should read and write to the info files instead of
 // always generating it, that way we can add info to it manually
-// when needed.
+// when needed. However, things that we might think need to be added
+// manually may not need to be, for example which direction a language
+// needs to be displayed in the view, either left-to-right, or right-to-left.
+// We can simply define that by its language in a global cache, even in this
+// file, or maybe from a module. E.g. English is ltr, and Hebrew rtl.
 (function Main() {
     return __awaiter(this, void 0, void 0, function* () {
         yield Generate_Data(`./Data`);
