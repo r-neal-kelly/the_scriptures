@@ -11,8 +11,8 @@ export class Instance
     private line_index: Index;
     private first_part_index: Index;
     private end_part_index: Index;
-    private first_part_offset: Count;
-    private last_part_offset: Count;
+    private first_part_first_unit_index: Index;
+    private last_part_end_unit_index: Index;
 
     constructor(
         {
@@ -21,16 +21,16 @@ export class Instance
             line_index,
             first_part_index,
             end_part_index,
-            first_part_offset,
-            last_part_offset,
+            first_part_first_unit_index,
+            last_part_end_unit_index,
         }: {
             search: Data.Search.Instance,
             file_index: Index,
             line_index: Index,
             first_part_index: Index,
             end_part_index: Index,
-            first_part_offset: Count,
-            last_part_offset: Count,
+            first_part_first_unit_index: Index,
+            last_part_end_unit_index: Index,
         },
     )
     {
@@ -39,8 +39,8 @@ export class Instance
         this.line_index = line_index;
         this.first_part_index = first_part_index;
         this.end_part_index = end_part_index;
-        this.first_part_offset = first_part_offset;
-        this.last_part_offset = last_part_offset;
+        this.first_part_first_unit_index = first_part_first_unit_index;
+        this.last_part_end_unit_index = last_part_end_unit_index;
 
         Object.freeze(this);
     }
@@ -87,15 +87,15 @@ export class Instance
         return this.end_part_index;
     }
 
-    First_Part_Offset():
-        Count
+    First_Part_First_Unit_Index():
+        Index
     {
-        return this.first_part_offset;
+        return this.first_part_first_unit_index;
     }
 
-    Last_Part_Offset():
-        Count
+    Last_Part_End_Unit_Index():
+        Index
     {
-        return this.last_part_offset;
+        return this.last_part_end_unit_index;
     }
 }

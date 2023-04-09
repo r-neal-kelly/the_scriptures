@@ -1,6 +1,7 @@
 export type Integer = number;
 export type Count = Integer;
 export type Index = Integer;
+export type Offset = Integer;
 
 export type Float = number;
 
