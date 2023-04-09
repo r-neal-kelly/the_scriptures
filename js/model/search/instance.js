@@ -14,14 +14,13 @@ import * as Data from "../data.js";
 import * as Text from "../text.js";
 import * as Result from "./result.js";
 export class Instance extends Entity.Instance {
-    constructor({ book_names = null, language_names = null, version_names = null, ignore_markup = true, respect_case = true, align_on_part = true, respect_sequence = true, }) {
+    constructor({ book_names = null, language_names = null, version_names = null, ignore_markup = true, respect_case = true, align_on_part = true, }) {
         super();
         this.book_names = book_names;
         this.language_names = language_names;
         this.version_names = version_names;
         this.ignore_markup = ignore_markup;
         this.align_on_part = align_on_part;
-        this.respect_sequence = respect_sequence;
         this.respect_case = respect_case;
         this.searches = [];
         this.Is_Ready_After([
@@ -44,7 +43,6 @@ export class Instance extends Entity.Instance {
             });
         });
     }
-    // We need to make this work in case-less mode too.
     Suggestions(query) {
         return __awaiter(this, void 0, void 0, function* () {
             Utils.Assert(this.Is_Ready(), `Is not ready.`);
@@ -52,17 +50,36 @@ export class Instance extends Entity.Instance {
             const suggestions = new Set();
             for (const search of this.searches) {
                 const line = new Text.Instance({
-                    dictionary: (yield search.Version().Files().Dictionary()).Text_Dictionary(),
                     value: query,
+                    dictionary: (yield search.Version().Files().Dictionary()).Text_Dictionary(),
                 }).Line(0);
                 if (line.Macro_Part_Count() > 0) {
-                    const value = line.Macro_Part(line.Macro_Part_Count() - 1).Value();
-                    const first_point = Unicode.First_Point(value);
-                    const unique_parts = yield search.Maybe_Unique_Parts(first_point);
-                    if (unique_parts != null) {
-                        for (const unique_part of unique_parts) {
-                            if (unique_part.slice(0, value.length) === value) {
-                                suggestions.add(unique_part);
+                    const uniques = yield search.Uniques().Info();
+                    const part = line.Macro_Part(line.Macro_Part_Count() - 1);
+                    if (!this.respect_case) {
+                        const value = part.Value().toLowerCase();
+                        const value_first_point = Unicode.First_Point(value);
+                        const first_points = [
+                            value_first_point.toLowerCase(),
+                            value_first_point.toUpperCase(),
+                        ];
+                        for (const first_point of first_points) {
+                            for (const unique of uniques[first_point] || []) {
+                                const comparable_unique = unique.toLowerCase();
+                                if (comparable_unique.length > value.length &&
+                                    comparable_unique.slice(0, value.length) === value) {
+                                    suggestions.add(unique);
+                                }
+                            }
+                        }
+                    }
+                    else {
+                        const value = part.Value();
+                        const value_first_point = Unicode.First_Point(value);
+                        for (const unique of uniques[value_first_point] || []) {
+                            if (unique.length > value.length &&
+                                unique.slice(0, value.length) === value) {
+                                suggestions.add(unique);
                             }
                         }
                     }
@@ -73,6 +90,8 @@ export class Instance extends Entity.Instance {
     }
     Queries(search, query) {
         return __awaiter(this, void 0, void 0, function* () {
+            Utils.Assert(this.Is_Ready(), `Is not ready.`);
+            Utils.Assert(!/\r?\n/.test(query), `query cannot have any newlines.`);
             let queries = [];
             if (query.length > 0) {
                 const uniques = yield search.Uniques().Info();
@@ -83,8 +102,6 @@ export class Instance extends Entity.Instance {
                 for (let part_idx = 0, part_end = line.Macro_Part_Count(); part_idx < part_end; part_idx += 1) {
                     const part = line.Macro_Part(part_idx);
                     Utils.Assert(!this.ignore_markup || !part.Is_Command(), `A query cannot contain a command when ignoring markup.`);
-                    // When not aligned on word and not respecting sequence,
-                    // just do all indices, from any position in unique?
                     const part_uniques = new Map();
                     if (!this.align_on_part &&
                         (part_idx === 0 ||
@@ -96,20 +113,22 @@ export class Instance extends Entity.Instance {
                             for (const first_point of Object.keys(uniques)) {
                                 for (const unique of uniques[first_point]) {
                                     if (!part_uniques.has(unique)) {
-                                        const lower_unique = unique.toLowerCase();
-                                        if (lower_unique.length >= value.length &&
-                                            lower_unique.slice(lower_unique.length - value.length, lower_unique.length) === value) {
+                                        const comparable_unique = !this.respect_case ?
+                                            unique.toLowerCase() :
+                                            unique;
+                                        if (comparable_unique.length >= value.length &&
+                                            comparable_unique.slice(comparable_unique.length - value.length, comparable_unique.length) === value) {
                                             part_uniques.set(unique, {
                                                 value: unique,
-                                                first_unit_index: lower_unique.length - value.length,
-                                                end_unit_index: lower_unique.length,
+                                                first_unit_index: comparable_unique.length - value.length,
+                                                end_unit_index: comparable_unique.length,
                                             });
                                         }
                                     }
                                 }
                             }
                         }
-                        if (part_idx === part_end - 1) {
+                        else if (part_idx === part_end - 1) {
                             const value_first_point = Unicode.First_Point(value);
                             const first_points = !this.respect_case ?
                                 [
@@ -119,11 +138,13 @@ export class Instance extends Entity.Instance {
                                 value_first_point,
                             ];
                             for (const first_point of first_points) {
-                                for (const unique of uniques[first_point]) {
+                                for (const unique of uniques[first_point] || []) {
                                     if (!part_uniques.has(unique)) {
-                                        const lower_unique = unique.toLowerCase();
-                                        if (lower_unique.length >= value.length &&
-                                            lower_unique.slice(0, value.length) === value) {
+                                        const comparable_unique = !this.respect_case ?
+                                            unique.toLowerCase() :
+                                            unique;
+                                        if (comparable_unique.length >= value.length &&
+                                            comparable_unique.slice(0, value.length) === value) {
                                             part_uniques.set(unique, {
                                                 value: unique,
                                                 first_unit_index: 0,
@@ -143,7 +164,7 @@ export class Instance extends Entity.Instance {
                             value_first_point.toUpperCase(),
                         ];
                         for (const first_point of first_points) {
-                            for (const unique of uniques[first_point]) {
+                            for (const unique of uniques[first_point] || []) {
                                 if (!part_uniques.has(unique)) {
                                     if (unique.toLowerCase() === value) {
                                         part_uniques.set(unique, {
@@ -159,7 +180,8 @@ export class Instance extends Entity.Instance {
                     else {
                         const value = part.Value();
                         const value_first_point = Unicode.First_Point(value);
-                        if (uniques[value_first_point].includes(value)) {
+                        if (uniques[value_first_point] != null &&
+                            uniques[value_first_point].includes(value)) {
                             if (!part_uniques.has(value)) {
                                 part_uniques.set(value, {
                                     value: value,

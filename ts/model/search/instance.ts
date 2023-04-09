@@ -36,7 +36,6 @@ export class Instance extends Entity.Instance
     private ignore_markup: boolean;
     private respect_case: boolean;
     private align_on_part: boolean;
-    private respect_sequence: boolean;
 
     private searches: Array<Data.Search.Instance>;
 
@@ -49,7 +48,6 @@ export class Instance extends Entity.Instance
             ignore_markup = true,
             respect_case = true,
             align_on_part = true,
-            respect_sequence = true,
         }: {
             book_names?: Array<Name> | null,
             language_names?: Array<Name> | null,
@@ -58,7 +56,6 @@ export class Instance extends Entity.Instance
             ignore_markup?: boolean,
             respect_case?: boolean,
             align_on_part?: boolean,
-            respect_sequence?: boolean,
         },
     )
     {
@@ -70,7 +67,6 @@ export class Instance extends Entity.Instance
 
         this.ignore_markup = ignore_markup;
         this.align_on_part = align_on_part;
-        this.respect_sequence = respect_sequence;
         this.respect_case = respect_case;
 
         this.searches = [];
@@ -116,8 +112,6 @@ export class Instance extends Entity.Instance
         );
     }
 
-    // We need to make this work in case-less mode too.
-
     async Suggestions(
         query: string,
     ):
@@ -137,22 +131,49 @@ export class Instance extends Entity.Instance
         for (const search of this.searches) {
             const line: Text.Line.Instance = new Text.Instance(
                 {
-                    dictionary: (await search.Version().Files().Dictionary()).Text_Dictionary(),
                     value: query,
+                    dictionary: (
+                        await search.Version().Files().Dictionary()
+                    ).Text_Dictionary(),
                 },
             ).Line(0);
 
             if (line.Macro_Part_Count() > 0) {
-                const value: Text.Value =
-                    line.Macro_Part(line.Macro_Part_Count() - 1).Value();
-                const first_point: Text.Value =
-                    Unicode.First_Point(value);
-                const unique_parts: Array<Data.Search.Uniques.Part> | null =
-                    await search.Maybe_Unique_Parts(first_point);
-                if (unique_parts != null) {
-                    for (const unique_part of unique_parts) {
-                        if (unique_part.slice(0, value.length) === value) {
-                            suggestions.add(unique_part);
+                const uniques: Data.Search.Uniques.Info =
+                    await search.Uniques().Info();
+                const part: Text.Part.Instance =
+                    line.Macro_Part(line.Macro_Part_Count() - 1);
+                if (!this.respect_case) {
+                    const value: Text.Value =
+                        part.Value().toLowerCase();
+                    const value_first_point: Text.Value =
+                        Unicode.First_Point(value);
+                    const first_points: Array<Text.Value> = [
+                        value_first_point.toLowerCase(),
+                        value_first_point.toUpperCase(),
+                    ];
+                    for (const first_point of first_points) {
+                        for (const unique of uniques[first_point] || []) {
+                            const comparable_unique = unique.toLowerCase();
+                            if (
+                                comparable_unique.length > value.length &&
+                                comparable_unique.slice(0, value.length) === value
+                            ) {
+                                suggestions.add(unique);
+                            }
+                        }
+                    }
+                } else {
+                    const value: Text.Value =
+                        part.Value();
+                    const value_first_point: Text.Value =
+                        Unicode.First_Point(value);
+                    for (const unique of uniques[value_first_point] || []) {
+                        if (
+                            unique.length > value.length &&
+                            unique.slice(0, value.length) === value
+                        ) {
+                            suggestions.add(unique);
                         }
                     }
                 }
@@ -168,6 +189,15 @@ export class Instance extends Entity.Instance
     ):
         Promise<Array<Query>>
     {
+        Utils.Assert(
+            this.Is_Ready(),
+            `Is not ready.`,
+        );
+        Utils.Assert(
+            !/\r?\n/.test(query),
+            `query cannot have any newlines.`,
+        );
+
         let queries: Array<Query> = [];
 
         if (query.length > 0) {
@@ -194,9 +224,6 @@ export class Instance extends Entity.Instance
                     `A query cannot contain a command when ignoring markup.`,
                 );
 
-                // When not aligned on word and not respecting sequence,
-                // just do all indices, from any position in unique?
-
                 const part_uniques: Map<Query_Part_Value, Query_Part> = new Map();
                 if (
                     !this.align_on_part &&
@@ -212,28 +239,29 @@ export class Instance extends Entity.Instance
                         for (const first_point of Object.keys(uniques)) {
                             for (const unique of uniques[first_point]) {
                                 if (!part_uniques.has(unique)) {
-                                    const lower_unique = unique.toLowerCase();
+                                    const comparable_unique = !this.respect_case ?
+                                        unique.toLowerCase() :
+                                        unique;
                                     if (
-                                        lower_unique.length >= value.length &&
-                                        lower_unique.slice(
-                                            lower_unique.length - value.length,
-                                            lower_unique.length,
+                                        comparable_unique.length >= value.length &&
+                                        comparable_unique.slice(
+                                            comparable_unique.length - value.length,
+                                            comparable_unique.length,
                                         ) === value
                                     ) {
                                         part_uniques.set(
                                             unique,
                                             {
                                                 value: unique,
-                                                first_unit_index: lower_unique.length - value.length,
-                                                end_unit_index: lower_unique.length,
+                                                first_unit_index: comparable_unique.length - value.length,
+                                                end_unit_index: comparable_unique.length,
                                             },
                                         );
                                     }
                                 }
                             }
                         }
-                    }
-                    if (part_idx === part_end - 1) {
+                    } else if (part_idx === part_end - 1) {
                         const value_first_point: Text.Value =
                             Unicode.First_Point(value);
                         const first_points: Array<Text.Value> = !this.respect_case ?
@@ -244,12 +272,14 @@ export class Instance extends Entity.Instance
                                 value_first_point,
                             ];
                         for (const first_point of first_points) {
-                            for (const unique of uniques[first_point]) {
+                            for (const unique of uniques[first_point] || []) {
                                 if (!part_uniques.has(unique)) {
-                                    const lower_unique = unique.toLowerCase();
+                                    const comparable_unique = !this.respect_case ?
+                                        unique.toLowerCase() :
+                                        unique;
                                     if (
-                                        lower_unique.length >= value.length &&
-                                        lower_unique.slice(
+                                        comparable_unique.length >= value.length &&
+                                        comparable_unique.slice(
                                             0,
                                             value.length,
                                         ) === value
@@ -277,7 +307,7 @@ export class Instance extends Entity.Instance
                         value_first_point.toUpperCase(),
                     ];
                     for (const first_point of first_points) {
-                        for (const unique of uniques[first_point]) {
+                        for (const unique of uniques[first_point] || []) {
                             if (!part_uniques.has(unique)) {
                                 if (unique.toLowerCase() === value) {
                                     part_uniques.set(
@@ -297,7 +327,10 @@ export class Instance extends Entity.Instance
                         part.Value();
                     const value_first_point: Text.Value =
                         Unicode.First_Point(value);
-                    if (uniques[value_first_point].includes(value)) {
+                    if (
+                        uniques[value_first_point] != null &&
+                        uniques[value_first_point].includes(value)
+                    ) {
                         if (!part_uniques.has(value)) {
                             part_uniques.set(
                                 value,

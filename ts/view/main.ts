@@ -210,7 +210,6 @@ import * as Search from "../model/search.js"
                 ignore_markup: true,
                 respect_case: false,
                 align_on_part: false,
-                respect_sequence: false,
             },
         );
 
