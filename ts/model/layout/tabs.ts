@@ -29,7 +29,7 @@ export class Instance extends Entity.Instance
         this.window_ids = [];
         this.tabs = [];
 
-        this.Is_Ready_After(
+        this.Add_Dependencies(
             this.tabs,
         );
     }

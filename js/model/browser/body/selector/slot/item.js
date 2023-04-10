@@ -15,7 +15,7 @@ export class Instance extends Entity.Instance {
         this.index = index;
         this.name = name;
         this.file = file;
-        this.Is_Ready_After([]);
+        this.Add_Dependencies([]);
     }
     Items() {
         return this.items;

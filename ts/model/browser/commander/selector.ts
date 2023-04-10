@@ -21,7 +21,7 @@ export class Instance extends Entity.Instance
         this.commander = commander;
         this.is_activated = is_activated;
 
-        this.Is_Ready_After(
+        this.Add_Dependencies(
             [
             ],
         );

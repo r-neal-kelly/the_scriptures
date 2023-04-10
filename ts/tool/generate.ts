@@ -1,9 +1,12 @@
 import * as fs from "fs";
 
+import { Integer } from "../types.js";
+import { Count } from "../types.js";
 import { Index } from "../types.js";
 import { Name } from "../types.js";
 import { Path } from "../types.js";
 
+import * as Utils from "../utils.js";
 import * as Unicode from "../unicode.js";
 
 import * as Data from "../model/data.js";
@@ -136,367 +139,382 @@ async function File_Names(
     return names;
 }
 
-async function Generate_Data(
-    folder_path: Path,
-):
-    Promise<void>
+class Unique_Names
 {
-    const info: Data.Info = {
-    };
+    private books: Set<Name>;
+    private languages: Set<Name>;
+    private versions: Set<Name>;
 
-    await Generate_Books(`${folder_path}/Books`);
-
-    await Write_File(
-        `${folder_path}/Info.json`,
-        JSON.stringify(info, null, 4),
-    );
-}
-
-async function Generate_Books(
-    folder_path: Path,
-):
-    Promise<void>
-{
-    const info: Data.Books.Info = {
-        names: [],
-    };
-
-    info.names = (await Folder_Names(folder_path)).sort();
-
-    await Promise.all(
-        info.names.map(
-            async function (
-                name,
-            )
-            {
-                await Generate_Book(`${folder_path}/${name}`);
-            },
-        ),
-    );
-
-    await Write_File(
-        `${folder_path}/Info.json`,
-        JSON.stringify(info, null, 4),
-    );
-}
-
-async function Generate_Book(
-    folder_path: Path,
-):
-    Promise<void>
-{
-    const info: Data.Book.Info = {
-    };
-
-    await Generate_Languages(`${folder_path}/Languages`);
-
-    await Write_File(
-        `${folder_path}/Info.json`,
-        JSON.stringify(info, null, 4),
-    );
-}
-
-async function Generate_Languages(
-    folder_path: Path,
-):
-    Promise<void>
-{
-    const info: Data.Languages.Info = {
-        names: [],
-    };
-
-    info.names = (await Folder_Names(folder_path)).sort();
-
-    await Promise.all(
-        info.names.map(
-            async function (
-                name,
-            )
-            {
-                await Generate_Language(`${folder_path}/${name}`);
-            },
-        ),
-    );
-
-    await Write_File(
-        `${folder_path}/Info.json`,
-        JSON.stringify(info, null, 4),
-    );
-}
-
-async function Generate_Language(
-    folder_path: Path,
-):
-    Promise<void>
-{
-    const info: Data.Language.Info = {
-    };
-
-    await Generate_Versions(`${folder_path}/Versions`);
-
-    await Write_File(
-        `${folder_path}/Info.json`,
-        JSON.stringify(info, null, 4),
-    );
-}
-
-async function Generate_Versions(
-    folder_path: Path,
-):
-    Promise<void>
-{
-    const info: Data.Versions.Info = {
-        names: [],
-    };
-
-    info.names = (await Folder_Names(folder_path)).sort();
-
-    await Promise.all(
-        info.names.map(
-            async function (
-                name,
-            )
-            {
-                await Generate_Version(`${folder_path}/${name}`);
-            },
-        ),
-    );
-
-    await Write_File(
-        `${folder_path}/Info.json`,
-        JSON.stringify(info, null, 4),
-    );
-}
-
-async function Generate_Version(
-    folder_path: Path,
-):
-    Promise<void>
-{
-    const info: Data.Version.Info = {
-    };
-
-    const files_info: Data.Files.Info = await Generate_Files(`${folder_path}/Files`);
-
-    await Generate_Search(folder_path, files_info.names);
-
-    await Write_File(
-        `${folder_path}/Info.json`,
-        JSON.stringify(info, null, 4),
-    );
-}
-
-async function Generate_Files(
-    folder_path: Path,
-):
-    Promise<Data.Files.Info>
-{
-    const info: Data.Files.Info = {
-        names: [],
-    };
-
-    info.names = (
-        await File_Names(folder_path)
-    ).filter(
-        function (
-            name,
-        ):
-            boolean
-        {
-            return (
-                /\.txt$/.test(name) &&
-                !/COPY\.txt$/.test(name)
-            );
-        },
-    ).sort();
-
-    await Promise.all(
-        info.names.map(
-            async function (
-                file_name: Name,
-            ):
-                Promise<void>
-            {
-                await Generate_File(
-                    folder_path,
-                    file_name,
-                );
-            },
-        ),
-    );
-
-    await Write_File(
-        `${folder_path}/Info.json`,
-        JSON.stringify(info, null, 4),
-    );
-
-    return info;
-}
-
-async function Generate_File(
-    files_folder_path: Path,
-    file_name: Path,
-):
-    Promise<void>
-{
-    const file_info: Data.File.Info = {
-        line_count: 0,
-        line_names: [],
-    };
-    const file_folder_path: Path =
-        `${files_folder_path}/${file_name.replace(/\.[^.]*$/, ``)}`;
-
-    if (fs.existsSync(file_folder_path)) {
-        fs.rmSync(
-            file_folder_path,
-            {
-                recursive: true,
-                force: true,
-            },
-        );
+    constructor()
+    {
+        this.books = new Set();
+        this.languages = new Set();
+        this.versions = new Set();
     }
-    fs.mkdirSync(file_folder_path);
 
-    const dictionary: Text.Dictionary.Instance = new Text.Dictionary.Instance(
-        {
-            json: await Read_File(`${files_folder_path}/Dictionary.json`),
-        },
-    );
-    const text: Text.Instance = new Text.Instance(
-        {
-            dictionary: dictionary,
-            value: await Read_File(`${files_folder_path}/${file_name}`),
-        },
-    );
-    for (let line_idx = 0, end = text.Line_Count(); line_idx < end; line_idx += 1) {
-        const line: Text.Line.Instance = text.Line(line_idx);
-        const value: Text.Value = line.Value();
-        file_info.line_count += 1;
-        if (value != ``) {
-            file_info.line_names.push(`${line_idx}.txt`);
-            await Write_File(`${file_folder_path}/${line_idx}.txt`, line.Value());
+    Add_Book(
+        name: Name,
+    ):
+        void
+    {
+        this.books.add(name);
+    }
+
+    Add_Language(
+        name: Name,
+    ):
+        void
+    {
+        this.languages.add(name);
+    }
+
+    Add_Version(
+        name: Name,
+    ):
+        void
+    {
+        this.versions.add(name);
+    }
+
+    Books():
+        Array<Name>
+    {
+        return Array.from(this.books).sort();
+    }
+
+    Languages():
+        Array<Name>
+    {
+        return Array.from(this.languages).sort();
+    }
+
+    Versions():
+        Array<Name>
+    {
+        return Array.from(this.versions).sort();
+    }
+}
+
+class Unique_Parts
+{
+    private parts: { [index: string]: Count };
+
+    constructor()
+    {
+        this.parts = {};
+    }
+
+    Add(
+        part: string,
+    ):
+        void
+    {
+        if (this.parts.hasOwnProperty(part)) {
+            Utils.Assert(
+                this.parts[part] < Number.MAX_SAFE_INTEGER,
+                `Cannot add more of this unique part!`,
+            );
+
+            this.parts[part] += 1;
+        } else {
+            this.parts[part] = 1;
         }
     }
 
-    await Write_File(
-        `${file_folder_path}/Info.json`,
-        JSON.stringify(file_info, null, 4),
-    );
+    Values():
+        Array<string>
+    {
+        return Object.keys(this.parts).sort(
+            function (
+                this: Unique_Parts,
+                a: string,
+                b: string,
+            ):
+                Integer
+            {
+                return this.parts[b] - this.parts[a];
+            }.bind(this),
+        );
+    }
+
+    Count(
+        part: string,
+    ):
+        Count
+    {
+        Utils.Assert(
+            this.parts.hasOwnProperty(part),
+            `Does not have part.`,
+        );
+
+        return this.parts[part];
+    }
 }
 
-async function Generate_Search(
-    version_folder_path: Path,
-    file_names: Array<Name>,
-):
+class Unique_Part_Indices
+{
+    private parts: { [index: string]: Index };
+
+    constructor(
+        {
+            unique_part_values,
+        }: {
+            unique_part_values: Array<string>,
+        },
+    )
+    {
+        this.parts = {};
+        for (let idx = 0, end = unique_part_values.length; idx < end; idx += 1) {
+            this.parts[unique_part_values[idx]] = idx;
+        }
+    }
+
+    Index(
+        part_value: string,
+    ):
+        Index
+    {
+        Utils.Assert(
+            this.parts.hasOwnProperty(part_value),
+            `Unknown part_value.`,
+        );
+
+        return this.parts[part_value];
+    }
+}
+
+class Unique_Part_Values
+{
+    private parts: { [index: Index]: string };
+
+    constructor(
+        {
+            unique_part_values,
+        }: {
+            unique_part_values: Array<string>,
+        },
+    )
+    {
+        this.parts = {};
+        for (let idx = 0, end = unique_part_values.length; idx < end; idx += 1) {
+            this.parts[idx] = unique_part_values[idx];
+        }
+    }
+
+    Value(
+        part_index: Index,
+    ):
+        string
+    {
+        Utils.Assert(
+            this.parts.hasOwnProperty(part_index),
+            `Unknown part_index.`,
+        );
+
+        return this.parts[part_index];
+    }
+}
+
+async function Generate():
     Promise<void>
 {
-    // We cache data it bite-sized chunks to diminish band-width usage for the serverless
-    // client, and at the same time make searching overall more efficient than brute-force.
-
-    // Maybe this code should be in its own module so that the code to write and read it
-    // are in the same location. However, wed want to supply it the dictionary data and
-    // and the data for each file through node .js, and it can remain agnostic to the
-    // environment.
-
-    const uniques: Data.Search.Uniques.Info = {};
-
-    const occurrences: {
-        [index: Data.Search.Uniques.First_Point]: Data.Search.Partition.Parts,
-    } = {};
-    const occurrences_info: Data.Search.Occurrences.Info = {
-        names: [],
+    const data_info: Data.Info = {
+        tree: {
+            books: [],
+        },
+        unique_book_names: [],
+        unique_language_names: [],
+        unique_version_names: [],
+        unique_part_values: [],
     };
+    const unique_names = new Unique_Names();
+    const unique_parts = new Unique_Parts();
 
-    for (let file_idx = 0, end = file_names.length; file_idx < end; file_idx += 1) {
-        const dictionary: Text.Dictionary.Instance = new Text.Dictionary.Instance(
-            {
-                json: await Read_File(`${version_folder_path}/Files/Dictionary.json`),
-            },
-        );
-        const text: Text.Instance = new Text.Instance(
-            {
-                dictionary: dictionary,
-                value: await Read_File(`${version_folder_path}/Files/${file_names[file_idx]}`),
-            },
-        );
-        for (let line_idx = 0, end = text.Line_Count(); line_idx < end; line_idx += 1) {
-            const line: Text.Line.Instance = text.Line(line_idx);
-            for (let part_idx = 0, end = line.Macro_Part_Count(); part_idx < end; part_idx += 1) {
-                const part: Text.Part.Instance = line.Macro_Part(part_idx);
-                const value: Text.Value = part.Value();
-                const point: Text.Value = Unicode.First_Point(value);
-
-                if (!uniques.hasOwnProperty(point)) {
-                    uniques[point] = [];
+    const data_path: Path = `./Data`;
+    const books_path: Path = `${data_path}/Books`;
+    for (const book_name of (await Folder_Names(books_path)).sort()) {
+        const languages_path: Path = `${books_path}/${book_name}`;
+        const book_branch: Data.Book.Branch = {
+            name: book_name,
+            languages: [],
+        };
+        data_info.tree.books.push(book_branch);
+        unique_names.Add_Book(book_name);
+        for (const language_name of (await Folder_Names(languages_path)).sort()) {
+            const versions_path: Path = `${languages_path}/${language_name}`;
+            const language_branch: Data.Language.Branch = {
+                name: language_name,
+                versions: [],
+            };
+            book_branch.languages.push(language_branch);
+            unique_names.Add_Language(language_name);
+            for (const version_name of (await Folder_Names(versions_path)).sort()) {
+                const files_path: Path = `${versions_path}/${version_name}`;
+                const version_branch: Data.Version.Branch = {
+                    name: version_name,
+                    files: [],
+                };
+                const dictionary: Text.Dictionary.Instance = new Text.Dictionary.Instance(
+                    {
+                        json: await Read_File(`${files_path}/Dictionary.json`),
+                    },
+                );
+                language_branch.versions.push(version_branch);
+                unique_names.Add_Version(version_name);
+                for (
+                    const file_name of (await File_Names(files_path)).filter(
+                        function (
+                            file_name,
+                        ):
+                            boolean
+                        {
+                            return (
+                                /\.txt$/.test(file_name) &&
+                                !/COPY\.txt$/.test(file_name)
+                            );
+                        },
+                    ).sort()
+                ) {
+                    const file_path: Path = `${files_path}/${file_name}`;
+                    const file_leaf: Data.File.Leaf = {
+                        name: file_name,
+                    };
+                    const text: Text.Instance = new Text.Instance(
+                        {
+                            dictionary: dictionary,
+                            value: await Read_File(file_path),
+                        },
+                    );
+                    version_branch.files.push(file_leaf);
+                    for (
+                        let line_idx = 0, line_end = text.Line_Count();
+                        line_idx < line_end;
+                        line_idx += 1
+                    ) {
+                        const line: Text.Line.Instance = text.Line(line_idx);
+                        for (
+                            let part_idx = 0, part_end = line.Macro_Part_Count();
+                            part_idx < part_end;
+                            part_idx += 1
+                        ) {
+                            const part: Text.Part.Instance = line.Macro_Part(part_idx);
+                            unique_parts.Add(part.Value());
+                        }
+                    }
                 }
-                if (!uniques[point].includes(value)) {
-                    uniques[point].push(value);
-                }
-
-                if (!occurrences.hasOwnProperty(point)) {
-                    occurrences[point] = {};
-                }
-                if (!occurrences[point].hasOwnProperty(value)) {
-                    occurrences[point][value] = {};
-                }
-                if (!occurrences[point][value].hasOwnProperty(file_idx)) {
-                    occurrences[point][value][file_idx] = {};
-                }
-                if (!occurrences[point][value][file_idx].hasOwnProperty(line_idx)) {
-                    occurrences[point][value][file_idx][line_idx] = [];
-                }
-                occurrences[point][value][file_idx][line_idx].push(part_idx);
             }
         }
     }
 
-    for (const point of Object.keys(uniques)) {
-        uniques[point].sort();
-    }
-
-    if (fs.existsSync(`${version_folder_path}/Search`)) {
-        fs.rmSync(
-            `${version_folder_path}/Search`,
-            {
-                recursive: true,
-                force: true,
-            },
-        );
-    }
-    fs.mkdirSync(`${version_folder_path}/Search`);
-    fs.mkdirSync(`${version_folder_path}/Search/Occurrences`);
+    data_info.unique_book_names = unique_names.Books();
+    data_info.unique_language_names = unique_names.Languages();
+    data_info.unique_version_names = unique_names.Versions();
+    data_info.unique_part_values = unique_parts.Values();
 
     await Write_File(
-        `${version_folder_path}/Search/${Data.Search.Uniques.Instance.Name()}`,
-        JSON.stringify(uniques),
+        `${data_path}/Info.json`,
+        JSON.stringify(data_info),
     );
 
-    for (const point of Object.keys(occurrences)) {
-        const name: Name = (point.codePointAt(0) as number).toString();
-        occurrences_info.names.push(`${name}.json`);
-
-        await Write_File(
-            `${version_folder_path}/Search/Occurrences/${name}.json`,
-            JSON.stringify(occurrences[point]),
-        );
+    const unique_part_indices: Unique_Part_Indices = new Unique_Part_Indices(
+        {
+            unique_part_values: data_info.unique_part_values,
+        },
+    );
+    const compressed_parts: Array<string> = [];
+    for (const book_name of (await Folder_Names(books_path)).sort()) {
+        const languages_path: Path = `${books_path}/${book_name}`;
+        for (const language_name of (await Folder_Names(languages_path)).sort()) {
+            const versions_path: Path = `${languages_path}/${language_name}`;
+            for (const version_name of (await Folder_Names(versions_path)).sort()) {
+                const files_path: Path = `${versions_path}/${version_name}`;
+                const dictionary: Text.Dictionary.Instance = new Text.Dictionary.Instance(
+                    {
+                        json: await Read_File(`${files_path}/Dictionary.json`),
+                    },
+                );
+                for (
+                    const file_name of (await File_Names(files_path)).filter(
+                        function (
+                            file_name,
+                        ):
+                            boolean
+                        {
+                            return (
+                                /\.txt$/.test(file_name) &&
+                                !/COPY\.txt$/.test(file_name)
+                            );
+                        },
+                    ).sort()
+                ) {
+                    const file_path: Path = `${files_path}/${file_name}`;
+                    const text: Text.Instance = new Text.Instance(
+                        {
+                            dictionary: dictionary,
+                            value: await Read_File(file_path),
+                        },
+                    );
+                    for (
+                        let line_idx = 0, line_end = text.Line_Count();
+                        line_idx < line_end;
+                        line_idx += 1
+                    ) {
+                        const line: Text.Line.Instance = text.Line(line_idx);
+                        for (
+                            let part_idx = 0, part_end = line.Macro_Part_Count();
+                            part_idx < part_end;
+                            part_idx += 1
+                        ) {
+                            const part: Text.Part.Instance = line.Macro_Part(part_idx);
+                            const index: Index = unique_part_indices.Index(part.Value());
+                            compressed_parts.push(String.fromCodePoint(index));
+                        }
+                    }
+                }
+            }
+        }
     }
 
+    /*
     await Write_File(
-        `${version_folder_path}/Search/Occurrences/Info.json`,
-        JSON.stringify(occurrences_info, null, 4),
+        `${data_path}/Test_Compressed.txt`,
+        compressed_parts.join(``),
     );
+    */
+
+    const unique_part_values: Unique_Part_Values = new Unique_Part_Values(
+        {
+            unique_part_values: data_info.unique_part_values,
+        },
+    );
+    const uncompressed_parts: Array<string> = [];
+    for (const compressed_part of compressed_parts) {
+        uncompressed_parts.push(unique_part_values.Value(compressed_part.codePointAt(0) as Index));
+    }
+
+    /*
+    await Write_File(
+        `${data_path}/Test_Uncompressed.txt`,
+        uncompressed_parts.join(``),
+    );
+    */
 }
 
-// This maybe should read and write to the info files instead of
-// always generating it, that way we can add info to it manually
-// when needed. However, things that we might think need to be added
-// manually may not need to be, for example which direction a language
-// needs to be displayed in the view, either left-to-right, or right-to-left.
-// We can simply define that by its language in a global cache, even in this
-// file, or maybe from a module. E.g. English is ltr, and Hebrew rtl.
+/*
+if (fs.existsSync(`${versions_path}/${version_name}/Search`)) {
+    fs.rmSync(
+        `${versions_path}/${version_name}/Search`,
+        {
+            recursive: true,
+            force: true,
+        },
+    );
+}
+*/
+
 (
     async function Main()
     {
-        await Generate_Data(`./Data`);
+        await Generate();
     }
 )();

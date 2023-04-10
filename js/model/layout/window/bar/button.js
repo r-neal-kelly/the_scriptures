@@ -13,7 +13,7 @@ export class Instance extends Entity.Instance {
     constructor({ commands, }) {
         super();
         this.commands = commands;
-        this.Is_Ready_After([]);
+        this.Add_Dependencies([]);
     }
     Commands() {
         return this.commands;

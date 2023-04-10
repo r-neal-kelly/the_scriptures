@@ -1,3 +1,5 @@
+import { Count } from "../../types.js";
+import { Index } from "../../types.js";
 import { Name } from "../../types.js";
 import { Path } from "../../types.js";
 
@@ -6,28 +8,30 @@ import * as Async from "../../async.js";
 
 import { Type } from "./type.js";
 import * as Query from "./query.js";
-import * as Books from "./books.js";
 import * as Book from "./book.js";
 import * as Language from "./language.js";
 import * as Version from "./version.js";
-import * as Files from "./files.js";
 import * as File from "./file.js";
-import * as Search from "./search.js";
-import * as Selection from "./selection.js"
+
+export type Tree = {
+    books: Array<Book.Branch>,
+};
 
 export type Info = {
-}
+    tree: Tree;
+    unique_book_names: Array<Name>,
+    unique_language_names: Array<Name>,
+    unique_version_names: Array<Name>,
+    unique_part_values: Array<string>,
+};
 
 export class Instance extends Async.Instance
 {
     private name: Name;
     private path: Path;
-    private books: Books.Instance;
-
-    private book_names: Array<Name> | null;
-    private language_names: Array<Name> | null;
-    private version_names: Array<Name> | null;
-    private is_caching: boolean;
+    private books_path: Path;
+    private info: Info | null;
+    private books: Array<Book.Instance>;
 
     constructor()
     {
@@ -35,16 +39,14 @@ export class Instance extends Async.Instance
 
         this.name = `Data`;
         this.path = this.name;
-        this.books = new Books.Instance(
-            {
-                data: this,
-            },
-        );
+        this.books_path = `${this.path}/Books`;
+        this.info = null;
+        this.books = [];
 
-        this.book_names = null;
-        this.language_names = null;
-        this.version_names = null;
-        this.is_caching = false;
+        this.Add_Dependencies(
+            [
+            ],
+        );
     }
 
     Name():
@@ -59,55 +61,104 @@ export class Instance extends Async.Instance
         return this.path;
     }
 
-    Books():
-        Books.Instance
+    Books_Path():
+        Path
     {
-        return this.books;
+        return this.books_path;
     }
 
-    // we should probably have this info cached in a downloaded info file
-    // and for the more specific ones, in each of their directories.
-    // for right now we're doing it here till we get it working.
-    private async Cache_Names():
-        Promise<void>
+    private Info():
+        Info
     {
-        while (this.is_caching) {
-            await Utils.Wait_Milliseconds(1);
-        }
-        this.is_caching = true;
+        Utils.Assert(
+            this.Is_Ready(),
+            `Not ready.`,
+        );
+        Utils.Assert(
+            this.info != null,
+            `info is null!`,
+        );
 
-        if (
-            this.book_names == null ||
-            this.language_names == null ||
-            this.version_names == null
-        ) {
-            const book_names: Set<Name> = new Set();
-            const language_names: Set<Name> = new Set();
-            const version_names: Set<Name> = new Set();
+        return this.info as Info;
+    }
 
-            for (const book of await this.Books().Array()) {
-                book_names.add(book.Name());
-                for (const language of await book.Languages().Array()) {
-                    language_names.add(language.Name());
-                    for (const version of await language.Versions().Array()) {
-                        version_names.add(version.Name());
-                    }
-                }
+    Book(
+        book_name: Name,
+    ):
+        Book.Instance
+    {
+        Utils.Assert(
+            this.Is_Ready(),
+            `Not ready.`,
+        );
+
+        for (const book of this.books) {
+            if (book.Name() === book_name) {
+                return book;
             }
-
-            this.book_names = Array.from(book_names).sort();
-            this.language_names = Array.from(language_names).sort();
-            this.version_names = Array.from(version_names).sort();
         }
 
-        this.is_caching = false;
+        Utils.Assert(
+            false,
+            `Invalid book_name.`,
+        );
+
+        return this.books[0];
     }
 
-    async Names(
+    Book_Count():
+        Count
+    {
+        Utils.Assert(
+            this.Is_Ready(),
+            `Not ready.`,
+        );
+
+        return this.books.length;
+    }
+
+    Book_At(
+        book_index: Index,
+    ):
+        Book.Instance
+    {
+        Utils.Assert(
+            this.Is_Ready(),
+            `Not ready.`,
+        );
+        Utils.Assert(
+            book_index > -1,
+            `book_index must be greater than -1.`,
+        );
+        Utils.Assert(
+            book_index < this.Book_Count(),
+            `book_index must be less than book_count.`,
+        );
+
+        return this.books[book_index];
+    }
+
+    Books():
+        Array<Book.Instance>
+    {
+        Utils.Assert(
+            this.Is_Ready(),
+            `Not ready.`,
+        );
+
+        return Array.from(this.books);
+    }
+
+    Names(
         of: Array<Query.Type_And_Name>,
     ):
-        Promise<Array<Name>>
+        Array<Name>
     {
+        Utils.Assert(
+            this.Is_Ready(),
+            `Not ready.`,
+        );
+
         if (of.length === 1) {
             Utils.Assert(
                 of[0].Name() == null,
@@ -119,17 +170,17 @@ export class Instance extends Async.Instance
                 of[0].Type() === Type.BOOKS ||
                 of[0].Type() === Type.BOOK
             ) {
-                return await this.Book_Names();
+                return this.Book_Names();
             } else if (
                 of[0].Type() === Type.LANGUAGES ||
                 of[0].Type() === Type.LANGUAGE
             ) {
-                return await this.Language_Names();
+                return this.Language_Names();
             } else if (
                 of[0].Type() === Type.VERSIONS ||
                 of[0].Type() === Type.VERSION
             ) {
-                return await this.Version_Names();
+                return this.Version_Names();
             } else {
                 Utils.Assert(
                     false,
@@ -161,7 +212,7 @@ export class Instance extends Async.Instance
                     of[1].Type() === Type.LANGUAGE
                 )
             ) {
-                return await this.Book_Language_Names(
+                return this.Book_Language_Names(
                     {
                         book_name: of[0].Name() as Name,
                     },
@@ -176,7 +227,7 @@ export class Instance extends Async.Instance
                     of[1].Type() === Type.VERSION
                 )
             ) {
-                return await this.Book_Version_Names(
+                return this.Book_Version_Names(
                     {
                         book_name: of[0].Name() as Name,
                     },
@@ -191,7 +242,7 @@ export class Instance extends Async.Instance
                     of[1].Type() === Type.BOOK
                 )
             ) {
-                return await this.Language_Book_Names(
+                return this.Language_Book_Names(
                     {
                         language_name: of[0].Name() as Name,
                     },
@@ -206,7 +257,7 @@ export class Instance extends Async.Instance
                     of[1].Type() === Type.VERSION
                 )
             ) {
-                return await this.Language_Version_Names(
+                return this.Language_Version_Names(
                     {
                         language_name: of[0].Name() as Name,
                     },
@@ -221,7 +272,7 @@ export class Instance extends Async.Instance
                     of[1].Type() === Type.BOOK
                 )
             ) {
-                return await this.Version_Book_Names(
+                return this.Version_Book_Names(
                     {
                         version_name: of[0].Name() as Name,
                     },
@@ -236,7 +287,7 @@ export class Instance extends Async.Instance
                     of[1].Type() === Type.LANGUAGE
                 )
             ) {
-                return await this.Version_Language_Names(
+                return this.Version_Language_Names(
                     {
                         version_name: of[0].Name() as Name,
                     },
@@ -278,7 +329,7 @@ export class Instance extends Async.Instance
                     of[2].Type() === Type.VERSION
                 )
             ) {
-                return await this.Book_Language_Version_Names(
+                return this.Book_Language_Version_Names(
                     {
                         book_name: of[0].Name() as Name,
                         language_name: of[1].Name() as Name,
@@ -298,7 +349,7 @@ export class Instance extends Async.Instance
                     of[2].Type() === Type.LANGUAGE
                 )
             ) {
-                return await this.Book_Version_Language_Names(
+                return this.Book_Version_Language_Names(
                     {
                         book_name: of[0].Name() as Name,
                         version_name: of[1].Name() as Name,
@@ -318,7 +369,7 @@ export class Instance extends Async.Instance
                     of[2].Type() === Type.VERSION
                 )
             ) {
-                return await this.Language_Book_Version_Names(
+                return this.Language_Book_Version_Names(
                     {
                         language_name: of[0].Name() as Name,
                         book_name: of[1].Name() as Name,
@@ -338,7 +389,7 @@ export class Instance extends Async.Instance
                     of[2].Type() === Type.BOOK
                 )
             ) {
-                return await this.Language_Version_Book_Names(
+                return this.Language_Version_Book_Names(
                     {
                         language_name: of[0].Name() as Name,
                         version_name: of[1].Name() as Name,
@@ -358,7 +409,7 @@ export class Instance extends Async.Instance
                     of[2].Type() === Type.LANGUAGE
                 )
             ) {
-                return await this.Version_Book_Language_Names(
+                return this.Version_Book_Language_Names(
                     {
                         version_name: of[0].Name() as Name,
                         book_name: of[1].Name() as Name,
@@ -378,7 +429,7 @@ export class Instance extends Async.Instance
                     of[2].Type() === Type.BOOK
                 )
             ) {
-                return await this.Version_Language_Book_Names(
+                return this.Version_Language_Book_Names(
                     {
                         version_name: of[0].Name() as Name,
                         language_name: of[1].Name() as Name,
@@ -428,7 +479,7 @@ export class Instance extends Async.Instance
                     of[2].Type() === Type.VERSION
                 )
             ) {
-                return await this.File_Names(
+                return this.File_Names(
                     {
                         book_name: of[0].Name() as Name,
                         language_name: of[1].Name() as Name,
@@ -449,7 +500,7 @@ export class Instance extends Async.Instance
                     of[2].Type() === Type.LANGUAGE
                 )
             ) {
-                return await this.File_Names(
+                return this.File_Names(
                     {
                         book_name: of[0].Name() as Name,
                         language_name: of[2].Name() as Name,
@@ -470,7 +521,7 @@ export class Instance extends Async.Instance
                     of[2].Type() === Type.VERSION
                 )
             ) {
-                return await this.File_Names(
+                return this.File_Names(
                     {
                         book_name: of[1].Name() as Name,
                         language_name: of[0].Name() as Name,
@@ -491,7 +542,7 @@ export class Instance extends Async.Instance
                     of[2].Type() === Type.BOOK
                 )
             ) {
-                return await this.File_Names(
+                return this.File_Names(
                     {
                         book_name: of[2].Name() as Name,
                         language_name: of[0].Name() as Name,
@@ -512,7 +563,7 @@ export class Instance extends Async.Instance
                     of[2].Type() === Type.LANGUAGE
                 )
             ) {
-                return await this.File_Names(
+                return this.File_Names(
                     {
                         book_name: of[1].Name() as Name,
                         language_name: of[2].Name() as Name,
@@ -533,7 +584,7 @@ export class Instance extends Async.Instance
                     of[2].Type() === Type.BOOK
                 )
             ) {
-                return await this.File_Names(
+                return this.File_Names(
                     {
                         book_name: of[2].Name() as Name,
                         language_name: of[1].Name() as Name,
@@ -562,31 +613,36 @@ export class Instance extends Async.Instance
         }
     }
 
-    // we should have an option on how the names are sorted
-    async Book_Names():
-        Promise<Array<Name>>
+    Book_Names():
+        Array<Name>
     {
-        if (this.book_names == null) {
-            await this.Cache_Names();
-        }
+        Utils.Assert(
+            this.Is_Ready(),
+            `Not ready.`,
+        );
 
-        return Array.from(this.book_names as Array<Name>);
+        return Array.from(this.Info().unique_book_names);
     }
 
-    async Book_Language_Names(
+    Book_Language_Names(
         {
             book_name,
         }: {
             book_name: Name,
         },
     ):
-        Promise<Array<Name>>
+        Array<Name>
     {
+        Utils.Assert(
+            this.Is_Ready(),
+            `Not ready.`,
+        );
+
         const language_names: Set<Name> = new Set();
 
-        for (const book of await this.Books().Array()) {
+        for (const book of this.Books()) {
             if (book.Name() === book_name) {
-                for (const language of await book.Languages().Array()) {
+                for (const language of book.Languages()) {
                     language_names.add(language.Name());
                 }
                 break;
@@ -596,21 +652,26 @@ export class Instance extends Async.Instance
         return Array.from(language_names).sort();
     }
 
-    async Book_Version_Names(
+    Book_Version_Names(
         {
             book_name,
         }: {
             book_name: Name,
         },
     ):
-        Promise<Array<Name>>
+        Array<Name>
     {
+        Utils.Assert(
+            this.Is_Ready(),
+            `Not ready.`,
+        );
+
         const version_names: Set<Name> = new Set();
 
-        for (const book of await this.Books().Array()) {
+        for (const book of this.Books()) {
             if (book.Name() === book_name) {
-                for (const language of await book.Languages().Array()) {
-                    for (const version of await language.Versions().Array()) {
+                for (const language of book.Languages()) {
+                    for (const version of language.Versions()) {
                         version_names.add(version.Name());
                     }
                 }
@@ -621,7 +682,7 @@ export class Instance extends Async.Instance
         return Array.from(version_names).sort();
     }
 
-    async Book_Language_Version_Names(
+    Book_Language_Version_Names(
         {
             book_name,
             language_name,
@@ -630,15 +691,20 @@ export class Instance extends Async.Instance
             language_name: Name,
         },
     ):
-        Promise<Array<Name>>
+        Array<Name>
     {
+        Utils.Assert(
+            this.Is_Ready(),
+            `Not ready.`,
+        );
+
         const version_names: Set<Name> = new Set();
 
-        for (const book of await this.Books().Array()) {
+        for (const book of this.Books()) {
             if (book.Name() === book_name) {
-                for (const language of await book.Languages().Array()) {
+                for (const language of book.Languages()) {
                     if (language.Name() === language_name) {
-                        for (const version of await language.Versions().Array()) {
+                        for (const version of language.Versions()) {
                             version_names.add(version.Name());
                         }
                         break;
@@ -651,7 +717,7 @@ export class Instance extends Async.Instance
         return Array.from(version_names).sort();
     }
 
-    async Book_Version_Language_Names(
+    Book_Version_Language_Names(
         {
             book_name,
             version_name,
@@ -660,14 +726,19 @@ export class Instance extends Async.Instance
             version_name: Name,
         },
     ):
-        Promise<Array<Name>>
+        Array<Name>
     {
+        Utils.Assert(
+            this.Is_Ready(),
+            `Not ready.`,
+        );
+
         const language_names: Set<Name> = new Set();
 
-        for (const book of await this.Books().Array()) {
+        for (const book of this.Books()) {
             if (book.Name() === book_name) {
-                for (const language of await book.Languages().Array()) {
-                    for (const version of await language.Versions().Array()) {
+                for (const language of book.Languages()) {
+                    for (const version of language.Versions()) {
                         if (version.Name() === version_name) {
                             language_names.add(language.Name());
                             break;
@@ -681,29 +752,35 @@ export class Instance extends Async.Instance
         return Array.from(language_names).sort();
     }
 
-    async Language_Names():
-        Promise<Array<Name>>
+    Language_Names():
+        Array<Name>
     {
-        if (this.language_names == null) {
-            await this.Cache_Names();
-        }
+        Utils.Assert(
+            this.Is_Ready(),
+            `Not ready.`,
+        );
 
-        return Array.from(this.language_names as Array<Name>);
+        return Array.from(this.Info().unique_language_names);
     }
 
-    async Language_Book_Names(
+    Language_Book_Names(
         {
             language_name,
         }: {
             language_name: Name,
         },
     ):
-        Promise<Array<Name>>
+        Array<Name>
     {
+        Utils.Assert(
+            this.Is_Ready(),
+            `Not ready.`,
+        );
+
         const book_names: Set<Name> = new Set();
 
-        for (const book of await this.Books().Array()) {
-            for (const language of await book.Languages().Array()) {
+        for (const book of this.Books()) {
+            for (const language of book.Languages()) {
                 if (language.Name() === language_name) {
                     book_names.add(book.Name());
                     break;
@@ -714,21 +791,26 @@ export class Instance extends Async.Instance
         return Array.from(book_names).sort();
     }
 
-    async Language_Version_Names(
+    Language_Version_Names(
         {
             language_name,
         }: {
             language_name: Name,
         },
     ):
-        Promise<Array<Name>>
+        Array<Name>
     {
+        Utils.Assert(
+            this.Is_Ready(),
+            `Not ready.`,
+        );
+
         const version_names: Set<Name> = new Set();
 
-        for (const book of await this.Books().Array()) {
-            for (const language of await book.Languages().Array()) {
+        for (const book of this.Books()) {
+            for (const language of book.Languages()) {
                 if (language.Name() === language_name) {
-                    for (const version of await language.Versions().Array()) {
+                    for (const version of language.Versions()) {
                         version_names.add(version.Name());
                     }
                     break;
@@ -739,7 +821,7 @@ export class Instance extends Async.Instance
         return Array.from(version_names).sort();
     }
 
-    async Language_Book_Version_Names(
+    Language_Book_Version_Names(
         {
             language_name,
             book_name,
@@ -748,15 +830,20 @@ export class Instance extends Async.Instance
             book_name: Name,
         },
     ):
-        Promise<Array<Name>>
+        Array<Name>
     {
+        Utils.Assert(
+            this.Is_Ready(),
+            `Not ready.`,
+        );
+
         const version_names: Set<Name> = new Set();
 
-        for (const book of await this.Books().Array()) {
+        for (const book of this.Books()) {
             if (book.Name() === book_name) {
-                for (const language of await book.Languages().Array()) {
+                for (const language of book.Languages()) {
                     if (language.Name() === language_name) {
-                        for (const version of await language.Versions().Array()) {
+                        for (const version of language.Versions()) {
                             version_names.add(version.Name());
                         }
                         break;
@@ -769,7 +856,7 @@ export class Instance extends Async.Instance
         return Array.from(version_names).sort();
     }
 
-    async Language_Version_Book_Names(
+    Language_Version_Book_Names(
         {
             language_name,
             version_name,
@@ -778,14 +865,19 @@ export class Instance extends Async.Instance
             version_name: Name,
         },
     ):
-        Promise<Array<Name>>
+        Array<Name>
     {
+        Utils.Assert(
+            this.Is_Ready(),
+            `Not ready.`,
+        );
+
         const book_names: Set<Name> = new Set();
 
-        for (const book of await this.Books().Array()) {
-            for (const language of await book.Languages().Array()) {
+        for (const book of this.Books()) {
+            for (const language of book.Languages()) {
                 if (language.Name() === language_name) {
-                    for (const version of await language.Versions().Array()) {
+                    for (const version of language.Versions()) {
                         if (version.Name() === version_name) {
                             book_names.add(book.Name());
                             break;
@@ -799,30 +891,36 @@ export class Instance extends Async.Instance
         return Array.from(book_names).sort();
     }
 
-    async Version_Names():
-        Promise<Array<Name>>
+    Version_Names():
+        Array<Name>
     {
-        if (this.version_names == null) {
-            await this.Cache_Names();
-        }
+        Utils.Assert(
+            this.Is_Ready(),
+            `Not ready.`,
+        );
 
-        return Array.from(this.version_names as Array<Name>);
+        return Array.from(this.Info().unique_version_names);
     }
 
-    async Version_Book_Names(
+    Version_Book_Names(
         {
             version_name,
         }: {
             version_name: Name,
         },
     ):
-        Promise<Array<Name>>
+        Array<Name>
     {
+        Utils.Assert(
+            this.Is_Ready(),
+            `Not ready.`,
+        );
+
         const book_names: Set<Name> = new Set();
 
-        for (const book of await this.Books().Array()) {
-            for (const language of await book.Languages().Array()) {
-                for (const version of await language.Versions().Array()) {
+        for (const book of this.Books()) {
+            for (const language of book.Languages()) {
+                for (const version of language.Versions()) {
                     if (version.Name() === version_name) {
                         book_names.add(book.Name());
                         break;
@@ -834,20 +932,25 @@ export class Instance extends Async.Instance
         return Array.from(book_names).sort();
     }
 
-    async Version_Language_Names(
+    Version_Language_Names(
         {
             version_name,
         }: {
             version_name: Name,
         },
     ):
-        Promise<Array<Name>>
+        Array<Name>
     {
+        Utils.Assert(
+            this.Is_Ready(),
+            `Not ready.`,
+        );
+
         const language_names: Set<Name> = new Set();
 
-        for (const book of await this.Books().Array()) {
-            for (const language of await book.Languages().Array()) {
-                for (const version of await language.Versions().Array()) {
+        for (const book of this.Books()) {
+            for (const language of book.Languages()) {
+                for (const version of language.Versions()) {
                     if (version.Name() === version_name) {
                         language_names.add(language.Name());
                         break;
@@ -859,7 +962,7 @@ export class Instance extends Async.Instance
         return Array.from(language_names).sort();
     }
 
-    async Version_Book_Language_Names(
+    Version_Book_Language_Names(
         {
             version_name,
             book_name,
@@ -868,14 +971,19 @@ export class Instance extends Async.Instance
             book_name: Name,
         },
     ):
-        Promise<Array<Name>>
+        Array<Name>
     {
+        Utils.Assert(
+            this.Is_Ready(),
+            `Not ready.`,
+        );
+
         const language_names: Set<Name> = new Set();
 
-        for (const book of await this.Books().Array()) {
+        for (const book of this.Books()) {
             if (book.Name() === book_name) {
-                for (const language of await book.Languages().Array()) {
-                    for (const version of await language.Versions().Array()) {
+                for (const language of book.Languages()) {
+                    for (const version of language.Versions()) {
                         if (version.Name() === version_name) {
                             language_names.add(language.Name());
                             break;
@@ -889,7 +997,7 @@ export class Instance extends Async.Instance
         return Array.from(language_names).sort();
     }
 
-    async Version_Language_Book_Names(
+    Version_Language_Book_Names(
         {
             version_name,
             language_name,
@@ -898,14 +1006,19 @@ export class Instance extends Async.Instance
             language_name: Name,
         },
     ):
-        Promise<Array<Name>>
+        Array<Name>
     {
+        Utils.Assert(
+            this.Is_Ready(),
+            `Not ready.`,
+        );
+
         const book_names: Set<Name> = new Set();
 
-        for (const book of await this.Books().Array()) {
-            for (const language of await book.Languages().Array()) {
+        for (const book of this.Books()) {
+            for (const language of book.Languages()) {
                 if (language.Name() === language_name) {
-                    for (const version of await language.Versions().Array()) {
+                    for (const version of language.Versions()) {
                         if (version.Name() === version_name) {
                             book_names.add(book.Name());
                             break;
@@ -919,7 +1032,7 @@ export class Instance extends Async.Instance
         return Array.from(book_names).sort();
     }
 
-    async Versions(
+    Versions(
         {
             book_names = null,
             language_names = null,
@@ -930,25 +1043,30 @@ export class Instance extends Async.Instance
             version_names: Array<Name> | null,
         },
     ):
-        Promise<Array<Version.Instance>>
+        Array<Version.Instance>
     {
+        Utils.Assert(
+            this.Is_Ready(),
+            `Not ready.`,
+        );
+
         const versions: Array<Version.Instance> = [];
 
         if (book_names == null) {
-            book_names = await this.Book_Names();
+            book_names = this.Book_Names();
         }
         if (language_names == null) {
-            language_names = await this.Language_Names();
+            language_names = this.Language_Names();
         }
         if (version_names == null) {
-            version_names = await this.Version_Names();
+            version_names = this.Version_Names();
         }
 
-        for (const book of await this.Books().Array()) {
+        for (const book of this.Books()) {
             if (book_names.includes(book.Name())) {
-                for (const language of await book.Languages().Array()) {
+                for (const language of book.Languages()) {
                     if (language_names.includes(language.Name())) {
-                        for (const version of await language.Versions().Array()) {
+                        for (const version of language.Versions()) {
                             if (version_names.includes(version.Name())) {
                                 versions.push(version);
                             }
@@ -961,68 +1079,7 @@ export class Instance extends Async.Instance
         return versions;
     }
 
-    async Version(
-        selection: Selection.Version.Name,
-    ):
-        Promise<Version.Instance>
-    {
-        const book: Book.Instance = await this.Books().Get(selection.Book());
-        const language: Language.Instance = await book.Languages().Get(selection.Language());
-
-        return await language.Versions().Get(selection.Version());
-    }
-
-    async Searches(
-        {
-            book_names = null,
-            language_names = null,
-            version_names = null,
-        }: {
-            book_names: Array<Name> | null,
-            language_names: Array<Name> | null,
-            version_names: Array<Name> | null,
-        },
-    ):
-        Promise<Array<Search.Instance>>
-    {
-        const searches: Array<Search.Instance> = [];
-
-        if (book_names == null) {
-            book_names = await this.Book_Names();
-        }
-        if (language_names == null) {
-            language_names = await this.Language_Names();
-        }
-        if (version_names == null) {
-            version_names = await this.Version_Names();
-        }
-
-        for (const book of await this.Books().Array()) {
-            if (book_names.includes(book.Name())) {
-                for (const language of await book.Languages().Array()) {
-                    if (language_names.includes(language.Name())) {
-                        for (const version of await language.Versions().Array()) {
-                            if (version_names.includes(version.Name())) {
-                                searches.push(version.Search());
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        return searches;
-    }
-
-    async Search(
-        selection: Selection.Version.Name,
-    ):
-        Promise<Search.Instance>
-    {
-        return (await this.Version(selection)).Search();
-    }
-
-    async Files(
+    Files(
         {
             book_name,
             language_name,
@@ -1033,16 +1090,20 @@ export class Instance extends Async.Instance
             version_name: Name,
         },
     ):
-        Promise<Files.Instance>
+        Array<File.Instance>
     {
-        const book: Book.Instance = await this.Books().Get(book_name);
-        const language: Language.Instance = await book.Languages().Get(language_name);
-        const version: Version.Instance = await language.Versions().Get(version_name);
+        Utils.Assert(
+            this.Is_Ready(),
+            `Not ready.`,
+        );
 
-        return version.Files();
+        return this.Book(book_name)
+            .Language(language_name)
+            .Version(version_name)
+            .Files();
     }
 
-    async File(
+    File(
         {
             book_name,
             language_name,
@@ -1055,17 +1116,20 @@ export class Instance extends Async.Instance
             file_name: Name,
         },
     ):
-        Promise<File.Instance>
+        File.Instance
     {
-        const book: Book.Instance = await this.Books().Get(book_name);
-        const language: Language.Instance = await book.Languages().Get(language_name);
-        const version: Version.Instance = await language.Versions().Get(version_name);
-        const file: File.Instance = await version.Files().Get(file_name);
+        Utils.Assert(
+            this.Is_Ready(),
+            `Not ready.`,
+        );
 
-        return file;
+        return this.Book(book_name)
+            .Language(language_name)
+            .Version(version_name)
+            .File(file_name);
     }
 
-    async File_Names(
+    File_Names(
         {
             book_name,
             language_name,
@@ -1076,17 +1140,15 @@ export class Instance extends Async.Instance
             version_name: Name,
         },
     ):
-        Promise<Array<Name>>
+        Array<Name>
     {
-        const files: Files.Instance = await this.Files(
+        return this.Files(
             {
                 book_name,
                 language_name,
                 version_name,
             },
-        );
-
-        return (await files.Array()).map(
+        ).map(
             function (
                 file: File.Instance,
             ):
@@ -1095,6 +1157,37 @@ export class Instance extends Async.Instance
                 return file.Name();
             },
         );
+    }
+
+    override async After_Dependencies_Are_Ready():
+        Promise<void>
+    {
+        const response: Response =
+            await fetch(Utils.Resolve_Path(`${this.Path()}/Info.json`));
+        if (response.ok) {
+            this.info = JSON.parse(await response.text()) as Info;
+
+            for (const book_branch of this.info.tree.books) {
+                this.books.push(
+                    new Book.Instance(
+                        {
+                            data: this,
+                            branch: book_branch,
+                        },
+                    ),
+                );
+            }
+        } else {
+            this.info = {
+                tree: {
+                    books: [],
+                },
+                unique_book_names: [],
+                unique_language_names: [],
+                unique_version_names: [],
+                unique_part_values: [],
+            };
+        }
     }
 }
 

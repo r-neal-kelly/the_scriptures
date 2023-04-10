@@ -4,7 +4,7 @@ export class Instance extends Entity.Instance {
         super();
         this.commander = commander;
         this.is_activated = is_activated;
-        this.Is_Ready_After([]);
+        this.Add_Dependencies([]);
     }
     Commander() {
         return this.commander;

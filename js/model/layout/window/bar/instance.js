@@ -11,7 +11,7 @@ export class Instance extends Entity.Instance {
         this.commands = new Commands.Instance({
             bar: this,
         });
-        this.Is_Ready_After([
+        this.Add_Dependencies([
             this.title,
             this.commands,
         ]);

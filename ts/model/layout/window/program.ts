@@ -62,7 +62,7 @@ export class Instance extends Model_Entity.Instance
         this.model_instance = new model_class(model_data);
         this.view_class = view_class;
 
-        this.Is_Ready_After(
+        this.Add_Dependencies(
             [
                 this.model_instance,
             ],

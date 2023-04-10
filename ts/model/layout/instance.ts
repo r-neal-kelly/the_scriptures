@@ -27,7 +27,7 @@ export class Instance extends Entity.Instance
         );
         this.active_window = null;
 
-        this.Is_Ready_After(
+        this.Add_Dependencies(
             [
                 this.wall,
                 this.bar,

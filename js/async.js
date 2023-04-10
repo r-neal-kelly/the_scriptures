@@ -14,7 +14,9 @@ export class Instance {
         this.is_readying = false;
         this.dependencies = [];
     }
-    Is_Ready_After(dependencies) {
+    Add_Dependencies(dependencies) {
+        Utils.Assert(!this.Is_Ready(), `Cannot add dependencies after being ready.`);
+        Utils.Assert(!this.is_readying, `Cannot add dependencies while readying.`);
         for (const dependency of dependencies) {
             Utils.Assert(this.dependencies.indexOf(dependency) < 0, `A dependency can only be added once.`);
             this.dependencies.push(dependency);
@@ -23,6 +25,16 @@ export class Instance {
     Is_Ready() {
         return this.is_ready;
     }
+    Before_Dependencies_Are_Ready() {
+        return __awaiter(this, void 0, void 0, function* () {
+            Utils.Assert(false, `This method must be overridden to be used.`);
+        });
+    }
+    After_Dependencies_Are_Ready() {
+        return __awaiter(this, void 0, void 0, function* () {
+            Utils.Assert(false, `This method must be overridden to be used.`);
+        });
+    }
     Ready() {
         return __awaiter(this, void 0, void 0, function* () {
             while (this.is_readying) {
@@ -30,10 +42,16 @@ export class Instance {
             }
             this.is_readying = true;
             if (this.is_ready === false) {
+                if (Object.getPrototypeOf(this).hasOwnProperty(`Before_Dependencies_Are_Ready`)) {
+                    yield this.Before_Dependencies_Are_Ready();
+                }
                 if (this.dependencies.length > 0) {
                     yield Promise.all(this.dependencies.map(function (dependency) {
                         return dependency.Ready();
                     }));
+                }
+                if (Object.getPrototypeOf(this).hasOwnProperty(`After_Dependencies_Are_Ready`)) {
+                    yield this.After_Dependencies_Are_Ready();
                 }
                 this.is_ready = true;
             }

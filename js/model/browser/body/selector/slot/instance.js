@@ -16,7 +16,7 @@ export class Instance extends Entity.Instance {
             item_names: item_names,
             item_files: item_files,
         });
-        this.Is_Ready_After([
+        this.Add_Dependencies([
             this.title,
             this.items,
         ]);

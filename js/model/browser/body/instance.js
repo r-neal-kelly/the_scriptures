@@ -13,7 +13,7 @@ export class Instance extends Entity.Instance {
         this.reader = new Reader.Instance({
             body: this,
         });
-        this.Is_Ready_After([
+        this.Add_Dependencies([
             this.selector,
             this.reader,
         ]);

@@ -20,7 +20,7 @@ export class Instance extends Entity.Instance {
         this.bar = new Bar.Instance({
             window: this,
         });
-        this.Is_Ready_After([
+        this.Add_Dependencies([
             this.program,
             this.bar,
         ]);
@@ -118,17 +118,11 @@ export class Instance extends Entity.Instance {
     Is_Active() {
         return this.Wall().Layout().Maybe_Active_Window() === this;
     }
-    Ready() {
-        const _super = Object.create(null, {
-            Ready: { get: () => super.Ready }
-        });
+    Before_Dependencies_Are_Ready() {
         return __awaiter(this, void 0, void 0, function* () {
-            if (!this.Is_Ready()) {
-                this.Live();
-                // We do this after Live so that the window can
-                // get anchored to its wall synchronously.
-                yield _super.Ready.call(this);
-            }
+            // We do this before so that the window can
+            // get anchored to its wall quicker.
+            this.Live();
         });
     }
 }

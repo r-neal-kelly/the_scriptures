@@ -22,7 +22,7 @@ export class Instance extends Entity.Instance {
                 text: text.Line(idx),
             }));
         }
-        this.Is_Ready_After(this.lines);
+        this.Add_Dependencies(this.lines);
     }
     Reader() {
         Utils.Assert(this.reader != null, `Has no reader.`);

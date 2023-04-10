@@ -3,7 +3,7 @@ export class Instance extends Entity.Instance {
     constructor({ bar, }) {
         super();
         this.bar = bar;
-        this.Is_Ready_After([]);
+        this.Add_Dependencies([]);
     }
     Bar() {
         return this.bar;

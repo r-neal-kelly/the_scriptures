@@ -9,15 +9,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import * as Utils from "../../utils.js";
 export class Instance {
-    constructor({ files, name, }) {
-        this.files = files;
-        this.name = name;
-        this.path = `${files.Path()}/${name}`;
-        this.title = name.replace(/\.[^.]*$/, ``);
-        this.extension = name.replace(/^[^.]*\./, ``);
+    constructor({ version, leaf, }) {
+        this.version = version;
+        this.name = leaf.name;
+        this.path = `${version.Path()}/${leaf.name}`;
+        this.title = leaf.name.replace(/\.[^.]*$/, ``);
+        this.extension = leaf.name.replace(/^[^.]*\./, ``);
     }
-    Files() {
-        return this.files;
+    Version() {
+        return this.version;
     }
     Name() {
         return this.name;

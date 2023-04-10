@@ -15,7 +15,7 @@ export class Instance extends Entity.Instance {
         super();
         this.layout = layout;
         this.windows = new Map();
-        this.Is_Ready_After([]);
+        this.Add_Dependencies([]);
     }
     Layout() {
         return this.layout;

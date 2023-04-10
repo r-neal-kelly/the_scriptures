@@ -201,6 +201,7 @@ async function Main():
 Main();
 
 // temp
+/*
 import * as Search from "../model/search.js"
 (
     async function ()
@@ -218,4 +219,5 @@ import * as Search from "../model/search.js"
         (window as any).Test = search;
     }
 )();
+*/
 //

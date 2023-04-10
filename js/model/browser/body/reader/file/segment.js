@@ -30,7 +30,7 @@ export class Instance extends Entity.Instance {
                 }));
             }
         }
-        this.Is_Ready_After(this.items);
+        this.Add_Dependencies(this.items);
     }
     Line() {
         Utils.Assert(this.line != null, `Doesn't have line.`);

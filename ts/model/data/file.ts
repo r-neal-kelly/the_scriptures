@@ -1,19 +1,17 @@
-import { Count } from "../../types.js";
 import { Name } from "../../types.js";
 import { Path } from "../../types.js";
 
 import * as Utils from "../../utils.js";
 
-import * as Files from "./files.js";
+import * as Version from "./version.js";
 
-export type Info = {
-    line_count: Count,
-    line_names: Array<Name>,
-}
+export type Leaf = {
+    name: Name,
+};
 
 export class Instance
 {
-    private files: Files.Instance;
+    private version: Version.Instance;
     private name: Name;
     private path: Path;
     private title: Name;
@@ -21,25 +19,25 @@ export class Instance
 
     constructor(
         {
-            files,
-            name,
+            version,
+            leaf,
         }: {
-            files: Files.Instance,
-            name: Name,
+            version: Version.Instance,
+            leaf: Leaf,
         },
     )
     {
-        this.files = files;
-        this.name = name;
-        this.path = `${files.Path()}/${name}`;
-        this.title = name.replace(/\.[^.]*$/, ``);
-        this.extension = name.replace(/^[^.]*\./, ``);
+        this.version = version;
+        this.name = leaf.name;
+        this.path = `${version.Path()}/${leaf.name}`;
+        this.title = leaf.name.replace(/\.[^.]*$/, ``);
+        this.extension = leaf.name.replace(/^[^.]*\./, ``);
     }
 
-    Files():
-        Files.Instance
+    Version():
+        Version.Instance
     {
-        return this.files;
+        return this.version;
     }
 
     Name():

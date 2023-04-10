@@ -6,11 +6,11 @@ import * as Utils from "../../utils.js";
 import * as Async from "../../async.js";
 
 import * as Text from "../text.js";
-import * as Files from "./files.js";
+import * as Version from "./version.js";
 
 export class Instance extends Async.Instance
 {
-    private files: Files.Instance;
+    private version: Version.Instance;
     private name: Name;
     private path: Path;
     private title: Name;
@@ -19,26 +19,31 @@ export class Instance extends Async.Instance
 
     constructor(
         {
-            files,
+            version,
         }: {
-            files: Files.Instance,
+            version: Version.Instance,
         },
     )
     {
         super();
 
-        this.files = files;
+        this.version = version;
         this.name = `Dictionary.json`;
-        this.path = `${files.Path()}/${this.name}`;
+        this.path = `${version.Path()}/${this.name}`;
         this.title = this.name.replace(/\.[^.]*$/, ``);
         this.extension = this.name.replace(/^[^.]*\./, ``);
         this.text_dictionary = null;
+
+        this.Add_Dependencies(
+            [
+            ],
+        );
     }
 
-    Files():
-        Files.Instance
+    Version():
+        Version.Instance
     {
-        return this.files;
+        return this.version;
     }
 
     Name():
@@ -80,27 +85,23 @@ export class Instance extends Async.Instance
         return this.text_dictionary as Text.Dictionary.Instance;
     }
 
-    async Ready():
+    override async After_Dependencies_Are_Ready():
         Promise<void>
     {
-        if (!this.Is_Ready()) {
-            await super.Ready();
+        let text_dictionary_json: string | null;
 
-            let text_dictionary_json: string | null;
-
-            const response: Response =
-                await fetch(Utils.Resolve_Path(this.Path()));
-            if (response.ok) {
-                text_dictionary_json = await response.text();
-            } else {
-                text_dictionary_json = null;
-            }
-
-            this.text_dictionary = new Text.Dictionary.Instance(
-                {
-                    json: text_dictionary_json,
-                },
-            );
+        const response: Response =
+            await fetch(Utils.Resolve_Path(this.Path()));
+        if (response.ok) {
+            text_dictionary_json = await response.text();
+        } else {
+            text_dictionary_json = null;
         }
+
+        this.text_dictionary = new Text.Dictionary.Instance(
+            {
+                json: text_dictionary_json,
+            },
+        );
     }
 }

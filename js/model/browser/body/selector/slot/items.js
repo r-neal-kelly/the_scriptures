@@ -26,7 +26,7 @@ export class Instance extends Entity.Instance {
                     null,
             }));
         }
-        this.Is_Ready_After(this.items);
+        this.Add_Dependencies(this.items);
     }
     Slot() {
         return this.slot;

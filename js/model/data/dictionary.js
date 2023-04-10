@@ -11,17 +11,18 @@ import * as Utils from "../../utils.js";
 import * as Async from "../../async.js";
 import * as Text from "../text.js";
 export class Instance extends Async.Instance {
-    constructor({ files, }) {
+    constructor({ version, }) {
         super();
-        this.files = files;
+        this.version = version;
         this.name = `Dictionary.json`;
-        this.path = `${files.Path()}/${this.name}`;
+        this.path = `${version.Path()}/${this.name}`;
         this.title = this.name.replace(/\.[^.]*$/, ``);
         this.extension = this.name.replace(/^[^.]*\./, ``);
         this.text_dictionary = null;
+        this.Add_Dependencies([]);
     }
-    Files() {
-        return this.files;
+    Version() {
+        return this.version;
     }
     Name() {
         return this.name;
@@ -40,25 +41,19 @@ export class Instance extends Async.Instance {
         Utils.Assert(this.text_dictionary != null, `text_dictionary should not be null when this is ready!`);
         return this.text_dictionary;
     }
-    Ready() {
-        const _super = Object.create(null, {
-            Ready: { get: () => super.Ready }
-        });
+    After_Dependencies_Are_Ready() {
         return __awaiter(this, void 0, void 0, function* () {
-            if (!this.Is_Ready()) {
-                yield _super.Ready.call(this);
-                let text_dictionary_json;
-                const response = yield fetch(Utils.Resolve_Path(this.Path()));
-                if (response.ok) {
-                    text_dictionary_json = yield response.text();
-                }
-                else {
-                    text_dictionary_json = null;
-                }
-                this.text_dictionary = new Text.Dictionary.Instance({
-                    json: text_dictionary_json,
-                });
+            let text_dictionary_json;
+            const response = yield fetch(Utils.Resolve_Path(this.Path()));
+            if (response.ok) {
+                text_dictionary_json = yield response.text();
             }
+            else {
+                text_dictionary_json = null;
+            }
+            this.text_dictionary = new Text.Dictionary.Instance({
+                json: text_dictionary_json,
+            });
         });
     }
 }

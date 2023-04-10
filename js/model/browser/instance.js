@@ -3,9 +3,6 @@ import * as Data from "../data.js";
 import * as Commander from "./commander.js";
 import * as Body from "./body.js";
 export class Instance extends Entity.Instance {
-    static Data() {
-        return this.data;
-    }
     constructor({ selection = null, selector_slot_order = Body.Selector.Slot.Order.BOOKS_LANGUAGES_VERSIONS, is_selector_open = false, } = {}) {
         super();
         this.commander = new Commander.Instance({
@@ -17,8 +14,8 @@ export class Instance extends Entity.Instance {
             selection: selection,
             selector_slot_order: selector_slot_order,
         });
-        this.Is_Ready_After([
-            Instance.data,
+        this.Add_Dependencies([
+            Data.Singleton(),
             this.commander,
             this.body,
         ]);
@@ -48,4 +45,3 @@ export class Instance extends Entity.Instance {
         }
     }
 }
-Instance.data = Data.Singleton();

@@ -1,4 +1,4 @@
-import { Count } from "../../types.js";
+/*
 import { Index } from "../../types.js";
 import { Name } from "../../types.js";
 
@@ -98,4 +98,9 @@ export class Instance
     {
         return this.last_part_end_unit_index;
     }
+}
+*/
+export class Instance
+{
+
 }

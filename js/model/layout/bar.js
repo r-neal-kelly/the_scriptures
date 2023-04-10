@@ -7,7 +7,7 @@ export class Instance extends Entity.Instance {
         this.tabs = new Tabs.Instance({
             bar: this,
         });
-        this.Is_Ready_After([
+        this.Add_Dependencies([
             this.tabs,
         ]);
     }

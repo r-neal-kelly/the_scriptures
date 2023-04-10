@@ -15,7 +15,7 @@ export class Instance extends Entity.Instance {
         this.close = new Close.Instance({
             commands: this,
         });
-        this.Is_Ready_After([
+        this.Add_Dependencies([
             this.minimize,
             this.maximize,
             this.close,

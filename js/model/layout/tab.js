@@ -4,7 +4,7 @@ export class Instance extends Entity.Instance {
         super();
         this.tabs = tabs;
         this.window = window;
-        this.Is_Ready_After([]);
+        this.Add_Dependencies([]);
     }
     Tabs() {
         return this.tabs;

@@ -19,7 +19,7 @@ export class Instance extends Entity.Instance
 
         this.commands = commands;
 
-        this.Is_Ready_After(
+        this.Add_Dependencies(
             [
             ],
         );

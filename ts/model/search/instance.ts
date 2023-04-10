@@ -1,3 +1,4 @@
+/*
 import { Index } from "../../types.js";
 import { Name } from "../../types.js";
 
@@ -71,7 +72,7 @@ export class Instance extends Entity.Instance
 
         this.searches = [];
 
-        this.Is_Ready_After(
+        this.Add_Dependencies(
             [
                 Data.Singleton(),
             ],
@@ -498,11 +499,9 @@ export class Instance extends Entity.Instance
         return results;
     }
 
-    async Ready():
+    override async After_Dependencies_Are_Ready():
         Promise<void>
     {
-        await super.Ready();
-
         this.searches = await Data.Singleton().Searches(
             {
                 book_names: this.book_names,
@@ -511,4 +510,9 @@ export class Instance extends Entity.Instance
             },
         );
     }
+}
+*/
+export class Instance
+{
+
 }

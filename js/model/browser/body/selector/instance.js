@@ -9,7 +9,7 @@ export class Instance extends Entity.Instance {
             order: slot_order,
             selection: selection,
         });
-        this.Is_Ready_After([
+        this.Add_Dependencies([
             this.slots,
         ]);
     }

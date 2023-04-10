@@ -10,7 +10,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import * as Utils from "../../../../utils.js";
 import * as Data from "../../../data.js";
 import * as Entity from "../../../entity.js";
-import * as Browser from "../../../browser.js";
 import * as Selection from "../../selection.js";
 import * as Slot from "./slot.js";
 export class Instance extends Entity.Instance {
@@ -41,7 +40,9 @@ export class Instance extends Entity.Instance {
         this.order = order;
         this.first_selection = selection;
         this.slots = [];
-        this.Is_Ready_After(this.slots);
+        this.Add_Dependencies([
+            Data.Singleton(),
+        ]);
     }
     Selector() {
         return this.selector;
@@ -153,13 +154,13 @@ export class Instance extends Entity.Instance {
                 type: Instance.Slot_To_Data_Type(slot_type),
                 name: null,
             }));
-            const slot_item_names = yield Browser.Instance.Data().Names(slot_query);
+            const slot_item_names = Data.Singleton().Names(slot_query);
             const slot_item_files = slot_type === Slot.Type.FILES ?
-                yield (yield Browser.Instance.Data().Files({
+                Data.Singleton().Files({
                     book_name: this.Books().Items().Selected().Name(),
                     language_name: this.Languages().Items().Selected().Name(),
                     version_name: this.Versions().Items().Selected().Name(),
-                })).Array() :
+                }) :
                 null;
             this.slots.push(new Slot.Instance({
                 slots: this,
@@ -243,7 +244,7 @@ export class Instance extends Entity.Instance {
         return __awaiter(this, void 0, void 0, function* () {
             Utils.Assert(this.Has(slot), `The slot does not belong to this selector.`);
             if (slot.Type() === Slot.Type.FILES) {
-                const file = yield Browser.Instance.Data().File({
+                const file = Data.Singleton().File({
                     book_name: this.Books().Items().Selected().Name(),
                     language_name: this.Languages().Items().Selected().Name(),
                     version_name: this.Versions().Items().Selected().Name(),
@@ -350,22 +351,16 @@ export class Instance extends Entity.Instance {
             }
         });
     }
-    Ready() {
-        const _super = Object.create(null, {
-            Ready: { get: () => super.Ready }
-        });
+    After_Dependencies_Are_Ready() {
         return __awaiter(this, void 0, void 0, function* () {
-            if (!this.Is_Ready()) {
-                yield _super.Ready.call(this);
-                if (this.first_selection instanceof Selection.Name) {
-                    yield this.Select(this.first_selection);
-                }
-                else if (this.first_selection instanceof Selection.Index) {
-                    yield this.Select_At(this.first_selection);
-                }
-                else {
-                    yield this.Push();
-                }
+            if (this.first_selection instanceof Selection.Name) {
+                yield this.Select(this.first_selection);
+            }
+            else if (this.first_selection instanceof Selection.Index) {
+                yield this.Select_At(this.first_selection);
+            }
+            else {
+                yield this.Push();
             }
         });
     }

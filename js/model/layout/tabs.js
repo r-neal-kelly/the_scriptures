@@ -7,7 +7,7 @@ export class Instance extends Entity.Instance {
         this.bar = bar;
         this.window_ids = [];
         this.tabs = [];
-        this.Is_Ready_After(this.tabs);
+        this.Add_Dependencies(this.tabs);
     }
     Bar() {
         return this.bar;

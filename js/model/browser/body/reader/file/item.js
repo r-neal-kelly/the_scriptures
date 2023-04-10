@@ -24,7 +24,7 @@ export class Instance extends Entity.Instance {
                     .replace(/  /g, `  `);
             }
         }
-        this.Is_Ready_After([]);
+        this.Add_Dependencies([]);
     }
     Segment() {
         Utils.Assert(this.segment != null, `Doesn't have segment.`);

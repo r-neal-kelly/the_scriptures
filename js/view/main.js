@@ -122,16 +122,23 @@ function Main() {
 }
 Main();
 // temp
-import * as Search from "../model/search.js";
-(function () {
-    return __awaiter(this, void 0, void 0, function* () {
-        const search = new Search.Instance({
-            ignore_markup: true,
-            respect_case: false,
-            align_on_part: false,
-        });
-        yield search.Ready();
-        window.Test = search;
-    });
-})();
+/*
+import * as Search from "../model/search.js"
+(
+    async function ()
+    {
+        const search: Search.Instance = new Search.Instance(
+            {
+                ignore_markup: true,
+                respect_case: false,
+                align_on_part: false,
+            },
+        );
+
+        await search.Ready();
+
+        (window as any).Test = search;
+    }
+)();
+*/
 //

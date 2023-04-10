@@ -30,7 +30,7 @@ export class Instance extends Entity.Instance {
                 }));
             }
         }
-        this.Is_Ready_After(this.segments);
+        this.Add_Dependencies(this.segments);
     }
     File() {
         Utils.Assert(this.file != null, `Doesn't have file.`);

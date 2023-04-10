@@ -34,7 +34,7 @@ export class Instance extends Entity.Instance
             },
         );
 
-        this.Is_Ready_After(
+        this.Add_Dependencies(
             [
                 this.program,
                 this.bar,
@@ -276,14 +276,11 @@ export class Instance extends Entity.Instance
         return this.Wall().Layout().Maybe_Active_Window() === this;
     }
 
-    override async Ready():
+    override async Before_Dependencies_Are_Ready():
         Promise<void>
     {
-        if (!this.Is_Ready()) {
-            this.Live();
-            // We do this after Live so that the window can
-            // get anchored to its wall synchronously.
-            await super.Ready();
-        }
+        // We do this before so that the window can
+        // get anchored to its wall quicker.
+        this.Live();
     }
 }

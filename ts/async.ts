@@ -3,7 +3,7 @@ import * as Utils from "./utils.js";
 export class Instance
 {
     private is_ready: boolean;
-    protected is_readying: boolean;
+    private is_readying: boolean;
     private dependencies: Array<Instance>;
 
     constructor()
@@ -13,11 +13,20 @@ export class Instance
         this.dependencies = [];
     }
 
-    Is_Ready_After(
+    Add_Dependencies(
         dependencies: Array<Instance>,
     ):
         void
     {
+        Utils.Assert(
+            !this.Is_Ready(),
+            `Cannot add dependencies after being ready.`,
+        );
+        Utils.Assert(
+            !this.is_readying,
+            `Cannot add dependencies while readying.`,
+        );
+
         for (const dependency of dependencies) {
             Utils.Assert(
                 this.dependencies.indexOf(dependency) < 0,
@@ -34,6 +43,24 @@ export class Instance
         return this.is_ready;
     }
 
+    async Before_Dependencies_Are_Ready():
+        Promise<void>
+    {
+        Utils.Assert(
+            false,
+            `This method must be overridden to be used.`,
+        );
+    }
+
+    async After_Dependencies_Are_Ready():
+        Promise<void>
+    {
+        Utils.Assert(
+            false,
+            `This method must be overridden to be used.`,
+        );
+    }
+
     async Ready():
         Promise<void>
     {
@@ -43,6 +70,10 @@ export class Instance
         this.is_readying = true;
 
         if (this.is_ready === false) {
+            if (Object.getPrototypeOf(this).hasOwnProperty(`Before_Dependencies_Are_Ready`)) {
+                await this.Before_Dependencies_Are_Ready();
+            }
+
             if (this.dependencies.length > 0) {
                 await Promise.all(
                     this.dependencies.map(
@@ -55,6 +86,10 @@ export class Instance
                         },
                     ),
                 );
+            }
+
+            if (Object.getPrototypeOf(this).hasOwnProperty(`After_Dependencies_Are_Ready`)) {
+                await this.After_Dependencies_Are_Ready();
             }
 
             this.is_ready = true;

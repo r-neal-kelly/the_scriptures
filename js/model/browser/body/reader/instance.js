@@ -18,7 +18,7 @@ export class Instance extends Entity.Instance {
         super();
         this.body = body;
         this.current_file = Instance.Blank_File();
-        this.Is_Ready_After([
+        this.Add_Dependencies([
             this.current_file,
         ]);
     }
@@ -32,7 +32,7 @@ export class Instance extends Entity.Instance {
         return __awaiter(this, void 0, void 0, function* () {
             if (this.current_file.Maybe_Data() != file) {
                 if (file != null) {
-                    const file_dictionary = (yield file.Files().Dictionary()).Text_Dictionary();
+                    const file_dictionary = (yield file.Version().Dictionary()).Text_Dictionary();
                     const file_value = ((yield file.Maybe_Text()) || ``).replace(/\r?\n\r?\n/g, `\n \n`);
                     this.current_file = new File.Instance({
                         reader: this,

@@ -8,14 +8,6 @@ import * as Body from "./body.js";
 
 export class Instance extends Entity.Instance
 {
-    private static data: Data.Instance = Data.Singleton();
-
-    static Data():
-        Data.Instance
-    {
-        return this.data;
-    }
-
     private commander: Commander.Instance;
     private body: Body.Instance;
 
@@ -47,9 +39,9 @@ export class Instance extends Entity.Instance
             },
         );
 
-        this.Is_Ready_After(
+        this.Add_Dependencies(
             [
-                Instance.data,
+                Data.Singleton(),
                 this.commander,
                 this.body,
             ],

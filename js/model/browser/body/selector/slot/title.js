@@ -21,7 +21,7 @@ export class Instance extends Entity.Instance {
             Utils.Assert(false, `Invalid type.`);
             this.value = ``;
         }
-        this.Is_Ready_After([]);
+        this.Add_Dependencies([]);
     }
     Slot() {
         return this.slot;

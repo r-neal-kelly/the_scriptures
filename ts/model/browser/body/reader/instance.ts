@@ -46,7 +46,7 @@ export class Instance extends Entity.Instance
         this.body = body;
         this.current_file = Instance.Blank_File();
 
-        this.Is_Ready_After(
+        this.Add_Dependencies(
             [
                 this.current_file,
             ],
@@ -73,7 +73,7 @@ export class Instance extends Entity.Instance
         if (this.current_file.Maybe_Data() != file) {
             if (file != null) {
                 const file_dictionary: Text.Dictionary.Instance =
-                    (await file.Files().Dictionary()).Text_Dictionary();
+                    (await file.Version().Dictionary()).Text_Dictionary();
                 const file_value: string =
                     (await file.Maybe_Text() || ``).replace(/\r?\n\r?\n/g, `\n \n`);
 

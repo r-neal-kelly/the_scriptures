@@ -7,7 +7,6 @@ import * as Utils from "../../../../utils.js";
 import * as Data from "../../../data.js";
 
 import * as Entity from "../../../entity.js";
-import * as Browser from "../../../browser.js";
 import * as Selection from "../../selection.js";
 import * as Selector from "./instance.js";
 import * as Slot from "./slot.js";
@@ -69,8 +68,10 @@ export class Instance extends Entity.Instance
         this.first_selection = selection;
         this.slots = [];
 
-        this.Is_Ready_After(
-            this.slots,
+        this.Add_Dependencies(
+            [
+                Data.Singleton(),
+            ],
         );
     }
 
@@ -267,18 +268,16 @@ export class Instance extends Entity.Instance
         );
 
         const slot_item_names: Array<Name> =
-            await Browser.Instance.Data().Names(slot_query);
+            Data.Singleton().Names(slot_query);
         const slot_item_files: Array<Data.File.Instance> | null =
             slot_type === Slot.Type.FILES ?
-                await (
-                    await Browser.Instance.Data().Files(
-                        {
-                            book_name: this.Books().Items().Selected().Name(),
-                            language_name: this.Languages().Items().Selected().Name(),
-                            version_name: this.Versions().Items().Selected().Name(),
-                        },
-                    )
-                ).Array() :
+                Data.Singleton().Files(
+                    {
+                        book_name: this.Books().Items().Selected().Name(),
+                        language_name: this.Languages().Items().Selected().Name(),
+                        version_name: this.Versions().Items().Selected().Name(),
+                    },
+                ) :
                 null;
 
         this.slots.push(
@@ -428,7 +427,7 @@ export class Instance extends Entity.Instance
         );
 
         if (slot.Type() === Slot.Type.FILES) {
-            const file: Data.File.Instance = await Browser.Instance.Data().File(
+            const file: Data.File.Instance = Data.Singleton().File(
                 {
                     book_name: this.Books().Items().Selected().Name(),
                     language_name: this.Languages().Items().Selected().Name(),
@@ -539,18 +538,15 @@ export class Instance extends Entity.Instance
         }
     }
 
-    override async Ready():
+    override async After_Dependencies_Are_Ready():
         Promise<void>
     {
-        if (!this.Is_Ready()) {
-            await super.Ready();
-            if (this.first_selection instanceof Selection.Name) {
-                await this.Select(this.first_selection);
-            } else if (this.first_selection instanceof Selection.Index) {
-                await this.Select_At(this.first_selection);
-            } else {
-                await this.Push();
-            }
+        if (this.first_selection instanceof Selection.Name) {
+            await this.Select(this.first_selection);
+        } else if (this.first_selection instanceof Selection.Index) {
+            await this.Select_At(this.first_selection);
+        } else {
+            await this.Push();
         }
     }
 }

@@ -77,7 +77,7 @@ export class Instance extends Entity.Instance
             );
         }
 
-        this.Is_Ready_After(
+        this.Add_Dependencies(
             this.lines,
         );
     }

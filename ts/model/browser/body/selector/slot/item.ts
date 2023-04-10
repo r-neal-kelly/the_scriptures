@@ -34,7 +34,7 @@ export class Instance extends Entity.Instance
         this.name = name;
         this.file = file;
 
-        this.Is_Ready_After(
+        this.Add_Dependencies(
             [
             ],
         );
