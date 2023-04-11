@@ -9,6 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import * as fs from "fs";
 import * as Utils from "../utils.js";
+import * as Data from "../model/data.js";
 import * as Text from "../model/text.js";
 function Read_Directory(directory_path) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -126,30 +127,6 @@ class Unique_Parts {
         return this.parts[part];
     }
 }
-class Unique_Part_Indices {
-    constructor({ unique_part_values, }) {
-        this.parts = {};
-        for (let idx = 0, end = unique_part_values.length; idx < end; idx += 1) {
-            this.parts[unique_part_values[idx]] = idx;
-        }
-    }
-    Index(part_value) {
-        Utils.Assert(this.parts.hasOwnProperty(part_value), `Unknown part_value.`);
-        return this.parts[part_value];
-    }
-}
-class Unique_Part_Values {
-    constructor({ unique_part_values, }) {
-        this.parts = {};
-        for (let idx = 0, end = unique_part_values.length; idx < end; idx += 1) {
-            this.parts[idx] = unique_part_values[idx];
-        }
-    }
-    Value(part_index) {
-        Utils.Assert(this.parts.hasOwnProperty(part_index), `Unknown part_index.`);
-        return this.parts[part_index];
-    }
-}
 function Generate() {
     return __awaiter(this, void 0, void 0, function* () {
         const data_info = {
@@ -221,8 +198,8 @@ function Generate() {
         data_info.unique_version_names = unique_names.Versions();
         data_info.unique_part_values = unique_parts.Values();
         yield Write_File(`${data_path}/Info.json`, JSON.stringify(data_info));
-        const unique_part_indices = new Unique_Part_Indices({
-            unique_part_values: data_info.unique_part_values,
+        const compressor = new Data.Compressor.Instance({
+            unique_parts: data_info.unique_part_values,
         });
         const compressed_parts = [];
         for (const book_name of (yield Folder_Names(books_path)).sort()) {
@@ -231,62 +208,29 @@ function Generate() {
                 const versions_path = `${languages_path}/${language_name}`;
                 for (const version_name of (yield Folder_Names(versions_path)).sort()) {
                     const files_path = `${versions_path}/${version_name}`;
-                    const dictionary = new Text.Dictionary.Instance({
-                        json: yield Read_File(`${files_path}/Dictionary.json`),
-                    });
+                    const file_texts = [];
                     for (const file_name of (yield File_Names(files_path)).filter(function (file_name) {
                         return (/\.txt$/.test(file_name) &&
                             !/COPY\.txt$/.test(file_name));
                     }).sort()) {
                         const file_path = `${files_path}/${file_name}`;
-                        const text = new Text.Instance({
-                            dictionary: dictionary,
-                            value: yield Read_File(file_path),
-                        });
-                        for (let line_idx = 0, line_end = text.Line_Count(); line_idx < line_end; line_idx += 1) {
-                            const line = text.Line(line_idx);
-                            for (let part_idx = 0, part_end = line.Macro_Part_Count(); part_idx < part_end; part_idx += 1) {
-                                const part = line.Macro_Part(part_idx);
-                                const index = unique_part_indices.Index(part.Value());
-                                compressed_parts.push(String.fromCodePoint(index));
-                            }
-                        }
+                        file_texts.push(yield Read_File(file_path));
                     }
+                    const version_text = new Text.Instance({
+                        dictionary: new Text.Dictionary.Instance({
+                            json: yield Read_File(`${files_path}/Dictionary.json`),
+                        }),
+                        value: file_texts.join(Data.Version.Symbol.FILE_BREAK),
+                    });
+                    const compressed_version_text = compressor.Compress(version_text);
+                    const uncompressed_version_text = compressor.Decompress(compressed_version_text);
+                    Utils.Assert(version_text.Value() === uncompressed_version_text, `Invalid decompression!`);
+                    yield Write_File(`${versions_path}/${version_name}.txt`, compressed_version_text);
                 }
             }
         }
-        /*
-        await Write_File(
-            `${data_path}/Test_Compressed.txt`,
-            compressed_parts.join(``),
-        );
-        */
-        const unique_part_values = new Unique_Part_Values({
-            unique_part_values: data_info.unique_part_values,
-        });
-        const uncompressed_parts = [];
-        for (const compressed_part of compressed_parts) {
-            uncompressed_parts.push(unique_part_values.Value(compressed_part.codePointAt(0)));
-        }
-        /*
-        await Write_File(
-            `${data_path}/Test_Uncompressed.txt`,
-            uncompressed_parts.join(``),
-        );
-        */
     });
 }
-/*
-if (fs.existsSync(`${versions_path}/${version_name}/Search`)) {
-    fs.rmSync(
-        `${versions_path}/${version_name}/Search`,
-        {
-            recursive: true,
-            force: true,
-        },
-    );
-}
-*/
 (function Main() {
     return __awaiter(this, void 0, void 0, function* () {
         yield Generate();

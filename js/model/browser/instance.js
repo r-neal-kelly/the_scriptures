@@ -1,5 +1,4 @@
 import * as Entity from "../entity.js";
-import * as Data from "../data.js";
 import * as Commander from "./commander.js";
 import * as Body from "./body.js";
 export class Instance extends Entity.Instance {
@@ -15,7 +14,6 @@ export class Instance extends Entity.Instance {
             selector_slot_order: selector_slot_order,
         });
         this.Add_Dependencies([
-            Data.Singleton(),
             this.commander,
             this.body,
         ]);

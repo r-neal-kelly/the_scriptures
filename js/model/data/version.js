@@ -10,6 +10,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import * as Utils from "../../utils.js";
 import * as Dictionary from "./dictionary.js";
 import * as File from "./file.js";
+export var Symbol;
+(function (Symbol) {
+    Symbol["FILE_BREAK"] = "\n~~~FILE_BREAK~~~\n";
+})(Symbol || (Symbol = {}));
 export class Instance {
     constructor({ language, branch, }) {
         this.language = language;

@@ -251,70 +251,6 @@ class Unique_Parts
     }
 }
 
-class Unique_Part_Indices
-{
-    private parts: { [index: string]: Index };
-
-    constructor(
-        {
-            unique_part_values,
-        }: {
-            unique_part_values: Array<string>,
-        },
-    )
-    {
-        this.parts = {};
-        for (let idx = 0, end = unique_part_values.length; idx < end; idx += 1) {
-            this.parts[unique_part_values[idx]] = idx;
-        }
-    }
-
-    Index(
-        part_value: string,
-    ):
-        Index
-    {
-        Utils.Assert(
-            this.parts.hasOwnProperty(part_value),
-            `Unknown part_value.`,
-        );
-
-        return this.parts[part_value];
-    }
-}
-
-class Unique_Part_Values
-{
-    private parts: { [index: Index]: string };
-
-    constructor(
-        {
-            unique_part_values,
-        }: {
-            unique_part_values: Array<string>,
-        },
-    )
-    {
-        this.parts = {};
-        for (let idx = 0, end = unique_part_values.length; idx < end; idx += 1) {
-            this.parts[idx] = unique_part_values[idx];
-        }
-    }
-
-    Value(
-        part_index: Index,
-    ):
-        string
-    {
-        Utils.Assert(
-            this.parts.hasOwnProperty(part_index),
-            `Unknown part_index.`,
-        );
-
-        return this.parts[part_index];
-    }
-}
-
 async function Generate():
     Promise<void>
 {
@@ -416,9 +352,9 @@ async function Generate():
         JSON.stringify(data_info),
     );
 
-    const unique_part_indices: Unique_Part_Indices = new Unique_Part_Indices(
+    const compressor: Data.Compressor.Instance = new Data.Compressor.Instance(
         {
-            unique_part_values: data_info.unique_part_values,
+            unique_parts: data_info.unique_part_values,
         },
     );
     const compressed_parts: Array<string> = [];
@@ -428,11 +364,7 @@ async function Generate():
             const versions_path: Path = `${languages_path}/${language_name}`;
             for (const version_name of (await Folder_Names(versions_path)).sort()) {
                 const files_path: Path = `${versions_path}/${version_name}`;
-                const dictionary: Text.Dictionary.Instance = new Text.Dictionary.Instance(
-                    {
-                        json: await Read_File(`${files_path}/Dictionary.json`),
-                    },
-                );
+                const file_texts: Array<string> = [];
                 for (
                     const file_name of (await File_Names(files_path)).filter(
                         function (
@@ -448,69 +380,35 @@ async function Generate():
                     ).sort()
                 ) {
                     const file_path: Path = `${files_path}/${file_name}`;
-                    const text: Text.Instance = new Text.Instance(
-                        {
-                            dictionary: dictionary,
-                            value: await Read_File(file_path),
-                        },
-                    );
-                    for (
-                        let line_idx = 0, line_end = text.Line_Count();
-                        line_idx < line_end;
-                        line_idx += 1
-                    ) {
-                        const line: Text.Line.Instance = text.Line(line_idx);
-                        for (
-                            let part_idx = 0, part_end = line.Macro_Part_Count();
-                            part_idx < part_end;
-                            part_idx += 1
-                        ) {
-                            const part: Text.Part.Instance = line.Macro_Part(part_idx);
-                            const index: Index = unique_part_indices.Index(part.Value());
-                            compressed_parts.push(String.fromCodePoint(index));
-                        }
-                    }
+                    file_texts.push(await Read_File(file_path));
                 }
+                const version_text: Text.Instance = new Text.Instance(
+                    {
+                        dictionary: new Text.Dictionary.Instance(
+                            {
+                                json: await Read_File(`${files_path}/Dictionary.json`),
+                            },
+                        ),
+                        value: file_texts.join(Data.Version.Symbol.FILE_BREAK),
+                    },
+                );
+                const compressed_version_text: string =
+                    compressor.Compress(version_text);
+                const uncompressed_version_text: string =
+                    compressor.Decompress(compressed_version_text);
+                Utils.Assert(
+                    version_text.Value() === uncompressed_version_text,
+                    `Invalid decompression!`,
+                );
+
+                await Write_File(
+                    `${versions_path}/${version_name}.txt`,
+                    compressed_version_text,
+                );
             }
         }
     }
-
-    /*
-    await Write_File(
-        `${data_path}/Test_Compressed.txt`,
-        compressed_parts.join(``),
-    );
-    */
-
-    const unique_part_values: Unique_Part_Values = new Unique_Part_Values(
-        {
-            unique_part_values: data_info.unique_part_values,
-        },
-    );
-    const uncompressed_parts: Array<string> = [];
-    for (const compressed_part of compressed_parts) {
-        uncompressed_parts.push(unique_part_values.Value(compressed_part.codePointAt(0) as Index));
-    }
-
-    /*
-    await Write_File(
-        `${data_path}/Test_Uncompressed.txt`,
-        uncompressed_parts.join(``),
-    );
-    */
 }
-
-/*
-if (fs.existsSync(`${versions_path}/${version_name}/Search`)) {
-    fs.rmSync(
-        `${versions_path}/${version_name}/Search`,
-        {
-            recursive: true,
-            force: true,
-        },
-    );
-}
-*/
 
 (
     async function Main()

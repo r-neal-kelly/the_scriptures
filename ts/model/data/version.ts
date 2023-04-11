@@ -14,6 +14,11 @@ export type Branch = {
     files: Array<File.Leaf>,
 };
 
+export enum Symbol
+{
+    FILE_BREAK = `\n~~~FILE_BREAK~~~\n`,
+}
+
 export class Instance
 {
     private language: Language.Instance;

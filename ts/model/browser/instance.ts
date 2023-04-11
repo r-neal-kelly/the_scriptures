@@ -1,7 +1,6 @@
 import { Name } from "../../types.js";
 
 import * as Entity from "../entity.js";
-import * as Data from "../data.js";
 import * as Selection from "./selection.js";
 import * as Commander from "./commander.js";
 import * as Body from "./body.js";
@@ -41,7 +40,6 @@ export class Instance extends Entity.Instance
 
         this.Add_Dependencies(
             [
-                Data.Singleton(),
                 this.commander,
                 this.body,
             ],
