@@ -115,19 +115,24 @@ export class Instance extends Async.Instance
         }
 
         if (text_version != null) {
+            const dictionary: Text.Dictionary.Instance =
+                (await this.Version().Dictionary()).Text_Dictionary();
             const compressor: Compressor.Instance =
                 this.Version().Language().Book().Data().Compressor();
             for (
                 const text_file of
-                compressor.Decompress(text_version).split(Version.Symbol.FILE_BREAK)
+                compressor.Decompress(
+                    {
+                        value: text_version,
+                        dictionary: dictionary,
+                    },
+                ).split(Version.Symbol.FILE_BREAK)
             ) {
                 this.text_files.push(
                     new Text.Instance(
                         {
-                            dictionary:
-                                (await this.Version().Dictionary()).Text_Dictionary(),
-                            value:
-                                text_file.replace(/\r?\n\r?\n/g, `\n \n`),
+                            dictionary: dictionary,
+                            value: text_file.replace(/\r?\n\r?\n/g, `\n \n`),
                         },
                     ),
                 );

@@ -218,15 +218,19 @@ function Generate() {
                         const file_path = `${files_path}/${file_name}`;
                         file_texts.push(yield Read_File(file_path));
                     }
-                    const version_text = new Text.Instance({
-                        dictionary: new Text.Dictionary.Instance({
-                            json: yield Read_File(`${files_path}/Dictionary.json`),
-                        }),
-                        value: file_texts.join(Data.Version.Symbol.FILE_BREAK),
+                    const version_dictionary = new Text.Dictionary.Instance({
+                        json: yield Read_File(`${files_path}/Dictionary.json`),
                     });
-                    const compressed_version_text = compressor.Compress(version_text);
-                    const uncompressed_version_text = compressor.Decompress(compressed_version_text);
-                    Utils.Assert(version_text.Value() === uncompressed_version_text, `Invalid decompression!`);
+                    const version_text = file_texts.join(Data.Version.Symbol.FILE_BREAK);
+                    const compressed_version_text = compressor.Compress({
+                        value: version_text,
+                        dictionary: version_dictionary,
+                    });
+                    const uncompressed_version_text = compressor.Decompress({
+                        value: compressed_version_text,
+                        dictionary: version_dictionary,
+                    });
+                    Utils.Assert(version_text === uncompressed_version_text, `Invalid decompression!`);
                     yield Write_File(`${files_path}/${Data.Version.Text.Symbol.NAME}`, compressed_version_text);
                 }
             }

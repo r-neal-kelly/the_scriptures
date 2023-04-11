@@ -62,10 +62,14 @@ export class Instance extends Async.Instance {
                 text_version = null;
             }
             if (text_version != null) {
+                const dictionary = (yield this.Version().Dictionary()).Text_Dictionary();
                 const compressor = this.Version().Language().Book().Data().Compressor();
-                for (const text_file of compressor.Decompress(text_version).split(Version.Symbol.FILE_BREAK)) {
+                for (const text_file of compressor.Decompress({
+                    value: text_version,
+                    dictionary: dictionary,
+                }).split(Version.Symbol.FILE_BREAK)) {
                     this.text_files.push(new Text.Instance({
-                        dictionary: (yield this.Version().Dictionary()).Text_Dictionary(),
+                        dictionary: dictionary,
                         value: text_file.replace(/\r?\n\r?\n/g, `\n \n`),
                     }));
                 }

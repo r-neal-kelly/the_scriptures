@@ -378,22 +378,28 @@ async function Generate():
                     const file_path: Path = `${files_path}/${file_name}`;
                     file_texts.push(await Read_File(file_path));
                 }
-                const version_text: Text.Instance = new Text.Instance(
+                const version_dictionary: Text.Dictionary.Instance = new Text.Dictionary.Instance(
                     {
-                        dictionary: new Text.Dictionary.Instance(
-                            {
-                                json: await Read_File(`${files_path}/Dictionary.json`),
-                            },
-                        ),
-                        value: file_texts.join(Data.Version.Symbol.FILE_BREAK),
+                        json: await Read_File(`${files_path}/Dictionary.json`),
                     },
                 );
+                const version_text = file_texts.join(Data.Version.Symbol.FILE_BREAK);
                 const compressed_version_text: string =
-                    compressor.Compress(version_text);
+                    compressor.Compress(
+                        {
+                            value: version_text,
+                            dictionary: version_dictionary,
+                        },
+                    );
                 const uncompressed_version_text: string =
-                    compressor.Decompress(compressed_version_text);
+                    compressor.Decompress(
+                        {
+                            value: compressed_version_text,
+                            dictionary: version_dictionary,
+                        },
+                    );
                 Utils.Assert(
-                    version_text.Value() === uncompressed_version_text,
+                    version_text === uncompressed_version_text,
                     `Invalid decompression!`,
                 );
 

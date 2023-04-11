@@ -1,5 +1,6 @@
 import * as Utils from "../../utils.js";
 import * as Unicode from "../../unicode.js";
+import * as Text from "../text.js";
 export var Symbol;
 (function (Symbol) {
     Symbol[Symbol["NEWLINE"] = 0] = "NEWLINE";
@@ -18,20 +19,39 @@ export class Instance {
             this.values[compressor_index] = unique_parts[idx];
         }
     }
-    Compress(text) {
+    Compress({ value, dictionary, }) {
         const compressed_parts = [];
+        const text = new Text.Instance({
+            dictionary: dictionary,
+            value: value,
+        });
         for (let line_idx = 0, line_end = text.Line_Count(); line_idx < line_end; line_idx += 1) {
             const line = text.Line(line_idx);
+            let previous_part_is_word = false;
             for (let part_idx = 0, part_end = line.Macro_Part_Count(); part_idx < part_end; part_idx += 1) {
                 const part = line.Macro_Part(part_idx);
                 const value = part.Value();
                 if (this.indices.hasOwnProperty(value)) {
-                    compressed_parts.push(String.fromCodePoint(this.indices[value]));
+                    const index = String.fromCodePoint(this.indices[value]);
+                    if (part.Is_Word()) {
+                        compressed_parts.push(index);
+                        previous_part_is_word = true;
+                    }
+                    else {
+                        if (!(value === ` ` &&
+                            previous_part_is_word &&
+                            part_idx + 1 < part_end &&
+                            line.Macro_Part(part_idx + 1).Is_Word())) {
+                            compressed_parts.push(index);
+                        }
+                        previous_part_is_word = false;
+                    }
                 }
                 else {
                     compressed_parts.push(String.fromCodePoint(Symbol.VERBATIM_OPEN));
                     compressed_parts.push(value);
                     compressed_parts.push(String.fromCodePoint(Symbol.VERBATIM_CLOSE));
+                    previous_part_is_word = false;
                 }
             }
             if (line_idx < line_end - 1) {
@@ -40,11 +60,12 @@ export class Instance {
         }
         return compressed_parts.join(``);
     }
-    Decompress(text) {
+    Decompress({ value, dictionary, }) {
         const uncompressed_parts = [];
         let it = new Unicode.Iterator({
-            text: text,
+            text: value,
         });
+        let previous_part_is_word = false;
         for (; !it.Is_At_End(); it = it.Next()) {
             if (it.Point().codePointAt(0) === Symbol.VERBATIM_OPEN) {
                 const start = it.Next();
@@ -53,12 +74,26 @@ export class Instance {
                     it = it.Next();
                 }
                 uncompressed_parts.push(start.Points().slice(0, it.Index() - start.Index()));
+                previous_part_is_word = false;
             }
             else if (it.Point().codePointAt(0) === Symbol.NEWLINE) {
                 uncompressed_parts.push(`\n`);
+                previous_part_is_word = false;
             }
             else {
-                uncompressed_parts.push(this.values[it.Point().codePointAt(0)]);
+                const value = this.values[it.Point().codePointAt(0)];
+                if (dictionary.Has_Word(value) ||
+                    dictionary.Has_Word_Error(value)) {
+                    if (previous_part_is_word) {
+                        uncompressed_parts.push(` `);
+                    }
+                    uncompressed_parts.push(value);
+                    previous_part_is_word = true;
+                }
+                else {
+                    uncompressed_parts.push(value);
+                    previous_part_is_word = false;
+                }
             }
         }
         return uncompressed_parts.join(``);
