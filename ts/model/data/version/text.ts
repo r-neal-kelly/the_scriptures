@@ -12,9 +12,9 @@ import * as Version from "./instance.js";
 
 export enum Symbol
 {
-    NAME = `Compressed.txt`,
-    TITLE = `Compressed`,
-    EXTENSION = `txt`,
+    NAME = `Text.comp`,
+    TITLE = `Text`,
+    EXTENSION = `comp`,
 }
 
 export class Instance extends Async.Instance

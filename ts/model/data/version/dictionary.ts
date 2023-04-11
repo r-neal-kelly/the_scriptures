@@ -5,15 +5,20 @@ import * as Utils from "../../../utils.js";
 import * as Async from "../../../async.js";
 
 import * as Text from "../../text.js";
+import * as Compressor from "../compressor.js";
 import * as Version from "./instance.js";
+
+export enum Symbol
+{
+    NAME = `Dictionary.comp`,
+    TITLE = `Dictionary`,
+    EXTENSION = `comp`,
+}
 
 export class Instance extends Async.Instance
 {
     private version: Version.Instance;
-    private name: Name;
     private path: Path;
-    private title: Name;
-    private extension: Name;
     private text_dictionary: Text.Dictionary.Instance | null;
 
     constructor(
@@ -27,14 +32,12 @@ export class Instance extends Async.Instance
         super();
 
         this.version = version;
-        this.name = `Dictionary.json`;
-        this.path = `${version.Path()}/${this.name}`;
-        this.title = this.name.replace(/\.[^.]*$/, ``);
-        this.extension = this.name.replace(/^[^.]*\./, ``);
+        this.path = `${version.Path()}/${Symbol.NAME}`;
         this.text_dictionary = null;
 
         this.Add_Dependencies(
             [
+                this.Version().Language().Book().Data(),
             ],
         );
     }
@@ -48,7 +51,7 @@ export class Instance extends Async.Instance
     Name():
         Name
     {
-        return this.name;
+        return Symbol.NAME;
     }
 
     Path():
@@ -60,13 +63,13 @@ export class Instance extends Async.Instance
     Title():
         Name
     {
-        return this.title;
+        return Symbol.TITLE;
     }
 
     Extension():
         Name
     {
-        return this.extension;
+        return Symbol.EXTENSION;
     }
 
     Text_Dictionary():
@@ -92,7 +95,9 @@ export class Instance extends Async.Instance
         const response: Response =
             await fetch(Utils.Resolve_Path(this.Path()));
         if (response.ok) {
-            text_dictionary_json = await response.text();
+            const compressor: Compressor.Instance =
+                this.Version().Language().Book().Data().Compressor();
+            text_dictionary_json = compressor.Decompress_Dictionary(await response.text());
         } else {
             text_dictionary_json = null;
         }

@@ -129,8 +129,7 @@ class Unique_Parts {
 }
 function Filter_File_Names(file_name) {
     return (/\.txt$/.test(file_name) &&
-        !/COPY\.txt$/.test(file_name) &&
-        !new RegExp(`^${Data.Version.Text.Symbol.TITLE}\\.${Data.Version.Text.Symbol.EXTENSION}$`).test(file_name));
+        !/COPY\.txt$/.test(file_name));
 }
 ;
 function Generate() {
@@ -218,8 +217,13 @@ function Generate() {
                         const file_path = `${files_path}/${file_name}`;
                         file_texts.push(yield Read_File(file_path));
                     }
+                    const version_dictionary_json = yield Read_File(`${files_path}/Dictionary.json`);
+                    const compressed_version_dictionary_json = compressor.Compress_Dictionary(version_dictionary_json);
+                    const uncompressed_version_dictionary_json = compressor.Decompress_Dictionary(compressed_version_dictionary_json);
+                    Utils.Assert(uncompressed_version_dictionary_json === version_dictionary_json, `Invalid dictionary decompression!`);
+                    yield Write_File(`${files_path}/${Data.Version.Dictionary.Symbol.NAME}`, compressed_version_dictionary_json);
                     const version_dictionary = new Text.Dictionary.Instance({
-                        json: yield Read_File(`${files_path}/Dictionary.json`),
+                        json: version_dictionary_json,
                     });
                     const version_text = file_texts.join(Data.Version.Symbol.FILE_BREAK);
                     const compressed_version_text = compressor.Compress({
@@ -230,7 +234,7 @@ function Generate() {
                         value: compressed_version_text,
                         dictionary: version_dictionary,
                     });
-                    Utils.Assert(version_text === uncompressed_version_text, `Invalid decompression!`);
+                    Utils.Assert(uncompressed_version_text === version_text, `Invalid decompression!`);
                     yield Write_File(`${files_path}/${Data.Version.Text.Symbol.NAME}`, compressed_version_text);
                 }
             }

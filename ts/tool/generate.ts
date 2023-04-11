@@ -262,10 +262,7 @@ function Filter_File_Names(
 {
     return (
         /\.txt$/.test(file_name) &&
-        !/COPY\.txt$/.test(file_name) &&
-        !new RegExp(
-            `^${Data.Version.Text.Symbol.TITLE}\\.${Data.Version.Text.Symbol.EXTENSION}$`,
-        ).test(file_name)
+        !/COPY\.txt$/.test(file_name)
     );
 };
 
@@ -378,9 +375,25 @@ async function Generate():
                     const file_path: Path = `${files_path}/${file_name}`;
                     file_texts.push(await Read_File(file_path));
                 }
+
+                const version_dictionary_json: Text.Value =
+                    await Read_File(`${files_path}/Dictionary.json`);
+                const compressed_version_dictionary_json: Text.Value =
+                    compressor.Compress_Dictionary(version_dictionary_json);
+                const uncompressed_version_dictionary_json: Text.Value =
+                    compressor.Decompress_Dictionary(compressed_version_dictionary_json);
+                Utils.Assert(
+                    uncompressed_version_dictionary_json === version_dictionary_json,
+                    `Invalid dictionary decompression!`,
+                );
+                await Write_File(
+                    `${files_path}/${Data.Version.Dictionary.Symbol.NAME}`,
+                    compressed_version_dictionary_json,
+                );
+
                 const version_dictionary: Text.Dictionary.Instance = new Text.Dictionary.Instance(
                     {
-                        json: await Read_File(`${files_path}/Dictionary.json`),
+                        json: version_dictionary_json,
                     },
                 );
                 const version_text = file_texts.join(Data.Version.Symbol.FILE_BREAK);
@@ -399,10 +412,9 @@ async function Generate():
                         },
                     );
                 Utils.Assert(
-                    version_text === uncompressed_version_text,
+                    uncompressed_version_text === version_text,
                     `Invalid decompression!`,
                 );
-
                 await Write_File(
                     `${files_path}/${Data.Version.Text.Symbol.NAME}`,
                     compressed_version_text,

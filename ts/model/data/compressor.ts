@@ -1,3 +1,4 @@
+import { Integer } from "../../types.js";
 import { Index } from "../../types.js";
 
 import * as Utils from "../../utils.js";
@@ -54,6 +55,9 @@ export class Instance
         string
     {
         const compressed_parts: Array<string> = [];
+        const newline: string = String.fromCodePoint(Symbol.NEWLINE);
+        const verbatim_open: string = String.fromCodePoint(Symbol.VERBATIM_OPEN);
+        const verbatim_close: string = String.fromCodePoint(Symbol.VERBATIM_CLOSE);
 
         const text: Text.Instance = new Text.Instance(
             {
@@ -94,14 +98,18 @@ export class Instance
                         previous_part_is_word = false;
                     }
                 } else {
-                    compressed_parts.push(String.fromCodePoint(Symbol.VERBATIM_OPEN));
+                    if (compressed_parts[compressed_parts.length - 1] === verbatim_close) {
+                        compressed_parts.pop();
+                    } else {
+                        compressed_parts.push(verbatim_open);
+                    }
                     compressed_parts.push(value);
-                    compressed_parts.push(String.fromCodePoint(Symbol.VERBATIM_CLOSE));
+                    compressed_parts.push(verbatim_close);
                     previous_part_is_word = false;
                 }
             }
             if (line_idx < line_end - 1) {
-                compressed_parts.push(String.fromCodePoint(Symbol.NEWLINE));
+                compressed_parts.push(newline);
             }
         }
 
@@ -158,5 +166,75 @@ export class Instance
         }
 
         return uncompressed_parts.join(``);
+    }
+
+    Compress_Dictionary(
+        dictionary_value: string,
+    ):
+        string
+    {
+        const zero: string = String.fromCodePoint(0);
+        const one: string = String.fromCodePoint(1);
+
+        Utils.Assert(
+            dictionary_value.match(zero) == null &&
+            dictionary_value.match(one) == null,
+            `Cannot compress a dictionary that contains a code point of 0 or 1.`,
+        );
+
+        for (
+            const value of Object.values(this.values).sort(
+                function (
+                    a: string,
+                    b: string,
+                ):
+                    Integer
+                {
+                    return b.length - a.length;
+                },
+            )
+        ) {
+            if (value.length > 1) {
+                dictionary_value = dictionary_value.replace(
+                    value,
+                    zero + String.fromCodePoint(this.indices[value]),
+                );
+            }
+        }
+        dictionary_value = dictionary_value.replace(/","\x00/g, one);
+
+        return dictionary_value;
+    }
+
+    Decompress_Dictionary(
+        dictionary_value: string,
+    ):
+        string
+    {
+        const zero: string = String.fromCodePoint(0);
+        const one: string = String.fromCodePoint(1);
+
+        dictionary_value = dictionary_value.replace(new RegExp(one, `g`), `","\x00`);
+        for (
+            const value of Object.values(this.values).sort(
+                function (
+                    a: string,
+                    b: string,
+                ):
+                    Integer
+                {
+                    return b.length - a.length;
+                },
+            )
+        ) {
+            if (value.length > 1) {
+                dictionary_value = dictionary_value.replace(
+                    zero + String.fromCodePoint(this.indices[value]),
+                    value,
+                );
+            }
+        }
+
+        return dictionary_value;
     }
 }

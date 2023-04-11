@@ -13,9 +13,9 @@ import * as Text from "../../text.js";
 import * as Version from "./instance.js";
 export var Symbol;
 (function (Symbol) {
-    Symbol["NAME"] = "Compressed.txt";
-    Symbol["TITLE"] = "Compressed";
-    Symbol["EXTENSION"] = "txt";
+    Symbol["NAME"] = "Text.comp";
+    Symbol["TITLE"] = "Text";
+    Symbol["EXTENSION"] = "comp";
 })(Symbol || (Symbol = {}));
 export class Instance extends Async.Instance {
     constructor({ version, }) {
