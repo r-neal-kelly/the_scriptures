@@ -317,7 +317,7 @@ async function Generate():
                 for (const [file_index, file_name] of file_names.entries()) {
                     const file_path: Path = `${files_path}/${file_name}`;
                     const file_leaf: Data.File.Leaf = {
-                        name: file_name,
+                        name: file_name.replace(/\.[^.]*$/, `.comp`),
                         index: file_index,
                     };
                     const text: Text.Instance = new Text.Instance(
@@ -371,13 +371,13 @@ async function Generate():
                 const file_names: Array<string> =
                     (await File_Names(files_path)).filter(Filter_File_Names).sort();
                 const file_texts: Array<string> = [];
-                for (const file_name of file_names) {
-                    const file_path: Path = `${files_path}/${file_name}`;
-                    file_texts.push(await Read_File(file_path));
-                }
-
                 const version_dictionary_json: Text.Value =
                     await Read_File(`${files_path}/Dictionary.json`);
+                const version_dictionary: Text.Dictionary.Instance = new Text.Dictionary.Instance(
+                    {
+                        json: version_dictionary_json,
+                    },
+                );
                 const compressed_version_dictionary_json: Text.Value =
                     compressor.Compress_Dictionary(version_dictionary_json);
                 const uncompressed_version_dictionary_json: Text.Value =
@@ -390,12 +390,33 @@ async function Generate():
                     `${files_path}/${Data.Version.Dictionary.Symbol.NAME}`,
                     compressed_version_dictionary_json,
                 );
-
-                const version_dictionary: Text.Dictionary.Instance = new Text.Dictionary.Instance(
-                    {
-                        json: version_dictionary_json,
-                    },
-                );
+                for (const file_name of file_names) {
+                    const file_path: Path = `${files_path}/${file_name}`;
+                    const file_text: Text.Value = await Read_File(file_path);
+                    file_texts.push(file_text);
+                    const compressed_file_text: string =
+                        compressor.Compress(
+                            {
+                                value: file_text,
+                                dictionary: version_dictionary,
+                            },
+                        );
+                    const uncompressed_file_text: string =
+                        compressor.Decompress(
+                            {
+                                value: compressed_file_text,
+                                dictionary: version_dictionary,
+                            },
+                        );
+                    Utils.Assert(
+                        uncompressed_file_text === file_text,
+                        `Invalid decompression!`,
+                    );
+                    await Write_File(
+                        `${files_path}/${file_name.replace(/\.[^.]*$/, `.comp`)}`,
+                        compressed_file_text,
+                    );
+                }
                 const version_text = file_texts.join(Data.Version.Symbol.FILE_BREAK);
                 const compressed_version_text: string =
                     compressor.Compress(

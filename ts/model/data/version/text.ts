@@ -132,7 +132,7 @@ export class Instance extends Async.Instance
                     new Text.Instance(
                         {
                             dictionary: dictionary,
-                            value: text_file.replace(/\r?\n\r?\n/g, `\n \n`),
+                            value: text_file,
                         },
                     ),
                 );

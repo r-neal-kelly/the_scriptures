@@ -83,16 +83,43 @@ export class Instance extends Entity.Instance
                 `index must not be null, and must be greater than -1.`,
             );
 
-            for (let idx = 0, end = text.Macro_Segment_Count(); idx < end; idx += 1) {
+            if (text.Value() === ``) {
+                const segment: Text.Segment.Instance = new Text.Segment.Instance(
+                    {
+                        segment_type: Text.Segment.Type.MACRO,
+                    },
+                );
+                segment.Add_Item(
+                    new Text.Part.Instance(
+                        {
+                            part_type: Text.Part.Type.POINT,
+                            value: ` `,
+                            status: Text.Part.Status.GOOD,
+                            style: Text.Part.Style._NONE_,
+                        },
+                    ),
+                );
                 this.segments.push(
                     new Segment.Instance(
                         {
                             line: this,
-                            index: idx,
-                            text: text.Macro_Segment(idx),
+                            index: 0,
+                            text: segment,
                         },
                     ),
                 );
+            } else {
+                for (let idx = 0, end = text.Macro_Segment_Count(); idx < end; idx += 1) {
+                    this.segments.push(
+                        new Segment.Instance(
+                            {
+                                line: this,
+                                index: idx,
+                                text: text.Macro_Segment(idx),
+                            },
+                        ),
+                    );
+                }
             }
         }
 
@@ -161,5 +188,11 @@ export class Instance extends Entity.Instance
         boolean
     {
         return this.text == null;
+    }
+
+    Is_New_Line():
+        boolean
+    {
+        return this.Text().Value() === ``;
     }
 }

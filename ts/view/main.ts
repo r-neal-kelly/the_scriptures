@@ -164,14 +164,14 @@ async function Main():
             `Genesis`,
             `English`,
             `KJV 1872-1888+`,
-            `Chapter 01.txt`,
+            `Chapter 01.comp`,
         ],
         [
             Browser_Model.Body.Selector.Slot.Order.VERSIONS_LANGUAGES_BOOKS,
             `Jubilees`,
             `English`,
             `R. H. Charles 1913`,
-            `Chapter 01.txt`,
+            `Chapter 01.comp`,
         ],
     ];
     for (const [order, book_name, language_name, version_name, file_name] of data) {
