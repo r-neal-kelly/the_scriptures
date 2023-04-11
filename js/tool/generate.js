@@ -127,6 +127,11 @@ class Unique_Parts {
         return this.parts[part];
     }
 }
+function Filter_File_Names(file_name) {
+    return (/\.txt$/.test(file_name) &&
+        !/COPY\.txt$/.test(file_name));
+}
+;
 function Generate() {
     return __awaiter(this, void 0, void 0, function* () {
         const data_info = {
@@ -169,10 +174,7 @@ function Generate() {
                     });
                     language_branch.versions.push(version_branch);
                     unique_names.Add_Version(version_name);
-                    for (const file_name of (yield File_Names(files_path)).filter(function (file_name) {
-                        return (/\.txt$/.test(file_name) &&
-                            !/COPY\.txt$/.test(file_name));
-                    }).sort()) {
+                    for (const file_name of (yield File_Names(files_path)).filter(Filter_File_Names).sort()) {
                         const file_path = `${files_path}/${file_name}`;
                         const file_leaf = {
                             name: file_name,
@@ -201,7 +203,6 @@ function Generate() {
         const compressor = new Data.Compressor.Instance({
             unique_parts: data_info.unique_part_values,
         });
-        const compressed_parts = [];
         for (const book_name of (yield Folder_Names(books_path)).sort()) {
             const languages_path = `${books_path}/${book_name}`;
             for (const language_name of (yield Folder_Names(languages_path)).sort()) {
@@ -209,10 +210,7 @@ function Generate() {
                 for (const version_name of (yield Folder_Names(versions_path)).sort()) {
                     const files_path = `${versions_path}/${version_name}`;
                     const file_texts = [];
-                    for (const file_name of (yield File_Names(files_path)).filter(function (file_name) {
-                        return (/\.txt$/.test(file_name) &&
-                            !/COPY\.txt$/.test(file_name));
-                    }).sort()) {
+                    for (const file_name of (yield File_Names(files_path)).filter(Filter_File_Names).sort()) {
                         const file_path = `${files_path}/${file_name}`;
                         file_texts.push(yield Read_File(file_path));
                     }

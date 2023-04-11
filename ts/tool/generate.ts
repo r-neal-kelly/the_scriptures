@@ -2,12 +2,10 @@ import * as fs from "fs";
 
 import { Integer } from "../types.js";
 import { Count } from "../types.js";
-import { Index } from "../types.js";
 import { Name } from "../types.js";
 import { Path } from "../types.js";
 
 import * as Utils from "../utils.js";
-import * as Unicode from "../unicode.js";
 
 import * as Data from "../model/data.js";
 import * as Text from "../model/text.js";
@@ -17,11 +15,12 @@ async function Read_Directory(
 ):
     Promise<Array<any>>
 {
-    return new Promise(
+    return new Promise<Array<any>>(
         function (
-            resolve,
-            reject,
-        )
+            resolve: (entities: Array<any>) => void,
+            reject: (error: Error) => void,
+        ):
+            void
         {
             fs.readdir(
                 directory_path,
@@ -29,9 +28,10 @@ async function Read_Directory(
                     withFileTypes: true,
                 },
                 function (
-                    error: Error,
+                    error: Error | null,
                     entities: Array<any>,
-                )
+                ):
+                    void
                 {
                     if (error != null) {
                         reject(error);
@@ -49,19 +49,21 @@ async function Read_File(
 ):
     Promise<string>
 {
-    return new Promise(
+    return new Promise<string>(
         function (
-            resolve,
-            reject,
-        )
+            resolve: (file_text: string) => void,
+            reject: (error: Error) => void,
+        ):
+            void
         {
             fs.readFile(
                 file_path,
                 `utf8`,
                 function (
-                    error: Error,
+                    error: Error | null,
                     file_text: string,
-                )
+                ):
+                    void
                 {
                     if (error != null) {
                         reject(error);
@@ -80,19 +82,21 @@ async function Write_File(
 ):
     Promise<void>
 {
-    return new Promise(
+    return new Promise<void>(
         function (
-            resolve,
-            reject,
-        )
+            resolve: () => void,
+            reject: (error: Error) => void,
+        ):
+            void
         {
             fs.writeFile(
                 file_path,
                 data,
                 `utf8`,
                 function (
-                    error: Error,
-                )
+                    error: Error | null,
+                ):
+                    void
                 {
                     if (error != null) {
                         reject(error);
@@ -110,9 +114,9 @@ async function Folder_Names(
 ):
     Promise<Array<Name>>
 {
-    const names = [];
+    const names: Array<Name> = [];
 
-    const entities = await Read_Directory(folder_path);
+    const entities: Array<any> = await Read_Directory(folder_path);
     for (let entity of entities) {
         if (entity.isDirectory()) {
             names.push(entity.name);
@@ -127,9 +131,9 @@ async function File_Names(
 ):
     Promise<Array<Name>>
 {
-    const names = [];
+    const names: Array<Name> = [];
 
-    const entities = await Read_Directory(folder_path);
+    const entities: Array<any> = await Read_Directory(folder_path);
     for (let entity of entities) {
         if (entity.isFile()) {
             names.push(entity.name);
@@ -251,6 +255,17 @@ class Unique_Parts
     }
 }
 
+function Filter_File_Names(
+    file_name: string,
+):
+    boolean
+{
+    return (
+        /\.txt$/.test(file_name) &&
+        !/COPY\.txt$/.test(file_name)
+    );
+};
+
 async function Generate():
     Promise<void>
 {
@@ -263,8 +278,8 @@ async function Generate():
         unique_version_names: [],
         unique_part_values: [],
     };
-    const unique_names = new Unique_Names();
-    const unique_parts = new Unique_Parts();
+    const unique_names: Unique_Names = new Unique_Names();
+    const unique_parts: Unique_Parts = new Unique_Parts();
 
     const data_path: Path = `./Data`;
     const books_path: Path = `${data_path}/Books`;
@@ -299,16 +314,7 @@ async function Generate():
                 unique_names.Add_Version(version_name);
                 for (
                     const file_name of (await File_Names(files_path)).filter(
-                        function (
-                            file_name,
-                        ):
-                            boolean
-                        {
-                            return (
-                                /\.txt$/.test(file_name) &&
-                                !/COPY\.txt$/.test(file_name)
-                            );
-                        },
+                        Filter_File_Names,
                     ).sort()
                 ) {
                     const file_path: Path = `${files_path}/${file_name}`;
@@ -357,7 +363,6 @@ async function Generate():
             unique_parts: data_info.unique_part_values,
         },
     );
-    const compressed_parts: Array<string> = [];
     for (const book_name of (await Folder_Names(books_path)).sort()) {
         const languages_path: Path = `${books_path}/${book_name}`;
         for (const language_name of (await Folder_Names(languages_path)).sort()) {
@@ -367,16 +372,7 @@ async function Generate():
                 const file_texts: Array<string> = [];
                 for (
                     const file_name of (await File_Names(files_path)).filter(
-                        function (
-                            file_name,
-                        ):
-                            boolean
-                        {
-                            return (
-                                /\.txt$/.test(file_name) &&
-                                !/COPY\.txt$/.test(file_name)
-                            );
-                        },
+                        Filter_File_Names,
                     ).sort()
                 ) {
                     const file_path: Path = `${files_path}/${file_name}`;
@@ -411,7 +407,8 @@ async function Generate():
 }
 
 (
-    async function Main()
+    async function Main():
+        Promise<void>
     {
         await Generate();
     }
