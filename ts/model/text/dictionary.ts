@@ -540,6 +540,6 @@ export class Instance
             this.info.break_errors[boundary].sort();
         }
 
-        return JSON.stringify(this.info, null, 4);
+        return JSON.stringify(this.info);
     }
 }

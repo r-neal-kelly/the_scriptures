@@ -247,6 +247,6 @@ export class Instance {
         for (const boundary of [Boundary.START, Boundary.MIDDLE, Boundary.END]) {
             this.info.break_errors[boundary].sort();
         }
-        return JSON.stringify(this.info, null, 4);
+        return JSON.stringify(this.info);
     }
 }
