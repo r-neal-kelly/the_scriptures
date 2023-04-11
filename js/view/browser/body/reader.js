@@ -1,1 +1,1 @@
-export { Instance } from "./reader/instance.js";
+export{Instance}from"./reader/instance.js";

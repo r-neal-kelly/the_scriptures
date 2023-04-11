@@ -1,5 +1,1 @@
-export var Type;
-(function (Type) {
-    Type[Type["PART"] = 0] = "PART";
-    Type[Type["SPLIT"] = 1] = "SPLIT";
-})(Type || (Type = {}));
+export var Type;!function(T){T[T.PART=0]="PART",T[T.SPLIT=1]="SPLIT"}(Type||(Type={}));
