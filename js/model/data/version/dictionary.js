@@ -7,9 +7,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import * as Utils from "../../utils.js";
-import * as Async from "../../async.js";
-import * as Text from "../text.js";
+import * as Utils from "../../../utils.js";
+import * as Async from "../../../async.js";
+import * as Text from "../../text.js";
 export class Instance extends Async.Instance {
     constructor({ version, }) {
         super();

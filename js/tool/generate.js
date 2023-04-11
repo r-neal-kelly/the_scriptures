@@ -129,7 +129,8 @@ class Unique_Parts {
 }
 function Filter_File_Names(file_name) {
     return (/\.txt$/.test(file_name) &&
-        !/COPY\.txt$/.test(file_name));
+        !/COPY\.txt$/.test(file_name) &&
+        !new RegExp(`^${Data.Version.Text.Symbol.TITLE}\\.${Data.Version.Text.Symbol.EXTENSION}$`).test(file_name));
 }
 ;
 function Generate() {
@@ -172,12 +173,14 @@ function Generate() {
                     const dictionary = new Text.Dictionary.Instance({
                         json: yield Read_File(`${files_path}/Dictionary.json`),
                     });
+                    const file_names = (yield File_Names(files_path)).filter(Filter_File_Names).sort();
                     language_branch.versions.push(version_branch);
                     unique_names.Add_Version(version_name);
-                    for (const file_name of (yield File_Names(files_path)).filter(Filter_File_Names).sort()) {
+                    for (const [file_index, file_name] of file_names.entries()) {
                         const file_path = `${files_path}/${file_name}`;
                         const file_leaf = {
                             name: file_name,
+                            index: file_index,
                         };
                         const text = new Text.Instance({
                             dictionary: dictionary,
@@ -209,8 +212,9 @@ function Generate() {
                 const versions_path = `${languages_path}/${language_name}`;
                 for (const version_name of (yield Folder_Names(versions_path)).sort()) {
                     const files_path = `${versions_path}/${version_name}`;
+                    const file_names = (yield File_Names(files_path)).filter(Filter_File_Names).sort();
                     const file_texts = [];
-                    for (const file_name of (yield File_Names(files_path)).filter(Filter_File_Names).sort()) {
+                    for (const file_name of file_names) {
                         const file_path = `${files_path}/${file_name}`;
                         file_texts.push(yield Read_File(file_path));
                     }
@@ -223,7 +227,7 @@ function Generate() {
                     const compressed_version_text = compressor.Compress(version_text);
                     const uncompressed_version_text = compressor.Decompress(compressed_version_text);
                     Utils.Assert(version_text.Value() === uncompressed_version_text, `Invalid decompression!`);
-                    yield Write_File(`${versions_path}/${version_name}.txt`, compressed_version_text);
+                    yield Write_File(`${files_path}/${Data.Version.Text.Symbol.NAME}`, compressed_version_text);
                 }
             }
         }

@@ -72,21 +72,11 @@ export class Instance extends Entity.Instance
     {
         if (this.current_file.Maybe_Data() != file) {
             if (file != null) {
-                const file_dictionary: Text.Dictionary.Instance =
-                    (await file.Version().Dictionary()).Text_Dictionary();
-                const file_value: string =
-                    (await file.Maybe_Text() || ``).replace(/\r?\n\r?\n/g, `\n \n`);
-
                 this.current_file = new File.Instance(
                     {
                         reader: this,
                         data: file,
-                        text: new Text.Instance(
-                            {
-                                dictionary: file_dictionary,
-                                value: file_value,
-                            },
-                        ),
+                        text: await file.Text(),
                     },
                 );
 

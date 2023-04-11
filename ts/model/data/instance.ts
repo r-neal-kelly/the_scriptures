@@ -7,6 +7,7 @@ import * as Utils from "../../utils.js";
 import * as Async from "../../async.js";
 
 import { Type } from "./type.js";
+import * as Compressor from "./compressor.js";
 import * as Query from "./query.js";
 import * as Book from "./book.js";
 import * as Version from "./version.js";
@@ -31,6 +32,7 @@ export class Instance extends Async.Instance
     private books_path: Path;
     private info: Info | null;
     private books: Array<Book.Instance>;
+    private compressor: Compressor.Instance | null;
 
     constructor()
     {
@@ -41,6 +43,7 @@ export class Instance extends Async.Instance
         this.books_path = `${this.path}/Books`;
         this.info = null;
         this.books = [];
+        this.compressor = null;
 
         this.Add_Dependencies(
             [
@@ -146,6 +149,21 @@ export class Instance extends Async.Instance
         );
 
         return Array.from(this.books);
+    }
+
+    Compressor():
+        Compressor.Instance
+    {
+        Utils.Assert(
+            this.Is_Ready(),
+            `Not ready.`,
+        );
+        Utils.Assert(
+            this.compressor != null,
+            `Compressor is null!`,
+        );
+
+        return this.compressor as Compressor.Instance;
     }
 
     Names(
@@ -1141,6 +1159,11 @@ export class Instance extends Async.Instance
     ):
         Array<Name>
     {
+        Utils.Assert(
+            this.Is_Ready(),
+            `Not ready.`,
+        );
+
         return this.Files(
             {
                 book_name,
@@ -1176,6 +1199,12 @@ export class Instance extends Async.Instance
                     ),
                 );
             }
+
+            this.compressor = new Compressor.Instance(
+                {
+                    unique_parts: this.info.unique_part_values,
+                },
+            );
         } else {
             this.info = {
                 tree: {
@@ -1186,6 +1215,12 @@ export class Instance extends Async.Instance
                 unique_version_names: [],
                 unique_part_values: [],
             };
+
+            this.compressor = new Compressor.Instance(
+                {
+                    unique_parts: [],
+                },
+            );
         }
     }
 }

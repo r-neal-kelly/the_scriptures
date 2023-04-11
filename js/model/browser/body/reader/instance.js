@@ -32,15 +32,10 @@ export class Instance extends Entity.Instance {
         return __awaiter(this, void 0, void 0, function* () {
             if (this.current_file.Maybe_Data() != file) {
                 if (file != null) {
-                    const file_dictionary = (yield file.Version().Dictionary()).Text_Dictionary();
-                    const file_value = ((yield file.Maybe_Text()) || ``).replace(/\r?\n\r?\n/g, `\n \n`);
                     this.current_file = new File.Instance({
                         reader: this,
                         data: file,
-                        text: new Text.Instance({
-                            dictionary: file_dictionary,
-                            value: file_value,
-                        }),
+                        text: yield file.Text(),
                     });
                     yield this.current_file.Ready();
                 }

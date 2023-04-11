@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import * as Utils from "../../utils.js";
 import * as Async from "../../async.js";
 import { Type } from "./type.js";
+import * as Compressor from "./compressor.js";
 import * as Book from "./book.js";
 export class Instance extends Async.Instance {
     constructor() {
@@ -19,6 +20,7 @@ export class Instance extends Async.Instance {
         this.books_path = `${this.path}/Books`;
         this.info = null;
         this.books = [];
+        this.compressor = null;
         this.Add_Dependencies([]);
     }
     Name() {
@@ -58,6 +60,11 @@ export class Instance extends Async.Instance {
     Books() {
         Utils.Assert(this.Is_Ready(), `Not ready.`);
         return Array.from(this.books);
+    }
+    Compressor() {
+        Utils.Assert(this.Is_Ready(), `Not ready.`);
+        Utils.Assert(this.compressor != null, `Compressor is null!`);
+        return this.compressor;
     }
     Names(of) {
         Utils.Assert(this.Is_Ready(), `Not ready.`);
@@ -565,6 +572,7 @@ export class Instance extends Async.Instance {
             .File(file_name);
     }
     File_Names({ book_name, language_name, version_name, }) {
+        Utils.Assert(this.Is_Ready(), `Not ready.`);
         return this.Files({
             book_name,
             language_name,
@@ -584,6 +592,9 @@ export class Instance extends Async.Instance {
                         branch: book_branch,
                     }));
                 }
+                this.compressor = new Compressor.Instance({
+                    unique_parts: this.info.unique_part_values,
+                });
             }
             else {
                 this.info = {
@@ -595,6 +606,9 @@ export class Instance extends Async.Instance {
                     unique_version_names: [],
                     unique_part_values: [],
                 };
+                this.compressor = new Compressor.Instance({
+                    unique_parts: [],
+                });
             }
         });
     }

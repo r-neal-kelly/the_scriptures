@@ -262,7 +262,10 @@ function Filter_File_Names(
 {
     return (
         /\.txt$/.test(file_name) &&
-        !/COPY\.txt$/.test(file_name)
+        !/COPY\.txt$/.test(file_name) &&
+        !new RegExp(
+            `^${Data.Version.Text.Symbol.TITLE}\\.${Data.Version.Text.Symbol.EXTENSION}$`,
+        ).test(file_name)
     );
 };
 
@@ -310,16 +313,15 @@ async function Generate():
                         json: await Read_File(`${files_path}/Dictionary.json`),
                     },
                 );
+                const file_names: Array<string> =
+                    (await File_Names(files_path)).filter(Filter_File_Names).sort();
                 language_branch.versions.push(version_branch);
                 unique_names.Add_Version(version_name);
-                for (
-                    const file_name of (await File_Names(files_path)).filter(
-                        Filter_File_Names,
-                    ).sort()
-                ) {
+                for (const [file_index, file_name] of file_names.entries()) {
                     const file_path: Path = `${files_path}/${file_name}`;
                     const file_leaf: Data.File.Leaf = {
                         name: file_name,
+                        index: file_index,
                     };
                     const text: Text.Instance = new Text.Instance(
                         {
@@ -369,12 +371,10 @@ async function Generate():
             const versions_path: Path = `${languages_path}/${language_name}`;
             for (const version_name of (await Folder_Names(versions_path)).sort()) {
                 const files_path: Path = `${versions_path}/${version_name}`;
+                const file_names: Array<string> =
+                    (await File_Names(files_path)).filter(Filter_File_Names).sort();
                 const file_texts: Array<string> = [];
-                for (
-                    const file_name of (await File_Names(files_path)).filter(
-                        Filter_File_Names,
-                    ).sort()
-                ) {
+                for (const file_name of file_names) {
                     const file_path: Path = `${files_path}/${file_name}`;
                     file_texts.push(await Read_File(file_path));
                 }
@@ -398,7 +398,7 @@ async function Generate():
                 );
 
                 await Write_File(
-                    `${versions_path}/${version_name}.txt`,
+                    `${files_path}/${Data.Version.Text.Symbol.NAME}`,
                     compressed_version_text,
                 );
             }

@@ -7,11 +7,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import * as Utils from "../../utils.js";
 export class Instance {
     constructor({ version, leaf, }) {
         this.version = version;
         this.name = leaf.name;
+        this.index = leaf.index;
         this.path = `${version.Path()}/${leaf.name}`;
         this.title = leaf.name.replace(/\.[^.]*$/, ``);
         this.extension = leaf.name.replace(/^[^.]*\./, ``);
@@ -22,6 +22,9 @@ export class Instance {
     Name() {
         return this.name;
     }
+    Index() {
+        return this.index;
+    }
     Path() {
         return this.path;
     }
@@ -31,15 +34,9 @@ export class Instance {
     Extension() {
         return this.extension;
     }
-    Maybe_Text() {
+    Text() {
         return __awaiter(this, void 0, void 0, function* () {
-            const response = yield fetch(Utils.Resolve_Path(this.Path()));
-            if (response.ok) {
-                return yield response.text();
-            }
-            else {
-                return null;
-            }
+            return (yield this.Version().Text()).Text_File_At(this.Index());
         });
     }
 }
