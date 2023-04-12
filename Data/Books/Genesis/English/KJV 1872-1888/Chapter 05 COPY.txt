@@ -43,10 +43,10 @@
 ⸨i⸩ᵈ⸨/i⸩ Ecclus⸼ 44⸼ 16⸼
 ⸨err⸩Heb⸼⸨/err⸩ 11⸼ 5⸼
 
-⁺ Heb⸼ ⸨i⸩Enosh⸨err⸩⸨/err⸩⸨/i⸩
-⁺ Heb⸼ ⸨i⸩Kenan.⸨/i⸩
-⁺ Gr⸼ ⸨i⸩Maleleel.⸨/i⸩
-⁺ Heb⸼ ⸨i⸩Jered.⸨/i⸩
-⁺ Gr⸼ ⸨i⸩Mathusala.⸨/i⸩
-⁺ Heb⸼ ⸨i⸩Lemech.⸨/i⸩
-⁺ Gr⸼ ⸨i⸩⸨err⸩Noa⸨/err⸩⸨err⸩⸨/err⸩⸨/i⸩
+⁺ Heb⸼ ⸨i⸩Enosh⸨/i⸩⸨err⸩⸨/err⸩
+⁺ Heb⸼ ⸨i⸩Kenan⸨/i⸩.
+⁺ Gr⸼ ⸨i⸩Maleleel⸨/i⸩.
+⁺ Heb⸼ ⸨i⸩Jered⸨/i⸩.
+⁺ Gr⸼ ⸨i⸩Mathusala⸨/i⸩.
+⁺ Heb⸼ ⸨i⸩Lemech⸨/i⸩.
+⁺ Gr⸼ ⸨i⸩⸨err⸩Noa⸨/err⸩⸨/i⸩⸨err⸩⸨/err⸩

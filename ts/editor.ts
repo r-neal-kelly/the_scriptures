@@ -966,8 +966,14 @@ class Line
                     command_classes += ` INDENT`;
                 }
 
-                inner_html +=
-                    `<span class="COMMAND${command_classes}">${Escape_Text(command.Value())}</span>`;
+                if (command.Is_Good()) {
+                    inner_html +=
+                        `<span class="COMMAND${command_classes}">${Escape_Text(command.Value())}</span>`;
+                } else {
+                    inner_html +=
+                        `<span class="BAD_COMMAND${command_classes}">${Escape_Text(command.Value())}</span>`;
+                }
+
             } else {
                 let command_classes: string = ``;
                 if (part.Has_Italic_Style()) {
@@ -2559,6 +2565,14 @@ class Editor
             border-width: 0 0 2px 0;
             border-style: solid;
             border-color: transparent;
+            
+            overflow-wrap: normal;
+        }
+
+        .BAD_COMMAND {
+            border-width: 0 0 2px 0;
+            border-style: solid;
+            border-color: orange;
             
             overflow-wrap: normal;
         }
