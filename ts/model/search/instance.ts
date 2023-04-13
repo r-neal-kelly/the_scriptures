@@ -165,6 +165,167 @@
     won't even return a line if it matches its operand, and therefore that includes sequences, which essentially act as a text
     operand on the non-sequence level for a not. but the double not has me stumped atm. Does the not recalc the matches somehow?
     the matches that are lost?
+
+    THinking about it last night as I went to sleep, it occurrs to me that part of the solution is going to involve saving
+    the matches that we get from a sequence or non-sequence text also, and the matches will be paried with a negated
+    boolean that a not toggles. At the end of execution the matches will be check to see if they are negated, in which case
+    they are not returned as results.
+
+    We do not want matches when something is negated, even though we still want to get the line.
+    - !water
+    Should return an array of lines that have no matches. The matches are there for the view to know what to highlight.
+    See how we asked to highlight not water, it might be considered that we should highlight everything that is not
+    water, but I think this is a mistake.
+    - !water & fire
+    Should return an array of lines that have matches for "fire" but not "water". See why it would be frustrating for the
+    user to highlight every that is not water? We're really not interested in the non-sequence scope.
+    However, in the sequence scope
+    - <!water & fire>
+    Should return an array lof lines that have a sequence of some word followed by a break, and then "fire", all of which
+    should be highlighted. We can do look befores and look aheads too that simply aren't added to the matches but only verify
+    if a match succeeds, but the default behavior is to match.
+    However what does this mean?
+    -!<!water & fire>
+    Essentially it does the above and only returns lines that don't have that, and of course, it returns not matches, not even
+    matches for "water", break, "fire".
+
+    Now in terms of making this work, and how do we keep the negated booleans, I think we'll have to have several arrays
+    just like the out_nodes in compiler.
+    - !day | !night
+    Will spin up to execution frames, one for "day" and one for "night". They would each return a result of negated=false,
+    match[]. Remember, both sequences and non-sequences can have multiple matches from one text node, because it looks for
+    repeats in either case. Then the not simply returns a result of negated=true, match[]. Then the or keeps the negated
+    and combines the match[]'s into one. (This reminds me, if we have a not version for the binaries which would be neat,
+    this in addition may toggle the negated instead of leaving it unchanged.) Keep in mind, these are also working with a
+    lines array in a subtractive fashion, which is easier to understand.
+    - !day & night
+    Does the and have to check the negated state of matches on the left? I don't think so. And is essentially the same
+    as the text node, it just works with the lines it has and returns lines and matches. I think the matches are attached
+    to the line object, right? That way previous matches, negated or not, are discarded with their lines, else they are
+    carried in addition to new matches from "night", which I think should push its matches into the line's matches on
+    text node, right?
+    - true | false & false
+    Yeah, I think it makes sense that the matches array is attached to the lines, which are naturally subtractive. The
+    matches are only changed on not, in that they are all negate toggled, or on text, in which case any new matches in the same
+    line are pushed into the array. So some matches in the matches array will be negated and others not.
+    - !(!day & night)
+    Does this work with the above implementation? Let's just say we have the one line
+    
+    Avoiding the complication of matches:
+        !(!day & night)
+        - "day and night."
+        - "dawn and night."
+            call !(!day & night) lines:[0, 1]
+                call !day lines:[0, 1]
+                    call day lines:[0, 1]
+                    return lines:[0]
+                return lines:[1]
+                call night lines:[1]
+                return lines:[1]
+            return lines:[0]
+    Adding the complication of matches without caching negation:
+        !(!day & night)
+        - "day and night."
+        - "dawn and night."
+            call !(!day & night) lines:[0:matches:[], 1:matches:[]]
+                call !day lines:[0:matches:[], 1:matches:[]]
+                    call day lines:[0:matches:[], 1:matches:[]]
+                    return lines:[0:matches:[0]]
+                return lines:[1:matches:[]]
+                call night lines:[1:matches:[]]
+                return lines:[1:matches:[4]]
+            return lines:[0:matches:[0]]
+        Okay, wow, I think that just does what we want, because leach line in the lines array is a stateful object.
+        What would break this?
+           ___
+        - "day and night."
+
+        <!water & fire>
+        - "water fire."
+        - "earth fire."
+            call <!water & fire> lines:[0:matches:[], 1:matches:[]]
+                call <> lines:[0:matches:[], 1:matches:[]]
+                    call !water lines:[0:matches:[], 1:matches:[]]
+                        call water lines:[0:matches:[], 1:matches:[]]
+                        return lines:[0:matches:[0-1], 1:matches:[]]
+                    return lines:[0:matches:[1-2,2-3,3-4], 1:matches:[0-1,1-2,2-3,3-4]]
+                    call [implicit_break] lines:[0:matches:[1-2,2-3,3-4], 1:matches:[0-1,1-2,2-3,3-4]]
+                        lines:[0:matches:[2-3>4], 1:matches:[0-1>2,2-3>4]]
+                    return lines:[0:matches:[2-4], 1:matches:[0-2,2-4]]
+                    call fire lines:[0:matches:[2-4], 1:matches:[0-2,2-4]]
+                        lines:[1:matches:[0-2>3]]
+                    return lines:[1:matches:[0-3]]
+                return lines:[1:matches:[0-3]]
+            return lines:[1:matches:[0-3]]
+        Okay, I think I see how sequence will work. A not adds every part as a range from x-x+1 where
+        x is not found as a first index in any of the previous expression's matches, I wonder how that
+        will pan out for more complicated not operands. Also this really does point out how we need
+        classes in the language so that we can simply say {Break} or {Word}, etc. It's implicitly added
+        here because the algorithm might be able to infer that somehow, but maybe not in the parser?
+        If we do that in the parser, we'd have to pass a dictionary, which would increase the number
+        of compilations that would be cached, but might be worth it. Parse would just look to the left
+        to see if it's a text token, or close_group token I think, maybe two back if the and operator is
+        present. Which makes me think we should have a separate parser pass for sequences. The logic could
+        get gnarly?
+
+        !<!water & fire>
+        - "water fire." >>> "₀water₁ ₂fire₃.₄"
+        - "earth fire." >>> "₀earth₁ ₂fire₃.₄"
+            call !<!water & fire> lines:[0:matches:[], 1:matches:[]]
+                call <!water & fire> lines:[0:matches:[], 1:matches:[]]
+                    call !water & fire lines:[0:matches:[], 1:matches:[]]
+                        call !water lines:[0:matches:[], 1:matches:[]]
+                            call water lines:[0:matches:[], 1:matches:[]]
+                            return lines:[0:matches:[0-1], 1:matches:[]] // notice that it returns all lines, even ones without matches
+                        return lines:[0:matches:[1-2,2-3,3-4], 1:matches:[0-1,1-2,2-3,3-4]]
+                        call [implicit_break] lines:[0:matches:[1-2,2-3,3-4], 1:matches:[0-1,1-2,2-3,3-4]]
+                            lines:[0:matches:[2-3>4], 1:matches:[0-1>2,2-3>4]]
+                        return lines:[0:matches:[2-4], 1:matches:[0-2,2-4]]
+                        call fire lines:[0:matches:[2-4], 1:matches:[0-2,2-4]]
+                            lines:[0:matches;[], 1:matches:[0-2>3]] // must return all lines, even those without matches, I think, for the sake of not, like above
+                        return lines:[0:matches;[], 1:matches:[0-3]]
+                    return lines:[0:matches;[], 1:matches:[0-3]]
+                return lines:[1:matches:[0-3]] // now sequence mode is done, it returns only lines that have matches.
+            return lines:[0:matches:[]] // inverts lines just like normal.
+        - "water fire."
+        So it gets the line but doesn't actually match anything, which I think is exactly what we want.
+        It's similar to what would happen if we said
+        - !day
+        It find all the verses that don't have "day" in it, but there are no matches, nothing to highlight.
+
+        I do think that we should have a negated_matches prop on lines so that the double negative can
+        just switch back and forth, to save the matches of a verbatim, null by default. That way ranges are preserved.
+        I think it's safe because it's always set back to null except when executing the not node. It can probably
+        tell internal to the node execution simply by looking at if its operand is a not or not, lol.
+        if it's not a not operand, than it saves the matches on each line, and if it is a not operand, it just
+        switches the cache? But other unary's can get in the way, so I think the state has to be set to null
+        outside of not execution, and then it simply checks if the cache is null, sets it if it is, generates
+        the not matches, but if it does exist, it just switches them. It's set to null on all non-unary operator nodes,
+        or just when it's calc'd by text node? I think the later should logically cover it.
+
+        !(!day & night)
+        - "day night."
+        - "dawn night."
+            call !(!day & night) lines:[0:matches:[], 1:matches:[]]
+                call !day & night lines:[0:matches:[], 1:matches:[]]
+                    call !day lines:[0:matches:[], 1:matches:[]]
+                        call day lines:[0:matches:[], 1:matches:[]]
+                        return lines:[0:matches:[0-1]]
+                    return lines:[1:matches:[]]
+                    call night lines:[1:matches:[]]
+                    return lines:[1:matches:[2-3]]
+                return lines:[1:matches:[2-3]]
+            return lines:[0:matches:[0-1]]
+           ___
+        - "day night."
+        Don't we want
+           ___ _____
+        - "day night."
+        ?
+        I think no, because !(!day & night) === day & !night
+        which should result in
+           ___
+        - "day night."
 */
 
 import * as Entity from "../entity.js";
