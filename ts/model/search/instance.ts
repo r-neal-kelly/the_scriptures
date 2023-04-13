@@ -326,6 +326,10 @@
         which should result in
            ___
         - "day night."
+
+        Also, just realized that fuzzy should be invertable like not, likewise align operators. That's
+        so it can be turned on for a whole group and selectively disabled. And it's not hard like not
+        I don't think, because it's just a mode flag change and recursion.
 */
 
 import * as Entity from "../entity.js";
