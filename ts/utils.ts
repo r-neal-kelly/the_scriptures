@@ -71,8 +71,6 @@ function Is_Type(
 }
 
 export const Is = {
-    Type: Is_Type,
-
     Undefined: (x: any) => Is_Type(/^Undefined$/, x),
     Null: (x: any) => Is_Type(/^Null$/, x),
     Undefined_Or_Null: (x: any) => Is_Type(/^Undefined$|^Null$/, x),
@@ -99,6 +97,18 @@ export const Is = {
     Window_Or_Global: (x: any) => Is_Type(/^Window$|^global$/, x),
 };
 Object.freeze(Is);
+
+export function Escape_Regular_Expression(
+    regular_expression: string,
+):
+    string
+{
+    // Courtesy of Mozilla Developer Network.
+    return regular_expression.replace(
+        /[.*+?^${}()|[\]\\]/g,
+        `\\$&`,
+    );
+}
 
 export function Resolve_Path(
     path_from_root: Path,
