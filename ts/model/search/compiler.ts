@@ -56,7 +56,8 @@ export class Instance
             if (
                 operator_type === Token.Type.OPEN_SEQUENCE ||
                 operator_type === Token.Type.NOT ||
-                operator_type === Token.Type.FUZZY
+                operator_type === Token.Type.CASE ||
+                operator_type === Token.Type.ALIGN
             ) {
                 Utils.Assert(
                     fragments.length >= 1,
@@ -80,11 +81,17 @@ export class Instance
                                     operand: fragment.In_Node(),
                                 },
                             ) :
-                            new Node.Fuzzy(
-                                {
-                                    operand: fragment.In_Node(),
-                                },
-                            );
+                            operator_type === Token.Type.CASE ?
+                                new Node.Case(
+                                    {
+                                        operand: fragment.In_Node(),
+                                    },
+                                ) :
+                                new Node.Align(
+                                    {
+                                        operand: fragment.In_Node(),
+                                    },
+                                );
                 fragments.push(
                     new Fragment(
                         unary,
@@ -187,13 +194,18 @@ export class Instance
                     operator as Token.Operator,
                     fragments,
                 );
-            } else if (token_type === Token.Type.NOT || token_type === Token.Type.FUZZY) {
+            } else if (token_type === Token.Type.NOT) {
+                operators.push(token as Token.Operator);
+            } else if (token_type === Token.Type.CASE) {
+                operators.push(token as Token.Operator);
+            } else if (token_type === Token.Type.ALIGN) {
                 operators.push(token as Token.Operator);
             } else if (token_type === Token.Type.AND) {
                 while (
                     operators.length > 0 &&
                     operators[operators.length - 1].Type() === Token.Type.NOT ||
-                    operators[operators.length - 1].Type() === Token.Type.FUZZY ||
+                    operators[operators.length - 1].Type() === Token.Type.CASE ||
+                    operators[operators.length - 1].Type() === Token.Type.ALIGN ||
                     operators[operators.length - 1].Type() === Token.Type.AND
                 ) {
                     Evaluate_Fragments(
@@ -206,7 +218,8 @@ export class Instance
                 while (
                     operators.length > 0 &&
                     operators[operators.length - 1].Type() === Token.Type.NOT ||
-                    operators[operators.length - 1].Type() === Token.Type.FUZZY ||
+                    operators[operators.length - 1].Type() === Token.Type.CASE ||
+                    operators[operators.length - 1].Type() === Token.Type.ALIGN ||
                     operators[operators.length - 1].Type() === Token.Type.AND ||
                     operators[operators.length - 1].Type() === Token.Type.XOR
                 ) {
@@ -220,7 +233,8 @@ export class Instance
                 while (
                     operators.length > 0 &&
                     operators[operators.length - 1].Type() === Token.Type.NOT ||
-                    operators[operators.length - 1].Type() === Token.Type.FUZZY ||
+                    operators[operators.length - 1].Type() === Token.Type.CASE ||
+                    operators[operators.length - 1].Type() === Token.Type.ALIGN ||
                     operators[operators.length - 1].Type() === Token.Type.AND ||
                     operators[operators.length - 1].Type() === Token.Type.XOR ||
                     operators[operators.length - 1].Type() === Token.Type.OR

@@ -148,9 +148,14 @@ export class Instance
                             `Invalid '${Operator.NOT}' followed by '${Operator.CLOSE_GROUP}'.`,
                             last_expression_index,
                         );
-                    } else if (last_token.Type() === Token.Type.FUZZY) {
+                    } else if (last_token.Type() === Token.Type.CASE) {
                         return new Help(
-                            `Invalid '${Operator.FUZZY}' followed by '${Operator.CLOSE_GROUP}'.`,
+                            `Invalid '${Operator.CASE}' followed by '${Operator.CLOSE_GROUP}'.`,
+                            last_expression_index,
+                        );
+                    } else if (last_token.Type() === Token.Type.ALIGN) {
+                        return new Help(
+                            `Invalid '${Operator.ALIGN}' followed by '${Operator.CLOSE_GROUP}'.`,
                             last_expression_index,
                         );
                     } else if (last_token.Type() === Token.Type.AND) {
@@ -227,9 +232,14 @@ export class Instance
                             `Invalid '${Operator.NOT}' followed by '${Operator.CLOSE_SEQUENCE}'.`,
                             last_expression_index,
                         );
-                    } else if (last_token.Type() === Token.Type.FUZZY) {
+                    } else if (last_token.Type() === Token.Type.CASE) {
                         return new Help(
-                            `Invalid '${Operator.FUZZY}' followed by '${Operator.CLOSE_SEQUENCE}'.`,
+                            `Invalid '${Operator.CASE}' followed by '${Operator.CLOSE_SEQUENCE}'.`,
+                            last_expression_index,
+                        );
+                    } else if (last_token.Type() === Token.Type.ALIGN) {
+                        return new Help(
+                            `Invalid '${Operator.ALIGN}' followed by '${Operator.CLOSE_SEQUENCE}'.`,
                             last_expression_index,
                         );
                     } else if (last_token.Type() === Token.Type.AND) {
@@ -271,7 +281,7 @@ export class Instance
                     }
                     last_expression_index = it.Index();
                     tokens.push(new Token.Not());
-                } else if (point === Operator.FUZZY) {
+                } else if (point === Operator.CASE) {
                     const last_token: Token.Instance | null = Last(tokens);
                     if (
                         last_token != null &&
@@ -284,7 +294,21 @@ export class Instance
                         tokens.push(new Token.And());
                     }
                     last_expression_index = it.Index();
-                    tokens.push(new Token.Fuzzy());
+                    tokens.push(new Token.Case());
+                } else if (point === Operator.ALIGN) {
+                    const last_token: Token.Instance | null = Last(tokens);
+                    if (
+                        last_token != null &&
+                        (
+                            last_token.Type() === Token.Type.CLOSE_GROUP ||
+                            last_token.Type() === Token.Type.CLOSE_SEQUENCE ||
+                            last_token.Type() === Token.Type.TEXT
+                        )
+                    ) {
+                        tokens.push(new Token.And());
+                    }
+                    last_expression_index = it.Index();
+                    tokens.push(new Token.Align());
                 } else if (point === Operator.AND) {
                     const last_token: Token.Instance | null = Last(tokens);
                     if (last_token === null) {
@@ -307,9 +331,14 @@ export class Instance
                             `Invalid '${Operator.AND}' after '${Operator.NOT}'.`,
                             it.Index(),
                         );
-                    } else if (last_token.Type() === Token.Type.FUZZY) {
+                    } else if (last_token.Type() === Token.Type.CASE) {
                         return new Help(
-                            `Invalid '${Operator.AND}' after '${Operator.FUZZY}'.`,
+                            `Invalid '${Operator.AND}' after '${Operator.CASE}'.`,
+                            it.Index(),
+                        );
+                    } else if (last_token.Type() === Token.Type.ALIGN) {
+                        return new Help(
+                            `Invalid '${Operator.AND}' after '${Operator.ALIGN}'.`,
                             it.Index(),
                         );
                     } else if (last_token.Type() === Token.Type.AND) {
@@ -353,9 +382,14 @@ export class Instance
                             `Invalid '${Operator.XOR}' after '${Operator.NOT}'.`,
                             it.Index(),
                         );
-                    } else if (last_token.Type() === Token.Type.FUZZY) {
+                    } else if (last_token.Type() === Token.Type.CASE) {
                         return new Help(
-                            `Invalid '${Operator.XOR}' after '${Operator.FUZZY}'.`,
+                            `Invalid '${Operator.XOR}' after '${Operator.CASE}'.`,
+                            it.Index(),
+                        );
+                    } else if (last_token.Type() === Token.Type.ALIGN) {
+                        return new Help(
+                            `Invalid '${Operator.XOR}' after '${Operator.ALIGN}'.`,
                             it.Index(),
                         );
                     } else if (last_token.Type() === Token.Type.AND) {
@@ -399,9 +433,14 @@ export class Instance
                             `Invalid '${Operator.OR}' after '${Operator.NOT}'.`,
                             it.Index(),
                         );
-                    } else if (last_token.Type() === Token.Type.FUZZY) {
+                    } else if (last_token.Type() === Token.Type.CASE) {
                         return new Help(
-                            `Invalid '${Operator.OR}' after '${Operator.FUZZY}'.`,
+                            `Invalid '${Operator.OR}' after '${Operator.CASE}'.`,
+                            it.Index(),
+                        );
+                    } else if (last_token.Type() === Token.Type.ALIGN) {
+                        return new Help(
+                            `Invalid '${Operator.OR}' after '${Operator.ALIGN}'.`,
                             it.Index(),
                         );
                     } else if (last_token.Type() === Token.Type.AND) {
@@ -483,9 +522,14 @@ export class Instance
                     `Invalid '${Operator.NOT}' at end.`,
                     last_expression_index,
                 );
-            } else if (last_token.Type() === Token.Type.FUZZY) {
+            } else if (last_token.Type() === Token.Type.CASE) {
                 return new Help(
-                    `Invalid '${Operator.FUZZY}' at end.`,
+                    `Invalid '${Operator.CASE}' at end.`,
+                    last_expression_index,
+                );
+            } else if (last_token.Type() === Token.Type.ALIGN) {
+                return new Help(
+                    `Invalid '${Operator.ALIGN}' at end.`,
                     last_expression_index,
                 );
             } else if (last_token.Type() === Token.Type.AND) {

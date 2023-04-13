@@ -11,7 +11,8 @@ export enum Operator
     CLOSE_SEQUENCE = `>`,
 
     NOT = `!`,
-    FUZZY = `*`,
+    CASE = `*`,
+    ALIGN = `@`,
 
     AND = `&`,
 

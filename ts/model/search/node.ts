@@ -7,7 +7,8 @@ export enum Type
     XOR,
     AND,
     NOT,
-    FUZZY,
+    CASE,
+    ALIGN,
     SEQUENCE,
     END,
 }
@@ -236,7 +237,7 @@ export class Not extends Unary
     }
 }
 
-export class Fuzzy extends Unary
+export class Case extends Unary
 {
     constructor(
         {
@@ -248,7 +249,26 @@ export class Fuzzy extends Unary
     {
         super(
             {
-                type: Type.FUZZY,
+                type: Type.CASE,
+                operand: operand,
+            },
+        );
+    }
+}
+
+export class Align extends Unary
+{
+    constructor(
+        {
+            operand,
+        }: {
+            operand: Instance,
+        },
+    )
+    {
+        super(
+            {
+                type: Type.ALIGN,
                 operand: operand,
             },
         );

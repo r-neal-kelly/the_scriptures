@@ -6,7 +6,8 @@ export enum Type
     CLOSE_SEQUENCE,
 
     NOT,
-    FUZZY,
+    CASE,
+    ALIGN,
 
     AND,
 
@@ -103,13 +104,25 @@ export class Not extends Operator
     }
 }
 
-export class Fuzzy extends Operator
+export class Case extends Operator
 {
     constructor()
     {
         super(
             {
-                type: Type.FUZZY,
+                type: Type.CASE,
+            },
+        );
+    }
+}
+
+export class Align extends Operator
+{
+    constructor()
+    {
+        super(
+            {
+                type: Type.ALIGN,
             },
         );
     }
