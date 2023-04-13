@@ -35,7 +35,7 @@ class Fragment
 
 export class Instance
 {
-    // We could cache compiled tokens.
+    // We could cache nodes by expression.
 
     constructor()
     {

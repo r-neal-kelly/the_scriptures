@@ -1,1 +1,40 @@
-import*as Entity from"../../entity.js";export class Instance extends Entity.Instance{constructor({commander:t,is_activated:e}){super(),this.commander=t,this.is_activated=e,this.Add_Dependencies([])}Commander(){return this.commander}Symbol(){return this.Is_Activated()?"<":">"}Is_Activated(){return this.is_activated}Is_Deactivated(){return!this.Is_Activated()}Activate(){this.is_activated=!0}Deactivate(){this.is_activated=!1}Toggle(){this.Is_Activated()?this.Deactivate():this.Activate()}}
+import * as Entity from "../../entity.js";
+export class Instance extends Entity.Instance {
+    constructor({ commander, is_activated, }) {
+        super();
+        this.commander = commander;
+        this.is_activated = is_activated;
+        this.Add_Dependencies([]);
+    }
+    Commander() {
+        return this.commander;
+    }
+    Symbol() {
+        if (this.Is_Activated()) {
+            return `<`;
+        }
+        else {
+            return `>`;
+        }
+    }
+    Is_Activated() {
+        return this.is_activated;
+    }
+    Is_Deactivated() {
+        return !this.Is_Activated();
+    }
+    Activate() {
+        this.is_activated = true;
+    }
+    Deactivate() {
+        this.is_activated = false;
+    }
+    Toggle() {
+        if (this.Is_Activated()) {
+            this.Deactivate();
+        }
+        else {
+            this.Activate();
+        }
+    }
+}

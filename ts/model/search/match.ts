@@ -1,3 +1,10 @@
+export class Instance
+{
+    constructor()
+    {
+    }
+}
+
 /*
 import { Index } from "../../types.js";
 import { Name } from "../../types.js";
@@ -100,7 +107,3 @@ export class Instance
     }
 }
 */
-export class Instance
-{
-
-}

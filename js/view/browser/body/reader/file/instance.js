@@ -1,1 +1,115 @@
-import*as Model from"../../../../../model/browser/body/reader/file.js";import*as Entity from"../../../../entity.js";import*as Line from"./line.js";export class Instance extends Entity.Instance{constructor({model:n,reader:e}){super({element:"div",parent:e,event_grid:e.Event_Grid()}),this.model=n}On_Life(){return this.Add_This_CSS("\n                .File {\n                    width: 100%;\n                    padding: 12px 4px 36px 4px;\n                }\n            "),this.Add_Children_CSS("\n                .Line {\n                    display: block;\n\n                    color: inherit;\n                }\n\n                .Centered_Line {\n                    display: flex;\n                    flex-wrap: wrap;\n                    justify-content: center;\n\n                    text-align: center;\n                }\n\n                .Segment {\n                    display: inline-block;\n\n                    color: inherit;\n                }\n\n                .Item {\n                    display: inline-block;\n\n                    width: auto;\n\n                    border-style: solid;\n                    border-width: 0 0 2px 0;\n                    border-color: transparent;\n\n                    color: inherit;\n                    font-style: normal;\n                    font-weight: normal;\n                    font-variant: normal;\n                    text-decoration: none;\n                }\n                \n                .Indented_Item {\n                    width: 3em;\n                }\n\n                .Blank {\n                    display: none;\n\n                    color: transparent;\n                }\n\n                .Transparent {\n                    color: transparent;\n                }\n\n                .Italic {\n                    font-style: italic;\n                }\n\n                .Bold {\n                    font-weight: bold;\n                }\n\n                .Underline {\n                    text-decoration: underline;\n                }\n\n                .Small_Caps {\n                    font-variant: small-caps;\n                }\n\n                .Error {\n                    border-color: #ffcbcb;\n\n                    color: #ffcbcb;\n                }\n            "),[]}On_Refresh(){const n=this.Model(),e=Math.max(Model.Instance.Min_Line_Count(),n.Line_Count());for(let n=this.Child_Count(),t=e;n<t;n+=1)new Line.Instance({model:()=>this.Model().Line_At(n),file:this})}On_Reclass(){return["File"]}Model(){return this.model()}Reader(){return this.Parent()}}
+import * as Model from "../../../../../model/browser/body/reader/file.js";
+import * as Entity from "../../../../entity.js";
+import * as Line from "./line.js";
+export class Instance extends Entity.Instance {
+    constructor({ model, reader, }) {
+        super({
+            element: `div`,
+            parent: reader,
+            event_grid: reader.Event_Grid()
+        });
+        this.model = model;
+    }
+    On_Life() {
+        this.Add_This_CSS(`
+                .File {
+                    width: 100%;
+                    padding: 12px 4px 36px 4px;
+                }
+            `);
+        this.Add_Children_CSS(`
+                .Line {
+                    display: block;
+
+                    color: inherit;
+                }
+
+                .Centered_Line {
+                    display: flex;
+                    flex-wrap: wrap;
+                    justify-content: center;
+
+                    text-align: center;
+                }
+
+                .Segment {
+                    display: inline-block;
+
+                    color: inherit;
+                }
+
+                .Item {
+                    display: inline-block;
+
+                    width: auto;
+
+                    border-style: solid;
+                    border-width: 0 0 2px 0;
+                    border-color: transparent;
+
+                    color: inherit;
+                    font-style: normal;
+                    font-weight: normal;
+                    font-variant: normal;
+                    text-decoration: none;
+                }
+                
+                .Indented_Item {
+                    width: 3em;
+                }
+
+                .Blank {
+                    display: none;
+
+                    color: transparent;
+                }
+
+                .Transparent {
+                    color: transparent;
+                }
+
+                .Italic {
+                    font-style: italic;
+                }
+
+                .Bold {
+                    font-weight: bold;
+                }
+
+                .Underline {
+                    text-decoration: underline;
+                }
+
+                .Small_Caps {
+                    font-variant: small-caps;
+                }
+
+                .Error {
+                    border-color: #ffcbcb;
+
+                    color: #ffcbcb;
+                }
+            `);
+        return [];
+    }
+    On_Refresh() {
+        const model = this.Model();
+        const target = Math.max(Model.Instance.Min_Line_Count(), model.Line_Count());
+        const count = this.Child_Count();
+        for (let idx = count, end = target; idx < end; idx += 1) {
+            new Line.Instance({
+                model: () => this.Model().Line_At(idx),
+                file: this,
+            });
+        }
+    }
+    On_Reclass() {
+        return [`File`];
+    }
+    Model() {
+        return this.model();
+    }
+    Reader() {
+        return this.Parent();
+    }
+}

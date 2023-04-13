@@ -1,1 +1,339 @@
-import*as Utils from"../../../utils.js";import{Type}from"./type.js";export class Instance{constructor({segment_type:t}){this.segment_type=t,this.items=[]}Segment_Type(){return this.segment_type}Item_Count(){return this.items.length}Has_Item(t){return this.items.indexOf(t)>-1}Has_Item_Index(t){return t>-1&&t<this.items.length}Item(t){return Utils.Assert(this.Has_Item_Index(t),`Does not have an item at index ${t}.`),this.items[t]}Item_Index(t){const s=this.items.indexOf(t);return Utils.Assert(s>-1,"Does not have item."),s}Items(){return Array.from(this.items)}Try_Add_Item(t){const s=this.Segment_Type();if(s===Type.MICRO){if(Utils.Assert(t.Is_Part()&&(t.Is_Point()||t.Is_Letter()||t.Is_Marker()||t.Is_Command()),"Can only add micro parts to a micro segment."),0===this.items.length)return this.items.push(t),!0;{const s=t,e=this.items[this.items.length-1];return s.Is_Point()?e.Is_Point()?(this.items.push(s),!0):!e.Is_Letter()&&(e.Is_Marker()?!!/\S+/.test(e.Value())&&(this.items.push(s),!0):e.Is_Command()?(this.items.push(s),!0):(Utils.Assert(!1,"Invalid previous_part_type."),!1)):s.Is_Letter()?!e.Is_Point()&&(e.Is_Letter()?(this.items.push(s),!0):e.Is_Marker()?!!/\S+/.test(e.Value())&&(this.items.push(s),!0):e.Is_Command()?(this.items.push(s),!0):(Utils.Assert(!1,"Invalid previous_part_type."),!1)):s.Is_Marker()||s.Is_Command()?e.Is_Point()||e.Is_Letter()?(this.items.push(s),!0):e.Is_Marker()?!!/\S+/.test(e.Value())&&(this.items.push(s),!0):e.Is_Command()?(this.items.push(s),!0):(Utils.Assert(!1,"Invalid previous_part_type."),!1):(Utils.Assert(!1,"Invalid part_type."),!1)}}if(s===Type.MACRO){if(Utils.Assert(t.Is_Part()&&(t.Is_Point()||t.Is_Word()||t.Is_Command())||t.Is_Split(),"Can only add macro parts to a macro segment."),0===this.items.length)return this.items.push(t),!0;{const s=this.items[this.items.length-1];if(t.Is_Part()){const e=t;if(e.Is_Point()){if(s.Is_Part()){const t=s;return t.Is_Point()?(this.items.push(e),!0):!t.Is_Word()&&(t.Is_Command()?(this.items.push(e),!0):(Utils.Assert(!1,"Invalid previous_part_type."),!1))}if(s.Is_Split()){return!!/\S+/.test(s.Value())&&(this.items.push(e),!0)}return Utils.Assert(!1,"Invalid previous_item_type."),!1}if(e.Is_Word()){if(s.Is_Part()){const t=s;return!t.Is_Point()&&(!t.Is_Word()&&(t.Is_Command()?(this.items.push(e),!0):(Utils.Assert(!1,"Invalid previous_part_type."),!1)))}if(s.Is_Split()){return!!/\S+/.test(s.Value())&&(this.items.push(e),!0)}return Utils.Assert(!1,"Invalid previous_item_type."),!1}if(e.Is_Command()){if(s.Is_Part()){const t=s;return t.Is_Point()||t.Is_Word()||t.Is_Command()?(this.items.push(e),!0):(Utils.Assert(!1,"Invalid previous_part_type."),!1)}if(s.Is_Split()){return!!/\S+/.test(s.Value())&&(this.items.push(e),!0)}return Utils.Assert(!1,"Invalid previous_item_type."),!1}return Utils.Assert(!1,"Invalid part_type."),!1}if(t.Is_Split()){const e=t;if(s.Is_Part()){const t=s;return t.Is_Point()||t.Is_Word()||t.Is_Command()?(this.items.push(e),!0):(Utils.Assert(!1,"Invalid previous_part_type."),!1)}if(s.Is_Split()){return!!/\S+/.test(s.Value())&&(this.items.push(e),!0)}return Utils.Assert(!1,"Invalid previous_item_type."),!1}return Utils.Assert(!1,"Unknown item_type."),!1}}return Utils.Assert(!1,"Unknown segment_type."),!1}Add_Item(t){const s=this.Try_Add_Item(t);Utils.Assert(!0===s,"Failed to add item.")}Value(){let t="";for(const s of this.items)t+=s.Value();return t}}
+import * as Utils from "../../../utils.js";
+import { Type } from "./type.js";
+export class Instance {
+    constructor({ segment_type, }) {
+        this.segment_type = segment_type;
+        this.items = [];
+    }
+    Segment_Type() {
+        return this.segment_type;
+    }
+    Item_Count() {
+        return this.items.length;
+    }
+    Has_Item(item) {
+        return this.items.indexOf(item) > -1;
+    }
+    Has_Item_Index(item_index) {
+        return (item_index > -1 &&
+            item_index < this.items.length);
+    }
+    Item(item_index) {
+        Utils.Assert(this.Has_Item_Index(item_index), `Does not have an item at index ${item_index}.`);
+        return this.items[item_index];
+    }
+    Item_Index(item) {
+        const index = this.items.indexOf(item);
+        Utils.Assert(index > -1, `Does not have item.`);
+        return index;
+    }
+    Items() {
+        return Array.from(this.items);
+    }
+    Try_Add_Item(item) {
+        const segment_type = this.Segment_Type();
+        if (segment_type === Type.MICRO) {
+            Utils.Assert(item.Is_Part() &&
+                (item.Is_Point() ||
+                    item.Is_Letter() ||
+                    item.Is_Marker() ||
+                    item.Is_Command()), `Can only add micro parts to a micro segment.`);
+            if (this.items.length === 0) {
+                this.items.push(item);
+                return true;
+            }
+            else {
+                const part = item;
+                const previous_part = this.items[this.items.length - 1];
+                if (part.Is_Point()) {
+                    if (previous_part.Is_Point()) {
+                        this.items.push(part);
+                        return true;
+                    }
+                    else if (previous_part.Is_Letter()) {
+                        return false;
+                    }
+                    else if (previous_part.Is_Marker()) {
+                        if (/\S+/.test(previous_part.Value())) {
+                            this.items.push(part);
+                            return true;
+                        }
+                        else {
+                            return false;
+                        }
+                    }
+                    else if (previous_part.Is_Command()) {
+                        this.items.push(part);
+                        return true;
+                    }
+                    else {
+                        Utils.Assert(false, `Invalid previous_part_type.`);
+                        return false;
+                    }
+                }
+                else if (part.Is_Letter()) {
+                    if (previous_part.Is_Point()) {
+                        return false;
+                    }
+                    else if (previous_part.Is_Letter()) {
+                        this.items.push(part);
+                        return true;
+                    }
+                    else if (previous_part.Is_Marker()) {
+                        if (/\S+/.test(previous_part.Value())) {
+                            this.items.push(part);
+                            return true;
+                        }
+                        else {
+                            return false;
+                        }
+                    }
+                    else if (previous_part.Is_Command()) {
+                        this.items.push(part);
+                        return true;
+                    }
+                    else {
+                        Utils.Assert(false, `Invalid previous_part_type.`);
+                        return false;
+                    }
+                }
+                else if (part.Is_Marker()) {
+                    if (previous_part.Is_Point()) {
+                        this.items.push(part);
+                        return true;
+                    }
+                    else if (previous_part.Is_Letter()) {
+                        this.items.push(part);
+                        return true;
+                    }
+                    else if (previous_part.Is_Marker()) {
+                        if (/\S+/.test(previous_part.Value())) {
+                            this.items.push(part);
+                            return true;
+                        }
+                        else {
+                            return false;
+                        }
+                    }
+                    else if (previous_part.Is_Command()) {
+                        this.items.push(part);
+                        return true;
+                    }
+                    else {
+                        Utils.Assert(false, `Invalid previous_part_type.`);
+                        return false;
+                    }
+                }
+                else if (part.Is_Command()) {
+                    if (previous_part.Is_Point()) {
+                        this.items.push(part);
+                        return true;
+                    }
+                    else if (previous_part.Is_Letter()) {
+                        this.items.push(part);
+                        return true;
+                    }
+                    else if (previous_part.Is_Marker()) {
+                        if (/\S+/.test(previous_part.Value())) {
+                            this.items.push(part);
+                            return true;
+                        }
+                        else {
+                            return false;
+                        }
+                    }
+                    else if (previous_part.Is_Command()) {
+                        this.items.push(part);
+                        return true;
+                    }
+                    else {
+                        Utils.Assert(false, `Invalid previous_part_type.`);
+                        return false;
+                    }
+                }
+                else {
+                    Utils.Assert(false, `Invalid part_type.`);
+                    return false;
+                }
+            }
+        }
+        else if (segment_type === Type.MACRO) {
+            Utils.Assert((item.Is_Part() &&
+                (item.Is_Point() ||
+                    item.Is_Word() ||
+                    item.Is_Command())) ||
+                item.Is_Split(), `Can only add macro parts to a macro segment.`);
+            if (this.items.length === 0) {
+                this.items.push(item);
+                return true;
+            }
+            else {
+                const previous_item = this.items[this.items.length - 1];
+                if (item.Is_Part()) {
+                    const part = item;
+                    if (part.Is_Point()) {
+                        if (previous_item.Is_Part()) {
+                            const previous_part = previous_item;
+                            if (previous_part.Is_Point()) {
+                                this.items.push(part);
+                                return true;
+                            }
+                            else if (previous_part.Is_Word()) {
+                                return false;
+                            }
+                            else if (previous_part.Is_Command()) {
+                                this.items.push(part);
+                                return true;
+                            }
+                            else {
+                                Utils.Assert(false, `Invalid previous_part_type.`);
+                                return false;
+                            }
+                        }
+                        else if (previous_item.Is_Split()) {
+                            const previous_split = previous_item;
+                            if (/\S+/.test(previous_split.Value())) {
+                                this.items.push(part);
+                                return true;
+                            }
+                            else {
+                                return false;
+                            }
+                        }
+                        else {
+                            Utils.Assert(false, `Invalid previous_item_type.`);
+                            return false;
+                        }
+                    }
+                    else if (part.Is_Word()) {
+                        if (previous_item.Is_Part()) {
+                            const previous_part = previous_item;
+                            if (previous_part.Is_Point()) {
+                                return false;
+                            }
+                            else if (previous_part.Is_Word()) {
+                                return false;
+                            }
+                            else if (previous_part.Is_Command()) {
+                                this.items.push(part);
+                                return true;
+                            }
+                            else {
+                                Utils.Assert(false, `Invalid previous_part_type.`);
+                                return false;
+                            }
+                        }
+                        else if (previous_item.Is_Split()) {
+                            const previous_split = previous_item;
+                            if (/\S+/.test(previous_split.Value())) {
+                                this.items.push(part);
+                                return true;
+                            }
+                            else {
+                                return false;
+                            }
+                        }
+                        else {
+                            Utils.Assert(false, `Invalid previous_item_type.`);
+                            return false;
+                        }
+                    }
+                    else if (part.Is_Command()) {
+                        if (previous_item.Is_Part()) {
+                            const previous_part = previous_item;
+                            if (previous_part.Is_Point()) {
+                                this.items.push(part);
+                                return true;
+                            }
+                            else if (previous_part.Is_Word()) {
+                                this.items.push(part);
+                                return true;
+                            }
+                            else if (previous_part.Is_Command()) {
+                                this.items.push(part);
+                                return true;
+                            }
+                            else {
+                                Utils.Assert(false, `Invalid previous_part_type.`);
+                                return false;
+                            }
+                        }
+                        else if (previous_item.Is_Split()) {
+                            const previous_split = previous_item;
+                            if (/\S+/.test(previous_split.Value())) {
+                                this.items.push(part);
+                                return true;
+                            }
+                            else {
+                                return false;
+                            }
+                        }
+                        else {
+                            Utils.Assert(false, `Invalid previous_item_type.`);
+                            return false;
+                        }
+                    }
+                    else {
+                        Utils.Assert(false, `Invalid part_type.`);
+                        return false;
+                    }
+                }
+                else if (item.Is_Split()) {
+                    const split = item;
+                    if (previous_item.Is_Part()) {
+                        const previous_part = previous_item;
+                        if (previous_part.Is_Point()) {
+                            this.items.push(split);
+                            return true;
+                        }
+                        else if (previous_part.Is_Word()) {
+                            this.items.push(split);
+                            return true;
+                        }
+                        else if (previous_part.Is_Command()) {
+                            this.items.push(split);
+                            return true;
+                        }
+                        else {
+                            Utils.Assert(false, `Invalid previous_part_type.`);
+                            return false;
+                        }
+                    }
+                    else if (previous_item.Is_Split()) {
+                        const previous_split = previous_item;
+                        if (/\S+/.test(previous_split.Value())) {
+                            this.items.push(split);
+                            return true;
+                        }
+                        else {
+                            return false;
+                        }
+                    }
+                    else {
+                        Utils.Assert(false, `Invalid previous_item_type.`);
+                        return false;
+                    }
+                }
+                else {
+                    Utils.Assert(false, `Unknown item_type.`);
+                    return false;
+                }
+            }
+        }
+        else {
+            Utils.Assert(false, `Unknown segment_type.`);
+            return false;
+        }
+    }
+    Add_Item(item) {
+        const result = this.Try_Add_Item(item);
+        Utils.Assert(result === true, `Failed to add item.`);
+    }
+    Value() {
+        let value = ``;
+        for (const item of this.items) {
+            value += item.Value();
+        }
+        return value;
+    }
+}

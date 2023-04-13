@@ -1,1 +1,1 @@
-export{Instance}from"./window/instance.js";
+export { Instance } from "./window/instance.js";

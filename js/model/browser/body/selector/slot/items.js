@@ -1,1 +1,78 @@
-var __awaiter=this&&this.__awaiter||function(t,e,s,i){return new(s||(s=Promise))((function(n,r){function l(t){try{a(i.next(t))}catch(t){r(t)}}function o(t){try{a(i.throw(t))}catch(t){r(t)}}function a(t){var e;t.done?n(t.value):(e=t.value,e instanceof s?e:new s((function(t){t(e)}))).then(l,o)}a((i=i.apply(t,e||[])).next())}))};import*as Utils from"../../../../../utils.js";import*as Entity from"../../../../entity.js";import*as Item from"./item.js";export class Instance extends Entity.Instance{constructor({slot:t,item_names:e,item_files:s}){super(),this.slot=t,this.items=[],this.selected=null;for(let t=0,i=e.length;t<i;t+=1)this.items.push(new Item.Instance({items:this,index:t,name:e[t],file:null!=s?s[t]:null}));this.Add_Dependencies(this.items)}Slot(){return this.slot}Has(t){return this.items.includes(t)}Count(){return this.items.length}At(t){return Utils.Assert(t>-1,"item_index must be greater than -1."),Utils.Assert(t<this.Count(),"item_index must be less than item_count."),this.items[t]}Maybe_From(t){for(let e=0,s=this.Count();e<s;e+=1){const s=this.At(e);if(s.Name()===t)return s}return null}From(t){const e=this.Maybe_From(t);return Utils.Assert(null!=e,`Does not have an item with the name of ${t}.`),e}Array(){return Array.from(this.items)}Has_Selected(){return null!=this.selected}Selected(){return Utils.Assert(this.Has_Selected(),"Has no selected item."),this.selected}Select(t){return __awaiter(this,void 0,void 0,(function*(){Utils.Assert(this.Has(t),"The item does not belong to this slot."),this.selected=t,yield this.Slot().Slots().Select_Item_Internally({slot:this.Slot()})}))}}
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+import * as Utils from "../../../../../utils.js";
+import * as Entity from "../../../../entity.js";
+import * as Item from "./item.js";
+export class Instance extends Entity.Instance {
+    constructor({ slot, item_names, item_files, }) {
+        super();
+        this.slot = slot;
+        this.items = [];
+        this.selected = null;
+        for (let idx = 0, end = item_names.length; idx < end; idx += 1) {
+            this.items.push(new Item.Instance({
+                items: this,
+                index: idx,
+                name: item_names[idx],
+                file: item_files != null ?
+                    item_files[idx] :
+                    null,
+            }));
+        }
+        this.Add_Dependencies(this.items);
+    }
+    Slot() {
+        return this.slot;
+    }
+    Has(item) {
+        return this.items.includes(item);
+    }
+    Count() {
+        return this.items.length;
+    }
+    At(item_index) {
+        Utils.Assert(item_index > -1, `item_index must be greater than -1.`);
+        Utils.Assert(item_index < this.Count(), `item_index must be less than item_count.`);
+        return this.items[item_index];
+    }
+    Maybe_From(name) {
+        for (let idx = 0, end = this.Count(); idx < end; idx += 1) {
+            const item = this.At(idx);
+            if (item.Name() === name) {
+                return item;
+            }
+        }
+        return null;
+    }
+    From(name) {
+        const maybe_item = this.Maybe_From(name);
+        Utils.Assert(maybe_item != null, `Does not have an item with the name of ${name}.`);
+        return maybe_item;
+    }
+    Array() {
+        return Array.from(this.items);
+    }
+    Has_Selected() {
+        return this.selected != null;
+    }
+    Selected() {
+        Utils.Assert(this.Has_Selected(), `Has no selected item.`);
+        return this.selected;
+    }
+    Select(item) {
+        return __awaiter(this, void 0, void 0, function* () {
+            Utils.Assert(this.Has(item), `The item does not belong to this slot.`);
+            this.selected = item;
+            yield this.Slot().Slots().Select_Item_Internally({
+                slot: this.Slot(),
+            });
+        });
+    }
+}

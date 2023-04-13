@@ -1,7 +1,6 @@
 import { Count } from "../../types.js";
 import { Index } from "../../types.js";
 
-import * as Utils from "../../utils.js";
 import * as Unicode from "../../unicode.js";
 
 import { Operator } from "./operator.js";
@@ -38,7 +37,7 @@ export class Help
 
 export class Instance
 {
-    // We could cache tokenized expressions.
+    // We could cache tokens by expression.
 
     constructor()
     {

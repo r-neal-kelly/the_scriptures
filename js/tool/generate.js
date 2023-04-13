@@ -1,1 +1,259 @@
-var __awaiter=this&&this.__awaiter||function(e,t,s,i){return new(s||(s=Promise))((function(n,o){function r(e){try{u(i.next(e))}catch(e){o(e)}}function a(e){try{u(i.throw(e))}catch(e){o(e)}}function u(e){var t;e.done?n(e.value):(t=e.value,t instanceof s?t:new s((function(e){e(t)}))).then(r,a)}u((i=i.apply(e,t||[])).next())}))};import*as fs from"fs";import*as Utils from"../utils.js";import*as Data from"../model/data.js";import*as Text from"../model/text.js";function Read_Directory(e){return __awaiter(this,void 0,void 0,(function*(){return new Promise((function(t,s){fs.readdir(e,{withFileTypes:!0},(function(e,i){null!=e?s(e):t(i)}))}))}))}function Read_File(e){return __awaiter(this,void 0,void 0,(function*(){return new Promise((function(t,s){fs.readFile(e,"utf8",(function(e,i){null!=e?s(e):t(i)}))}))}))}function Write_File(e,t){return __awaiter(this,void 0,void 0,(function*(){return new Promise((function(s,i){fs.writeFile(e,t,"utf8",(function(e){null!=e?i(e):s()}))}))}))}function Folder_Names(e){return __awaiter(this,void 0,void 0,(function*(){const t=[],s=yield Read_Directory(e);for(let e of s)e.isDirectory()&&t.push(e.name);return t}))}function File_Names(e){return __awaiter(this,void 0,void 0,(function*(){const t=[],s=yield Read_Directory(e);for(let e of s)e.isFile()&&t.push(e.name);return t}))}class Unique_Names{constructor(){this.books=new Set,this.languages=new Set,this.versions=new Set}Add_Book(e){this.books.add(e)}Add_Language(e){this.languages.add(e)}Add_Version(e){this.versions.add(e)}Books(){return Array.from(this.books).sort()}Languages(){return Array.from(this.languages).sort()}Versions(){return Array.from(this.versions).sort()}}class Unique_Parts{constructor(){this.parts={}}Add(e){this.parts.hasOwnProperty(e)?(Utils.Assert(this.parts[e]<Number.MAX_SAFE_INTEGER,"Cannot add more of this unique part!"),this.parts[e]+=1):this.parts[e]=1}Values(){return Object.keys(this.parts).sort(function(e,t){return this.parts[t]-this.parts[e]}.bind(this))}Count(e){return Utils.Assert(this.parts.hasOwnProperty(e),"Does not have part."),this.parts[e]}}function Filter_File_Names(e){return/\.txt$/.test(e)&&!/COPY\.txt$/.test(e)}function Generate(){return __awaiter(this,void 0,void 0,(function*(){const e={tree:{books:[]},unique_book_names:[],unique_language_names:[],unique_version_names:[],unique_part_values:[]},t=new Unique_Names,s=new Unique_Parts,i="./Data",n=`${i}/Books`;for(const i of(yield Folder_Names(n)).sort()){const o=`${n}/${i}`,r={name:i,languages:[]};e.tree.books.push(r),t.Add_Book(i);for(const e of(yield Folder_Names(o)).sort()){const i=`${o}/${e}`,n={name:e,versions:[]};r.languages.push(n),t.Add_Language(e);for(const e of(yield Folder_Names(i)).sort()){const o=`${i}/${e}`,r={name:e,files:[]},a=new Text.Dictionary.Instance({json:yield Read_File(`${o}/Dictionary.json`)}),u=(yield File_Names(o)).filter(Filter_File_Names).sort();n.versions.push(r),t.Add_Version(e);for(const[e,t]of u.entries()){const i=`${o}/${t}`,n={name:t.replace(/\.[^.]*$/,".comp"),index:e},u=new Text.Instance({dictionary:a,value:yield Read_File(i)});r.files.push(n);for(let e=0,t=u.Line_Count();e<t;e+=1){const t=u.Line(e);for(let e=0,i=t.Macro_Part_Count();e<i;e+=1){const i=t.Macro_Part(e);s.Add(i.Value())}}}}}}e.unique_book_names=t.Books(),e.unique_language_names=t.Languages(),e.unique_version_names=t.Versions(),e.unique_part_values=s.Values(),yield Write_File(`${i}/Info.json`,JSON.stringify(e));const o=new Data.Compressor.Instance({unique_parts:e.unique_part_values});for(const e of(yield Folder_Names(n)).sort()){const t=`${n}/${e}`;for(const e of(yield Folder_Names(t)).sort()){const s=`${t}/${e}`;for(const e of(yield Folder_Names(s)).sort()){const t=`${s}/${e}`,i=(yield File_Names(t)).filter(Filter_File_Names).sort(),n=[],r=yield Read_File(`${t}/Dictionary.json`),a=new Text.Dictionary.Instance({json:r}),u=o.Compress_Dictionary(r),l=o.Decompress_Dictionary(u);Utils.Assert(l===r,"Invalid dictionary decompression!"),yield Write_File(`${t}/${Data.Version.Dictionary.Symbol.NAME}`,u);for(const e of i){const s=`${t}/${e}`,i=yield Read_File(s);n.push(i);const r=o.Compress({value:i,dictionary:a}),u=o.Decompress({value:r,dictionary:a});Utils.Assert(u===i,"Invalid decompression!"),yield Write_File(`${t}/${e.replace(/\.[^.]*$/,".comp")}`,r)}const c=n.join(Data.Version.Symbol.FILE_BREAK),d=o.Compress({value:c,dictionary:a}),_=o.Decompress({value:d,dictionary:a});Utils.Assert(_===c,"Invalid decompression!"),yield Write_File(`${t}/${Data.Version.Text.Symbol.NAME}`,d)}}}}))}!function(){__awaiter(this,void 0,void 0,(function*(){yield Generate()}))}();
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+import * as fs from "fs";
+import * as Utils from "../utils.js";
+import * as Data from "../model/data.js";
+import * as Text from "../model/text.js";
+function Read_Directory(directory_path) {
+    return __awaiter(this, void 0, void 0, function* () {
+        return new Promise(function (resolve, reject) {
+            fs.readdir(directory_path, {
+                withFileTypes: true,
+            }, function (error, entities) {
+                if (error != null) {
+                    reject(error);
+                }
+                else {
+                    resolve(entities);
+                }
+            });
+        });
+    });
+}
+function Read_File(file_path) {
+    return __awaiter(this, void 0, void 0, function* () {
+        return new Promise(function (resolve, reject) {
+            fs.readFile(file_path, `utf8`, function (error, file_text) {
+                if (error != null) {
+                    reject(error);
+                }
+                else {
+                    resolve(file_text);
+                }
+            });
+        });
+    });
+}
+function Write_File(file_path, data) {
+    return __awaiter(this, void 0, void 0, function* () {
+        return new Promise(function (resolve, reject) {
+            fs.writeFile(file_path, data, `utf8`, function (error) {
+                if (error != null) {
+                    reject(error);
+                }
+                else {
+                    resolve();
+                }
+            });
+        });
+    });
+}
+function Folder_Names(folder_path) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const names = [];
+        const entities = yield Read_Directory(folder_path);
+        for (let entity of entities) {
+            if (entity.isDirectory()) {
+                names.push(entity.name);
+            }
+        }
+        return names;
+    });
+}
+function File_Names(folder_path) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const names = [];
+        const entities = yield Read_Directory(folder_path);
+        for (let entity of entities) {
+            if (entity.isFile()) {
+                names.push(entity.name);
+            }
+        }
+        return names;
+    });
+}
+class Unique_Names {
+    constructor() {
+        this.books = new Set();
+        this.languages = new Set();
+        this.versions = new Set();
+    }
+    Add_Book(name) {
+        this.books.add(name);
+    }
+    Add_Language(name) {
+        this.languages.add(name);
+    }
+    Add_Version(name) {
+        this.versions.add(name);
+    }
+    Books() {
+        return Array.from(this.books).sort();
+    }
+    Languages() {
+        return Array.from(this.languages).sort();
+    }
+    Versions() {
+        return Array.from(this.versions).sort();
+    }
+}
+class Unique_Parts {
+    constructor() {
+        this.parts = {};
+    }
+    Add(part) {
+        if (this.parts.hasOwnProperty(part)) {
+            Utils.Assert(this.parts[part] < Number.MAX_SAFE_INTEGER, `Cannot add more of this unique part!`);
+            this.parts[part] += 1;
+        }
+        else {
+            this.parts[part] = 1;
+        }
+    }
+    Values() {
+        return Object.keys(this.parts).sort(function (a, b) {
+            return this.parts[b] - this.parts[a];
+        }.bind(this));
+    }
+    Count(part) {
+        Utils.Assert(this.parts.hasOwnProperty(part), `Does not have part.`);
+        return this.parts[part];
+    }
+}
+function Filter_File_Names(file_name) {
+    return (/\.txt$/.test(file_name) &&
+        !/COPY\.txt$/.test(file_name));
+}
+;
+function Generate() {
+    return __awaiter(this, void 0, void 0, function* () {
+        const data_info = {
+            tree: {
+                books: [],
+            },
+            unique_book_names: [],
+            unique_language_names: [],
+            unique_version_names: [],
+            unique_part_values: [],
+        };
+        const unique_names = new Unique_Names();
+        const unique_parts = new Unique_Parts();
+        const data_path = `./Data`;
+        const books_path = `${data_path}/Books`;
+        for (const book_name of (yield Folder_Names(books_path)).sort()) {
+            const languages_path = `${books_path}/${book_name}`;
+            const book_branch = {
+                name: book_name,
+                languages: [],
+            };
+            data_info.tree.books.push(book_branch);
+            unique_names.Add_Book(book_name);
+            for (const language_name of (yield Folder_Names(languages_path)).sort()) {
+                const versions_path = `${languages_path}/${language_name}`;
+                const language_branch = {
+                    name: language_name,
+                    versions: [],
+                };
+                book_branch.languages.push(language_branch);
+                unique_names.Add_Language(language_name);
+                for (const version_name of (yield Folder_Names(versions_path)).sort()) {
+                    const files_path = `${versions_path}/${version_name}`;
+                    const version_branch = {
+                        name: version_name,
+                        files: [],
+                    };
+                    const dictionary = new Text.Dictionary.Instance({
+                        json: yield Read_File(`${files_path}/Dictionary.json`),
+                    });
+                    const file_names = (yield File_Names(files_path)).filter(Filter_File_Names).sort();
+                    language_branch.versions.push(version_branch);
+                    unique_names.Add_Version(version_name);
+                    for (const [file_index, file_name] of file_names.entries()) {
+                        const file_path = `${files_path}/${file_name}`;
+                        const file_leaf = {
+                            name: file_name.replace(/\.[^.]*$/, `.comp`),
+                            index: file_index,
+                        };
+                        const text = new Text.Instance({
+                            dictionary: dictionary,
+                            value: yield Read_File(file_path),
+                        });
+                        version_branch.files.push(file_leaf);
+                        for (let line_idx = 0, line_end = text.Line_Count(); line_idx < line_end; line_idx += 1) {
+                            const line = text.Line(line_idx);
+                            for (let part_idx = 0, part_end = line.Macro_Part_Count(); part_idx < part_end; part_idx += 1) {
+                                const part = line.Macro_Part(part_idx);
+                                unique_parts.Add(part.Value());
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        data_info.unique_book_names = unique_names.Books();
+        data_info.unique_language_names = unique_names.Languages();
+        data_info.unique_version_names = unique_names.Versions();
+        data_info.unique_part_values = unique_parts.Values();
+        yield Write_File(`${data_path}/Info.json`, JSON.stringify(data_info));
+        const compressor = new Data.Compressor.Instance({
+            unique_parts: data_info.unique_part_values,
+        });
+        for (const book_name of (yield Folder_Names(books_path)).sort()) {
+            const languages_path = `${books_path}/${book_name}`;
+            for (const language_name of (yield Folder_Names(languages_path)).sort()) {
+                const versions_path = `${languages_path}/${language_name}`;
+                for (const version_name of (yield Folder_Names(versions_path)).sort()) {
+                    const files_path = `${versions_path}/${version_name}`;
+                    const file_names = (yield File_Names(files_path)).filter(Filter_File_Names).sort();
+                    const file_texts = [];
+                    const version_dictionary_json = yield Read_File(`${files_path}/Dictionary.json`);
+                    const version_dictionary = new Text.Dictionary.Instance({
+                        json: version_dictionary_json,
+                    });
+                    const compressed_version_dictionary_json = compressor.Compress_Dictionary(version_dictionary_json);
+                    const uncompressed_version_dictionary_json = compressor.Decompress_Dictionary(compressed_version_dictionary_json);
+                    Utils.Assert(uncompressed_version_dictionary_json === version_dictionary_json, `Invalid dictionary decompression!`);
+                    yield Write_File(`${files_path}/${Data.Version.Dictionary.Symbol.NAME}`, compressed_version_dictionary_json);
+                    for (const file_name of file_names) {
+                        const file_path = `${files_path}/${file_name}`;
+                        const file_text = yield Read_File(file_path);
+                        file_texts.push(file_text);
+                        const compressed_file_text = compressor.Compress({
+                            value: file_text,
+                            dictionary: version_dictionary,
+                        });
+                        const uncompressed_file_text = compressor.Decompress({
+                            value: compressed_file_text,
+                            dictionary: version_dictionary,
+                        });
+                        Utils.Assert(uncompressed_file_text === file_text, `Invalid decompression!`);
+                        yield Write_File(`${files_path}/${file_name.replace(/\.[^.]*$/, `.comp`)}`, compressed_file_text);
+                    }
+                    const version_text = file_texts.join(Data.Version.Symbol.FILE_BREAK);
+                    const compressed_version_text = compressor.Compress({
+                        value: version_text,
+                        dictionary: version_dictionary,
+                    });
+                    const uncompressed_version_text = compressor.Decompress({
+                        value: compressed_version_text,
+                        dictionary: version_dictionary,
+                    });
+                    Utils.Assert(uncompressed_version_text === version_text, `Invalid decompression!`);
+                    yield Write_File(`${files_path}/${Data.Version.Text.Symbol.NAME}`, compressed_version_text);
+                }
+            }
+        }
+    });
+}
+(function Main() {
+    return __awaiter(this, void 0, void 0, function* () {
+        yield Generate();
+    });
+})();

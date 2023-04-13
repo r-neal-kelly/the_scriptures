@@ -1,1 +1,81 @@
-import*as Utils from"../../../../../utils.js";import*as Entity from"../../../../entity.js";export class Instance extends Entity.Instance{constructor({segment:t,index:e,text:s}){super(),this.segment=t,this.index=e,this.text=s,null==s?(Utils.Assert(null==t,"segment must be null."),Utils.Assert(null==e,"index must be null."),this.value=""):(Utils.Assert(null!=t,"segment must not be null."),Utils.Assert(null!=e&&e>-1,"index must not be null, and must be greater than -1."),s.Is_Part()&&s.Is_Command()?this.value="":this.value=s.Value().replace(/^ /," ").replace(/ $/," ").replace(/  /g,"  ")),this.Add_Dependencies([])}Segment(){return Utils.Assert(null!=this.segment,"Doesn't have segment."),this.segment}Index(){return Utils.Assert(null!=this.index,"Doesn't have an index."),this.index}Text(){return Utils.Assert(null!=this.text,"Doesn't have text."),this.text}Value(){return this.value}Part(){Utils.Assert(!this.Is_Blank(),"Item is blank and doesn't have a part.");const t=this.Text();return t.Is_Part()?t:t.Break()}Is_Blank(){return null==this.text}Is_Indented(){Utils.Assert(!this.Is_Blank(),"Item is blank and can't be indented.");const t=this.Part();return t.Is_Command()&&t.Is_Indent()}Is_Error(){return this.Part().Is_Error()}Has_Italic_Style(){return this.Part().Has_Italic_Style()}Has_Bold_Style(){return this.Part().Has_Bold_Style()}Has_Underline_Style(){return this.Part().Has_Underline_Style()}Has_Small_Caps_Style(){return this.Part().Has_Small_Caps_Style()}Has_Error_Style(){return this.Part().Has_Error_Style()}}
+import * as Utils from "../../../../../utils.js";
+import * as Entity from "../../../../entity.js";
+export class Instance extends Entity.Instance {
+    constructor({ segment, index, text, }) {
+        super();
+        this.segment = segment;
+        this.index = index;
+        this.text = text;
+        if (text == null) {
+            Utils.Assert(segment == null, `segment must be null.`);
+            Utils.Assert(index == null, `index must be null.`);
+            this.value = ``;
+        }
+        else {
+            Utils.Assert(segment != null, `segment must not be null.`);
+            Utils.Assert(index != null && index > -1, `index must not be null, and must be greater than -1.`);
+            if (text.Is_Part() && text.Is_Command()) {
+                this.value = ``;
+            }
+            else {
+                this.value = text.Value()
+                    .replace(/^ /, ` `)
+                    .replace(/ $/, ` `)
+                    .replace(/  /g, `  `);
+            }
+        }
+        this.Add_Dependencies([]);
+    }
+    Segment() {
+        Utils.Assert(this.segment != null, `Doesn't have segment.`);
+        return this.segment;
+    }
+    Index() {
+        Utils.Assert(this.index != null, `Doesn't have an index.`);
+        return this.index;
+    }
+    Text() {
+        Utils.Assert(this.text != null, `Doesn't have text.`);
+        return this.text;
+    }
+    Value() {
+        return this.value;
+    }
+    Part() {
+        Utils.Assert(!this.Is_Blank(), `Item is blank and doesn't have a part.`);
+        const text = this.Text();
+        if (text.Is_Part()) {
+            return text;
+        }
+        else {
+            return text.Break();
+        }
+    }
+    Is_Blank() {
+        return this.text == null;
+    }
+    Is_Indented() {
+        Utils.Assert(!this.Is_Blank(), `Item is blank and can't be indented.`);
+        const part = this.Part();
+        return (part.Is_Command() &&
+            part.Is_Indent());
+    }
+    Is_Error() {
+        return this.Part().Is_Error();
+    }
+    Has_Italic_Style() {
+        return this.Part().Has_Italic_Style();
+    }
+    Has_Bold_Style() {
+        return this.Part().Has_Bold_Style();
+    }
+    Has_Underline_Style() {
+        return this.Part().Has_Underline_Style();
+    }
+    Has_Small_Caps_Style() {
+        return this.Part().Has_Small_Caps_Style();
+    }
+    Has_Error_Style() {
+        return this.Part().Has_Error_Style();
+    }
+}

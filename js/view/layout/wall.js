@@ -1,1 +1,90 @@
-import*as Entity from"../entity.js";import*as Window from"./window.js";export class Instance extends Entity.Instance{constructor({model:t,layout:e}){super({element:"div",parent:e,event_grid:e.Event_Grid()}),this.model=t}On_Refresh(){const t=this.Model().Count(),e=this.Child_Count(),r=t-e;if(r<0)for(let t=e,n=e+r;t>n;)t-=1,this.Abort_Child(this.Child(t));else if(r>0)for(let t=e,n=e+r;t<n;t+=1)new Window.Instance({model:()=>this.Model().At(t),wall:this})}On_Reclass(){return["Wall"]}On_Restyle(){const t=this.Model().Count();return 1===t?"\n                grid-template-columns: repeat(1, 1fr);\n                grid-template-rows: repeat(1, 1fr);\n            ":2===t?"\n                grid-template-columns: repeat(2, 1fr);\n                grid-template-rows: repeat(1, 1fr);\n            ":3===t||4===t?"\n                grid-template-columns: repeat(2, 1fr);\n                grid-template-rows: repeat(2, 1fr);\n            ":5===t||6===t?"\n                grid-template-columns: repeat(3, 1fr);\n                grid-template-rows: repeat(2, 1fr);\n            ":"\n                grid-template-columns: auto;\n                grid-template-rows: auto;\n            "}Model(){return this.model()}Layout(){return this.Parent()}}
+import * as Entity from "../entity.js";
+import * as Window from "./window.js";
+export class Instance extends Entity.Instance {
+    constructor({ model, layout, }) {
+        super({
+            element: `div`,
+            parent: layout,
+            event_grid: layout.Event_Grid(),
+        });
+        this.model = model;
+    }
+    On_Refresh() {
+        const model = this.Model();
+        const target = model.Count();
+        const count = this.Child_Count();
+        const delta = target - count;
+        if (delta < 0) {
+            for (let idx = count, end = count + delta; idx > end;) {
+                idx -= 1;
+                this.Abort_Child(this.Child(idx));
+            }
+        }
+        else if (delta > 0) {
+            for (let idx = count, end = count + delta; idx < end; idx += 1) {
+                new Window.Instance({
+                    model: () => this.Model().At(idx),
+                    wall: this,
+                });
+            }
+        }
+    }
+    On_Reclass() {
+        return [`Wall`];
+    }
+    On_Restyle() {
+        // This is just dumb logic, but I want something working
+        // and my brain is having a hard time cooperating. I
+        // can barely get this right.
+        const model = this.Model();
+        const window_count = model.Count();
+        if (window_count === 1) {
+            return `
+                grid-template-columns: repeat(1, 1fr);
+                grid-template-rows: repeat(1, 1fr);
+            `;
+        }
+        else if (window_count === 2) {
+            return `
+                grid-template-columns: repeat(2, 1fr);
+                grid-template-rows: repeat(1, 1fr);
+            `;
+        }
+        else if (window_count === 3) {
+            return `
+                grid-template-columns: repeat(2, 1fr);
+                grid-template-rows: repeat(2, 1fr);
+            `;
+        }
+        else if (window_count === 4) {
+            return `
+                grid-template-columns: repeat(2, 1fr);
+                grid-template-rows: repeat(2, 1fr);
+            `;
+        }
+        else if (window_count === 5) {
+            return `
+                grid-template-columns: repeat(3, 1fr);
+                grid-template-rows: repeat(2, 1fr);
+            `;
+        }
+        else if (window_count === 6) {
+            return `
+                grid-template-columns: repeat(3, 1fr);
+                grid-template-rows: repeat(2, 1fr);
+            `;
+        }
+        else {
+            return `
+                grid-template-columns: auto;
+                grid-template-rows: auto;
+            `;
+        }
+    }
+    Model() {
+        return this.model();
+    }
+    Layout() {
+        return this.Parent();
+    }
+}

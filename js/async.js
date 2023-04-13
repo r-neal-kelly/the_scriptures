@@ -1,1 +1,61 @@
-var __awaiter=this&&this.__awaiter||function(e,i,t,n){return new(t||(t=Promise))((function(s,d){function r(e){try{o(n.next(e))}catch(e){d(e)}}function a(e){try{o(n.throw(e))}catch(e){d(e)}}function o(e){var i;e.done?s(e.value):(i=e.value,i instanceof t?i:new t((function(e){e(i)}))).then(r,a)}o((n=n.apply(e,i||[])).next())}))};import*as Utils from"./utils.js";export class Instance{constructor(){this.is_ready=!1,this.is_readying=!1,this.dependencies=[]}Add_Dependencies(e){Utils.Assert(!this.Is_Ready(),"Cannot add dependencies after being ready."),Utils.Assert(!this.is_readying,"Cannot add dependencies while readying.");for(const i of e)Utils.Assert(this.dependencies.indexOf(i)<0,"A dependency can only be added once."),this.dependencies.push(i)}Is_Ready(){return this.is_ready}Before_Dependencies_Are_Ready(){return __awaiter(this,void 0,void 0,(function*(){Utils.Assert(!1,"This method must be overridden to be used.")}))}After_Dependencies_Are_Ready(){return __awaiter(this,void 0,void 0,(function*(){Utils.Assert(!1,"This method must be overridden to be used.")}))}Ready(){return __awaiter(this,void 0,void 0,(function*(){for(;this.is_readying;)yield Utils.Wait_Milliseconds(1);this.is_readying=!0,!1===this.is_ready&&(Object.getPrototypeOf(this).hasOwnProperty("Before_Dependencies_Are_Ready")&&(yield this.Before_Dependencies_Are_Ready()),this.dependencies.length>0&&(yield Promise.all(this.dependencies.map((function(e){return e.Ready()})))),Object.getPrototypeOf(this).hasOwnProperty("After_Dependencies_Are_Ready")&&(yield this.After_Dependencies_Are_Ready()),this.is_ready=!0),this.is_readying=!1}))}}
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+import * as Utils from "./utils.js";
+export class Instance {
+    constructor() {
+        this.is_ready = false;
+        this.is_readying = false;
+        this.dependencies = [];
+    }
+    Add_Dependencies(dependencies) {
+        Utils.Assert(!this.Is_Ready(), `Cannot add dependencies after being ready.`);
+        Utils.Assert(!this.is_readying, `Cannot add dependencies while readying.`);
+        for (const dependency of dependencies) {
+            Utils.Assert(this.dependencies.indexOf(dependency) < 0, `A dependency can only be added once.`);
+            this.dependencies.push(dependency);
+        }
+    }
+    Is_Ready() {
+        return this.is_ready;
+    }
+    Before_Dependencies_Are_Ready() {
+        return __awaiter(this, void 0, void 0, function* () {
+            Utils.Assert(false, `This method must be overridden to be used.`);
+        });
+    }
+    After_Dependencies_Are_Ready() {
+        return __awaiter(this, void 0, void 0, function* () {
+            Utils.Assert(false, `This method must be overridden to be used.`);
+        });
+    }
+    Ready() {
+        return __awaiter(this, void 0, void 0, function* () {
+            while (this.is_readying) {
+                yield Utils.Wait_Milliseconds(1);
+            }
+            this.is_readying = true;
+            if (this.is_ready === false) {
+                if (Object.getPrototypeOf(this).hasOwnProperty(`Before_Dependencies_Are_Ready`)) {
+                    yield this.Before_Dependencies_Are_Ready();
+                }
+                if (this.dependencies.length > 0) {
+                    yield Promise.all(this.dependencies.map(function (dependency) {
+                        return dependency.Ready();
+                    }));
+                }
+                if (Object.getPrototypeOf(this).hasOwnProperty(`After_Dependencies_Are_Ready`)) {
+                    yield this.After_Dependencies_Are_Ready();
+                }
+                this.is_ready = true;
+            }
+            this.is_readying = false;
+        });
+    }
+}

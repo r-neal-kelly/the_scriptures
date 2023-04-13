@@ -1,1 +1,11 @@
-export var Type;!function(E){E[E.BOOKS=0]="BOOKS",E[E.BOOK=1]="BOOK",E[E.LANGUAGES=2]="LANGUAGES",E[E.LANGUAGE=3]="LANGUAGE",E[E.VERSIONS=4]="VERSIONS",E[E.VERSION=5]="VERSION",E[E.FILES=6]="FILES",E[E.FILE=7]="FILE"}(Type||(Type={}));
+export var Type;
+(function (Type) {
+    Type[Type["BOOKS"] = 0] = "BOOKS";
+    Type[Type["BOOK"] = 1] = "BOOK";
+    Type[Type["LANGUAGES"] = 2] = "LANGUAGES";
+    Type[Type["LANGUAGE"] = 3] = "LANGUAGE";
+    Type[Type["VERSIONS"] = 4] = "VERSIONS";
+    Type[Type["VERSION"] = 5] = "VERSION";
+    Type[Type["FILES"] = 6] = "FILES";
+    Type[Type["FILE"] = 7] = "FILE";
+})(Type || (Type = {}));

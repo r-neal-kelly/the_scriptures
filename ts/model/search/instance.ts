@@ -2,42 +2,6 @@
     So we can have a syntax that automatically switches
     between the sequence context and the line context.
 
-    = God ~loves ~David
-    A sequence of 5 parts, 3 words and two breaks.
-    The ~ symbol means NOT in this case, so it would
-    find a sequence like "God sees Sarah", but not
-    "God sees David" or "God loves Sarah".
-
-    - (God) (loves) (David)
-    A line of 5 parts. Notices that any non-grouped part
-    automatically acts like a group if it has only one part.
-    So this would find any line that has "God", "loves", and "David"
-    in it, as well as the spaces? (Not sure about the spaces, maybe they
-    are ignored if they are a line group.)
-
-    - (God) loves David
-    A line and a sequence. I think the idea is that it finds the sequence
-    "loves David" in any line that also contains "God". But maybe we should
-    require that "loves David" also be considered a line unto itself, right?
-    I think that makes sense. A sequence is a line.
-
-    That way
-    - !David
-    Would find any line that doesn't have "David" in it. And in order to do
-    a sequence, then we use the grouping. I think that makes the most sense.
-
-    Therefore
-    - God !loves !David
-    Would find any line that has "God" but not "loves" and not "David" in it.
-
-    Then
-    - God !(loves David)
-    Would find any line that has "God" and not the sequence "loves David".
-    And space would only matter in the group sequence.
-
-    - God & loves & !David
-    I think this will work splendidly.
-
     Now what about operators in the sequence group?
     - God & (~loves David)
     I think this means that any line with "God" and a sequence that has
@@ -63,61 +27,171 @@
     that we should by default not align on word anyway, so maybe just disrespect
     capitals. So *Lord would get LORD, lord, etc. Can be applied to groups too.
     - ("God " & >(("loves" | !"hates") & " David")) | *Lord
-*/
 
-import { Name } from "../../types.js";
+    - <loves David | hates>
+    Should this pretend that this is the expression?
+    - <"loves David" | "hates">
+    Or what we currently have it as:
+    - <"loves" "David" | "hates">
+    The latter is a little counter-intuitive because it will only find
+    "lovesDavid" with no assumption in the executor anyway.
+    However, the executor could simply know that it's in sequence mode
+    and it could look for any sequence of a Part:"loves" Break:any Part:"David".
+    So it would pick up "loves David", "loves. David", "loves: David", etc.
+    I actually think that's a good idea., it assumes that when working with AND.
+    However, it should assume that when working with OR and XOR. We really do want
+    "loves David" OR "hates", and not some strangeness.
+    But if the executor assumes that, then what would it do with this?
+    - <"loves " "David" | "hates">
+    I guess what it could do is see if the left hand operand of the AND has a break/part
+    on the end, else look for something in between?
+    - <", " " ">
+    If we do the clever thing, then this would pick up any three parts where the middle is
+    any word and the left break has the ", " and the right break the " ". I do like that idea,
+    I think. It avoids the explicit need for classes, like "{Word}" or "{Break}", which we can
+    add later. I do believe it's logically sound because lines have to follow that pattern,
+    except when commands get in the way of course. It's always interwoven words and breaks.
+    Also points get in the way. I guess if ignoring commands, then it would skip them until
+    it sees either a word/break/point? 
+    I think it can skip the clever logic if it determines that there is more than one part
+    in the text value it's given from the text node. That makes sense. Otherwise, if the text
+    is just one part, it can try to work with it in smarter ways. At any text node, it can look
+    at the next node and see if it too is a text node and then work on the logic from there.
+    Something else we can do additionally is make a second text type, the verbatim type,
+    which is an easy addition. And then maybe we could just treat them differently? But then
+    it feels like we'd do wrong to searching breaks (<", " " ">) if we always treat a verbatim
+    with the non-clever logic. In any case I think all of this only matters in the sequence mode.
+    I don't think default mode needs this extra complexity.
+
+    I think that the executor should probably be additive with its matches, that way it's
+    easier on memory up front. But if it turns out to be too hard, then what we can do
+    is go ahead and fill up the matches array with every single line that we'll be searching.
+    It's annoying bandwidth wise also, unless we have a function on match that lazily gets
+    the text line. But that stinks too, because it would mostly be sync in the recursive algorithm.
+    It would be kind of nice to return some matches as soon as we find them, so the view
+    can start rendering as soon as possible, however, that's kind of hard to design.
+    Ultimately, we're going to search every single line that's from the versions it will be
+    looking at, so it may be best to just load the entire thing in memory anyway.
+
+    One idea that would be neat is viewing chapter by chapter, or version by version, yet the
+    searcher already knows what chapters/versions have hits. If we could efficiently do the
+    index search method that we had before in combination with loading up a file when we need
+    it, it would be smoothest of all for the serverless model. However, I'm concerned that there
+    is no real way around having to download the massive space index. I remember jubilee's was over
+    a 100 kb just by itself, which is now bigger than just downloading the entire jubilees file,
+    when compressed. And I'm not sure there is a good way that wouldn't take forever to try to
+    compress the index files.
+
+    Alternatively, which could limit the ability to search one version at a time. It would be awful
+    to limit searching to files though, like how we have the browsers set up.
+
+    In any case, we could pass executor the data file, one by one and then we can let caller
+    figure out how they're going to work with that asynchronously. That gives them the ability
+    to show what they want when they can. Or we can do it version by version (which includes
+    a book and a language.)
+
+    Ultimately however, we do want to be able to search any assortment of books, langs, and versions.
+    So this type can supply those kind of various methods to do that, and the underlying executor
+    is maybe just given file by file? I don't even want the executor to have be async honestly, it's
+    just too complicated for a search engine. So all the async stuff could be handled here.
+
+    Something else that we can make clever about the executor is to have it only look at commands
+    when one is present in a text node. Else it just skips them entirely. I like that kind of
+    implicit behavior for that, I think it's probably fine in this case. I know that having
+    too much implicit behavior is not good, but there needs to be a balance between average users
+    and power users. I think it just makes perfect sense to only look when one is explictly asked for
+    in the search language itself. We have the fuzzy operator also, which will at least cover ignore
+    case. I'm not sure about the align to word issue. I know by default though that we typically don't
+    want that because it picks up less results that the user might be looking for. It does bring into
+    question how the executor will handle boundaries for alignment. Maybe the parser can help to
+    determine that. Seeing how we only care about boundaries in a sequence, when it sees a text
+    token is in a sequence, it can know what index that text is. But it should only increment the
+    index on the AND operator right? I think so. We'd need to make sure that all the implicit AND
+    tokens also add it up when in a sequence too. But really, it's not the index that's interesting
+    it whether the text value is at the first, middle, last, or all/none of the sequence. It would be able to tell
+    for first and middle, but it would either have to look forward or back to tell for last and all/none.
+    But it would be worth doing that upfront so that executor doesn't have to dink around with that complication.
+
+    Of course out of sequence, it should just check all boundaries.
+
+    I do think that the "exact" check should not be default, but what we were discussing above should be default.
+    However, maybe we could make it a unary operator? like maybe ^(God) and ^bless or maybe #(God | David), #bless
+    Oh, how about @ for the align operator? btw the "align" operator should be able to be used in an out of sequences.
+    It can also be combined with the "caseless" operator *. We need to rename fuzzy to caseless I think.
+
+    I think the executor will need to be passed two arrays. One has lines that are subtractive and another that has
+    matches with are additive. Will that work? Remember, NOT only works on the line level, unless there are more than
+    one texts in a sequence? Because doesn't a sequence of one essentially become a non-sequence? I think that's another
+    reason why we're going to have to calc the boundary in parse, because executor needs to know if the text in a sequence
+    should be executed as a non-sequence, when it's the first and only text in the sequence. But in that case, we can
+    just have parse remove the sequence tokens I think. Or we can return a help message when the sequence only has one
+    text token. It is non-sensical in a way
+    - God | <!David> === God | !David.
+    whereas
+    - God | <!loves David>
+    means something different. Essentially any other word than loves can be in that place.
+
+    Anyways, back to the problem of subtractive and additive. The non-sequence should be subtractive and the sequence
+    additive. Essentially we need two different execution methods that can interoperate when needed? No wait, it's necessarily
+    subtractive for the lines, but necessarily additive for the matches. The distinction is that our filter does not equate
+    to our search. The matches are exact indices to words, whereas a line just either has something or not.
+
+    Holdup
+    - God & <!David>
+    should execute just fine the way things are in the parser. That's because the sequence will find any word/break
+    that is not David. It essentially acts the same as a non-sequence by default without any extra logic. It makes sense
+    as written. Even this makes perfect sense:
+    - God & !<!David>
+
+    - !<David was>
+    Okay, so when in a non-sequence not, it calls execute on its operand, which then calls execute on a sequence
+    which then matches every part with the sequence. That function returns an array of lines that filtered out and an
+    array of matches. The sequence call just returns the lines and matches too. Then the not looks at it and discards
+    the matches, just using its cached array which was not altered to only return those lines which didn't have match.
+    I think that makes perfect sense, even those the matches are lost.
+    - !!<David was>
+    but aren't the matches somehow needed here? The lines aren't because they just alternate, being new arrays that are
+    returned. I don't think the matches are necessary? Because isn't this just going to return an array of what
+    lines.. no wait, it would need the matches because we'd want to highlight "David was", because this will return the
+    lines that do have the sequence.
+    I think the problem is that I haven't figured out what this actually means. It makes sense when there is only one part
+    in the sequence, it essentially acts like a non-sequence.
+    An important question, what does this mean?
+    - !David
+    It should pick up any line that has a part that is not "David", which is is a lot of lines. And it too cares about matches!
+    Doesn't it? Because we'd like to highlight every part that doesn't match that. But isn't the problem that we can either
+    return lines that don't have "David" in it, or return parts that aren't "David" which would almost certainly exist in
+    lines that otherwise include David? I think the point of the non-sequence is partially to only do the prior, where we
+    won't even return a line if it matches its operand, and therefore that includes sequences, which essentially act as a text
+    operand on the non-sequence level for a not. but the double not has me stumped atm. Does the not recalc the matches somehow?
+    the matches that are lost?
+*/
 
 import * as Entity from "../entity.js";
 import * as Data from "../data.js";
 import * as Parser from "./parser.js";
 import * as Compiler from "./compiler.js";
+import * as Executor from "./executor.js";
 
 export class Instance extends Entity.Instance
 {
-    private book_names: Array<Name> | null;
-    private language_names: Array<Name> | null;
-    private version_names: Array<Name> | null;
-
     private parser: Parser.Instance;
     private compiler: Compiler.Instance;
+    private executor: Executor.Instance;
 
-    constructor(
-        {
-            book_names = null,
-            language_names = null,
-            version_names = null,
-        }: {
-            book_names?: Array<Name> | null,
-            language_names?: Array<Name> | null,
-            version_names?: Array<Name> | null,
-        },
-    )
+    constructor()
     {
         super();
 
-        this.book_names = book_names != null ?
-            Array.from(book_names) :
-            null;
-        this.language_names = language_names != null ?
-            Array.from(language_names) :
-            null;
-        this.version_names = version_names != null ?
-            Array.from(version_names) :
-            null;
-
         this.parser = new Parser.Instance();
         this.compiler = new Compiler.Instance();
+        this.executor = new Executor.Instance();
 
         this.Add_Dependencies(
             [
                 Data.Singleton(),
             ],
         );
-    }
-
-    override async After_Dependencies_Are_Ready():
-        Promise<void>
-    {
     }
 }
 

@@ -1,1 +1,66 @@
-var __awaiter=this&&this.__awaiter||function(e,t,n,i){return new(n||(n=Promise))((function(r,s){function o(e){try{d(i.next(e))}catch(e){s(e)}}function a(e){try{d(i.throw(e))}catch(e){s(e)}}function d(e){var t;e.done?r(e.value):(t=e.value,t instanceof n?t:new n((function(e){e(t)}))).then(o,a)}d((i=i.apply(e,t||[])).next())}))};import*as Event from"../../../event.js";import*as Events from"../../events.js";import*as Entity from"../../entity.js";export class Instance extends Entity.Instance{constructor({model:e,commander:t}){super({element:"div",parent:t,event_grid:t.Event_Grid()}),this.model=e}On_Life(){return this.Element().addEventListener("click",this.On_Click.bind(this)),[new Event.Listener_Info({event_name:new Event.Name(Event.Prefix.ON,Events.BROWSER_COMMANDER_NEXT,this.ID()),event_handler:this.On,event_priority:0})]}On_Refresh(){this.Element().textContent=this.Model().Symbol()}On_Reclass(){return["Commander_Next"]}On_Click(e){return __awaiter(this,void 0,void 0,(function*(){this.Model().Can_Activate()&&(yield this.Send(new Event.Info({affix:Events.BROWSER_COMMANDER_NEXT,suffixes:[this.ID(),this.Commander().ID(),this.Commander().Browser().ID(),this.Commander().Browser().Root().ID()],type:Event.Type.EXCLUSIVE,data:{}})))}))}On(){return __awaiter(this,void 0,void 0,(function*(){yield this.Model().Activate()}))}Model(){return this.model()}Commander(){return this.Parent()}}
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+import * as Event from "../../../event.js";
+import * as Events from "../../events.js";
+import * as Entity from "../../entity.js";
+export class Instance extends Entity.Instance {
+    constructor({ model, commander, }) {
+        super({
+            element: `div`,
+            parent: commander,
+            event_grid: commander.Event_Grid(),
+        });
+        this.model = model;
+    }
+    On_Life() {
+        this.Element().addEventListener(`click`, this.On_Click.bind(this));
+        return [
+            new Event.Listener_Info({
+                event_name: new Event.Name(Event.Prefix.ON, Events.BROWSER_COMMANDER_NEXT, this.ID()),
+                event_handler: this.On,
+                event_priority: 0,
+            }),
+        ];
+    }
+    On_Refresh() {
+        this.Element().textContent = this.Model().Symbol();
+    }
+    On_Reclass() {
+        return [`Commander_Next`];
+    }
+    On_Click(event) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (this.Model().Can_Activate()) {
+                yield this.Send(new Event.Info({
+                    affix: Events.BROWSER_COMMANDER_NEXT,
+                    suffixes: [
+                        this.ID(),
+                        this.Commander().ID(),
+                        this.Commander().Browser().ID(),
+                        this.Commander().Browser().Root().ID(),
+                    ],
+                    type: Event.Type.EXCLUSIVE,
+                    data: {},
+                }));
+            }
+        });
+    }
+    On() {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.Model().Activate();
+        });
+    }
+    Model() {
+        return this.model();
+    }
+    Commander() {
+        return this.Parent();
+    }
+}

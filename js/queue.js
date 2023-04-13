@@ -1,1 +1,81 @@
-var __awaiter=this&&this.__awaiter||function(t,i,s,e){return new(s||(s=Promise))((function(n,u){function o(t){try{r(e.next(t))}catch(t){u(t)}}function h(t){try{r(e.throw(t))}catch(t){u(t)}}function r(t){var i;t.done?n(t.value):(i=t.value,i instanceof s?i:new s((function(t){t(i)}))).then(o,h)}r((e=e.apply(t,i||[])).next())}))};import*as Utils from"./utils.js";export class Instance{constructor(){this.slots=[],this.is_executing=!1,this.is_paused=!1}Count(){return this.slots.length}Enqueue(t){return __awaiter(this,void 0,void 0,(function*(){return new Promise(function(i){this.slots.push((function(){return __awaiter(this,void 0,void 0,(function*(){yield t(),i()}))})),this.Execute()}.bind(this))}))}Is_Executing(){return this.is_executing}Execute(){return __awaiter(this,void 0,void 0,(function*(){if(!1===this.is_executing&&!1===this.is_paused){for(this.is_executing=!0;this.slots.length>0&&!1===this.is_paused;){const t=this.slots[0];this.slots=this.slots.slice(1),yield t()}this.is_executing=!1}}))}Is_Paused(){return!1===this.is_executing&&!0===this.is_paused}Pause(){return __awaiter(this,void 0,void 0,(function*(){if(!1===this.is_paused)for(this.is_paused=!0;!0===this.is_executing&&!0===this.is_paused;)yield Utils.Wait_Milliseconds(1)}))}Unpause(){!0===this.is_paused&&(this.is_paused=!1,this.Execute())}Flush(){this.slots=[]}}
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+import * as Utils from "./utils.js";
+// I think we can use a promise chain instead of an array,
+// such that each execution calls the next execution.
+export class Instance {
+    constructor() {
+        this.slots = [];
+        this.is_executing = false;
+        this.is_paused = false;
+    }
+    Count() {
+        return this.slots.length;
+    }
+    Enqueue(callback) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return new Promise(function (resolve) {
+                this.slots.push(function () {
+                    return __awaiter(this, void 0, void 0, function* () {
+                        yield callback();
+                        resolve();
+                    });
+                });
+                this.Execute();
+            }.bind(this));
+        });
+    }
+    Is_Executing() {
+        return this.is_executing;
+    }
+    Execute() {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (this.is_executing === false &&
+                this.is_paused === false) {
+                this.is_executing = true;
+                // the way this while loop is ordered allows
+                // cleanly cutting off execution when a
+                // pause or flush occurs, because the await
+                // is at the end of the loop
+                while (this.slots.length > 0 &&
+                    this.is_paused === false) {
+                    const callback = this.slots[0];
+                    this.slots = this.slots.slice(1); // inefficient.
+                    yield callback();
+                }
+                this.is_executing = false;
+            }
+        });
+    }
+    Is_Paused() {
+        return (this.is_executing === false &&
+            this.is_paused === true);
+    }
+    Pause() {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (this.is_paused === false) {
+                this.is_paused = true;
+                while (this.is_executing === true &&
+                    this.is_paused === true) {
+                    yield Utils.Wait_Milliseconds(1);
+                }
+            }
+        });
+    }
+    Unpause() {
+        if (this.is_paused === true) {
+            this.is_paused = false;
+            this.Execute();
+        }
+    }
+    Flush() {
+        this.slots = [];
+    }
+}

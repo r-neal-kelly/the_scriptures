@@ -1,1 +1,42 @@
-export class Name{constructor({book:e,language:i,version:t,file:r}){this.book=e,this.language=i,this.version=t,this.file=r,Object.freeze(this)}Book(){return this.book}Language(){return this.language}Version(){return this.version}File(){return this.file}}export class Index{constructor({book:e,language:i,version:t,file:r}){this.book=e,this.language=i,this.version=t,this.file=r,Object.freeze(this)}Book(){return this.book}Language(){return this.language}Version(){return this.version}File(){return this.file}}
+export class Name {
+    constructor({ book, language, version, file, }) {
+        this.book = book;
+        this.language = language;
+        this.version = version;
+        this.file = file;
+        Object.freeze(this);
+    }
+    Book() {
+        return this.book;
+    }
+    Language() {
+        return this.language;
+    }
+    Version() {
+        return this.version;
+    }
+    File() {
+        return this.file;
+    }
+}
+export class Index {
+    constructor({ book, language, version, file, }) {
+        this.book = book;
+        this.language = language;
+        this.version = version;
+        this.file = file;
+        Object.freeze(this);
+    }
+    Book() {
+        return this.book;
+    }
+    Language() {
+        return this.language;
+    }
+    Version() {
+        return this.version;
+    }
+    File() {
+        return this.file;
+    }
+}
