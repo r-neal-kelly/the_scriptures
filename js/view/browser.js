@@ -1,3 +1,1 @@
-export { Instance } from "./browser/instance.js";
-export * as Commander from "./browser/commander.js";
-export * as Body from "./browser/body.js";
+export{Instance}from"./browser/instance.js";export*as Commander from"./browser/commander.js";export*as Body from"./browser/body.js";

@@ -1,9 +1,1 @@
-export var Type;
-(function (Type) {
-    Type[Type["POINT"] = 0] = "POINT";
-    Type[Type["LETTER"] = 1] = "LETTER";
-    Type[Type["MARKER"] = 2] = "MARKER";
-    Type[Type["WORD"] = 3] = "WORD";
-    Type[Type["BREAK"] = 4] = "BREAK";
-    Type[Type["COMMAND"] = 5] = "COMMAND";
-})(Type || (Type = {}));
+export var Type;!function(R){R[R.POINT=0]="POINT",R[R.LETTER=1]="LETTER",R[R.MARKER=2]="MARKER",R[R.WORD=3]="WORD",R[R.BREAK=4]="BREAK",R[R.COMMAND=5]="COMMAND"}(Type||(Type={}));

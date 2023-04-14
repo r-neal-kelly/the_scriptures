@@ -15,6 +15,7 @@ import * as Segment from "./segment.js";
 export class Instance
 {
     private text: Text.Instance;
+    private index: Index;
     private value: Value;
     private micro_parts: Array<Part.Instance>;
     private macro_parts: Array<Part.Instance>;
@@ -26,14 +27,17 @@ export class Instance
     constructor(
         {
             text,
+            index,
             value,
         }: {
             text: Text.Instance,
+            index: Index,
             value: Value,
         },
     )
     {
         this.text = text;
+        this.index = index;
         this.value = ``;
         this.micro_parts = [];
         this.macro_parts = [];
@@ -54,7 +58,7 @@ export class Instance
     Index():
         Index
     {
-        return this.Text().Line_Index(this);
+        return this.index;
     }
 
     Value():

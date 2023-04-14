@@ -5,7 +5,6 @@ export enum Type
     TEXT,
     OR,
     XOR,
-    AND,
     NOT,
     CASE,
     ALIGN,
@@ -37,9 +36,14 @@ export class Instance
     }
 
     Next():
-        Instance | null
+        Instance
     {
-        return this.next;
+        Utils.Assert(
+            this.next != null,
+            `Internal compiler error, next is null!`,
+        );
+
+        return this.next as Instance;
     }
 
     Set_Next(
@@ -110,14 +114,14 @@ export class Binary extends Instance
     }
 
     override Next():
-        Instance | null
+        Instance
     {
         Utils.Assert(
             false,
             `Unused method.`,
         );
 
-        return null;
+        return END;
     }
 
     override Set_Next(
@@ -134,7 +138,7 @@ export class Binary extends Instance
     Left_Operand():
         Instance
     {
-        return this.Next() as Instance;
+        return this.Next();
     }
 
     Right_Operand():
@@ -306,14 +310,14 @@ export class End extends Instance
     }
 
     override Next():
-        Instance | null
+        Instance
     {
         Utils.Assert(
             false,
             `Unused method.`,
         );
 
-        return null;
+        return END;
     }
 
     override Set_Next(

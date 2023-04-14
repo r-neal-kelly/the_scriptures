@@ -1,16 +1,1 @@
-// From highest to lowest precedence,
-// and those with equal precedence
-// grouped together.
-export var Operator;
-(function (Operator) {
-    Operator["VERBATIM"] = "\"";
-    Operator["OPEN_GROUP"] = "(";
-    Operator["CLOSE_GROUP"] = ")";
-    Operator["OPEN_SEQUENCE"] = "<";
-    Operator["CLOSE_SEQUENCE"] = ">";
-    Operator["NOT"] = "!";
-    Operator["FUZZY"] = "*";
-    Operator["AND"] = "&";
-    Operator["XOR"] = "^";
-    Operator["OR"] = "|";
-})(Operator || (Operator = {}));
+export var Operator;!function(E){E.VERBATIM='"',E.OPEN_GROUP="(",E.CLOSE_GROUP=")",E.OPEN_SEQUENCE="<",E.CLOSE_SEQUENCE=">",E.NOT="!",E.CASE="*",E.ALIGN="@",E.AND="&",E.XOR="^",E.OR="|"}(Operator||(Operator={}));

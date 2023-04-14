@@ -27,12 +27,14 @@ export class Instance
         this.value = value;
         this.lines = [];
 
-        for (const line_value of value.split(/\r?\n/g)) {
+        const line_values: Array<string> = value.split(/\r?\n/g);
+        for (let idx = 0, end = line_values.length; idx < end; idx += 1) {
             this.lines.push(
                 new Line.Instance(
                     {
                         text: this,
-                        value: line_value,
+                        index: idx,
+                        value: line_values[idx],
                     },
                 ),
             );
@@ -87,21 +89,6 @@ export class Instance
         );
 
         return this.lines[line_index];
-    }
-
-    Line_Index(
-        line: Line.Instance,
-    ):
-        Index
-    {
-        const index: Index = this.lines.indexOf(line);
-
-        Utils.Assert(
-            index > -1,
-            `Text does not have the line.`,
-        );
-
-        return index;
     }
 
     // We need to be able to add, insert, remove, and set lines,
