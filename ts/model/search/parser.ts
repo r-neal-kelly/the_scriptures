@@ -3,6 +3,7 @@ import { Index } from "../../types.js";
 
 import * as Unicode from "../../unicode.js";
 
+import * as Text from "../text.js";
 import { Operator } from "./operator.js";
 import * as Token from "./token.js";
 
@@ -43,14 +44,20 @@ export class Instance
     {
     }
 
-    Tokenize(
+    Parse(
         expression: string,
+        dictionary: Text.Dictionary.Instance,
     ):
         Array<Token.Instance> | Help
     {
-        function Last(
-            tokens: Array<Token.Instance>,
-        ):
+        const tokens: Array<Token.Instance> = [];
+
+        let last_expression_index: Index = 0;
+        let group_depth: Count = 0;
+        let sequence_depth: Count = 0;
+        let at_start_boundary_in_sequence: boolean = false;
+
+        function Last():
             Token.Instance | null
         {
             return tokens.length > 0 ?
@@ -58,11 +65,22 @@ export class Instance
                 null;
         }
 
-        const tokens: Array<Token.Instance> = [];
-
-        let last_expression_index: Index = 0;
-        let group_depth: Count = 0;
-        let sequence_depth: Count = 0;
+        function Try_Add_And():
+            void
+        {
+            const last_token: Token.Instance | null = Last();
+            if (
+                last_token != null &&
+                (
+                    last_token.Type() === Token.Type.CLOSE_GROUP ||
+                    last_token.Type() === Token.Type.CLOSE_SEQUENCE ||
+                    last_token.Type() === Token.Type.TEXT
+                )
+            ) {
+                at_start_boundary_in_sequence = false;
+                tokens.push(new Token.And());
+            }
+        }
 
         let it: Unicode.Iterator = new Unicode.Iterator(
             {
@@ -73,17 +91,7 @@ export class Instance
             const point: string = it.Point();
             if (!/\s/.test(point)) {
                 if (point === Operator.VERBATIM) {
-                    const last_token: Token.Instance | null = Last(tokens);
-                    if (
-                        last_token != null &&
-                        (
-                            last_token.Type() === Token.Type.CLOSE_GROUP ||
-                            last_token.Type() === Token.Type.CLOSE_SEQUENCE ||
-                            last_token.Type() === Token.Type.TEXT
-                        )
-                    ) {
-                        tokens.push(new Token.And());
-                    }
+                    Try_Add_And();
                     it = it.Next();
                     if (it.Is_At_End()) {
                         return new Help(
@@ -103,31 +111,48 @@ export class Instance
                                 it.Previous().Index(),
                             );
                         } else {
-                            last_expression_index = it.Index();
-                            tokens.push(
-                                new Token.Text(
-                                    expression.slice(first.Index(), it.Index()),
-                                ),
+                            const text: Text.Instance = new Text.Instance(
+                                {
+                                    dictionary: dictionary,
+                                    value: expression.slice(first.Index(), it.Index()),
+                                },
                             );
+                            if (text.Line_Count() > 1) {
+                                return new Help(
+                                    `Newline inside '${Operator.VERBATIM}'.`,
+                                    it.Index(),
+                                );
+                            } else if (text.Line(0).Macro_Part_Count() === 0) {
+                                return new Help(
+                                    `Empty '${Operator.VERBATIM}'.`,
+                                    it.Index(),
+                                );
+                            } else {
+                                last_expression_index = it.Index();
+                                tokens.push(
+                                    new Token.Text(
+                                        {
+                                            line:
+                                                text.Line(0),
+                                            is_in_sequence:
+                                                sequence_depth > 0,
+                                            has_start_boundary_in_sequence:
+                                                at_start_boundary_in_sequence,
+                                        },
+                                    ),
+                                );
+                            }
                         }
                     }
+
                 } else if (point === Operator.OPEN_GROUP) {
-                    const last_token: Token.Instance | null = Last(tokens);
-                    if (
-                        last_token != null &&
-                        (
-                            last_token.Type() === Token.Type.CLOSE_GROUP ||
-                            last_token.Type() === Token.Type.CLOSE_SEQUENCE ||
-                            last_token.Type() === Token.Type.TEXT
-                        )
-                    ) {
-                        tokens.push(new Token.And());
-                    }
+                    Try_Add_And();
                     last_expression_index = it.Index();
                     group_depth += 1;
                     tokens.push(new Token.Open_Group());
+
                 } else if (point === Operator.CLOSE_GROUP) {
-                    const last_token: Token.Instance | null = Last(tokens);
+                    const last_token: Token.Instance | null = Last();
                     if (last_token == null) {
                         return new Help(
                             `Invalid '${Operator.CLOSE_GROUP}' at beginning.`,
@@ -183,6 +208,7 @@ export class Instance
                         group_depth -= 1;
                         tokens.push(new Token.Close_Group());
                     }
+
                 } else if (point === Operator.OPEN_SEQUENCE) {
                     if (sequence_depth > 0) {
                         return new Help(
@@ -190,23 +216,15 @@ export class Instance
                             last_expression_index,
                         );
                     } else {
-                        const last_token: Token.Instance | null = Last(tokens);
-                        if (
-                            last_token != null &&
-                            (
-                                last_token.Type() === Token.Type.CLOSE_GROUP ||
-                                last_token.Type() === Token.Type.CLOSE_SEQUENCE ||
-                                last_token.Type() === Token.Type.TEXT
-                            )
-                        ) {
-                            tokens.push(new Token.And());
-                        }
+                        Try_Add_And();
                         last_expression_index = it.Index();
                         sequence_depth += 1;
+                        at_start_boundary_in_sequence = true;
                         tokens.push(new Token.Open_Sequence());
                     }
+
                 } else if (point === Operator.CLOSE_SEQUENCE) {
-                    const last_token: Token.Instance | null = Last(tokens);
+                    const last_token: Token.Instance | null = Last();
                     if (last_token === null) {
                         return new Help(
                             `Invalid '${Operator.CLOSE_SEQUENCE}' at beginning.`,
@@ -265,52 +283,27 @@ export class Instance
                     } else {
                         last_expression_index = it.Index();
                         sequence_depth -= 1;
+                        at_start_boundary_in_sequence = false;
                         tokens.push(new Token.Close_Sequence());
                     }
+
                 } else if (point === Operator.NOT) {
-                    const last_token: Token.Instance | null = Last(tokens);
-                    if (
-                        last_token != null &&
-                        (
-                            last_token.Type() === Token.Type.CLOSE_GROUP ||
-                            last_token.Type() === Token.Type.CLOSE_SEQUENCE ||
-                            last_token.Type() === Token.Type.TEXT
-                        )
-                    ) {
-                        tokens.push(new Token.And());
-                    }
+                    Try_Add_And();
                     last_expression_index = it.Index();
                     tokens.push(new Token.Not());
+
                 } else if (point === Operator.CASE) {
-                    const last_token: Token.Instance | null = Last(tokens);
-                    if (
-                        last_token != null &&
-                        (
-                            last_token.Type() === Token.Type.CLOSE_GROUP ||
-                            last_token.Type() === Token.Type.CLOSE_SEQUENCE ||
-                            last_token.Type() === Token.Type.TEXT
-                        )
-                    ) {
-                        tokens.push(new Token.And());
-                    }
+                    Try_Add_And();
                     last_expression_index = it.Index();
                     tokens.push(new Token.Case());
+
                 } else if (point === Operator.ALIGN) {
-                    const last_token: Token.Instance | null = Last(tokens);
-                    if (
-                        last_token != null &&
-                        (
-                            last_token.Type() === Token.Type.CLOSE_GROUP ||
-                            last_token.Type() === Token.Type.CLOSE_SEQUENCE ||
-                            last_token.Type() === Token.Type.TEXT
-                        )
-                    ) {
-                        tokens.push(new Token.And());
-                    }
+                    Try_Add_And();
                     last_expression_index = it.Index();
                     tokens.push(new Token.Align());
+
                 } else if (point === Operator.AND) {
-                    const last_token: Token.Instance | null = Last(tokens);
+                    const last_token: Token.Instance | null = Last();
                     if (last_token === null) {
                         return new Help(
                             `Invalid '${Operator.AND}' at beginning.`,
@@ -358,10 +351,12 @@ export class Instance
                         );
                     } else {
                         last_expression_index = it.Index();
+                        at_start_boundary_in_sequence = false;
                         tokens.push(new Token.And());
                     }
+
                 } else if (point === Operator.XOR) {
-                    const last_token: Token.Instance | null = Last(tokens);
+                    const last_token: Token.Instance | null = Last();
                     if (last_token === null) {
                         return new Help(
                             `Invalid '${Operator.XOR}' at beginning.`,
@@ -411,8 +406,9 @@ export class Instance
                         last_expression_index = it.Index();
                         tokens.push(new Token.Xor());
                     }
+
                 } else if (point === Operator.OR) {
-                    const last_token: Token.Instance | null = Last(tokens);
+                    const last_token: Token.Instance | null = Last();
                     if (last_token === null) {
                         return new Help(
                             `Invalid '${Operator.OR}' at beginning.`,
@@ -462,30 +458,35 @@ export class Instance
                         last_expression_index = it.Index();
                         tokens.push(new Token.Or());
                     }
+
                 } else {
-                    const last_token: Token.Instance | null = Last(tokens);
-                    if (
-                        last_token != null &&
-                        (
-                            last_token.Type() === Token.Type.CLOSE_GROUP ||
-                            last_token.Type() === Token.Type.CLOSE_SEQUENCE ||
-                            last_token.Type() === Token.Type.TEXT
-                        )
-                    ) {
-                        tokens.push(new Token.And());
-                    }
+                    Try_Add_And();
                     const first: Unicode.Iterator = it;
                     for (it = it.Next(); !it.Is_At_End(); it = it.Next()) {
                         if (/\s/.test(it.Point())) {
                             break;
                         }
                     }
+                    const text: Text.Instance = new Text.Instance(
+                        {
+                            dictionary: dictionary,
+                            value: expression.slice(first.Index(), it.Index()),
+                        },
+                    );
                     last_expression_index = first.Index();
                     tokens.push(
                         new Token.Text(
-                            expression.slice(first.Index(), it.Index()),
+                            {
+                                line:
+                                    text.Line(0),
+                                is_in_sequence:
+                                    sequence_depth > 0,
+                                has_start_boundary_in_sequence:
+                                    at_start_boundary_in_sequence,
+                            },
                         ),
                     );
+
                 }
             }
         }
@@ -495,16 +496,19 @@ export class Instance
                 `Empty expression.`,
                 0,
             );
+
         } else if (group_depth > 0) {
             return new Help(
                 `Unclosed '${Operator.OPEN_GROUP}'.`,
                 it.Previous().Index(),
             );
+
         } else if (sequence_depth > 0) {
             return new Help(
                 `Unclosed '${Operator.OPEN_SEQUENCE}'.`,
                 it.Previous().Index(),
             );
+
         } else {
             const last_token: Token.Instance = tokens[tokens.length - 1];
             if (last_token.Type() === Token.Type.OPEN_GROUP) {
@@ -548,6 +552,7 @@ export class Instance
                     last_expression_index,
                 );
             }
+
         }
 
         return tokens;

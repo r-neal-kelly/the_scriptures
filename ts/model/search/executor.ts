@@ -1,6 +1,9 @@
 import * as Utils from "../../utils.js";
 
 import * as Text from "../text.js";
+import * as Parser from "./parser.js";
+import * as Compiler from "./compiler.js";
+import * as Token from "./token.js";
 import * as Node from "./node.js";
 import * as Result from "./result.js";
 
@@ -15,33 +18,50 @@ export enum Mode
 
 export class Instance
 {
-    // We could cache matches by expression + given data (which is from the singleton).
+    private parser: Parser.Instance;
+    private compiler: Compiler.Instance;
+    // We could cache results of expression by the text's value.
 
     constructor()
     {
+        this.parser = new Parser.Instance();
+        this.compiler = new Compiler.Instance();
     }
 
     Execute(
-        node: Node.Instance, // make this the expression, and this type will carry parser and compiler. That way we can pass dictionary to parser.
+        expression: string,
         text: Text.Instance,
     ):
-        Array<Result.Instance>
+        Array<Result.Instance> | Parser.Help
     {
-        const results: Array<Result.Instance> = [];
-
-        for (let idx = 0, end = text.Line_Count(); idx < end; idx += 1) {
-            const line: Text.Line.Instance = text.Line(idx);
-            const maybe_result: Result.Instance | null = this.Step(
-                node,
-                Mode.INITIAL,
-                new Result.Instance(line),
+        const tokens_or_help: Array<Token.Instance> | Parser.Help =
+            this.parser.Parse(
+                expression,
+                text.Dictionary(),
             );
-            if (maybe_result != null) {
-                results.push(maybe_result as Result.Instance);
-            }
-        }
+        if (tokens_or_help instanceof Parser.Help) {
+            return tokens_or_help as Parser.Help;
+        } else {
+            const node: Node.Instance =
+                this.compiler.Compile(
+                    tokens_or_help as Array<Token.Instance>,
+                );
+            const results: Array<Result.Instance> = [];
 
-        return results;
+            for (let idx = 0, end = text.Line_Count(); idx < end; idx += 1) {
+                const line: Text.Line.Instance = text.Line(idx);
+                const maybe_result: Result.Instance | null = this.Step(
+                    node,
+                    Mode.INITIAL,
+                    new Result.Instance(line),
+                );
+                if (maybe_result != null) {
+                    results.push(maybe_result as Result.Instance);
+                }
+            }
+
+            return results;
+        }
     }
 
     private Step(
@@ -247,9 +267,15 @@ export class Instance
             );
 
             return null;
+
         }
     }
 
+    // I think when it comes to doing implicit breaks and words
+    // in sequences, it's fine to just test if it's there,
+    // and throw it in the possible range of matches. The next
+    // part will determine if it matches either the match with
+    // or the match without the implicit part and proceed from there.
     private Sequenced_Negated_Cased_Aligned_Text(
         node: Node.Text,
         result: Result.Instance,

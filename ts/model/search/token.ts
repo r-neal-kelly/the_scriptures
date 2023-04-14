@@ -1,3 +1,5 @@
+import * as Text_Module from "../text.js";
+
 export enum Type
 {
     OPEN_GROUP,
@@ -166,10 +168,20 @@ export class Or extends Operator
 
 export class Text extends Instance
 {
-    private value: string;
+    private line: Text_Module.Line.Instance;
+    private is_in_sequence: boolean;
+    private has_start_boundary_in_sequence: boolean;
 
     constructor(
-        value: string,
+        {
+            line,
+            is_in_sequence,
+            has_start_boundary_in_sequence,
+        }: {
+            line: Text_Module.Line.Instance,
+            is_in_sequence: boolean,
+            has_start_boundary_in_sequence: boolean,
+        },
     )
     {
         super(
@@ -178,12 +190,29 @@ export class Text extends Instance
             },
         );
 
-        this.value = value;
+        this.line = line;
+        this.is_in_sequence = is_in_sequence;
+        this.has_start_boundary_in_sequence = has_start_boundary_in_sequence;
     }
 
-    Value():
-        string
+    Line():
+        Text_Module.Line.Instance
     {
-        return this.value;
+        return this.line;
+    }
+
+    Is_In_Sequence():
+        boolean
+    {
+        return this.is_in_sequence;
+    }
+
+    Has_Start_Boundary_In_Sequence():
+        boolean
+    {
+        return (
+            this.is_in_sequence &&
+            this.has_start_boundary_in_sequence
+        );
     }
 }

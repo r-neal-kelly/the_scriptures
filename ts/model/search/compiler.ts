@@ -98,6 +98,7 @@ export class Instance
                         [unary],
                     ),
                 );
+
             } else if (
                 operator_type === Token.Type.AND
             ) {
@@ -118,6 +119,7 @@ export class Instance
                         right_fragment.Out_Nodes(),
                     ),
                 );
+
             } else if (
                 operator_type === Token.Type.OR ||
                 operator_type === Token.Type.XOR
@@ -150,11 +152,13 @@ export class Instance
                         left_fragment.Out_Nodes().concat(right_fragment.Out_Nodes()),
                     ),
                 );
+
             } else {
                 Utils.Assert(
                     false,
                     `Unworkable operator_type: ${operator_type}.`,
                 );
+
             }
         }
 
@@ -165,6 +169,7 @@ export class Instance
             const token_type: Token.Type = token.Type();
             if (token_type === Token.Type.OPEN_GROUP) {
                 operators.push(token as Token.Operator);
+
             } else if (token_type === Token.Type.CLOSE_GROUP) {
                 for (
                     let operator: Token.Operator | undefined = operators.pop();
@@ -176,8 +181,10 @@ export class Instance
                         fragments,
                     );
                 }
+
             } else if (token_type === Token.Type.OPEN_SEQUENCE) {
                 operators.push(token as Token.Operator);
+
             } else if (token_type === Token.Type.CLOSE_SEQUENCE) {
                 let operator: Token.Operator | undefined = operators.pop();
                 for (
@@ -194,12 +201,16 @@ export class Instance
                     operator as Token.Operator,
                     fragments,
                 );
+
             } else if (token_type === Token.Type.NOT) {
                 operators.push(token as Token.Operator);
+
             } else if (token_type === Token.Type.CASE) {
                 operators.push(token as Token.Operator);
+
             } else if (token_type === Token.Type.ALIGN) {
                 operators.push(token as Token.Operator);
+
             } else if (token_type === Token.Type.AND) {
                 while (
                     operators.length > 0 &&
@@ -214,6 +225,7 @@ export class Instance
                     );
                 }
                 operators.push(token as Token.Operator);
+
             } else if (token_type === Token.Type.XOR) {
                 while (
                     operators.length > 0 &&
@@ -229,6 +241,7 @@ export class Instance
                     );
                 }
                 operators.push(token as Token.Operator);
+
             } else if (token_type === Token.Type.OR) {
                 while (
                     operators.length > 0 &&
@@ -245,10 +258,11 @@ export class Instance
                     );
                 }
                 operators.push(token as Token.Operator);
+
             } else if (token_type === Token.Type.TEXT) {
                 const text: Node.Text = new Node.Text(
                     {
-                        value: (token as Token.Text).Value(),
+                        token: (token as Token.Text),
                     },
                 );
                 fragments.push(
@@ -257,11 +271,13 @@ export class Instance
                         [text],
                     ),
                 );
+
             } else {
                 Utils.Assert(
                     fragments.length === 1,
                     `Unknown token type: ${token.Type()}.`,
                 );
+
             }
         }
 

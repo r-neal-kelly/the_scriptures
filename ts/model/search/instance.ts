@@ -106,22 +106,16 @@
 
 import * as Entity from "../entity.js";
 import * as Data from "../data.js";
-import * as Parser from "./parser.js";
-import * as Compiler from "./compiler.js";
 import * as Executor from "./executor.js";
 
 export class Instance extends Entity.Instance
 {
-    private parser: Parser.Instance;
-    private compiler: Compiler.Instance;
     private executor: Executor.Instance;
 
     constructor()
     {
         super();
 
-        this.parser = new Parser.Instance();
-        this.compiler = new Compiler.Instance();
         this.executor = new Executor.Instance();
 
         this.Add_Dependencies(

@@ -1,5 +1,8 @@
 import * as Utils from "../../utils.js";
 
+import * as Text_Module from "../text.js";
+import * as Token from "./token.js";
+
 export enum Type
 {
     TEXT,
@@ -59,13 +62,13 @@ export class Instance
 
 export class Text extends Instance
 {
-    private value: string;
+    private token: Token.Text;
 
     constructor(
         {
-            value,
+            token,
         }: {
-            value: string,
+            token: Token.Text,
         },
     )
     {
@@ -75,13 +78,73 @@ export class Text extends Instance
             },
         );
 
-        this.value = value;
+        this.token = token;
     }
 
-    Value():
-        string
+    Token():
+        Token.Text
     {
-        return this.value;
+        return this.token;
+    }
+
+    Line():
+        Text_Module.Line.Instance
+    {
+        return this.Token().Line();
+    }
+
+    Is_In_Sequence():
+        boolean
+    {
+        return this.Token().Is_In_Sequence();
+    }
+
+    Has_Start_Boundary_In_Sequence():
+        boolean
+    {
+        return (
+            this.Is_In_Sequence() &&
+            this.Token().Has_Start_Boundary_In_Sequence()
+        );
+    }
+
+    Has_Middle_Boundary_In_Sequence():
+        boolean
+    {
+        return (
+            this.Is_In_Sequence() &&
+            !this.Has_Start_Boundary_In_Sequence() &&
+            !this.Has_End_Boundary_In_Sequence()
+        );
+    }
+
+    Has_End_Boundary_In_Sequence():
+        boolean
+    {
+        return (
+            this.Is_In_Sequence() &&
+            this.Next() === END
+        );
+    }
+
+    May_Have_Implicit_Word_In_Sequence():
+        boolean
+    {
+        return (
+            this.Is_In_Sequence() &&
+            this.Line().Macro_Part_Count() === 1 &&
+            this.Line().Macro_Part(0).Is_Break()
+        );
+    }
+
+    May_Have_Implicit_Break_In_Sequence():
+        boolean
+    {
+        return (
+            this.Is_In_Sequence() &&
+            this.Line().Macro_Part_Count() === 1 &&
+            this.Line().Macro_Part(0).Is_Word()
+        );
     }
 }
 
