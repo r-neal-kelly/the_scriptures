@@ -21,7 +21,7 @@ export class Instance extends Async.Instance
 {
     private version: Version.Instance;
     private path: Path;
-    private text_files: Array<Text.Instance>;
+    private file_texts: Array<Text.Instance>;
 
     constructor(
         {
@@ -35,7 +35,7 @@ export class Instance extends Async.Instance
 
         this.version = version;
         this.path = `${version.Path()}/${Symbol.NAME}`;
-        this.text_files = [];
+        this.file_texts = [];
 
         this.Add_Dependencies(
             [
@@ -74,14 +74,14 @@ export class Instance extends Async.Instance
         return Symbol.EXTENSION;
     }
 
-    Text_File_Count():
+    File_Text_Count():
         Count
     {
-        return this.text_files.length;
+        return this.file_texts.length;
     }
 
-    Text_File_At(
-        text_file_index: Index,
+    File_Text_At(
+        file_text_index: Index,
     ):
         Text.Instance
     {
@@ -90,15 +90,15 @@ export class Instance extends Async.Instance
             `Not ready.`,
         );
         Utils.Assert(
-            text_file_index > -1,
-            `text_file_index must be greater than -1.`,
+            file_text_index > -1,
+            `file_text_index must be greater than -1.`,
         );
         Utils.Assert(
-            text_file_index < this.Text_File_Count(),
-            `text_file_index must be less than text_file_count.`,
+            file_text_index < this.File_Text_Count(),
+            `file_text_index must be less than file_text_count.`,
         );
 
-        return this.text_files[text_file_index];
+        return this.file_texts[file_text_index];
     }
 
     override async After_Dependencies_Are_Ready():
@@ -128,7 +128,7 @@ export class Instance extends Async.Instance
                     },
                 ).split(Version.Symbol.FILE_BREAK)
             ) {
-                this.text_files.push(
+                this.file_texts.push(
                     new Text.Instance(
                         {
                             dictionary: dictionary,

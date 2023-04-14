@@ -1,9 +1,133 @@
 import { Count } from "../../types.js";
 import { Index } from "../../types.js";
+import { Name } from "../../types.js";
+import { ID } from "../../types.js";
 
 import * as Utils from "../../utils.js";
 
+import * as Data from "../data.js";
 import * as Text from "../text.js";
+
+export class Match
+{
+    private first_part_index: Index;
+    private end_part_index: Index;
+    private first_part_first_unit_index: Index;
+    private last_part_end_unit_index: Index;
+
+    constructor(
+        {
+            first_part_index,
+            end_part_index,
+            first_part_first_unit_index,
+            last_part_end_unit_index,
+        }: {
+            first_part_index: Index,
+            end_part_index: Index,
+            first_part_first_unit_index: Index,
+            last_part_end_unit_index: Index,
+        },
+    )
+    {
+        this.first_part_index = first_part_index;
+        this.end_part_index = end_part_index;
+        this.first_part_first_unit_index = first_part_first_unit_index;
+        this.last_part_end_unit_index = last_part_end_unit_index;
+    }
+
+    Copy():
+        Match
+    {
+        return new Match(
+            {
+                first_part_index: this.first_part_index,
+                end_part_index: this.end_part_index,
+                first_part_first_unit_index: this.first_part_first_unit_index,
+                last_part_end_unit_index: this.last_part_end_unit_index,
+            },
+        );
+    }
+
+    First_Part_Index():
+        Index
+    {
+        return this.first_part_index;
+    }
+
+    End_Part_Index():
+        Index
+    {
+        return this.end_part_index;
+    }
+
+    First_Part_First_Unit_Index():
+        Index
+    {
+        return this.first_part_first_unit_index;
+    }
+
+    Last_Part_End_Unit_Index():
+        Index
+    {
+        return this.last_part_end_unit_index;
+    }
+
+    Is_Equal_To(
+        other: Match,
+    ):
+        boolean
+    {
+        return (
+            other.first_part_index === this.first_part_index &&
+            other.end_part_index === this.end_part_index &&
+            other.first_part_first_unit_index === this.first_part_first_unit_index &&
+            other.last_part_end_unit_index === this.last_part_end_unit_index
+        );
+    }
+
+    Includes(
+        other: Match,
+    ):
+        boolean
+    {
+        return (
+            other.first_part_index >= this.first_part_index &&
+            other.end_part_index <= this.end_part_index &&
+            other.first_part_first_unit_index >= this.first_part_first_unit_index &&
+            other.last_part_end_unit_index <= this.last_part_end_unit_index
+        );
+    }
+
+    Shadows(
+        other: Match,
+    ):
+        boolean
+    {
+        return (
+            (
+                other.first_part_index >= this.first_part_index &&
+                other.end_part_index < this.end_part_index
+            ) ||
+            (
+                other.first_part_index > this.first_part_index &&
+                other.end_part_index <= this.end_part_index
+            ) ||
+            (
+                other.first_part_index === this.first_part_index &&
+                other.end_part_index === this.end_part_index &&
+                (
+                    (
+                        other.first_part_first_unit_index >= this.first_part_first_unit_index &&
+                        other.last_part_end_unit_index < this.last_part_end_unit_index
+                    ) || (
+                        other.first_part_first_unit_index > this.first_part_first_unit_index &&
+                        other.last_part_end_unit_index <= this.last_part_end_unit_index
+                    )
+                )
+            )
+        );
+    }
+}
 
 export class Instance
 {
@@ -62,6 +186,34 @@ export class Instance
         return false;
     }
 
+    Has_Match_Including(
+        other: Match,
+    ):
+        boolean
+    {
+        for (const match of this.matches) {
+            if (match.Includes(other)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    Has_Match_Shadowing(
+        other: Match,
+    ):
+        boolean
+    {
+        for (const match of this.matches) {
+            if (match.Shadows(other)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     Match_Count():
         Count
     {
@@ -96,123 +248,20 @@ export class Instance
     }
 }
 
-export class Match
+export class Version
 {
-    private start_part_index: Index;
-    private end_part_index: Index;
-    private start_part_start_unit_index: Index;
-    private end_part_end_unit_index: Index;
+    private name: Name;
+    private versions: null;
 
     constructor(
         {
-            start_part_index,
-            end_part_index,
-            start_part_start_unit_index,
-            end_part_end_unit_index,
+            name,
         }: {
-            start_part_index: Index,
-            end_part_index: Index,
-            start_part_start_unit_index: Index,
-            end_part_end_unit_index: Index,
+            name: Name,
         },
     )
     {
-        this.start_part_index = start_part_index;
-        this.end_part_index = end_part_index;
-        this.start_part_start_unit_index = start_part_start_unit_index;
-        this.end_part_end_unit_index = end_part_end_unit_index;
-    }
-
-    Copy():
-        Match
-    {
-        return new Match(
-            {
-                start_part_index: this.start_part_index,
-                end_part_index: this.end_part_index,
-                start_part_start_unit_index: this.start_part_start_unit_index,
-                end_part_end_unit_index: this.end_part_end_unit_index,
-            },
-        );
-    }
-
-    Start_Part_Index():
-        Index
-    {
-        return this.start_part_index;
-    }
-
-    End_Part_Index():
-        Index
-    {
-        return this.end_part_index;
-    }
-
-    Start_Part_Start_Unit_Index():
-        Index
-    {
-        return this.start_part_start_unit_index;
-    }
-
-    End_Part_End_Unit_Index():
-        Index
-    {
-        return this.end_part_end_unit_index;
-    }
-
-    Is_Equal_To(
-        other: Match,
-    ):
-        boolean
-    {
-        return (
-            other.start_part_index === this.start_part_index &&
-            other.end_part_index === this.end_part_index &&
-            other.start_part_start_unit_index === this.start_part_start_unit_index &&
-            other.end_part_end_unit_index === this.end_part_end_unit_index
-        );
-    }
-
-    Includes(
-        other: Match,
-    ):
-        boolean
-    {
-        return (
-            other.start_part_index >= this.start_part_index &&
-            other.end_part_index <= this.end_part_index &&
-            other.start_part_start_unit_index >= this.start_part_start_unit_index &&
-            other.end_part_end_unit_index <= this.end_part_end_unit_index
-        );
-    }
-
-    Shadows(
-        other: Match,
-    ):
-        boolean
-    {
-        return (
-            (
-                other.start_part_index >= this.start_part_index &&
-                other.end_part_index < this.end_part_index
-            ) ||
-            (
-                other.start_part_index > this.start_part_index &&
-                other.end_part_index <= this.end_part_index
-            ) ||
-            (
-                other.start_part_index === this.start_part_index &&
-                other.end_part_index === this.end_part_index &&
-                (
-                    (
-                        other.start_part_start_unit_index >= this.start_part_start_unit_index &&
-                        other.end_part_end_unit_index < this.end_part_end_unit_index
-                    ) || (
-                        other.start_part_start_unit_index > this.start_part_start_unit_index &&
-                        other.end_part_end_unit_index <= this.end_part_end_unit_index
-                    )
-                )
-            )
-        );
+        this.name = name;
+        this.versions = null;
     }
 }

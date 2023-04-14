@@ -104,9 +104,14 @@
     are no matches, nothing to highlight.
 */
 
+import { Name } from "../../types.js";
+
 import * as Entity from "../entity.js";
 import * as Data from "../data.js";
+import * as Text from "../text.js";
+import * as Parser from "./parser.js";
 import * as Executor from "./executor.js";
+import * as Result from "./result.js";
 
 export class Instance extends Entity.Instance
 {
@@ -124,4 +129,70 @@ export class Instance extends Entity.Instance
             ],
         );
     }
+
+    Value(
+        value: Text.Value,
+        dictionary: Text.Dictionary.Instance,
+        expression: string,
+    ):
+        Array<Result.Instance> | Parser.Help
+    {
+        return this.Text(
+            new Text.Instance(
+                {
+                    dictionary: dictionary,
+                    value: value,
+                },
+            ),
+            expression,
+        );
+    }
+
+    Text(
+        text: Text.Instance,
+        expression: string,
+    ):
+        Array<Result.Instance> | Parser.Help
+    {
+        return this.executor.Execute(
+            expression,
+            text,
+        );
+    }
+
+    /*
+    async Version(
+        version_name: Name,
+        expression: string,
+    ):
+        Promise< | Parser.Help>
+    {
+        const versions: Array<Data.Version.Instance> =
+            Data.Singleton().Versions(
+                {
+                    book_names: null,
+                    language_names: null,
+                    version_names: [version_name],
+                },
+            );
+
+        for (const version of versions) {
+            const version_text: Data.Version.Text.Instance =
+                await version.Text();
+            for (let idx = 0, end = version_text.File_Text_Count(); idx < end; idx += 1) {
+                const file_text: Text.Instance = version_text.File_Text_At(idx);
+                const results_or_help: Array<Result.Instance> | Parser.Help =
+                    this.executor.Execute(
+                        expression,
+                        file_text,
+                    );
+                if (results_or_help instanceof Parser.Help) {
+                    return results_or_help as Parser.Help;
+                } else {
+
+                }
+            }
+        }
+    }
+    */
 }

@@ -5,6 +5,7 @@ import { Path } from "../../../types.js";
 
 import * as Utils from "../../../utils.js";
 
+import * as Entity from "../../entity.js";
 import * as Language from "../language.js";
 import * as Dictionary from "./dictionary.js";
 import * as Text from "./text.js";
@@ -20,7 +21,7 @@ export enum Symbol
     FILE_BREAK = `\n~~~FILE_BREAK~~~\n`,
 }
 
-export class Instance
+export class Instance extends Entity.Instance
 {
     private language: Language.Instance;
     private name: Name;
@@ -39,6 +40,8 @@ export class Instance
         },
     )
     {
+        super();
+
         this.language = language;
         this.name = branch.name;
         this.path = `${language.Path()}/${branch.name}`;
@@ -63,6 +66,11 @@ export class Instance
                 ),
             );
         }
+
+        this.Add_Dependencies(
+            [
+            ],
+        );
     }
 
     Language():

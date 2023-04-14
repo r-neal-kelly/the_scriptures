@@ -201,23 +201,30 @@ async function Main():
 Main();
 
 // temp
-/*
+import * as Data from "../model/data.js";
+import * as Text from "../model/text.js";
 import * as Search from "../model/search.js"
 (
     async function ()
     {
-        const search: Search.Instance = new Search.Instance(
-            {
-                ignore_markup: true,
-                respect_case: false,
-                align_on_part: false,
-            },
-        );
+        const search: Search.Instance = new Search.Instance();
 
         await search.Ready();
 
-        (window as any).Test = search;
+        const text: Text.Instance = await Data.Singleton()
+            .Book(`Genesis`)
+            .Language(`English`)
+            .Version(`KJV 1872-1888+`)
+            .File(`Chapter 01.comp`).Text();
+
+        (window as any).search =
+            function (
+                expression: string,
+            ):
+                Array<Search.Result.Instance> | Search.Parser.Help
+            {
+                return search.Text(text, expression);
+            };
     }
 )();
-*/
 //

@@ -170,10 +170,8 @@ export class Binary extends Instance
             },
         );
 
-        super.Set_Next(left_operand);
         this.right_operand = right_operand;
-
-        Object.freeze(this);
+        super.Set_Next(left_operand);
     }
 
     override Next():
@@ -201,7 +199,7 @@ export class Binary extends Instance
     Left_Operand():
         Instance
     {
-        return this.Next();
+        return super.Next();
     }
 
     Right_Operand():

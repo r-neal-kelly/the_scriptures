@@ -271,155 +271,268 @@ export class Instance
         }
     }
 
-    // I think when it comes to doing implicit breaks and words
-    // in sequences, it's fine to just test if it's there,
-    // and throw it in the possible range of matches. The next
-    // part will determine if it matches either the match with
-    // or the match without the implicit part and proceed from there.
     private Sequenced_Negated_Cased_Aligned_Text(
-        node: Node.Text,
+        text: Node.Text,
         result: Result.Instance,
     ):
         Result.Instance | null
     {
-        return result;
+        Utils.Assert(
+            false,
+            `Not implemented yet.`,
+        );
+
+        return null;
     }
 
     private Sequenced_Negated_Cased_Text(
-        node: Node.Text,
+        text: Node.Text,
         result: Result.Instance,
     ):
         Result.Instance | null
     {
-        return result;
+        Utils.Assert(
+            false,
+            `Not implemented yet.`,
+        );
+
+        return null;
     }
 
     private Sequenced_Negated_Aligned_Text(
-        node: Node.Text,
+        text: Node.Text,
         result: Result.Instance,
     ):
         Result.Instance | null
     {
-        return result;
+        Utils.Assert(
+            false,
+            `Not implemented yet.`,
+        );
+
+        return null;
     }
 
     private Sequenced_Negated_Text(
-        node: Node.Text,
+        text: Node.Text,
         result: Result.Instance,
     ):
         Result.Instance | null
     {
-        return result;
+        Utils.Assert(
+            false,
+            `Not implemented yet.`,
+        );
+
+        return null;
     }
 
     private Sequenced_Cased_Aligned_Text(
-        node: Node.Text,
+        text: Node.Text,
         result: Result.Instance,
     ):
         Result.Instance | null
     {
-        return result;
+        Utils.Assert(
+            false,
+            `Not implemented yet.`,
+        );
+
+        return null;
     }
 
     private Sequenced_Cased_Text(
-        node: Node.Text,
+        text: Node.Text,
         result: Result.Instance,
     ):
         Result.Instance | null
     {
-        return result;
+        Utils.Assert(
+            false,
+            `Not implemented yet.`,
+        );
+
+        return null;
     }
 
     private Sequenced_Aligned_Text(
-        node: Node.Text,
+        text: Node.Text,
         result: Result.Instance,
     ):
         Result.Instance | null
     {
-        return result;
+        Utils.Assert(
+            false,
+            `Not implemented yet.`,
+        );
+
+        return null;
     }
 
     private Sequenced_Text(
-        node: Node.Text,
+        text: Node.Text,
         result: Result.Instance,
     ):
         Result.Instance | null
     {
-        return result;
+        Utils.Assert(
+            false,
+            `Not implemented yet.`,
+        );
+
+        return null;
     }
 
     private Negated_Cased_Aligned_Text(
-        node: Node.Text,
+        text: Node.Text,
         result: Result.Instance,
     ):
         Result.Instance | null
     {
-        return result;
+        Utils.Assert(
+            false,
+            `Not implemented yet.`,
+        );
+
+        return null;
     }
 
     private Negated_Cased_Text(
-        node: Node.Text,
+        text: Node.Text,
         result: Result.Instance,
     ):
         Result.Instance | null
     {
-        return result;
+        Utils.Assert(
+            false,
+            `Not implemented yet.`,
+        );
+
+        return null;
     }
 
     private Negated_Aligned_Text(
-        node: Node.Text,
+        text: Node.Text,
         result: Result.Instance,
     ):
         Result.Instance | null
     {
-        return result;
+        Utils.Assert(
+            false,
+            `Not implemented yet.`,
+        );
+
+        return null;
     }
 
     private Negated_Text(
-        node: Node.Text,
+        text: Node.Text,
         result: Result.Instance,
     ):
         Result.Instance | null
     {
-        return result;
+        Utils.Assert(
+            false,
+            `Not implemented yet.`,
+        );
+
+        return null;
     }
 
     private Cased_Aligned_Text(
-        node: Node.Text,
+        text: Node.Text,
         result: Result.Instance,
     ):
         Result.Instance | null
     {
-        return result;
+        const search_line: Text.Line.Instance = result.Line();
+        const expression_line: Text.Line.Instance = text.Line();
+
+        let found_match: boolean = false;
+
+        for (
+            let search_idx = 0, search_end = search_line.Macro_Part_Count();
+            search_idx < search_end;
+            search_idx += 1
+        ) {
+            for (
+                let expression_idx = 0, expression_end = expression_line.Macro_Part_Count();
+                expression_idx < expression_end;
+                expression_idx += 1
+            ) {
+                if (search_idx + expression_idx < search_end) {
+                    const search_part: Text.Part.Instance = search_line.Macro_Part(search_idx + expression_idx);
+                    const search_value: Text.Value = search_part.Value();
+                    const expression_part: Text.Part.Instance = expression_line.Macro_Part(expression_idx);
+                    const expression_value: Text.Value = expression_part.Value();
+
+                    if (search_value === expression_value) {
+                        if (expression_idx === expression_end - 1) {
+                            found_match = true;
+                            result.Try_Add_Match(
+                                new Result.Match(
+                                    {
+                                        first_part_index: search_idx,
+                                        end_part_index: search_idx + expression_end,
+                                        first_part_first_unit_index: 0,
+                                        last_part_end_unit_index: search_value.length,
+                                    },
+                                ),
+                            );
+                        }
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (found_match) {
+            return result;
+        } else {
+            return null;
+        }
     }
 
     private Cased_Text(
-        node: Node.Text,
+        text: Node.Text,
         result: Result.Instance,
     ):
         Result.Instance | null
     {
-        return result;
+        Utils.Assert(
+            false,
+            `Not implemented yet.`,
+        );
+
+        return null;
     }
 
     private Aligned_Text(
-        node: Node.Text,
+        text: Node.Text,
         result: Result.Instance,
     ):
         Result.Instance | null
     {
-        return result;
+        Utils.Assert(
+            false,
+            `Not implemented yet.`,
+        );
+
+        return null;
     }
 
     private Text(
-        node: Node.Text,
+        text: Node.Text,
         result: Result.Instance,
     ):
         Result.Instance | null
     {
-        const dictionary: Text.Dictionary.Instance =
-            result.Line().Text().Dictionary();
+        Utils.Assert(
+            false,
+            `Not implemented yet.`,
+        );
 
-        return result;
+        return null;
     }
 }
