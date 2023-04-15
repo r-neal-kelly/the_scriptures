@@ -1,4 +1,5 @@
 import { Count } from "../../types.js";
+import { Index } from "../../types.js";
 
 import * as Utils from "../../utils.js";
 
@@ -261,41 +262,138 @@ export class Instance
             search_idx < search_end;
             search_idx += 1
         ) {
-            let command_count: Count = 0;
-            for (
-                let expression_idx = 0, expression_end = expression_line.Macro_Part_Count();
-                expression_idx < expression_end;
-                expression_idx += 1
+            if (
+                (mode & Mode.META) ||
+                !search_line.Macro_Part(search_idx).Is_Command()
             ) {
-                if (!(mode & Mode.META)) {
-                    while (
-                        search_idx + command_count + expression_idx < search_end &&
-                        search_line.Macro_Part(search_idx + command_count + expression_idx).Is_Command()
-                    ) {
-                        command_count += 1;
+                let command_count: Count = 0;
+                let first_part_first_unit_index: Index = -1;
+                let last_part_end_unit_index: Index = -1;
+                for (
+                    let expression_idx = 0, expression_end = expression_line.Macro_Part_Count();
+                    expression_idx < expression_end;
+                    expression_idx += 1
+                ) {
+                    if (!(mode & Mode.META)) {
+                        while (
+                            search_idx + command_count + expression_idx < search_end &&
+                            search_line.Macro_Part(search_idx + command_count + expression_idx).Is_Command()
+                        ) {
+                            command_count += 1;
+                        }
                     }
-                }
 
-                if (search_idx + command_count + expression_idx < search_end) {
-                    const search_part: Text.Part.Instance =
-                        search_line.Macro_Part(search_idx + command_count + expression_idx);
-                    const expression_part: Text.Part.Instance =
-                        expression_line.Macro_Part(expression_idx);
-                    const search_value: Text.Value =
-                        search_part.Value();
-                    const expression_value: Text.Value =
-                        expression_part.Value();
+                    if (search_idx + command_count + expression_idx < search_end) {
+                        const search_part: Text.Part.Instance =
+                            search_line.Macro_Part(search_idx + command_count + expression_idx);
+                        const expression_part: Text.Part.Instance =
+                            expression_line.Macro_Part(expression_idx);
 
-                    if (search_value === expression_value) {
-                        if (expression_idx === expression_end - 1) {
+                        const {
+                            search_value,
+                            expression_value,
+                        }: {
+                            search_value: Text.Value,
+                            expression_value: Text.Value,
+                        } = mode & Mode.CASE ?
+                                {
+                                    search_value: search_part.Value(),
+                                    expression_value: expression_part.Value(),
+                                } : {
+                                    search_value: search_part.Value().toLowerCase(),
+                                    expression_value: expression_part.Value().toLowerCase(),
+                                };
+
+                        let is_match: boolean;
+                        if (mode & Mode.ALIGN) {
+                            is_match = search_value === expression_value;
+                            first_part_first_unit_index = 0;
+                            last_part_end_unit_index = search_value.length;
+                        } else {
+                            if (expression_end > 1) {
+                                if (expression_idx === 0) {
+                                    if (
+                                        search_value.length >= expression_value.length &&
+                                        search_value.slice(search_value.length - expression_value.length, search_value.length) === expression_value
+                                    ) {
+                                        is_match = true;
+                                        first_part_first_unit_index = search_value.length - expression_value.length;
+                                        for (
+                                            let search_value_idx = first_part_first_unit_index, search_value_end = 0;
+                                            search_value_idx > search_value_end + (expression_value.length - 1);
+                                        ) {
+                                            if (search_value.slice(search_value_idx - expression_value.length, search_value_idx) === expression_value) {
+                                                search_value_idx -= expression_value.length;
+                                                first_part_first_unit_index = search_value_idx;
+                                            } else {
+                                                break;
+                                            }
+                                        }
+                                    } else {
+                                        is_match = false;
+                                    }
+                                } else if (expression_idx === expression_end - 1) {
+                                    if (
+                                        search_value.length >= expression_value.length &&
+                                        search_value.slice(0, expression_value.length) === expression_value
+                                    ) {
+                                        is_match = true;
+                                        last_part_end_unit_index = expression_value.length;
+                                        for (
+                                            let search_value_idx = last_part_end_unit_index, search_value_end = search_value.length;
+                                            search_value_idx < search_value_end - (expression_value.length - 1);
+                                        ) {
+                                            if (search_value.slice(search_value_idx, search_value_idx + expression_value.length) === expression_value) {
+                                                search_value_idx += expression_value.length;
+                                                last_part_end_unit_index = search_value_idx;
+                                            } else {
+                                                break;
+                                            }
+                                        }
+                                    } else {
+                                        is_match = false;
+                                    }
+                                } else {
+                                    is_match = search_value === expression_value;
+                                }
+                            } else {
+                                is_match = false;
+                                for (
+                                    let search_value_idx = 0, search_value_end = search_value.length;
+                                    search_value_idx < search_value_end - (expression_value.length - 1);
+                                ) {
+                                    if (!is_match) {
+                                        if (search_value.slice(search_value_idx, search_value_idx + expression_value.length) === expression_value) {
+                                            is_match = true;
+                                            first_part_first_unit_index = search_value_idx;
+                                            search_value_idx += expression_value.length;
+                                            last_part_end_unit_index = search_value_idx;
+                                        } else {
+                                            search_value_idx += 1;
+                                        }
+                                    } else {
+                                        if (search_value.slice(search_value_idx, search_value_idx + expression_value.length) === expression_value) {
+                                            search_value_idx += expression_value.length;
+                                            last_part_end_unit_index = search_value_idx;
+                                        } else {
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        if (!is_match) {
+                            break;
+                        } else if (expression_idx === expression_end - 1) {
                             found_match = true;
                             result.Try_Add_Match(
                                 new Result.Match(
                                     {
                                         first_part_index: search_idx,
                                         end_part_index: search_idx + command_count + expression_end,
-                                        first_part_first_unit_index: 0,
-                                        last_part_end_unit_index: search_value.length,
+                                        first_part_first_unit_index: first_part_first_unit_index,
+                                        last_part_end_unit_index: last_part_end_unit_index,
                                     },
                                 ),
                             );
@@ -303,8 +401,6 @@ export class Instance
                     } else {
                         break;
                     }
-                } else {
-                    break;
                 }
             }
         }

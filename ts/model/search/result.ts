@@ -29,6 +29,23 @@ export class Match
         },
     )
     {
+        Utils.Assert(
+            first_part_index > -1,
+            `first_part_index must be greater than -1.`,
+        );
+        Utils.Assert(
+            first_part_index < end_part_index,
+            `first_part_index must be less than end_part_index.`,
+        );
+        Utils.Assert(
+            first_part_first_unit_index > -1,
+            `first_part_first_unit_index must be greater than -1.`,
+        );
+        Utils.Assert(
+            last_part_end_unit_index > -1,
+            `last_part_end_unit_index must be greater than -1.`,
+        );
+
         this.first_part_index = first_part_index;
         this.end_part_index = end_part_index;
         this.first_part_first_unit_index = first_part_first_unit_index;

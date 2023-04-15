@@ -95,7 +95,7 @@ export class Instance
                     it = it.Next();
                     if (it.Is_At_End()) {
                         return new Help(
-                            `Unclosed '${Operator.VERBATIM}'`,
+                            `Unclosed ${Operator.VERBATIM}`,
                             it.Previous().Index(),
                         );
                     } else {
@@ -107,7 +107,7 @@ export class Instance
                         }
                         if (it.Is_At_End()) {
                             return new Help(
-                                `Unclosed '${Operator.VERBATIM}'`,
+                                `Unclosed ${Operator.VERBATIM}`,
                                 it.Previous().Index(),
                             );
                         } else {
@@ -119,12 +119,12 @@ export class Instance
                             );
                             if (text.Line_Count() > 1) {
                                 return new Help(
-                                    `Newline inside '${Operator.VERBATIM}'`,
+                                    `Newline inside ${Operator.VERBATIM}`,
                                     it.Index(),
                                 );
                             } else if (text.Line(0).Macro_Part_Count() === 0) {
                                 return new Help(
-                                    `Empty '${Operator.VERBATIM}'`,
+                                    `Empty ${Operator.VERBATIM}`,
                                     it.Index(),
                                 );
                             } else {
@@ -155,57 +155,57 @@ export class Instance
                     const last_token: Token.Instance | null = Last();
                     if (last_token == null) {
                         return new Help(
-                            `Invalid '${Operator.CLOSE_GROUP}' at beginning`,
+                            `Invalid ${Operator.CLOSE_GROUP} at beginning`,
                             it.Index(),
                         );
                     } else if (last_token.Type() === Token.Type.OPEN_GROUP) {
                         return new Help(
-                            `Empty '${Operator.OPEN_GROUP}${Operator.CLOSE_GROUP}'`,
+                            `Empty ${Operator.OPEN_GROUP}${Operator.CLOSE_GROUP}`,
                             last_expression_index,
                         );
                     } else if (last_token.Type() === Token.Type.OPEN_SEQUENCE) {
                         return new Help(
-                            `Invalid '${Operator.OPEN_SEQUENCE}' followed by '${Operator.CLOSE_GROUP}'`,
+                            `Invalid ${Operator.OPEN_SEQUENCE} followed by ${Operator.CLOSE_GROUP}`,
                             last_expression_index,
                         );
                     } else if (last_token.Type() === Token.Type.NOT) {
                         return new Help(
-                            `Invalid '${Operator.NOT}' followed by '${Operator.CLOSE_GROUP}'`,
+                            `Invalid ${Operator.NOT} followed by ${Operator.CLOSE_GROUP}`,
                             last_expression_index,
                         );
                     } else if (last_token.Type() === Token.Type.CASE) {
                         return new Help(
-                            `Invalid '${Operator.CASE}' followed by '${Operator.CLOSE_GROUP}'`,
+                            `Invalid ${Operator.CASE} followed by ${Operator.CLOSE_GROUP}`,
                             last_expression_index,
                         );
                     } else if (last_token.Type() === Token.Type.ALIGN) {
                         return new Help(
-                            `Invalid '${Operator.ALIGN}' followed by '${Operator.CLOSE_GROUP}'`,
+                            `Invalid ${Operator.ALIGN} followed by ${Operator.CLOSE_GROUP}`,
                             last_expression_index,
                         );
                     } else if (last_token.Type() === Token.Type.META) {
                         return new Help(
-                            `Invalid '${Operator.META}' followed by '${Operator.CLOSE_GROUP}'`,
+                            `Invalid ${Operator.META} followed by ${Operator.CLOSE_GROUP}`,
                             last_expression_index,
                         );
                     } else if (last_token.Type() === Token.Type.AND) {
                         return new Help(
-                            `Invalid '${Operator.AND}' followed by '${Operator.CLOSE_GROUP}'`,
+                            `Invalid ${Operator.AND} followed by ${Operator.CLOSE_GROUP}`,
                             last_expression_index,
                         );
                     } else if (last_token.Type() === Token.Type.XOR) {
                         return new Help(
-                            `Invalid '${Operator.XOR}' followed by '${Operator.CLOSE_GROUP}'`,
+                            `Invalid ${Operator.XOR} followed by ${Operator.CLOSE_GROUP}`,
                             last_expression_index,
                         );
                     } else if (last_token.Type() === Token.Type.OR) {
                         return new Help(
-                            `Invalid '${Operator.OR}' followed by '${Operator.CLOSE_GROUP}'`,
+                            `Invalid ${Operator.OR} followed by ${Operator.CLOSE_GROUP}`,
                             last_expression_index,
                         );
                     } else if (group_depth < 1) {
                         return new Help(
-                            `Extra '${Operator.CLOSE_GROUP}'`,
+                            `Extra ${Operator.CLOSE_GROUP}`,
                             it.Index(),
                         );
                     } else {
@@ -217,7 +217,7 @@ export class Instance
                 } else if (point === Operator.OPEN_SEQUENCE) {
                     if (sequence_depth > 0) {
                         return new Help(
-                            `Interior '${Operator.OPEN_SEQUENCE}' within sequence`,
+                            `Interior ${Operator.OPEN_SEQUENCE} within sequence`,
                             last_expression_index,
                         );
                     } else {
@@ -232,62 +232,62 @@ export class Instance
                     const last_token: Token.Instance | null = Last();
                     if (last_token === null) {
                         return new Help(
-                            `Invalid '${Operator.CLOSE_SEQUENCE}' at beginning`,
+                            `Invalid ${Operator.CLOSE_SEQUENCE} at beginning`,
                             it.Index(),
                         );
                     } else if (last_token.Type() === Token.Type.OPEN_GROUP) {
                         return new Help(
-                            `Invalid '${Operator.OPEN_GROUP}' followed by '${Operator.CLOSE_SEQUENCE}'`,
+                            `Invalid ${Operator.OPEN_GROUP} followed by ${Operator.CLOSE_SEQUENCE}`,
                             last_expression_index,
                         );
                     } else if (last_token.Type() === Token.Type.OPEN_SEQUENCE) {
                         return new Help(
-                            `Empty '${Operator.OPEN_SEQUENCE}${Operator.CLOSE_SEQUENCE}'`,
+                            `Empty ${Operator.OPEN_SEQUENCE}${Operator.CLOSE_SEQUENCE}`,
                             last_expression_index,
                         );
                     } else if (last_token.Type() === Token.Type.CLOSE_SEQUENCE) {
                         return new Help(
-                            `Invalid '${Operator.CLOSE_SEQUENCE}' followed by '${Operator.CLOSE_SEQUENCE}'`,
+                            `Invalid ${Operator.CLOSE_SEQUENCE} followed by ${Operator.CLOSE_SEQUENCE}`,
                             last_expression_index,
                         );
                     } else if (last_token.Type() === Token.Type.NOT) {
                         return new Help(
-                            `Invalid '${Operator.NOT}' followed by '${Operator.CLOSE_SEQUENCE}'`,
+                            `Invalid ${Operator.NOT} followed by ${Operator.CLOSE_SEQUENCE}`,
                             last_expression_index,
                         );
                     } else if (last_token.Type() === Token.Type.CASE) {
                         return new Help(
-                            `Invalid '${Operator.CASE}' followed by '${Operator.CLOSE_SEQUENCE}'`,
+                            `Invalid ${Operator.CASE} followed by ${Operator.CLOSE_SEQUENCE}`,
                             last_expression_index,
                         );
                     } else if (last_token.Type() === Token.Type.ALIGN) {
                         return new Help(
-                            `Invalid '${Operator.ALIGN}' followed by '${Operator.CLOSE_SEQUENCE}'`,
+                            `Invalid ${Operator.ALIGN} followed by ${Operator.CLOSE_SEQUENCE}`,
                             last_expression_index,
                         );
                     } else if (last_token.Type() === Token.Type.META) {
                         return new Help(
-                            `Invalid '${Operator.META}' followed by '${Operator.CLOSE_SEQUENCE}'`,
+                            `Invalid ${Operator.META} followed by ${Operator.CLOSE_SEQUENCE}`,
                             last_expression_index,
                         );
                     } else if (last_token.Type() === Token.Type.AND) {
                         return new Help(
-                            `Invalid '${Operator.AND}' followed by '${Operator.CLOSE_SEQUENCE}'`,
+                            `Invalid ${Operator.AND} followed by ${Operator.CLOSE_SEQUENCE}`,
                             last_expression_index,
                         );
                     } else if (last_token.Type() === Token.Type.XOR) {
                         return new Help(
-                            `Invalid '${Operator.XOR}' followed by '${Operator.CLOSE_SEQUENCE}'`,
+                            `Invalid ${Operator.XOR} followed by ${Operator.CLOSE_SEQUENCE}`,
                             last_expression_index,
                         );
                     } else if (last_token.Type() === Token.Type.OR) {
                         return new Help(
-                            `Invalid '${Operator.OR}' followed by '${Operator.CLOSE_SEQUENCE}'`,
+                            `Invalid ${Operator.OR} followed by ${Operator.CLOSE_SEQUENCE}`,
                             last_expression_index,
                         );
                     } else if (sequence_depth < 1) {
                         return new Help(
-                            `Extra '${Operator.CLOSE_SEQUENCE}'`,
+                            `Extra ${Operator.CLOSE_SEQUENCE}`,
                             it.Index(),
                         );
                     } else {
@@ -321,52 +321,52 @@ export class Instance
                     const last_token: Token.Instance | null = Last();
                     if (last_token === null) {
                         return new Help(
-                            `Invalid '${Operator.AND}' at beginning`,
+                            `Invalid ${Operator.AND} at beginning`,
                             it.Index(),
                         );
                     } else if (last_token.Type() === Token.Type.OPEN_GROUP) {
                         return new Help(
-                            `Invalid '${Operator.AND}' after '${Operator.OPEN_GROUP}'`,
+                            `Invalid ${Operator.AND} after ${Operator.OPEN_GROUP}`,
                             it.Index(),
                         );
                     } else if (last_token.Type() === Token.Type.OPEN_SEQUENCE) {
                         return new Help(
-                            `Invalid '${Operator.AND}' after '${Operator.OPEN_SEQUENCE}'`,
+                            `Invalid ${Operator.AND} after ${Operator.OPEN_SEQUENCE}`,
                             it.Index(),
                         );
                     } else if (last_token.Type() === Token.Type.NOT) {
                         return new Help(
-                            `Invalid '${Operator.AND}' after '${Operator.NOT}'`,
+                            `Invalid ${Operator.AND} after ${Operator.NOT}`,
                             it.Index(),
                         );
                     } else if (last_token.Type() === Token.Type.CASE) {
                         return new Help(
-                            `Invalid '${Operator.AND}' after '${Operator.CASE}'`,
+                            `Invalid ${Operator.AND} after ${Operator.CASE}`,
                             it.Index(),
                         );
                     } else if (last_token.Type() === Token.Type.ALIGN) {
                         return new Help(
-                            `Invalid '${Operator.AND}' after '${Operator.ALIGN}'`,
+                            `Invalid ${Operator.AND} after ${Operator.ALIGN}`,
                             it.Index(),
                         );
                     } else if (last_token.Type() === Token.Type.META) {
                         return new Help(
-                            `Invalid '${Operator.AND}' after '${Operator.META}'`,
+                            `Invalid ${Operator.AND} after ${Operator.META}`,
                             it.Index(),
                         );
                     } else if (last_token.Type() === Token.Type.AND) {
                         return new Help(
-                            `Invalid '${Operator.AND}' after '${Operator.AND}'`,
+                            `Invalid ${Operator.AND} after ${Operator.AND}`,
                             it.Index(),
                         );
                     } else if (last_token.Type() === Token.Type.XOR) {
                         return new Help(
-                            `Invalid '${Operator.AND}' after '${Operator.XOR}'`,
+                            `Invalid ${Operator.AND} after ${Operator.XOR}`,
                             it.Index(),
                         );
                     } else if (last_token.Type() === Token.Type.OR) {
                         return new Help(
-                            `Invalid '${Operator.AND}' after '${Operator.OR}'`,
+                            `Invalid ${Operator.AND} after ${Operator.OR}`,
                             it.Index(),
                         );
                     } else {
@@ -379,52 +379,52 @@ export class Instance
                     const last_token: Token.Instance | null = Last();
                     if (last_token === null) {
                         return new Help(
-                            `Invalid '${Operator.XOR}' at beginning`,
+                            `Invalid ${Operator.XOR} at beginning`,
                             it.Index(),
                         );
                     } else if (last_token.Type() === Token.Type.OPEN_GROUP) {
                         return new Help(
-                            `Invalid '${Operator.XOR}' after '${Operator.OPEN_GROUP}'`,
+                            `Invalid ${Operator.XOR} after ${Operator.OPEN_GROUP}`,
                             it.Index(),
                         );
                     } else if (last_token.Type() === Token.Type.OPEN_SEQUENCE) {
                         return new Help(
-                            `Invalid '${Operator.XOR}' after '${Operator.OPEN_SEQUENCE}'`,
+                            `Invalid ${Operator.XOR} after ${Operator.OPEN_SEQUENCE}`,
                             it.Index(),
                         );
                     } else if (last_token.Type() === Token.Type.NOT) {
                         return new Help(
-                            `Invalid '${Operator.XOR}' after '${Operator.NOT}'`,
+                            `Invalid ${Operator.XOR} after ${Operator.NOT}`,
                             it.Index(),
                         );
                     } else if (last_token.Type() === Token.Type.CASE) {
                         return new Help(
-                            `Invalid '${Operator.XOR}' after '${Operator.CASE}'`,
+                            `Invalid ${Operator.XOR} after ${Operator.CASE}`,
                             it.Index(),
                         );
                     } else if (last_token.Type() === Token.Type.ALIGN) {
                         return new Help(
-                            `Invalid '${Operator.XOR}' after '${Operator.ALIGN}'`,
+                            `Invalid ${Operator.XOR} after ${Operator.ALIGN}`,
                             it.Index(),
                         );
                     } else if (last_token.Type() === Token.Type.META) {
                         return new Help(
-                            `Invalid '${Operator.XOR}' after '${Operator.META}'`,
+                            `Invalid ${Operator.XOR} after ${Operator.META}`,
                             it.Index(),
                         );
                     } else if (last_token.Type() === Token.Type.AND) {
                         return new Help(
-                            `Invalid '${Operator.XOR}' after '${Operator.AND}'`,
+                            `Invalid ${Operator.XOR} after ${Operator.AND}`,
                             it.Index(),
                         );
                     } else if (last_token.Type() === Token.Type.XOR) {
                         return new Help(
-                            `Invalid '${Operator.XOR}' after '${Operator.XOR}'`,
+                            `Invalid ${Operator.XOR} after ${Operator.XOR}`,
                             it.Index(),
                         );
                     } else if (last_token.Type() === Token.Type.OR) {
                         return new Help(
-                            `Invalid '${Operator.XOR}' after '${Operator.OR}'`,
+                            `Invalid ${Operator.XOR} after ${Operator.OR}`,
                             it.Index(),
                         );
                     } else {
@@ -436,52 +436,52 @@ export class Instance
                     const last_token: Token.Instance | null = Last();
                     if (last_token === null) {
                         return new Help(
-                            `Invalid '${Operator.OR}' at beginning`,
+                            `Invalid ${Operator.OR} at beginning`,
                             it.Index(),
                         );
                     } else if (last_token.Type() === Token.Type.OPEN_GROUP) {
                         return new Help(
-                            `Invalid '${Operator.OR}' after '${Operator.OPEN_GROUP}'`,
+                            `Invalid ${Operator.OR} after ${Operator.OPEN_GROUP}`,
                             it.Index(),
                         );
                     } else if (last_token.Type() === Token.Type.OPEN_SEQUENCE) {
                         return new Help(
-                            `Invalid '${Operator.OR}' after '${Operator.OPEN_SEQUENCE}'`,
+                            `Invalid ${Operator.OR} after ${Operator.OPEN_SEQUENCE}`,
                             it.Index(),
                         );
                     } else if (last_token.Type() === Token.Type.NOT) {
                         return new Help(
-                            `Invalid '${Operator.OR}' after '${Operator.NOT}'`,
+                            `Invalid ${Operator.OR} after ${Operator.NOT}`,
                             it.Index(),
                         );
                     } else if (last_token.Type() === Token.Type.CASE) {
                         return new Help(
-                            `Invalid '${Operator.OR}' after '${Operator.CASE}'`,
+                            `Invalid ${Operator.OR} after ${Operator.CASE}`,
                             it.Index(),
                         );
                     } else if (last_token.Type() === Token.Type.ALIGN) {
                         return new Help(
-                            `Invalid '${Operator.OR}' after '${Operator.ALIGN}'`,
+                            `Invalid ${Operator.OR} after ${Operator.ALIGN}`,
                             it.Index(),
                         );
                     } else if (last_token.Type() === Token.Type.META) {
                         return new Help(
-                            `Invalid '${Operator.OR}' after '${Operator.META}'`,
+                            `Invalid ${Operator.OR} after ${Operator.META}`,
                             it.Index(),
                         );
                     } else if (last_token.Type() === Token.Type.AND) {
                         return new Help(
-                            `Invalid '${Operator.OR}' after '${Operator.AND}'`,
+                            `Invalid ${Operator.OR} after ${Operator.AND}`,
                             it.Index(),
                         );
                     } else if (last_token.Type() === Token.Type.XOR) {
                         return new Help(
-                            `Invalid '${Operator.OR}' after '${Operator.XOR}'`,
+                            `Invalid ${Operator.OR} after ${Operator.XOR}`,
                             it.Index(),
                         );
                     } else if (last_token.Type() === Token.Type.OR) {
                         return new Help(
-                            `Invalid '${Operator.OR}' after '${Operator.OR}'`,
+                            `Invalid ${Operator.OR} after ${Operator.OR}`,
                             it.Index(),
                         );
                     } else {
@@ -546,13 +546,13 @@ export class Instance
 
         } else if (group_depth > 0) {
             return new Help(
-                `Unclosed '${Operator.OPEN_GROUP}'`,
+                `Unclosed ${Operator.OPEN_GROUP}`,
                 it.Previous().Index(),
             );
 
         } else if (sequence_depth > 0) {
             return new Help(
-                `Unclosed '${Operator.OPEN_SEQUENCE}'`,
+                `Unclosed ${Operator.OPEN_SEQUENCE}`,
                 it.Previous().Index(),
             );
 
@@ -560,47 +560,47 @@ export class Instance
             const last_token: Token.Instance = tokens[tokens.length - 1];
             if (last_token.Type() === Token.Type.OPEN_GROUP) {
                 return new Help(
-                    `Invalid '${Operator.OPEN_GROUP}' at end`,
+                    `Invalid ${Operator.OPEN_GROUP} at end`,
                     last_expression_index,
                 );
             } else if (last_token.Type() === Token.Type.OPEN_SEQUENCE) {
                 return new Help(
-                    `Invalid '${Operator.OPEN_SEQUENCE}' at end`,
+                    `Invalid ${Operator.OPEN_SEQUENCE} at end`,
                     last_expression_index,
                 );
             } else if (last_token.Type() === Token.Type.NOT) {
                 return new Help(
-                    `Invalid '${Operator.NOT}' at end`,
+                    `Invalid ${Operator.NOT} at end`,
                     last_expression_index,
                 );
             } else if (last_token.Type() === Token.Type.CASE) {
                 return new Help(
-                    `Invalid '${Operator.CASE}' at end`,
+                    `Invalid ${Operator.CASE} at end`,
                     last_expression_index,
                 );
             } else if (last_token.Type() === Token.Type.ALIGN) {
                 return new Help(
-                    `Invalid '${Operator.ALIGN}' at end`,
+                    `Invalid ${Operator.ALIGN} at end`,
                     last_expression_index,
                 );
             } else if (last_token.Type() === Token.Type.META) {
                 return new Help(
-                    `Invalid '${Operator.META}' at end`,
+                    `Invalid ${Operator.META} at end`,
                     last_expression_index,
                 );
             } else if (last_token.Type() === Token.Type.AND) {
                 return new Help(
-                    `Invalid '${Operator.AND}' at end`,
+                    `Invalid ${Operator.AND} at end`,
                     last_expression_index,
                 );
             } else if (last_token.Type() === Token.Type.XOR) {
                 return new Help(
-                    `Invalid '${Operator.XOR}' at end`,
+                    `Invalid ${Operator.XOR} at end`,
                     last_expression_index,
                 );
             } else if (last_token.Type() === Token.Type.OR) {
                 return new Help(
-                    `Invalid '${Operator.OR}' at end`,
+                    `Invalid ${Operator.OR} at end`,
                     last_expression_index,
                 );
             }
