@@ -57,7 +57,8 @@ export class Instance
                 operator_type === Token.Type.OPEN_SEQUENCE ||
                 operator_type === Token.Type.NOT ||
                 operator_type === Token.Type.CASE ||
-                operator_type === Token.Type.ALIGN
+                operator_type === Token.Type.ALIGN ||
+                operator_type === Token.Type.META
             ) {
                 Utils.Assert(
                     fragments.length >= 1,
@@ -87,11 +88,17 @@ export class Instance
                                         operand: fragment.In_Node(),
                                     },
                                 ) :
-                                new Node.Align(
-                                    {
-                                        operand: fragment.In_Node(),
-                                    },
-                                );
+                                operator_type === Token.Type.ALIGN ?
+                                    new Node.Align(
+                                        {
+                                            operand: fragment.In_Node(),
+                                        },
+                                    ) :
+                                    new Node.Meta(
+                                        {
+                                            operand: fragment.In_Node(),
+                                        },
+                                    );
                 fragments.push(
                     new Fragment(
                         unary,
@@ -211,13 +218,19 @@ export class Instance
             } else if (token_type === Token.Type.ALIGN) {
                 operators.push(token as Token.Operator);
 
+            } else if (token_type === Token.Type.META) {
+                operators.push(token as Token.Operator);
+
             } else if (token_type === Token.Type.AND) {
                 while (
                     operators.length > 0 &&
-                    operators[operators.length - 1].Type() === Token.Type.NOT ||
-                    operators[operators.length - 1].Type() === Token.Type.CASE ||
-                    operators[operators.length - 1].Type() === Token.Type.ALIGN ||
-                    operators[operators.length - 1].Type() === Token.Type.AND
+                    (
+                        operators[operators.length - 1].Type() === Token.Type.NOT ||
+                        operators[operators.length - 1].Type() === Token.Type.CASE ||
+                        operators[operators.length - 1].Type() === Token.Type.ALIGN ||
+                        operators[operators.length - 1].Type() === Token.Type.META ||
+                        operators[operators.length - 1].Type() === Token.Type.AND
+                    )
                 ) {
                     Evaluate_Fragments(
                         operators.pop() as Token.Operator,
@@ -229,11 +242,14 @@ export class Instance
             } else if (token_type === Token.Type.XOR) {
                 while (
                     operators.length > 0 &&
-                    operators[operators.length - 1].Type() === Token.Type.NOT ||
-                    operators[operators.length - 1].Type() === Token.Type.CASE ||
-                    operators[operators.length - 1].Type() === Token.Type.ALIGN ||
-                    operators[operators.length - 1].Type() === Token.Type.AND ||
-                    operators[operators.length - 1].Type() === Token.Type.XOR
+                    (
+                        operators[operators.length - 1].Type() === Token.Type.NOT ||
+                        operators[operators.length - 1].Type() === Token.Type.CASE ||
+                        operators[operators.length - 1].Type() === Token.Type.ALIGN ||
+                        operators[operators.length - 1].Type() === Token.Type.META ||
+                        operators[operators.length - 1].Type() === Token.Type.AND ||
+                        operators[operators.length - 1].Type() === Token.Type.XOR
+                    )
                 ) {
                     Evaluate_Fragments(
                         operators.pop() as Token.Operator,
@@ -245,12 +261,15 @@ export class Instance
             } else if (token_type === Token.Type.OR) {
                 while (
                     operators.length > 0 &&
-                    operators[operators.length - 1].Type() === Token.Type.NOT ||
-                    operators[operators.length - 1].Type() === Token.Type.CASE ||
-                    operators[operators.length - 1].Type() === Token.Type.ALIGN ||
-                    operators[operators.length - 1].Type() === Token.Type.AND ||
-                    operators[operators.length - 1].Type() === Token.Type.XOR ||
-                    operators[operators.length - 1].Type() === Token.Type.OR
+                    (
+                        operators[operators.length - 1].Type() === Token.Type.NOT ||
+                        operators[operators.length - 1].Type() === Token.Type.CASE ||
+                        operators[operators.length - 1].Type() === Token.Type.ALIGN ||
+                        operators[operators.length - 1].Type() === Token.Type.META ||
+                        operators[operators.length - 1].Type() === Token.Type.AND ||
+                        operators[operators.length - 1].Type() === Token.Type.XOR ||
+                        operators[operators.length - 1].Type() === Token.Type.OR
+                    )
                 ) {
                     Evaluate_Fragments(
                         operators.pop() as Token.Operator,

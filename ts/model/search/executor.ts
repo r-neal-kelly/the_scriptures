@@ -1,3 +1,5 @@
+import { Count } from "../../types.js";
+
 import * as Utils from "../../utils.js";
 
 import * as Text from "../text.js";
@@ -10,10 +12,11 @@ import * as Result from "./result.js";
 export enum Mode
 {
     INITIAL = 0,
-    SEQUENCED = 1 << 0,
-    NEGATED = 1 << 1,
-    CASED = 1 << 2,
-    ALIGNED = 1 << 3,
+    SEQUENCE = 1 << 0,
+    NOT = 1 << 1,
+    CASE = 1 << 2,
+    ALIGN = 1 << 3,
+    META = 1 << 4,
 }
 
 export class Instance
@@ -76,7 +79,7 @@ export class Instance
             const sequence: Node.Sequence = node as Node.Sequence;
             const sequence_result: Result.Instance | null = this.Step(
                 sequence.Operand(),
-                mode | Mode.SEQUENCED,
+                mode | Mode.SEQUENCE,
                 new Result.Instance(result.Line()),
             );
 
@@ -94,7 +97,7 @@ export class Instance
             const not: Node.Not = node as Node.Not;
             const not_result: Result.Instance | null = this.Step(
                 not.Operand(),
-                mode ^ Mode.NEGATED,
+                mode ^ Mode.NOT,
                 result,
             );
 
@@ -112,7 +115,7 @@ export class Instance
             const case_: Node.Case = node as Node.Case;
             const case_result: Result.Instance | null = this.Step(
                 case_.Operand(),
-                mode ^ Mode.CASED,
+                mode ^ Mode.CASE,
                 result,
             );
 
@@ -130,7 +133,7 @@ export class Instance
             const align: Node.Align = node as Node.Align;
             const align_result: Result.Instance | null = this.Step(
                 align.Operand(),
-                mode ^ Mode.ALIGNED,
+                mode ^ Mode.ALIGN,
                 result,
             );
 
@@ -139,6 +142,24 @@ export class Instance
                     align.Next(),
                     mode,
                     align_result,
+                );
+            } else {
+                return null;
+            }
+
+        } else if (node_type === Node.Type.META) {
+            const meta: Node.Meta = node as Node.Meta;
+            const meta_result: Result.Instance | null = this.Step(
+                meta.Operand(),
+                mode ^ Mode.META,
+                result,
+            );
+
+            if (meta_result != null) {
+                return this.Step(
+                    meta.Next(),
+                    mode,
+                    meta_result,
                 );
             } else {
                 return null;
@@ -186,65 +207,17 @@ export class Instance
             const text: Node.Text = node as Node.Text;
 
             let text_result: Result.Instance | null;
-            if (mode & Mode.SEQUENCED) {
-                if (mode & Mode.NEGATED) {
-                    if (mode & Mode.CASED) {
-                        if (mode & Mode.ALIGNED) {
-                            text_result = this.Sequenced_Negated_Cased_Aligned_Text(text, result);
-                        } else {
-                            text_result = this.Sequenced_Negated_Cased_Text(text, result);
-                        }
-                    } else {
-                        if (mode & Mode.ALIGNED) {
-                            text_result = this.Sequenced_Negated_Aligned_Text(text, result);
-                        } else {
-                            text_result = this.Sequenced_Negated_Text(text, result);
-                        }
-                    }
+            if (mode & Mode.SEQUENCE) {
+                if (mode & Mode.NOT) {
+                    text_result = this.Not_Sequence(text, mode, result);
                 } else {
-                    if (mode & Mode.CASED) {
-                        if (mode & Mode.ALIGNED) {
-                            text_result = this.Sequenced_Cased_Aligned_Text(text, result);
-                        } else {
-                            text_result = this.Sequenced_Cased_Text(text, result);
-                        }
-                    } else {
-                        if (mode & Mode.ALIGNED) {
-                            text_result = this.Sequenced_Aligned_Text(text, result);
-                        } else {
-                            text_result = this.Sequenced_Text(text, result);
-                        }
-                    }
+                    text_result = this.Sequence(text, mode, result);
                 }
             } else {
-                if (mode & Mode.NEGATED) {
-                    if (mode & Mode.CASED) {
-                        if (mode & Mode.ALIGNED) {
-                            text_result = this.Negated_Cased_Aligned_Text(text, result);
-                        } else {
-                            text_result = this.Negated_Cased_Text(text, result);
-                        }
-                    } else {
-                        if (mode & Mode.ALIGNED) {
-                            text_result = this.Negated_Aligned_Text(text, result);
-                        } else {
-                            text_result = this.Negated_Text(text, result);
-                        }
-                    }
+                if (mode & Mode.NOT) {
+                    text_result = this.Not_Text(text, mode, result);
                 } else {
-                    if (mode & Mode.CASED) {
-                        if (mode & Mode.ALIGNED) {
-                            text_result = this.Cased_Aligned_Text(text, result);
-                        } else {
-                            text_result = this.Cased_Text(text, result);
-                        }
-                    } else {
-                        if (mode & Mode.ALIGNED) {
-                            text_result = this.Aligned_Text(text, result);
-                        } else {
-                            text_result = this.Text(text, result);
-                        }
-                    }
+                    text_result = this.Text(text, mode, result);
                 }
             }
             if (text_result != null) {
@@ -271,176 +244,9 @@ export class Instance
         }
     }
 
-    private Sequenced_Negated_Cased_Aligned_Text(
+    private Text(
         text: Node.Text,
-        result: Result.Instance,
-    ):
-        Result.Instance | null
-    {
-        Utils.Assert(
-            false,
-            `Not implemented yet.`,
-        );
-
-        return null;
-    }
-
-    private Sequenced_Negated_Cased_Text(
-        text: Node.Text,
-        result: Result.Instance,
-    ):
-        Result.Instance | null
-    {
-        Utils.Assert(
-            false,
-            `Not implemented yet.`,
-        );
-
-        return null;
-    }
-
-    private Sequenced_Negated_Aligned_Text(
-        text: Node.Text,
-        result: Result.Instance,
-    ):
-        Result.Instance | null
-    {
-        Utils.Assert(
-            false,
-            `Not implemented yet.`,
-        );
-
-        return null;
-    }
-
-    private Sequenced_Negated_Text(
-        text: Node.Text,
-        result: Result.Instance,
-    ):
-        Result.Instance | null
-    {
-        Utils.Assert(
-            false,
-            `Not implemented yet.`,
-        );
-
-        return null;
-    }
-
-    private Sequenced_Cased_Aligned_Text(
-        text: Node.Text,
-        result: Result.Instance,
-    ):
-        Result.Instance | null
-    {
-        Utils.Assert(
-            false,
-            `Not implemented yet.`,
-        );
-
-        return null;
-    }
-
-    private Sequenced_Cased_Text(
-        text: Node.Text,
-        result: Result.Instance,
-    ):
-        Result.Instance | null
-    {
-        Utils.Assert(
-            false,
-            `Not implemented yet.`,
-        );
-
-        return null;
-    }
-
-    private Sequenced_Aligned_Text(
-        text: Node.Text,
-        result: Result.Instance,
-    ):
-        Result.Instance | null
-    {
-        Utils.Assert(
-            false,
-            `Not implemented yet.`,
-        );
-
-        return null;
-    }
-
-    private Sequenced_Text(
-        text: Node.Text,
-        result: Result.Instance,
-    ):
-        Result.Instance | null
-    {
-        Utils.Assert(
-            false,
-            `Not implemented yet.`,
-        );
-
-        return null;
-    }
-
-    private Negated_Cased_Aligned_Text(
-        text: Node.Text,
-        result: Result.Instance,
-    ):
-        Result.Instance | null
-    {
-        Utils.Assert(
-            false,
-            `Not implemented yet.`,
-        );
-
-        return null;
-    }
-
-    private Negated_Cased_Text(
-        text: Node.Text,
-        result: Result.Instance,
-    ):
-        Result.Instance | null
-    {
-        Utils.Assert(
-            false,
-            `Not implemented yet.`,
-        );
-
-        return null;
-    }
-
-    private Negated_Aligned_Text(
-        text: Node.Text,
-        result: Result.Instance,
-    ):
-        Result.Instance | null
-    {
-        Utils.Assert(
-            false,
-            `Not implemented yet.`,
-        );
-
-        return null;
-    }
-
-    private Negated_Text(
-        text: Node.Text,
-        result: Result.Instance,
-    ):
-        Result.Instance | null
-    {
-        Utils.Assert(
-            false,
-            `Not implemented yet.`,
-        );
-
-        return null;
-    }
-
-    private Cased_Aligned_Text(
-        text: Node.Text,
+        mode: Mode,
         result: Result.Instance,
     ):
         Result.Instance | null
@@ -455,16 +261,30 @@ export class Instance
             search_idx < search_end;
             search_idx += 1
         ) {
+            let command_count: Count = 0;
             for (
                 let expression_idx = 0, expression_end = expression_line.Macro_Part_Count();
                 expression_idx < expression_end;
                 expression_idx += 1
             ) {
-                if (search_idx + expression_idx < search_end) {
-                    const search_part: Text.Part.Instance = search_line.Macro_Part(search_idx + expression_idx);
-                    const search_value: Text.Value = search_part.Value();
-                    const expression_part: Text.Part.Instance = expression_line.Macro_Part(expression_idx);
-                    const expression_value: Text.Value = expression_part.Value();
+                if (!(mode & Mode.META)) {
+                    while (
+                        search_idx + command_count + expression_idx < search_end &&
+                        search_line.Macro_Part(search_idx + command_count + expression_idx).Is_Command()
+                    ) {
+                        command_count += 1;
+                    }
+                }
+
+                if (search_idx + command_count + expression_idx < search_end) {
+                    const search_part: Text.Part.Instance =
+                        search_line.Macro_Part(search_idx + command_count + expression_idx);
+                    const expression_part: Text.Part.Instance =
+                        expression_line.Macro_Part(expression_idx);
+                    const search_value: Text.Value =
+                        search_part.Value();
+                    const expression_value: Text.Value =
+                        expression_part.Value();
 
                     if (search_value === expression_value) {
                         if (expression_idx === expression_end - 1) {
@@ -473,7 +293,7 @@ export class Instance
                                 new Result.Match(
                                     {
                                         first_part_index: search_idx,
-                                        end_part_index: search_idx + expression_end,
+                                        end_part_index: search_idx + command_count + expression_end,
                                         first_part_first_unit_index: 0,
                                         last_part_end_unit_index: search_value.length,
                                     },
@@ -483,6 +303,8 @@ export class Instance
                     } else {
                         break;
                     }
+                } else {
+                    break;
                 }
             }
         }
@@ -494,8 +316,26 @@ export class Instance
         }
     }
 
-    private Cased_Text(
+    private Not_Text(
         text: Node.Text,
+        mode: Mode,
+        result: Result.Instance,
+    ):
+        Result.Instance | null
+    {
+        const text_result: Result.Instance | null =
+            this.Text(text, mode, result);
+
+        if (text_result == null) {
+            return result;
+        } else {
+            return null;
+        }
+    }
+
+    private Sequence(
+        text: Node.Text,
+        mode: Mode,
         result: Result.Instance,
     ):
         Result.Instance | null
@@ -508,22 +348,9 @@ export class Instance
         return null;
     }
 
-    private Aligned_Text(
+    private Not_Sequence(
         text: Node.Text,
-        result: Result.Instance,
-    ):
-        Result.Instance | null
-    {
-        Utils.Assert(
-            false,
-            `Not implemented yet.`,
-        );
-
-        return null;
-    }
-
-    private Text(
-        text: Node.Text,
+        mode: Mode,
         result: Result.Instance,
     ):
         Result.Instance | null

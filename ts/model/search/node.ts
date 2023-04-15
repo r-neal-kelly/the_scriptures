@@ -11,6 +11,7 @@ export enum Type
     NOT,
     CASE,
     ALIGN,
+    META,
     SEQUENCE,
     END,
 }
@@ -334,6 +335,25 @@ export class Align extends Unary
         super(
             {
                 type: Type.ALIGN,
+                operand: operand,
+            },
+        );
+    }
+}
+
+export class Meta extends Unary
+{
+    constructor(
+        {
+            operand,
+        }: {
+            operand: Instance,
+        },
+    )
+    {
+        super(
+            {
+                type: Type.META,
                 operand: operand,
             },
         );

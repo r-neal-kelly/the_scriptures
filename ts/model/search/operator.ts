@@ -3,7 +3,7 @@
 // grouped together.
 export enum Operator
 {
-    VERBATIM = `"`,
+    VERBATIM = `'`,
 
     OPEN_GROUP = `(`,
     CLOSE_GROUP = `)`,
@@ -11,8 +11,9 @@ export enum Operator
     CLOSE_SEQUENCE = `>`,
 
     NOT = `!`,
-    CASE = `*`,
+    CASE = `%`,
     ALIGN = `@`,
+    META = `$`,
 
     AND = `&`,
 

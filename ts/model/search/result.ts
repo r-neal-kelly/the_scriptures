@@ -133,6 +133,7 @@ export class Instance
 {
     private line: Text.Line.Instance;
     private matches: Array<Match>;
+    private buffer: Array<Match>;
 
     constructor(
         line: Text.Line.Instance,
@@ -140,6 +141,7 @@ export class Instance
     {
         this.line = line;
         this.matches = [];
+        this.buffer = [];
     }
 
     Copy():
@@ -242,7 +244,22 @@ export class Instance
     ):
         void
     {
-        if (!this.Has_Match_Equal_To(match)) {
+        let do_add: boolean = true;
+        for (const held_match of this.matches) {
+            if (held_match.Includes(match)) {
+                do_add = false;
+                this.buffer.push(held_match);
+            } else if (!match.Shadows(held_match)) {
+                this.buffer.push(held_match);
+            }
+        }
+
+        const swap = this.buffer;
+        this.buffer = this.matches;
+        this.matches = swap;
+        this.buffer.splice(0, this.buffer.length);
+
+        if (do_add) {
             this.matches.push(match);
         }
     }

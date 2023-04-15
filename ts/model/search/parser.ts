@@ -183,6 +183,11 @@ export class Instance
                             `Invalid '${Operator.ALIGN}' followed by '${Operator.CLOSE_GROUP}'`,
                             last_expression_index,
                         );
+                    } else if (last_token.Type() === Token.Type.META) {
+                        return new Help(
+                            `Invalid '${Operator.META}' followed by '${Operator.CLOSE_GROUP}'`,
+                            last_expression_index,
+                        );
                     } else if (last_token.Type() === Token.Type.AND) {
                         return new Help(
                             `Invalid '${Operator.AND}' followed by '${Operator.CLOSE_GROUP}'`,
@@ -260,6 +265,11 @@ export class Instance
                             `Invalid '${Operator.ALIGN}' followed by '${Operator.CLOSE_SEQUENCE}'`,
                             last_expression_index,
                         );
+                    } else if (last_token.Type() === Token.Type.META) {
+                        return new Help(
+                            `Invalid '${Operator.META}' followed by '${Operator.CLOSE_SEQUENCE}'`,
+                            last_expression_index,
+                        );
                     } else if (last_token.Type() === Token.Type.AND) {
                         return new Help(
                             `Invalid '${Operator.AND}' followed by '${Operator.CLOSE_SEQUENCE}'`,
@@ -302,6 +312,11 @@ export class Instance
                     last_expression_index = it.Index();
                     tokens.push(new Token.Align());
 
+                } else if (point === Operator.META) {
+                    Try_Add_And();
+                    last_expression_index = it.Index();
+                    tokens.push(new Token.Meta());
+
                 } else if (point === Operator.AND) {
                     const last_token: Token.Instance | null = Last();
                     if (last_token === null) {
@@ -332,6 +347,11 @@ export class Instance
                     } else if (last_token.Type() === Token.Type.ALIGN) {
                         return new Help(
                             `Invalid '${Operator.AND}' after '${Operator.ALIGN}'`,
+                            it.Index(),
+                        );
+                    } else if (last_token.Type() === Token.Type.META) {
+                        return new Help(
+                            `Invalid '${Operator.AND}' after '${Operator.META}'`,
                             it.Index(),
                         );
                     } else if (last_token.Type() === Token.Type.AND) {
@@ -387,6 +407,11 @@ export class Instance
                             `Invalid '${Operator.XOR}' after '${Operator.ALIGN}'`,
                             it.Index(),
                         );
+                    } else if (last_token.Type() === Token.Type.META) {
+                        return new Help(
+                            `Invalid '${Operator.XOR}' after '${Operator.META}'`,
+                            it.Index(),
+                        );
                     } else if (last_token.Type() === Token.Type.AND) {
                         return new Help(
                             `Invalid '${Operator.XOR}' after '${Operator.AND}'`,
@@ -439,6 +464,11 @@ export class Instance
                             `Invalid '${Operator.OR}' after '${Operator.ALIGN}'`,
                             it.Index(),
                         );
+                    } else if (last_token.Type() === Token.Type.META) {
+                        return new Help(
+                            `Invalid '${Operator.OR}' after '${Operator.META}'`,
+                            it.Index(),
+                        );
                     } else if (last_token.Type() === Token.Type.AND) {
                         return new Help(
                             `Invalid '${Operator.OR}' after '${Operator.AND}'`,
@@ -475,6 +505,7 @@ export class Instance
                             point === Operator.NOT ||
                             point === Operator.CASE ||
                             point === Operator.ALIGN ||
+                            point === Operator.META ||
                             point === Operator.AND ||
                             point === Operator.XOR ||
                             point === Operator.OR
@@ -550,6 +581,11 @@ export class Instance
             } else if (last_token.Type() === Token.Type.ALIGN) {
                 return new Help(
                     `Invalid '${Operator.ALIGN}' at end`,
+                    last_expression_index,
+                );
+            } else if (last_token.Type() === Token.Type.META) {
+                return new Help(
+                    `Invalid '${Operator.META}' at end`,
                     last_expression_index,
                 );
             } else if (last_token.Type() === Token.Type.AND) {

@@ -10,6 +10,7 @@ export enum Type
     NOT,
     CASE,
     ALIGN,
+    META,
 
     AND,
 
@@ -125,6 +126,18 @@ export class Align extends Operator
         super(
             {
                 type: Type.ALIGN,
+            },
+        );
+    }
+}
+
+export class Meta extends Operator
+{
+    constructor()
+    {
+        super(
+            {
+                type: Type.META,
             },
         );
     }
