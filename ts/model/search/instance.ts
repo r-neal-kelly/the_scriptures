@@ -2,6 +2,7 @@
     We should add classes so that we can simply say {Break} or {Word}, etc.
     Would be nice to have + and * operators also.
     Maybe even look-ahead and look-behind.
+    Also need to add in delimiters.
 */
 
 import * as Entity from "../entity.js";

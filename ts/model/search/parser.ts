@@ -149,6 +149,7 @@ export class Instance
             while (sequence_and_counts.length > 0) {
                 let sequence_and_count: Count = sequence_and_counts.pop() as Count;
                 if (sequence_and_count > 0) {
+                    const do_middle: boolean = sequence_and_count > 1;
                     for (; idx > end;) {
                         idx -= 1;
                         if (tokens[idx].Type() === Token.Type.CLOSE_GROUP) {
@@ -162,19 +163,21 @@ export class Instance
                             (tokens[idx] as Token.Text).Set_Boundary(Boundary.END);
                         }
                     }
-                    for (; idx > end;) {
-                        idx -= 1;
-                        if (tokens[idx].Type() === Token.Type.CLOSE_GROUP) {
-                            group_depth += 1;
-                        } else if (tokens[idx].Type() === Token.Type.OPEN_GROUP) {
-                            group_depth -= 1;
-                        } else if (tokens[idx].Type() === Token.Type.AND) {
-                            sequence_and_count -= 1;
-                            if (sequence_and_count === 0) {
-                                break;
+                    if (do_middle) {
+                        for (; idx > end;) {
+                            idx -= 1;
+                            if (tokens[idx].Type() === Token.Type.CLOSE_GROUP) {
+                                group_depth += 1;
+                            } else if (tokens[idx].Type() === Token.Type.OPEN_GROUP) {
+                                group_depth -= 1;
+                            } else if (tokens[idx].Type() === Token.Type.AND) {
+                                sequence_and_count -= 1;
+                                if (sequence_and_count === 0) {
+                                    break;
+                                }
+                            } else if (tokens[idx].Type() === Token.Type.TEXT) {
+                                (tokens[idx] as Token.Text).Set_Boundary(Boundary.MIDDLE);
                             }
-                        } else if (tokens[idx].Type() === Token.Type.TEXT) {
-                            (tokens[idx] as Token.Text).Set_Boundary(Boundary.MIDDLE);
                         }
                     }
                     for (; idx > end;) {
