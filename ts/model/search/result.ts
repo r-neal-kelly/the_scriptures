@@ -1,11 +1,8 @@
 import { Count } from "../../types.js";
 import { Index } from "../../types.js";
-import { Name } from "../../types.js";
-import { ID } from "../../types.js";
 
 import * as Utils from "../../utils.js";
 
-import * as Data from "../data.js";
 import * as Text from "../text.js";
 
 export class Match
@@ -279,23 +276,5 @@ export class Instance
         if (do_add) {
             this.matches.push(match);
         }
-    }
-}
-
-export class Version
-{
-    private name: Name;
-    private versions: null;
-
-    constructor(
-        {
-            name,
-        }: {
-            name: Name,
-        },
-    )
-    {
-        this.name = name;
-        this.versions = null;
     }
 }

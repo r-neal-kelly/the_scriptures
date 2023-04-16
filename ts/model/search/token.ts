@@ -1,4 +1,7 @@
+import * as Utils from "../../utils.js";
+
 import * as Text_Module from "../text.js";
+import { Boundary } from "./boundary.js";
 
 export enum Type
 {
@@ -181,19 +184,14 @@ export class Or extends Operator
 
 export class Text extends Instance
 {
-    private line: Text_Module.Line.Instance;
-    private is_in_sequence: boolean;
-    private has_start_boundary_in_sequence: boolean;
+    private part: Text_Module.Part.Instance;
+    private boundary: Boundary | null;
 
     constructor(
         {
-            line,
-            is_in_sequence,
-            has_start_boundary_in_sequence,
+            part,
         }: {
-            line: Text_Module.Line.Instance,
-            is_in_sequence: boolean,
-            has_start_boundary_in_sequence: boolean,
+            part: Text_Module.Part.Instance,
         },
     )
     {
@@ -203,29 +201,57 @@ export class Text extends Instance
             },
         );
 
-        this.line = line;
-        this.is_in_sequence = is_in_sequence;
-        this.has_start_boundary_in_sequence = has_start_boundary_in_sequence;
+        this.part = part;
+        this.boundary = null;
     }
 
-    Line():
-        Text_Module.Line.Instance
+    Part():
+        Text_Module.Part.Instance
     {
-        return this.line;
+        return this.part;
     }
 
-    Is_In_Sequence():
-        boolean
+    Boundary():
+        Boundary
     {
-        return this.is_in_sequence;
+        Utils.Assert(
+            this.boundary != null,
+            `boundary was not set on this token.`,
+        );
+
+        return this.boundary as Boundary;
     }
 
-    Has_Start_Boundary_In_Sequence():
+    Set_Boundary(
+        boundary: Boundary,
+    ):
+        void
+    {
+        Utils.Assert(
+            this.boundary == null,
+            `boundary has already been set.`,
+        );
+
+        this.boundary = boundary;
+    }
+
+    May_Precede_Implicit_Word_In_Sequence():
         boolean
     {
         return (
-            this.is_in_sequence &&
-            this.has_start_boundary_in_sequence
+            this.Boundary() != Boundary.ANY &&
+            this.Boundary() != Boundary.END &&
+            this.Part().Is_Break()
+        );
+    }
+
+    May_Precede_Implicit_Break_In_Sequence():
+        boolean
+    {
+        return (
+            this.Boundary() != Boundary.ANY &&
+            this.Boundary() != Boundary.END &&
+            this.Part().Is_Word()
         );
     }
 }

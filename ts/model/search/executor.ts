@@ -4,6 +4,7 @@ import { Index } from "../../types.js";
 import * as Utils from "../../utils.js";
 
 import * as Text from "../text.js";
+import { Boundary } from "./boundary.js";
 import * as Parser from "./parser.js";
 import * as Compiler from "./compiler.js";
 import * as Token from "./token.js";
@@ -205,22 +206,15 @@ export class Instance
             }
 
         } else if (node_type === Node.Type.TEXT) {
-            const text: Node.Text = node as Node.Text;
+            Utils.Assert(
+                (mode & Mode.SEQUENCE) !== 0,
+                `Every text node should be in a sequence.`,
+            );
 
-            let text_result: Result.Instance | null;
-            if (mode & Mode.SEQUENCE) {
-                if (mode & Mode.NOT) {
-                    text_result = this.Not_Sequence(text, mode, result);
-                } else {
-                    text_result = this.Sequence(text, mode, result);
-                }
-            } else {
-                if (mode & Mode.NOT) {
-                    text_result = this.Not_Text(text, mode, result);
-                } else {
-                    text_result = this.Text(text, mode, result);
-                }
-            }
+            const text: Node.Text = node as Node.Text;
+            const text_result: Result.Instance | null =
+                this.Text(text, mode, result);
+
             if (text_result != null) {
                 return this.Step(
                     text.Next(),
@@ -253,209 +247,417 @@ export class Instance
         Result.Instance | null
     {
         const search_line: Text.Line.Instance = result.Line();
-        const expression_line: Text.Line.Instance = text.Line();
-
-        let found_match: boolean = false;
-
-        for (
-            let search_idx = 0, search_end = search_line.Macro_Part_Count();
-            search_idx < search_end;
-            search_idx += 1
-        ) {
-            if (
-                (mode & Mode.META) ||
-                !search_line.Macro_Part(search_idx).Is_Command()
+        const expression_part: Text.Part.Instance = text.Part();
+        const expression_boundary: Boundary = text.Boundary();
+        const expression_value: Text.Value = mode & Mode.CASE ?
+            expression_part.Value() :
+            expression_part.Value().toLowerCase();
+        if (expression_boundary === Boundary.START) {
+            for (
+                let search_idx = 0, search_end = search_line.Macro_Part_Count();
+                search_idx < search_end;
+                search_idx += 1
             ) {
-                let command_count: Count = 0;
-                let first_part_first_unit_index: Index = -1;
-                let last_part_end_unit_index: Index = -1;
-                for (
-                    let expression_idx = 0, expression_end = expression_line.Macro_Part_Count();
-                    expression_idx < expression_end;
-                    expression_idx += 1
+                if (
+                    (mode & Mode.META) ||
+                    !search_line.Macro_Part(search_idx).Is_Command()
                 ) {
-                    if (!(mode & Mode.META)) {
-                        while (
-                            search_idx + command_count + expression_idx < search_end &&
-                            search_line.Macro_Part(search_idx + command_count + expression_idx).Is_Command()
-                        ) {
-                            command_count += 1;
-                        }
-                    }
-
-                    if (search_idx + command_count + expression_idx < search_end) {
-                        const search_part: Text.Part.Instance =
-                            search_line.Macro_Part(search_idx + command_count + expression_idx);
-                        const expression_part: Text.Part.Instance =
-                            expression_line.Macro_Part(expression_idx);
-
-                        const {
-                            search_value,
-                            expression_value,
-                        }: {
-                            search_value: Text.Value,
-                            expression_value: Text.Value,
-                        } = mode & Mode.CASE ?
-                                {
-                                    search_value: search_part.Value(),
-                                    expression_value: expression_part.Value(),
-                                } : {
-                                    search_value: search_part.Value().toLowerCase(),
-                                    expression_value: expression_part.Value().toLowerCase(),
-                                };
-
-                        let is_match: boolean;
-                        if (mode & Mode.ALIGN) {
-                            is_match = search_value === expression_value;
-                            first_part_first_unit_index = 0;
-                            last_part_end_unit_index = search_value.length;
+                    const search_part: Text.Part.Instance =
+                        search_line.Macro_Part(search_idx);
+                    const search_value: Text.Value = mode & Mode.CASE ?
+                        search_part.Value() :
+                        search_part.Value().toLowerCase();
+                    if (mode & Mode.ALIGN) {
+                        if (mode & Mode.NOT) {
+                            if (search_value !== expression_value) {
+                                result.Try_Add_Match(
+                                    new Result.Match(
+                                        {
+                                            first_part_index: search_idx,
+                                            end_part_index: search_idx + 1,
+                                            first_part_first_unit_index: 0,
+                                            last_part_end_unit_index: search_value.length,
+                                        },
+                                    ),
+                                );
+                            }
                         } else {
-                            if (expression_end > 1) {
-                                if (expression_idx === 0) {
-                                    if (
-                                        search_value.length >= expression_value.length &&
-                                        search_value.slice(search_value.length - expression_value.length, search_value.length) === expression_value
-                                    ) {
-                                        is_match = true;
-                                        first_part_first_unit_index = search_value.length - expression_value.length;
-                                        for (
-                                            let search_value_idx = first_part_first_unit_index, search_value_end = 0;
-                                            search_value_idx > search_value_end + (expression_value.length - 1);
-                                        ) {
-                                            if (search_value.slice(search_value_idx - expression_value.length, search_value_idx) === expression_value) {
-                                                search_value_idx -= expression_value.length;
-                                                first_part_first_unit_index = search_value_idx;
-                                            } else {
-                                                break;
-                                            }
-                                        }
-                                    } else {
-                                        is_match = false;
-                                    }
-                                } else if (expression_idx === expression_end - 1) {
-                                    if (
-                                        search_value.length >= expression_value.length &&
-                                        search_value.slice(0, expression_value.length) === expression_value
-                                    ) {
-                                        is_match = true;
-                                        last_part_end_unit_index = expression_value.length;
-                                        for (
-                                            let search_value_idx = last_part_end_unit_index, search_value_end = search_value.length;
-                                            search_value_idx < search_value_end - (expression_value.length - 1);
-                                        ) {
-                                            if (search_value.slice(search_value_idx, search_value_idx + expression_value.length) === expression_value) {
-                                                search_value_idx += expression_value.length;
-                                                last_part_end_unit_index = search_value_idx;
-                                            } else {
-                                                break;
-                                            }
-                                        }
-                                    } else {
-                                        is_match = false;
-                                    }
-                                } else {
-                                    is_match = search_value === expression_value;
-                                }
-                            } else {
-                                is_match = false;
-                                for (
-                                    let search_value_idx = 0, search_value_end = search_value.length;
-                                    search_value_idx < search_value_end - (expression_value.length - 1);
-                                ) {
-                                    if (!is_match) {
-                                        if (search_value.slice(search_value_idx, search_value_idx + expression_value.length) === expression_value) {
-                                            is_match = true;
-                                            first_part_first_unit_index = search_value_idx;
-                                            search_value_idx += expression_value.length;
-                                            last_part_end_unit_index = search_value_idx;
-                                        } else {
-                                            search_value_idx += 1;
-                                        }
-                                    } else {
-                                        if (search_value.slice(search_value_idx, search_value_idx + expression_value.length) === expression_value) {
-                                            search_value_idx += expression_value.length;
-                                            last_part_end_unit_index = search_value_idx;
-                                        } else {
-                                            break;
-                                        }
-                                    }
-                                }
+                            if (search_value === expression_value) {
+                                result.Try_Add_Match(
+                                    new Result.Match(
+                                        {
+                                            first_part_index: search_idx,
+                                            end_part_index: search_idx + 1,
+                                            first_part_first_unit_index: 0,
+                                            last_part_end_unit_index: search_value.length,
+                                        },
+                                    ),
+                                );
                             }
                         }
-
-                        if (!is_match) {
-                            break;
-                        } else if (expression_idx === expression_end - 1) {
-                            found_match = true;
+                    } else {
+                        if (
+                            (mode & Mode.NOT) !== 0 &&
+                            (
+                                search_value.length < expression_value.length ||
+                                search_value.slice(
+                                    search_value.length - expression_value.length,
+                                    search_value.length,
+                                ) !== expression_value
+                            )
+                        ) {
                             result.Try_Add_Match(
                                 new Result.Match(
                                     {
                                         first_part_index: search_idx,
-                                        end_part_index: search_idx + command_count + expression_end,
+                                        end_part_index: search_idx + 1,
+                                        first_part_first_unit_index: 0,
+                                        last_part_end_unit_index: search_value.length,
+                                    },
+                                ),
+                            );
+                        } else if (
+                            search_value.length >= expression_value.length &&
+                            search_value.slice(
+                                search_value.length - expression_value.length,
+                                search_value.length,
+                            ) === expression_value
+                        ) {
+                            let first_part_first_unit_index =
+                                search_value.length - expression_value.length;
+                            for (
+                                let search_value_idx = first_part_first_unit_index, search_value_end = 0;
+                                search_value_idx > search_value_end + (expression_value.length - 1);
+                            ) {
+                                if (
+                                    search_value.slice(
+                                        search_value_idx - expression_value.length,
+                                        search_value_idx,
+                                    ) === expression_value
+                                ) {
+                                    search_value_idx -= expression_value.length;
+                                    first_part_first_unit_index = search_value_idx;
+                                } else {
+                                    break;
+                                }
+                            }
+                            result.Try_Add_Match(
+                                new Result.Match(
+                                    {
+                                        first_part_index: search_idx,
+                                        end_part_index: search_idx + 1,
+                                        first_part_first_unit_index: first_part_first_unit_index,
+                                        last_part_end_unit_index: search_value.length,
+                                    },
+                                ),
+                            );
+                        }
+                    }
+                }
+            }
+            if (result.Match_Count() > 0) {
+                return result;
+            } else {
+                return null;
+            }
+        } else if (expression_boundary === Boundary.MIDDLE) {
+            const new_result: Result.Instance = new Result.Instance(result.Line());
+            for (
+                let match_idx = 0, match_end = result.Match_Count();
+                match_idx < match_end;
+                match_idx += 1
+            ) {
+                const old_match: Result.Match = result.Match(match_idx);
+                let search_idx: Index = old_match.End_Part_Index();
+                const search_end: Index = search_line.Macro_Part_Count();
+                let command_count: Count = 0;
+                if (!(mode & Mode.META)) {
+                    while (
+                        search_idx + command_count < search_end &&
+                        search_line.Macro_Part(search_idx + command_count).Is_Command()
+                    ) {
+                        command_count += 1;
+                    }
+                }
+                if (search_idx + command_count < search_end) {
+                    const search_part: Text.Part.Instance =
+                        search_line.Macro_Part(search_idx + command_count);
+                    const search_value: Text.Value = mode & Mode.CASE ?
+                        search_part.Value() :
+                        search_part.Value().toLowerCase();
+                    if (mode & Mode.NOT) {
+                        if (search_value !== expression_value) {
+                            new_result.Try_Add_Match(
+                                new Result.Match(
+                                    {
+                                        first_part_index: old_match.First_Part_Index(),
+                                        end_part_index: search_idx + command_count + 1,
+                                        first_part_first_unit_index: old_match.First_Part_First_Unit_Index(),
+                                        last_part_end_unit_index: search_value.length,
+                                    },
+                                ),
+                            );
+                        }
+                    } else {
+                        if (search_value === expression_value) {
+                            new_result.Try_Add_Match(
+                                new Result.Match(
+                                    {
+                                        first_part_index: old_match.First_Part_Index(),
+                                        end_part_index: search_idx + command_count + 1,
+                                        first_part_first_unit_index: old_match.First_Part_First_Unit_Index(),
+                                        last_part_end_unit_index: search_value.length,
+                                    },
+                                ),
+                            );
+                        }
+                    }
+                }
+            }
+            if (new_result.Match_Count() > 0) {
+                return new_result;
+            } else {
+                return null;
+            }
+        } else if (expression_boundary === Boundary.END) {
+            const new_result: Result.Instance = new Result.Instance(result.Line());
+            for (
+                let match_idx = 0, match_end = result.Match_Count();
+                match_idx < match_end;
+                match_idx += 1
+            ) {
+                const old_match: Result.Match = result.Match(match_idx);
+                let search_idx: Index = old_match.End_Part_Index();
+                const search_end: Index = search_line.Macro_Part_Count();
+                let command_count: Count = 0;
+                if (!(mode & Mode.META)) {
+                    while (
+                        search_idx + command_count < search_end &&
+                        search_line.Macro_Part(search_idx + command_count).Is_Command()
+                    ) {
+                        command_count += 1;
+                    }
+                }
+                if (search_idx + command_count < search_end) {
+                    const search_part: Text.Part.Instance =
+                        search_line.Macro_Part(search_idx + command_count);
+                    const search_value: Text.Value = mode & Mode.CASE ?
+                        search_part.Value() :
+                        search_part.Value().toLowerCase();
+                    if (mode & Mode.ALIGN) {
+                        if (mode & Mode.NOT) {
+                            if (search_value !== expression_value) {
+                                new_result.Try_Add_Match(
+                                    new Result.Match(
+                                        {
+                                            first_part_index: old_match.First_Part_Index(),
+                                            end_part_index: search_idx + command_count + 1,
+                                            first_part_first_unit_index: old_match.First_Part_First_Unit_Index(),
+                                            last_part_end_unit_index: search_value.length,
+                                        },
+                                    ),
+                                );
+                            }
+                        } else {
+                            if (search_value === expression_value) {
+                                new_result.Try_Add_Match(
+                                    new Result.Match(
+                                        {
+                                            first_part_index: old_match.First_Part_Index(),
+                                            end_part_index: search_idx + command_count + 1,
+                                            first_part_first_unit_index: old_match.First_Part_First_Unit_Index(),
+                                            last_part_end_unit_index: search_value.length,
+                                        },
+                                    ),
+                                );
+                            }
+                        }
+                    } else {
+                        if (
+                            (mode & Mode.NOT) !== 0 &&
+                            (
+                                search_value.length < expression_value.length ||
+                                search_value.slice(
+                                    0,
+                                    expression_value.length,
+                                ) !== expression_value
+                            )
+                        ) {
+                            new_result.Try_Add_Match(
+                                new Result.Match(
+                                    {
+                                        first_part_index: old_match.First_Part_Index(),
+                                        end_part_index: search_idx + command_count + 1,
+                                        first_part_first_unit_index: old_match.First_Part_First_Unit_Index(),
+                                        last_part_end_unit_index: search_value.length,
+                                    },
+                                ),
+                            );
+                        } else if (
+                            search_value.length >= expression_value.length &&
+                            search_value.slice(
+                                0,
+                                expression_value.length,
+                            ) === expression_value
+                        ) {
+                            let last_part_end_unit_index =
+                                expression_value.length;
+                            for (
+                                let search_value_idx = last_part_end_unit_index, search_value_end = search_value.length;
+                                search_value_idx < search_value_end - (expression_value.length - 1);
+                            ) {
+                                if (
+                                    search_value.slice(
+                                        search_value_idx,
+                                        search_value_idx + expression_value.length,
+                                    ) === expression_value
+                                ) {
+                                    search_value_idx += expression_value.length;
+                                    last_part_end_unit_index = search_value_idx;
+                                } else {
+                                    break;
+                                }
+                            }
+                            new_result.Try_Add_Match(
+                                new Result.Match(
+                                    {
+                                        first_part_index: old_match.First_Part_Index(),
+                                        end_part_index: search_idx + command_count + 1,
+                                        first_part_first_unit_index: old_match.First_Part_First_Unit_Index(),
+                                        last_part_end_unit_index: last_part_end_unit_index,
+                                    },
+                                ),
+                            );
+                        }
+                    }
+                }
+            }
+            if (new_result.Match_Count() > 0) {
+                return new_result;
+            } else {
+                return null;
+            }
+        } else if (expression_boundary === Boundary.ANY) {
+            for (
+                let search_idx = 0, search_end = search_line.Macro_Part_Count();
+                search_idx < search_end;
+                search_idx += 1
+            ) {
+                if (
+                    (mode & Mode.META) ||
+                    !search_line.Macro_Part(search_idx).Is_Command()
+                ) {
+                    const search_part: Text.Part.Instance =
+                        search_line.Macro_Part(search_idx);
+                    const search_value: Text.Value = mode & Mode.CASE ?
+                        search_part.Value() :
+                        search_part.Value().toLowerCase();
+                    if (mode & Mode.ALIGN) {
+                        if (mode & Mode.NOT) {
+                            if (search_value !== expression_value) {
+                                result.Try_Add_Match(
+                                    new Result.Match(
+                                        {
+                                            first_part_index: search_idx,
+                                            end_part_index: search_idx + 1,
+                                            first_part_first_unit_index: 0,
+                                            last_part_end_unit_index: search_value.length,
+                                        },
+                                    ),
+                                );
+                            }
+                        } else {
+                            if (search_value === expression_value) {
+                                result.Try_Add_Match(
+                                    new Result.Match(
+                                        {
+                                            first_part_index: search_idx,
+                                            end_part_index: search_idx + 1,
+                                            first_part_first_unit_index: 0,
+                                            last_part_end_unit_index: search_value.length,
+                                        },
+                                    ),
+                                );
+                            }
+                        }
+                    } else {
+                        let is_match: boolean = false;
+                        let first_part_first_unit_index: Index = 0;
+                        let last_part_end_unit_index: Index = 0;
+                        for (
+                            let search_value_idx = 0, search_value_end = search_value.length;
+                            search_value_idx < search_value_end - (expression_value.length - 1);
+                        ) {
+                            if (!is_match) {
+                                if (
+                                    search_value.slice(
+                                        search_value_idx,
+                                        search_value_idx + expression_value.length,
+                                    ) === expression_value
+                                ) {
+                                    is_match = true;
+                                    first_part_first_unit_index = search_value_idx;
+                                    search_value_idx += expression_value.length;
+                                    last_part_end_unit_index = search_value_idx;
+                                } else {
+                                    search_value_idx += 1;
+                                }
+                            } else {
+                                if (
+                                    search_value.slice(
+                                        search_value_idx,
+                                        search_value_idx + expression_value.length,
+                                    ) === expression_value
+                                ) {
+                                    search_value_idx += expression_value.length;
+                                    last_part_end_unit_index = search_value_idx;
+                                } else {
+                                    break;
+                                }
+                            }
+                        }
+
+                        if (
+                            (mode & Mode.NOT) !== 0 &&
+                            !is_match
+                        ) {
+                            result.Try_Add_Match(
+                                new Result.Match(
+                                    {
+                                        first_part_index: search_idx,
+                                        end_part_index: search_idx + 1,
+                                        first_part_first_unit_index: 0,
+                                        last_part_end_unit_index: search_value.length,
+                                    },
+                                ),
+                            );
+                        } else if (is_match) {
+                            result.Try_Add_Match(
+                                new Result.Match(
+                                    {
+                                        first_part_index: search_idx,
+                                        end_part_index: search_idx + 1,
                                         first_part_first_unit_index: first_part_first_unit_index,
                                         last_part_end_unit_index: last_part_end_unit_index,
                                     },
                                 ),
                             );
                         }
-                    } else {
-                        break;
                     }
                 }
             }
-        }
-
-        if (found_match) {
-            return result;
+            if (result.Match_Count() > 0) {
+                return result;
+            } else {
+                return null;
+            }
         } else {
+            Utils.Assert(
+                false,
+                `Unknown text boundary.`,
+            );
+
             return null;
         }
-    }
-
-    private Not_Text(
-        text: Node.Text,
-        mode: Mode,
-        result: Result.Instance,
-    ):
-        Result.Instance | null
-    {
-        const text_result: Result.Instance | null =
-            this.Text(text, mode, result);
-
-        if (text_result == null) {
-            return result;
-        } else {
-            return null;
-        }
-    }
-
-    private Sequence(
-        text: Node.Text,
-        mode: Mode,
-        result: Result.Instance,
-    ):
-        Result.Instance | null
-    {
-        Utils.Assert(
-            false,
-            `Not implemented yet.`,
-        );
-
-        return null;
-    }
-
-    private Not_Sequence(
-        text: Node.Text,
-        mode: Mode,
-        result: Result.Instance,
-    ):
-        Result.Instance | null
-    {
-        Utils.Assert(
-            false,
-            `Not implemented yet.`,
-        );
-
-        return null;
     }
 }

@@ -1,6 +1,7 @@
 import * as Utils from "../../utils.js";
 
 import * as Text_Module from "../text.js";
+import { Boundary } from "./boundary.js";
 import * as Token from "./token.js";
 
 export enum Type
@@ -88,64 +89,28 @@ export class Text extends Instance
         return this.token;
     }
 
-    Line():
-        Text_Module.Line.Instance
+    Part():
+        Text_Module.Part.Instance
     {
-        return this.Token().Line();
+        return this.Token().Part();
     }
 
-    Is_In_Sequence():
-        boolean
+    Boundary():
+        Boundary
     {
-        return this.Token().Is_In_Sequence();
+        return this.Token().Boundary();
     }
 
-    Has_Start_Boundary_In_Sequence():
+    May_Precede_Implicit_Word_In_Sequence():
         boolean
     {
-        return (
-            this.Is_In_Sequence() &&
-            this.Token().Has_Start_Boundary_In_Sequence()
-        );
+        return this.Token().May_Precede_Implicit_Word_In_Sequence();
     }
 
-    Has_Middle_Boundary_In_Sequence():
+    May_Precede_Implicit_Break_In_Sequence():
         boolean
     {
-        return (
-            this.Is_In_Sequence() &&
-            !this.Has_Start_Boundary_In_Sequence() &&
-            !this.Has_End_Boundary_In_Sequence()
-        );
-    }
-
-    Has_End_Boundary_In_Sequence():
-        boolean
-    {
-        return (
-            this.Is_In_Sequence() &&
-            this.Next() === END
-        );
-    }
-
-    May_Have_Implicit_Word_In_Sequence():
-        boolean
-    {
-        return (
-            this.Is_In_Sequence() &&
-            this.Line().Macro_Part_Count() === 1 &&
-            this.Line().Macro_Part(0).Is_Break()
-        );
-    }
-
-    May_Have_Implicit_Break_In_Sequence():
-        boolean
-    {
-        return (
-            this.Is_In_Sequence() &&
-            this.Line().Macro_Part_Count() === 1 &&
-            this.Line().Macro_Part(0).Is_Word()
-        );
+        return this.Token().May_Precede_Implicit_Break_In_Sequence();
     }
 }
 

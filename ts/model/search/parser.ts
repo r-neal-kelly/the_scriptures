@@ -5,6 +5,7 @@ import * as Unicode from "../../unicode.js";
 
 import * as Text from "../text.js";
 import { Operator } from "./operator.js";
+import { Boundary } from "./boundary.js";
 import * as Token from "./token.js";
 
 export class Help
@@ -55,7 +56,8 @@ export class Instance
         let last_expression_index: Index = 0;
         let group_depth: Count = 0;
         let sequence_depth: Count = 0;
-        let at_start_boundary_in_sequence: boolean = false;
+        let sequence_group_depth: Count = 0;
+        let sequence_and_counts: Array<Count> = [];
 
         function Last():
             Token.Instance | null
@@ -77,8 +79,136 @@ export class Instance
                     last_token.Type() === Token.Type.TEXT
                 )
             ) {
-                at_start_boundary_in_sequence = false;
+                if (sequence_depth > 0) {
+                    sequence_and_counts[sequence_and_counts.length - 1] += 1;
+                }
                 tokens.push(new Token.And());
+            }
+        }
+
+        function Add_Text(
+            text: Text.Instance,
+        ):
+            void
+        {
+            if (sequence_depth < 1) {
+                sequence_depth += 1;
+                sequence_and_counts.push(0);
+                tokens.push(new Token.Open_Sequence());
+                for (let idx = 0, end = text.Line(0).Macro_Part_Count(); idx < end; idx += 1) {
+                    tokens.push(
+                        new Token.Text(
+                            {
+                                part: text.Line(0).Macro_Part(idx),
+                            },
+                        ),
+                    );
+                    if (idx < end - 1) {
+                        sequence_and_counts[sequence_and_counts.length - 1] += 1;
+                        tokens.push(new Token.And());
+                    }
+                }
+                Update_Sequence_Texts();
+                sequence_depth -= 1;
+                tokens.push(new Token.Close_Sequence());
+            } else {
+                for (let idx = 0, end = text.Line(0).Macro_Part_Count(); idx < end; idx += 1) {
+                    tokens.push(
+                        new Token.Text(
+                            {
+                                part: text.Line(0).Macro_Part(idx),
+                            },
+                        ),
+                    );
+                    if (idx < end - 1) {
+                        sequence_and_counts[sequence_and_counts.length - 1] += 1;
+                        tokens.push(new Token.And());
+                    }
+                }
+            }
+        }
+
+        function Update_Sequence_Texts():
+            void
+        {
+            let idx = tokens.length;
+            const end = 0;
+            let group_depth = 0;
+            while (sequence_and_counts.length > 0) {
+                let sequence_and_count: Count = sequence_and_counts.pop() as Count;
+                if (sequence_and_count > 0) {
+                    for (; idx > end;) {
+                        idx -= 1;
+                        if (tokens[idx].Type() === Token.Type.CLOSE_GROUP) {
+                            group_depth += 1;
+                        } else if (tokens[idx].Type() === Token.Type.OPEN_GROUP) {
+                            group_depth -= 1;
+                        } else if (tokens[idx].Type() === Token.Type.AND) {
+                            sequence_and_count -= 1;
+                            break;
+                        } else if (tokens[idx].Type() === Token.Type.TEXT) {
+                            (tokens[idx] as Token.Text).Set_Boundary(Boundary.END);
+                        }
+                    }
+                    for (; idx > end;) {
+                        idx -= 1;
+                        if (tokens[idx].Type() === Token.Type.CLOSE_GROUP) {
+                            group_depth += 1;
+                        } else if (tokens[idx].Type() === Token.Type.OPEN_GROUP) {
+                            group_depth -= 1;
+                        } else if (tokens[idx].Type() === Token.Type.AND) {
+                            sequence_and_count -= 1;
+                            if (sequence_and_count === 0) {
+                                break;
+                            }
+                        } else if (tokens[idx].Type() === Token.Type.TEXT) {
+                            (tokens[idx] as Token.Text).Set_Boundary(Boundary.MIDDLE);
+                        }
+                    }
+                    for (; idx > end;) {
+                        idx -= 1;
+                        if (tokens[idx].Type() === Token.Type.CLOSE_GROUP) {
+                            group_depth += 1;
+                        } else if (tokens[idx].Type() === Token.Type.OPEN_GROUP) {
+                            group_depth -= 1;
+                        } else if (
+                            tokens[idx].Type() === Token.Type.OPEN_SEQUENCE ||
+                            (
+                                group_depth === 0 &&
+                                (
+                                    tokens[idx].Type() === Token.Type.XOR ||
+                                    tokens[idx].Type() === Token.Type.OR
+                                )
+                            )
+                        ) {
+                            break;
+                        } else if (tokens[idx].Type() === Token.Type.TEXT) {
+                            (tokens[idx] as Token.Text).Set_Boundary(Boundary.START);
+                        }
+                    }
+                } else {
+                    for (; idx > end;) {
+                        idx -= 1;
+                        if (tokens[idx].Type() === Token.Type.CLOSE_GROUP) {
+                            group_depth += 1;
+                        } else if (tokens[idx].Type() === Token.Type.OPEN_GROUP) {
+                            group_depth -= 1;
+                        } else if (
+                            tokens[idx].Type() === Token.Type.OPEN_SEQUENCE ||
+                            (
+                                group_depth === 0 &&
+                                (
+                                    tokens[idx].Type() === Token.Type.XOR ||
+                                    tokens[idx].Type() === Token.Type.OR
+                                )
+                            )
+                        ) {
+                            break;
+                        } else if (tokens[idx].Type() === Token.Type.TEXT) {
+                            (tokens[idx] as Token.Text).Set_Boundary(Boundary.ANY);
+                        }
+                    }
+                }
             }
         }
 
@@ -129,18 +259,7 @@ export class Instance
                                 );
                             } else {
                                 last_expression_index = it.Index();
-                                tokens.push(
-                                    new Token.Text(
-                                        {
-                                            line:
-                                                text.Line(0),
-                                            is_in_sequence:
-                                                sequence_depth > 0,
-                                            has_start_boundary_in_sequence:
-                                                at_start_boundary_in_sequence,
-                                        },
-                                    ),
-                                );
+                                Add_Text(text);
                             }
                         }
                     }
@@ -149,6 +268,9 @@ export class Instance
                     Try_Add_And();
                     last_expression_index = it.Index();
                     group_depth += 1;
+                    if (sequence_depth > 0) {
+                        sequence_group_depth += 1;
+                    }
                     tokens.push(new Token.Open_Group());
 
                 } else if (point === Operator.CLOSE_GROUP) {
@@ -211,6 +333,9 @@ export class Instance
                     } else {
                         last_expression_index = it.Index();
                         group_depth -= 1;
+                        if (sequence_depth > 0) {
+                            sequence_group_depth -= 1;
+                        }
                         tokens.push(new Token.Close_Group());
                     }
 
@@ -224,7 +349,7 @@ export class Instance
                         Try_Add_And();
                         last_expression_index = it.Index();
                         sequence_depth += 1;
-                        at_start_boundary_in_sequence = true;
+                        sequence_and_counts.push(0);
                         tokens.push(new Token.Open_Sequence());
                     }
 
@@ -291,9 +416,9 @@ export class Instance
                             it.Index(),
                         );
                     } else {
+                        Update_Sequence_Texts();
                         last_expression_index = it.Index();
                         sequence_depth -= 1;
-                        at_start_boundary_in_sequence = false;
                         tokens.push(new Token.Close_Sequence());
                     }
 
@@ -371,7 +496,9 @@ export class Instance
                         );
                     } else {
                         last_expression_index = it.Index();
-                        at_start_boundary_in_sequence = false;
+                        if (sequence_depth > 0) {
+                            sequence_and_counts[sequence_and_counts.length - 1] += 1;
+                        }
                         tokens.push(new Token.And());
                     }
 
@@ -429,6 +556,12 @@ export class Instance
                         );
                     } else {
                         last_expression_index = it.Index();
+                        if (
+                            sequence_depth > 0 &&
+                            sequence_group_depth === 0
+                        ) {
+                            sequence_and_counts.push(0);
+                        }
                         tokens.push(new Token.Xor());
                     }
 
@@ -486,6 +619,12 @@ export class Instance
                         );
                     } else {
                         last_expression_index = it.Index();
+                        if (
+                            sequence_depth > 0 &&
+                            sequence_group_depth === 0
+                        ) {
+                            sequence_and_counts.push(0);
+                        }
                         tokens.push(new Token.Or());
                     }
 
@@ -521,18 +660,7 @@ export class Instance
                     );
                     it = it.Previous();
                     last_expression_index = first.Index();
-                    tokens.push(
-                        new Token.Text(
-                            {
-                                line:
-                                    text.Line(0),
-                                is_in_sequence:
-                                    sequence_depth > 0,
-                                has_start_boundary_in_sequence:
-                                    at_start_boundary_in_sequence,
-                            },
-                        ),
-                    );
+                    Add_Text(text);
 
                 }
             }
