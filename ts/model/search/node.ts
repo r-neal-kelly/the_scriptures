@@ -327,11 +327,15 @@ export class Meta extends Unary
 
 export class Sequence extends Unary
 {
+    private token: Token.Close_Sequence;
+
     constructor(
         {
             operand,
+            token,
         }: {
             operand: Instance,
+            token: Token.Close_Sequence,
         },
     )
     {
@@ -341,6 +345,20 @@ export class Sequence extends Unary
                 operand: operand,
             },
         );
+
+        this.token = token;
+    }
+
+    Token():
+        Token.Close_Sequence
+    {
+        return this.token;
+    }
+
+    Is_Complex():
+        boolean
+    {
+        return this.Token().Is_Complex();
     }
 }
 

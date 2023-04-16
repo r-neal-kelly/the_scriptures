@@ -94,7 +94,13 @@ export class Instance
             if (sequence_depth < 1) {
                 sequence_depth += 1;
                 sequence_and_counts.push(0);
-                tokens.push(new Token.Open_Sequence());
+                tokens.push(
+                    new Token.Open_Sequence(
+                        {
+                            is_complex: false,
+                        },
+                    ),
+                );
                 for (let idx = 0, end = text.Line(0).Macro_Part_Count(); idx < end; idx += 1) {
                     tokens.push(
                         new Token.Text(
@@ -110,7 +116,13 @@ export class Instance
                 }
                 Update_Sequence_Texts();
                 sequence_depth -= 1;
-                tokens.push(new Token.Close_Sequence());
+                tokens.push(
+                    new Token.Close_Sequence(
+                        {
+                            is_complex: false,
+                        },
+                    ),
+                );
             } else {
                 for (let idx = 0, end = text.Line(0).Macro_Part_Count(); idx < end; idx += 1) {
                     tokens.push(
@@ -350,7 +362,13 @@ export class Instance
                         last_expression_index = it.Index();
                         sequence_depth += 1;
                         sequence_and_counts.push(0);
-                        tokens.push(new Token.Open_Sequence());
+                        tokens.push(
+                            new Token.Open_Sequence(
+                                {
+                                    is_complex: true,
+                                },
+                            ),
+                        );
                     }
 
                 } else if (point === Operator.CLOSE_SEQUENCE) {
@@ -419,7 +437,13 @@ export class Instance
                         Update_Sequence_Texts();
                         last_expression_index = it.Index();
                         sequence_depth -= 1;
-                        tokens.push(new Token.Close_Sequence());
+                        tokens.push(
+                            new Token.Close_Sequence(
+                                {
+                                    is_complex: true,
+                                },
+                            ),
+                        );
                     }
 
                 } else if (point === Operator.NOT) {

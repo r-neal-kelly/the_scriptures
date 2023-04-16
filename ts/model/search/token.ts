@@ -76,25 +76,57 @@ export class Close_Group extends Operator
 
 export class Open_Sequence extends Operator
 {
-    constructor()
+    private is_complex: boolean;
+
+    constructor(
+        {
+            is_complex,
+        }: {
+            is_complex: boolean,
+        },
+    )
     {
         super(
             {
                 type: Type.OPEN_SEQUENCE,
             },
         );
+
+        this.is_complex = is_complex;
+    }
+
+    Is_Complex():
+        boolean
+    {
+        return this.is_complex;
     }
 }
 
 export class Close_Sequence extends Operator
 {
-    constructor()
+    private is_complex: boolean;
+
+    constructor(
+        {
+            is_complex,
+        }: {
+            is_complex: boolean,
+        },
+    )
     {
         super(
             {
                 type: Type.CLOSE_SEQUENCE,
             },
         );
+
+        this.is_complex = is_complex;
+    }
+
+    Is_Complex():
+        boolean
+    {
+        return this.is_complex;
     }
 }
 

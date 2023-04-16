@@ -14,7 +14,7 @@ import * as Result from "./result.js";
 export enum Mode
 {
     INITIAL = 0,
-    SEQUENCE = 1 << 0,
+    COMPLEX = 1 << 0,
     NOT = 1 << 1,
     CASE = 1 << 2,
     ALIGN = 1 << 3,
@@ -81,7 +81,9 @@ export class Instance
             const sequence: Node.Sequence = node as Node.Sequence;
             const sequence_result: Result.Instance | null = this.Step(
                 sequence.Operand(),
-                mode | Mode.SEQUENCE,
+                sequence.Is_Complex() ?
+                    mode | Mode.COMPLEX :
+                    mode,
                 new Result.Instance(result.Line()),
             );
 
@@ -206,11 +208,6 @@ export class Instance
             }
 
         } else if (node_type === Node.Type.TEXT) {
-            Utils.Assert(
-                (mode & Mode.SEQUENCE) !== 0,
-                `Every text node should be in a sequence.`,
-            );
-
             const text: Node.Text = node as Node.Text;
             const text_result: Result.Instance | null =
                 this.Text(text, mode, result);
@@ -268,7 +265,10 @@ export class Instance
                         search_part.Value() :
                         search_part.Value().toLowerCase();
                     if (mode & Mode.ALIGN) {
-                        if (mode & Mode.NOT) {
+                        if (
+                            mode & Mode.COMPLEX &&
+                            mode & Mode.NOT
+                        ) {
                             if (search_value !== expression_value) {
                                 result.Try_Add_Match(
                                     new Result.Match(
@@ -297,7 +297,8 @@ export class Instance
                         }
                     } else {
                         if (
-                            (mode & Mode.NOT) !== 0 &&
+                            mode & Mode.COMPLEX &&
+                            mode & Mode.NOT &&
                             (
                                 search_value.length < expression_value.length ||
                                 search_value.slice(
@@ -355,10 +356,22 @@ export class Instance
                     }
                 }
             }
-            if (result.Match_Count() > 0) {
-                return result;
+            if (mode & Mode.COMPLEX) {
+                if (result.Match_Count() > 0) {
+                    return result;
+                } else {
+                    return null;
+                }
             } else {
-                return null;
+                if (mode & Mode.NOT) {
+                    return result;
+                } else {
+                    if (result.Match_Count() > 0) {
+                        return result;
+                    } else {
+                        return null;
+                    }
+                }
             }
         } else if (expression_boundary === Boundary.MIDDLE) {
             const new_result: Result.Instance = new Result.Instance(result.Line());
@@ -385,7 +398,10 @@ export class Instance
                     const search_value: Text.Value = mode & Mode.CASE ?
                         search_part.Value() :
                         search_part.Value().toLowerCase();
-                    if (mode & Mode.NOT) {
+                    if (
+                        mode & Mode.COMPLEX &&
+                        mode & Mode.NOT
+                    ) {
                         if (search_value !== expression_value) {
                             new_result.Try_Add_Match(
                                 new Result.Match(
@@ -414,10 +430,22 @@ export class Instance
                     }
                 }
             }
-            if (new_result.Match_Count() > 0) {
-                return new_result;
+            if (mode & Mode.COMPLEX) {
+                if (new_result.Match_Count() > 0) {
+                    return new_result;
+                } else {
+                    return null;
+                }
             } else {
-                return null;
+                if (mode & Mode.NOT) {
+                    return new_result;
+                } else {
+                    if (new_result.Match_Count() > 0) {
+                        return new_result;
+                    } else {
+                        return null;
+                    }
+                }
             }
         } else if (expression_boundary === Boundary.END) {
             const new_result: Result.Instance = new Result.Instance(result.Line());
@@ -445,7 +473,10 @@ export class Instance
                         search_part.Value() :
                         search_part.Value().toLowerCase();
                     if (mode & Mode.ALIGN) {
-                        if (mode & Mode.NOT) {
+                        if (
+                            mode & Mode.COMPLEX &&
+                            mode & Mode.NOT
+                        ) {
                             if (search_value !== expression_value) {
                                 new_result.Try_Add_Match(
                                     new Result.Match(
@@ -474,7 +505,8 @@ export class Instance
                         }
                     } else {
                         if (
-                            (mode & Mode.NOT) !== 0 &&
+                            mode & Mode.COMPLEX &&
+                            mode & Mode.NOT &&
                             (
                                 search_value.length < expression_value.length ||
                                 search_value.slice(
@@ -532,10 +564,26 @@ export class Instance
                     }
                 }
             }
-            if (new_result.Match_Count() > 0) {
-                return new_result;
+            if (mode & Mode.COMPLEX) {
+                if (new_result.Match_Count() > 0) {
+                    return new_result;
+                } else {
+                    return null;
+                }
             } else {
-                return null;
+                if (mode & Mode.NOT) {
+                    if (new_result.Match_Count() > 0) {
+                        return null;
+                    } else {
+                        return new_result;
+                    }
+                } else {
+                    if (new_result.Match_Count() > 0) {
+                        return new_result;
+                    } else {
+                        return null;
+                    }
+                }
             }
         } else if (expression_boundary === Boundary.ANY) {
             for (
@@ -553,7 +601,10 @@ export class Instance
                         search_part.Value() :
                         search_part.Value().toLowerCase();
                     if (mode & Mode.ALIGN) {
-                        if (mode & Mode.NOT) {
+                        if (
+                            mode & Mode.COMPLEX &&
+                            mode & Mode.NOT
+                        ) {
                             if (search_value !== expression_value) {
                                 result.Try_Add_Match(
                                     new Result.Match(
@@ -616,40 +667,59 @@ export class Instance
                                 }
                             }
                         }
-
                         if (
-                            (mode & Mode.NOT) !== 0 &&
-                            !is_match
+                            mode & Mode.COMPLEX &&
+                            mode & Mode.NOT
                         ) {
-                            result.Try_Add_Match(
-                                new Result.Match(
-                                    {
-                                        first_part_index: search_idx,
-                                        end_part_index: search_idx + 1,
-                                        first_part_first_unit_index: 0,
-                                        last_part_end_unit_index: search_value.length,
-                                    },
-                                ),
-                            );
-                        } else if (is_match) {
-                            result.Try_Add_Match(
-                                new Result.Match(
-                                    {
-                                        first_part_index: search_idx,
-                                        end_part_index: search_idx + 1,
-                                        first_part_first_unit_index: first_part_first_unit_index,
-                                        last_part_end_unit_index: last_part_end_unit_index,
-                                    },
-                                ),
-                            );
+                            if (!is_match) {
+                                result.Try_Add_Match(
+                                    new Result.Match(
+                                        {
+                                            first_part_index: search_idx,
+                                            end_part_index: search_idx + 1,
+                                            first_part_first_unit_index: 0,
+                                            last_part_end_unit_index: search_value.length,
+                                        },
+                                    ),
+                                );
+                            }
+                        } else {
+                            if (is_match) {
+                                result.Try_Add_Match(
+                                    new Result.Match(
+                                        {
+                                            first_part_index: search_idx,
+                                            end_part_index: search_idx + 1,
+                                            first_part_first_unit_index: first_part_first_unit_index,
+                                            last_part_end_unit_index: last_part_end_unit_index,
+                                        },
+                                    ),
+                                );
+                            }
                         }
                     }
                 }
             }
-            if (result.Match_Count() > 0) {
-                return result;
+            if (mode & Mode.COMPLEX) {
+                if (result.Match_Count() > 0) {
+                    return result;
+                } else {
+                    return null;
+                }
             } else {
-                return null;
+                if (mode & Mode.NOT) {
+                    if (result.Match_Count() > 0) {
+                        return null;
+                    } else {
+                        return result;
+                    }
+                } else {
+                    if (result.Match_Count() > 0) {
+                        return result;
+                    } else {
+                        return null;
+                    }
+                }
             }
         } else {
             Utils.Assert(

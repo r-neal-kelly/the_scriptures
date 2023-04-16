@@ -54,7 +54,6 @@ export class Instance
         {
             const operator_type: Token.Type = operator.Type();
             if (
-                operator_type === Token.Type.OPEN_SEQUENCE ||
                 operator_type === Token.Type.NOT ||
                 operator_type === Token.Type.CASE ||
                 operator_type === Token.Type.ALIGN ||
@@ -70,35 +69,29 @@ export class Instance
                     out_node.Set_Next(Node.END);
                 }
                 const unary: Node.Unary =
-                    operator_type === Token.Type.OPEN_SEQUENCE ?
-                        new Node.Sequence(
+                    operator_type === Token.Type.NOT ?
+                        new Node.Not(
                             {
                                 operand: fragment.In_Node(),
                             },
                         ) :
-                        operator_type === Token.Type.NOT ?
-                            new Node.Not(
+                        operator_type === Token.Type.CASE ?
+                            new Node.Case(
                                 {
                                     operand: fragment.In_Node(),
                                 },
                             ) :
-                            operator_type === Token.Type.CASE ?
-                                new Node.Case(
+                            operator_type === Token.Type.ALIGN ?
+                                new Node.Align(
                                     {
                                         operand: fragment.In_Node(),
                                     },
                                 ) :
-                                operator_type === Token.Type.ALIGN ?
-                                    new Node.Align(
-                                        {
-                                            operand: fragment.In_Node(),
-                                        },
-                                    ) :
-                                    new Node.Meta(
-                                        {
-                                            operand: fragment.In_Node(),
-                                        },
-                                    );
+                                new Node.Meta(
+                                    {
+                                        operand: fragment.In_Node(),
+                                    },
+                                );
                 fragments.push(
                     new Fragment(
                         unary,
@@ -193,9 +186,8 @@ export class Instance
                 operators.push(token as Token.Operator);
 
             } else if (token_type === Token.Type.CLOSE_SEQUENCE) {
-                let operator: Token.Operator | undefined = operators.pop();
                 for (
-                    ;
+                    let operator: Token.Operator | undefined = operators.pop();
                     operator != null && operator.Type() != Token.Type.OPEN_SEQUENCE;
                     operator = operators.pop()
                 ) {
@@ -204,9 +196,27 @@ export class Instance
                         fragments,
                     );
                 }
-                Evaluate_Fragments(
-                    operator as Token.Operator,
-                    fragments,
+                Utils.Assert(
+                    fragments.length >= 1,
+                    `Corrupt fragments.`,
+                );
+                const fragment: Fragment =
+                    fragments.pop() as Fragment;
+                for (const out_node of fragment.Out_Nodes()) {
+                    out_node.Set_Next(Node.END);
+                }
+                const sequence: Node.Sequence =
+                    new Node.Sequence(
+                        {
+                            operand: fragment.In_Node(),
+                            token: token as Token.Close_Sequence,
+                        },
+                    );
+                fragments.push(
+                    new Fragment(
+                        sequence,
+                        [sequence],
+                    ),
                 );
 
             } else if (token_type === Token.Type.NOT) {
