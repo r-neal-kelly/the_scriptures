@@ -74,6 +74,9 @@ export class Instance
             if (
                 last_token != null &&
                 (
+                    last_token.Type() === Token.Type.MAYBE_ONE ||
+                    last_token.Type() === Token.Type.MAYBE_MANY ||
+                    last_token.Type() === Token.Type.ONE_OR_MANY ||
                     last_token.Type() === Token.Type.CLOSE_GROUP ||
                     last_token.Type() === Token.Type.CLOSE_SEQUENCE ||
                     last_token.Type() === Token.Type.TEXT
@@ -124,7 +127,13 @@ export class Instance
                     ),
                 );
             } else {
-                for (let idx = 0, end = text.Line(0).Macro_Part_Count(); idx < end; idx += 1) {
+                const text_part_count: Count = text.Line(0).Macro_Part_Count();
+                if (text_part_count > 1) {
+                    group_depth += 1;
+                    sequence_group_depth += 1;
+                    tokens.push(new Token.Open_Group());
+                }
+                for (let idx = 0, end = text_part_count; idx < end; idx += 1) {
                     tokens.push(
                         new Token.Text(
                             {
@@ -136,6 +145,11 @@ export class Instance
                         sequence_and_counts[sequence_and_counts.length - 1] += 1;
                         tokens.push(new Token.And());
                     }
+                }
+                if (text_part_count > 1) {
+                    group_depth -= 1;
+                    sequence_group_depth -= 1;
+                    tokens.push(new Token.Close_Group());
                 }
             }
         }
@@ -276,6 +290,243 @@ export class Instance
                                 last_expression_index = it.Index();
                                 Add_Text(text);
                             }
+                        }
+                    }
+
+                } else if (point === Operator.MAYBE_ONE) {
+                    if (sequence_depth < 1) {
+                        return new Help(
+                            `Invalid ${Operator.MAYBE_ONE} outside sequence`,
+                            it.Index(),
+                        );
+                    } else {
+                        const last_token: Token.Instance | null = Last();
+                        if (last_token == null) {
+                            return new Help(
+                                `Invalid ${Operator.MAYBE_ONE} at beginning`,
+                                it.Index(),
+                            );
+                        } else if (last_token.Type() === Token.Type.MAYBE_ONE) {
+                            return new Help(
+                                `Invalid ${Operator.MAYBE_ONE} after ${Operator.MAYBE_ONE}`,
+                                last_expression_index,
+                            );
+                        } else if (last_token.Type() === Token.Type.MAYBE_MANY) {
+                            return new Help(
+                                `Invalid ${Operator.MAYBE_ONE} after ${Operator.MAYBE_MANY}`,
+                                last_expression_index,
+                            );
+                        } else if (last_token.Type() === Token.Type.ONE_OR_MANY) {
+                            return new Help(
+                                `Invalid ${Operator.MAYBE_ONE} after ${Operator.ONE_OR_MANY}`,
+                                last_expression_index,
+                            );
+                        } else if (last_token.Type() === Token.Type.OPEN_GROUP) {
+                            return new Help(
+                                `Invalid ${Operator.MAYBE_ONE} after ${Operator.OPEN_GROUP}`,
+                                last_expression_index,
+                            );
+                        } else if (last_token.Type() === Token.Type.OPEN_SEQUENCE) {
+                            return new Help(
+                                `Invalid ${Operator.MAYBE_ONE} after ${Operator.OPEN_SEQUENCE}`,
+                                last_expression_index,
+                            );
+                        } else if (last_token.Type() === Token.Type.NOT) {
+                            return new Help(
+                                `Invalid ${Operator.MAYBE_ONE} after ${Operator.NOT}`,
+                                last_expression_index,
+                            );
+                        } else if (last_token.Type() === Token.Type.CASE) {
+                            return new Help(
+                                `Invalid ${Operator.MAYBE_ONE} after ${Operator.CASE}`,
+                                last_expression_index,
+                            );
+                        } else if (last_token.Type() === Token.Type.ALIGN) {
+                            return new Help(
+                                `Invalid ${Operator.MAYBE_ONE} after ${Operator.ALIGN}`,
+                                last_expression_index,
+                            );
+                        } else if (last_token.Type() === Token.Type.META) {
+                            return new Help(
+                                `Invalid ${Operator.MAYBE_ONE} after ${Operator.META}`,
+                                last_expression_index,
+                            );
+                        } else if (last_token.Type() === Token.Type.AND) {
+                            return new Help(
+                                `Invalid ${Operator.MAYBE_ONE} after ${Operator.AND}`,
+                                last_expression_index,
+                            );
+                        } else if (last_token.Type() === Token.Type.XOR) {
+                            return new Help(
+                                `Invalid ${Operator.MAYBE_ONE} after ${Operator.XOR}`,
+                                last_expression_index,
+                            );
+                        } else if (last_token.Type() === Token.Type.OR) {
+                            return new Help(
+                                `Invalid ${Operator.MAYBE_ONE} after ${Operator.OR}`,
+                                last_expression_index,
+                            );
+                        } else {
+                            last_expression_index = it.Index();
+                            tokens.push(new Token.Maybe_One());
+                        }
+                    }
+
+                } else if (point === Operator.MAYBE_MANY) {
+                    if (sequence_depth < 1) {
+                        return new Help(
+                            `Invalid ${Operator.MAYBE_MANY} outside sequence`,
+                            it.Index(),
+                        );
+                    } else {
+                        const last_token: Token.Instance | null = Last();
+                        if (last_token == null) {
+                            return new Help(
+                                `Invalid ${Operator.MAYBE_MANY} at beginning`,
+                                it.Index(),
+                            );
+                        } else if (last_token.Type() === Token.Type.MAYBE_ONE) {
+                            return new Help(
+                                `Invalid ${Operator.MAYBE_MANY} after ${Operator.MAYBE_ONE}`,
+                                last_expression_index,
+                            );
+                        } else if (last_token.Type() === Token.Type.MAYBE_MANY) {
+                            return new Help(
+                                `Invalid ${Operator.MAYBE_MANY} after ${Operator.MAYBE_MANY}`,
+                                last_expression_index,
+                            );
+                        } else if (last_token.Type() === Token.Type.ONE_OR_MANY) {
+                            return new Help(
+                                `Invalid ${Operator.MAYBE_MANY} after ${Operator.ONE_OR_MANY}`,
+                                last_expression_index,
+                            );
+                        } else if (last_token.Type() === Token.Type.OPEN_GROUP) {
+                            return new Help(
+                                `Invalid ${Operator.MAYBE_MANY} after ${Operator.OPEN_GROUP}`,
+                                last_expression_index,
+                            );
+                        } else if (last_token.Type() === Token.Type.OPEN_SEQUENCE) {
+                            return new Help(
+                                `Invalid ${Operator.MAYBE_MANY} after ${Operator.OPEN_SEQUENCE}`,
+                                last_expression_index,
+                            );
+                        } else if (last_token.Type() === Token.Type.NOT) {
+                            return new Help(
+                                `Invalid ${Operator.MAYBE_MANY} after ${Operator.NOT}`,
+                                last_expression_index,
+                            );
+                        } else if (last_token.Type() === Token.Type.CASE) {
+                            return new Help(
+                                `Invalid ${Operator.MAYBE_MANY} after ${Operator.CASE}`,
+                                last_expression_index,
+                            );
+                        } else if (last_token.Type() === Token.Type.ALIGN) {
+                            return new Help(
+                                `Invalid ${Operator.MAYBE_MANY} after ${Operator.ALIGN}`,
+                                last_expression_index,
+                            );
+                        } else if (last_token.Type() === Token.Type.META) {
+                            return new Help(
+                                `Invalid ${Operator.MAYBE_MANY} after ${Operator.META}`,
+                                last_expression_index,
+                            );
+                        } else if (last_token.Type() === Token.Type.AND) {
+                            return new Help(
+                                `Invalid ${Operator.MAYBE_MANY} after ${Operator.AND}`,
+                                last_expression_index,
+                            );
+                        } else if (last_token.Type() === Token.Type.XOR) {
+                            return new Help(
+                                `Invalid ${Operator.MAYBE_MANY} after ${Operator.XOR}`,
+                                last_expression_index,
+                            );
+                        } else if (last_token.Type() === Token.Type.OR) {
+                            return new Help(
+                                `Invalid ${Operator.MAYBE_MANY} after ${Operator.OR}`,
+                                last_expression_index,
+                            );
+                        } else {
+                            last_expression_index = it.Index();
+                            tokens.push(new Token.Maybe_Many());
+                        }
+                    }
+
+                } else if (point === Operator.ONE_OR_MANY) {
+                    if (sequence_depth < 1) {
+                        return new Help(
+                            `Invalid ${Operator.ONE_OR_MANY} outside sequence`,
+                            it.Index(),
+                        );
+                    } else {
+                        const last_token: Token.Instance | null = Last();
+                        if (last_token == null) {
+                            return new Help(
+                                `Invalid ${Operator.ONE_OR_MANY} at beginning`,
+                                it.Index(),
+                            );
+                        } else if (last_token.Type() === Token.Type.MAYBE_ONE) {
+                            return new Help(
+                                `Invalid ${Operator.ONE_OR_MANY} after ${Operator.MAYBE_ONE}`,
+                                last_expression_index,
+                            );
+                        } else if (last_token.Type() === Token.Type.MAYBE_MANY) {
+                            return new Help(
+                                `Invalid ${Operator.ONE_OR_MANY} after ${Operator.MAYBE_MANY}`,
+                                last_expression_index,
+                            );
+                        } else if (last_token.Type() === Token.Type.ONE_OR_MANY) {
+                            return new Help(
+                                `Invalid ${Operator.ONE_OR_MANY} after ${Operator.ONE_OR_MANY}`,
+                                last_expression_index,
+                            );
+                        } else if (last_token.Type() === Token.Type.OPEN_GROUP) {
+                            return new Help(
+                                `Invalid ${Operator.ONE_OR_MANY} after ${Operator.OPEN_GROUP}`,
+                                last_expression_index,
+                            );
+                        } else if (last_token.Type() === Token.Type.OPEN_SEQUENCE) {
+                            return new Help(
+                                `Invalid ${Operator.ONE_OR_MANY} after ${Operator.OPEN_SEQUENCE}`,
+                                last_expression_index,
+                            );
+                        } else if (last_token.Type() === Token.Type.NOT) {
+                            return new Help(
+                                `Invalid ${Operator.ONE_OR_MANY} after ${Operator.NOT}`,
+                                last_expression_index,
+                            );
+                        } else if (last_token.Type() === Token.Type.CASE) {
+                            return new Help(
+                                `Invalid ${Operator.ONE_OR_MANY} after ${Operator.CASE}`,
+                                last_expression_index,
+                            );
+                        } else if (last_token.Type() === Token.Type.ALIGN) {
+                            return new Help(
+                                `Invalid ${Operator.ONE_OR_MANY} after ${Operator.ALIGN}`,
+                                last_expression_index,
+                            );
+                        } else if (last_token.Type() === Token.Type.META) {
+                            return new Help(
+                                `Invalid ${Operator.ONE_OR_MANY} after ${Operator.META}`,
+                                last_expression_index,
+                            );
+                        } else if (last_token.Type() === Token.Type.AND) {
+                            return new Help(
+                                `Invalid ${Operator.ONE_OR_MANY} after ${Operator.AND}`,
+                                last_expression_index,
+                            );
+                        } else if (last_token.Type() === Token.Type.XOR) {
+                            return new Help(
+                                `Invalid ${Operator.ONE_OR_MANY} after ${Operator.XOR}`,
+                                last_expression_index,
+                            );
+                        } else if (last_token.Type() === Token.Type.OR) {
+                            return new Help(
+                                `Invalid ${Operator.ONE_OR_MANY} after ${Operator.OR}`,
+                                last_expression_index,
+                            );
+                        } else {
+                            last_expression_index = it.Index();
+                            tokens.push(new Token.One_Or_Many());
                         }
                     }
 
@@ -664,6 +915,9 @@ export class Instance
                         if (
                             /\s/.test(point) ||
                             point === Operator.VERBATIM ||
+                            point === Operator.MAYBE_ONE ||
+                            point === Operator.MAYBE_MANY ||
+                            point === Operator.ONE_OR_MANY ||
                             point === Operator.OPEN_GROUP ||
                             point === Operator.CLOSE_GROUP ||
                             point === Operator.OPEN_SEQUENCE ||

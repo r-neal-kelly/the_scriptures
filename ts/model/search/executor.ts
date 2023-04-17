@@ -77,7 +77,30 @@ export class Instance
         Result.Instance | null
     {
         const node_type: Node.Type = node.Type();
-        if (node_type === Node.Type.SEQUENCE) {
+        if (
+            node_type === Node.Type.MAYBE_ONE ||
+            node_type === Node.Type.MAYBE_MANY ||
+            node_type === Node.Type.ONE_OR_MANY
+        ) {
+            const unary: Node.Unary = node as Node.Unary;
+            const maybe_next_result: Result.Instance | null =
+                this.Step(unary.Next(), mode, result.Copy());
+            const maybe_operand_result: Result.Instance | null =
+                this.Step(unary.Operand(), mode, result.Copy());
+
+            if (maybe_next_result != null) {
+                if (maybe_operand_result != null) {
+                    return maybe_next_result.Combine(maybe_operand_result);
+                } else {
+                    return maybe_next_result as Result.Instance;
+                }
+            } else if (maybe_operand_result != null) {
+                return maybe_operand_result as Result.Instance;
+            } else {
+                return null;
+            }
+
+        } else if (node_type === Node.Type.SEQUENCE) {
             const sequence: Node.Sequence = node as Node.Sequence;
             const sequence_result: Result.Instance | null = this.Step(
                 sequence.Operand(),

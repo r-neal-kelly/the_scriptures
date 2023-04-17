@@ -1,1 +1,1 @@
-export var Operator;!function(E){E.VERBATIM='"',E.OPEN_GROUP="(",E.CLOSE_GROUP=")",E.OPEN_SEQUENCE="<",E.CLOSE_SEQUENCE=">",E.NOT="!",E.CASE="%",E.ALIGN="@",E.META="$",E.AND="&",E.XOR="^",E.OR="|"}(Operator||(Operator={}));
+export var Operator;!function(E){E.VERBATIM='"',E.MAYBE_ONE="?",E.MAYBE_MANY="*",E.ONE_OR_MANY="+",E.OPEN_GROUP="(",E.CLOSE_GROUP=")",E.OPEN_SEQUENCE="<",E.CLOSE_SEQUENCE=">",E.NOT="!",E.CASE="%",E.ALIGN="@",E.META="#",E.AND="&",E.XOR="^",E.OR="|"}(Operator||(Operator={}));

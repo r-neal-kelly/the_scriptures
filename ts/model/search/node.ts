@@ -14,6 +14,9 @@ export enum Type
     ALIGN,
     META,
     SEQUENCE,
+    MAYBE_ONE,
+    MAYBE_MANY,
+    ONE_OR_MANY,
     END,
 }
 
@@ -359,6 +362,63 @@ export class Sequence extends Unary
         boolean
     {
         return this.Token().Is_Complex();
+    }
+}
+
+export class Maybe_One extends Unary
+{
+    constructor(
+        {
+            operand,
+        }: {
+            operand: Instance,
+        },
+    )
+    {
+        super(
+            {
+                type: Type.MAYBE_ONE,
+                operand: operand,
+            },
+        );
+    }
+}
+
+export class Maybe_Many extends Unary
+{
+    constructor(
+        {
+            operand,
+        }: {
+            operand: Instance,
+        },
+    )
+    {
+        super(
+            {
+                type: Type.MAYBE_MANY,
+                operand: operand,
+            },
+        );
+    }
+}
+
+export class One_Or_Many extends Unary
+{
+    constructor(
+        {
+            operand,
+        }: {
+            operand: Instance,
+        },
+    )
+    {
+        super(
+            {
+                type: Type.ONE_OR_MANY,
+                operand: operand,
+            },
+        );
     }
 }
 

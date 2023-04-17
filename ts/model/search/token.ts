@@ -5,6 +5,10 @@ import { Boundary } from "./boundary.js";
 
 export enum Type
 {
+    MAYBE_ONE,
+    MAYBE_MANY,
+    ONE_OR_MANY,
+
     OPEN_GROUP,
     CLOSE_GROUP,
     OPEN_SEQUENCE,
@@ -48,6 +52,42 @@ export class Instance
 
 export class Operator extends Instance
 {
+}
+
+export class Maybe_One extends Operator
+{
+    constructor()
+    {
+        super(
+            {
+                type: Type.MAYBE_ONE,
+            },
+        );
+    }
+}
+
+export class Maybe_Many extends Operator
+{
+    constructor()
+    {
+        super(
+            {
+                type: Type.MAYBE_MANY,
+            },
+        );
+    }
+}
+
+export class One_Or_Many extends Operator
+{
+    constructor()
+    {
+        super(
+            {
+                type: Type.ONE_OR_MANY,
+            },
+        );
+    }
 }
 
 export class Open_Group extends Operator

@@ -3,18 +3,27 @@
 // grouped together.
 export enum Operator
 {
+    // Literal
     VERBATIM = `"`,
 
+    // Left-to-Right Associative Unary
+    MAYBE_ONE = `?`,
+    MAYBE_MANY = `*`,
+    ONE_OR_MANY = `+`,
+
+    // Explicit Precedence
     OPEN_GROUP = `(`,
     CLOSE_GROUP = `)`,
     OPEN_SEQUENCE = `<`,
     CLOSE_SEQUENCE = `>`,
 
+    // Right-to-Left Associative Unary
     NOT = `!`,
     CASE = `%`,
     ALIGN = `@`,
-    META = `$`,
+    META = `#`,
 
+    // Logical
     AND = `&`,
 
     XOR = `^`,

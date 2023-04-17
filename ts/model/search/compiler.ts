@@ -46,14 +46,95 @@ export class Instance
     ):
         Node.Instance
     {
+        const operators: Array<Token.Operator> = [];
+        const fragments: Array<Fragment> = [];
+
+        function Evaluate_Operators(
+            types: Array<Token.Type>,
+        ):
+            void
+        {
+            while (
+                operators.length > 0 &&
+                types.includes(operators[operators.length - 1].Type())
+            ) {
+                Evaluate_Fragments(operators.pop() as Token.Operator);
+            }
+        }
+
         function Evaluate_Fragments(
             operator: Token.Operator,
-            fragments: Array<Fragment>,
         ):
             void
         {
             const operator_type: Token.Type = operator.Type();
-            if (
+            if (operator_type === Token.Type.MAYBE_ONE) {
+                Utils.Assert(
+                    fragments.length >= 1,
+                    `Corrupt fragments.`,
+                );
+                const fragment: Fragment =
+                    fragments.pop() as Fragment;
+                const maybe_one: Node.Maybe_One =
+                    new Node.Maybe_One(
+                        {
+                            operand: fragment.In_Node(),
+                        },
+                    );
+                fragments.push(
+                    new Fragment(
+                        maybe_one,
+                        ([maybe_one] as Array<Node.Instance>).concat(fragment.Out_Nodes()),
+                    ),
+                );
+
+            } else if (operator_type === Token.Type.MAYBE_MANY) {
+                Utils.Assert(
+                    fragments.length >= 1,
+                    `Corrupt fragments.`,
+                );
+                const fragment: Fragment =
+                    fragments.pop() as Fragment;
+                const maybe_many: Node.Maybe_Many =
+                    new Node.Maybe_Many(
+                        {
+                            operand: fragment.In_Node(),
+                        },
+                    );
+                for (const out_node of fragment.Out_Nodes()) {
+                    out_node.Set_Next(maybe_many);
+                }
+                fragments.push(
+                    new Fragment(
+                        maybe_many,
+                        [maybe_many],
+                    ),
+                );
+
+            } else if (operator_type === Token.Type.ONE_OR_MANY) {
+                Utils.Assert(
+                    fragments.length >= 1,
+                    `Corrupt fragments.`,
+                );
+                const fragment: Fragment =
+                    fragments.pop() as Fragment;
+                const one_or_many: Node.One_Or_Many =
+                    new Node.One_Or_Many(
+                        {
+                            operand: fragment.In_Node(),
+                        },
+                    );
+                for (const out_node of fragment.Out_Nodes()) {
+                    out_node.Set_Next(one_or_many);
+                }
+                fragments.push(
+                    new Fragment(
+                        fragment.In_Node(),
+                        [one_or_many],
+                    ),
+                );
+
+            } else if (
                 operator_type === Token.Type.NOT ||
                 operator_type === Token.Type.CASE ||
                 operator_type === Token.Type.ALIGN ||
@@ -162,12 +243,30 @@ export class Instance
             }
         }
 
-        const operators: Array<Token.Operator> = [];
-        const fragments: Array<Fragment> = [];
-
         for (const token of tokens) {
             const token_type: Token.Type = token.Type();
-            if (token_type === Token.Type.OPEN_GROUP) {
+            if (
+                token_type === Token.Type.MAYBE_ONE ||
+                token_type === Token.Type.MAYBE_MANY ||
+                token_type === Token.Type.ONE_OR_MANY
+            ) {
+                Evaluate_Operators(
+                    [
+                        Token.Type.MAYBE_ONE,
+                        Token.Type.MAYBE_MANY,
+                        Token.Type.ONE_OR_MANY,
+                    ],
+                );
+                operators.push(token as Token.Operator);
+
+            } else if (token_type === Token.Type.OPEN_GROUP) {
+                Evaluate_Operators(
+                    [
+                        Token.Type.MAYBE_ONE,
+                        Token.Type.MAYBE_MANY,
+                        Token.Type.ONE_OR_MANY,
+                    ],
+                );
                 operators.push(token as Token.Operator);
 
             } else if (token_type === Token.Type.CLOSE_GROUP) {
@@ -176,13 +275,17 @@ export class Instance
                     operator != null && operator.Type() != Token.Type.OPEN_GROUP;
                     operator = operators.pop()
                 ) {
-                    Evaluate_Fragments(
-                        operator as Token.Operator,
-                        fragments,
-                    );
+                    Evaluate_Fragments(operator as Token.Operator);
                 }
 
             } else if (token_type === Token.Type.OPEN_SEQUENCE) {
+                Evaluate_Operators(
+                    [
+                        Token.Type.MAYBE_ONE,
+                        Token.Type.MAYBE_MANY,
+                        Token.Type.ONE_OR_MANY,
+                    ],
+                );
                 operators.push(token as Token.Operator);
 
             } else if (token_type === Token.Type.CLOSE_SEQUENCE) {
@@ -191,10 +294,7 @@ export class Instance
                     operator != null && operator.Type() != Token.Type.OPEN_SEQUENCE;
                     operator = operators.pop()
                 ) {
-                    Evaluate_Fragments(
-                        operator as Token.Operator,
-                        fragments,
-                    );
+                    Evaluate_Fragments(operator as Token.Operator);
                 }
                 Utils.Assert(
                     fragments.length >= 1,
@@ -219,73 +319,60 @@ export class Instance
                     ),
                 );
 
-            } else if (token_type === Token.Type.NOT) {
-                operators.push(token as Token.Operator);
-
-            } else if (token_type === Token.Type.CASE) {
-                operators.push(token as Token.Operator);
-
-            } else if (token_type === Token.Type.ALIGN) {
-                operators.push(token as Token.Operator);
-
-            } else if (token_type === Token.Type.META) {
+            } else if (
+                token_type === Token.Type.NOT ||
+                token_type === Token.Type.CASE ||
+                token_type === Token.Type.ALIGN ||
+                token_type === Token.Type.META
+            ) {
                 operators.push(token as Token.Operator);
 
             } else if (token_type === Token.Type.AND) {
-                while (
-                    operators.length > 0 &&
-                    (
-                        operators[operators.length - 1].Type() === Token.Type.NOT ||
-                        operators[operators.length - 1].Type() === Token.Type.CASE ||
-                        operators[operators.length - 1].Type() === Token.Type.ALIGN ||
-                        operators[operators.length - 1].Type() === Token.Type.META ||
-                        operators[operators.length - 1].Type() === Token.Type.AND
-                    )
-                ) {
-                    Evaluate_Fragments(
-                        operators.pop() as Token.Operator,
-                        fragments,
-                    );
-                }
+                Evaluate_Operators(
+                    [
+                        Token.Type.MAYBE_ONE,
+                        Token.Type.MAYBE_MANY,
+                        Token.Type.ONE_OR_MANY,
+                        Token.Type.NOT,
+                        Token.Type.CASE,
+                        Token.Type.ALIGN,
+                        Token.Type.META,
+                        Token.Type.AND,
+                    ],
+                );
                 operators.push(token as Token.Operator);
 
             } else if (token_type === Token.Type.XOR) {
-                while (
-                    operators.length > 0 &&
-                    (
-                        operators[operators.length - 1].Type() === Token.Type.NOT ||
-                        operators[operators.length - 1].Type() === Token.Type.CASE ||
-                        operators[operators.length - 1].Type() === Token.Type.ALIGN ||
-                        operators[operators.length - 1].Type() === Token.Type.META ||
-                        operators[operators.length - 1].Type() === Token.Type.AND ||
-                        operators[operators.length - 1].Type() === Token.Type.XOR
-                    )
-                ) {
-                    Evaluate_Fragments(
-                        operators.pop() as Token.Operator,
-                        fragments,
-                    );
-                }
+                Evaluate_Operators(
+                    [
+                        Token.Type.MAYBE_ONE,
+                        Token.Type.MAYBE_MANY,
+                        Token.Type.ONE_OR_MANY,
+                        Token.Type.NOT,
+                        Token.Type.CASE,
+                        Token.Type.ALIGN,
+                        Token.Type.META,
+                        Token.Type.AND,
+                        Token.Type.XOR,
+                    ],
+                );
                 operators.push(token as Token.Operator);
 
             } else if (token_type === Token.Type.OR) {
-                while (
-                    operators.length > 0 &&
-                    (
-                        operators[operators.length - 1].Type() === Token.Type.NOT ||
-                        operators[operators.length - 1].Type() === Token.Type.CASE ||
-                        operators[operators.length - 1].Type() === Token.Type.ALIGN ||
-                        operators[operators.length - 1].Type() === Token.Type.META ||
-                        operators[operators.length - 1].Type() === Token.Type.AND ||
-                        operators[operators.length - 1].Type() === Token.Type.XOR ||
-                        operators[operators.length - 1].Type() === Token.Type.OR
-                    )
-                ) {
-                    Evaluate_Fragments(
-                        operators.pop() as Token.Operator,
-                        fragments,
-                    );
-                }
+                Evaluate_Operators(
+                    [
+                        Token.Type.MAYBE_ONE,
+                        Token.Type.MAYBE_MANY,
+                        Token.Type.ONE_OR_MANY,
+                        Token.Type.NOT,
+                        Token.Type.CASE,
+                        Token.Type.ALIGN,
+                        Token.Type.META,
+                        Token.Type.AND,
+                        Token.Type.XOR,
+                        Token.Type.OR,
+                    ],
+                );
                 operators.push(token as Token.Operator);
 
             } else if (token_type === Token.Type.TEXT) {
@@ -311,10 +398,7 @@ export class Instance
         }
 
         while (operators.length > 0) {
-            Evaluate_Fragments(
-                operators.pop() as Token.Operator,
-                fragments,
-            );
+            Evaluate_Fragments(operators.pop() as Token.Operator);
         }
         Utils.Assert(
             fragments.length === 1,
