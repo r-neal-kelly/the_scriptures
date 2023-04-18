@@ -388,6 +388,19 @@ export class Instance
                     ),
                 );
 
+            } else if (token_type === Token.Type.CLASS) {
+                const class_: Node.Class = new Node.Class(
+                    {
+                        token: (token as Token.Class),
+                    },
+                );
+                fragments.push(
+                    new Fragment(
+                        class_,
+                        [class_],
+                    ),
+                );
+
             } else {
                 Utils.Assert(
                     fragments.length === 1,

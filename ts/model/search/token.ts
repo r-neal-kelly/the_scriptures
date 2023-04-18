@@ -25,8 +25,8 @@ export enum Type
 
     OR,
 
-    TEXT,
     CLASS,
+    TEXT,
 }
 
 export class Instance
@@ -255,6 +255,34 @@ export class Or extends Operator
     }
 }
 
+export class Class extends Instance
+{
+    private value: Class_Module.Instance;
+
+    constructor(
+        {
+            value,
+        }: {
+            value: Class_Module.Instance;
+        },
+    )
+    {
+        super(
+            {
+                type: Type.CLASS,
+            },
+        );
+
+        this.value = value;
+    }
+
+    Value():
+        Class_Module.Instance
+    {
+        return this.value;
+    }
+}
+
 export class Text extends Instance
 {
     private part: Text_Module.Part.Instance;
@@ -280,27 +308,5 @@ export class Text extends Instance
         Text_Module.Part.Instance
     {
         return this.part;
-    }
-}
-
-export class Class extends Instance
-{
-    private class_: Class_Module.Instance;
-
-    constructor(
-        {
-            class_,
-        }: {
-            class_: Class_Module.Instance;
-        },
-    )
-    {
-        super(
-            {
-                type: Type.CLASS,
-            },
-        );
-
-        this.class_ = class_;
     }
 }

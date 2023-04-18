@@ -1,11 +1,13 @@
 import * as Utils from "../../utils.js";
 
 import * as Text_Module from "../text.js";
+import * as Class_Module from "./class.js";
 import * as Token from "./token.js";
 
 export enum Type
 {
     TEXT,
+    CLASS,
     OR,
     XOR,
     NOT,
@@ -95,6 +97,48 @@ export class Text extends Instance
         Text_Module.Part.Instance
     {
         return this.Token().Part();
+    }
+}
+
+export class Class extends Instance
+{
+    private token: Token.Class;
+
+    constructor(
+        {
+            token,
+        }: {
+            token: Token.Class,
+        },
+    )
+    {
+        super(
+            {
+                type: Type.CLASS,
+            },
+        );
+
+        this.token = token;
+    }
+
+    Token():
+        Token.Class
+    {
+        return this.token;
+    }
+
+    Value():
+        Class_Module.Instance
+    {
+        return this.Token().Value();
+    }
+
+    Recognizes(
+        part: Text_Module.Part.Instance,
+    ):
+        boolean
+    {
+        return this.Value().Recognizes(part);
     }
 }
 

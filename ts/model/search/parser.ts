@@ -5,6 +5,8 @@ import * as Unicode from "../../unicode.js";
 
 import * as Text from "../text.js";
 import { Operator } from "./operator.js";
+import { Operand } from "./operand.js";
+import * as Class from "./class.js";
 import * as Token from "./token.js";
 
 export class Help
@@ -56,6 +58,7 @@ export class Instance
         let group_depth: Count = 0;
         let sequence_depth: Count = 0;
         let sequence_group_depth: Count = 0;
+        let sequence_has_and: boolean = false;
 
         function Last():
             Token.Instance | null
@@ -77,9 +80,13 @@ export class Instance
                     last_token.Type() === Token.Type.ONE_OR_MANY ||
                     last_token.Type() === Token.Type.CLOSE_GROUP ||
                     last_token.Type() === Token.Type.CLOSE_SEQUENCE ||
+                    last_token.Type() === Token.Type.CLASS ||
                     last_token.Type() === Token.Type.TEXT
                 )
             ) {
+                if (sequence_depth > 0) {
+                    sequence_has_and = true;
+                }
                 tokens.push(new Token.And());
             }
         }
@@ -120,10 +127,33 @@ export class Instance
                 );
             } else {
                 const text_part_count: Count = text.Line(0).Macro_Part_Count();
-                if (text_part_count > 1) {
+                const has_group: boolean = text_part_count > 1 || sequence_has_and;
+                if (has_group) {
                     group_depth += 1;
-                    sequence_group_depth += 1;
                     tokens.push(new Token.Open_Group());
+                }
+                if (sequence_has_and && false) {
+                    const text_first_part: Text.Part.Instance =
+                        text.Line(0).Macro_Part(0);
+                    if (text_first_part.Is_Word()) {
+                        tokens.push(
+                            new Token.Class(
+                                {
+                                    value: Class.BREAK,
+                                }
+                            ),
+                        );
+                    } else if (text_first_part.Is_Break()) {
+                        tokens.push(
+                            new Token.Class(
+                                {
+                                    value: Class.WORD,
+                                }
+                            ),
+                        );
+                    }
+                    tokens.push(new Token.Maybe_One());
+                    tokens.push(new Token.And());
                 }
                 for (let idx = 0, end = text_part_count; idx < end; idx += 1) {
                     tokens.push(
@@ -134,14 +164,44 @@ export class Instance
                         ),
                     );
                     if (idx < end - 1) {
+                        sequence_has_and = true;
                         tokens.push(new Token.And());
                     }
                 }
-                if (text_part_count > 1) {
+                if (has_group) {
                     group_depth -= 1;
-                    sequence_group_depth -= 1;
                     tokens.push(new Token.Close_Group());
                 }
+            }
+        }
+
+        function Add_Class(
+            class_: Token.Class,
+        ):
+            void
+        {
+            if (sequence_depth < 1) {
+                sequence_depth += 1;
+                tokens.push(
+                    new Token.Open_Sequence(
+                        {
+                            is_complex: false,
+                        },
+                    ),
+                );
+
+                tokens.push(class_);
+
+                sequence_depth -= 1;
+                tokens.push(
+                    new Token.Close_Sequence(
+                        {
+                            is_complex: false,
+                        },
+                    ),
+                );
+            } else {
+                tokens.push(class_);
             }
         }
 
@@ -519,6 +579,8 @@ export class Instance
                         Try_Add_And();
                         last_expression_index = it.Index();
                         sequence_depth += 1;
+                        sequence_group_depth = 0;
+                        sequence_has_and = false;
                         tokens.push(
                             new Token.Open_Sequence(
                                 {
@@ -593,6 +655,8 @@ export class Instance
                     } else {
                         last_expression_index = it.Index();
                         sequence_depth -= 1;
+                        sequence_group_depth = 0;
+                        sequence_has_and = false;
                         tokens.push(
                             new Token.Close_Sequence(
                                 {
@@ -676,6 +740,9 @@ export class Instance
                         );
                     } else {
                         last_expression_index = it.Index();
+                        if (sequence_depth > 0) {
+                            sequence_has_and = true;
+                        }
                         tokens.push(new Token.And());
                     }
 
@@ -733,6 +800,9 @@ export class Instance
                         );
                     } else {
                         last_expression_index = it.Index();
+                        if (sequence_depth > 0 && sequence_group_depth === 0) {
+                            sequence_has_and = false;
+                        }
                         tokens.push(new Token.Xor());
                     }
 
@@ -790,8 +860,22 @@ export class Instance
                         );
                     } else {
                         last_expression_index = it.Index();
+                        if (sequence_depth > 0 && sequence_group_depth === 0) {
+                            sequence_has_and = false;
+                        }
                         tokens.push(new Token.Or());
                     }
+
+                } else if (point === Operand.PART) {
+                    Try_Add_And();
+                    last_expression_index = it.Index();
+                    Add_Class(
+                        new Token.Class(
+                            {
+                                value: Class.PART,
+                            }
+                        ),
+                    );
 
                 } else {
                     Try_Add_And();
@@ -815,7 +899,8 @@ export class Instance
                             point === Operator.META ||
                             point === Operator.AND ||
                             point === Operator.XOR ||
-                            point === Operator.OR
+                            point === Operator.OR ||
+                            point === Operand.PART
                         ) {
                             break;
                         }

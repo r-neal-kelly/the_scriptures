@@ -20,13 +20,6 @@ export enum Mode
     META = 1 << 4,
 }
 
-export enum Position
-{
-    ANY_OR_START,
-    MIDDLE_OR_END,
-    OUT_OF_BOUNDS,
-}
-
 export class Instance
 {
     private parser: Parser.Instance;
@@ -64,7 +57,6 @@ export class Instance
                 const maybe_result: Result.Instance | null = this.Step(
                     node,
                     Mode.INITIAL,
-                    Position.ANY_OR_START,
                     new Result.Instance(line),
                 );
                 if (maybe_result != null) {
@@ -79,7 +71,6 @@ export class Instance
     private Step(
         node: Node.Instance,
         mode: Mode,
-        position: Position,
         result: Result.Instance,
     ):
         Result.Instance | null
@@ -92,9 +83,9 @@ export class Instance
         ) {
             const unary: Node.Unary = node as Node.Unary;
             const maybe_next_result: Result.Instance | null =
-                this.Step(unary.Next(), mode, position, result.Copy());
+                this.Step(unary.Next(), mode, result.Copy());
             const maybe_operand_result: Result.Instance | null =
-                this.Step(unary.Operand(), mode, position, result.Copy());
+                this.Step(unary.Operand(), mode, result.Copy());
 
             if (maybe_next_result != null) {
                 if (maybe_operand_result != null) {
@@ -115,7 +106,6 @@ export class Instance
                 sequence.Is_Complex() ?
                     mode | Mode.COMPLEX_SEQUENCE :
                     mode,
-                Position.ANY_OR_START,
                 new Result.Instance(result.Line()),
             );
 
@@ -123,7 +113,6 @@ export class Instance
                 return this.Step(
                     sequence.Next(),
                     mode,
-                    position,
                     result.Combine(sequence_result as Result.Instance),
                 );
             } else {
@@ -135,7 +124,6 @@ export class Instance
             const not_result: Result.Instance | null = this.Step(
                 not.Operand(),
                 mode ^ Mode.NOT,
-                position,
                 result,
             );
 
@@ -143,7 +131,6 @@ export class Instance
                 return this.Step(
                     not.Next(),
                     mode,
-                    position,
                     not_result,
                 );
             } else {
@@ -155,7 +142,6 @@ export class Instance
             const case_result: Result.Instance | null = this.Step(
                 case_.Operand(),
                 mode ^ Mode.CASE,
-                position,
                 result,
             );
 
@@ -163,7 +149,6 @@ export class Instance
                 return this.Step(
                     case_.Next(),
                     mode,
-                    position,
                     case_result,
                 );
             } else {
@@ -175,7 +160,6 @@ export class Instance
             const align_result: Result.Instance | null = this.Step(
                 align.Operand(),
                 mode ^ Mode.ALIGN,
-                position,
                 result,
             );
 
@@ -183,7 +167,6 @@ export class Instance
                 return this.Step(
                     align.Next(),
                     mode,
-                    position,
                     align_result,
                 );
             } else {
@@ -195,7 +178,6 @@ export class Instance
             const meta_result: Result.Instance | null = this.Step(
                 meta.Operand(),
                 mode ^ Mode.META,
-                position,
                 result,
             );
 
@@ -203,7 +185,6 @@ export class Instance
                 return this.Step(
                     meta.Next(),
                     mode,
-                    position,
                     meta_result,
                 );
             } else {
@@ -213,9 +194,9 @@ export class Instance
         } else if (node_type === Node.Type.XOR) {
             const xor: Node.Xor = node as Node.Xor;
             const maybe_left_result: Result.Instance | null =
-                this.Step(xor.Left_Operand(), mode, position, result.Copy());
+                this.Step(xor.Left_Operand(), mode, result.Copy());
             const maybe_right_result: Result.Instance | null =
-                this.Step(xor.Right_Operand(), mode, position, result.Copy());
+                this.Step(xor.Right_Operand(), mode, result.Copy());
 
             if (maybe_left_result != null) {
                 if (maybe_right_result != null) {
@@ -232,9 +213,9 @@ export class Instance
         } else if (node_type === Node.Type.OR) {
             const or: Node.Or = node as Node.Or;
             const maybe_left_result: Result.Instance | null =
-                this.Step(or.Left_Operand(), mode, position, result.Copy());
+                this.Step(or.Left_Operand(), mode, result.Copy());
             const maybe_right_result: Result.Instance | null =
-                this.Step(or.Right_Operand(), mode, position, result.Copy());
+                this.Step(or.Right_Operand(), mode, result.Copy());
 
             if (maybe_left_result != null) {
                 if (maybe_right_result != null) {
@@ -248,117 +229,11 @@ export class Instance
                 return null;
             }
 
+        } else if (node_type === Node.Type.CLASS) {
+            return this.Class(node, mode, result);
+
         } else if (node_type === Node.Type.TEXT) {
-            const text: Node.Text = node as Node.Text;
-            if (position === Position.ANY_OR_START) {
-                let text_result_any: Result.Instance | null;
-                if (mode & Mode.COMPLEX_SEQUENCE) {
-                    text_result_any = this.Complex_Sequence_Any(text, mode, result);
-                } else {
-                    text_result_any = this.Sequence_Any(text, mode, result);
-                }
-                if (text_result_any != null) {
-                    text_result_any = this.Step(
-                        text.Next(),
-                        mode,
-                        Position.OUT_OF_BOUNDS,
-                        text_result_any,
-                    );
-                    if (text_result_any != null) {
-                        return text_result_any;
-                    } else {
-                        let text_result_start: Result.Instance | null;
-                        if (mode & Mode.COMPLEX_SEQUENCE) {
-                            text_result_start = this.Complex_Sequence_Start(text, mode, result);
-                        } else {
-                            text_result_start = this.Sequence_Start(text, mode, result);
-                        }
-                        if (text_result_start != null) {
-                            return this.Step(
-                                text.Next(),
-                                mode,
-                                Position.MIDDLE_OR_END,
-                                text_result_start,
-                            );
-                        } else {
-                            return null;
-                        }
-                    }
-                } else {
-                    let text_result_start: Result.Instance | null;
-                    if (mode & Mode.COMPLEX_SEQUENCE) {
-                        text_result_start = this.Complex_Sequence_Start(text, mode, result);
-                    } else {
-                        text_result_start = this.Sequence_Start(text, mode, result);
-                    }
-                    if (text_result_start != null) {
-                        return this.Step(
-                            text.Next(),
-                            mode,
-                            Position.MIDDLE_OR_END,
-                            text_result_start,
-                        );
-                    } else {
-                        return null;
-                    }
-                }
-            } else if (position === Position.MIDDLE_OR_END) {
-                let text_result_middle: Result.Instance | null;
-                if (mode & Mode.COMPLEX_SEQUENCE) {
-                    text_result_middle = this.Complex_Sequence_Middle(text, mode, result);
-                } else {
-                    text_result_middle = this.Sequence_Middle(text, mode, result);
-                }
-                if (text_result_middle != null) {
-                    text_result_middle = this.Step(
-                        text.Next(),
-                        mode,
-                        Position.MIDDLE_OR_END,
-                        text_result_middle,
-                    );
-                    if (text_result_middle != null) {
-                        return text_result_middle;
-                    } else {
-                        let text_result_end: Result.Instance | null;
-                        if (mode & Mode.COMPLEX_SEQUENCE) {
-                            text_result_end = this.Complex_Sequence_End(text, mode, result);
-                        } else {
-                            text_result_end = this.Sequence_End(text, mode, result);
-                        }
-                        if (text_result_end != null) {
-                            return this.Step(
-                                text.Next(),
-                                mode,
-                                Position.OUT_OF_BOUNDS,
-                                text_result_end,
-                            );
-                        } else {
-                            return null;
-                        }
-                    }
-                } else {
-                    let text_result_end: Result.Instance | null;
-                    if (mode & Mode.COMPLEX_SEQUENCE) {
-                        text_result_end = this.Complex_Sequence_End(text, mode, result);
-                    } else {
-                        text_result_end = this.Sequence_End(text, mode, result);
-                    }
-                    if (text_result_end != null) {
-                        return this.Step(
-                            text.Next(),
-                            mode,
-                            Position.OUT_OF_BOUNDS,
-                            text_result_end,
-                        );
-                    } else {
-                        return null;
-                    }
-                }
-
-            } else {
-                return null;
-
-            }
+            return this.Text(node, mode, result);
 
         } else if (node_type === Node.Type.END) {
             return result;
@@ -374,7 +249,159 @@ export class Instance
         }
     }
 
-    private Sequence_Any(
+    private Text(
+        node: Node.Instance,
+        mode: Mode,
+        result: Result.Instance,
+    ):
+        Result.Instance | null
+    {
+        const text: Node.Text = node as Node.Text;
+        if (result.Match_Count() === 0) {
+            let text_result_any: Result.Instance | null;
+            if (mode & Mode.COMPLEX_SEQUENCE) {
+                text_result_any = this.Complex_Text_Any(text, mode, result);
+            } else {
+                text_result_any = this.Text_Any(text, mode, result);
+            }
+            if (text_result_any != null) {
+                text_result_any = this.Step(
+                    text.Next(),
+                    mode,
+                    text_result_any,
+                );
+                if (text_result_any != null) {
+                    return text_result_any;
+                } else {
+                    let text_result_start: Result.Instance | null;
+                    if (mode & Mode.COMPLEX_SEQUENCE) {
+                        text_result_start = this.Complex_Text_Start(text, mode, result);
+                    } else {
+                        text_result_start = this.Text_Start(text, mode, result);
+                    }
+                    if (text_result_start != null) {
+                        return this.Step(
+                            text.Next(),
+                            mode,
+                            text_result_start,
+                        );
+                    } else {
+                        return null;
+                    }
+                }
+            } else {
+                let text_result_start: Result.Instance | null;
+                if (mode & Mode.COMPLEX_SEQUENCE) {
+                    text_result_start = this.Complex_Text_Start(text, mode, result);
+                } else {
+                    text_result_start = this.Text_Start(text, mode, result);
+                }
+                if (text_result_start != null) {
+                    return this.Step(
+                        text.Next(),
+                        mode,
+                        text_result_start,
+                    );
+                } else {
+                    return null;
+                }
+            }
+        } else {
+            let text_result_middle: Result.Instance | null;
+            if (mode & Mode.COMPLEX_SEQUENCE) {
+                text_result_middle = this.Complex_Text_Middle(text, mode, result);
+            } else {
+                text_result_middle = this.Text_Middle(text, mode, result);
+            }
+            if (text_result_middle != null) {
+                text_result_middle = this.Step(
+                    text.Next(),
+                    mode,
+                    text_result_middle,
+                );
+                if (text_result_middle != null) {
+                    return text_result_middle;
+                } else {
+                    let text_result_end: Result.Instance | null;
+                    if (mode & Mode.COMPLEX_SEQUENCE) {
+                        text_result_end = this.Complex_Text_End(text, mode, result);
+                    } else {
+                        text_result_end = this.Text_End(text, mode, result);
+                    }
+                    if (text_result_end != null) {
+                        return this.Step(
+                            text.Next(),
+                            mode,
+                            text_result_end,
+                        );
+                    } else {
+                        return null;
+                    }
+                }
+            } else {
+                let text_result_end: Result.Instance | null;
+                if (mode & Mode.COMPLEX_SEQUENCE) {
+                    text_result_end = this.Complex_Text_End(text, mode, result);
+                } else {
+                    text_result_end = this.Text_End(text, mode, result);
+                }
+                if (text_result_end != null) {
+                    return this.Step(
+                        text.Next(),
+                        mode,
+                        text_result_end,
+                    );
+                } else {
+                    return null;
+                }
+            }
+        }
+    }
+
+    private Class(
+        node: Node.Instance,
+        mode: Mode,
+        result: Result.Instance,
+    ):
+        Result.Instance | null
+    {
+        const class_: Node.Class = node as Node.Class;
+        if (result.Match_Count() === 0) {
+            let class_result: Result.Instance | null;
+            if (mode & Mode.COMPLEX_SEQUENCE) {
+                class_result = this.Complex_Class_Any_Or_Start(class_, mode, result);
+            } else {
+                class_result = this.Class_Any_Or_Start(class_, mode, result);
+            }
+            if (class_result != null) {
+                return this.Step(
+                    class_.Next(),
+                    mode,
+                    class_result,
+                );
+            } else {
+                return null;
+            }
+        } else {
+            let class_result: Result.Instance | null;
+            if (mode & Mode.COMPLEX_SEQUENCE) {
+                class_result = this.Complex_Class_Middle_Or_End(class_, mode, result);
+            } else {
+                class_result = this.Class_Middle_Or_End(class_, mode, result);
+            }
+            if (class_result != null) {
+                return this.Step(
+                    class_.Next(),
+                    mode,
+                    class_result,
+                );
+            } else {
+                return null;
+            }
+        }
+    }
+
+    private Text_Any(
         text: Node.Text,
         mode: Mode,
         result: Result.Instance,
@@ -486,7 +513,7 @@ export class Instance
         }
     }
 
-    private Sequence_Start(
+    private Text_Start(
         text: Node.Text,
         mode: Mode,
         result: Result.Instance,
@@ -583,7 +610,7 @@ export class Instance
         }
     }
 
-    private Sequence_Middle(
+    private Text_Middle(
         text: Node.Text,
         mode: Mode,
         result: Result.Instance,
@@ -604,33 +631,40 @@ export class Instance
         ) {
             const old_match: Result.Match = result.Match(match_idx);
             let search_idx: Index = old_match.End_Part_Index();
-            const search_end: Index = search_line.Macro_Part_Count();
-            let command_count: Count = 0;
-            if (!(mode & Mode.META)) {
-                while (
-                    search_idx + command_count < search_end &&
-                    search_line.Macro_Part(search_idx + command_count).Is_Command()
-                ) {
-                    command_count += 1;
+            const old_search_part: Text.Part.Instance =
+                search_line.Macro_Part(search_idx - 1);
+            const old_search_value: Text.Value = mode & Mode.CASE ?
+                old_search_part.Value() :
+                old_search_part.Value().toLowerCase();
+            if (old_match.Last_Part_End_Unit_Index() === old_search_value.length) {
+                const search_end: Index = search_line.Macro_Part_Count();
+                let command_count: Count = 0;
+                if (!(mode & Mode.META)) {
+                    while (
+                        search_idx + command_count < search_end &&
+                        search_line.Macro_Part(search_idx + command_count).Is_Command()
+                    ) {
+                        command_count += 1;
+                    }
                 }
-            }
-            if (search_idx + command_count < search_end) {
-                const search_part: Text.Part.Instance =
-                    search_line.Macro_Part(search_idx + command_count);
-                const search_value: Text.Value = mode & Mode.CASE ?
-                    search_part.Value() :
-                    search_part.Value().toLowerCase();
-                if (search_value === expression_value) {
-                    new_result.Try_Add_Match(
-                        new Result.Match(
-                            {
-                                first_part_index: old_match.First_Part_Index(),
-                                end_part_index: search_idx + command_count + 1,
-                                first_part_first_unit_index: old_match.First_Part_First_Unit_Index(),
-                                last_part_end_unit_index: search_value.length,
-                            },
-                        ),
-                    );
+                if (search_idx + command_count < search_end) {
+                    const search_part: Text.Part.Instance =
+                        search_line.Macro_Part(search_idx + command_count);
+                    const search_value: Text.Value = mode & Mode.CASE ?
+                        search_part.Value() :
+                        search_part.Value().toLowerCase();
+                    if (search_value === expression_value) {
+                        new_result.Try_Add_Match(
+                            new Result.Match(
+                                {
+                                    first_part_index: old_match.First_Part_Index(),
+                                    end_part_index: search_idx + command_count + 1,
+                                    first_part_first_unit_index: old_match.First_Part_First_Unit_Index(),
+                                    last_part_end_unit_index: search_value.length,
+                                },
+                            ),
+                        );
+                    }
                 }
             }
         }
@@ -645,7 +679,7 @@ export class Instance
         }
     }
 
-    private Sequence_End(
+    private Text_End(
         text: Node.Text,
         mode: Mode,
         result: Result.Instance,
@@ -666,71 +700,78 @@ export class Instance
         ) {
             const old_match: Result.Match = result.Match(match_idx);
             let search_idx: Index = old_match.End_Part_Index();
-            const search_end: Index = search_line.Macro_Part_Count();
-            let command_count: Count = 0;
-            if (!(mode & Mode.META)) {
-                while (
-                    search_idx + command_count < search_end &&
-                    search_line.Macro_Part(search_idx + command_count).Is_Command()
-                ) {
-                    command_count += 1;
-                }
-            }
-            if (search_idx + command_count < search_end) {
-                const search_part: Text.Part.Instance =
-                    search_line.Macro_Part(search_idx + command_count);
-                const search_value: Text.Value = mode & Mode.CASE ?
-                    search_part.Value() :
-                    search_part.Value().toLowerCase();
-                if (mode & Mode.ALIGN) {
-                    if (search_value === expression_value) {
-                        new_result.Try_Add_Match(
-                            new Result.Match(
-                                {
-                                    first_part_index: old_match.First_Part_Index(),
-                                    end_part_index: search_idx + command_count + 1,
-                                    first_part_first_unit_index: old_match.First_Part_First_Unit_Index(),
-                                    last_part_end_unit_index: search_value.length,
-                                },
-                            ),
-                        );
-                    }
-                } else {
-                    if (
-                        search_value.length >= expression_value.length &&
-                        search_value.slice(
-                            0,
-                            expression_value.length,
-                        ) === expression_value
+            const old_search_part: Text.Part.Instance =
+                search_line.Macro_Part(search_idx - 1);
+            const old_search_value: Text.Value = mode & Mode.CASE ?
+                old_search_part.Value() :
+                old_search_part.Value().toLowerCase();
+            if (old_match.Last_Part_End_Unit_Index() === old_search_value.length) {
+                const search_end: Index = search_line.Macro_Part_Count();
+                let command_count: Count = 0;
+                if (!(mode & Mode.META)) {
+                    while (
+                        search_idx + command_count < search_end &&
+                        search_line.Macro_Part(search_idx + command_count).Is_Command()
                     ) {
-                        let last_part_end_unit_index =
-                            expression_value.length;
-                        for (
-                            let search_value_idx = last_part_end_unit_index, search_value_end = search_value.length;
-                            search_value_idx < search_value_end - (expression_value.length - 1);
-                        ) {
-                            if (
-                                search_value.slice(
-                                    search_value_idx,
-                                    search_value_idx + expression_value.length,
-                                ) === expression_value
-                            ) {
-                                search_value_idx += expression_value.length;
-                                last_part_end_unit_index = search_value_idx;
-                            } else {
-                                break;
-                            }
+                        command_count += 1;
+                    }
+                }
+                if (search_idx + command_count < search_end) {
+                    const search_part: Text.Part.Instance =
+                        search_line.Macro_Part(search_idx + command_count);
+                    const search_value: Text.Value = mode & Mode.CASE ?
+                        search_part.Value() :
+                        search_part.Value().toLowerCase();
+                    if (mode & Mode.ALIGN) {
+                        if (search_value === expression_value) {
+                            new_result.Try_Add_Match(
+                                new Result.Match(
+                                    {
+                                        first_part_index: old_match.First_Part_Index(),
+                                        end_part_index: search_idx + command_count + 1,
+                                        first_part_first_unit_index: old_match.First_Part_First_Unit_Index(),
+                                        last_part_end_unit_index: search_value.length,
+                                    },
+                                ),
+                            );
                         }
-                        new_result.Try_Add_Match(
-                            new Result.Match(
-                                {
-                                    first_part_index: old_match.First_Part_Index(),
-                                    end_part_index: search_idx + command_count + 1,
-                                    first_part_first_unit_index: old_match.First_Part_First_Unit_Index(),
-                                    last_part_end_unit_index: last_part_end_unit_index,
-                                },
-                            ),
-                        );
+                    } else {
+                        if (
+                            search_value.length >= expression_value.length &&
+                            search_value.slice(
+                                0,
+                                expression_value.length,
+                            ) === expression_value
+                        ) {
+                            let last_part_end_unit_index =
+                                expression_value.length;
+                            for (
+                                let search_value_idx = last_part_end_unit_index, search_value_end = search_value.length;
+                                search_value_idx < search_value_end - (expression_value.length - 1);
+                            ) {
+                                if (
+                                    search_value.slice(
+                                        search_value_idx,
+                                        search_value_idx + expression_value.length,
+                                    ) === expression_value
+                                ) {
+                                    search_value_idx += expression_value.length;
+                                    last_part_end_unit_index = search_value_idx;
+                                } else {
+                                    break;
+                                }
+                            }
+                            new_result.Try_Add_Match(
+                                new Result.Match(
+                                    {
+                                        first_part_index: old_match.First_Part_Index(),
+                                        end_part_index: search_idx + command_count + 1,
+                                        first_part_first_unit_index: old_match.First_Part_First_Unit_Index(),
+                                        last_part_end_unit_index: last_part_end_unit_index,
+                                    },
+                                ),
+                            );
+                        }
                     }
                 }
             }
@@ -750,7 +791,7 @@ export class Instance
         }
     }
 
-    private Complex_Sequence_Any(
+    private Complex_Text_Any(
         text: Node.Text,
         mode: Mode,
         result: Result.Instance,
@@ -884,7 +925,7 @@ export class Instance
         }
     }
 
-    private Complex_Sequence_Start(
+    private Complex_Text_Start(
         text: Node.Text,
         mode: Mode,
         result: Result.Instance,
@@ -1013,7 +1054,7 @@ export class Instance
         }
     }
 
-    private Complex_Sequence_Middle(
+    private Complex_Text_Middle(
         text: Node.Text,
         mode: Mode,
         result: Result.Instance,
@@ -1034,96 +1075,28 @@ export class Instance
         ) {
             const old_match: Result.Match = result.Match(match_idx);
             let search_idx: Index = old_match.End_Part_Index();
-            const search_end: Index = search_line.Macro_Part_Count();
-            let command_count: Count = 0;
-            if (!(mode & Mode.META)) {
-                while (
-                    search_idx + command_count < search_end &&
-                    search_line.Macro_Part(search_idx + command_count).Is_Command()
-                ) {
-                    command_count += 1;
-                }
-            }
-            if (search_idx + command_count < search_end) {
-                const search_part: Text.Part.Instance =
-                    search_line.Macro_Part(search_idx + command_count);
-                const search_value: Text.Value = mode & Mode.CASE ?
-                    search_part.Value() :
-                    search_part.Value().toLowerCase();
-                if (mode & Mode.NOT) {
-                    if (search_value !== expression_value) {
-                        new_result.Try_Add_Match(
-                            new Result.Match(
-                                {
-                                    first_part_index: old_match.First_Part_Index(),
-                                    end_part_index: search_idx + command_count + 1,
-                                    first_part_first_unit_index: old_match.First_Part_First_Unit_Index(),
-                                    last_part_end_unit_index: search_value.length,
-                                },
-                            ),
-                        );
-                    }
-                } else {
-                    if (search_value === expression_value) {
-                        new_result.Try_Add_Match(
-                            new Result.Match(
-                                {
-                                    first_part_index: old_match.First_Part_Index(),
-                                    end_part_index: search_idx + command_count + 1,
-                                    first_part_first_unit_index: old_match.First_Part_First_Unit_Index(),
-                                    last_part_end_unit_index: search_value.length,
-                                },
-                            ),
-                        );
+            const old_search_part: Text.Part.Instance =
+                search_line.Macro_Part(search_idx - 1);
+            const old_search_value: Text.Value = mode & Mode.CASE ?
+                old_search_part.Value() :
+                old_search_part.Value().toLowerCase();
+            if (old_match.Last_Part_End_Unit_Index() === old_search_value.length) {
+                const search_end: Index = search_line.Macro_Part_Count();
+                let command_count: Count = 0;
+                if (!(mode & Mode.META)) {
+                    while (
+                        search_idx + command_count < search_end &&
+                        search_line.Macro_Part(search_idx + command_count).Is_Command()
+                    ) {
+                        command_count += 1;
                     }
                 }
-            }
-        }
-        if (new_result.Match_Count() > 0) {
-            return new_result;
-        } else {
-            return null;
-        }
-    }
-
-    private Complex_Sequence_End(
-        text: Node.Text,
-        mode: Mode,
-        result: Result.Instance,
-    ):
-        Result.Instance | null
-    {
-        const search_line: Text.Line.Instance = result.Line();
-        const expression_part: Text.Part.Instance = text.Part();
-        const expression_value: Text.Value = mode & Mode.CASE ?
-            expression_part.Value() :
-            expression_part.Value().toLowerCase();
-
-        const new_result: Result.Instance = new Result.Instance(result.Line());
-        for (
-            let match_idx = 0, match_end = result.Match_Count();
-            match_idx < match_end;
-            match_idx += 1
-        ) {
-            const old_match: Result.Match = result.Match(match_idx);
-            let search_idx: Index = old_match.End_Part_Index();
-            const search_end: Index = search_line.Macro_Part_Count();
-            let command_count: Count = 0;
-            if (!(mode & Mode.META)) {
-                while (
-                    search_idx + command_count < search_end &&
-                    search_line.Macro_Part(search_idx + command_count).Is_Command()
-                ) {
-                    command_count += 1;
-                }
-            }
-            if (search_idx + command_count < search_end) {
-                const search_part: Text.Part.Instance =
-                    search_line.Macro_Part(search_idx + command_count);
-                const search_value: Text.Value = mode & Mode.CASE ?
-                    search_part.Value() :
-                    search_part.Value().toLowerCase();
-                if (mode & Mode.ALIGN) {
+                if (search_idx + command_count < search_end) {
+                    const search_part: Text.Part.Instance =
+                        search_line.Macro_Part(search_idx + command_count);
+                    const search_value: Text.Value = mode & Mode.CASE ?
+                        search_part.Value() :
+                        search_part.Value().toLowerCase();
                     if (mode & Mode.NOT) {
                         if (search_value !== expression_value) {
                             new_result.Try_Add_Match(
@@ -1151,63 +1124,399 @@ export class Instance
                             );
                         }
                     }
-                } else {
-                    if (mode & Mode.NOT) {
-                        if (
-                            search_value.length < expression_value.length ||
-                            search_value.slice(
-                                0,
-                                expression_value.length,
-                            ) !== expression_value
-                        ) {
-                            new_result.Try_Add_Match(
-                                new Result.Match(
-                                    {
-                                        first_part_index: old_match.First_Part_Index(),
-                                        end_part_index: search_idx + command_count + 1,
-                                        first_part_first_unit_index: old_match.First_Part_First_Unit_Index(),
-                                        last_part_end_unit_index: search_value.length,
-                                    },
-                                ),
-                            );
+                }
+            }
+        }
+        if (new_result.Match_Count() > 0) {
+            return new_result;
+        } else {
+            return null;
+        }
+    }
+
+    private Complex_Text_End(
+        text: Node.Text,
+        mode: Mode,
+        result: Result.Instance,
+    ):
+        Result.Instance | null
+    {
+        const search_line: Text.Line.Instance = result.Line();
+        const expression_part: Text.Part.Instance = text.Part();
+        const expression_value: Text.Value = mode & Mode.CASE ?
+            expression_part.Value() :
+            expression_part.Value().toLowerCase();
+
+        const new_result: Result.Instance = new Result.Instance(result.Line());
+        for (
+            let match_idx = 0, match_end = result.Match_Count();
+            match_idx < match_end;
+            match_idx += 1
+        ) {
+            const old_match: Result.Match = result.Match(match_idx);
+            let search_idx: Index = old_match.End_Part_Index();
+            const old_search_part: Text.Part.Instance =
+                search_line.Macro_Part(search_idx - 1);
+            const old_search_value: Text.Value = mode & Mode.CASE ?
+                old_search_part.Value() :
+                old_search_part.Value().toLowerCase();
+            if (old_match.Last_Part_End_Unit_Index() === old_search_value.length) {
+                const search_end: Index = search_line.Macro_Part_Count();
+                let command_count: Count = 0;
+                if (!(mode & Mode.META)) {
+                    while (
+                        search_idx + command_count < search_end &&
+                        search_line.Macro_Part(search_idx + command_count).Is_Command()
+                    ) {
+                        command_count += 1;
+                    }
+                }
+                if (search_idx + command_count < search_end) {
+                    const search_part: Text.Part.Instance =
+                        search_line.Macro_Part(search_idx + command_count);
+                    const search_value: Text.Value = mode & Mode.CASE ?
+                        search_part.Value() :
+                        search_part.Value().toLowerCase();
+                    if (mode & Mode.ALIGN) {
+                        if (mode & Mode.NOT) {
+                            if (search_value !== expression_value) {
+                                new_result.Try_Add_Match(
+                                    new Result.Match(
+                                        {
+                                            first_part_index: old_match.First_Part_Index(),
+                                            end_part_index: search_idx + command_count + 1,
+                                            first_part_first_unit_index: old_match.First_Part_First_Unit_Index(),
+                                            last_part_end_unit_index: search_value.length,
+                                        },
+                                    ),
+                                );
+                            }
+                        } else {
+                            if (search_value === expression_value) {
+                                new_result.Try_Add_Match(
+                                    new Result.Match(
+                                        {
+                                            first_part_index: old_match.First_Part_Index(),
+                                            end_part_index: search_idx + command_count + 1,
+                                            first_part_first_unit_index: old_match.First_Part_First_Unit_Index(),
+                                            last_part_end_unit_index: search_value.length,
+                                        },
+                                    ),
+                                );
+                            }
                         }
                     } else {
-                        if (
-                            search_value.length >= expression_value.length &&
-                            search_value.slice(
-                                0,
-                                expression_value.length,
-                            ) === expression_value
-                        ) {
-                            let last_part_end_unit_index =
-                                expression_value.length;
-                            for (
-                                let search_value_idx = last_part_end_unit_index, search_value_end = search_value.length;
-                                search_value_idx < search_value_end - (expression_value.length - 1);
+                        if (mode & Mode.NOT) {
+                            if (
+                                search_value.length < expression_value.length ||
+                                search_value.slice(
+                                    0,
+                                    expression_value.length,
+                                ) !== expression_value
                             ) {
-                                if (
-                                    search_value.slice(
-                                        search_value_idx,
-                                        search_value_idx + expression_value.length,
-                                    ) === expression_value
-                                ) {
-                                    search_value_idx += expression_value.length;
-                                    last_part_end_unit_index = search_value_idx;
-                                } else {
-                                    break;
-                                }
+                                new_result.Try_Add_Match(
+                                    new Result.Match(
+                                        {
+                                            first_part_index: old_match.First_Part_Index(),
+                                            end_part_index: search_idx + command_count + 1,
+                                            first_part_first_unit_index: old_match.First_Part_First_Unit_Index(),
+                                            last_part_end_unit_index: search_value.length,
+                                        },
+                                    ),
+                                );
                             }
-                            new_result.Try_Add_Match(
-                                new Result.Match(
-                                    {
-                                        first_part_index: old_match.First_Part_Index(),
-                                        end_part_index: search_idx + command_count + 1,
-                                        first_part_first_unit_index: old_match.First_Part_First_Unit_Index(),
-                                        last_part_end_unit_index: last_part_end_unit_index,
-                                    },
-                                ),
-                            );
+                        } else {
+                            if (
+                                search_value.length >= expression_value.length &&
+                                search_value.slice(
+                                    0,
+                                    expression_value.length,
+                                ) === expression_value
+                            ) {
+                                let last_part_end_unit_index =
+                                    expression_value.length;
+                                for (
+                                    let search_value_idx = last_part_end_unit_index, search_value_end = search_value.length;
+                                    search_value_idx < search_value_end - (expression_value.length - 1);
+                                ) {
+                                    if (
+                                        search_value.slice(
+                                            search_value_idx,
+                                            search_value_idx + expression_value.length,
+                                        ) === expression_value
+                                    ) {
+                                        search_value_idx += expression_value.length;
+                                        last_part_end_unit_index = search_value_idx;
+                                    } else {
+                                        break;
+                                    }
+                                }
+                                new_result.Try_Add_Match(
+                                    new Result.Match(
+                                        {
+                                            first_part_index: old_match.First_Part_Index(),
+                                            end_part_index: search_idx + command_count + 1,
+                                            first_part_first_unit_index: old_match.First_Part_First_Unit_Index(),
+                                            last_part_end_unit_index: last_part_end_unit_index,
+                                        },
+                                    ),
+                                );
+                            }
                         }
+                    }
+                }
+            }
+        }
+        if (new_result.Match_Count() > 0) {
+            return new_result;
+        } else {
+            return null;
+        }
+    }
+
+    private Class_Any_Or_Start(
+        class_: Node.Class,
+        mode: Mode,
+        result: Result.Instance,
+    ):
+        Result.Instance | null
+    {
+        Utils.Assert(
+            result.Match_Count() === 0,
+            `Should not have any matches at any or start.`,
+        );
+
+        const search_line: Text.Line.Instance = result.Line();
+
+        const new_result: Result.Instance = new Result.Instance(result.Line());
+        for (
+            let search_idx = 0, search_end = search_line.Macro_Part_Count();
+            search_idx < search_end;
+            search_idx += 1
+        ) {
+            if (
+                (mode & Mode.META) ||
+                !search_line.Macro_Part(search_idx).Is_Command()
+            ) {
+                const search_part: Text.Part.Instance =
+                    search_line.Macro_Part(search_idx);
+                const search_value: Text.Value = mode & Mode.CASE ?
+                    search_part.Value() :
+                    search_part.Value().toLowerCase();
+                if (class_.Recognizes(search_part)) {
+                    new_result.Try_Add_Match(
+                        new Result.Match(
+                            {
+                                first_part_index: search_idx,
+                                end_part_index: search_idx + 1,
+                                first_part_first_unit_index: 0,
+                                last_part_end_unit_index: search_value.length,
+                            },
+                        ),
+                    );
+                }
+            }
+        }
+        if (mode & Mode.NOT) {
+            if (new_result.Match_Count() > 0) {
+                return null;
+            } else {
+                return new_result;
+            }
+        } else {
+            if (new_result.Match_Count() > 0) {
+                return new_result;
+            } else {
+                return null;
+            }
+        }
+    }
+
+    private Class_Middle_Or_End(
+        class_: Node.Class,
+        mode: Mode,
+        result: Result.Instance,
+    ):
+        Result.Instance | null
+    {
+        const search_line: Text.Line.Instance = result.Line();
+
+        const new_result: Result.Instance = new Result.Instance(result.Line());
+        for (
+            let match_idx = 0, match_end = result.Match_Count();
+            match_idx < match_end;
+            match_idx += 1
+        ) {
+            const old_match: Result.Match = result.Match(match_idx);
+            let search_idx: Index = old_match.End_Part_Index();
+            const search_end: Index = search_line.Macro_Part_Count();
+            let command_count: Count = 0;
+            if (!(mode & Mode.META)) {
+                while (
+                    search_idx + command_count < search_end &&
+                    search_line.Macro_Part(search_idx + command_count).Is_Command()
+                ) {
+                    command_count += 1;
+                }
+            }
+            if (search_idx + command_count < search_end) {
+                const search_part: Text.Part.Instance =
+                    search_line.Macro_Part(search_idx + command_count);
+                const search_value: Text.Value = mode & Mode.CASE ?
+                    search_part.Value() :
+                    search_part.Value().toLowerCase();
+                if (class_.Recognizes(search_part)) {
+                    new_result.Try_Add_Match(
+                        new Result.Match(
+                            {
+                                first_part_index: old_match.First_Part_Index(),
+                                end_part_index: search_idx + command_count + 1,
+                                first_part_first_unit_index: old_match.First_Part_First_Unit_Index(),
+                                last_part_end_unit_index: search_value.length,
+                            },
+                        ),
+                    );
+                }
+            }
+        }
+        if (mode & Mode.NOT) {
+            if (new_result.Match_Count() > 0) {
+                return null;
+            } else {
+                return new_result;
+            }
+        } else {
+            if (new_result.Match_Count() > 0) {
+                return new_result;
+            } else {
+                return null;
+            }
+        }
+    }
+
+    private Complex_Class_Any_Or_Start(
+        class_: Node.Class,
+        mode: Mode,
+        result: Result.Instance,
+    ):
+        Result.Instance | null
+    {
+        Utils.Assert(
+            result.Match_Count() === 0,
+            `Should not have any matches at any or start.`,
+        );
+
+        const search_line: Text.Line.Instance = result.Line();
+
+        const new_result: Result.Instance = new Result.Instance(result.Line());
+        for (
+            let search_idx = 0, search_end = search_line.Macro_Part_Count();
+            search_idx < search_end;
+            search_idx += 1
+        ) {
+            if (
+                (mode & Mode.META) ||
+                !search_line.Macro_Part(search_idx).Is_Command()
+            ) {
+                const search_part: Text.Part.Instance =
+                    search_line.Macro_Part(search_idx);
+                const search_value: Text.Value = mode & Mode.CASE ?
+                    search_part.Value() :
+                    search_part.Value().toLowerCase();
+                if (mode & Mode.NOT) {
+                    if (!class_.Recognizes(search_part)) {
+                        new_result.Try_Add_Match(
+                            new Result.Match(
+                                {
+                                    first_part_index: search_idx,
+                                    end_part_index: search_idx + 1,
+                                    first_part_first_unit_index: 0,
+                                    last_part_end_unit_index: search_value.length,
+                                },
+                            ),
+                        );
+                    }
+                } else {
+                    if (class_.Recognizes(search_part)) {
+                        new_result.Try_Add_Match(
+                            new Result.Match(
+                                {
+                                    first_part_index: search_idx,
+                                    end_part_index: search_idx + 1,
+                                    first_part_first_unit_index: 0,
+                                    last_part_end_unit_index: search_value.length,
+                                },
+                            ),
+                        );
+                    }
+                }
+            }
+        }
+        if (new_result.Match_Count() > 0) {
+            return new_result;
+        } else {
+            return null;
+        }
+    }
+
+    private Complex_Class_Middle_Or_End(
+        class_: Node.Class,
+        mode: Mode,
+        result: Result.Instance,
+    ):
+        Result.Instance | null
+    {
+        const search_line: Text.Line.Instance = result.Line();
+
+        const new_result: Result.Instance = new Result.Instance(result.Line());
+        for (
+            let match_idx = 0, match_end = result.Match_Count();
+            match_idx < match_end;
+            match_idx += 1
+        ) {
+            const old_match: Result.Match = result.Match(match_idx);
+            let search_idx: Index = old_match.End_Part_Index();
+            const search_end: Index = search_line.Macro_Part_Count();
+            let command_count: Count = 0;
+            if (!(mode & Mode.META)) {
+                while (
+                    search_idx + command_count < search_end &&
+                    search_line.Macro_Part(search_idx + command_count).Is_Command()
+                ) {
+                    command_count += 1;
+                }
+            }
+            if (search_idx + command_count < search_end) {
+                const search_part: Text.Part.Instance =
+                    search_line.Macro_Part(search_idx + command_count);
+                const search_value: Text.Value = mode & Mode.CASE ?
+                    search_part.Value() :
+                    search_part.Value().toLowerCase();
+                if (mode & Mode.NOT) {
+                    if (!class_.Recognizes(search_part)) {
+                        new_result.Try_Add_Match(
+                            new Result.Match(
+                                {
+                                    first_part_index: old_match.First_Part_Index(),
+                                    end_part_index: search_idx + command_count + 1,
+                                    first_part_first_unit_index: old_match.First_Part_First_Unit_Index(),
+                                    last_part_end_unit_index: search_value.length,
+                                },
+                            ),
+                        );
+                    }
+                } else {
+                    if (class_.Recognizes(search_part)) {
+                        new_result.Try_Add_Match(
+                            new Result.Match(
+                                {
+                                    first_part_index: old_match.First_Part_Index(),
+                                    end_part_index: search_idx + command_count + 1,
+                                    first_part_first_unit_index: old_match.First_Part_First_Unit_Index(),
+                                    last_part_end_unit_index: search_value.length,
+                                },
+                            ),
+                        );
                     }
                 }
             }

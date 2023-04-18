@@ -1,0 +1,1 @@
+export var Operand;!function(n){n.PART="."}(Operand||(Operand={}));

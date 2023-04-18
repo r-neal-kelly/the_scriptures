@@ -1,5 +1,7 @@
 export { Instance } from "./search/instance.js";
 export { Operator } from "./search/operator.js";
+export { Operand } from "./search/operand.js";
+export * as Class from "./search/class.js";
 export * as Parser from "./search/parser.js";
 export * as Compiler from "./search/compiler.js";
 export * as Executor from "./search/executor.js";
