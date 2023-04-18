@@ -1,1 +1,0 @@
-export var Boundary;!function(D){D[D.START=0]="START",D[D.MIDDLE=1]="MIDDLE",D[D.END=2]="END",D[D.ANY=3]="ANY"}(Boundary||(Boundary={}));

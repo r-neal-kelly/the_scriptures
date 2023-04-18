@@ -1,7 +1,6 @@
 import * as Utils from "../../utils.js";
 
 import * as Text_Module from "../text.js";
-import { Boundary } from "./boundary.js";
 import * as Token from "./token.js";
 
 export enum Type
@@ -96,24 +95,6 @@ export class Text extends Instance
         Text_Module.Part.Instance
     {
         return this.Token().Part();
-    }
-
-    Boundary():
-        Boundary
-    {
-        return this.Token().Boundary();
-    }
-
-    May_Precede_Implicit_Word_In_Sequence():
-        boolean
-    {
-        return this.Token().May_Precede_Implicit_Word_In_Sequence();
-    }
-
-    May_Precede_Implicit_Break_In_Sequence():
-        boolean
-    {
-        return this.Token().May_Precede_Implicit_Break_In_Sequence();
     }
 }
 

@@ -3,7 +3,7 @@
 // grouped together.
 export enum Operator
 {
-    // Literal
+    // Values
     VERBATIM = `"`,
 
     // Left-to-Right Associative Unary

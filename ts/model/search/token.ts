@@ -1,7 +1,7 @@
 import * as Utils from "../../utils.js";
 
 import * as Text_Module from "../text.js";
-import { Boundary } from "./boundary.js";
+import * as Class_Module from "./class.js";
 
 export enum Type
 {
@@ -26,6 +26,7 @@ export enum Type
     OR,
 
     TEXT,
+    CLASS,
 }
 
 export class Instance
@@ -257,7 +258,6 @@ export class Or extends Operator
 export class Text extends Instance
 {
     private part: Text_Module.Part.Instance;
-    private boundary: Boundary | null;
 
     constructor(
         {
@@ -274,7 +274,6 @@ export class Text extends Instance
         );
 
         this.part = part;
-        this.boundary = null;
     }
 
     Part():
@@ -282,48 +281,26 @@ export class Text extends Instance
     {
         return this.part;
     }
+}
 
-    Boundary():
-        Boundary
+export class Class extends Instance
+{
+    private class_: Class_Module.Instance;
+
+    constructor(
+        {
+            class_,
+        }: {
+            class_: Class_Module.Instance;
+        },
+    )
     {
-        Utils.Assert(
-            this.boundary != null,
-            `boundary was not set on this token.`,
+        super(
+            {
+                type: Type.CLASS,
+            },
         );
 
-        return this.boundary as Boundary;
-    }
-
-    Set_Boundary(
-        boundary: Boundary,
-    ):
-        void
-    {
-        Utils.Assert(
-            this.boundary == null,
-            `boundary has already been set.`,
-        );
-
-        this.boundary = boundary;
-    }
-
-    May_Precede_Implicit_Word_In_Sequence():
-        boolean
-    {
-        return (
-            this.Boundary() != Boundary.ANY &&
-            this.Boundary() != Boundary.END &&
-            this.Part().Is_Break()
-        );
-    }
-
-    May_Precede_Implicit_Break_In_Sequence():
-        boolean
-    {
-        return (
-            this.Boundary() != Boundary.ANY &&
-            this.Boundary() != Boundary.END &&
-            this.Part().Is_Word()
-        );
+        this.class_ = class_;
     }
 }

@@ -5,7 +5,6 @@ import * as Unicode from "../../unicode.js";
 
 import * as Text from "../text.js";
 import { Operator } from "./operator.js";
-import { Boundary } from "./boundary.js";
 import * as Token from "./token.js";
 
 export class Help
@@ -57,7 +56,6 @@ export class Instance
         let group_depth: Count = 0;
         let sequence_depth: Count = 0;
         let sequence_group_depth: Count = 0;
-        let sequence_and_counts: Array<Count> = [];
 
         function Last():
             Token.Instance | null
@@ -82,9 +80,6 @@ export class Instance
                     last_token.Type() === Token.Type.TEXT
                 )
             ) {
-                if (sequence_depth > 0) {
-                    sequence_and_counts[sequence_and_counts.length - 1] += 1;
-                }
                 tokens.push(new Token.And());
             }
         }
@@ -96,7 +91,6 @@ export class Instance
         {
             if (sequence_depth < 1) {
                 sequence_depth += 1;
-                sequence_and_counts.push(0);
                 tokens.push(
                     new Token.Open_Sequence(
                         {
@@ -113,11 +107,9 @@ export class Instance
                         ),
                     );
                     if (idx < end - 1) {
-                        sequence_and_counts[sequence_and_counts.length - 1] += 1;
                         tokens.push(new Token.And());
                     }
                 }
-                Update_Sequence_Texts();
                 sequence_depth -= 1;
                 tokens.push(
                     new Token.Close_Sequence(
@@ -142,7 +134,6 @@ export class Instance
                         ),
                     );
                     if (idx < end - 1) {
-                        sequence_and_counts[sequence_and_counts.length - 1] += 1;
                         tokens.push(new Token.And());
                     }
                 }
@@ -150,93 +141,6 @@ export class Instance
                     group_depth -= 1;
                     sequence_group_depth -= 1;
                     tokens.push(new Token.Close_Group());
-                }
-            }
-        }
-
-        function Update_Sequence_Texts():
-            void
-        {
-            let idx = tokens.length;
-            const end = 0;
-            let group_depth = 0;
-            while (sequence_and_counts.length > 0) {
-                let sequence_and_count: Count = sequence_and_counts.pop() as Count;
-                if (sequence_and_count > 0) {
-                    const do_middle: boolean = sequence_and_count > 1;
-                    for (; idx > end;) {
-                        idx -= 1;
-                        if (tokens[idx].Type() === Token.Type.CLOSE_GROUP) {
-                            group_depth += 1;
-                        } else if (tokens[idx].Type() === Token.Type.OPEN_GROUP) {
-                            group_depth -= 1;
-                        } else if (tokens[idx].Type() === Token.Type.AND) {
-                            sequence_and_count -= 1;
-                            break;
-                        } else if (tokens[idx].Type() === Token.Type.TEXT) {
-                            (tokens[idx] as Token.Text).Set_Boundary(Boundary.END);
-                        }
-                    }
-                    if (do_middle) {
-                        for (; idx > end;) {
-                            idx -= 1;
-                            if (tokens[idx].Type() === Token.Type.CLOSE_GROUP) {
-                                group_depth += 1;
-                            } else if (tokens[idx].Type() === Token.Type.OPEN_GROUP) {
-                                group_depth -= 1;
-                            } else if (tokens[idx].Type() === Token.Type.AND) {
-                                sequence_and_count -= 1;
-                                if (sequence_and_count === 0) {
-                                    break;
-                                }
-                            } else if (tokens[idx].Type() === Token.Type.TEXT) {
-                                (tokens[idx] as Token.Text).Set_Boundary(Boundary.MIDDLE);
-                            }
-                        }
-                    }
-                    for (; idx > end;) {
-                        idx -= 1;
-                        if (tokens[idx].Type() === Token.Type.CLOSE_GROUP) {
-                            group_depth += 1;
-                        } else if (tokens[idx].Type() === Token.Type.OPEN_GROUP) {
-                            group_depth -= 1;
-                        } else if (
-                            tokens[idx].Type() === Token.Type.OPEN_SEQUENCE ||
-                            (
-                                group_depth === 0 &&
-                                (
-                                    tokens[idx].Type() === Token.Type.XOR ||
-                                    tokens[idx].Type() === Token.Type.OR
-                                )
-                            )
-                        ) {
-                            break;
-                        } else if (tokens[idx].Type() === Token.Type.TEXT) {
-                            (tokens[idx] as Token.Text).Set_Boundary(Boundary.START);
-                        }
-                    }
-                } else {
-                    for (; idx > end;) {
-                        idx -= 1;
-                        if (tokens[idx].Type() === Token.Type.CLOSE_GROUP) {
-                            group_depth += 1;
-                        } else if (tokens[idx].Type() === Token.Type.OPEN_GROUP) {
-                            group_depth -= 1;
-                        } else if (
-                            tokens[idx].Type() === Token.Type.OPEN_SEQUENCE ||
-                            (
-                                group_depth === 0 &&
-                                (
-                                    tokens[idx].Type() === Token.Type.XOR ||
-                                    tokens[idx].Type() === Token.Type.OR
-                                )
-                            )
-                        ) {
-                            break;
-                        } else if (tokens[idx].Type() === Token.Type.TEXT) {
-                            (tokens[idx] as Token.Text).Set_Boundary(Boundary.ANY);
-                        }
-                    }
                 }
             }
         }
@@ -615,7 +519,6 @@ export class Instance
                         Try_Add_And();
                         last_expression_index = it.Index();
                         sequence_depth += 1;
-                        sequence_and_counts.push(0);
                         tokens.push(
                             new Token.Open_Sequence(
                                 {
@@ -688,7 +591,6 @@ export class Instance
                             it.Index(),
                         );
                     } else {
-                        Update_Sequence_Texts();
                         last_expression_index = it.Index();
                         sequence_depth -= 1;
                         tokens.push(
@@ -774,9 +676,6 @@ export class Instance
                         );
                     } else {
                         last_expression_index = it.Index();
-                        if (sequence_depth > 0) {
-                            sequence_and_counts[sequence_and_counts.length - 1] += 1;
-                        }
                         tokens.push(new Token.And());
                     }
 
@@ -834,12 +733,6 @@ export class Instance
                         );
                     } else {
                         last_expression_index = it.Index();
-                        if (
-                            sequence_depth > 0 &&
-                            sequence_group_depth === 0
-                        ) {
-                            sequence_and_counts.push(0);
-                        }
                         tokens.push(new Token.Xor());
                     }
 
@@ -897,12 +790,6 @@ export class Instance
                         );
                     } else {
                         last_expression_index = it.Index();
-                        if (
-                            sequence_depth > 0 &&
-                            sequence_group_depth === 0
-                        ) {
-                            sequence_and_counts.push(0);
-                        }
                         tokens.push(new Token.Or());
                     }
 
