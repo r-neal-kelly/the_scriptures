@@ -1,60 +1,56 @@
-import { Count } from "../../../../types.js";
-import { Index } from "../../../../types.js";
-import { Name } from "../../../../types.js";
+import { Count } from "../../../../../types.js";
+import { Index } from "../../../../../types.js";
+import { Name } from "../../../../../types.js";
 
-import * as Utils from "../../../../utils.js";
+import * as Utils from "../../../../../utils.js";
 
-import * as Entity from "../../../entity.js";
-import * as Data from "../../../data.js";
-import * as Selector from "../instance.js";
+import * as Entity from "../../../../entity.js";
+import * as Filter from "../instance.js";
 import { Type } from "./type.js";
 import * as Item from "./item.js";
 
 export class Instance extends Entity.Instance
 {
-    private selector: Selector.Instance;
+    private filter: Filter.Instance;
     private index: Index;
     private type: Type;
-    private title: string;
+    private name: string;
     private items: Array<Item.Instance>;
     private selected_item: Item.Instance | null;
 
     constructor(
         {
-            selector,
+            filter,
             index,
             type,
             item_names,
-            item_files,
         }: {
-            selector: Selector.Instance,
+            filter: Filter.Instance,
             index: Index,
             type: Type,
             item_names: Array<Name>,
-            item_files: Array<Data.File.Instance> | null,
         },
     )
     {
         super();
 
-        this.selector = selector;
+        this.filter = filter;
         this.index = index;
         this.type = type;
         if (type === Type.BOOKS) {
-            this.title = `Books`;
+            this.name = `Books`;
         } else if (type === Type.LANGUAGES) {
-            this.title = `Languages`;
+            this.name = `Languages`;
         } else if (type === Type.VERSIONS) {
-            this.title = `Versions`;
+            this.name = `Versions`;
         } else if (type === Type.FILES) {
-            this.title = `Files`;
+            this.name = `Files`;
         } else {
             Utils.Assert(
                 false,
                 `Invalid type.`,
             );
-
-            this.title = ``;
+            this.name = ``;
         }
         this.items = [];
         this.selected_item = null;
@@ -66,9 +62,6 @@ export class Instance extends Entity.Instance
                         slot: this,
                         index: idx,
                         name: item_names[idx],
-                        file: item_files != null ?
-                            item_files[idx] :
-                            null,
                     },
                 ),
             );
@@ -79,10 +72,10 @@ export class Instance extends Entity.Instance
         );
     }
 
-    Selector():
-        Selector.Instance
+    Filter():
+        Filter.Instance
     {
-        return this.selector;
+        return this.filter;
     }
 
     Index():
@@ -97,10 +90,10 @@ export class Instance extends Entity.Instance
         return this.type;
     }
 
-    Title():
+    Name():
         string
     {
-        return this.title;
+        return this.name;
     }
 
     Has_Item(
@@ -202,8 +195,6 @@ export class Instance extends Entity.Instance
         );
 
         this.selected_item = item;
-
-        item.__Select__();
     }
 
     Select_Item(
@@ -211,7 +202,7 @@ export class Instance extends Entity.Instance
     ):
         void
     {
-        this.Selector().__Select_Item__(
+        this.Filter().__Select_Item__(
             {
                 slot: this,
                 slot_item: item,

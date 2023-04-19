@@ -10,8 +10,7 @@ import * as Version from "./instance.js";
 
 export enum Symbol
 {
-    NAME = `Dictionary.comp`,
-    TITLE = `Dictionary`,
+    NAME = `Dictionary`,
     EXTENSION = `comp`,
 }
 
@@ -32,7 +31,7 @@ export class Instance extends Async.Instance
         super();
 
         this.version = version;
-        this.path = `${version.Path()}/${Symbol.NAME}`;
+        this.path = `${version.Path()}/${Symbol.NAME}.${Symbol.EXTENSION}`;
         this.text_dictionary = null;
 
         this.Add_Dependencies(
@@ -58,12 +57,6 @@ export class Instance extends Async.Instance
         Path
     {
         return this.path;
-    }
-
-    Title():
-        Name
-    {
-        return Symbol.TITLE;
     }
 
     Extension():

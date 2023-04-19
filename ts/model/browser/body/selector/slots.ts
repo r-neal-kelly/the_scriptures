@@ -378,7 +378,7 @@ export class Instance extends Entity.Instance
             for (let idx = 0, end = count; idx < end;) {
                 const slot: Slot.Instance = this.At(idx);
                 if (slot.Items().Has_Selected()) {
-                    result += slot.Items().Selected().Title();
+                    result += slot.Items().Selected().Name();
                 } else {
                     result += slot.Title().Value();
                 }
@@ -403,7 +403,7 @@ export class Instance extends Entity.Instance
         if (count > 0) {
             const slot: Slot.Instance = this.At(0);
             if (slot.Items().Has_Selected()) {
-                return slot.Items().Selected().Title();
+                return slot.Items().Selected().Name();
             } else {
                 return slot.Title().Value();
             }

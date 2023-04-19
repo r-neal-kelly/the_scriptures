@@ -167,14 +167,14 @@ async function Main():
             `Genesis`,
             `English`,
             `KJV 1872-1888+`,
-            `Chapter 01.comp`,
+            `Chapter 01`,
         ],
         [
             Browser_Model.Body.Selector.Slot.Order.VERSIONS_LANGUAGES_BOOKS,
             `Jubilees`,
             `English`,
             `R. H. Charles 1913`,
-            `Chapter 01.comp`,
+            `Chapter 01`,
         ],
     ];
     for (const [order, book_name, language_name, version_name, file_name] of data) {
@@ -204,7 +204,7 @@ async function Main():
         new Model.Window.Program.Instance(
             {
                 model_class: Finder_Model.Instance,
-                model_data: {},
+                model_data: undefined,
                 view_class: Finder_View.Instance,
             },
         ),
@@ -228,7 +228,7 @@ import * as Search from "../model/search.js"
             .Book(`Genesis`)
             .Language(`English`)
             .Version(`KJV 1872-1888+`)
-            .File(`Chapter 01.comp`).Text();
+            .File(`Chapter 01`).Text();
 
         (window as any).search =
             function (

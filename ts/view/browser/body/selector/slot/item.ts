@@ -58,7 +58,7 @@ export class Instance extends Entity.Instance
     override On_Refresh():
         void
     {
-        this.Element().textContent = this.Model().Title();
+        this.Element().textContent = this.Model().Name();
     }
 
     override On_Reclass():

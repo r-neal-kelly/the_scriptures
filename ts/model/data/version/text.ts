@@ -12,8 +12,7 @@ import * as Version from "./instance.js";
 
 export enum Symbol
 {
-    NAME = `Text.comp`,
-    TITLE = `Text`,
+    NAME = `Text`,
     EXTENSION = `comp`,
 }
 
@@ -34,7 +33,7 @@ export class Instance extends Async.Instance
         super();
 
         this.version = version;
-        this.path = `${version.Path()}/${Symbol.NAME}`;
+        this.path = `${version.Path()}/${Symbol.NAME}.${Symbol.EXTENSION}`;
         this.file_texts = [];
 
         this.Add_Dependencies(
@@ -60,12 +59,6 @@ export class Instance extends Async.Instance
         Path
     {
         return this.path;
-    }
-
-    Title():
-        Name
-    {
-        return Symbol.TITLE;
     }
 
     Extension():

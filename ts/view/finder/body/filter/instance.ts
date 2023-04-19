@@ -47,7 +47,7 @@ export class Instance extends Entity.Instance
         const classes: Array<string> = [];
 
         classes.push(`Filter`);
-        if (model.Is_Filter_Invisible()) {
+        if (!model.Commander().Filter_Visibility().Is_Toggled()) {
             classes.push(`Invisible`);
         }
 

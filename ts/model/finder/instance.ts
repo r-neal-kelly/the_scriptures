@@ -4,48 +4,38 @@ import * as Entity from "../entity.js";
 import * as Data from "../data.js";
 import * as Search from "../search.js";
 import * as Commander from "./commander.js";
+import * as Body from "./body.js";
 
 export class Instance extends Entity.Instance
 {
-    private filter: Data.Selector.Instance;
     private search: Search.Instance;
     private search_expression: string | null;
     private search_help: Search.Parser.Help | null;
     private search_results: Array<Search.Result.Instance> | null;
 
     private commander: Commander.Instance;
+    private body: Body.Instance;
 
-    constructor(
-        // I would like to be able to pass in a version so
-        // we can open a finder for a browser with a version open.
-        {
-        }: {},
-    )
+    constructor()
     {
         super();
 
-        this.filter = new Data.Selector.Instance({});
         this.search = new Search.Instance();
         this.search_expression = null;
         this.search_help = null;
         this.search_results = null;
 
         this.commander = new Commander.Instance();
+        this.body = new Body.Instance();
 
         this.Add_Dependencies(
             [
                 Data.Singleton(),
-                this.filter,
                 this.search,
                 this.commander,
+                this.body,
             ],
         );
-    }
-
-    Filter():
-        Data.Selector.Instance
-    {
-        return this.filter;
     }
 
     Search():
@@ -82,22 +72,10 @@ export class Instance extends Entity.Instance
         return this.commander;
     }
 
-    Is_Filter_Visible():
-        boolean
+    Body():
+        Body.Instance
     {
-        return this.Commander().Filter_Visibility().Is_Toggled();
-    }
-
-    Is_Filter_Invisible():
-        boolean
-    {
-        return !this.Is_Filter_Visible();
-    }
-
-    Toggle_Filter_Visibility():
-        void
-    {
-        this.Commander().Filter_Visibility().Toggle();
+        return this.body;
     }
 
     Title():

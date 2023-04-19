@@ -20,8 +20,6 @@ export class Instance extends Entity.Instance
     private name: Name;
     private index: Index;
     private path: Path;
-    private title: Name;
-    private extension: Name;
     private text: Text.Instance | null;
 
     constructor(
@@ -37,11 +35,9 @@ export class Instance extends Entity.Instance
         super();
 
         this.version = version;
-        this.name = leaf.name;
+        this.name = leaf.name.replace(/\.[^.]*$/, ``);
         this.index = leaf.index;
         this.path = `${version.Path()}/${leaf.name}`;
-        this.title = leaf.name.replace(/\.[^.]*$/, ``);
-        this.extension = leaf.name.replace(/^[^.]*\./, ``);
         this.text = null;
 
         this.Add_Dependencies(
@@ -72,18 +68,6 @@ export class Instance extends Entity.Instance
         Path
     {
         return this.path;
-    }
-
-    Title():
-        Name
-    {
-        return this.title;
-    }
-
-    Extension():
-        Name
-    {
-        return this.extension;
     }
 
     async Text():

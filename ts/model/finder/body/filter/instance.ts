@@ -1,13 +1,11 @@
-import { Count } from "../../../types.js";
-import { Index } from "../../../types.js";
-import { Name } from "../../../types.js";
+import { Count } from "../../../../types.js";
+import { Index } from "../../../../types.js";
+import { Name } from "../../../../types.js";
 
-import * as Utils from "../../../utils.js";
+import * as Utils from "../../../../utils.js";
 
-import * as Data from "../../data.js";
-
-import * as Entity from "../../entity.js";
-import * as Selection from "../../data/selection.js";
+import * as Entity from "../../../entity.js";
+import * as Data from "../../../data.js";
 import * as Slot from "./slot.js";
 
 export class Instance extends Entity.Instance
@@ -44,9 +42,8 @@ export class Instance extends Entity.Instance
     }
 
     private slot_order: Slot.Order;
-    private first_selection: Selection.Name | Selection.Index | null;
+    private first_selection: Data.Selection.Name | Data.Selection.Index | null;
     private slots: Array<Slot.Instance>;
-    private selected_data_file: Data.File.Instance | null;
 
     constructor(
         {
@@ -54,7 +51,7 @@ export class Instance extends Entity.Instance
             selection = null,
         }: {
             slot_order?: Slot.Order,
-            selection?: Selection.Name | Selection.Index | null,
+            selection?: Data.Selection.Name | Data.Selection.Index | null,
         },
     )
     {
@@ -63,7 +60,6 @@ export class Instance extends Entity.Instance
         this.slot_order = slot_order;
         this.first_selection = selection;
         this.slots = [];
-        this.selected_data_file = null;
 
         this.Add_Dependencies(
             [
@@ -258,27 +254,13 @@ export class Instance extends Entity.Instance
             ),
         );
 
-        const slot_item_names: Array<Name> =
-            Data.Singleton().Names(slot_query);
-        const slot_item_files: Array<Data.File.Instance> | null =
-            slot_type === Slot.Type.FILES ?
-                Data.Singleton().Files(
-                    {
-                        book_name: this.Books().Selected_Item().Name(),
-                        language_name: this.Languages().Selected_Item().Name(),
-                        version_name: this.Versions().Selected_Item().Name(),
-                    },
-                ) :
-                null;
-
         this.slots.push(
             new Slot.Instance(
                 {
-                    selector: this,
+                    filter: this,
                     index: slot_index,
                     type: slot_type,
-                    item_names: slot_item_names,
-                    item_files: slot_item_files,
+                    item_names: Data.Singleton().Names(slot_query),
                 },
             ),
         );
@@ -288,7 +270,6 @@ export class Instance extends Entity.Instance
         void
     {
         this.slots.pop();
-        this.selected_data_file = null;
     }
 
     Has_Books():
@@ -359,12 +340,6 @@ export class Instance extends Entity.Instance
         return this.Slot_From_Type(Slot.Type.FILES);
     }
 
-    Maybe_Selected_Data_File():
-        Data.File.Instance | null
-    {
-        return this.selected_data_file;
-    }
-
     As_String():
         string | null
     {
@@ -376,9 +351,9 @@ export class Instance extends Entity.Instance
             for (let idx = 0, end = count; idx < end;) {
                 const slot: Slot.Instance = this.Slot_At_Index(idx);
                 if (slot.Has_Selected_Item()) {
-                    result += slot.Selected_Item().Title();
+                    result += slot.Selected_Item().Name();
                 } else {
-                    result += slot.Title();
+                    result += slot.Name();
                 }
 
                 idx += 1;
@@ -401,9 +376,9 @@ export class Instance extends Entity.Instance
         if (count > 0) {
             const slot: Slot.Instance = this.Slot_At_Index(0);
             if (slot.Has_Selected_Item()) {
-                return slot.Selected_Item().Title();
+                return slot.Selected_Item().Name();
             } else {
-                return slot.Title();
+                return slot.Name();
             }
         } else {
             return null;
@@ -432,70 +407,19 @@ export class Instance extends Entity.Instance
             },
         );
 
-        if (slot.Type() === Slot.Type.FILES) {
-            this.selected_data_file = Data.Singleton().File(
-                {
-                    book_name: this.Books().Selected_Item().Name(),
-                    language_name: this.Languages().Selected_Item().Name(),
-                    version_name: this.Versions().Selected_Item().Name(),
-                    file_name: this.Files().Selected_Item().Name(),
-                },
-            );
-        } else if (this.Slot_At_Index(this.Slot_Count() - 1) === slot) {
-            this.Push_Slot();
-        } else {
-            const book_name: Name | null = this.Has_Books() && this.Books().Has_Selected_Item() ?
-                this.Books().Selected_Item().Name() :
-                null;
-            const language_name: Name | null = this.Has_Languages() && this.Languages().Has_Selected_Item() ?
-                this.Languages().Selected_Item().Name() :
-                null;
-            const version_name: Name | null = this.Has_Versions() && this.Versions().Has_Selected_Item() ?
-                this.Versions().Selected_Item().Name() :
-                null;
-            const file_name: Name | null = this.Has_Files() && this.Files().Has_Selected_Item() ?
-                this.Files().Selected_Item().Name() :
-                null;
-
-            while (this.Slot_Count() > slot.Index() + 1) {
-                this.Pop_Slot();
-            }
-            this.Push_Slot();
-
-            while (this.Slot_Count() < Instance.Max_Slot_Count()) {
-                const last_slot: Slot.Instance = this.Slot_At_Index(this.Slot_Count() - 1);
-
-                let maybe_item: Slot.Item.Instance | null = null;
-                if (last_slot.Type() === Slot.Type.BOOKS && book_name != null) {
-                    maybe_item = last_slot.Maybe_Item_From_Name(book_name);
-                } else if (last_slot.Type() === Slot.Type.LANGUAGES && language_name != null) {
-                    maybe_item = last_slot.Maybe_Item_From_Name(language_name);
-                } else if (last_slot.Type() === Slot.Type.VERSIONS && version_name != null) {
-                    maybe_item = last_slot.Maybe_Item_From_Name(version_name);
-                }
-
-                if (maybe_item != null) {
-                    maybe_item.Select();
-                } else {
-                    return;
-                }
-            }
-
-            const last_slot: Slot.Instance = this.Slot_At_Index(this.Slot_Count() - 1);
-            if (last_slot.Type() === Slot.Type.FILES && file_name != null) {
-                const maybe_item: Slot.Item.Instance | null =
-                    last_slot.Maybe_Item_From_Name(file_name);
-                if (maybe_item != null) {
-                    maybe_item.Select();
-                } else {
-                    return;
+        if (slot.Type() !== Slot.Type.FILES) {
+            if (this.Slot_At_Index(this.Slot_Count() - 1) === slot) {
+                this.Push_Slot();
+            } else {
+                while (this.Slot_Count() > slot.Index() + 1) {
+                    this.Pop_Slot();
                 }
             }
         }
     }
 
     Select_Item(
-        selection: Selection.Name,
+        selection: Data.Selection.Name,
     ):
         void
     {
@@ -519,7 +443,7 @@ export class Instance extends Entity.Instance
     }
 
     Select_Item_At(
-        selection: Selection.Index,
+        selection: Data.Selection.Index,
     ):
         void
     {
@@ -545,9 +469,9 @@ export class Instance extends Entity.Instance
     override async After_Dependencies_Are_Ready():
         Promise<void>
     {
-        if (this.first_selection instanceof Selection.Name) {
+        if (this.first_selection instanceof Data.Selection.Name) {
             this.Select_Item(this.first_selection);
-        } else if (this.first_selection instanceof Selection.Index) {
+        } else if (this.first_selection instanceof Data.Selection.Index) {
             this.Select_Item_At(this.first_selection);
         } else {
             this.Push_Slot();

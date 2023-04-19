@@ -387,7 +387,7 @@ async function Generate():
                     `Invalid dictionary decompression!`,
                 );
                 await Write_File(
-                    `${files_path}/${Data.Version.Dictionary.Symbol.NAME}`,
+                    `${files_path}/${Data.Version.Dictionary.Symbol.NAME}.${Data.Version.Dictionary.Symbol.EXTENSION}`,
                     compressed_version_dictionary_json,
                 );
                 for (const file_name of file_names) {
@@ -437,7 +437,7 @@ async function Generate():
                     `Invalid decompression!`,
                 );
                 await Write_File(
-                    `${files_path}/${Data.Version.Text.Symbol.NAME}`,
+                    `${files_path}/${Data.Version.Text.Symbol.NAME}.${Data.Version.Text.Symbol.EXTENSION}`,
                     compressed_version_text,
                 );
             }

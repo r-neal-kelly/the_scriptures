@@ -1,0 +1,1 @@
+import*as Entity from"../../entity.js";import*as Filter from"./filter.js";export class Instance extends Entity.Instance{constructor(){super(),this.filter=new Filter.Instance({}),this.Add_Dependencies([this.filter])}Filter(){return this.filter}}

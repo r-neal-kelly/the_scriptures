@@ -58,16 +58,6 @@ export class Instance extends Entity.Instance
         return this.name;
     }
 
-    Title():
-        Name
-    {
-        if (this.file != null) {
-            return this.file.Title();
-        } else {
-            return this.name;
-        }
-    }
-
     Is_Selected():
         boolean
     {
