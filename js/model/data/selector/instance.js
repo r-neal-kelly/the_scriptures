@@ -1,0 +1,1 @@
+import*as Entity from"../../entity.js";import*as Slots from"./slots.js";import*as Slot from"./slot.js";export class Instance extends Entity.Instance{constructor({slot_order:s=Slot.Order.LANGUAGES_VERSIONS_BOOKS,selection:t=null}){super(),this.slots=new Slots.Instance({selector:this,order:s,selection:t}),this.Add_Dependencies([this.slots])}Slots(){return this.slots}}

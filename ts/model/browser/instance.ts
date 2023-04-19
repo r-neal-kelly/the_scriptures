@@ -1,7 +1,7 @@
 import { Name } from "../../types.js";
 
 import * as Entity from "../entity.js";
-import * as Selection from "./selection.js";
+import * as Selection from "../data/selection.js";
 import * as Commander from "./commander.js";
 import * as Body from "./body.js";
 

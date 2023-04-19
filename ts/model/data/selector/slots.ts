@@ -1,13 +1,13 @@
-import { Count } from "../../../../types.js";
-import { Index } from "../../../../types.js";
-import { Name } from "../../../../types.js";
+import { Count } from "../../../types.js";
+import { Index } from "../../../types.js";
+import { Name } from "../../../types.js";
 
-import * as Utils from "../../../../utils.js";
+import * as Utils from "../../../utils.js";
 
-import * as Data from "../../../data.js";
+import * as Data from "../../data.js";
 
-import * as Entity from "../../../entity.js";
-import * as Selection from "../../../data/selection.js";
+import * as Entity from "../../entity.js";
+import * as Selection from "../../data/selection.js";
 import * as Selector from "./instance.js";
 import * as Slot from "./slot.js";
 
@@ -48,6 +48,7 @@ export class Instance extends Entity.Instance
     private order: Slot.Order;
     private first_selection: Selection.Name | Selection.Index | null;
     private slots: Array<Slot.Instance>;
+    private selected_data_file: Data.File.Instance | null;
 
     constructor(
         {
@@ -67,6 +68,7 @@ export class Instance extends Entity.Instance
         this.order = order;
         this.first_selection = selection;
         this.slots = [];
+        this.selected_data_file = null;
 
         this.Add_Dependencies(
             [
@@ -87,10 +89,10 @@ export class Instance extends Entity.Instance
         return this.order;
     }
 
-    async Reorder(
+    Reorder(
         order: Slot.Order,
     ):
-        Promise<void>
+        void
     {
         // we probably should get the previously selected book, language, version, and file
         // and reset them as the currently selected item of each slot.
@@ -214,8 +216,8 @@ export class Instance extends Entity.Instance
         return slot_types;
     }
 
-    private async Push():
-        Promise<void>
+    private Push():
+        void
     {
         const max_slot_count: Count = Instance.Max_Count();
         const slot_count: Count = this.Count();
@@ -367,6 +369,12 @@ export class Instance extends Entity.Instance
         return this.From_Type(Slot.Type.FILES);
     }
 
+    Maybe_Selected_Data_File():
+        Data.File.Instance | null
+    {
+        return this.selected_data_file;
+    }
+
     As_String():
         string | null
     {
@@ -412,14 +420,14 @@ export class Instance extends Entity.Instance
         }
     }
 
-    async Select_Item_Internally(
+    Select_Item_Internally(
         {
             slot,
         }: {
             slot: Slot.Instance,
         },
     ):
-        Promise<void>
+        void
     {
         Utils.Assert(
             this.Has(slot),
@@ -427,7 +435,7 @@ export class Instance extends Entity.Instance
         );
 
         if (slot.Type() === Slot.Type.FILES) {
-            const file: Data.File.Instance = Data.Singleton().File(
+            this.selected_data_file = Data.Singleton().File(
                 {
                     book_name: this.Books().Items().Selected().Name(),
                     language_name: this.Languages().Items().Selected().Name(),
@@ -435,10 +443,8 @@ export class Instance extends Entity.Instance
                     file_name: this.Files().Items().Selected().Name(),
                 },
             );
-            await this.Selector().Body().Browser().Body().Reader().Open_File(file);
         } else if (this.At(this.Count() - 1) === slot) {
-            await this.Push();
-            await this.Selector().Body().Browser().Body().Reader().Open_File(null);
+            this.Push();
         } else {
             const book_name: Name | null = this.Has_Books() && this.Books().Items().Has_Selected() ?
                 this.Books().Items().Selected().Name() :
@@ -456,7 +462,7 @@ export class Instance extends Entity.Instance
             while (this.Count() > slot.Index() + 1) {
                 this.Pop();
             }
-            await this.Push();
+            this.Push();
 
             while (this.Count() < Instance.Max_Count()) {
                 const last_slot: Slot.Instance = this.At(this.Count() - 1);
@@ -471,7 +477,7 @@ export class Instance extends Entity.Instance
                 }
 
                 if (maybe_item != null) {
-                    await maybe_item.Select();
+                    maybe_item.Select();
                 } else {
                     return;
                 }
@@ -482,7 +488,7 @@ export class Instance extends Entity.Instance
                 const maybe_item: Slot.Item.Instance | null =
                     last_slot.Items().Maybe_From(file_name);
                 if (maybe_item != null) {
-                    await maybe_item.Select();
+                    maybe_item.Select();
                 } else {
                     return;
                 }
@@ -490,50 +496,50 @@ export class Instance extends Entity.Instance
         }
     }
 
-    async Select(
+    Select(
         selection: Selection.Name,
     ):
-        Promise<void>
+        void
     {
         const types: Array<Slot.Type> = this.Types();
         for (let idx = 0, end = Instance.Max_Count(); idx < end; idx += 1) {
             if (idx === this.Count()) {
-                await this.Push();
+                this.Push();
             }
 
             const type: Slot.Type = types[idx];
             if (type === Slot.Type.BOOKS) {
-                await this.Books().Items().From(selection.Book()).Select();
+                this.Books().Items().From(selection.Book()).Select();
             } else if (type === Slot.Type.LANGUAGES) {
-                await this.Languages().Items().From(selection.Language()).Select();
+                this.Languages().Items().From(selection.Language()).Select();
             } else if (type === Slot.Type.VERSIONS) {
-                await this.Versions().Items().From(selection.Version()).Select();
+                this.Versions().Items().From(selection.Version()).Select();
             } else if (type === Slot.Type.FILES) {
-                await this.Files().Items().From(selection.File()).Select();
+                this.Files().Items().From(selection.File()).Select();
             }
         }
     }
 
-    async Select_At(
+    Select_At(
         selection: Selection.Index,
     ):
-        Promise<void>
+        void
     {
         const types: Array<Slot.Type> = this.Types();
         for (let idx = 0, end = Instance.Max_Count(); idx < end; idx += 1) {
             if (idx === this.Count()) {
-                await this.Push();
+                this.Push();
             }
 
             const type: Slot.Type = types[idx];
             if (type === Slot.Type.BOOKS) {
-                await this.Books().Items().At(selection.Book()).Select();
+                this.Books().Items().At(selection.Book()).Select();
             } else if (type === Slot.Type.LANGUAGES) {
-                await this.Languages().Items().At(selection.Language()).Select();
+                this.Languages().Items().At(selection.Language()).Select();
             } else if (type === Slot.Type.VERSIONS) {
-                await this.Versions().Items().At(selection.Version()).Select();
+                this.Versions().Items().At(selection.Version()).Select();
             } else if (type === Slot.Type.FILES) {
-                await this.Files().Items().At(selection.File()).Select();
+                this.Files().Items().At(selection.File()).Select();
             }
         }
     }
@@ -542,11 +548,11 @@ export class Instance extends Entity.Instance
         Promise<void>
     {
         if (this.first_selection instanceof Selection.Name) {
-            await this.Select(this.first_selection);
+            this.Select(this.first_selection);
         } else if (this.first_selection instanceof Selection.Index) {
-            await this.Select_At(this.first_selection);
+            this.Select_At(this.first_selection);
         } else {
-            await this.Push();
+            this.Push();
         }
     }
 }

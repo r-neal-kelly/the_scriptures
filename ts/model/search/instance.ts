@@ -1,7 +1,5 @@
 /*  
-    We should add classes so that we can simply say {Break} or {Word}, etc.
-    Would be nice to have + and * operators also.
-    Maybe even look-ahead and look-behind.
+    Add look-ahead and look-behind.
     Also need to add in delimiters.
 */
 
@@ -57,5 +55,14 @@ export class Instance extends Entity.Instance
             expression,
             text,
         );
+    }
+
+    async Data_File(
+        data_file: Data.File.Instance,
+        expression: string,
+    ):
+        Promise<Array<Result.Instance> | Parser.Help>
+    {
+        return this.Text(await data_file.Text(), expression);
     }
 }

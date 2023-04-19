@@ -8,5 +8,7 @@ export * as Book from "./data/book.js";
 export * as Language from "./data/language.js";
 export * as Version from "./data/version.js";
 export * as File from "./data/file.js";
+export * as Selection from "./data/selection.js";
+export * as Selector from "./data/selector.js";
 
 export { Singleton } from "./data/instance.js";

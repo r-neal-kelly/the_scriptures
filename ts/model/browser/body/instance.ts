@@ -1,6 +1,6 @@
 import * as Entity from "../../entity.js";
 import * as Browser from "../instance.js";
-import * as Selection from "../selection.js";
+import * as Selection from "../../data/selection.js";
 import * as Selector from "./selector.js";
 import * as Reader from "./reader.js";
 

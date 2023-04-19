@@ -6,8 +6,11 @@ import * as Entity from "./entity.js";
 import * as Model from "../model/layout.js";
 import * as View from "./layout.js";
 
+import * as Data_Model from "../model/data.js";
 import * as Browser_Model from "../model/browser.js";
 import * as Browser_View from "./browser.js";
+import * as Finder_Model from "../model/finder.js";
+import * as Finder_View from "./finder.js";
 
 class Body extends Entity.Instance
 {
@@ -180,7 +183,7 @@ async function Main():
                 {
                     model_class: Browser_Model.Instance,
                     model_data: {
-                        selection: new Browser_Model.Selection.Name(
+                        selection: new Data_Model.Selection.Name(
                             {
                                 book: book_name,
                                 language: language_name,
@@ -196,6 +199,16 @@ async function Main():
             ),
         );
     }
+
+    model.Add_Program(
+        new Model.Window.Program.Instance(
+            {
+                model_class: Finder_Model.Instance,
+                model_data: {},
+                view_class: Finder_View.Instance,
+            },
+        ),
+    );
 }
 
 Main();
