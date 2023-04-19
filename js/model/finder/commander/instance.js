@@ -1,0 +1,1 @@
+import*as Entity from"../../entity.js";import*as Filter_Visibility from"./filter_visibility.js";export class Instance extends Entity.Instance{constructor(){super(),this.filter_visibility=new Filter_Visibility.Instance,this.Add_Dependencies([this.filter_visibility])}Filter_Visibility(){return this.filter_visibility}}

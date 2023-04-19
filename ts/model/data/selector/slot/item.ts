@@ -4,23 +4,23 @@ import { Name } from "../../../../types.js";
 import * as Data from "../../../data.js";
 
 import * as Entity from "../../../entity.js";
-import * as Items from "./items.js";
+import * as Slot from "./instance.js";
 
 export class Instance extends Entity.Instance
 {
-    private items: Items.Instance;
+    private slot: Slot.Instance;
     private index: Index;
     private name: Name;
     private file: Data.File.Instance | null;
 
     constructor(
         {
-            items,
+            slot,
             index,
             name,
             file,
         }: {
-            items: Items.Instance,
+            slot: Slot.Instance,
             index: Index,
             name: Name,
             file: Data.File.Instance | null,
@@ -29,7 +29,7 @@ export class Instance extends Entity.Instance
     {
         super();
 
-        this.items = items;
+        this.slot = slot;
         this.index = index;
         this.name = name;
         this.file = file;
@@ -40,10 +40,10 @@ export class Instance extends Entity.Instance
         );
     }
 
-    Items():
-        Items.Instance
+    Slot():
+        Slot.Instance
     {
-        return this.items;
+        return this.slot;
     }
 
     Index():
@@ -72,14 +72,19 @@ export class Instance extends Entity.Instance
         boolean
     {
         return (
-            this.Items().Has_Selected() &&
-            this.Items().Selected() === this
+            this.Slot().Has_Selected_Item() &&
+            this.Slot().Selected_Item() === this
         );
+    }
+
+    __Select__():
+        void
+    {
     }
 
     Select():
         void
     {
-        this.Items().Select(this);
+        this.Slot().Select_Item(this);
     }
 }

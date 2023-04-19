@@ -1,11 +1,8 @@
-import * as Utils from "../../utils.js";
-import * as Event from "../../event.js";
+import * as Event from "../../../../../event.js";
 
-import * as Model from "../../model/finder/instance.js";
-import * as Layout from "../../model/layout.js";
+import * as Model from "../../../../../model/finder.js";
 
-import * as Events from "../events.js";
-import * as Entity from "../entity.js";
+import * as Entity from "../../../../entity.js";
 
 export class Instance extends Entity.Instance
 {
@@ -35,9 +32,6 @@ export class Instance extends Entity.Instance
     override On_Life():
         Array<Event.Listener_Info>
     {
-        this.Element().setAttribute(`contentEditable`, `true`);
-        this.Element().setAttribute(`spellcheck`, `false`);
-
         return [];
     }
 
@@ -49,7 +43,7 @@ export class Instance extends Entity.Instance
     override On_Reclass():
         Array<string>
     {
-        return [`Expression`];
+        return [`Tree`];
     }
 
     Model():

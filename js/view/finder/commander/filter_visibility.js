@@ -1,0 +1,1 @@
+import*as Entity from"../../entity.js";export class Instance extends Entity.Instance{constructor({model:t,parent:e}){super({element:"div",parent:e,event_grid:e.Event_Grid()}),this.model=t}On_Life(){return[]}On_Refresh(){const t=this.Model();this.Element().textContent=t.Commander().Filter_Visibility().Symbol()}On_Reclass(){return["Filter_Visibility"]}Model(){return this.model()}}

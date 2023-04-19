@@ -1,0 +1,1 @@
+import*as Entity from"../../../../entity.js";export class Instance extends Entity.Instance{constructor({model:e,parent:t}){super({element:"div",parent:t,event_grid:t.Event_Grid()}),this.model=e}On_Life(){return[]}On_Refresh(){}On_Reclass(){return["Tree"]}Model(){return this.model()}}

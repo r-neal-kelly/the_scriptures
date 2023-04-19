@@ -1,12 +1,13 @@
 import * as Utils from "../../utils.js";
 import * as Event from "../../event.js";
 
-import * as Model from "../../model/finder/instance.js";
+import * as Model from "../../model/finder.js";
 import * as Layout from "../../model/layout.js";
 
 import * as Events from "../events.js";
 import * as Entity from "../entity.js";
-import * as Expression from "./expression.js";
+import * as Commander from "./commander.js";
+import * as Body from "./body.js";
 
 export class Instance extends Entity.Instance
 {
@@ -40,7 +41,7 @@ export class Instance extends Entity.Instance
             `
                 .Finder {
                     display: grid;
-                    grid-template-rows: 1fr 1fr;
+                    grid-template-rows: auto 1fr;
                     grid-template-columns: 1fr;
                     justify-content: start;
 
@@ -57,13 +58,8 @@ export class Instance extends Entity.Instance
 
         this.Add_Children_CSS(
             `
-                .Expression {
-                    width: 100%;
-                    height: 100%;
-                    padding: 2px;
-
-                    overflow-x: hidden;
-                    overflow-y: hidden;
+                .Invisible {
+                    display: none;
                 }
             `,
         );
@@ -74,10 +70,19 @@ export class Instance extends Entity.Instance
     override On_Refresh():
         void
     {
-        if (!this.Has_Expression()) {
+        if (
+            !this.Has_Commander() ||
+            !this.Has_Body()
+        ) {
             this.Abort_All_Children();
 
-            new Expression.Instance(
+            new Commander.Instance(
+                {
+                    model: () => this.Model(),
+                    parent: this,
+                },
+            );
+            new Body.Instance(
                 {
                     model: () => this.Model(),
                     parent: this,
@@ -104,23 +109,43 @@ export class Instance extends Entity.Instance
         return this.Parent();
     }
 
-    Has_Expression():
+    Has_Commander():
         boolean
     {
         return (
             this.Has_Child(0) &&
-            this.Child(0) instanceof Expression.Instance
+            this.Child(0) instanceof Commander.Instance
         );
     }
 
-    Expression():
-        Expression.Instance
+    Commander():
+        Commander.Instance
     {
         Utils.Assert(
-            this.Has_Expression(),
-            `Does not have expression.`,
+            this.Has_Commander(),
+            `Does not have Commander.`,
         );
 
-        return this.Child(0) as Expression.Instance;
+        return this.Child(0) as Commander.Instance;
+    }
+
+    Has_Body():
+        boolean
+    {
+        return (
+            this.Has_Child(1) &&
+            this.Child(1) instanceof Body.Instance
+        );
+    }
+
+    Body():
+        Body.Instance
+    {
+        Utils.Assert(
+            this.Has_Body(),
+            `Does not have Body.`,
+        );
+
+        return this.Child(1) as Body.Instance;
     }
 }

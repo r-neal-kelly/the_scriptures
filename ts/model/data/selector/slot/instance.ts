@@ -1,31 +1,33 @@
+import { Count } from "../../../../types.js";
 import { Index } from "../../../../types.js";
 import { Name } from "../../../../types.js";
 
-import * as Data from "../../../data.js";
+import * as Utils from "../../../../utils.js";
 
 import * as Entity from "../../../entity.js";
-import * as Slots from "../slots.js";
+import * as Data from "../../../data.js";
+import * as Selector from "../instance.js";
 import { Type } from "./type.js";
-import * as Title from "./title.js";
-import * as Items from "./items.js";
+import * as Item from "./item.js";
 
 export class Instance extends Entity.Instance
 {
-    private slots: Slots.Instance;
+    private selector: Selector.Instance;
     private index: Index;
     private type: Type;
-    private title: Title.Instance;
-    private items: Items.Instance;
+    private title: string;
+    private items: Array<Item.Instance>;
+    private selected_item: Item.Instance | null;
 
     constructor(
         {
-            slots,
+            selector,
             index,
             type,
             item_names,
             item_files,
         }: {
-            slots: Slots.Instance,
+            selector: Selector.Instance,
             index: Index,
             type: Type,
             item_names: Array<Name>,
@@ -35,35 +37,52 @@ export class Instance extends Entity.Instance
     {
         super();
 
-        this.slots = slots;
+        this.selector = selector;
         this.index = index;
         this.type = type;
-        this.title = new Title.Instance(
-            {
-                slot: this,
-                type: type,
-            },
-        );
-        this.items = new Items.Instance(
-            {
-                slot: this,
-                item_names: item_names,
-                item_files: item_files,
-            },
-        );
+        if (type === Type.BOOKS) {
+            this.title = `Books`;
+        } else if (type === Type.LANGUAGES) {
+            this.title = `Languages`;
+        } else if (type === Type.VERSIONS) {
+            this.title = `Versions`;
+        } else if (type === Type.FILES) {
+            this.title = `Files`;
+        } else {
+            Utils.Assert(
+                false,
+                `Invalid type.`,
+            );
+
+            this.title = ``;
+        }
+        this.items = [];
+        this.selected_item = null;
+
+        for (let idx = 0, end = item_names.length; idx < end; idx += 1) {
+            this.items.push(
+                new Item.Instance(
+                    {
+                        slot: this,
+                        index: idx,
+                        name: item_names[idx],
+                        file: item_files != null ?
+                            item_files[idx] :
+                            null,
+                    },
+                ),
+            );
+        }
 
         this.Add_Dependencies(
-            [
-                this.title,
-                this.items,
-            ],
+            this.items,
         );
     }
 
-    Slots():
-        Slots.Instance
+    Selector():
+        Selector.Instance
     {
-        return this.slots;
+        return this.selector;
     }
 
     Index():
@@ -79,14 +98,124 @@ export class Instance extends Entity.Instance
     }
 
     Title():
-        Title.Instance
+        string
     {
         return this.title;
     }
 
-    Items():
-        Items.Instance
+    Has_Item(
+        item: Item.Instance,
+    ):
+        boolean
     {
-        return this.items;
+        return this.items.includes(item);
+    }
+
+    Item_Count():
+        Count
+    {
+        return this.items.length;
+    }
+
+    Item_At_Index(
+        item_index: Index,
+    ):
+        Item.Instance
+    {
+        Utils.Assert(
+            item_index > -1,
+            `item_index must be greater than -1.`,
+        );
+        Utils.Assert(
+            item_index < this.Item_Count(),
+            `item_index must be less than item_count.`,
+        );
+
+        return this.items[item_index];
+    }
+
+    Maybe_Item_From_Name(
+        name: Name,
+    ):
+        Item.Instance | null
+    {
+        for (let idx = 0, end = this.Item_Count(); idx < end; idx += 1) {
+            const item: Item.Instance = this.Item_At_Index(idx);
+            if (item.Name() === name) {
+                return item;
+            }
+        }
+
+        return null;
+    }
+
+    Item_From_Name(
+        name: Name,
+    ):
+        Item.Instance
+    {
+        const maybe_item: Item.Instance | null = this.Maybe_Item_From_Name(name);
+
+        Utils.Assert(
+            maybe_item != null,
+            `Does not have an item with the name of ${name}.`,
+        );
+
+        return maybe_item as Item.Instance;
+    }
+
+    Items():
+        Array<Item.Instance>
+    {
+        return Array.from(this.items);
+    }
+
+    Has_Selected_Item():
+        boolean
+    {
+        return this.selected_item != null;
+    }
+
+    Selected_Item():
+        Item.Instance
+    {
+        Utils.Assert(
+            this.Has_Selected_Item(),
+            `Has no selected_item.`,
+        );
+
+        return this.selected_item as Item.Instance;
+    }
+
+    __Select_Item__(
+        {
+            item,
+        }: {
+            item: Item.Instance,
+        },
+    ):
+        void
+    {
+        Utils.Assert(
+            this.Has_Item(item),
+            `The item does not belong to this slot.`,
+        );
+
+        this.selected_item = item;
+
+        item.__Select__();
+    }
+
+    Select_Item(
+        item: Item.Instance,
+    ):
+        void
+    {
+        this.Selector().__Select_Item__(
+            {
+                slot: this,
+                slot_item: item,
+            },
+        );
     }
 }
