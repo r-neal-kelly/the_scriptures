@@ -2,6 +2,7 @@ import * as Event from "../../../../event.js";
 
 import * as Model from "../../../../model/layout/window/bar/title.js";
 
+import * as Events from "../../../events.js";
 import * as Entity from "../../../entity.js";
 import * as Bar from "./instance.js";
 
@@ -40,7 +41,7 @@ export class Instance extends Entity.Instance
                 {
                     event_name: new Event.Name(
                         Event.Prefix.AFTER,
-                        `Selector_Slot_Item_Select`,
+                        Events.SELECTOR_SLOT_ITEM_SELECT, // This should be a window event instead.
                         this.Bar().Window().View().ID(),
                     ),
                     event_handler: this.After_Selector_Slot_Item_Select,

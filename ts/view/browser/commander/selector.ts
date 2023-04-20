@@ -2,6 +2,7 @@ import * as Event from "../../../event.js";
 
 import * as Model from "../../../model/browser/commander/selector.js";
 
+import * as Events from "../../events.js";
 import * as Entity from "../../entity.js";
 import * as Commander from "./instance.js";
 
@@ -45,7 +46,7 @@ export class Instance extends Entity.Instance
                 {
                     event_name: new Event.Name(
                         Event.Prefix.ON,
-                        `Selector_Toggle`,
+                        Events.SELECTOR_TOGGLE,
                         this.ID(),
                     ),
                     event_handler: this.On,
@@ -56,7 +57,7 @@ export class Instance extends Entity.Instance
                 {
                     event_name: new Event.Name(
                         Event.Prefix.AFTER,
-                        `Selector_Toggle`,
+                        Events.SELECTOR_TOGGLE,
                         this.ID(),
                     ),
                     event_handler: this.After,
@@ -86,7 +87,7 @@ export class Instance extends Entity.Instance
         await this.Send(
             new Event.Info(
                 {
-                    affix: `Selector_Toggle`,
+                    affix: Events.SELECTOR_TOGGLE,
                     suffixes: [
                         this.ID(),
                         this.Commander().ID(),

@@ -371,6 +371,16 @@ export class Instance extends Entity.Instance
         );
     }
 
+    Maybe_File():
+        Data.File.Instance | null
+    {
+        if (this.Has_File()) {
+            return this.File();
+        } else {
+            return null;
+        }
+    }
+
     Does_Smart_Item_Selection():
         boolean
     {

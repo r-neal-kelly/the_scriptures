@@ -5,8 +5,8 @@ import * as Model from "../../../../model/browser/body/reader/instance.js";
 
 import * as Events from "../../../events.js";
 import * as Entity from "../../../entity.js";
+import * as Buffer from "../../../buffer.js";
 import * as Body from "../instance.js";
-import * as File from "./file.js";
 
 export class Instance extends Entity.Instance
 {
@@ -43,10 +43,10 @@ export class Instance extends Entity.Instance
                 {
                     event_name: new Event.Name(
                         Event.Prefix.AFTER,
-                        `Selector_Slot_Item_Select`,
+                        Events.SELECTOR_SLOT_ITEM_SELECT,
                         this.Body().Browser().ID(),
                     ),
-                    event_handler: this.After_Selector_Slot_Item_Select,
+                    event_handler: () => this.Element().scrollTo(0, 0),
                     event_priority: 10,
                 },
             ),
@@ -81,10 +81,11 @@ export class Instance extends Entity.Instance
         if (!this.Has_File()) {
             this.Abort_All_Children();
 
-            new File.Instance(
+            new Buffer.Text.Instance(
                 {
+                    parent: this,
                     model: () => this.Model().File(),
-                    reader: this,
+                    event_grid_id: () => this.Body().Browser().ID(),
                 },
             );
         }
@@ -94,12 +95,6 @@ export class Instance extends Entity.Instance
         Array<string>
     {
         return [`Reader`];
-    }
-
-    async After_Selector_Slot_Item_Select():
-        Promise<void>
-    {
-        this.Element().scrollTo(0, 0);
     }
 
     Model():
@@ -119,18 +114,18 @@ export class Instance extends Entity.Instance
     {
         return (
             this.Has_Child(0) &&
-            this.Child(0) instanceof File.Instance
+            this.Child(0) instanceof Buffer.Text.Instance
         );
     }
 
     File():
-        File.Instance
+        Buffer.Text.Instance
     {
         Utils.Assert(
             this.Has_File(),
             `Doesn't have file.`,
         );
 
-        return this.Child(0) as File.Instance;
+        return this.Child(0) as Buffer.Text.Instance;
     }
 }

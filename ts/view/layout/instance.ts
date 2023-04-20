@@ -3,6 +3,7 @@ import * as Event from "../../event.js";
 
 import * as Model from "../../model/layout/instance.js";
 
+import * as Events from "../events.js";
 import * as Entity from "../entity.js";
 import * as Wall from "./wall.js";
 import * as Bar from "./bar.js";
@@ -93,7 +94,7 @@ export class Instance extends Entity.Instance
                 {
                     event_name: new Event.Name(
                         Event.Prefix.AFTER,
-                        `Window_Close`,
+                        Events.WINDOW_CLOSE,
                         this.ID(),
                     ),
                     event_handler: this.After_Window_Close,

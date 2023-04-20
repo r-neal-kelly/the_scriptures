@@ -3,9 +3,10 @@ import * as Event from "../../../event.js";
 
 import * as Model from "../../../model/browser/body.js";
 
+import * as Events from "../../events.js";
 import * as Entity from "../../entity.js";
+import * as Selector from "../../selector.js";
 import * as Browser from "../instance.js";
-import * as Selector from "./selector.js";
 import * as Reader from "./reader.js";
 
 export class Instance extends Entity.Instance
@@ -42,12 +43,34 @@ export class Instance extends Entity.Instance
             new Event.Listener_Info(
                 {
                     event_name: new Event.Name(
-                        Event.Prefix.AFTER,
-                        `Selector_Slot_Item_Select`,
+                        Event.Prefix.ON,
+                        Events.BROWSER_COMMANDER_PREVIOUS,
                         this.Browser().ID(),
                     ),
-                    event_handler: this.After_Selector_Slot_Item_Select,
-                    event_priority: 0,
+                    event_handler: this.On_Browser_Commander_Previous,
+                    event_priority: 10,
+                },
+            ),
+            new Event.Listener_Info(
+                {
+                    event_name: new Event.Name(
+                        Event.Prefix.ON,
+                        Events.BROWSER_COMMANDER_NEXT,
+                        this.Browser().ID(),
+                    ),
+                    event_handler: this.On_Browser_Commander_Next,
+                    event_priority: 10,
+                },
+            ),
+            new Event.Listener_Info(
+                {
+                    event_name: new Event.Name(
+                        Event.Prefix.ON,
+                        Events.SELECTOR_SLOT_ITEM_SELECT,
+                        this.Browser().ID(),
+                    ),
+                    event_handler: this.On_Selector_Slot_Item_Select,
+                    event_priority: 10,
                 },
             ),
         ];
@@ -64,14 +87,16 @@ export class Instance extends Entity.Instance
 
             new Selector.Instance(
                 {
+                    parent: this,
                     model: () => this.Model().Selector(),
-                    body: this,
+                    event_grid_id: () => this.Browser().ID(),
+                    is_visible: () => this.Model().Browser().Commander().Selector().Is_Activated(),
                 },
             );
             new Reader.Instance(
                 {
-                    model: () => this.Model().Reader(),
                     body: this,
+                    model: () => this.Model().Reader(),
                 },
             );
         }
@@ -83,10 +108,22 @@ export class Instance extends Entity.Instance
         return [`Body`];
     }
 
-    async After_Selector_Slot_Item_Select():
+    async On_Browser_Commander_Previous():
         Promise<void>
     {
-        this.Refresh();
+        await this.Model().Reader().Refresh_File();
+    }
+
+    async On_Browser_Commander_Next():
+        Promise<void>
+    {
+        await this.Model().Reader().Refresh_File();
+    }
+
+    async On_Selector_Slot_Item_Select():
+        Promise<void>
+    {
+        await this.Model().Reader().Refresh_File();
     }
 
     Model():

@@ -2,6 +2,7 @@ import * as Event from "../../../../event.js";
 
 import * as Model from "../../../../model/layout/window/bar/minimize.js";
 
+import * as Events from "../../../events.js";
 import * as Entity from "../../../entity.js";
 import * as Commands from "./commands.js";
 
@@ -45,7 +46,7 @@ export class Instance extends Entity.Instance
                 {
                     event_name: new Event.Name(
                         Event.Prefix.ON,
-                        `Window_Toggle_Minimization`,
+                        Events.WINDOW_TOGGLE_MINIMIZATION,
                         this.ID(),
                     ),
                     event_handler: this.On_Window_Toggle_Minimization,
@@ -75,7 +76,7 @@ export class Instance extends Entity.Instance
         await this.Send(
             new Event.Info(
                 {
-                    affix: `Window_Toggle_Minimization`,
+                    affix: Events.WINDOW_TOGGLE_MINIMIZATION,
                     suffixes: [
                         this.ID(),
                         this.Commands().Bar().Window().Wall().Layout().ID(),

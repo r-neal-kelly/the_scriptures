@@ -1,7 +1,7 @@
 import * as Entity from "../../entity.js";
 import * as Browser from "../instance.js";
 import * as Selection from "../../data/selection.js";
-import * as Selector from "./selector.js";
+import * as Selector from "../../selector.js";
 import * as Reader from "./reader.js";
 
 export class Instance extends Entity.Instance
@@ -27,7 +27,6 @@ export class Instance extends Entity.Instance
         this.browser = browser;
         this.selector = new Selector.Instance(
             {
-                body: this,
                 slot_order: selector_slot_order,
                 selection: selection,
             },
@@ -62,5 +61,11 @@ export class Instance extends Entity.Instance
         Reader.Instance
     {
         return this.reader;
+    }
+
+    override async After_Dependencies_Are_Ready():
+        Promise<void>
+    {
+        await this.Reader().Refresh_File();
     }
 }

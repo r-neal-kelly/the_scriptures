@@ -211,6 +211,17 @@ export class Instance extends Entity.Instance
                     event_priority: 0,
                 },
             ),
+            new Event.Listener_Info(
+                {
+                    event_name: new Event.Name(
+                        Event.Prefix.AFTER,
+                        Events.SELECTOR_SLOT_ITEM_SELECT,
+                        this.ID(),
+                    ),
+                    event_handler: this.After_Selector_Slot_Item_Select,
+                    event_priority: 0,
+                },
+            ),
         ];
     }
 
@@ -251,6 +262,12 @@ export class Instance extends Entity.Instance
     }
 
     private async After_Browser_Commander_Next():
+        Promise<void>
+    {
+        this.Refresh();
+    }
+
+    private async After_Selector_Slot_Item_Select():
         Promise<void>
     {
         this.Refresh();

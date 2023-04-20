@@ -2,6 +2,10 @@ import { ID } from "../types.js";
 
 import * as Unique_ID from "../unique_id.js";
 
+export const WINDOW_CLOSE: ID = Unique_ID.New();
+export const WINDOW_TOGGLE_MAXIMIZATION: ID = Unique_ID.New();
+export const WINDOW_TOGGLE_MINIMIZATION: ID = Unique_ID.New();
+
 export const BROWSER_COMMANDER_PREVIOUS: ID = Unique_ID.New();
 export const BROWSER_COMMANDER_NEXT: ID = Unique_ID.New();
 

@@ -1,16 +1,13 @@
+import * as Entity from "../../../entity.js";
 import * as Data from "../../../data.js";
 import * as Text from "../../../text.js";
-
-import * as Entity from "../../../entity.js";
+import * as Buffer from "../../../buffer.js";
 import * as Body from "../instance.js";
-import * as File from "./file.js";
 
 export class Instance extends Entity.Instance
 {
-    private static blank_file: File.Instance = new File.Instance(
+    private static blank_file: Buffer.Text.Instance = new Buffer.Text.Instance(
         {
-            reader: null,
-            data: null,
             text: new Text.Instance(
                 {
                     dictionary: new Text.Dictionary.Instance(
@@ -25,13 +22,14 @@ export class Instance extends Entity.Instance
     );
 
     static Blank_File():
-        File.Instance
+        Buffer.Text.Instance
     {
         return this.blank_file;
     }
 
     private body: Body.Instance;
-    private current_file: File.Instance;
+    private current_data: Data.File.Instance | null;
+    private current_file: Buffer.Text.Instance;
 
     constructor(
         {
@@ -44,6 +42,7 @@ export class Instance extends Entity.Instance
         super();
 
         this.body = body;
+        this.current_data = null;
         this.current_file = Instance.Blank_File();
 
         this.Add_Dependencies(
@@ -59,33 +58,35 @@ export class Instance extends Entity.Instance
         return this.body;
     }
 
+    Maybe_Current_Data():
+        Data.File.Instance | null
+    {
+        return this.current_data;
+    }
+
     File():
-        File.Instance
+        Buffer.Text.Instance
     {
         return this.current_file;
     }
 
-    async Open_File(
-        file: Data.File.Instance | null,
-    ):
+    async Refresh_File():
         Promise<void>
     {
-        if (this.current_file.Maybe_Data() != file) {
-            if (file != null) {
-                this.current_file = new File.Instance(
+        const new_data: Data.File.Instance | null =
+            this.Body().Selector().Maybe_File();
+        if (this.Maybe_Current_Data() != new_data) {
+            this.current_data = new_data;
+            if (new_data != null) {
+                this.current_file = new Buffer.Text.Instance(
                     {
-                        reader: this,
-                        data: file,
-                        text: await file.Text(),
+                        text: await new_data.Text(),
                     },
                 );
-
-                await this.current_file.Ready();
             } else {
                 this.current_file = Instance.Blank_File();
-
-                await this.current_file.Ready();
             }
+            await this.current_file.Ready();
         }
     }
 }

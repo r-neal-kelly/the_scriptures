@@ -101,7 +101,7 @@ export class Instance extends Entity.Instance
     async On_Selector_Slot_Item_Select():
         Promise<void>
     {
-        await this.Model().Select();
+        this.Model().Select();
     }
 
     Model():

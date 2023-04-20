@@ -1,1 +1,0 @@
-import*as Entity from"../../../../entity.js";export class Instance extends Entity.Instance{constructor({model:t,slot:e}){super({element:"div",parent:e,event_grid:e.Event_Grid()}),this.model=t,this.Live()}On_Refresh(){const t=this.Model();this.Element().textContent=t.Value()}On_Reclass(){return["Slot_Title"]}Model(){return this.model()}Slot(){return this.Parent()}}

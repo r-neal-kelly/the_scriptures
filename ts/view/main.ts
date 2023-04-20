@@ -7,6 +7,7 @@ import * as Model from "../model/layout.js";
 import * as View from "./layout.js";
 
 import * as Data_Model from "../model/data.js";
+import * as Selector_Model from "../model/selector.js";
 import * as Browser_Model from "../model/browser.js";
 import * as Browser_View from "./browser.js";
 import * as Finder_Model from "../model/finder.js";
@@ -156,7 +157,7 @@ async function Main():
     // we'll pull each window's model's data from there and pass it along.
     type Data = Array<
         [
-            Browser_Model.Body.Selector.Slot.Order,
+            Selector_Model.Slot.Order,
             string,
             string,
             string,
@@ -165,14 +166,14 @@ async function Main():
     >;
     const data: Data = [
         [
-            Browser_Model.Body.Selector.Slot.Order.BOOKS_LANGUAGES_VERSIONS,
+            Selector_Model.Slot.Order.BOOKS_LANGUAGES_VERSIONS,
             `Genesis`,
             `English`,
             `KJV 1872-1888+`,
             `Chapter 01`,
         ],
         [
-            Browser_Model.Body.Selector.Slot.Order.VERSIONS_LANGUAGES_BOOKS,
+            Selector_Model.Slot.Order.VERSIONS_LANGUAGES_BOOKS,
             `Jubilees`,
             `English`,
             `R. H. Charles 1913`,

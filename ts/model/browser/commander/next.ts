@@ -3,6 +3,7 @@ import { Count } from "../../../types.js";
 import * as Utils from "../../../utils.js";
 
 import * as Entity from "../../entity.js";
+import * as Selector from "../../selector.js";
 import * as Commander from "./instance.js";
 import * as Body from "../body.js";
 
@@ -43,12 +44,12 @@ export class Instance extends Entity.Instance
     Can_Activate():
         boolean
     {
-        const slots: Body.Selector.Slots.Instance =
-            this.Commander().Browser().Body().Selector().Slots();
+        const selector: Selector.Instance =
+            this.Commander().Browser().Body().Selector();
 
         return (
-            slots.Has_Files() &&
-            slots.Files().Items().Count() > 0
+            selector.Has_Files() &&
+            selector.Files().Item_Count() > 0
         );
     }
 
@@ -60,20 +61,20 @@ export class Instance extends Entity.Instance
             `Cannot be activated right now.`,
         );
 
-        const files: Body.Selector.Slot.Items.Instance =
-            this.Commander().Browser().Body().Selector().Slots().Files().Items();
+        const files: Selector.Slot.Instance =
+            this.Commander().Browser().Body().Selector().Files();
 
-        const file_count: Count = files.Count();
-        if (files.Has_Selected()) {
-            const current_file: Body.Selector.Slot.Item.Instance =
-                files.Selected();
+        const file_count: Count = files.Item_Count();
+        if (files.Has_Selected_Item()) {
+            const current_file: Selector.Slot.Item.Instance =
+                files.Selected_Item();
             if (current_file.Index() < file_count - 1) {
-                await files.At(current_file.Index() + 1).Select();
+                await files.Item_At_Index(current_file.Index() + 1).Select();
             } else {
-                await files.At(0).Select();
+                await files.Item_At_Index(0).Select();
             }
         } else {
-            await files.At(0).Select();
+            await files.Item_At_Index(0).Select();
         }
     }
 }

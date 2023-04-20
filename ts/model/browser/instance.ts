@@ -2,6 +2,7 @@ import { Name } from "../../types.js";
 
 import * as Entity from "../entity.js";
 import * as Selection from "../data/selection.js";
+import * as Selector from "../selector.js";
 import * as Commander from "./commander.js";
 import * as Body from "./body.js";
 
@@ -13,11 +14,11 @@ export class Instance extends Entity.Instance
     constructor(
         {
             selection = null,
-            selector_slot_order = Body.Selector.Slot.Order.BOOKS_LANGUAGES_VERSIONS,
+            selector_slot_order = Selector.Slot.Order.BOOKS_LANGUAGES_VERSIONS,
             is_selector_open = false,
         }: {
             selection?: Selection.Name | Selection.Index | null,
-            selector_slot_order?: Body.Selector.Slot.Order,
+            selector_slot_order?: Selector.Slot.Order,
             is_selector_open?: boolean,
         } = {},
     )
@@ -62,7 +63,7 @@ export class Instance extends Entity.Instance
         Name
     {
         const slots_as_string: string | null =
-            this.Body().Selector().Slots().As_String();
+            this.Body().Selector().As_String();
         if (slots_as_string != null) {
             return slots_as_string;
         } else {
@@ -74,7 +75,7 @@ export class Instance extends Entity.Instance
         Name
     {
         const slots_as_short_string: string | null =
-            this.Body().Selector().Slots().As_Short_String();
+            this.Body().Selector().As_Short_String();
         if (slots_as_short_string != null) {
             return slots_as_short_string;
         } else {
