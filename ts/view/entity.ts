@@ -29,7 +29,11 @@ import * as Unique_ID from "../unique_id.js";
 
 export interface Info_API
 {
+    Is_Unborn(): boolean;
+
     Is_Alive(): boolean;
+
+    Is_Dead(): boolean;
 
     ID(): ID;
 
@@ -41,14 +45,14 @@ export interface Info_API
 export interface Life_Cycle_Sender_API
 {
     /*
-        Automatically called after the entity is constructed.
+        Must be manually called after a derived type is finished constructing.
+        If it were called by the super(), it's possible that the derived type
+        may not be prepared for the On_Life listener.
     */
-    // private Live(
-    //    parent: Instance | null,
-    //): Promise<void>;
+    Live(): void;
 
     /*
-        Automatically called through Live.
+        Automatically called through a parent's Live.
         You can call this to refresh an entity and all of its children.
     */
     Refresh(): void;
@@ -291,6 +295,13 @@ export type Animation_Frame_Callback<User_State> = (
     state: User_State,
 ) => boolean | Promise<boolean>;
 
+enum Life_Cycle_State
+{
+    UNBORN,
+    ALIVE,
+    DEAD,
+}
+
 enum Life_Cycle_Listener
 {
     _NONE_ = 0,
@@ -323,7 +334,6 @@ export class Instance implements
     private static class_id: ID =
         `${new Date().getTime()}${Math.random().toString().replace(/\./g, ``)}`;
 
-    private is_alive: boolean;
     private id: ID;
     private element: HTMLElement;
     private event_grid: Event.Grid;
@@ -334,6 +344,7 @@ export class Instance implements
     private parent: Instance | null;
     private children: Map<HTMLElement, Instance>;
 
+    private life_cycle_state: Life_Cycle_State;
     private life_cycle_listener: Life_Cycle_Listener;
     private life_cycle_skip: Life_Cycle_Skip;
 
@@ -349,7 +360,6 @@ export class Instance implements
         },
     )
     {
-        this.is_alive = false;
         this.id = Unique_ID.New();
         this.element = element instanceof HTMLElement ?
             element :
@@ -359,22 +369,19 @@ export class Instance implements
         this.css = null;
         this.css_to_add = null;
 
-        this.parent = null;
+        this.parent = parent;
         this.children = new Map();
 
+        this.life_cycle_state = Life_Cycle_State.UNBORN;
         this.life_cycle_listener = Life_Cycle_Listener._NONE_;
         this.life_cycle_skip = Life_Cycle_Skip._NONE_;
-
-        this.Live(parent);
     }
 
-    private async Live(
-        parent: Instance | null,
-    ):
-        Promise<void>
+    Live():
+        void
     {
-        if (!this.Is_Alive()) {
-            this.is_alive = true;
+        if (this.Is_Unborn()) {
+            this.life_cycle_state = Life_Cycle_State.ALIVE;
 
             this.element.setAttribute(
                 `id`,
@@ -384,22 +391,16 @@ export class Instance implements
             // We only refresh when there is no parent
             // because the parent itself will refresh
             // its children through this event.
-            if (parent != null) {
-                // This needs to happen before On_Life so that
-                // the listener has access to their parent.
+            if (this.parent != null) {
+                const parent: Instance = this.parent;
+                this.parent = null;
                 parent.Adopt_Child(this);
+
                 this.Life_This();
             } else {
                 this.Life_This();
-                // Waiting here allows the derived type to
-                // finish its constructor before On_Refresh().
-                await Utils.Wait_Milliseconds(1);
                 this.Refresh();
             }
-            // Notice that we are not waiting before On_Life().
-            // Testing showed that this had strange results in combination
-            // with the refresh event of the parent. Currently
-            // the deriver can just wait through an async call.
         }
     }
 
@@ -584,7 +585,7 @@ export class Instance implements
 
             this.Event_Grid().Remove(this);
             this.element = document.body;
-            this.is_alive = false;
+            this.life_cycle_state = Life_Cycle_State.DEAD;
         }
     }
 
@@ -643,10 +644,22 @@ export class Instance implements
         return;
     }
 
+    Is_Unborn():
+        boolean
+    {
+        return this.life_cycle_state === Life_Cycle_State.UNBORN;
+    }
+
     Is_Alive():
         boolean
     {
-        return this.is_alive;
+        return this.life_cycle_state === Life_Cycle_State.ALIVE;
+    }
+
+    Is_Dead():
+        boolean
+    {
+        return this.life_cycle_state === Life_Cycle_State.DEAD;
     }
 
     ID():

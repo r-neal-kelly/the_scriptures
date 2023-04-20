@@ -4,7 +4,6 @@ import * as Event from "../../event.js";
 import * as Model from "../../model/finder.js";
 import * as Layout from "../../model/layout.js";
 
-import * as Events from "../events.js";
 import * as Entity from "../entity.js";
 import * as Commander from "./commander.js";
 import * as Body from "./body.js";
@@ -15,11 +14,11 @@ export class Instance extends Entity.Instance
 
     constructor(
         {
-            model,
             root,
+            model,
         }: {
-            model: () => Model.Instance | Layout.Window.Program.Model_Instance,
             root: Entity.Instance,
+            model: () => Model.Instance | Layout.Window.Program.Model_Instance,
         },
     )
     {
@@ -32,6 +31,8 @@ export class Instance extends Entity.Instance
         );
 
         this.model = model as () => Model.Instance;
+
+        this.Live();
     }
 
     override On_Life():
@@ -78,14 +79,14 @@ export class Instance extends Entity.Instance
 
             new Commander.Instance(
                 {
+                    finder: this,
                     model: () => this.Model(),
-                    parent: this,
                 },
             );
             new Body.Instance(
                 {
+                    finder: this,
                     model: () => this.Model(),
-                    parent: this,
                 },
             );
         }

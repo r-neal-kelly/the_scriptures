@@ -5,8 +5,6 @@ import * as Model from "../../../../../model/browser/body/selector/slot/item.js"
 import * as Entity from "../../../../entity.js";
 import * as Items from "./items.js";
 
-import * as Temp from "../../../../../unique_id.js";
-
 export class Instance extends Entity.Instance
 {
     private model: () => Model.Instance;
@@ -30,6 +28,8 @@ export class Instance extends Entity.Instance
         );
 
         this.model = model;
+
+        this.Live();
     }
 
     override On_Life():

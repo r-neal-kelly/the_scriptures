@@ -1,15 +1,19 @@
 import * as Entity from "../../entity.js";
-import * as Filter from "./filter.js";
+import * as Selector from "../../selector.js";
 
 export class Instance extends Entity.Instance
 {
-    private filter: Filter.Instance;
+    private filter: Selector.Instance;
 
     constructor()
     {
         super();
 
-        this.filter = new Filter.Instance({});
+        this.filter = new Selector.Instance(
+            {
+                does_smart_item_selection: false,
+            },
+        );
 
         this.Add_Dependencies(
             [
@@ -19,7 +23,7 @@ export class Instance extends Entity.Instance
     }
 
     Filter():
-        Filter.Instance
+        Selector.Instance
     {
         return this.filter;
     }

@@ -4,6 +4,7 @@ import * as Event from "../../../../event.js";
 import * as Model from "../../../../model/finder.js";
 
 import * as Entity from "../../../entity.js";
+import * as Body from "../instance.js";
 import * as Tree from "./tree.js";
 import * as List from "./list.js";
 
@@ -13,23 +14,25 @@ export class Instance extends Entity.Instance
 
     constructor(
         {
+            body,
             model,
-            parent,
         }: {
+            body: Body.Instance,
             model: () => Model.Instance,
-            parent: Entity.Instance,
         },
     )
     {
         super(
             {
                 element: `div`,
-                parent: parent,
-                event_grid: parent.Event_Grid(),
+                parent: body,
+                event_grid: body.Event_Grid(),
             },
         );
 
         this.model = model;
+
+        this.Live();
     }
 
     override On_Life():
@@ -49,14 +52,14 @@ export class Instance extends Entity.Instance
 
             new Tree.Instance(
                 {
+                    results: this,
                     model: () => this.Model(),
-                    parent: this,
                 },
             );
             new List.Instance(
                 {
+                    results: this,
                     model: () => this.Model(),
-                    parent: this,
                 },
             );
         }
@@ -72,6 +75,12 @@ export class Instance extends Entity.Instance
         Model.Instance
     {
         return this.model();
+    }
+
+    Body():
+        Body.Instance
+    {
+        return this.Parent() as Body.Instance;
     }
 
     Has_Tree():

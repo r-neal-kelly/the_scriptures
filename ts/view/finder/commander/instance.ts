@@ -4,6 +4,7 @@ import * as Event from "../../../event.js";
 import * as Model from "../../../model/finder.js";
 
 import * as Entity from "../../entity.js";
+import * as Finder from "../instance.js";
 import * as Filter_Visibility from "./filter_visibility.js";
 
 export class Instance extends Entity.Instance
@@ -12,23 +13,25 @@ export class Instance extends Entity.Instance
 
     constructor(
         {
+            finder,
             model,
-            parent,
         }: {
+            finder: Finder.Instance,
             model: () => Model.Instance,
-            parent: Entity.Instance,
         },
     )
     {
         super(
             {
                 element: `div`,
-                parent: parent,
-                event_grid: parent.Event_Grid(),
+                parent: finder,
+                event_grid: finder.Event_Grid(),
             },
         );
 
         this.model = model;
+
+        this.Live();
     }
 
     override On_Life():
@@ -71,8 +74,8 @@ export class Instance extends Entity.Instance
 
             new Filter_Visibility.Instance(
                 {
+                    commander: this,
                     model: () => this.Model(),
-                    parent: this,
                 },
             );
         }
@@ -88,6 +91,12 @@ export class Instance extends Entity.Instance
         Model.Instance
     {
         return this.model();
+    }
+
+    Finder():
+        Finder.Instance
+    {
+        return this.Parent() as Finder.Instance;
     }
 
     Has_Filter_Visibility():

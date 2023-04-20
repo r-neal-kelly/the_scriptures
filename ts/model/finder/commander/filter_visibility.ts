@@ -8,7 +8,7 @@ export class Instance extends Entity.Instance
     {
         super();
 
-        this.is_toggled = false;
+        this.is_toggled = true;
 
         this.Add_Dependencies(
             [

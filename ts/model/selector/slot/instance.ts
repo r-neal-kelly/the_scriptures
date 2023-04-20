@@ -1,10 +1,10 @@
-import { Count } from "../../../../../types.js";
-import { Index } from "../../../../../types.js";
-import { Name } from "../../../../../types.js";
+import { Count } from "../../../types.js";
+import { Index } from "../../../types.js";
+import { Name } from "../../../types.js";
 
-import * as Utils from "../../../../../utils.js";
+import * as Utils from "../../../utils.js";
 
-import * as Entity from "../../../../entity.js";
+import * as Entity from "../../entity.js";
 import * as Filter from "../instance.js";
 import { Type } from "./type.js";
 import * as Item from "./item.js";
@@ -66,10 +66,6 @@ export class Instance extends Entity.Instance
                 ),
             );
         }
-
-        this.Add_Dependencies(
-            this.items,
-        );
     }
 
     Filter():

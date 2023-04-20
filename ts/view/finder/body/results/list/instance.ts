@@ -3,6 +3,7 @@ import * as Event from "../../../../../event.js";
 import * as Model from "../../../../../model/finder.js";
 
 import * as Entity from "../../../../entity.js";
+import * as Results from "../instance.js";
 
 export class Instance extends Entity.Instance
 {
@@ -10,23 +11,25 @@ export class Instance extends Entity.Instance
 
     constructor(
         {
+            results,
             model,
-            parent,
         }: {
+            results: Results.Instance,
             model: () => Model.Instance,
-            parent: Entity.Instance,
         },
     )
     {
         super(
             {
                 element: `div`,
-                parent: parent,
-                event_grid: parent.Event_Grid(),
+                parent: results,
+                event_grid: results.Event_Grid(),
             },
         );
 
         this.model = model;
+
+        this.Live();
     }
 
     override On_Life():
@@ -50,5 +53,11 @@ export class Instance extends Entity.Instance
         Model.Instance
     {
         return this.model();
+    }
+
+    Results():
+        Results.Instance
+    {
+        return this.Parent() as Results.Instance;
     }
 }

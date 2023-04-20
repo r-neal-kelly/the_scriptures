@@ -1,1 +1,1 @@
-import*as Entity from"../../entity.js";import*as Filter from"./filter.js";export class Instance extends Entity.Instance{constructor(){super(),this.filter=new Filter.Instance({}),this.Add_Dependencies([this.filter])}Filter(){return this.filter}}
+import*as Entity from"../../entity.js";import*as Selector from"../../selector.js";export class Instance extends Entity.Instance{constructor(){super(),this.filter=new Selector.Instance({does_smart_item_selection:!1}),this.Add_Dependencies([this.filter])}Filter(){return this.filter}}

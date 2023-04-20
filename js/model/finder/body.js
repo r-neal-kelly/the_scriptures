@@ -1,1 +1,1 @@
-export{Instance}from"./body/instance.js";export*as Filter from"./body/filter.js";
+export{Instance}from"./body/instance.js";

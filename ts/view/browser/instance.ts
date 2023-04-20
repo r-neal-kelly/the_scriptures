@@ -32,6 +32,8 @@ export class Instance extends Entity.Instance
         );
 
         this.model = model as () => Model.Instance;
+
+        this.Live();
     }
 
     override On_Life():

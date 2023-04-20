@@ -4,7 +4,8 @@ import * as Event from "../../../event.js";
 import * as Model from "../../../model/finder.js";
 
 import * as Entity from "../../entity.js";
-import * as Filter from "./filter.js";
+import * as Finder from "../instance.js";
+import * as Selector from "../../selector.js";
 import * as Expression from "./expression.js";
 import * as Results from "./results.js";
 
@@ -14,23 +15,25 @@ export class Instance extends Entity.Instance
 
     constructor(
         {
+            finder,
             model,
-            parent,
         }: {
+            finder: Finder.Instance,
             model: () => Model.Instance,
-            parent: Entity.Instance,
         },
     )
     {
         super(
             {
                 element: `div`,
-                parent: parent,
-                event_grid: parent.Event_Grid(),
+                parent: finder,
+                event_grid: finder.Event_Grid(),
             },
         );
 
         this.model = model;
+
+        this.Live();
     }
 
     override On_Life():
@@ -104,22 +107,24 @@ export class Instance extends Entity.Instance
         ) {
             this.Abort_All_Children();
 
-            new Filter.Instance(
+            new Selector.Instance(
                 {
-                    model: () => this.Model(),
                     parent: this,
+                    model: () => this.Model().Body().Filter(),
+                    event_grid_id: () => this.Finder().ID(),
+                    is_visible: () => this.model().Commander().Filter_Visibility().Is_Toggled(),
                 },
             );
             new Expression.Instance(
                 {
+                    body: this,
                     model: () => this.Model(),
-                    parent: this,
                 },
             );
             new Results.Instance(
                 {
+                    body: this,
                     model: () => this.Model(),
-                    parent: this,
                 },
             );
         }
@@ -137,24 +142,30 @@ export class Instance extends Entity.Instance
         return this.model();
     }
 
+    Finder():
+        Finder.Instance
+    {
+        return this.Parent() as Finder.Instance;
+    }
+
     Has_Filter():
         boolean
     {
         return (
             this.Has_Child(0) &&
-            this.Child(0) instanceof Filter.Instance
+            this.Child(0) instanceof Selector.Instance
         );
     }
 
     Filter():
-        Filter.Instance
+        Selector.Instance
     {
         Utils.Assert(
             this.Has_Filter(),
             `Does not have Filter.`,
         );
 
-        return this.Child(0) as Filter.Instance;
+        return this.Child(0) as Selector.Instance;
     }
 
     Has_Expression():

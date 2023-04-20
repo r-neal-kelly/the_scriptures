@@ -1,1 +1,1 @@
-import*as Entity from"../../entity.js";export class Instance extends Entity.Instance{constructor(){super(),this.is_toggled=!1,this.Add_Dependencies([])}Is_Toggled(){return this.is_toggled}Toggle(){this.is_toggled=!this.is_toggled}Symbol(){return this.Is_Toggled()?"^":"V"}}
+import*as Entity from"../../entity.js";export class Instance extends Entity.Instance{constructor(){super(),this.is_toggled=!0,this.Add_Dependencies([])}Is_Toggled(){return this.is_toggled}Toggle(){this.is_toggled=!this.is_toggled}Symbol(){return this.Is_Toggled()?"^":"V"}}

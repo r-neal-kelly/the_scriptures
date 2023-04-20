@@ -30,6 +30,8 @@ export class Instance extends Entity.Instance
         );
 
         this.model = model;
+
+        this.Live();
     }
 
     override On_Refresh():

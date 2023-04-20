@@ -33,6 +33,8 @@ class Body extends Entity.Instance
         );
 
         this.model = model;
+
+        this.Live();
     }
 
     override On_Life():
@@ -209,6 +211,8 @@ async function Main():
             },
         ),
     );
+
+    view.Refresh();
 }
 
 Main();

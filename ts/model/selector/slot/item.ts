@@ -1,7 +1,7 @@
-import { Index } from "../../../../../types.js";
-import { Name } from "../../../../../types.js";
+import { Index } from "../../../types.js";
+import { Name } from "../../../types.js";
 
-import * as Entity from "../../../../entity.js";
+import * as Entity from "../../entity.js";
 import * as Slot from "./instance.js";
 
 export class Instance extends Entity.Instance
@@ -27,11 +27,6 @@ export class Instance extends Entity.Instance
         this.slot = slot;
         this.index = index;
         this.name = name;
-
-        this.Add_Dependencies(
-            [
-            ],
-        );
     }
 
     Slot():

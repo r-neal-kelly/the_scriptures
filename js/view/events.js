@@ -1,1 +1,1 @@
-import*as Unique_ID from"../unique_id.js";export const BROWSER_COMMANDER_PREVIOUS=Unique_ID.New();export const BROWSER_COMMANDER_NEXT=Unique_ID.New();
+import*as Unique_ID from"../unique_id.js";export const BROWSER_COMMANDER_PREVIOUS=Unique_ID.New();export const BROWSER_COMMANDER_NEXT=Unique_ID.New();export const SELECTOR_TOGGLE=Unique_ID.New();export const SELECTOR_SLOT_ITEM_SELECT=Unique_ID.New();
