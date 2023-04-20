@@ -29,6 +29,7 @@ export class Instance extends Entity.Instance
             {
                 slot_order: selector_slot_order,
                 selection: selection,
+                does_smart_item_selection: true,
             },
         );
         this.reader = new Reader.Instance(

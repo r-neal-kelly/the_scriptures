@@ -1,7 +1,7 @@
 import * as Utils from "../../../utils.js";
 import * as Event from "../../../event.js";
 
-import * as Model from "../../../model/finder.js";
+import * as Model from "../../../model/finder/commander/instance.js";
 
 import * as Entity from "../../entity.js";
 import * as Finder from "../instance.js";
@@ -61,6 +61,18 @@ export class Instance extends Entity.Instance
             `,
         );
 
+        this.Add_Children_CSS(
+            `
+                .Filter_Visibility {
+                    height: 100%;
+
+                    text-align: center;
+
+                    cursor: pointer;
+                }
+            `,
+        );
+
         return [];
     }
 
@@ -75,7 +87,7 @@ export class Instance extends Entity.Instance
             new Filter_Visibility.Instance(
                 {
                     commander: this,
-                    model: () => this.Model(),
+                    model: () => this.Model().Filter_Visibility(),
                 },
             );
         }

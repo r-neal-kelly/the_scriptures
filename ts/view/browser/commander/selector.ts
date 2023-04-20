@@ -49,18 +49,7 @@ export class Instance extends Entity.Instance
                         Events.SELECTOR_TOGGLE,
                         this.ID(),
                     ),
-                    event_handler: this.On,
-                    event_priority: 0,
-                },
-            ),
-            new Event.Listener_Info(
-                {
-                    event_name: new Event.Name(
-                        Event.Prefix.AFTER,
-                        Events.SELECTOR_TOGGLE,
-                        this.ID(),
-                    ),
-                    event_handler: this.After,
+                    event_handler: this.On_Selector_Toggle,
                     event_priority: 0,
                 },
             ),
@@ -90,9 +79,7 @@ export class Instance extends Entity.Instance
                     affix: Events.SELECTOR_TOGGLE,
                     suffixes: [
                         this.ID(),
-                        this.Commander().ID(),
                         this.Commander().Browser().ID(),
-                        this.Commander().Browser().Root().ID(),
                     ],
                     type: Event.Type.EXCLUSIVE,
                     data: {},
@@ -101,16 +88,10 @@ export class Instance extends Entity.Instance
         );
     }
 
-    private async On():
+    private async On_Selector_Toggle():
         Promise<void>
     {
         await this.Model().Toggle();
-    }
-
-    private async After():
-        Promise<void>
-    {
-        this.Refresh();
     }
 
     Model():

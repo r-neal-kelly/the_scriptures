@@ -68,7 +68,7 @@ export class Instance extends Entity.Instance
         return [`Button`];
     }
 
-    async On_Click(
+    private async On_Click(
         event: MouseEvent,
     ):
         Promise<void>
@@ -88,7 +88,7 @@ export class Instance extends Entity.Instance
         );
     }
 
-    async On_Window_Toggle_Maximization():
+    private async On_Window_Toggle_Maximization():
         Promise<void>
     {
         await this.Model().Click();

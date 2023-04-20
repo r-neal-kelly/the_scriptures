@@ -1,7 +1,8 @@
 import * as Event from "../../../event.js";
 
-import * as Model from "../../../model/finder.js";
+import * as Model from "../../../model/finder/commander/filter_visibility.js";
 
+import * as Events from "../../events.js";
 import * as Entity from "../../entity.js";
 import * as Commander from "./instance.js";
 
@@ -35,21 +36,62 @@ export class Instance extends Entity.Instance
     override On_Life():
         Array<Event.Listener_Info>
     {
-        return [];
+        this.Element().addEventListener(
+            `click`,
+            this.On_Click.bind(this),
+        );
+
+        return [
+            new Event.Listener_Info(
+                {
+                    event_name: new Event.Name(
+                        Event.Prefix.ON,
+                        Events.SELECTOR_TOGGLE,
+                        this.ID(),
+                    ),
+                    event_handler: this.On_Selector_Toggle,
+                    event_priority: 0,
+                },
+            ),
+        ];
     }
 
     override On_Refresh():
         void
     {
-        const model: Model.Instance = this.Model();
-
-        this.Element().textContent = model.Commander().Filter_Visibility().Symbol();
+        this.Element().textContent = this.Model().Symbol();
     }
 
     override On_Reclass():
         Array<string>
     {
         return [`Filter_Visibility`];
+    }
+
+    private async On_Click(
+        event: MouseEvent,
+    ):
+        Promise<void>
+    {
+        await this.Send(
+            new Event.Info(
+                {
+                    affix: Events.SELECTOR_TOGGLE,
+                    suffixes: [
+                        this.ID(),
+                        this.Commander().Finder().ID(),
+                    ],
+                    type: Event.Type.EXCLUSIVE,
+                    data: {},
+                },
+            ),
+        );
+    }
+
+    private async On_Selector_Toggle():
+        Promise<void>
+    {
+        this.Model().Toggle();
     }
 
     Model():

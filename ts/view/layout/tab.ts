@@ -63,7 +63,7 @@ export class Instance extends Entity.Instance
         return classes;
     }
 
-    async On_Click():
+    private async On_Click():
         Promise<void>
     {
         this.Model().Tabs().Bar().Layout().Set_Active_Window(this.Model().Window());

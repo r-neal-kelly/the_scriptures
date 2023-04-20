@@ -32,9 +32,9 @@ export class Instance extends Entity.Instance
         string
     {
         if (this.Is_Toggled()) {
-            return `^`;
+            return `Close Filter`;
         } else {
-            return `V`;
+            return `Open Filter`;
         }
     }
 }

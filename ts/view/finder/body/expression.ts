@@ -1,6 +1,6 @@
 import * as Event from "../../../event.js";
 
-import * as Model from "../../../model/finder.js";
+import * as Model from "../../../model/finder/body/instance.js";
 
 import * as Entity from "../../entity.js";
 import * as Body from "./instance.js";

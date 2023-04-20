@@ -83,7 +83,7 @@ export class Instance extends Entity.Instance
         return [`Window`];
     }
 
-    async On_Click():
+    private async On_Click():
         Promise<void>
     {
         this.Model().Wall().Layout().Set_Active_Window(this.Model());

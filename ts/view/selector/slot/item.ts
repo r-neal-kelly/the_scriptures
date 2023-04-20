@@ -78,7 +78,7 @@ export class Instance extends Entity.Instance
         return classes;
     }
 
-    async On_Click(
+    private async On_Click(
         event: MouseEvent,
     ):
         Promise<void>
@@ -98,7 +98,7 @@ export class Instance extends Entity.Instance
         );
     }
 
-    async On_Selector_Slot_Item_Select():
+    private async On_Selector_Slot_Item_Select():
         Promise<void>
     {
         this.Model().Select();

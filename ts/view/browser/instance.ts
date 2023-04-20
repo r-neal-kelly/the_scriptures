@@ -215,6 +215,17 @@ export class Instance extends Entity.Instance
                 {
                     event_name: new Event.Name(
                         Event.Prefix.AFTER,
+                        Events.SELECTOR_TOGGLE,
+                        this.ID(),
+                    ),
+                    event_handler: this.After_Selector_Toggle,
+                    event_priority: 0,
+                },
+            ),
+            new Event.Listener_Info(
+                {
+                    event_name: new Event.Name(
+                        Event.Prefix.AFTER,
                         Events.SELECTOR_SLOT_ITEM_SELECT,
                         this.ID(),
                     ),
@@ -262,6 +273,12 @@ export class Instance extends Entity.Instance
     }
 
     private async After_Browser_Commander_Next():
+        Promise<void>
+    {
+        this.Refresh();
+    }
+
+    private async After_Selector_Toggle():
         Promise<void>
     {
         this.Refresh();

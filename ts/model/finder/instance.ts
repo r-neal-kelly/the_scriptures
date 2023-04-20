@@ -25,8 +25,16 @@ export class Instance extends Entity.Instance
         this.search_help = null;
         this.search_results = null;
 
-        this.commander = new Commander.Instance();
-        this.body = new Body.Instance();
+        this.commander = new Commander.Instance(
+            {
+                finder: this,
+            },
+        );
+        this.body = new Body.Instance(
+            {
+                finder: this,
+            },
+        );
 
         this.Add_Dependencies(
             [

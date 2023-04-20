@@ -134,7 +134,7 @@ export class Instance extends Entity.Instance
         return [`Layout`];
     }
 
-    async After_Window_Close():
+    private async After_Window_Close():
         Promise<void>
     {
         this.Refresh();

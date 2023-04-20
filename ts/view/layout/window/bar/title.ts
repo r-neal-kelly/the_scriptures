@@ -63,7 +63,7 @@ export class Instance extends Entity.Instance
         return [`Title`];
     }
 
-    async After_Selector_Slot_Item_Select():
+    private async After_Selector_Slot_Item_Select():
         Promise<void>
     {
         this.Refresh();

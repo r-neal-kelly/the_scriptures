@@ -108,19 +108,19 @@ export class Instance extends Entity.Instance
         return [`Body`];
     }
 
-    async On_Browser_Commander_Previous():
+    private async On_Browser_Commander_Previous():
         Promise<void>
     {
         await this.Model().Reader().Refresh_File();
     }
 
-    async On_Browser_Commander_Next():
+    private async On_Browser_Commander_Next():
         Promise<void>
     {
         await this.Model().Reader().Refresh_File();
     }
 
-    async On_Selector_Slot_Item_Select():
+    private async On_Selector_Slot_Item_Select():
         Promise<void>
     {
         await this.Model().Reader().Refresh_File();

@@ -153,19 +153,7 @@ export class Instance extends Entity.Instance
             `,
         );
 
-        return [
-            new Event.Listener_Info(
-                {
-                    event_name: new Event.Name(
-                        Event.Prefix.AFTER,
-                        Events.SELECTOR_TOGGLE,
-                        this.Event_Grid_ID(),
-                    ),
-                    event_handler: this.After_Selector_Toggle,
-                    event_priority: 0,
-                },
-            ),
-        ];
+        return [];
     }
 
     override On_Refresh():
@@ -189,12 +177,6 @@ export class Instance extends Entity.Instance
         Array<string>
     {
         return [`Selector`];
-    }
-
-    async After_Selector_Toggle():
-        Promise<void>
-    {
-        this.Refresh();
     }
 
     Model():

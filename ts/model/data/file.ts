@@ -78,7 +78,7 @@ export class Instance extends Entity.Instance
         return this.text as Text.Instance;
     }
 
-    async After_Dependencies_Are_Ready():
+    override async After_Dependencies_Are_Ready():
         Promise<void>
     {
         let text_value: Text.Value | null;

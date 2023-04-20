@@ -1,7 +1,7 @@
 import * as Utils from "../../../utils.js";
 import * as Event from "../../../event.js";
 
-import * as Model from "../../../model/finder.js";
+import * as Model from "../../../model/finder/body/instance.js";
 
 import * as Entity from "../../entity.js";
 import * as Finder from "../instance.js";
@@ -110,9 +110,9 @@ export class Instance extends Entity.Instance
             new Selector.Instance(
                 {
                     parent: this,
-                    model: () => this.Model().Body().Filter(),
+                    model: () => this.Model().Filter(),
                     event_grid_id: () => this.Finder().ID(),
-                    is_visible: () => this.model().Commander().Filter_Visibility().Is_Toggled(),
+                    is_visible: () => this.Model().Finder().Commander().Filter_Visibility().Is_Toggled(),
                 },
             );
             new Expression.Instance(
