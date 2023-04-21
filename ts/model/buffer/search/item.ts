@@ -1,3 +1,4 @@
+import { Count } from "../../../types.js";
 import { Index } from "../../../types.js";
 
 import * as Utils from "../../../utils.js";
@@ -5,13 +6,44 @@ import * as Utils from "../../../utils.js";
 import * as Entity from "../../entity.js";
 import * as Text from "../../text.js";
 import * as Segment from "./segment.js";
+import * as Division from "./division.js";
 
 export class Instance extends Entity.Instance
 {
+    private static min_division_count: Count = 1;
+
+    private static blank_division: Division.Instance = new Division.Instance(
+        {
+            item: null,
+            index: null,
+            value: null,
+            is_highlighted: null,
+        },
+    );
+
+    static Min_Division_Count():
+        Count
+    {
+        return Instance.min_division_count;
+    }
+
+    static Set_Min_Division_Count(
+        min_division_count: Count,
+    ):
+        void
+    {
+        Utils.Assert(
+            min_division_count >= 0,
+            `min_division_count must be greater than or equal to 0.`,
+        );
+
+        Instance.min_division_count = min_division_count;
+    }
+
     private segment: Segment.Instance | null;
     private index: Index | null;
     private text: Text.Item.Instance | null;
-    private value: Text.Value;
+    private divisions: Array<Division.Instance>;
 
     constructor(
         {
@@ -30,6 +62,7 @@ export class Instance extends Entity.Instance
         this.segment = segment;
         this.index = index;
         this.text = text;
+        this.divisions = [];
 
         if (text == null) {
             Utils.Assert(
@@ -40,8 +73,6 @@ export class Instance extends Entity.Instance
                 index == null,
                 `index must be null.`,
             );
-
-            this.value = ``;
         } else {
             Utils.Assert(
                 segment != null,
@@ -52,14 +83,16 @@ export class Instance extends Entity.Instance
                 `index must not be null, and must be greater than -1.`,
             );
 
-            if (text.Is_Part() && (text as Text.Part.Instance).Is_Command()) {
-                this.value = ``;
-            } else {
-                this.value = text.Value()
-                    .replace(/^ /, ` `)
-                    .replace(/ $/, ` `)
-                    .replace(/  /g, `  `);
-            }
+            this.divisions.push(
+                new Division.Instance(
+                    {
+                        item: this,
+                        index: 0,
+                        value: this.Value(),
+                        is_highlighted: false,
+                    },
+                ),
+            );
         }
 
         this.Add_Dependencies(
@@ -104,7 +137,105 @@ export class Instance extends Entity.Instance
     Value():
         Text.Value
     {
-        return this.value;
+        if (this.Is_Blank()) {
+            return ``;
+        } else {
+            return this.Text().Value();
+        }
+    }
+
+    Division_Count():
+        Count
+    {
+        return this.divisions.length;
+    }
+
+    Division_At(
+        division_index: Index,
+    ):
+        Division.Instance
+    {
+        Utils.Assert(
+            division_index > -1,
+            `division_index (${division_index}) must be greater than -1.`,
+        );
+
+        if (division_index < this.Division_Count()) {
+            return this.divisions[division_index];
+        } else {
+            return Instance.blank_division;
+        }
+    }
+
+    Highlight(
+        {
+            first_unit_index,
+            end_unit_index,
+        }: {
+            first_unit_index: Index,
+            end_unit_index: Index,
+        },
+    ):
+        void
+    {
+        Utils.Assert(
+            this.Division_Count() === 1,
+            `Should not be called when already divided.`,
+        );
+
+        const value: Text.Value = this.Value();
+        if (first_unit_index === 0 && end_unit_index === value.length) {
+            this.Division_At(0).Set_Highlight(true);
+        } else if (first_unit_index === 0 || end_unit_index === value.length) {
+            if (first_unit_index === 0) {
+                this.Division_At(0).Set_Value(value.slice(first_unit_index, end_unit_index));
+                this.Division_At(0).Set_Highlight(true);
+                this.divisions.push(
+                    new Division.Instance(
+                        {
+                            item: this,
+                            index: 1,
+                            value: value.slice(end_unit_index, value.length),
+                            is_highlighted: false,
+                        },
+                    ),
+                );
+            } else {
+                this.Division_At(0).Set_Value(value.slice(0, first_unit_index));
+                this.divisions.push(
+                    new Division.Instance(
+                        {
+                            item: this,
+                            index: 1,
+                            value: value.slice(first_unit_index, end_unit_index),
+                            is_highlighted: true,
+                        },
+                    ),
+                );
+            }
+        } else {
+            this.Division_At(0).Set_Value(value.slice(0, first_unit_index));
+            this.divisions.push(
+                new Division.Instance(
+                    {
+                        item: this,
+                        index: 1,
+                        value: value.slice(first_unit_index, end_unit_index),
+                        is_highlighted: true,
+                    },
+                ),
+            );
+            this.divisions.push(
+                new Division.Instance(
+                    {
+                        item: this,
+                        index: 2,
+                        value: value.slice(end_unit_index, value.length),
+                        is_highlighted: false,
+                    },
+                ),
+            );
+        }
     }
 
     Part():

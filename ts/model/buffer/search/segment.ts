@@ -6,13 +6,13 @@ import * as Utils from "../../../utils.js";
 import * as Entity from "../../entity.js";
 import * as Text from "../../text.js";
 import * as Line from "./line.js";
-import * as Point from "./point.js";
+import * as Item from "./item.js";
 
 export class Instance extends Entity.Instance
 {
-    private static min_point_count: Count = 8;
+    private static min_item_count: Count = 2;
 
-    private static blank_point: Point.Instance = new Point.Instance(
+    private static blank_item: Item.Instance = new Item.Instance(
         {
             segment: null,
             index: null,
@@ -20,29 +20,29 @@ export class Instance extends Entity.Instance
         },
     );
 
-    static Min_Point_Count():
+    static Min_Item_Count():
         Count
     {
-        return Instance.min_point_count;
+        return Instance.min_item_count;
     }
 
-    static Set_Min_Point_Count(
-        min_point_count: Count,
+    static Set_Min_Item_Count(
+        min_item_count: Count,
     ):
         void
     {
         Utils.Assert(
-            min_point_count >= 0,
-            `min_point_count must be greater than or equal to 0.`,
+            min_item_count >= 0,
+            `min_item_count must be greater than or equal to 0.`,
         );
 
-        Instance.min_point_count = min_point_count;
+        Instance.min_item_count = min_item_count;
     }
 
     private line: Line.Instance | null;
     private index: Index | null;
     private text: Text.Segment.Instance | null;
-    private points: Array<Point.Instance>;
+    private items: Array<Item.Instance>;
 
     constructor(
         {
@@ -61,7 +61,7 @@ export class Instance extends Entity.Instance
         this.line = line;
         this.index = index;
         this.text = text;
-        this.points = [];
+        this.items = [];
 
         if (text == null) {
             Utils.Assert(
@@ -83,12 +83,12 @@ export class Instance extends Entity.Instance
             );
 
             for (let idx = 0, end = text.Item_Count(); idx < end; idx += 1) {
-                this.points.push(
-                    new Point.Instance(
+                this.items.push(
+                    new Item.Instance(
                         {
                             segment: this,
                             index: idx,
-                            text: text.Item(idx) as Text.Part.Instance,
+                            text: text.Item(idx),
                         },
                     ),
                 );
@@ -96,7 +96,7 @@ export class Instance extends Entity.Instance
         }
 
         this.Add_Dependencies(
-            this.points,
+            this.items,
         );
     }
 
@@ -133,26 +133,26 @@ export class Instance extends Entity.Instance
         return this.text as Text.Segment.Instance;
     }
 
-    Point_Count():
+    Item_Count():
         Count
     {
-        return this.points.length;
+        return this.items.length;
     }
 
-    Point_At(
-        point_index: Index,
+    Item_At(
+        item_index: Index,
     ):
-        Point.Instance
+        Item.Instance
     {
         Utils.Assert(
-            point_index > -1,
-            `point_index (${point_index}) must be greater than -1.`,
+            item_index > -1,
+            `item_index (${item_index}) must be greater than -1.`,
         );
 
-        if (point_index < this.Point_Count()) {
-            return this.points[point_index];
+        if (item_index < this.Item_Count()) {
+            return this.items[item_index];
         } else {
-            return Instance.blank_point;
+            return Instance.blank_item;
         }
     }
 

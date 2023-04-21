@@ -170,11 +170,16 @@ export class Instance extends Entity.Instance
                                 if (text_item.Is_Part()) {
                                     Utils.Assert(
                                         segment_item_end === 1,
-                                        `A part item in segment was found split between segments!.`,
+                                        `A part item in segment was found split between segments!`,
                                     );
-                                    //this.Segment(segment_index)
-                                    //.Item(item_index)
-                                    //.Highlight(first_part_first_unit_index, last_part_end_unit_index)
+                                    this.Segment_At(segment_index).Item_At(item_index).Highlight(
+                                        {
+                                            first_unit_index:
+                                                first_part_first_unit_index,
+                                            end_unit_index:
+                                                last_part_end_unit_index,
+                                        },
+                                    );
                                 } else {
                                     const text_split: Text.Split.Instance =
                                         text_item as Text.Split.Instance;
@@ -184,26 +189,46 @@ export class Instance extends Entity.Instance
                                         if (first_part_first_unit_index < text_split_end_unit_index) {
                                             found_first_unit = true;
                                             if (last_part_end_unit_index <= text_split_end_unit_index) {
-                                                //this.Segment(segment_index)
-                                                //.Item(item_index)
-                                                //.Highlight(first_part_first_unit_index - text_split.First_Unit_Index(), last_part_end_unit_index - text_split.First_Unit_Index())
+                                                this.Segment_At(segment_index).Item_At(item_index).Highlight(
+                                                    {
+                                                        first_unit_index:
+                                                            first_part_first_unit_index - text_split.First_Unit_Index(),
+                                                        end_unit_index:
+                                                            last_part_end_unit_index - text_split.First_Unit_Index(),
+                                                    },
+                                                );
                                                 break;
                                             } else {
-                                                //this.Segment(segment_index)
-                                                //.Item(item_index)
-                                                //.Highlight(first_part_first_unit_index - text_split.First_Unit_Index(), text_split.Value().length)
+                                                this.Segment_At(segment_index).Item_At(item_index).Highlight(
+                                                    {
+                                                        first_unit_index:
+                                                            first_part_first_unit_index - text_split.First_Unit_Index(),
+                                                        end_unit_index:
+                                                            text_split.Value().length,
+                                                    },
+                                                );
                                             }
                                         }
                                     } else {
                                         if (last_part_end_unit_index <= text_split_end_unit_index) {
-                                            //this.Segment(segment_index)
-                                            //.Item(item_index)
-                                            //.Highlight(0, last_part_end_unit_index - text_split.First_Unit_Index())
+                                            this.Segment_At(segment_index).Item_At(item_index).Highlight(
+                                                {
+                                                    first_unit_index:
+                                                        0,
+                                                    end_unit_index:
+                                                        last_part_end_unit_index - text_split.First_Unit_Index(),
+                                                },
+                                            );
                                             break;
                                         } else {
-                                            //this.Segment(segment_index)
-                                            //.Item(item_index)
-                                            //.Highlight(0, text_split.Value().length)
+                                            this.Segment_At(segment_index).Item_At(item_index).Highlight(
+                                                {
+                                                    first_unit_index:
+                                                        0,
+                                                    end_unit_index:
+                                                        text_split.Value().length,
+                                                },
+                                            );
                                         }
                                     }
                                 }
@@ -229,11 +254,16 @@ export class Instance extends Entity.Instance
                                 if (text_item.Is_Part()) {
                                     Utils.Assert(
                                         segment_item_end === 1,
-                                        `A part item in segment was found split between segments!.`,
+                                        `A part item in segment was found split between segments!`,
                                     );
-                                    //this.Segment(segment_index)
-                                    //.Item(item_index)
-                                    //.Highlight(first_part_first_unit_index, text_item.Value().length)
+                                    this.Segment_At(segment_index).Item_At(item_index).Highlight(
+                                        {
+                                            first_unit_index:
+                                                first_part_first_unit_index,
+                                            end_unit_index:
+                                                text_item.Value().length,
+                                        },
+                                    );
                                 } else {
                                     const text_split: Text.Split.Instance =
                                         text_item as Text.Split.Instance;
@@ -242,14 +272,24 @@ export class Instance extends Entity.Instance
                                     if (!found_first_unit) {
                                         if (first_part_first_unit_index < text_split_end_unit_index) {
                                             found_first_unit = true;
-                                            //this.Segment(segment_index)
-                                            //.Item(item_index)
-                                            //.Highlight(first_part_first_unit_index - text_split.First_Unit_Index(), text_split.Value().length)
+                                            this.Segment_At(segment_index).Item_At(item_index).Highlight(
+                                                {
+                                                    first_unit_index:
+                                                        first_part_first_unit_index - text_split.First_Unit_Index(),
+                                                    end_unit_index:
+                                                        text_split.Value().length,
+                                                },
+                                            );
                                         }
                                     } else {
-                                        //this.Segment(segment_index)
-                                        //.Item(item_index)
-                                        //.Highlight(0, text_split.Value().length)
+                                        this.Segment_At(segment_index).Item_At(item_index).Highlight(
+                                            {
+                                                first_unit_index:
+                                                    0,
+                                                end_unit_index:
+                                                    text_split.Value().length,
+                                            },
+                                        );
                                     }
                                 }
                             }
@@ -273,25 +313,40 @@ export class Instance extends Entity.Instance
                                 if (text_item.Is_Part()) {
                                     Utils.Assert(
                                         segment_item_end === 1,
-                                        `A part item in segment was found split between segments!.`,
+                                        `A part item in segment was found split between segments!`,
                                     );
-                                    //this.Segment(segment_index)
-                                    //.Item(item_index)
-                                    //.Highlight(0, last_part_end_unit_index)
+                                    this.Segment_At(segment_index).Item_At(item_index).Highlight(
+                                        {
+                                            first_unit_index:
+                                                0,
+                                            end_unit_index:
+                                                last_part_end_unit_index,
+                                        },
+                                    );
                                 } else {
                                     const text_split: Text.Split.Instance =
                                         text_item as Text.Split.Instance;
                                     const text_split_end_unit_index: Index =
                                         text_split.End_Unit_Index();
                                     if (last_part_end_unit_index <= text_split_end_unit_index) {
-                                        //this.Segment(segment_index)
-                                        //.Item(item_index)
-                                        //.Highlight(0, last_part_end_unit_index - text_split.First_Unit_Index())
+                                        this.Segment_At(segment_index).Item_At(item_index).Highlight(
+                                            {
+                                                first_unit_index:
+                                                    0,
+                                                end_unit_index:
+                                                    last_part_end_unit_index - text_split.First_Unit_Index(),
+                                            },
+                                        );
                                         break;
                                     } else {
-                                        //this.Segment(segment_index)
-                                        //.Item(item_index)
-                                        //.Highlight(0, text_split.Value().length)
+                                        this.Segment_At(segment_index).Item_At(item_index).Highlight(
+                                            {
+                                                first_unit_index:
+                                                    0,
+                                                end_unit_index:
+                                                    text_split.Value().length,
+                                            },
+                                        );
                                     }
                                 }
                             }
@@ -310,9 +365,14 @@ export class Instance extends Entity.Instance
                                     result.Line().Macro_Segment(segment_index);
                                 const text_item: Text.Item.Instance =
                                     text_segment.Item(item_index);
-                                //this.Segment(segment_index)
-                                //.Item(item_index)
-                                //.Highlight(0, text_item.Value().length)
+                                this.Segment_At(segment_index).Item_At(item_index).Highlight(
+                                    {
+                                        first_unit_index:
+                                            0,
+                                        end_unit_index:
+                                            text_item.Value().length,
+                                    },
+                                );
                             }
                         }
                     }

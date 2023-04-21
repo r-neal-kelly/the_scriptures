@@ -39,22 +39,22 @@ export class Instance extends Entity.Instance
     }
 
     private lines: Array<Line.Instance>;
-    private shows_commands: boolean;
+    private is_showing_command: boolean;
 
     constructor(
         {
             results,
-            shows_commands,
+            is_showing_command,
         }: {
             results: Array<Search.Result.Instance>,
-            shows_commands: boolean,
+            is_showing_command: boolean,
         },
     )
     {
         super();
 
         this.lines = [];
-        this.shows_commands = shows_commands;
+        this.is_showing_command = is_showing_command;
 
         for (let idx = 0, end = results.length; idx < end; idx += 1) {
             this.lines.push(
@@ -96,15 +96,15 @@ export class Instance extends Entity.Instance
         }
     }
 
-    Shows_Commands():
+    Is_Showing_Commands():
         boolean
     {
-        return this.shows_commands;
+        return this.is_showing_command;
     }
 
-    Toggle_Show_Commands():
+    Toggle_Showing_Commands():
         void
     {
-        this.shows_commands = !this.shows_commands;
+        this.is_showing_command = !this.is_showing_command;
     }
 }
