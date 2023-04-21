@@ -12,6 +12,15 @@ import * as Part from "./part.js";
 import * as Split from "./split.js";
 import * as Segment from "./segment.js";
 
+export type Segment_Item_Index = {
+    segment_index: Index,
+    item_index: Index,
+};
+
+type Part_Index_To_Segment_Item_Indices = {
+    [part_index: Index]: Array<Segment_Item_Index>,
+};
+
 export class Instance
 {
     private text: Text.Instance;
@@ -21,6 +30,8 @@ export class Instance
     private macro_parts: Array<Part.Instance>;
     private micro_segments: Array<Segment.Instance>;
     private macro_segments: Array<Segment.Instance>;
+    private micro_part_index_to_segment_item_indices: Part_Index_To_Segment_Item_Indices;
+    private macro_part_index_to_segment_item_indices: Part_Index_To_Segment_Item_Indices;
     private is_centered: boolean;
     private is_indented: boolean;
 
@@ -43,6 +54,8 @@ export class Instance
         this.macro_parts = [];
         this.micro_segments = [];
         this.macro_segments = [];
+        this.micro_part_index_to_segment_item_indices = {};
+        this.macro_part_index_to_segment_item_indices = {};
         this.is_centered = false;
         this.is_indented = false;
 
@@ -82,6 +95,8 @@ export class Instance
         this.macro_parts = [];
         this.micro_segments = [];
         this.macro_segments = [];
+        this.micro_part_index_to_segment_item_indices = {};
+        this.macro_part_index_to_segment_item_indices = {};
         this.is_centered =
             this.value.slice(
                 0,
@@ -117,11 +132,13 @@ export class Instance
         let current_micro_segment: Segment.Instance = new Segment.Instance(
             {
                 segment_type: Segment.Type.MICRO,
+                index: this.micro_segments.length,
             },
         );
         let current_macro_segment: Segment.Instance = new Segment.Instance(
             {
                 segment_type: Segment.Type.MACRO,
+                index: this.macro_segments.length,
             },
         );
         const Update_Micro_Segments: (
@@ -137,10 +154,21 @@ export class Instance
                 current_micro_segment = new Segment.Instance(
                     {
                         segment_type: Segment.Type.MICRO,
+                        index: this.micro_segments.length,
                     },
                 );
                 current_micro_segment.Add_Item(item);
             }
+            const part_index: Index = item.Part_Index();
+            const segment_item_index: Segment_Item_Index = {
+                segment_index: current_micro_segment.Index(),
+                item_index: current_micro_segment.Item_Count() - 1,
+            };
+            Object.freeze(segment_item_index);
+            if (this.micro_part_index_to_segment_item_indices[part_index] == null) {
+                this.micro_part_index_to_segment_item_indices[part_index] = [];
+            }
+            this.micro_part_index_to_segment_item_indices[part_index].push(segment_item_index);
         }.bind(this);
         const Update_Macro_Segments: (
             item: Item.Instance,
@@ -155,10 +183,21 @@ export class Instance
                 current_macro_segment = new Segment.Instance(
                     {
                         segment_type: Segment.Type.MACRO,
+                        index: this.macro_segments.length,
                     },
                 );
                 current_macro_segment.Add_Item(item);
             }
+            const part_index: Index = item.Part_Index();
+            const segment_item_index: Segment_Item_Index = {
+                segment_index: current_macro_segment.Index(),
+                item_index: current_macro_segment.Item_Count() - 1,
+            };
+            Object.freeze(segment_item_index);
+            if (this.macro_part_index_to_segment_item_indices[part_index] == null) {
+                this.macro_part_index_to_segment_item_indices[part_index] = [];
+            }
+            this.macro_part_index_to_segment_item_indices[part_index].push(segment_item_index);
         }.bind(this);
 
         for (let it = current_start; !it.Is_At_End();) {
@@ -166,41 +205,48 @@ export class Instance
                 Part.Command.Maybe_Valid_Value_From(it.Points());
 
             if (maybe_valid_command != null) {
-                const command: Part.Command.Instance = new Part.Command.Instance(
+                const micro_command: Part.Command.Instance = new Part.Command.Instance(
                     {
+                        index: this.micro_parts.length,
                         value: maybe_valid_command,
                     },
                 );
-                if (command.Is_Open_Italic()) {
+                const macro_command: Part.Command.Instance = new Part.Command.Instance(
+                    {
+                        index: this.macro_parts.length,
+                        value: maybe_valid_command,
+                    },
+                );
+                if (macro_command.Is_Open_Italic()) {
                     current_style |= Part.Style.ITALIC;
-                } else if (command.Is_Close_Italic()) {
+                } else if (macro_command.Is_Close_Italic()) {
                     current_style &= ~Part.Style.ITALIC;
 
-                } else if (command.Is_Open_Bold()) {
+                } else if (macro_command.Is_Open_Bold()) {
                     current_style |= Part.Style.BOLD;
-                } else if (command.Is_Close_Bold()) {
+                } else if (macro_command.Is_Close_Bold()) {
                     current_style &= ~Part.Style.BOLD;
 
-                } else if (command.Is_Open_Underline()) {
+                } else if (macro_command.Is_Open_Underline()) {
                     current_style |= Part.Style.UNDERLINE;
-                } else if (command.Is_Close_Underline()) {
+                } else if (macro_command.Is_Close_Underline()) {
                     current_style &= ~Part.Style.UNDERLINE;
 
-                } else if (command.Is_Open_Small_Caps()) {
+                } else if (macro_command.Is_Open_Small_Caps()) {
                     current_style |= Part.Style.SMALL_CAPS;
-                } else if (command.Is_Close_Small_Caps()) {
+                } else if (macro_command.Is_Close_Small_Caps()) {
                     current_style &= ~Part.Style.SMALL_CAPS;
 
-                } else if (command.Is_Open_Error()) {
+                } else if (macro_command.Is_Open_Error()) {
                     current_style |= Part.Style.ERROR;
-                } else if (command.Is_Close_Error()) {
+                } else if (macro_command.Is_Close_Error()) {
                     current_style &= ~Part.Style.ERROR;
                 }
 
-                this.micro_parts.push(command);
-                this.macro_parts.push(command);
-                Update_Micro_Segments(command);
-                Update_Macro_Segments(command);
+                this.micro_parts.push(micro_command);
+                this.macro_parts.push(macro_command);
+                Update_Micro_Segments(micro_command);
+                Update_Macro_Segments(macro_command);
 
                 it = new Unicode.Iterator(
                     {
@@ -220,6 +266,7 @@ export class Instance
                 if (dictionary.Has_Letter(this_point)) {
                     const point: Part.Letter.Instance = new Part.Letter.Instance(
                         {
+                            index: this.micro_parts.length,
                             value: this_point,
                             style: current_style,
                         },
@@ -232,6 +279,7 @@ export class Instance
                 } else if (dictionary.Has_Marker(this_point)) {
                     const point: Part.Marker.Instance = new Part.Marker.Instance(
                         {
+                            index: this.micro_parts.length,
                             value: this_point,
                             style: current_style,
                         },
@@ -242,15 +290,23 @@ export class Instance
 
                     current_type = Current_Type.BREAK;
                 } else {
-                    const point: Part.Point.Instance = new Part.Point.Instance(
+                    const micro_point: Part.Point.Instance = new Part.Point.Instance(
                         {
+                            index: this.micro_parts.length,
+                            value: this_point,
+                            style: current_style,
+                        },
+                    );
+                    const macro_point: Part.Point.Instance = new Part.Point.Instance(
+                        {
+                            index: this.macro_parts.length,
                             value: this_point,
                             style: current_style,
                         },
                     );
 
-                    this.micro_parts.push(point);
-                    Update_Micro_Segments(point);
+                    this.micro_parts.push(micro_point);
+                    Update_Micro_Segments(micro_point);
 
                     current_type = Current_Type.POINT;
 
@@ -258,8 +314,8 @@ export class Instance
                         first_non_command_index = it.Index();
                     }
 
-                    this.macro_parts.push(point);
-                    Update_Macro_Segments(point);
+                    this.macro_parts.push(macro_point);
+                    Update_Macro_Segments(macro_point);
 
                     current_start = it.Next();
                 }
@@ -286,6 +342,7 @@ export class Instance
 
                         const part: Part.Word.Instance = new Part.Word.Instance(
                             {
+                                index: this.macro_parts.length,
                                 value: word,
                                 status: status,
                                 style: current_style,
@@ -324,6 +381,7 @@ export class Instance
 
                         const part: Part.Break.Instance = new Part.Break.Instance(
                             {
+                                index: this.macro_parts.length,
                                 value: break_,
                                 status: status,
                                 style: current_style,
@@ -352,6 +410,19 @@ export class Instance
         }
     }
 
+    Has_Micro_Part(
+        micro_part_index: Index,
+    ):
+        boolean
+    {
+        Utils.Assert(
+            micro_part_index > -1,
+            `micro_part_index must be greater than -1.`,
+        );
+
+        return micro_part_index < this.Micro_Part_Count();
+    }
+
     Micro_Part_Count():
         Count
     {
@@ -364,15 +435,24 @@ export class Instance
         Part.Instance
     {
         Utils.Assert(
-            micro_part_index > -1,
-            `micro_part_index must be greater than -1.`,
-        );
-        Utils.Assert(
-            micro_part_index < this.Micro_Part_Count(),
-            `micro_part_index must be less than micro_part_count.`,
+            this.Has_Micro_Part(micro_part_index),
+            `Does not have micro_part at index ${micro_part_index}.`,
         );
 
         return this.micro_parts[micro_part_index];
+    }
+
+    Has_Macro_Part(
+        macro_part_index: Index,
+    ):
+        boolean
+    {
+        Utils.Assert(
+            macro_part_index > -1,
+            `macro_part_index must be greater than -1.`,
+        );
+
+        return macro_part_index < this.Macro_Part_Count();
     }
 
     Macro_Part_Count():
@@ -387,12 +467,8 @@ export class Instance
         Part.Instance
     {
         Utils.Assert(
-            macro_part_index > -1,
-            `macro_part_index must be greater than -1.`,
-        );
-        Utils.Assert(
-            macro_part_index < this.Macro_Part_Count(),
-            `macro_part_index must be less than macro_part_count.`,
+            this.Has_Macro_Part(macro_part_index),
+            `Does not have macro_part at index ${macro_part_index}.`,
         );
 
         return this.macro_parts[macro_part_index];
@@ -442,6 +518,44 @@ export class Instance
         );
 
         return this.macro_segments[macro_segment_index];
+    }
+
+    Micro_Part_Segment_Item_Indices(
+        micro_part_index: Index,
+    ):
+        Array<Segment_Item_Index>
+    {
+        Utils.Assert(
+            this.Has_Micro_Part(micro_part_index),
+            `Does not have micro_part at index ${micro_part_index}.`,
+        );
+
+        const segment_item_indices: Array<Segment_Item_Index> =
+            this.micro_part_index_to_segment_item_indices[micro_part_index];
+        if (!Object.isFrozen(segment_item_indices)) {
+            Object.freeze(segment_item_indices);
+        }
+
+        return segment_item_indices;
+    }
+
+    Macro_Part_Segment_Item_Indices(
+        macro_part_index: Index,
+    ):
+        Array<Segment_Item_Index>
+    {
+        Utils.Assert(
+            this.Has_Macro_Part(macro_part_index),
+            `Does not have macro_part at index ${macro_part_index}.`,
+        );
+
+        const segment_item_indices: Array<Segment_Item_Index> =
+            this.macro_part_index_to_segment_item_indices[macro_part_index];
+        if (!Object.isFrozen(segment_item_indices)) {
+            Object.freeze(segment_item_indices);
+        }
+
+        return segment_item_indices;
     }
 
     Is_Centered():

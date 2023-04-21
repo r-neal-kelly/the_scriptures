@@ -1,0 +1,1 @@
+import*as Entity from"../../entity.js";export class Instance extends Entity.Instance{constructor({body:t}){super(),this.body=t,this.value="",this.help=null,this.Add_Dependencies([])}Value(){return this.value}Maybe_Help(){return this.help}}

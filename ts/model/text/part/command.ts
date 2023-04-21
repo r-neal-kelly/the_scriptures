@@ -151,8 +151,10 @@ export class Instance extends Part.Instance
 {
     constructor(
         {
+            index,
             value,
         }: {
+            index: Index,
             value: Value,
         },
     )
@@ -160,6 +162,7 @@ export class Instance extends Part.Instance
         super(
             {
                 part_type: Type.COMMAND,
+                index: index,
                 value: value,
                 status: Is_Known_Value(value) ?
                     Status.GOOD :

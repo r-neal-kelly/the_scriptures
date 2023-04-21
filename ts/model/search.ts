@@ -8,3 +8,4 @@ export * as Executor from "./search/executor.js";
 export * as Token from "./search/token.js";
 export * as Node from "./search/node.js";
 export * as Result from "./search/result.js";
+export { Singleton } from "./search/instance.js";

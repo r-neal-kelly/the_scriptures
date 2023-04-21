@@ -1,50 +1,17 @@
-import * as Utils from "../../../utils.js";
+import { Index } from "../../../types.js";
 
 import { Value } from "../value.js";
-
 import { Type } from "./type.js";
 
-export class Instance
+export interface Instance
 {
-    private item_type: Type;
+    Item_Type(): Type;
 
-    constructor(
-        {
-            item_type,
-        }: {
-            item_type: Type,
-        },
-    )
-    {
-        this.item_type = item_type;
-    }
+    Is_Part(): boolean;
+    Is_Split(): boolean;
 
-    Item_Type():
-        Type
-    {
-        return this.item_type;
-    }
+    Index(): Index;
+    Part_Index(): Index;
 
-    Is_Part():
-        boolean
-    {
-        return this.item_type === Type.PART;
-    }
-
-    Is_Split():
-        boolean
-    {
-        return this.item_type === Type.SPLIT;
-    }
-
-    Value():
-        Value
-    {
-        Utils.Assert(
-            false,
-            `This method must be overridden to be used.`,
-        );
-
-        return ``;
-    }
+    Value(): Value;
 }

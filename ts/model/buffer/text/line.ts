@@ -86,12 +86,14 @@ export class Instance extends Entity.Instance
                 const segment: Text.Segment.Instance = new Text.Segment.Instance(
                     {
                         segment_type: Text.Segment.Type.MACRO,
+                        index: 0,
                     },
                 );
                 segment.Add_Item(
                     new Text.Part.Instance(
                         {
                             part_type: Text.Part.Type.POINT,
+                            index: 0,
                             value: ` `,
                             status: Text.Part.Status.GOOD,
                             style: Text.Part.Style._NONE_,

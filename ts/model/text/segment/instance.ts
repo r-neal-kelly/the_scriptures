@@ -13,17 +13,21 @@ import { Type } from "./type.js";
 export class Instance
 {
     private segment_type: Type;
+    private index: Index;
     private items: Array<Item.Instance>;
 
     constructor(
         {
             segment_type,
+            index,
         }: {
             segment_type: Type,
+            index: Index,
         },
     )
     {
         this.segment_type = segment_type;
+        this.index = index;
         this.items = [];
     }
 
@@ -31,6 +35,12 @@ export class Instance
         Type
     {
         return this.segment_type;
+    }
+
+    Index():
+        Index
+    {
+        return this.index;
     }
 
     Item_Count():

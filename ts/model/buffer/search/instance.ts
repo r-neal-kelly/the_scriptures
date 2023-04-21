@@ -4,7 +4,7 @@ import { Index } from "../../../types.js";
 import * as Utils from "../../../utils.js";
 
 import * as Entity from "../../entity.js";
-import * as Text from "../../text.js";
+import * as Search from "../../search.js";
 import * as Line from "./line.js";
 
 export class Instance extends Entity.Instance
@@ -15,7 +15,7 @@ export class Instance extends Entity.Instance
         {
             buffer: null,
             index: null,
-            text: null,
+            result: null,
         },
     );
 
@@ -38,29 +38,31 @@ export class Instance extends Entity.Instance
         Instance.min_line_count = min_line_count;
     }
 
-    private text: Text.Instance;
     private lines: Array<Line.Instance>;
+    private shows_commands: boolean;
 
     constructor(
         {
-            text,
+            results,
+            shows_commands,
         }: {
-            text: Text.Instance,
+            results: Array<Search.Result.Instance>,
+            shows_commands: boolean,
         },
     )
     {
         super();
 
-        this.text = text;
         this.lines = [];
+        this.shows_commands = shows_commands;
 
-        for (let idx = 0, end = text.Line_Count(); idx < end; idx += 1) {
+        for (let idx = 0, end = results.length; idx < end; idx += 1) {
             this.lines.push(
                 new Line.Instance(
                     {
                         buffer: this,
                         index: idx,
-                        text: text.Line(idx),
+                        result: results[idx],
                     },
                 ),
             );
@@ -69,12 +71,6 @@ export class Instance extends Entity.Instance
         this.Add_Dependencies(
             this.lines,
         );
-    }
-
-    Text():
-        Text.Instance
-    {
-        return this.text;
     }
 
     Line_Count():
@@ -98,5 +94,17 @@ export class Instance extends Entity.Instance
         } else {
             return Instance.blank_line;
         }
+    }
+
+    Shows_Commands():
+        boolean
+    {
+        return this.shows_commands;
+    }
+
+    Toggle_Show_Commands():
+        void
+    {
+        this.shows_commands = !this.shows_commands;
     }
 }

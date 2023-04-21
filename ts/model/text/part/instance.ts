@@ -1,15 +1,17 @@
+import { Index } from "../../../types.js"
+
 import * as Utils from "../../../utils.js";
 
 import { Value } from "../value.js";
 import * as Item from "../item.js";
-
 import { Type } from "./type.js";
 import { Status } from "./status.js";
 import { Style } from "./style.js";
 
-export class Instance extends Item.Instance
+export class Instance implements Item.Instance
 {
     private part_type: Type;
+    private index: Index;
     private value: Value;
     private status: Status;
     private style: Style;
@@ -17,29 +19,30 @@ export class Instance extends Item.Instance
     constructor(
         {
             part_type,
+            index,
             value,
             status,
             style,
         }: {
             part_type: Type,
+            index: Index,
             value: Value,
             status: Status,
             style: Style | Array<Style>,
         },
     )
     {
-        super(
-            {
-                item_type: Item.Type.PART,
-            },
+        Utils.Assert(
+            index > -1,
+            `index must be greater than -1.`,
         );
-
         Utils.Assert(
             value.length > 0,
             `value must have a length greater than 0.`,
         );
 
         this.part_type = part_type;
+        this.index = index;
         this.value = value;
         this.status = status;
         if (style instanceof Array) {
@@ -50,6 +53,24 @@ export class Instance extends Item.Instance
         } else {
             this.style = style;
         }
+    }
+
+    Item_Type():
+        Item.Type
+    {
+        return Item.Type.PART;
+    }
+
+    Is_Part():
+        boolean
+    {
+        return true;
+    }
+
+    Is_Split():
+        boolean
+    {
+        return false;
     }
 
     Part_Type():
@@ -94,7 +115,19 @@ export class Instance extends Item.Instance
         return this.part_type === Type.COMMAND;
     }
 
-    override Value():
+    Index():
+        Index
+    {
+        return this.index;
+    }
+
+    Part_Index():
+        Index
+    {
+        return this.index;
+    }
+
+    Value():
         Value
     {
         return this.value;

@@ -68,6 +68,12 @@ export class Match
         return this.first_part_index;
     }
 
+    Last_Part_Index():
+        Index
+    {
+        return this.end_part_index - 1;
+    }
+
     End_Part_Index():
         Index
     {

@@ -1,3 +1,5 @@
+import { Index } from "../../../types.js";
+
 import { Value } from "../value.js";
 
 import * as Part from "./instance.js";
@@ -9,9 +11,11 @@ export class Instance extends Part.Instance
 {
     constructor(
         {
+            index,
             value,
             style,
         }: {
+            index: Index,
             value: Value,
             style: Style | Array<Style>,
         },
@@ -20,6 +24,7 @@ export class Instance extends Part.Instance
         super(
             {
                 part_type: Type.LETTER,
+                index: index,
                 value: value,
                 status: Status.GOOD,
                 style: style,

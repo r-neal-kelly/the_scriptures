@@ -66,3 +66,10 @@ export class Instance extends Entity.Instance
         return this.Text(await data_file.Text(), expression);
     }
 }
+
+const SINGLETON = new Instance();
+export function Singleton():
+    Instance
+{
+    return SINGLETON;
+}

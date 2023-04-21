@@ -1,1 +1,1 @@
-import*as Utils from"../../../utils.js";import{Type}from"./type.js";export class Instance{constructor({item_type:t}){this.item_type=t}Item_Type(){return this.item_type}Is_Part(){return this.item_type===Type.PART}Is_Split(){return this.item_type===Type.SPLIT}Value(){return Utils.Assert(!1,"This method must be overridden to be used."),""}}
+export{};

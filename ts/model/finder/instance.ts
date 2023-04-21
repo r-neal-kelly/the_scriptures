@@ -8,11 +8,7 @@ import * as Body from "./body.js";
 
 export class Instance extends Entity.Instance
 {
-    private search: Search.Instance;
-    private search_expression: string | null;
-    private search_help: Search.Parser.Help | null;
     private search_results: Array<Search.Result.Instance> | null;
-
     private commander: Commander.Instance;
     private body: Body.Instance;
 
@@ -20,9 +16,6 @@ export class Instance extends Entity.Instance
     {
         super();
 
-        this.search = new Search.Instance();
-        this.search_expression = null;
-        this.search_help = null;
         this.search_results = null;
 
         this.commander = new Commander.Instance(
@@ -39,29 +32,11 @@ export class Instance extends Entity.Instance
         this.Add_Dependencies(
             [
                 Data.Singleton(),
-                this.search,
+                Search.Singleton(),
                 this.commander,
                 this.body,
             ],
         );
-    }
-
-    Search():
-        Search.Instance
-    {
-        return this.search;
-    }
-
-    Maybe_Search_Expression():
-        string | null
-    {
-        return this.search_expression;
-    }
-
-    Maybe_Search_Help():
-        Search.Parser.Help | null
-    {
-        return this.search_help;
     }
 
     Maybe_Search_Results():
