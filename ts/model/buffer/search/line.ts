@@ -132,78 +132,188 @@ export class Instance extends Entity.Instance
                         result.Match(match_idx);
                     const first_part_index: Index =
                         match.First_Part_Index();
+                    const first_part_first_unit_index: Index =
+                        match.First_Part_First_Unit_Index();
+                    const last_part_end_unit_index: Index =
+                        match.Last_Part_End_Unit_Index();
                     const last_part_index: Index =
                         match.Last_Part_Index();
-
-                    // Each item in each segment can at most be made into
-                    // three divisions of highlight and non-highlights.
-                    // Most of the time it should just be one division,
-                    // but if it's a highlight at the end of an item,
-                    // then it needs to be split in two, and likewise
-                    // for when the highlight is as the front of an item.
-                    // On occasion a highlight will be in the middle of
-                    // an item, in which case there needs to be two
-                    // non-highlights on either side. I think that should
-                    // be sufficient. Keep in mind that the matches
-                    // give the unit and not the point indices for these things.
-                    // They naturally fall on the unicode point boundaries, but
-                    // it need to be kept in mind.
-
-                    {
-                        const first_part_first_Unit_index: Index =
-                            match.First_Part_First_Unit_Index();
-                        const first_segment_item_indices: Array<Text.Line.Segment_Item_Index> =
-                            result.Line().Macro_Part_Segment_Item_Indices(first_part_index);
-                        for (
-                            let segment_item_idx = 0, segment_item_end = first_segment_item_indices.length;
-                            segment_item_idx < segment_item_end;
-                            segment_item_idx += 1
-                        ) {
-                            const {
-                                segment_index,
-                                item_index,
-                            }: Text.Line.Segment_Item_Index =
-                                first_segment_item_indices[segment_item_idx];
-
-                        }
-                    }
+                    const end_part_index: Index =
+                        match.End_Part_Index();
 
                     for (
-                        let part_idx = first_part_index + 1, part_end = last_part_index;
+                        let part_idx = first_part_index, part_end = end_part_index;
                         part_idx < part_end;
                         part_idx += 1
                     ) {
                         const segment_item_indices: Array<Text.Line.Segment_Item_Index> =
                             result.Line().Macro_Part_Segment_Item_Indices(part_idx);
-                        for (
-                            let segment_item_idx = 0, segment_item_end = segment_item_indices.length;
-                            segment_item_idx < segment_item_end;
-                            segment_item_idx += 1
+                        if (
+                            part_idx === first_part_index &&
+                            part_idx === last_part_index
                         ) {
-                            const {
-                                segment_index,
-                                item_index,
-                            }: Text.Line.Segment_Item_Index =
-                                segment_item_indices[segment_item_idx];
-                            // Highlight whole item.
-                        }
-                    }
-
-                    {
-                        const last_part_end_Unit_index: Index =
-                            match.Last_Part_End_Unit_Index();
-                        const last_segment_item_indices: Array<Text.Line.Segment_Item_Index> =
-                            result.Line().Macro_Part_Segment_Item_Indices(last_part_index);
-                        for (
-                            let segment_item_idx = 0, segment_item_end = last_segment_item_indices.length;
-                            segment_item_idx < segment_item_end;
-                            segment_item_idx += 1
+                            let found_first_unit: boolean = false;
+                            for (
+                                let segment_item_idx = 0, segment_item_end = segment_item_indices.length;
+                                segment_item_idx < segment_item_end;
+                                segment_item_idx += 1
+                            ) {
+                                const {
+                                    segment_index,
+                                    item_index,
+                                }: Text.Line.Segment_Item_Index =
+                                    segment_item_indices[segment_item_idx];
+                                const text_segment: Text.Segment.Instance =
+                                    result.Line().Macro_Segment(segment_index);
+                                const text_item: Text.Item.Instance =
+                                    text_segment.Item(item_index);
+                                if (text_item.Is_Part()) {
+                                    Utils.Assert(
+                                        segment_item_end === 1,
+                                        `A part item in segment was found split between segments!.`,
+                                    );
+                                    //this.Segment(segment_index)
+                                    //.Item(item_index)
+                                    //.Highlight(first_part_first_unit_index, last_part_end_unit_index)
+                                } else {
+                                    const text_split: Text.Split.Instance =
+                                        text_item as Text.Split.Instance;
+                                    const text_split_end_unit_index: Index =
+                                        text_split.End_Unit_Index();
+                                    if (!found_first_unit) {
+                                        if (first_part_first_unit_index < text_split_end_unit_index) {
+                                            found_first_unit = true;
+                                            if (last_part_end_unit_index <= text_split_end_unit_index) {
+                                                //this.Segment(segment_index)
+                                                //.Item(item_index)
+                                                //.Highlight(first_part_first_unit_index - text_split.First_Unit_Index(), last_part_end_unit_index - text_split.First_Unit_Index())
+                                                break;
+                                            } else {
+                                                //this.Segment(segment_index)
+                                                //.Item(item_index)
+                                                //.Highlight(first_part_first_unit_index - text_split.First_Unit_Index(), text_split.Value().length)
+                                            }
+                                        }
+                                    } else {
+                                        if (last_part_end_unit_index <= text_split_end_unit_index) {
+                                            //this.Segment(segment_index)
+                                            //.Item(item_index)
+                                            //.Highlight(0, last_part_end_unit_index - text_split.First_Unit_Index())
+                                            break;
+                                        } else {
+                                            //this.Segment(segment_index)
+                                            //.Item(item_index)
+                                            //.Highlight(0, text_split.Value().length)
+                                        }
+                                    }
+                                }
+                            }
+                        } else if (
+                            part_idx === first_part_index
                         ) {
-                            const {
-                                segment_index,
-                                item_index,
-                            }: Text.Line.Segment_Item_Index =
-                                last_segment_item_indices[segment_item_idx];
+                            let found_first_unit: boolean = false;
+                            for (
+                                let segment_item_idx = 0, segment_item_end = segment_item_indices.length;
+                                segment_item_idx < segment_item_end;
+                                segment_item_idx += 1
+                            ) {
+                                const {
+                                    segment_index,
+                                    item_index,
+                                }: Text.Line.Segment_Item_Index =
+                                    segment_item_indices[segment_item_idx];
+                                const text_segment: Text.Segment.Instance =
+                                    result.Line().Macro_Segment(segment_index);
+                                const text_item: Text.Item.Instance =
+                                    text_segment.Item(item_index);
+                                if (text_item.Is_Part()) {
+                                    Utils.Assert(
+                                        segment_item_end === 1,
+                                        `A part item in segment was found split between segments!.`,
+                                    );
+                                    //this.Segment(segment_index)
+                                    //.Item(item_index)
+                                    //.Highlight(first_part_first_unit_index, text_item.Value().length)
+                                } else {
+                                    const text_split: Text.Split.Instance =
+                                        text_item as Text.Split.Instance;
+                                    const text_split_end_unit_index: Index =
+                                        text_split.End_Unit_Index();
+                                    if (!found_first_unit) {
+                                        if (first_part_first_unit_index < text_split_end_unit_index) {
+                                            found_first_unit = true;
+                                            //this.Segment(segment_index)
+                                            //.Item(item_index)
+                                            //.Highlight(first_part_first_unit_index - text_split.First_Unit_Index(), text_split.Value().length)
+                                        }
+                                    } else {
+                                        //this.Segment(segment_index)
+                                        //.Item(item_index)
+                                        //.Highlight(0, text_split.Value().length)
+                                    }
+                                }
+                            }
+                        } else if (
+                            part_idx === last_part_index
+                        ) {
+                            for (
+                                let segment_item_idx = 0, segment_item_end = segment_item_indices.length;
+                                segment_item_idx < segment_item_end;
+                                segment_item_idx += 1
+                            ) {
+                                const {
+                                    segment_index,
+                                    item_index,
+                                }: Text.Line.Segment_Item_Index =
+                                    segment_item_indices[segment_item_idx];
+                                const text_segment: Text.Segment.Instance =
+                                    result.Line().Macro_Segment(segment_index);
+                                const text_item: Text.Item.Instance =
+                                    text_segment.Item(item_index);
+                                if (text_item.Is_Part()) {
+                                    Utils.Assert(
+                                        segment_item_end === 1,
+                                        `A part item in segment was found split between segments!.`,
+                                    );
+                                    //this.Segment(segment_index)
+                                    //.Item(item_index)
+                                    //.Highlight(0, last_part_end_unit_index)
+                                } else {
+                                    const text_split: Text.Split.Instance =
+                                        text_item as Text.Split.Instance;
+                                    const text_split_end_unit_index: Index =
+                                        text_split.End_Unit_Index();
+                                    if (last_part_end_unit_index <= text_split_end_unit_index) {
+                                        //this.Segment(segment_index)
+                                        //.Item(item_index)
+                                        //.Highlight(0, last_part_end_unit_index - text_split.First_Unit_Index())
+                                        break;
+                                    } else {
+                                        //this.Segment(segment_index)
+                                        //.Item(item_index)
+                                        //.Highlight(0, text_split.Value().length)
+                                    }
+                                }
+                            }
+                        } else {
+                            for (
+                                let segment_item_idx = 0, segment_item_end = segment_item_indices.length;
+                                segment_item_idx < segment_item_end;
+                                segment_item_idx += 1
+                            ) {
+                                const {
+                                    segment_index,
+                                    item_index,
+                                }: Text.Line.Segment_Item_Index =
+                                    segment_item_indices[segment_item_idx];
+                                const text_segment: Text.Segment.Instance =
+                                    result.Line().Macro_Segment(segment_index);
+                                const text_item: Text.Item.Instance =
+                                    text_segment.Item(item_index);
+                                //this.Segment(segment_index)
+                                //.Item(item_index)
+                                //.Highlight(0, text_item.Value().length)
+                            }
                         }
                     }
                 }

@@ -16,7 +16,7 @@ export function From(
     const matches: RegExpMatchArray | null =
         break_.Value().match(/\S+|\s/g);
     if (matches != null) {
-        let point_idx: Index = 0;
+        let unit_idx: Index = 0;
         for (
             let match_idx = 0, match_end = matches.length;
             match_idx < match_end;
@@ -29,10 +29,10 @@ export function From(
                             break_,
                         index:
                             match_idx,
-                        first_point_index:
-                            point_idx,
-                        end_point_index:
-                            point_idx += matches[match_idx].length,
+                        first_unit_index:
+                            unit_idx,
+                        end_unit_index:
+                            unit_idx += matches[match_idx].length,
                     },
                 ),
             );
@@ -46,21 +46,21 @@ export class Instance implements Item.Instance
 {
     private break_: Part.Break.Instance;
     private index: Index;
-    private first_point_index: Index;
-    private end_point_index: Index;
+    private first_unit_index: Index;
+    private end_unit_index: Index;
     private value: Value;
 
     constructor(
         {
             break_,
             index,
-            first_point_index,
-            end_point_index,
+            first_unit_index,
+            end_unit_index,
         }: {
             break_: Part.Break.Instance,
             index: Index,
-            first_point_index: Index,
-            end_point_index: Index,
+            first_unit_index: Index,
+            end_unit_index: Index,
         }
     )
     {
@@ -69,25 +69,25 @@ export class Instance implements Item.Instance
             `index must be greater than -1.`,
         );
         Utils.Assert(
-            first_point_index > -1,
-            `first_point_index must be greater than -1.`,
+            first_unit_index > -1,
+            `first_unit_index must be greater than -1.`,
         );
         Utils.Assert(
-            end_point_index > first_point_index,
-            `end_point_index must be greater than first_point_index.`,
+            end_unit_index > first_unit_index,
+            `end_unit_index must be greater than first_unit_index.`,
         );
         Utils.Assert(
-            end_point_index <= break_.Value().length,
-            `end_point_index must be less than or equal to break_value_length.`,
+            end_unit_index <= break_.Value().length,
+            `end_unit_index must be less than or equal to break_value_length.`,
         );
 
         this.break_ = break_;
         this.index = index;
-        this.first_point_index = first_point_index;
-        this.end_point_index = end_point_index;
+        this.first_unit_index = first_unit_index;
+        this.end_unit_index = end_unit_index;
         this.value = break_.Value().slice(
-            first_point_index,
-            end_point_index,
+            first_unit_index,
+            end_unit_index,
         );
     }
 
@@ -127,16 +127,16 @@ export class Instance implements Item.Instance
         return this.Break().Index();
     }
 
-    First_Point_Index():
+    First_Unit_Index():
         Index
     {
-        return this.first_point_index;
+        return this.first_unit_index;
     }
 
-    End_Point_Index():
+    End_Unit_Index():
         Index
     {
-        return this.end_point_index;
+        return this.end_unit_index;
     }
 
     Value():
