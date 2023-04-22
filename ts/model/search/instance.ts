@@ -81,7 +81,7 @@ export class Instance extends Entity.Instance
                 this.Text(version_text.File_Text_At(idx), expression);
             if (file_result instanceof Parser.Help) {
                 return file_result as Parser.Help;
-            } else {
+            } else if (file_result.length > 0) {
                 version_result.set(data_version.File_At(idx), file_result);
             }
         }
@@ -109,11 +109,13 @@ export class Instance extends Entity.Instance
                     this.Text(version_text.File_Text_At(idx), expression);
                 if (file_result instanceof Parser.Help) {
                     return file_result as Parser.Help;
-                } else {
+                } else if (file_result.length > 0) {
                     version_result.set(version_data.File_At(idx), file_result);
                 }
             }
-            versions_result.set(version_data, version_result);
+            if (version_result.size > 0) {
+                versions_result.set(version_data, version_result);
+            }
         }
 
         return versions_result;

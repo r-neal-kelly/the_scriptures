@@ -38,6 +38,9 @@ export class Instance extends Entity.Instance
         this.results = new Results.Instance(
             {
                 body: this,
+                filter_slot_order: this.filter.Slot_Order(),
+                versions_results: new Map(),
+                is_showing_commands: false,
             },
         );
 
@@ -96,10 +99,12 @@ export class Instance extends Entity.Instance
             if (file_results instanceof Search.Parser.Help) {
                 versions_results = file_results as Search.Parser.Help;
             } else {
-                const version_result: Search.Result.Version = new Map();
-                version_result.set(file, file_results);
                 versions_results = new Map();
-                versions_results.set(file.Version(), version_result);
+                if (file_results.length > 0) {
+                    const version_result: Search.Result.Version = new Map();
+                    version_result.set(file, file_results);
+                    versions_results.set(file.Version(), version_result);
+                }
             }
         } else {
             versions_results = await Search.Singleton().Data_Versions(
@@ -108,19 +113,27 @@ export class Instance extends Entity.Instance
             );
         }
 
-        // now that the async part is out of the way, we can just pass all this stuff
-        // to the results type and it can delegate any further setup to get all of its
-        // types in order. also, we'll need to give results the slot order of filter.
-        // We'll need to create results with default values if it's a parser help.
-
         if (versions_results instanceof Search.Parser.Help) {
-
+            this.results = new Results.Instance(
+                {
+                    body: this,
+                    filter_slot_order: this.filter.Slot_Order(),
+                    versions_results: new Map(),
+                    is_showing_commands: false,
+                },
+            );
         } else {
+            const expression_has_command: boolean =
+                Text.Part.Command.Maybe_Valid_Value_From(expression_value) !== null;
 
+            this.results = new Results.Instance(
+                {
+                    body: this,
+                    filter_slot_order: this.filter.Slot_Order(),
+                    versions_results: versions_results,
+                    is_showing_commands: expression_has_command,
+                },
+            );
         }
-
-        // this might be done in results ctor
-        const expression_has_command: boolean =
-            Text.Part.Command.Maybe_Valid_Value_From(expression_value) !== null;
     }
 }
