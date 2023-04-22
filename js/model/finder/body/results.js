@@ -1,1 +1,1 @@
-"use strict";
+export{Instance}from"./results/instance.js";

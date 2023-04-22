@@ -1,1 +1,1 @@
-"use strict";
+import*as Entity from"../../../entity.js";import*as Tree from"./tree.js";import*as Buffer from"../../../buffer/search.js";export class Instance extends Entity.Instance{constructor({body:e}){super(),this.body=e,this.tree=new Tree.Instance({results:this}),this.buffer=new Buffer.Instance({results:[],is_showing_command:!1}),this.Add_Dependencies([this.tree,this.buffer])}Body(){return this.body}Tree(){return this.tree}Buffer(){return this.buffer}}

@@ -3,6 +3,7 @@ import { Index } from "../../types.js";
 
 import * as Utils from "../../utils.js";
 
+import * as Data from "../data.js";
 import * as Text from "../text.js";
 
 export class Match
@@ -284,3 +285,6 @@ export class Instance
         }
     }
 }
+
+export type Version = Map<Data.File.Instance, Array<Instance>>;
+export type Versions = Map<Data.Version.Instance, Version>;

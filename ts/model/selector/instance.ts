@@ -135,6 +135,19 @@ export class Instance extends Entity.Instance
         return this.slots[0];
     }
 
+    Has_Slot_At_Index(
+        slot_index: Index,
+    ):
+        boolean
+    {
+        Utils.Assert(
+            slot_index > -1,
+            `slot_index must be greater than -1.`,
+        );
+
+        return slot_index < this.Slot_Count();
+    }
+
     Slot_At_Index(
         slot_index: Index,
     ):
@@ -378,6 +391,45 @@ export class Instance extends Entity.Instance
             return this.File();
         } else {
             return null;
+        }
+    }
+
+    File_Or_Versions():
+        Data.File.Instance | Array<Data.Version.Instance>
+    {
+        if (this.Has_File()) {
+            return this.File();
+        } else {
+            let book_names: Array<Name> | null = null;
+            let language_names: Array<Name> | null = null;
+            let version_names: Array<Name> | null = null;
+
+            if (this.Has_Books()) {
+                const books: Slot.Instance = this.Books();
+                if (books.Has_Selected_Item()) {
+                    book_names = [books.Selected_Item().Name()];
+                }
+            }
+            if (this.Has_Languages()) {
+                const languages: Slot.Instance = this.Languages();
+                if (languages.Has_Selected_Item()) {
+                    language_names = [languages.Selected_Item().Name()];
+                }
+            }
+            if (this.Has_Versions()) {
+                const versions: Slot.Instance = this.Versions();
+                if (versions.Has_Selected_Item()) {
+                    version_names = [versions.Selected_Item().Name()];
+                }
+            }
+
+            return Data.Singleton().Versions(
+                {
+                    book_names: book_names,
+                    language_names: language_names,
+                    version_names: version_names,
+                },
+            );
         }
     }
 

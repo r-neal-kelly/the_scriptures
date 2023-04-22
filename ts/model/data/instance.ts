@@ -1225,10 +1225,9 @@ export class Instance extends Async.Instance
     }
 }
 
-const singleton = new Instance();
-
+const SINGLETON = new Instance();
 export function Singleton():
     Instance
 {
-    return singleton;
+    return SINGLETON;
 }

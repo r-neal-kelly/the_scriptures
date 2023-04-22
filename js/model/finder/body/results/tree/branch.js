@@ -1,0 +1,1 @@
+import*as Entity from"../../../../entity.js";export class Instance extends Entity.Instance{constructor({parent:t}){super(),this.parent=t,this.branches_or_leaves=[]}Parent(){return this.parent}}
