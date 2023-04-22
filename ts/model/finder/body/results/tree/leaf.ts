@@ -12,7 +12,7 @@ export type Data = {
 
 export class Instance extends Entity.Instance
 {
-    private parent: Tree.Instance | Branch.Instance;
+    private parent: Branch.Instance;
     private data: Data;
 
     constructor(
@@ -20,7 +20,7 @@ export class Instance extends Entity.Instance
             parent,
             data,
         }: {
-            parent: Tree.Instance | Branch.Instance,
+            parent: Branch.Instance,
             data: Data,
         },
     )
@@ -34,16 +34,11 @@ export class Instance extends Entity.Instance
     Tree():
         Tree.Instance
     {
-        let parent: Tree.Instance | Branch.Instance = this.Parent();
-        while (parent instanceof Branch.Instance) {
-            parent = parent.Parent();
-        }
-
-        return parent;
+        return this.Parent().Tree();
     }
 
     Parent():
-        Tree.Instance | Branch.Instance
+        Branch.Instance
     {
         return this.parent;
     }

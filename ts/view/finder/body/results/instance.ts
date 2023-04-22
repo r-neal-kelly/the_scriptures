@@ -1,12 +1,12 @@
 import * as Utils from "../../../../utils.js";
 import * as Event from "../../../../event.js";
 
-import * as Model from "../../../../model/finder/body/instance.js";
+import * as Model from "../../../../model/finder/body/results/instance.js";
 
 import * as Entity from "../../../entity.js";
+import * as Buffer from "../../../buffer/search.js";
 import * as Body from "../instance.js";
 import * as Tree from "./tree.js";
-import * as List from "./list.js";
 
 export class Instance extends Entity.Instance
 {
@@ -46,20 +46,21 @@ export class Instance extends Entity.Instance
     {
         if (
             !this.Has_Tree() ||
-            !this.Has_List()
+            !this.Has_Buffer()
         ) {
             this.Abort_All_Children();
 
             new Tree.Instance(
                 {
                     results: this,
-                    model: () => this.Model(),
+                    model: () => this.Model().Tree(),
                 },
             );
-            new List.Instance(
+            new Buffer.Instance(
                 {
-                    results: this,
-                    model: () => this.Model(),
+                    parent: this,
+                    model: () => this.Model().Buffer(),
+                    event_grid_id: () => this.Body().Finder().ID(),
                 },
             );
         }
@@ -103,23 +104,23 @@ export class Instance extends Entity.Instance
         return this.Child(0) as Tree.Instance;
     }
 
-    Has_List():
+    Has_Buffer():
         boolean
     {
         return (
             this.Has_Child(1) &&
-            this.Child(1) instanceof List.Instance
+            this.Child(1) instanceof Buffer.Instance
         );
     }
 
-    List():
-        List.Instance
+    Buffer():
+        Buffer.Instance
     {
         Utils.Assert(
-            this.Has_List(),
-            `Does not have List.`,
+            this.Has_Buffer(),
+            `Does not have Buffer.`,
         );
 
-        return this.Child(1) as List.Instance;
+        return this.Child(1) as Buffer.Instance;
     }
 }

@@ -1,11 +1,10 @@
 import * as Utils from "../../../../../utils.js";
 import * as Event from "../../../../../event.js";
 
-import * as Model from "../../../../../model/finder/body/results/tree/instance.js";
+import * as Model from "../../../../../model/finder/body/results/tree/branch.js";
 
 import * as Entity from "../../../../entity.js";
-import * as Results from "../instance.js";
-import * as Root from "./branch.js";
+import * as Branch from "./branch.js";
 
 export class Instance extends Entity.Instance
 {
@@ -13,10 +12,10 @@ export class Instance extends Entity.Instance
 
     constructor(
         {
-            results,
+            branch,
             model,
         }: {
-            results: Results.Instance,
+            branch: Branch.Instance,
             model: () => Model.Instance,
         },
     )
@@ -24,8 +23,8 @@ export class Instance extends Entity.Instance
         super(
             {
                 element: `div`,
-                parent: results,
-                event_grid: results.Event_Grid(),
+                parent: branch,
+                event_grid: branch.Event_Grid(),
             },
         );
 
@@ -43,24 +42,21 @@ export class Instance extends Entity.Instance
     override On_Refresh():
         void
     {
-        if (
-            !this.Has_Root()
-        ) {
-            this.Abort_All_Children();
-
-            new Root.Instance(
-                {
-                    parent: this,
-                    model: () => this.Model().Root(),
-                },
-            );
-        }
+        this.Element().textContent = this.Model().Name();
     }
 
     override On_Reclass():
         Array<string>
     {
-        return [`Tree`];
+        const model: Model.Instance = this.Model();
+        const classes: Array<string> = [];
+
+        classes.push(`Branch_Name`);
+        if (model.Is_Selected()) {
+            classes.push(`Selected`);
+        }
+
+        return classes;
     }
 
     Model():
@@ -69,29 +65,23 @@ export class Instance extends Entity.Instance
         return this.model();
     }
 
-    Results():
-        Results.Instance
-    {
-        return this.Parent() as Results.Instance;
-    }
-
-    Has_Root():
+    Has_Branch():
         boolean
     {
         return (
             this.Has_Child(0) &&
-            this.Child(0) instanceof Root.Instance
+            this.Child(0) instanceof Branch.Instance
         );
     }
 
-    Root():
-        Root.Instance
+    Branch():
+        Branch.Instance
     {
         Utils.Assert(
-            this.Has_Root(),
-            `Does not have Root.`,
+            this.Has_Branch(),
+            `Does not have Branch.`,
         );
 
-        return this.Child(0) as Root.Instance;
+        return this.Child(0) as Branch.Instance;
     }
 }

@@ -69,7 +69,7 @@ export class Instance extends Entity.Instance
         Tree.Instance
     {
         let parent: Tree.Instance | Instance = this.Parent();
-        while (parent instanceof Instance) {
+        while (!(parent instanceof Tree.Instance)) {
             parent = parent.Parent();
         }
 

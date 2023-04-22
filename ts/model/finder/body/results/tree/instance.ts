@@ -25,7 +25,7 @@ export class Instance extends Entity.Instance
         this.root = new Branch.Instance(
             {
                 parent: this,
-                name: ``,
+                name: `Results`,
                 data: data,
             },
         );

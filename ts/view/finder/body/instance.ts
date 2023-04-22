@@ -3,9 +3,10 @@ import * as Event from "../../../event.js";
 
 import * as Model from "../../../model/finder/body/instance.js";
 
+import * as Events from "../../events.js";
 import * as Entity from "../../entity.js";
 import * as Finder from "../instance.js";
-import * as Selector from "../../selector.js";
+import * as Filter from "../../selector.js";
 import * as Expression from "./expression.js";
 import * as Results from "./results.js";
 
@@ -94,7 +95,19 @@ export class Instance extends Entity.Instance
             `,
         );
 
-        return [];
+        return [
+            new Event.Listener_Info(
+                {
+                    event_name: new Event.Name(
+                        Event.Prefix.ON,
+                        Events.FINDER_BODY_EXPRESSION_ENTER,
+                        this.Finder().ID(),
+                    ),
+                    event_handler: this.On_Finder_Body_Expression_Enter,
+                    event_priority: 10,
+                },
+            ),
+        ];
     }
 
     override On_Refresh():
@@ -107,7 +120,7 @@ export class Instance extends Entity.Instance
         ) {
             this.Abort_All_Children();
 
-            new Selector.Instance(
+            new Filter.Instance(
                 {
                     parent: this,
                     model: () => this.Model().Filter(),
@@ -118,13 +131,13 @@ export class Instance extends Entity.Instance
             new Expression.Instance(
                 {
                     body: this,
-                    model: () => this.Model(),
+                    model: () => this.Model().Expression(),
                 },
             );
             new Results.Instance(
                 {
                     body: this,
-                    model: () => this.Model(),
+                    model: () => this.Model().Results(),
                 },
             );
         }
@@ -134,6 +147,13 @@ export class Instance extends Entity.Instance
         Array<string>
     {
         return [`Body`];
+    }
+
+    private async On_Finder_Body_Expression_Enter():
+        Promise<void>
+    {
+        await this.Model().Search();
+        this.Refresh();
     }
 
     Model():
@@ -153,19 +173,19 @@ export class Instance extends Entity.Instance
     {
         return (
             this.Has_Child(0) &&
-            this.Child(0) instanceof Selector.Instance
+            this.Child(0) instanceof Filter.Instance
         );
     }
 
     Filter():
-        Selector.Instance
+        Filter.Instance
     {
         Utils.Assert(
             this.Has_Filter(),
             `Does not have Filter.`,
         );
 
-        return this.Child(0) as Selector.Instance;
+        return this.Child(0) as Filter.Instance;
     }
 
     Has_Expression():
