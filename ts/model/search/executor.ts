@@ -4,6 +4,7 @@ import { Index } from "../../types.js";
 import * as Utils from "../../utils.js";
 
 import * as Text from "../text.js";
+import { Sequence_Type } from "./sequence_type.js";
 import * as Parser from "./parser.js";
 import * as Compiler from "./compiler.js";
 import * as Token from "./token.js";
@@ -13,11 +14,11 @@ import * as Result from "./result.js";
 export enum Mode
 {
     INITIAL = 0,
-    COMPLEX_SEQUENCE = 1 << 0,
-    NOT = 1 << 1,
-    CASE = 1 << 2,
-    ALIGN = 1 << 3,
-    META = 1 << 4,
+    NOT = 1 << 0,
+    CASE = 1 << 1,
+    ALIGN = 1 << 2,
+    META = 1 << 3,
+    COMPLEX_SEQUENCE = 1 << 4,
 }
 
 export class Instance
@@ -101,9 +102,10 @@ export class Instance
 
         } else if (node_type === Node.Type.SEQUENCE) {
             const sequence: Node.Sequence = node as Node.Sequence;
+            const sequence_type: Sequence_Type = sequence.Sequence_Type();
             const sequence_result: Result.Instance | null = this.Step(
                 sequence.Operand(),
-                sequence.Is_Complex() ?
+                sequence_type === Sequence_Type.COMPLEX_SEQUENCE ?
                     mode | Mode.COMPLEX_SEQUENCE :
                     mode,
                 new Result.Instance(result.Line()),
@@ -233,7 +235,11 @@ export class Instance
             return this.Class(node, mode, result);
 
         } else if (node_type === Node.Type.TEXT) {
-            return this.Text(node, mode, result);
+            if (mode & Mode.COMPLEX_SEQUENCE) {
+                return this.Complex_Text(node, mode, result);
+            } else {
+                return this.Text(node, mode, result);
+            }
 
         } else if (node_type === Node.Type.END) {
             return result;
@@ -256,148 +262,37 @@ export class Instance
     ):
         Result.Instance | null
     {
-        const text: Node.Text = node as Node.Text;
-        if (result.Match_Count() === 0) {
-            let text_result_any: Result.Instance | null;
-            if (mode & Mode.COMPLEX_SEQUENCE) {
-                text_result_any = this.Complex_Text_Any(text, mode, result);
-            } else {
-                text_result_any = this.Text_Any(text, mode, result);
-            }
-            if (text_result_any != null) {
-                text_result_any = this.Step(
-                    text.Next(),
-                    mode,
-                    text_result_any,
-                );
-                if (text_result_any != null) {
-                    return text_result_any;
-                } else {
-                    let text_result_start: Result.Instance | null;
-                    if (mode & Mode.COMPLEX_SEQUENCE) {
-                        text_result_start = this.Complex_Text_Start(text, mode, result);
-                    } else {
-                        text_result_start = this.Text_Start(text, mode, result);
-                    }
-                    if (text_result_start != null) {
-                        return this.Step(
-                            text.Next(),
-                            mode,
-                            text_result_start,
-                        );
-                    } else {
-                        return null;
-                    }
-                }
-            } else {
-                let text_result_start: Result.Instance | null;
-                if (mode & Mode.COMPLEX_SEQUENCE) {
-                    text_result_start = this.Complex_Text_Start(text, mode, result);
-                } else {
-                    text_result_start = this.Text_Start(text, mode, result);
-                }
-                if (text_result_start != null) {
-                    return this.Step(
-                        text.Next(),
-                        mode,
-                        text_result_start,
-                    );
-                } else {
-                    return null;
-                }
-            }
+        const texts: Array<Node.Text> = [];
+        while (!(node instanceof Node.End)) {
+            texts.push(node as Node.Text);
+            node = node.Next();
+        }
+
+        let text_result: Result.Instance | null;
+        if (texts.length === 1) {
+            text_result = this.Text_Any(texts[0], mode, result);
         } else {
-            let text_result_middle: Result.Instance | null;
-            if (mode & Mode.COMPLEX_SEQUENCE) {
-                text_result_middle = this.Complex_Text_Middle(text, mode, result);
-            } else {
-                text_result_middle = this.Text_Middle(text, mode, result);
+            text_result = this.Text_Start(texts[0], mode, result);
+            for (let idx = 1, end = texts.length - 1; idx < end; idx += 1) {
+                if (text_result != null) {
+                    text_result = this.Text_Middle(texts[idx], mode, text_result);
+                } else {
+                    break;
+                }
             }
-            if (text_result_middle != null) {
-                text_result_middle = this.Step(
-                    text.Next(),
-                    mode,
-                    text_result_middle,
-                );
-                if (text_result_middle != null) {
-                    return text_result_middle;
-                } else {
-                    let text_result_end: Result.Instance | null;
-                    if (mode & Mode.COMPLEX_SEQUENCE) {
-                        text_result_end = this.Complex_Text_End(text, mode, result);
-                    } else {
-                        text_result_end = this.Text_End(text, mode, result);
-                    }
-                    if (text_result_end != null) {
-                        return this.Step(
-                            text.Next(),
-                            mode,
-                            text_result_end,
-                        );
-                    } else {
-                        return null;
-                    }
-                }
-            } else {
-                let text_result_end: Result.Instance | null;
-                if (mode & Mode.COMPLEX_SEQUENCE) {
-                    text_result_end = this.Complex_Text_End(text, mode, result);
-                } else {
-                    text_result_end = this.Text_End(text, mode, result);
-                }
-                if (text_result_end != null) {
-                    return this.Step(
-                        text.Next(),
-                        mode,
-                        text_result_end,
-                    );
-                } else {
-                    return null;
-                }
+            if (text_result != null) {
+                text_result = this.Text_End(texts[texts.length - 1], mode, text_result);
             }
         }
-    }
 
-    private Class(
-        node: Node.Instance,
-        mode: Mode,
-        result: Result.Instance,
-    ):
-        Result.Instance | null
-    {
-        const class_: Node.Class = node as Node.Class;
-        if (result.Match_Count() === 0) {
-            let class_result: Result.Instance | null;
-            if (mode & Mode.COMPLEX_SEQUENCE) {
-                class_result = this.Complex_Class_Any_Or_Start(class_, mode, result);
-            } else {
-                class_result = this.Class_Any_Or_Start(class_, mode, result);
-            }
-            if (class_result != null) {
-                return this.Step(
-                    class_.Next(),
-                    mode,
-                    class_result,
-                );
-            } else {
-                return null;
-            }
+        if (text_result != null) {
+            return this.Step(
+                node,
+                mode,
+                text_result,
+            );
         } else {
-            let class_result: Result.Instance | null;
-            if (mode & Mode.COMPLEX_SEQUENCE) {
-                class_result = this.Complex_Class_Middle_Or_End(class_, mode, result);
-            } else {
-                class_result = this.Class_Middle_Or_End(class_, mode, result);
-            }
-            if (class_result != null) {
-                return this.Step(
-                    class_.Next(),
-                    mode,
-                    class_result,
-                );
-            } else {
-                return null;
-            }
+            return null;
         }
     }
 
@@ -448,52 +343,29 @@ export class Instance
                         );
                     }
                 } else {
-                    let is_match: boolean = false;
-                    let first_part_first_unit_index: Index = 0;
-                    let last_part_end_unit_index: Index = 0;
                     for (
-                        let search_value_idx = 0, search_value_end = search_value.length;
-                        search_value_idx < search_value_end - (expression_value.length - 1);
+                        let search_value_idx = 0,
+                        search_value_end = search_value.length - (expression_value.length - 1);
+                        search_value_idx < search_value_end;
+                        search_value_idx += 1
                     ) {
-                        if (!is_match) {
-                            if (
-                                search_value.slice(
-                                    search_value_idx,
-                                    search_value_idx + expression_value.length,
-                                ) === expression_value
-                            ) {
-                                is_match = true;
-                                first_part_first_unit_index = search_value_idx;
-                                search_value_idx += expression_value.length;
-                                last_part_end_unit_index = search_value_idx;
-                            } else {
-                                search_value_idx += 1;
-                            }
-                        } else {
-                            if (
-                                search_value.slice(
-                                    search_value_idx,
-                                    search_value_idx + expression_value.length,
-                                ) === expression_value
-                            ) {
-                                search_value_idx += expression_value.length;
-                                last_part_end_unit_index = search_value_idx;
-                            } else {
-                                break;
-                            }
+                        if (
+                            search_value.slice(
+                                search_value_idx,
+                                search_value_idx + expression_value.length,
+                            ) === expression_value
+                        ) {
+                            new_result.Try_Add_Match(
+                                new Result.Match(
+                                    {
+                                        first_part_index: search_idx,
+                                        end_part_index: search_idx + 1,
+                                        first_part_first_unit_index: search_value_idx,
+                                        last_part_end_unit_index: search_value_idx + expression_value.length,
+                                    },
+                                ),
+                            );
                         }
-                    }
-                    if (is_match) {
-                        new_result.Try_Add_Match(
-                            new Result.Match(
-                                {
-                                    first_part_index: search_idx,
-                                    end_part_index: search_idx + 1,
-                                    first_part_first_unit_index: first_part_first_unit_index,
-                                    last_part_end_unit_index: last_part_end_unit_index,
-                                },
-                            ),
-                        );
                     }
                 }
             }
@@ -567,30 +439,12 @@ export class Instance
                             search_value.length,
                         ) === expression_value
                     ) {
-                        let first_part_first_unit_index =
-                            search_value.length - expression_value.length;
-                        for (
-                            let search_value_idx = first_part_first_unit_index, search_value_end = 0;
-                            search_value_idx > search_value_end + (expression_value.length - 1);
-                        ) {
-                            if (
-                                search_value.slice(
-                                    search_value_idx - expression_value.length,
-                                    search_value_idx,
-                                ) === expression_value
-                            ) {
-                                search_value_idx -= expression_value.length;
-                                first_part_first_unit_index = search_value_idx;
-                            } else {
-                                break;
-                            }
-                        }
                         new_result.Try_Add_Match(
                             new Result.Match(
                                 {
                                     first_part_index: search_idx,
                                     end_part_index: search_idx + 1,
-                                    first_part_first_unit_index: first_part_first_unit_index,
+                                    first_part_first_unit_index: search_value.length - expression_value.length,
                                     last_part_end_unit_index: search_value.length,
                                 },
                             ),
@@ -743,31 +597,13 @@ export class Instance
                                 expression_value.length,
                             ) === expression_value
                         ) {
-                            let last_part_end_unit_index =
-                                expression_value.length;
-                            for (
-                                let search_value_idx = last_part_end_unit_index, search_value_end = search_value.length;
-                                search_value_idx < search_value_end - (expression_value.length - 1);
-                            ) {
-                                if (
-                                    search_value.slice(
-                                        search_value_idx,
-                                        search_value_idx + expression_value.length,
-                                    ) === expression_value
-                                ) {
-                                    search_value_idx += expression_value.length;
-                                    last_part_end_unit_index = search_value_idx;
-                                } else {
-                                    break;
-                                }
-                            }
                             new_result.Try_Add_Match(
                                 new Result.Match(
                                     {
                                         first_part_index: old_match.First_Part_Index(),
                                         end_part_index: search_idx + command_count + 1,
                                         first_part_first_unit_index: old_match.First_Part_First_Unit_Index(),
-                                        last_part_end_unit_index: last_part_end_unit_index,
+                                        last_part_end_unit_index: expression_value.length,
                                     },
                                 ),
                             );
@@ -787,6 +623,91 @@ export class Instance
                 return new_result;
             } else {
                 return null;
+            }
+        }
+    }
+
+    private Complex_Text(
+        node: Node.Instance,
+        mode: Mode,
+        result: Result.Instance,
+    ):
+        Result.Instance | null
+    {
+        const text: Node.Text = node as Node.Text;
+        if (result.Match_Count() === 0) {
+            let text_result_any: Result.Instance | null =
+                this.Complex_Text_Any(text, mode, result);
+            if (text_result_any != null) {
+                text_result_any = this.Step(
+                    text.Next(),
+                    mode,
+                    text_result_any,
+                );
+                if (text_result_any != null) {
+                    return text_result_any;
+                } else {
+                    const text_result_start: Result.Instance | null =
+                        this.Complex_Text_Start(text, mode, result);
+                    if (text_result_start != null) {
+                        return this.Step(
+                            text.Next(),
+                            mode,
+                            text_result_start,
+                        );
+                    } else {
+                        return null;
+                    }
+                }
+            } else {
+                const text_result_start: Result.Instance | null =
+                    this.Complex_Text_Start(text, mode, result);
+                if (text_result_start != null) {
+                    return this.Step(
+                        text.Next(),
+                        mode,
+                        text_result_start,
+                    );
+                } else {
+                    return null;
+                }
+            }
+        } else {
+            let text_result_middle: Result.Instance | null =
+                this.Complex_Text_Middle(text, mode, result);
+            if (text_result_middle != null) {
+                text_result_middle = this.Step(
+                    text.Next(),
+                    mode,
+                    text_result_middle,
+                );
+                if (text_result_middle != null) {
+                    return text_result_middle;
+                } else {
+                    const text_result_end: Result.Instance | null =
+                        this.Complex_Text_End(text, mode, result);
+                    if (text_result_end != null) {
+                        return this.Step(
+                            text.Next(),
+                            mode,
+                            text_result_end,
+                        );
+                    } else {
+                        return null;
+                    }
+                }
+            } else {
+                const text_result_end: Result.Instance | null =
+                    this.Complex_Text_End(text, mode, result);
+                if (text_result_end != null) {
+                    return this.Step(
+                        text.Next(),
+                        mode,
+                        text_result_end,
+                    );
+                } else {
+                    return null;
+                }
             }
         }
     }
@@ -1271,6 +1192,49 @@ export class Instance
             return new_result;
         } else {
             return null;
+        }
+    }
+
+    private Class(
+        node: Node.Instance,
+        mode: Mode,
+        result: Result.Instance,
+    ):
+        Result.Instance | null
+    {
+        const class_: Node.Class = node as Node.Class;
+        if (result.Match_Count() === 0) {
+            let class_result: Result.Instance | null;
+            if (mode & Mode.COMPLEX_SEQUENCE) {
+                class_result = this.Complex_Class_Any_Or_Start(class_, mode, result);
+            } else {
+                class_result = this.Class_Any_Or_Start(class_, mode, result);
+            }
+            if (class_result != null) {
+                return this.Step(
+                    class_.Next(),
+                    mode,
+                    class_result,
+                );
+            } else {
+                return null;
+            }
+        } else {
+            let class_result: Result.Instance | null;
+            if (mode & Mode.COMPLEX_SEQUENCE) {
+                class_result = this.Complex_Class_Middle_Or_End(class_, mode, result);
+            } else {
+                class_result = this.Class_Middle_Or_End(class_, mode, result);
+            }
+            if (class_result != null) {
+                return this.Step(
+                    class_.Next(),
+                    mode,
+                    class_result,
+                );
+            } else {
+                return null;
+            }
         }
     }
 

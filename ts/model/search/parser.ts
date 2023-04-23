@@ -6,6 +6,7 @@ import * as Unicode from "../../unicode.js";
 import * as Text from "../text.js";
 import { Operator } from "./operator.js";
 import { Operand } from "./operand.js";
+import { Sequence_Type } from "./sequence_type.js";
 import * as Class from "./class.js";
 import * as Token from "./token.js";
 
@@ -98,13 +99,7 @@ export class Instance
         {
             if (sequence_depth < 1) {
                 sequence_depth += 1;
-                tokens.push(
-                    new Token.Open_Sequence(
-                        {
-                            is_complex: false,
-                        },
-                    ),
-                );
+                tokens.push(new Token.Open_Sequence());
                 for (let idx = 0, end = text.Line(0).Macro_Part_Count(); idx < end; idx += 1) {
                     tokens.push(
                         new Token.Text(
@@ -121,7 +116,7 @@ export class Instance
                 tokens.push(
                     new Token.Close_Sequence(
                         {
-                            is_complex: false,
+                            sequence_type: Sequence_Type.SIMPLE_SEQUENCE,
                         },
                     ),
                 );
@@ -182,13 +177,7 @@ export class Instance
         {
             if (sequence_depth < 1) {
                 sequence_depth += 1;
-                tokens.push(
-                    new Token.Open_Sequence(
-                        {
-                            is_complex: false,
-                        },
-                    ),
-                );
+                tokens.push(new Token.Open_Sequence());
 
                 tokens.push(class_);
 
@@ -196,7 +185,7 @@ export class Instance
                 tokens.push(
                     new Token.Close_Sequence(
                         {
-                            is_complex: false,
+                            sequence_type: Sequence_Type.SIMPLE_SEQUENCE,
                         },
                     ),
                 );
@@ -581,13 +570,7 @@ export class Instance
                         sequence_depth += 1;
                         sequence_group_depth = 0;
                         sequence_has_and = false;
-                        tokens.push(
-                            new Token.Open_Sequence(
-                                {
-                                    is_complex: true,
-                                },
-                            ),
-                        );
+                        tokens.push(new Token.Open_Sequence());
                     }
 
                 } else if (point === Operator.CLOSE_SEQUENCE) {
@@ -660,7 +643,8 @@ export class Instance
                         tokens.push(
                             new Token.Close_Sequence(
                                 {
-                                    is_complex: true,
+                                    sequence_type:
+                                        Sequence_Type.COMPLEX_SEQUENCE,
                                 },
                             ),
                         );

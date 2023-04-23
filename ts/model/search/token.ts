@@ -2,6 +2,7 @@ import * as Utils from "../../utils.js";
 
 import * as Text_Module from "../text.js";
 import * as Class_Module from "./class.js";
+import { Sequence_Type } from "./sequence_type.js";
 
 export enum Type
 {
@@ -117,41 +118,25 @@ export class Close_Group extends Operator
 
 export class Open_Sequence extends Operator
 {
-    private is_complex: boolean;
-
-    constructor(
-        {
-            is_complex,
-        }: {
-            is_complex: boolean,
-        },
-    )
+    constructor()
     {
         super(
             {
                 type: Type.OPEN_SEQUENCE,
             },
         );
-
-        this.is_complex = is_complex;
-    }
-
-    Is_Complex():
-        boolean
-    {
-        return this.is_complex;
     }
 }
 
 export class Close_Sequence extends Operator
 {
-    private is_complex: boolean;
+    private sequence_type: Sequence_Type;
 
     constructor(
         {
-            is_complex,
+            sequence_type,
         }: {
-            is_complex: boolean,
+            sequence_type: Sequence_Type,
         },
     )
     {
@@ -161,13 +146,13 @@ export class Close_Sequence extends Operator
             },
         );
 
-        this.is_complex = is_complex;
+        this.sequence_type = sequence_type;
     }
 
-    Is_Complex():
-        boolean
+    Sequence_Type():
+        Sequence_Type
     {
-        return this.is_complex;
+        return this.sequence_type;
     }
 }
 

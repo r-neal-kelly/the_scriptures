@@ -2,6 +2,7 @@ import * as Utils from "../../utils.js";
 
 import * as Text_Module from "../text.js";
 import * as Class_Module from "./class.js";
+import { Sequence_Type } from "./sequence_type.js";
 import * as Token from "./token.js";
 
 export enum Type
@@ -383,10 +384,10 @@ export class Sequence extends Unary
         return this.token;
     }
 
-    Is_Complex():
-        boolean
+    Sequence_Type():
+        Sequence_Type
     {
-        return this.Token().Is_Complex();
+        return this.Token().Sequence_Type();
     }
 }
 
