@@ -37,6 +37,67 @@ export class Instance extends Entity.Instance
     override On_Life():
         Array<Event.Listener_Info>
     {
+        this.Add_CSS(
+            `
+                .Tree {
+                    border-style: solid;
+                    border-width: 0 1px 1px 0;
+                    border-color: hsl(255, 100%, 100%, 0.7);
+                }
+
+                .Branches, .Leaves {
+                    margin-bottom: 3px;
+                    padding-top: 3px;
+                    padding-bottom: 3px;
+                    padding-left: 6px;
+
+                    border-style: solid;
+                    border-width: 0 0 1px 1px;
+                    border-color: hsl(255, 100%, 100%, 0.7);
+                }
+
+                .Branch_Name {
+                    padding: 2px 0;
+
+                    border-style: solid;
+                    border-width: 0 0 1px 0;
+                    border-color: hsl(255, 100%, 100%, 0.7);
+
+                    font-size: 0.8em;
+                    font-variant: small-caps;
+
+                    cursor: default;
+                    -webkit-user-select: none;
+                    -moz-user-select: none;
+                    -ms-user-select: none;
+                    user-select: none;
+                }
+
+                .Leaf {
+                    width: 100%;
+                    padding: 2px 2px;
+
+                    font-size: 0.8em;
+
+                    cursor: pointer;
+                    -webkit-user-select: none;
+                    -moz-user-select: none;
+                    -ms-user-select: none;
+                    user-select: none;
+                }
+
+                .Selected {
+                    color: black;
+
+                    background-color: white;
+                }
+
+                .Hidden {
+                    display: none;
+                }
+            `,
+        );
+
         return [];
     }
 
@@ -60,7 +121,14 @@ export class Instance extends Entity.Instance
     override On_Reclass():
         Array<string>
     {
-        return [`Tree`];
+        const classes: Array<string> = [];
+
+        classes.push(`Tree`);
+        if (this.Model().Root().Is_Empty()) {
+            classes.push(`Hidden`);
+        }
+
+        return classes;
     }
 
     Model():

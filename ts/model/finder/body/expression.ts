@@ -43,6 +43,12 @@ export class Instance extends Entity.Instance
         this.help = null;
     }
 
+    Placeholder():
+        string
+    {
+        return `type an expression`;
+    }
+
     Maybe_Help():
         Search.Parser.Help | null
     {

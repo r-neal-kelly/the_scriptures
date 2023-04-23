@@ -1,12 +1,11 @@
 import * as Utils from "../../../../utils.js";
-import * as Event from "../../../../event.js";
 
-import * as Model from "../../../../model/finder/body/results/instance.js";
+import * as Model from "../../../../model/finder/body/expression.js";
 
 import * as Entity from "../../../entity.js";
 import * as Body from "../instance.js";
-import * as Tree from "./tree.js";
-import * as List from "./list.js";
+import * as Placeholder from "./placeholder.js";
+import * as Input from "./input.js";
 
 export class Instance extends Entity.Instance
 {
@@ -35,30 +34,24 @@ export class Instance extends Entity.Instance
         this.Live();
     }
 
-    override On_Life():
-        Array<Event.Listener_Info>
-    {
-        return [];
-    }
-
     override On_Refresh():
         void
     {
         if (
-            !this.Has_Tree() ||
-            !this.Has_List()
+            !this.Has_Placeholder() ||
+            !this.Has_Input()
         ) {
             this.Abort_All_Children();
 
-            new Tree.Instance(
+            new Placeholder.Instance(
                 {
-                    results: this,
-                    model: () => this.Model().Tree(),
+                    expression: this,
+                    model: () => this.Model(),
                 },
             );
-            new List.Instance(
+            new Input.Instance(
                 {
-                    results: this,
+                    expression: this,
                     model: () => this.Model(),
                 },
             );
@@ -68,7 +61,7 @@ export class Instance extends Entity.Instance
     override On_Reclass():
         Array<string>
     {
-        return [`Results`];
+        return [`Expression`];
     }
 
     Model():
@@ -83,43 +76,43 @@ export class Instance extends Entity.Instance
         return this.Parent() as Body.Instance;
     }
 
-    Has_Tree():
+    Has_Placeholder():
         boolean
     {
         return (
             this.Has_Child(0) &&
-            this.Child(0) instanceof Tree.Instance
+            this.Child(0) instanceof Placeholder.Instance
         );
     }
 
-    Tree():
-        Tree.Instance
+    Placeholder():
+        Placeholder.Instance
     {
         Utils.Assert(
-            this.Has_Tree(),
-            `Does not have Tree.`,
+            this.Has_Placeholder(),
+            `Does not have Placeholder.`,
         );
 
-        return this.Child(0) as Tree.Instance;
+        return this.Child(0) as Placeholder.Instance;
     }
 
-    Has_List():
+    Has_Input():
         boolean
     {
         return (
             this.Has_Child(1) &&
-            this.Child(1) instanceof List.Instance
+            this.Child(1) instanceof Input.Instance
         );
     }
 
-    List():
-        List.Instance
+    Input():
+        Input.Instance
     {
         Utils.Assert(
-            this.Has_List(),
-            `Does not have List.`,
+            this.Has_Input(),
+            `Does not have Input.`,
         );
 
-        return this.Child(1) as List.Instance;
+        return this.Child(1) as Input.Instance;
     }
 }

@@ -12,6 +12,7 @@ export const BROWSER_COMMANDER_PREVIOUS: ID = Unique_ID.New();
 export const BROWSER_COMMANDER_NEXT: ID = Unique_ID.New();
 
 export const FINDER_BODY_EXPRESSION_ENTER: ID = Unique_ID.New();
+export const FINDER_BODY_EXPRESSION_KEY_UP: ID = Unique_ID.New();
 export const FINDER_BODY_TREE_LEAF_SELECT: ID = Unique_ID.New();
 
 export const SELECTOR_TOGGLE: ID = Unique_ID.New();

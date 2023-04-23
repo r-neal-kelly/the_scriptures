@@ -52,8 +52,12 @@ export class Instance extends Entity.Instance
         const classes: Array<string> = [];
 
         classes.push(`Branch_Name`);
-        if (model.Is_Selected()) {
-            classes.push(`Selected`);
+        if (model.Name() === ``) {
+            classes.push(`Hidden`);
+        } else {
+            if (model.Is_Selected()) {
+                classes.push(`Selected`);
+            }
         }
 
         return classes;

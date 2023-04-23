@@ -88,6 +88,12 @@ export class Instance extends Entity.Instance
         return this.name;
     }
 
+    Is_Empty():
+        boolean
+    {
+        return this.branches_or_leaves.length === 0;
+    }
+
     Has_Branches():
         boolean
     {

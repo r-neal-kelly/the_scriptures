@@ -81,14 +81,41 @@ export class Instance extends Entity.Instance
                     height: 100%;
                     padding: 2px;
 
+                    position: relative;
+
+                    border-style: solid;
+                    border-width: 0 0 1px 0;
+                    border-color: hsl(255, 100%, 100%, 0.7);
+
                     overflow-x: hidden;
                     overflow-y: hidden;
+                }
+
+                .Expression_Placeholder {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    z-index: -1;
+
+                    width: 100%;
+                    height: 100%;
+
+                    text-align: center;
+
+                    color: hsl(255, 100%, 100%, 0.7);
+                }
+
+                .Expression_Input {
+                    width: 100%;
+                    height: 100%;
+
+                    background-color: transparent;
                 }
 
                 .Results {
                     display: grid;
                     grid-template-rows: 1fr;
-                    grid-template-columns: 1fr 2fr;
+                    grid-template-columns: auto 1fr;
                     justify-content: start;
 
                     position: relative;
@@ -101,6 +128,11 @@ export class Instance extends Entity.Instance
                 }
 
                 .Tree {
+                    overflow-x: auto;
+                    overflow-y: auto;
+                }
+
+                .List {
                     overflow-x: auto;
                     overflow-y: auto;
                 }
