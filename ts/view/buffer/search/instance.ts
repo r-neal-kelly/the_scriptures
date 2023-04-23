@@ -47,6 +47,9 @@ export class Instance extends Entity.Instance
                 .Search {
                     width: 100%;
                     padding: 12px 4px 36px 4px;
+
+                    overflow-x: auto;
+                    overflow-y: auto;
                 }
             `,
         );

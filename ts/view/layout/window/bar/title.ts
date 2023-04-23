@@ -40,6 +40,17 @@ export class Instance extends Entity.Instance
             new Event.Listener_Info(
                 {
                     event_name: new Event.Name(
+                        Event.Prefix.ON,
+                        Events.WINDOW_REFRESH_TITLE,
+                        this.Bar().Window().View().ID(),
+                    ),
+                    event_handler: this.On_Window_Refresh_Title,
+                    event_priority: 0,
+                },
+            ),
+            new Event.Listener_Info(
+                {
+                    event_name: new Event.Name(
                         Event.Prefix.AFTER,
                         Events.SELECTOR_SLOT_ITEM_SELECT, // This should be a window event instead.
                         this.Bar().Window().View().ID(),
@@ -61,6 +72,25 @@ export class Instance extends Entity.Instance
         Array<string>
     {
         return [`Title`];
+    }
+
+    private async On_Window_Refresh_Title():
+        Promise<void>
+    {
+        this.Refresh();
+
+        await this.Send(
+            new Event.Info(
+                {
+                    affix: Events.WINDOW_REFRESH_TAB,
+                    suffixes: [
+                        this.Bar().Window().ID(),
+                    ],
+                    type: Event.Type.EXCLUSIVE,
+                    data: {},
+                },
+            ),
+        );
     }
 
     private async After_Selector_Slot_Item_Select():

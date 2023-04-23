@@ -44,7 +44,7 @@ export class Instance extends Entity.Instance
             `
                 .Body {
                     display: grid;
-                    grid-template-rows: auto 1fr 5fr;
+                    grid-template-rows: auto 1fr;
                     grid-template-columns: 1fr;
                     justify-content: start;
 
@@ -86,7 +86,23 @@ export class Instance extends Entity.Instance
                 }
 
                 .Results {
+                    display: grid;
+                    grid-template-rows: 1fr;
+                    grid-template-columns: 1fr 2fr;
+                    justify-content: start;
 
+                    position: relative;
+
+                    width: 100%;
+                    height: 100%;
+
+                    overflow-x: hidden;
+                    overflow-y: hidden;
+                }
+
+                .Tree {
+                    overflow-x: auto;
+                    overflow-y: auto;
                 }
 
                 .Invisible {
@@ -104,6 +120,17 @@ export class Instance extends Entity.Instance
                         this.Finder().ID(),
                     ),
                     event_handler: this.On_Finder_Body_Expression_Enter,
+                    event_priority: 10,
+                },
+            ),
+            new Event.Listener_Info(
+                {
+                    event_name: new Event.Name(
+                        Event.Prefix.ON,
+                        Events.FINDER_BODY_TREE_LEAF_SELECT,
+                        this.Finder().ID(),
+                    ),
+                    event_handler: this.On_Finder_Body_Tree_Leaf_Select,
                     event_priority: 10,
                 },
             ),
@@ -153,6 +180,12 @@ export class Instance extends Entity.Instance
         Promise<void>
     {
         await this.Model().Search();
+        this.Refresh();
+    }
+
+    private async On_Finder_Body_Tree_Leaf_Select():
+        Promise<void>
+    {
         this.Refresh();
     }
 

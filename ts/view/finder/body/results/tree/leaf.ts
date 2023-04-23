@@ -2,6 +2,7 @@ import * as Event from "../../../../../event.js";
 
 import * as Model from "../../../../../model/finder/body/results/tree/leaf.js";
 
+import * as Events from "../../../../events.js";
 import * as Entity from "../../../../entity.js";
 import * as Tree from "./instance.js";
 import * as Leaves from "./leaves.js";
@@ -36,7 +37,24 @@ export class Instance extends Entity.Instance
     override On_Life():
         Array<Event.Listener_Info>
     {
-        return [];
+        this.Element().addEventListener(
+            `click`,
+            this.On_Click.bind(this),
+        );
+
+        return [
+            new Event.Listener_Info(
+                {
+                    event_name: new Event.Name(
+                        Event.Prefix.ON,
+                        Events.FINDER_BODY_TREE_LEAF_SELECT,
+                        this.ID(),
+                    ),
+                    event_handler: this.On_Finder_Body_Tree_Leaf_Select,
+                    event_priority: 0,
+                },
+            ),
+        ];
     }
 
     override On_Refresh():
@@ -57,6 +75,30 @@ export class Instance extends Entity.Instance
         }
 
         return classes;
+    }
+
+    private async On_Click():
+        Promise<void>
+    {
+        await this.Send(
+            new Event.Info(
+                {
+                    affix: Events.FINDER_BODY_TREE_LEAF_SELECT,
+                    suffixes: [
+                        this.ID(),
+                        this.Tree().Results().Body().Finder().ID(),
+                    ],
+                    type: Event.Type.EXCLUSIVE,
+                    data: {},
+                },
+            ),
+        );
+    }
+
+    private async On_Finder_Body_Tree_Leaf_Select():
+        Promise<void>
+    {
+        this.Model().Select();
     }
 
     Model():

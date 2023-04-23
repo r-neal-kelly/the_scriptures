@@ -2,8 +2,10 @@ import * as Event from "../../event.js";
 
 import * as Model from "../../model/layout/tab.js";
 
+import * as Events from "../events.js";
 import * as Entity from "../entity.js";
 import * as Tabs from "./tabs.js";
+import * as Window from "./window/instance.js";
 
 export class Instance extends Entity.Instance
 {
@@ -40,7 +42,19 @@ export class Instance extends Entity.Instance
             this.On_Click.bind(this),
         );
 
-        return [];
+        return [
+            new Event.Listener_Info(
+                {
+                    event_name: new Event.Name(
+                        Event.Prefix.ON,
+                        Events.WINDOW_REFRESH_TAB,
+                        this.Window().ID(),
+                    ),
+                    event_handler: this.On_Window_Refresh_Title,
+                    event_priority: 0,
+                },
+            ),
+        ];
     }
 
     override On_Refresh():
@@ -70,6 +84,12 @@ export class Instance extends Entity.Instance
         this.Tabs().Bar().Layout().Refresh();
     }
 
+    private async On_Window_Refresh_Title():
+        Promise<void>
+    {
+        this.Refresh();
+    }
+
     Model():
         Model.Instance
     {
@@ -80,5 +100,11 @@ export class Instance extends Entity.Instance
         Tabs.Instance
     {
         return this.Parent() as Tabs.Instance;
+    }
+
+    Window():
+        Window.Instance
+    {
+        return this.Tabs().Bar().Layout().Wall().Window_With_Model(this.Model().Window());
     }
 }

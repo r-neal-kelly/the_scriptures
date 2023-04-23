@@ -64,12 +64,32 @@ export class Instance extends Entity.Instance
     Title():
         Name
     {
-        return `Finder`;
+        const expression_value: string = this.Body().Expression().Value();
+        if (
+            expression_value.length > 0 &&
+            /\S/.test(expression_value)
+        ) {
+            return `Finder: ${expression_value}`;
+        } else {
+            return `Finder: (empty expression)`;
+        }
     }
 
     Short_Title():
         Name
     {
-        return `Finder`;
+        const expression_value: string = this.Body().Expression().Value();
+        if (
+            expression_value.length > 0 &&
+            /\S/.test(expression_value)
+        ) {
+            if (expression_value.length > 7) {
+                return `Finder: ${expression_value.slice(0, 7)} ...`;
+            } else {
+                return `Finder: ${expression_value}`;
+            }
+        } else {
+            return `Finder`;
+        }
     }
 }

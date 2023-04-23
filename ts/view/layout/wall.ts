@@ -1,7 +1,10 @@
 import { Count } from "../../types.js";
 import { Delta } from "../../types.js";
 
+import * as Utils from "../../utils.js";
+
 import * as Model from "../../model/layout/wall.js";
+import * as Window_Model from "../../model/layout/window.js";
 
 import * as Entity from "../entity.js";
 import * as Layout from "./instance.js";
@@ -123,5 +126,25 @@ export class Instance extends Entity.Instance
         Layout.Instance
     {
         return this.Parent() as Layout.Instance;
+    }
+
+    Window_With_Model(
+        window_model: Window_Model.Instance,
+    ):
+        Window.Instance
+    {
+        for (let idx = 0, end = this.Child_Count(); idx < end; idx += 1) {
+            const window: Window.Instance = this.Child(idx) as Window.Instance;
+            if (window.Model() === window_model) {
+                return window;
+            }
+        }
+
+        Utils.Assert(
+            false,
+            `Does not have window with that model.`,
+        );
+
+        return this.Child(0) as Window.Instance;
     }
 }

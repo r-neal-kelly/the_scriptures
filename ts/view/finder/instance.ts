@@ -70,6 +70,17 @@ export class Instance extends Entity.Instance
             new Event.Listener_Info(
                 {
                     event_name: new Event.Name(
+                        Event.Prefix.ON,
+                        Events.FINDER_BODY_EXPRESSION_ENTER,
+                        this.ID(),
+                    ),
+                    event_handler: this.On_Finder_Body_Expression_Enter,
+                    event_priority: 10,
+                },
+            ),
+            new Event.Listener_Info(
+                {
+                    event_name: new Event.Name(
                         Event.Prefix.AFTER,
                         Events.SELECTOR_TOGGLE,
                         this.ID(),
@@ -109,6 +120,23 @@ export class Instance extends Entity.Instance
         Array<string>
     {
         return [`Finder`];
+    }
+
+    private async On_Finder_Body_Expression_Enter():
+        Promise<void>
+    {
+        await this.Send(
+            new Event.Info(
+                {
+                    affix: Events.WINDOW_REFRESH_TITLE,
+                    suffixes: [
+                        this.ID(),
+                    ],
+                    type: Event.Type.EXCLUSIVE,
+                    data: {},
+                },
+            ),
+        );
     }
 
     private async After_Selector_Toggle():
