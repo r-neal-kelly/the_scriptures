@@ -41,10 +41,10 @@ export class Instance extends Entity.Instance
                 {
                     event_name: new Event.Name(
                         Event.Prefix.ON,
-                        Events.FINDER_BODY_EXPRESSION_KEY_UP,
+                        Events.FINDER_BODY_EXPRESSION_CHANGE,
                         this.Expression().Body().Finder().ID(),
                     ),
-                    event_handler: this.On_Finder_Body_Expression_Key_Up,
+                    event_handler: this.On_Finder_Body_Expression_Change,
                     event_priority: 10,
                 },
             ),
@@ -68,7 +68,7 @@ export class Instance extends Entity.Instance
         return [`Expression_Placeholder`];
     }
 
-    private async On_Finder_Body_Expression_Key_Up():
+    private async On_Finder_Body_Expression_Change():
         Promise<void>
     {
         this.Refresh();

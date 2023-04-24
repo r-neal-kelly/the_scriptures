@@ -1,1 +1,1 @@
-export var Sequence_Type;!function(E){E[E.SIMPLE_SEQUENCE=0]="SIMPLE_SEQUENCE",E[E.COMPLEX_SEQUENCE=1]="COMPLEX_SEQUENCE"}(Sequence_Type||(Sequence_Type={}));
+export var Sequence_Type;!function(e){e[e.SIMPLE=0]="SIMPLE",e[e.COMPLEX=1]="COMPLEX"}(Sequence_Type||(Sequence_Type={}));

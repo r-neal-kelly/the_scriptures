@@ -57,7 +57,7 @@ export class Instance extends Entity.Instance
                 }
 
                 .Branch_Name {
-                    padding: 2px 0;
+                    padding: 2px 2px;
 
                     border-style: solid;
                     border-width: 0 0 1px 0;

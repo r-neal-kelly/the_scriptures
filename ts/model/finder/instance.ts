@@ -84,7 +84,7 @@ export class Instance extends Entity.Instance
             /\S/.test(expression_value)
         ) {
             if (expression_value.length > 7) {
-                return `Finder: ${expression_value.slice(0, 7)} ...`;
+                return `Finder: ${expression_value.slice(0, 12)} ...`;
             } else {
                 return `Finder: ${expression_value}`;
             }

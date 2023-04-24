@@ -116,7 +116,7 @@ export class Instance
                 tokens.push(
                     new Token.Close_Sequence(
                         {
-                            sequence_type: Sequence_Type.SIMPLE_SEQUENCE,
+                            sequence_type: Sequence_Type.SIMPLE,
                         },
                     ),
                 );
@@ -185,7 +185,7 @@ export class Instance
                 tokens.push(
                     new Token.Close_Sequence(
                         {
-                            sequence_type: Sequence_Type.SIMPLE_SEQUENCE,
+                            sequence_type: Sequence_Type.SIMPLE,
                         },
                     ),
                 );
@@ -644,7 +644,7 @@ export class Instance
                             new Token.Close_Sequence(
                                 {
                                     sequence_type:
-                                        Sequence_Type.COMPLEX_SEQUENCE,
+                                        Sequence_Type.COMPLEX,
                                 },
                             ),
                         );

@@ -44,6 +44,10 @@ export class Instance extends Entity.Instance
             `keyup`,
             this.On_Key_Up.bind(this),
         );
+        this.Element().addEventListener(
+            `input`,
+            this.On_Input.bind(this),
+        );
 
         this.Element().setAttribute(`contentEditable`, `true`);
         this.Element().setAttribute(`spellcheck`, `false`);
@@ -53,10 +57,10 @@ export class Instance extends Entity.Instance
                 {
                     event_name: new Event.Name(
                         Event.Prefix.ON,
-                        Events.FINDER_BODY_EXPRESSION_KEY_UP,
+                        Events.FINDER_BODY_EXPRESSION_CHANGE,
                         this.ID(),
                     ),
-                    event_handler: this.On_Finder_Body_Expression_Key_Up,
+                    event_handler: this.On_Finder_Body_Expression_Change,
                     event_priority: 0,
                 },
             ),
@@ -116,7 +120,7 @@ export class Instance extends Entity.Instance
             this.Send(
                 new Event.Info(
                     {
-                        affix: Events.FINDER_BODY_EXPRESSION_KEY_UP,
+                        affix: Events.FINDER_BODY_EXPRESSION_CHANGE,
                         suffixes: [
                             this.ID(),
                             this.Expression().Body().Finder().ID(),
@@ -131,7 +135,34 @@ export class Instance extends Entity.Instance
         await Promise.all(events);
     }
 
-    private async On_Finder_Body_Expression_Key_Up():
+    private async On_Input(
+        event: Event,
+    ):
+        Promise<void>
+    {
+        const input_event: InputEvent = event as InputEvent;
+        if (
+            input_event.inputType === `insertText` ||
+            input_event.inputType === `deleteContentBackward` ||
+            input_event.inputType === `insertFromPaste`
+        ) {
+            await this.Send(
+                new Event.Info(
+                    {
+                        affix: Events.FINDER_BODY_EXPRESSION_CHANGE,
+                        suffixes: [
+                            this.ID(),
+                            this.Expression().Body().Finder().ID(),
+                        ],
+                        type: Event.Type.EXCLUSIVE,
+                        data: {},
+                    },
+                ),
+            );
+        }
+    }
+
+    private async On_Finder_Body_Expression_Change():
         Promise<void>
     {
         this.Model().Set_Value(

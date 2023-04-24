@@ -153,6 +153,7 @@ export class Match
 export class Instance
 {
     private line: Text.Line.Instance;
+    private candidates: Array<Match>;
     private matches: Array<Match>;
     private buffer: Array<Match>;
 
@@ -161,6 +162,7 @@ export class Instance
     )
     {
         this.line = line;
+        this.candidates = [];
         this.matches = [];
         this.buffer = [];
     }
@@ -169,6 +171,10 @@ export class Instance
         Instance
     {
         const result: Instance = new Instance(this.line);
+
+        for (const candidate of this.candidates) {
+            result.candidates.push(candidate.Copy());
+        }
         for (const match of this.matches) {
             result.matches.push(match.Copy());
         }
@@ -181,6 +187,11 @@ export class Instance
     ):
         Instance
     {
+        for (let idx = 0, end = other.Candidate_Count(); idx < end; idx += 1) {
+            this.Try_Add_Candidate(other.Candidate(idx));
+        }
+        other.candidates = [];
+
         for (let idx = 0, end = other.Match_Count(); idx < end; idx += 1) {
             this.Try_Add_Match(other.Match(idx));
         }
@@ -195,46 +206,58 @@ export class Instance
         return this.line;
     }
 
-    Has_Match_Equal_To(
-        other: Match,
-    ):
-        boolean
+    Candidate_Count():
+        Count
     {
-        for (const match of this.matches) {
-            if (match.Is_Equal_To(other)) {
-                return true;
-            }
-        }
-
-        return false;
+        return this.candidates.length;
     }
 
-    Has_Match_Including(
-        other: Match,
+    Candidate(
+        candidate_index: Index,
     ):
-        boolean
+        Match
     {
-        for (const match of this.matches) {
-            if (match.Includes(other)) {
-                return true;
-            }
-        }
+        Utils.Assert(
+            candidate_index > -1,
+            `candidate_index must be greater than -1.`,
+        );
+        Utils.Assert(
+            candidate_index < this.Candidate_Count(),
+            `candidate_index must be less than candidate_count.`,
+        );
 
-        return false;
+        return this.candidates[candidate_index];
     }
 
-    Has_Match_Shadowing(
-        other: Match,
+    Try_Add_Candidate(
+        candidate: Match,
     ):
-        boolean
+        void
     {
-        for (const match of this.matches) {
-            if (match.Shadows(other)) {
-                return true;
+        let do_add: boolean = true;
+        for (const held_candidate of this.candidates) {
+            if (held_candidate.Includes(candidate)) {
+                do_add = false;
+                this.buffer.push(held_candidate);
+            } else if (!candidate.Shadows(held_candidate)) {
+                this.buffer.push(held_candidate);
             }
         }
 
-        return false;
+        const swap = this.buffer;
+        this.buffer = this.candidates;
+        this.candidates = swap;
+        this.buffer.splice(0, this.buffer.length);
+
+        if (do_add) {
+            this.candidates.push(candidate);
+        }
+    }
+
+    Clear_Candidates():
+        void
+    {
+        this.candidates.splice(0, this.candidates.length);
     }
 
     Match_Count():

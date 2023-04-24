@@ -178,28 +178,37 @@ export class Instance extends Entity.Instance
     ):
         void
     {
-        Utils.Assert(
-            this.Division_Count() === 1,
-            `Should not be called when already divided.`,
-        );
-
         const value: Text.Value = this.Value();
-        if (first_unit_index === 0 && end_unit_index === value.length) {
-            this.Division_At(0).Set_Highlight(true);
-        } else if (first_unit_index === 0 || end_unit_index === value.length) {
-            if (first_unit_index === 0) {
-                this.Division_At(0).Set_Value(value.slice(first_unit_index, end_unit_index));
+        if (this.Division_Count() === 1) {
+            if (first_unit_index === 0 && end_unit_index === value.length) {
                 this.Division_At(0).Set_Highlight(true);
-                this.divisions.push(
-                    new Division.Instance(
-                        {
-                            item: this,
-                            index: 1,
-                            value: value.slice(end_unit_index, value.length),
-                            is_highlighted: false,
-                        },
-                    ),
-                );
+            } else if (first_unit_index === 0 || end_unit_index === value.length) {
+                if (first_unit_index === 0) {
+                    this.Division_At(0).Set_Value(value.slice(first_unit_index, end_unit_index));
+                    this.Division_At(0).Set_Highlight(true);
+                    this.divisions.push(
+                        new Division.Instance(
+                            {
+                                item: this,
+                                index: 1,
+                                value: value.slice(end_unit_index, value.length),
+                                is_highlighted: false,
+                            },
+                        ),
+                    );
+                } else {
+                    this.Division_At(0).Set_Value(value.slice(0, first_unit_index));
+                    this.divisions.push(
+                        new Division.Instance(
+                            {
+                                item: this,
+                                index: 1,
+                                value: value.slice(first_unit_index, end_unit_index),
+                                is_highlighted: true,
+                            },
+                        ),
+                    );
+                }
             } else {
                 this.Division_At(0).Set_Value(value.slice(0, first_unit_index));
                 this.divisions.push(
@@ -212,29 +221,46 @@ export class Instance extends Entity.Instance
                         },
                     ),
                 );
+                this.divisions.push(
+                    new Division.Instance(
+                        {
+                            item: this,
+                            index: 2,
+                            value: value.slice(end_unit_index, value.length),
+                            is_highlighted: false,
+                        },
+                    ),
+                );
             }
         } else {
-            this.Division_At(0).Set_Value(value.slice(0, first_unit_index));
-            this.divisions.push(
-                new Division.Instance(
-                    {
-                        item: this,
-                        index: 1,
-                        value: value.slice(first_unit_index, end_unit_index),
-                        is_highlighted: true,
-                    },
-                ),
-            );
-            this.divisions.push(
-                new Division.Instance(
-                    {
-                        item: this,
-                        index: 2,
-                        value: value.slice(end_unit_index, value.length),
-                        is_highlighted: false,
-                    },
-                ),
-            );
+            /*
+                E.G. Expression <!is . the> matches the text "remove them the",
+                first "remove the" and then "them the". We just go ahead and
+                split the entire string maintaining previous highlighting. It's
+                expensive to do this for every item, so we only do it when we have
+                to.
+            */
+            const old_divisions: Array<Division.Instance> = this.divisions;
+            this.divisions = [];
+            for (const old_division of old_divisions) {
+                const is_highlighted: boolean = old_division.Is_Highlighted();
+                for (const unit of old_division.Value()) {
+                    this.divisions.push(
+                        new Division.Instance(
+                            {
+                                item: this,
+                                index: this.divisions.length,
+                                value: unit,
+                                is_highlighted: is_highlighted,
+                            },
+                        ),
+                    );
+                }
+            }
+
+            for (let idx = first_unit_index, end = end_unit_index; idx < end; idx += 1) {
+                this.Division_At(idx).Set_Highlight(true);
+            }
         }
     }
 
