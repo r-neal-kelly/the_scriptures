@@ -207,41 +207,99 @@ export class Instance
             }
 
         } else if (node_type === Node.Type.XOR) {
-            const xor: Node.Xor = node as Node.Xor;
-            const maybe_left_result: Result.Instance | null =
-                this.Step(xor.Left_Operand(), mode, result.Copy());
-            const maybe_right_result: Result.Instance | null =
-                this.Step(xor.Right_Operand(), mode, result.Copy());
+            // Gotta somehow do the same thing here as with or. Freaking brain-twister.
+            if (mode & Mode.NOT) {
+                if (mode & Mode.COMPLEX_SEQUENCE) {
+                    Utils.Assert(
+                        false,
+                        `Not implemented yet.`,
+                    );
 
-            if (maybe_left_result != null) {
-                if (maybe_right_result != null) {
                     return null;
                 } else {
-                    return maybe_left_result as Result.Instance;
+                    Utils.Assert(
+                        false,
+                        `Not implemented yet.`,
+                    );
+
+                    return null;
                 }
-            } else if (maybe_right_result != null) {
-                return maybe_right_result as Result.Instance;
             } else {
-                return null;
+                const xor: Node.Xor = node as Node.Xor;
+                const maybe_left_result: Result.Instance | null =
+                    this.Step(xor.Left_Operand(), mode, result.Copy());
+                const maybe_right_result: Result.Instance | null =
+                    this.Step(xor.Right_Operand(), mode, result.Copy());
+
+                if (maybe_left_result != null) {
+                    if (maybe_right_result != null) {
+                        return null;
+                    } else {
+                        return maybe_left_result as Result.Instance;
+                    }
+                } else if (maybe_right_result != null) {
+                    return maybe_right_result as Result.Instance;
+                } else {
+                    return null;
+                }
             }
 
         } else if (node_type === Node.Type.OR) {
             const or: Node.Or = node as Node.Or;
-            const maybe_left_result: Result.Instance | null =
-                this.Step(or.Left_Operand(), mode, result.Copy());
-            const maybe_right_result: Result.Instance | null =
-                this.Step(or.Right_Operand(), mode, result.Copy());
+            if (mode & Mode.NOT) {
+                if (mode & Mode.COMPLEX_SEQUENCE) {
+                    // This is probably significantly more expensive than evaluating
+                    // a class of user described parts in the text methods. We could
+                    // potentially pass user classes then?
+                    const maybe_left_result: Result.Instance | null =
+                        this.Step(or.Left_Operand(), mode, result.Copy());
+                    const maybe_right_result: Result.Instance | null =
+                        this.Step(or.Right_Operand(), mode, result.Copy());
 
-            if (maybe_left_result != null) {
-                if (maybe_right_result != null) {
-                    return maybe_left_result.Combine(maybe_right_result);
+                    if (maybe_left_result != null && maybe_right_result != null) {
+                        const new_result: Result.Instance = new Result.Instance(result.Line());
+                        for (let idx = 0, end = maybe_left_result.Candidate_Count(); idx < end; idx += 1) {
+                            if (maybe_right_result.Has_Candidate_Equal_To(maybe_left_result.Candidate(idx))) {
+                                new_result.Try_Add_Candidate(maybe_left_result.Candidate(idx));
+                            }
+                        }
+                        for (let idx = 0, end = maybe_left_result.Match_Count(); idx < end; idx += 1) {
+                            if (maybe_right_result.Has_Match_Equal_To(maybe_left_result.Match(idx))) {
+                                new_result.Try_Add_Match(maybe_left_result.Match(idx));
+                            }
+                        }
+                        return new_result;
+                    } else {
+                        return null;
+                    }
                 } else {
-                    return maybe_left_result as Result.Instance;
+                    // Isn't this NAND? Is that the inverse of OR?
+                    const maybe_left_result: Result.Instance | null =
+                        this.Step(or.Left_Operand(), mode, result);
+
+                    if (maybe_left_result != null) {
+                        return this.Step(or.Right_Operand(), mode, result);
+                    } else {
+                        return null;
+                    }
                 }
-            } else if (maybe_right_result != null) {
-                return maybe_right_result as Result.Instance;
             } else {
-                return null;
+                const maybe_left_result: Result.Instance | null =
+                    this.Step(or.Left_Operand(), mode, result.Copy());
+                const maybe_right_result: Result.Instance | null =
+                    this.Step(or.Right_Operand(), mode, result.Copy());
+
+                if (maybe_left_result != null) {
+                    if (maybe_right_result != null) {
+                        return maybe_left_result.Combine(maybe_right_result);
+                    } else {
+                        return maybe_left_result as Result.Instance;
+                    }
+                } else if (maybe_right_result != null) {
+                    return maybe_right_result as Result.Instance;
+                } else {
+                    return null;
+                }
             }
 
         } else if (node_type === Node.Type.CLASS) {

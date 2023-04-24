@@ -229,6 +229,19 @@ export class Instance
         return this.candidates[candidate_index];
     }
 
+    Has_Candidate_Equal_To(
+        other_candidate: Match,
+    ):
+        boolean
+    {
+        for (const candidate of this.candidates) {
+            if (candidate.Is_Equal_To(other_candidate)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     Try_Add_Candidate(
         candidate: Match,
     ):
@@ -281,6 +294,19 @@ export class Instance
         );
 
         return this.matches[match_index];
+    }
+
+    Has_Match_Equal_To(
+        other_match: Match,
+    ):
+        boolean
+    {
+        for (const match of this.matches) {
+            if (match.Is_Equal_To(other_match)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     Try_Add_Match(
