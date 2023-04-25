@@ -99,12 +99,12 @@ export class Instance extends Entity.Instance
         while (this.Is_Alive() && !this.Model().Is_Ready()) {
             const element: HTMLElement = this.Element();
 
-            if (element.textContent === `Loading.`) {
-                element.textContent = `Loading..`;
-            } else if (element.textContent === `Loading..`) {
-                element.textContent = `Loading...`;
-            } else {
+            if (element.textContent === `Loading...`) {
                 element.textContent = `Loading.`;
+            } else if (element.textContent === `Loading.`) {
+                element.textContent = `Loading..`;
+            } else {
+                element.textContent = `Loading...`;
             }
 
             await Utils.Wait_Milliseconds(200);

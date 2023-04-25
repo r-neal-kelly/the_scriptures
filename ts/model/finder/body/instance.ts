@@ -129,6 +129,9 @@ export class Instance extends Entity.Instance
                 }
             }
         } else {
+            // It might be good to async iterate and wait a bit, that way
+            // the view can actually render what it has after each iteration.
+            // If we hit a parser error, we simply stop the iteration.
             versions_results = await Search.Singleton().Data_Versions(
                 filter_file_or_versions as Array<Data.Version.Instance>,
                 expression_value,

@@ -85,6 +85,7 @@ export class Instance extends Entity.Instance
 
         classes.push(`Info`);
         if (
+            !this.Model().Is_Info_Waiting() &&
             this.Model().Has_Empty_Results() &&
             this.Model().Expression().Value() === ``
         ) {
@@ -97,6 +98,7 @@ export class Instance extends Entity.Instance
     private async On_Finder_Body_Before_Search():
         Promise<void>
     {
+        this.Refresh();
         (
             async function (
                 this: Instance,
@@ -105,12 +107,12 @@ export class Instance extends Entity.Instance
             {
                 while (this.Is_Alive() && this.Model().Is_Info_Waiting()) {
                     const element: HTMLElement = this.Element();
-                    if (element.textContent === `Searching.`) {
-                        element.textContent = `Searching..`;
-                    } else if (element.textContent === `Searching..`) {
-                        element.textContent = `Searching...`;
-                    } else {
+                    if (element.textContent === `Searching...`) {
                         element.textContent = `Searching.`;
+                    } else if (element.textContent === `Searching.`) {
+                        element.textContent = `Searching..`;
+                    } else {
+                        element.textContent = `Searching...`;
                     }
 
                     await Utils.Wait_Milliseconds(200);
