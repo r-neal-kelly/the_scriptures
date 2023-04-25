@@ -8,6 +8,7 @@ import * as Entity from "../../entity.js";
 import * as Finder from "../instance.js";
 import * as Filter from "../../selector.js";
 import * as Expression from "./expression.js";
+import * as Info from "./info.js";
 import * as Results from "./results.js";
 
 export class Instance extends Entity.Instance
@@ -44,7 +45,7 @@ export class Instance extends Entity.Instance
             `
                 .Body {
                     display: grid;
-                    grid-template-rows: auto 1fr;
+                    grid-template-rows: auto auto auto 1fr;
                     grid-template-columns: 1fr;
                     justify-content: start;
 
@@ -67,7 +68,6 @@ export class Instance extends Entity.Instance
                     top: 0;
                     z-index: 1;
 
-                    width: 100%;
                     height: 100%;
 
                     background-color: hsl(0, 0%, 0%, 0.7);
@@ -77,6 +77,10 @@ export class Instance extends Entity.Instance
                 }
 
                 .Expression {
+                    display: grid;
+                    grid-template-rows: 1fr auto;
+                    grid-template-columns: 1fr;
+
                     width: 100%;
                     height: 100%;
                     padding: 2px;
@@ -85,7 +89,7 @@ export class Instance extends Entity.Instance
 
                     border-style: solid;
                     border-width: 0 0 1px 0;
-                    border-color: hsl(255, 100%, 100%, 0.7);
+                    border-color: white;
 
                     overflow-x: hidden;
                     overflow-y: hidden;
@@ -100,9 +104,8 @@ export class Instance extends Entity.Instance
                     width: 100%;
                     height: 100%;
 
+                    color: hsl(255, 100%, 100%, 0.8);
                     text-align: center;
-
-                    color: hsl(255, 100%, 100%, 0.7);
                 }
 
                 .Expression_Input {
@@ -110,6 +113,30 @@ export class Instance extends Entity.Instance
                     height: 100%;
 
                     background-color: transparent;
+
+                    text-align: center;
+                }
+
+                .Expression_Help {
+                    width: 100%;
+                    height: 100%;
+
+                    color: #ffcbcb;
+                    text-align: center;
+                }
+
+                .Info {
+                    width: 100%;
+                    height: 100%;
+                    padding: 2px;
+
+                    border-style: solid;
+                    border-width: 0 0 1px 0;
+                    border-color: white;
+
+                    color: white;
+                    text-align: center;
+                    font-size: 0.8em;
                 }
 
                 .Results {
@@ -175,6 +202,7 @@ export class Instance extends Entity.Instance
         if (
             !this.Has_Filter() ||
             !this.Has_Expression() ||
+            !this.Has_Info() ||
             !this.Has_Results()
         ) {
             this.Abort_All_Children();
@@ -191,6 +219,12 @@ export class Instance extends Entity.Instance
                 {
                     body: this,
                     model: () => this.Model().Expression(),
+                },
+            );
+            new Info.Instance(
+                {
+                    body: this,
+                    model: () => this.Model(),
                 },
             );
             new Results.Instance(
@@ -211,7 +245,38 @@ export class Instance extends Entity.Instance
     private async On_Finder_Body_Expression_Enter():
         Promise<void>
     {
+        this.Model().Set_Is_Info_Waiting(true);
+
+        await this.Send(
+            new Event.Info(
+                {
+                    affix: Events.FINDER_BODY_BEFORE_SEARCH,
+                    suffixes: [
+                        this.Finder().ID(),
+                    ],
+                    type: Event.Type.EXCLUSIVE,
+                    data: {},
+                },
+            ),
+        );
+
         await this.Model().Search();
+
+        this.Model().Set_Is_Info_Waiting(false);
+
+        await this.Send(
+            new Event.Info(
+                {
+                    affix: Events.FINDER_BODY_AFTER_SEARCH,
+                    suffixes: [
+                        this.Finder().ID(),
+                    ],
+                    type: Event.Type.EXCLUSIVE,
+                    data: {},
+                },
+            ),
+        );
+
         this.Refresh();
     }
 
@@ -273,12 +338,32 @@ export class Instance extends Entity.Instance
         return this.Child(1) as Expression.Instance;
     }
 
-    Has_Results():
+    Has_Info():
         boolean
     {
         return (
             this.Has_Child(2) &&
-            this.Child(2) instanceof Results.Instance
+            this.Child(2) instanceof Info.Instance
+        );
+    }
+
+    Info():
+        Info.Instance
+    {
+        Utils.Assert(
+            this.Has_Info(),
+            `Does not have Info.`,
+        );
+
+        return this.Child(2) as Info.Instance;
+    }
+
+    Has_Results():
+        boolean
+    {
+        return (
+            this.Has_Child(3) &&
+            this.Child(3) instanceof Results.Instance
         );
     }
 
@@ -290,6 +375,6 @@ export class Instance extends Entity.Instance
             `Does not have Results.`,
         );
 
-        return this.Child(2) as Results.Instance;
+        return this.Child(3) as Results.Instance;
     }
 }

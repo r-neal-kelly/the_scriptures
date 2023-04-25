@@ -63,6 +63,7 @@ export class Instance extends Entity.Instance
                     border-width: 0 0 1px 0;
                     border-color: hsl(255, 100%, 100%, 0.7);
 
+                    color: hsl(255, 100%, 100%, 0.8);
                     font-size: 0.8em;
                     font-variant: small-caps;
 

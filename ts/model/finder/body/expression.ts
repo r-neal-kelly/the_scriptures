@@ -1,3 +1,5 @@
+import * as Utils from "../../../utils.js";
+
 import * as Entity from "../../entity.js";
 import * as Search from "../../search.js";
 import * as Body from "./instance.js";
@@ -28,6 +30,12 @@ export class Instance extends Entity.Instance
         );
     }
 
+    Body():
+        Body.Instance
+    {
+        return this.body;
+    }
+
     Value():
         string
     {
@@ -49,10 +57,27 @@ export class Instance extends Entity.Instance
         return `type an expression`;
     }
 
+    Has_Help():
+        boolean
+    {
+        return this.help != null;
+    }
+
     Maybe_Help():
         Search.Parser.Help | null
     {
         return this.help;
+    }
+
+    Help():
+        Search.Parser.Help
+    {
+        Utils.Assert(
+            this.Has_Help(),
+            `Does not have help.`,
+        );
+
+        return this.help as Search.Parser.Help;
     }
 
     Set_Help(

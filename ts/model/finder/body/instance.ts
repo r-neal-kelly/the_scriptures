@@ -13,6 +13,7 @@ export class Instance extends Entity.Instance
     private filter: Selector.Instance;
     private expression: Expression.Instance;
     private results: Results.Instance;
+    private is_info_waiting: boolean;
 
     constructor(
         {
@@ -43,6 +44,7 @@ export class Instance extends Entity.Instance
                 is_showing_commands: false,
             },
         );
+        this.is_info_waiting = false;
 
         this.Add_Dependencies(
             [
@@ -77,6 +79,26 @@ export class Instance extends Entity.Instance
         Results.Instance
     {
         return this.results;
+    }
+
+    Has_Empty_Results():
+        boolean
+    {
+        return this.Results().Tree().Root().Is_Empty()
+    }
+
+    Is_Info_Waiting():
+        boolean
+    {
+        return this.is_info_waiting;
+    }
+
+    Set_Is_Info_Waiting(
+        is_info_waiting: boolean,
+    ):
+        void
+    {
+        this.is_info_waiting = is_info_waiting;
     }
 
     async Search():
@@ -114,6 +136,7 @@ export class Instance extends Entity.Instance
         }
 
         if (versions_results instanceof Search.Parser.Help) {
+            this.expression.Set_Help(versions_results);
             this.results = new Results.Instance(
                 {
                     body: this,
@@ -126,6 +149,7 @@ export class Instance extends Entity.Instance
             const expression_has_command: boolean =
                 Text.Part.Command.Maybe_Valid_Value_From(expression_value) !== null;
 
+            this.expression.Set_Help(null);
             this.results = new Results.Instance(
                 {
                     body: this,

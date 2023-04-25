@@ -6,6 +6,7 @@ import * as Entity from "../../../entity.js";
 import * as Body from "../instance.js";
 import * as Placeholder from "./placeholder.js";
 import * as Input from "./input.js";
+import * as Help from "./help.js";
 
 export class Instance extends Entity.Instance
 {
@@ -39,7 +40,8 @@ export class Instance extends Entity.Instance
     {
         if (
             !this.Has_Placeholder() ||
-            !this.Has_Input()
+            !this.Has_Input() ||
+            !this.Has_Help()
         ) {
             this.Abort_All_Children();
 
@@ -50,6 +52,12 @@ export class Instance extends Entity.Instance
                 },
             );
             new Input.Instance(
+                {
+                    expression: this,
+                    model: () => this.Model(),
+                },
+            );
+            new Help.Instance(
                 {
                     expression: this,
                     model: () => this.Model(),
@@ -114,5 +122,25 @@ export class Instance extends Entity.Instance
         );
 
         return this.Child(1) as Input.Instance;
+    }
+
+    Has_Help():
+        boolean
+    {
+        return (
+            this.Has_Child(2) &&
+            this.Child(2) instanceof Help.Instance
+        );
+    }
+
+    Help():
+        Help.Instance
+    {
+        Utils.Assert(
+            this.Has_Help(),
+            `Does not have Help.`,
+        );
+
+        return this.Child(2) as Help.Instance;
     }
 }
