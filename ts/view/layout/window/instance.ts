@@ -86,8 +86,10 @@ export class Instance extends Entity.Instance
     private async On_Click():
         Promise<void>
     {
-        this.Model().Wall().Layout().Set_Active_Window(this.Model());
-        this.Wall().Layout().Refresh();
+        if (this.Is_Alive()) {
+            this.Model().Wall().Layout().Set_Active_Window(this.Model());
+            this.Wall().Layout().Refresh();
+        }
     }
 
     async Refresh_After_Has_Model():
