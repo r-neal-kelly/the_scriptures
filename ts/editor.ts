@@ -1250,13 +1250,13 @@ class Editor
                     if (this.Is_Meta_Key_Active()) {
                         keyboard_event.preventDefault();
 
-                        this.Highlight_Next(`⸨err⸩`);
+                        this.Highlight_Next([`⸨err⸩`, `⸨/err⸩`]);
                     }
                 } else if (keyboard_event.key === `!`) {
                     if (this.Is_Meta_Key_Active()) {
                         keyboard_event.preventDefault();
 
-                        this.Highlight_Next(`⸨b⸩`);
+                        this.Highlight_Next([`⸨b⸩`, `⸨/b⸩`]);
                     }
                 }
             }.bind(this),
@@ -2247,7 +2247,7 @@ class Editor
     }
 
     Highlight_Next(
-        text: string,
+        targets: Array<string>,
     ):
         void
     {
@@ -2285,7 +2285,7 @@ class Editor
                         const line: Element = this.lines[line_idx].Element();
                         for (let end = line.children.length; child_idx < end; child_idx += 1) {
                             const child: Element = line.children[child_idx];
-                            if ((child.textContent || ``).replaceAll(/ /g, ` `) === text) {
+                            if (targets.includes((child.textContent || ``).replaceAll(/ /g, ` `))) {
                                 return child;
                             } else if (child === selected_child_element) {
                                 return null;
@@ -2310,7 +2310,7 @@ class Editor
             // we have to look for the first instance and highlight it
             for (let line of this.lines) {
                 for (let child of line.Element().children) {
-                    if ((child.textContent || ``).replaceAll(/ /g, ` `) === text) {
+                    if (targets.includes((child.textContent || ``).replaceAll(/ /g, ` `))) {
                         line.Element().focus();
 
                         const selection: Selection = document.getSelection() as Selection;

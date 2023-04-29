@@ -150,7 +150,7 @@ export class Instance extends Entity.Instance
             );
         } else {
             const expression_has_command: boolean =
-                Text.Part.Command.Maybe_Valid_Value_From(expression_value) !== null;
+                expression_value.includes(Search.Operator.META);
 
             this.expression.Set_Help(null);
             this.results = new Results.Instance(

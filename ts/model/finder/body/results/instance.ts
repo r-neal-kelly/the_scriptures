@@ -230,7 +230,7 @@ export class Instance extends Entity.Instance
         this.buffer = new Buffer.Instance(
             {
                 results: [],
-                is_showing_commands: this.is_showing_commands,
+                is_showing_commands: is_showing_commands,
             },
         );
 
