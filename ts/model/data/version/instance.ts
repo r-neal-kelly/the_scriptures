@@ -6,6 +6,7 @@ import { Path } from "../../../types.js";
 import * as Utils from "../../../utils.js";
 
 import * as Entity from "../../entity.js";
+import * as Compressor from "../compressor.js";
 import * as Language from "../language.js";
 import * as Dictionary from "./dictionary.js";
 import * as Text from "./text.js";
@@ -29,6 +30,7 @@ export class Instance extends Entity.Instance
     private dictionary: Dictionary.Instance;
     private text: Text.Instance;
     private files: Array<File.Instance>;
+    private compressor: Compressor.Instance | null;
 
     constructor(
         {
@@ -66,6 +68,7 @@ export class Instance extends Entity.Instance
                 ),
             );
         }
+        this.compressor = null;
 
         this.Add_Dependencies(
             [
@@ -153,5 +156,21 @@ export class Instance extends Entity.Instance
         Array<File.Instance>
     {
         return Array.from(this.files);
+    }
+
+    async Compressor():
+        Promise<Compressor.Instance>
+    {
+        if (this.compressor == null) {
+            this.compressor = new Compressor.Instance(
+                {
+                    unique_parts: Array.from(
+                        (await this.Dictionary()).Text_Dictionary().Unique_Parts(),
+                    ),
+                },
+            );
+        }
+
+        return this.compressor as Compressor.Instance;
     }
 }

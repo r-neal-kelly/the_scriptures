@@ -357,7 +357,7 @@ async function Generate():
         JSON.stringify(data_info),
     );
 
-    const compressor: Data.Compressor.Instance = new Data.Compressor.Instance(
+    const dictionary_compressor: Data.Compressor.Instance = new Data.Compressor.Instance(
         {
             unique_parts: data_info.unique_part_values,
         },
@@ -379,9 +379,9 @@ async function Generate():
                     },
                 );
                 const compressed_version_dictionary_json: Text.Value =
-                    compressor.Compress_Dictionary(version_dictionary_json);
+                    dictionary_compressor.Compress_Dictionary(version_dictionary_json);
                 const uncompressed_version_dictionary_json: Text.Value =
-                    compressor.Decompress_Dictionary(compressed_version_dictionary_json);
+                    dictionary_compressor.Decompress_Dictionary(compressed_version_dictionary_json);
                 Utils.Assert(
                     uncompressed_version_dictionary_json === version_dictionary_json,
                     `Invalid dictionary decompression!`,
@@ -390,19 +390,24 @@ async function Generate():
                     `${files_path}/${Data.Version.Dictionary.Symbol.NAME}.${Data.Version.Dictionary.Symbol.EXTENSION}`,
                     compressed_version_dictionary_json,
                 );
+                const version_compressor: Data.Compressor.Instance = new Data.Compressor.Instance(
+                    {
+                        unique_parts: Array.from(version_dictionary.Unique_Parts()),
+                    },
+                );
                 for (const file_name of file_names) {
                     const file_path: Path = `${files_path}/${file_name}`;
                     const file_text: Text.Value = await Read_File(file_path);
                     file_texts.push(file_text);
                     const compressed_file_text: string =
-                        compressor.Compress(
+                        version_compressor.Compress(
                             {
                                 value: file_text,
                                 dictionary: version_dictionary,
                             },
                         );
                     const uncompressed_file_text: string =
-                        compressor.Decompress(
+                        version_compressor.Decompress(
                             {
                                 value: compressed_file_text,
                                 dictionary: version_dictionary,
@@ -419,14 +424,14 @@ async function Generate():
                 }
                 const version_text = file_texts.join(Data.Version.Symbol.FILE_BREAK);
                 const compressed_version_text: string =
-                    compressor.Compress(
+                    version_compressor.Compress(
                         {
                             value: version_text,
                             dictionary: version_dictionary,
                         },
                     );
                 const uncompressed_version_text: string =
-                    compressor.Decompress(
+                    version_compressor.Decompress(
                         {
                             value: compressed_version_text,
                             dictionary: version_dictionary,

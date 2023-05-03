@@ -94,7 +94,7 @@ export class Instance extends Entity.Instance
         const dictionary: Text.Dictionary.Instance =
             (await this.Version().Dictionary()).Text_Dictionary();
         const compressor: Compressor.Instance =
-            this.Version().Language().Book().Data().Compressor();
+            await this.Version().Compressor();
         this.text = new Text.Instance(
             {
                 dictionary: dictionary,

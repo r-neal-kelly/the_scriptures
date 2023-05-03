@@ -542,4 +542,45 @@ export class Instance
 
         return JSON.stringify(this.info);
     }
+
+    Unique_Parts():
+        Set<string>
+    {
+        const unique_parts: Set<string> = new Set();
+
+        for (const parts of Object.values(this.info.words)) {
+            for (const part of parts) {
+                unique_parts.add(part);
+            }
+        }
+        for (const parts of Object.values(this.info.breaks[Boundary.START])) {
+            for (const part of parts) {
+                unique_parts.add(part);
+            }
+        }
+        for (const parts of Object.values(this.info.breaks[Boundary.MIDDLE])) {
+            for (const part of parts) {
+                unique_parts.add(part);
+            }
+        }
+        for (const parts of Object.values(this.info.breaks[Boundary.END])) {
+            for (const part of parts) {
+                unique_parts.add(part);
+            }
+        }
+        for (const part of this.info.word_errors) {
+            unique_parts.add(part);
+        }
+        for (const part of this.info.break_errors[Boundary.START]) {
+            unique_parts.add(part);
+        }
+        for (const part of this.info.break_errors[Boundary.MIDDLE]) {
+            unique_parts.add(part);
+        }
+        for (const part of this.info.break_errors[Boundary.END]) {
+            unique_parts.add(part);
+        }
+
+        return unique_parts;
+    }
 }
