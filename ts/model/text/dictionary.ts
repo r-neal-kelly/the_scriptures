@@ -544,7 +544,7 @@ export class Instance
     }
 
     Unique_Parts():
-        Set<string>
+        Array<string>
     {
         const unique_parts: Set<string> = new Set();
 
@@ -581,6 +581,6 @@ export class Instance
             unique_parts.add(part);
         }
 
-        return unique_parts;
+        return Array.from(unique_parts).sort();
     }
 }

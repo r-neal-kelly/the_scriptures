@@ -111,7 +111,7 @@ export class Instance extends Async.Instance
             const dictionary: Text.Dictionary.Instance =
                 (await this.Version().Dictionary()).Text_Dictionary();
             const compressor: Compressor.Instance =
-                await this.Version().Compressor();
+                this.Version().Compressor();
             for (
                 const text_file of
                 compressor.Decompress(

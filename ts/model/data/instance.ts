@@ -22,7 +22,9 @@ export type Info = {
     unique_book_names: Array<Name>,
     unique_language_names: Array<Name>,
     unique_version_names: Array<Name>,
-    unique_part_values: Array<string>,
+    unique_part_values: {
+        [language_name: Name]: Array<string>,
+    },
 };
 
 export class Instance extends Async.Instance
@@ -32,7 +34,7 @@ export class Instance extends Async.Instance
     private books_path: Path;
     private info: Info | null;
     private books: Array<Book.Instance>;
-    private compressor: Compressor.Instance | null;
+    private compressors: { [language_name: Name]: Compressor.Instance };
 
     constructor()
     {
@@ -43,7 +45,7 @@ export class Instance extends Async.Instance
         this.books_path = `${this.path}/Books`;
         this.info = null;
         this.books = [];
-        this.compressor = null;
+        this.compressors = {};
 
         this.Add_Dependencies(
             [
@@ -151,7 +153,9 @@ export class Instance extends Async.Instance
         return Array.from(this.books);
     }
 
-    Compressor():
+    Compressor(
+        language_name: Name,
+    ):
         Compressor.Instance
     {
         Utils.Assert(
@@ -159,11 +163,11 @@ export class Instance extends Async.Instance
             `Not ready.`,
         );
         Utils.Assert(
-            this.compressor != null,
-            `Compressor is null!`,
+            this.compressors[language_name] != null,
+            `Doesn't have compressor for language ${language_name}`,
         );
 
-        return this.compressor as Compressor.Instance;
+        return this.compressors[language_name];
     }
 
     Names(
@@ -1200,11 +1204,13 @@ export class Instance extends Async.Instance
                 );
             }
 
-            this.compressor = new Compressor.Instance(
-                {
-                    unique_parts: this.info.unique_part_values,
-                },
-            );
+            for (const language_name of Object.keys(this.info.unique_part_values)) {
+                this.compressors[language_name] = new Compressor.Instance(
+                    {
+                        unique_parts: this.info.unique_part_values[language_name],
+                    },
+                );
+            }
         } else {
             this.info = {
                 tree: {
@@ -1213,14 +1219,8 @@ export class Instance extends Async.Instance
                 unique_book_names: [],
                 unique_language_names: [],
                 unique_version_names: [],
-                unique_part_values: [],
+                unique_part_values: {},
             };
-
-            this.compressor = new Compressor.Instance(
-                {
-                    unique_parts: [],
-                },
-            );
         }
     }
 }

@@ -276,10 +276,10 @@ async function Generate():
         unique_book_names: [],
         unique_language_names: [],
         unique_version_names: [],
-        unique_part_values: [],
+        unique_part_values: {},
     };
     const unique_names: Unique_Names = new Unique_Names();
-    const unique_parts: Unique_Parts = new Unique_Parts();
+    const unique_parts: { [language_name: Name]: Unique_Parts } = {};
 
     const data_path: Path = `./Data`;
     const books_path: Path = `${data_path}/Books`;
@@ -299,6 +299,9 @@ async function Generate():
             };
             book_branch.languages.push(language_branch);
             unique_names.Add_Language(language_name);
+            if (unique_parts[language_name] == null) {
+                unique_parts[language_name] = new Unique_Parts();
+            }
             for (const version_name of (await Folder_Names(versions_path)).sort()) {
                 const files_path: Path = `${versions_path}/${version_name}`;
                 const version_branch: Data.Version.Branch = {
@@ -339,7 +342,7 @@ async function Generate():
                             part_idx += 1
                         ) {
                             const part: Text.Part.Instance = line.Macro_Part(part_idx);
-                            unique_parts.Add(part.Value());
+                            unique_parts[language_name].Add(part.Value());
                         }
                     }
                 }
@@ -350,22 +353,24 @@ async function Generate():
     data_info.unique_book_names = unique_names.Books();
     data_info.unique_language_names = unique_names.Languages();
     data_info.unique_version_names = unique_names.Versions();
-    data_info.unique_part_values = unique_parts.Values();
+    for (const language_name of Object.keys(unique_parts)) {
+        data_info.unique_part_values[language_name] = unique_parts[language_name].Values();
+    }
 
     await Write_File(
         `${data_path}/Info.json`,
         JSON.stringify(data_info),
     );
 
-    const dictionary_compressor: Data.Compressor.Instance = new Data.Compressor.Instance(
-        {
-            unique_parts: data_info.unique_part_values,
-        },
-    );
     for (const book_name of (await Folder_Names(books_path)).sort()) {
         const languages_path: Path = `${books_path}/${book_name}`;
         for (const language_name of (await Folder_Names(languages_path)).sort()) {
             const versions_path: Path = `${languages_path}/${language_name}`;
+            const compressor: Data.Compressor.Instance = new Data.Compressor.Instance(
+                {
+                    unique_parts: data_info.unique_part_values[language_name],
+                },
+            );
             for (const version_name of (await Folder_Names(versions_path)).sort()) {
                 const files_path: Path = `${versions_path}/${version_name}`;
                 const file_names: Array<string> =
@@ -379,9 +384,9 @@ async function Generate():
                     },
                 );
                 const compressed_version_dictionary_json: Text.Value =
-                    dictionary_compressor.Compress_Dictionary(version_dictionary_json);
+                    compressor.Compress_Dictionary(version_dictionary_json);
                 const uncompressed_version_dictionary_json: Text.Value =
-                    dictionary_compressor.Decompress_Dictionary(compressed_version_dictionary_json);
+                    compressor.Decompress_Dictionary(compressed_version_dictionary_json);
                 Utils.Assert(
                     uncompressed_version_dictionary_json === version_dictionary_json,
                     `Invalid dictionary decompression!`,
@@ -390,24 +395,19 @@ async function Generate():
                     `${files_path}/${Data.Version.Dictionary.Symbol.NAME}.${Data.Version.Dictionary.Symbol.EXTENSION}`,
                     compressed_version_dictionary_json,
                 );
-                const version_compressor: Data.Compressor.Instance = new Data.Compressor.Instance(
-                    {
-                        unique_parts: Array.from(version_dictionary.Unique_Parts()),
-                    },
-                );
                 for (const file_name of file_names) {
                     const file_path: Path = `${files_path}/${file_name}`;
                     const file_text: Text.Value = await Read_File(file_path);
                     file_texts.push(file_text);
                     const compressed_file_text: string =
-                        version_compressor.Compress(
+                        compressor.Compress(
                             {
                                 value: file_text,
                                 dictionary: version_dictionary,
                             },
                         );
                     const uncompressed_file_text: string =
-                        version_compressor.Decompress(
+                        compressor.Decompress(
                             {
                                 value: compressed_file_text,
                                 dictionary: version_dictionary,
@@ -424,14 +424,14 @@ async function Generate():
                 }
                 const version_text = file_texts.join(Data.Version.Symbol.FILE_BREAK);
                 const compressed_version_text: string =
-                    version_compressor.Compress(
+                    compressor.Compress(
                         {
                             value: version_text,
                             dictionary: version_dictionary,
                         },
                     );
                 const uncompressed_version_text: string =
-                    version_compressor.Decompress(
+                    compressor.Decompress(
                         {
                             value: compressed_version_text,
                             dictionary: version_dictionary,

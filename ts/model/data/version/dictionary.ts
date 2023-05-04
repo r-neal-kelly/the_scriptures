@@ -89,7 +89,7 @@ export class Instance extends Async.Instance
             await fetch(Utils.Resolve_Path(this.Path()));
         if (response.ok) {
             const compressor: Compressor.Instance =
-                this.Version().Language().Book().Data().Compressor();
+                this.Version().Compressor();
             text_dictionary_json = compressor.Decompress_Dictionary(await response.text());
         } else {
             text_dictionary_json = null;

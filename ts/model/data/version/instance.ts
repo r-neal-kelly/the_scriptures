@@ -30,7 +30,6 @@ export class Instance extends Entity.Instance
     private dictionary: Dictionary.Instance;
     private text: Text.Instance;
     private files: Array<File.Instance>;
-    private compressor: Compressor.Instance | null;
 
     constructor(
         {
@@ -68,7 +67,6 @@ export class Instance extends Entity.Instance
                 ),
             );
         }
-        this.compressor = null;
 
         this.Add_Dependencies(
             [
@@ -158,19 +156,9 @@ export class Instance extends Entity.Instance
         return Array.from(this.files);
     }
 
-    async Compressor():
-        Promise<Compressor.Instance>
+    Compressor():
+        Compressor.Instance
     {
-        if (this.compressor == null) {
-            this.compressor = new Compressor.Instance(
-                {
-                    unique_parts: Array.from(
-                        (await this.Dictionary()).Text_Dictionary().Unique_Parts(),
-                    ),
-                },
-            );
-        }
-
-        return this.compressor as Compressor.Instance;
+        return this.Language().Book().Data().Compressor(this.Language().Name());
     }
 }
