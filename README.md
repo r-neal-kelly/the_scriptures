@@ -1,5 +1,5 @@
 # The Scriptures
 
-Currently has an editor to type in scriptures from various sources. Works with Brave and presumably any chromium based browser.
+**[Read Online](https://r-neal-kelly.github.io/the_scriptures/)**
 
-Currently working on The Book of Jubilees as translated by R. H. Charles.
+Currently adding Genesis from the KJV translation.
