@@ -78,6 +78,18 @@ export class Instance extends Entity.Instance
         return this.text as Text.Instance;
     }
 
+    Default_Text_Direction():
+        Text.Direction
+    {
+        const language_name: Name = this.Version().Language().Name();
+
+        if (language_name === `Hebrew`) {
+            return Text.Direction.RIGHT_TO_LEFT;
+        } else {
+            return Text.Direction.LEFT_TO_RIGHT;
+        }
+    }
+
     override async After_Dependencies_Are_Ready():
         Promise<void>
     {

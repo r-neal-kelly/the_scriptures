@@ -2564,6 +2564,7 @@ class Editor
             background-color: black;
 
             font-family: sans-serif;
+            font-family: Ezra SIL SR;
         }
 
         body {

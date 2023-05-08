@@ -3,7 +3,8 @@ import { ID } from "../../../types.js";
 
 import * as Event from "../../../event.js";
 
-import * as Model from "../../../model/buffer/text/instance.js";
+import * as Model from "../../../model/buffer/text.js";
+import * as Model_Text from "../../../model/text.js";
 
 import * as Entity from "../../entity.js";
 import * as Line from "./line.js";
@@ -47,6 +48,14 @@ export class Instance extends Entity.Instance
                 .Text {
                     width: 100%;
                     padding: 12px 4px 36px 4px;
+                }
+
+                .Left_To_Right {
+                    direction: ltr;
+                }
+
+                .Right_To_Left {
+                    direction: rtl;
                 }
             `,
         );
@@ -150,7 +159,16 @@ export class Instance extends Entity.Instance
     override On_Reclass():
         Array<string>
     {
-        return [`Text`];
+        const classes: Array<string> = [];
+
+        classes.push(`Text`);
+        if (this.Model().Text_Direction() === Model_Text.Direction.LEFT_TO_RIGHT) {
+            classes.push(`Left_To_Right`);
+        } else {
+            classes.push(`Right_To_Left`);
+        }
+
+        return classes;
     }
 
     Model():

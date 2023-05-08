@@ -39,19 +39,23 @@ export class Instance extends Entity.Instance
     }
 
     private text: Text.Instance;
+    private text_direction: Text.Direction;
     private lines: Array<Line.Instance>;
 
     constructor(
         {
             text,
+            text_direction,
         }: {
             text: Text.Instance,
+            text_direction: Text.Direction,
         },
     )
     {
         super();
 
         this.text = text;
+        this.text_direction = text_direction;
         this.lines = [];
 
         for (let idx = 0, end = text.Line_Count(); idx < end; idx += 1) {
@@ -75,6 +79,12 @@ export class Instance extends Entity.Instance
         Text.Instance
     {
         return this.text;
+    }
+
+    Text_Direction():
+        Text.Direction
+    {
+        return this.text_direction;
     }
 
     Line_Count():

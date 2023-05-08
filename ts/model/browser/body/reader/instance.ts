@@ -18,6 +18,7 @@ export class Instance extends Entity.Instance
                     value: ``,
                 },
             ),
+            text_direction: Text.Direction.LEFT_TO_RIGHT,
         },
     );
 
@@ -81,6 +82,7 @@ export class Instance extends Entity.Instance
                 this.current_file = new Buffer.Text.Instance(
                     {
                         text: await new_data.Text(),
+                        text_direction: new_data.Default_Text_Direction(),
                     },
                 );
             } else {

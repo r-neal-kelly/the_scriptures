@@ -63,7 +63,7 @@ export class Instance extends Entity.Instance
                 .Body {
                     display: grid;
                     grid-template-rows: 1fr;
-                    grid-template-columns: auto;
+                    grid-template-columns: 1fr;
                     justify-content: start;
 
                     position: relative;
