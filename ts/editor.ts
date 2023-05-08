@@ -411,7 +411,7 @@ class Line
                 border-color: #3B3A32;
 
                 font-size: 20px;
-                direction: ltr;
+                direction: ${editor.Direction() === Direction.LEFT_TO_RIGHT ? `ltr` : `rtl`};
             `,
         );
 
@@ -934,6 +934,11 @@ class Line
         const text_offset: number | null = Text_Offset(this.Element());
 
         this.Set_Text(this.Text());
+        if (this.Editor().Direction() === Direction.LEFT_TO_RIGHT) {
+            this.Element().style.direction = `ltr`;
+        } else {
+            this.Element().style.direction = `rtl`;
+        }
         if (text_offset) {
             Set_Text_Offset(this.Element(), text_offset);
         }
@@ -1096,6 +1101,12 @@ class Line
     }
 }
 
+enum Direction
+{
+    LEFT_TO_RIGHT,
+    RIGHT_TO_LEFT,
+}
+
 class Editor
 {
     private dictionary: Model.Dictionary.Instance;
@@ -1106,6 +1117,7 @@ class Editor
 
     private is_meta_key_active: boolean;
     private is_in_point_mode: boolean;
+    private direction: Direction;
 
     private parent: HTMLElement;
     private element: HTMLDivElement;
@@ -1156,6 +1168,7 @@ class Editor
 
         this.is_meta_key_active = false;
         this.is_in_point_mode = false;
+        this.direction = Direction.LEFT_TO_RIGHT;
 
         this.parent = parent;
         this.element = document.createElement(`div`);
@@ -1216,19 +1229,11 @@ class Editor
                     this.is_meta_key_active = true;
                 } else if (keyboard_event.key === `ArrowLeft`) {
                     if (this.Is_Meta_Key_Active()) {
-                        this.children.dictionary_name.style.direction = `rtl`;
-                        this.children.file_name.style.direction = `rtl`;
-                        for (const line of this.lines) {
-                            line.Element().style.direction = `rtl`;
-                        }
+                        this.Set_Direction(Direction.RIGHT_TO_LEFT);
                     }
                 } else if (keyboard_event.key === `ArrowRight`) {
                     if (this.Is_Meta_Key_Active()) {
-                        this.children.dictionary_name.style.direction = `ltr`;
-                        this.children.file_name.style.direction = `ltr`;
-                        for (const line of this.lines) {
-                            line.Element().style.direction = `ltr`;
-                        }
+                        this.Set_Direction(Direction.LEFT_TO_RIGHT);
                     }
                 } else if (keyboard_event.key === `ArrowDown`) {
                     if (this.Is_Meta_Key_Active()) {
@@ -2223,6 +2228,14 @@ class Editor
         this.Set_Dictionary_Name(this.Dictionary_Name());
         this.Set_File_Name(this.File_Name());
 
+        if (this.Direction() === Direction.LEFT_TO_RIGHT) {
+            this.children.dictionary_name.style.direction = `ltr`;
+            this.children.file_name.style.direction = `ltr`;
+        } else {
+            this.children.dictionary_name.style.direction = `rtl`;
+            this.children.file_name.style.direction = `rtl`;
+        }
+
         for (const line of this.lines) {
             line.Touch();
         }
@@ -2238,6 +2251,22 @@ class Editor
         boolean
     {
         return this.is_in_point_mode;
+    }
+
+    Direction():
+        Direction
+    {
+        return this.direction;
+    }
+
+    Set_Direction(
+        direction: Direction,
+    ):
+        void
+    {
+        this.direction = direction;
+
+        this.Touch();
     }
 
     Highlight_Next(
