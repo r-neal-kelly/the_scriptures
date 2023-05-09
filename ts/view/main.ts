@@ -41,6 +41,20 @@ class Body extends Entity.Instance
     override On_Life():
         Array<Event.Listener_Info>
     {
+        Utils.Create_Style_Element(
+            `
+                @font-face {
+                    font-family: "Ezra";
+                    src: url("${Utils.Resolve_Path(`fonts/Hebrew/Ezra/SILEOT.ttf`)}");
+                }
+                
+                @font-face {
+                    font-family: "Ezra SR";
+                    src: url("${Utils.Resolve_Path(`fonts/Hebrew/Ezra/SILEOTSR.ttf`)}");
+                }
+            `,
+        );
+
         this.Add_CSS(
             `
                 * {
