@@ -97,6 +97,14 @@ export class Instance extends Entity.Instance
         return [`Reader`];
     }
 
+    override On_Restyle():
+        string | { [index: string]: string }
+    {
+        return `
+            font-family: ${this.Model().Font_Name()};
+        `;
+    }
+
     Model():
         Model.Instance
     {

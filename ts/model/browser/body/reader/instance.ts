@@ -1,3 +1,5 @@
+import { Name } from "../../../../types.js";
+
 import * as Entity from "../../../entity.js";
 import * as Data from "../../../data.js";
 import * as Text from "../../../text.js";
@@ -89,6 +91,23 @@ export class Instance extends Entity.Instance
                 this.current_file = Instance.Blank_File();
             }
             await this.current_file.Ready();
+        }
+    }
+
+    Font_Name():
+        Name
+    {
+        const maybe_language_name: Name | null =
+            this.Body().Selector().Maybe_Selected_Language_Name();
+
+        if (maybe_language_name) {
+            if (maybe_language_name === `Hebrew`) {
+                return `Ezra SR`;
+            } else {
+                return `sans-serif`;
+            }
+        } else {
+            return `sans-serif`;
         }
     }
 }

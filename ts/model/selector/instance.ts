@@ -323,6 +323,21 @@ export class Instance extends Entity.Instance
         return this.Slot_From_Type(Slot.Type.LANGUAGES);
     }
 
+    Maybe_Selected_Language_Name():
+        Name | null
+    {
+        if (this.Has_Languages()) {
+            const languages: Slot.Instance = this.Languages();
+            if (languages.Has_Selected_Item()) {
+                return languages.Selected_Item().Name();
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
+    }
+
     Has_Versions():
         boolean
     {
