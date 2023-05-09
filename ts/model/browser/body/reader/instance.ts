@@ -102,7 +102,13 @@ export class Instance extends Entity.Instance
 
         if (maybe_language_name) {
             if (maybe_language_name === `Hebrew`) {
-                return `Ezra SR`;
+                return `Ezra SIL SR`;
+            } else if (maybe_language_name === `Greek`) {
+                return `Cardo`;
+            } else if (maybe_language_name === `Latin`) {
+                return `Gentium Plus`;
+            } else if (maybe_language_name === `English`) {
+                return `Orkney-Regular`;
             } else {
                 return `sans-serif`;
             }

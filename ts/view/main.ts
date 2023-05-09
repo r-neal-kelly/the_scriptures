@@ -43,14 +43,58 @@ class Body extends Entity.Instance
     {
         Utils.Create_Style_Element(
             `
+                /* Hebrew */
                 @font-face {
-                    font-family: "Ezra";
+                    font-family: "Ezra SIL";
                     src: url("${Utils.Resolve_Path(`fonts/Hebrew/Ezra/SILEOT.ttf`)}");
                 }
-                
                 @font-face {
-                    font-family: "Ezra SR";
+                    font-family: "Ezra SIL SR";
                     src: url("${Utils.Resolve_Path(`fonts/Hebrew/Ezra/SILEOTSR.ttf`)}");
+                }
+
+                /* Greek */
+                @font-face {
+                    font-family: "Galatia SIL";
+                    src: url("${Utils.Resolve_Path(`fonts/Greek/Galatia/GalSILR.ttf`)}");
+                }
+                @font-face {
+                    font-family: "Galatia SIL Bold";
+                    src: url("${Utils.Resolve_Path(`fonts/Greek/Galatia/GalSILB.ttf`)}");
+                }
+
+                @font-face {
+                    font-family: "Cardo";
+                    src: url("${Utils.Resolve_Path(`fonts/Greek/Cardo/Cardo-Regular.ttf`)}");
+                }
+                @font-face {
+                    font-family: "Cardo Bold";
+                    src: url("${Utils.Resolve_Path(`fonts/Greek/Cardo/Cardo-Bold.ttf`)}");
+                }
+                @font-face {
+                    font-family: "Cardo Italic";
+                    src: url("${Utils.Resolve_Path(`fonts/Greek/Cardo/Cardo-Italic.ttf`)}");
+                }
+
+                /* Latin */
+                @font-face {
+                    font-family: "Gentium Plus";
+                    src: url("${Utils.Resolve_Path(`fonts/Latin/Gentium/GentiumPlus-R.ttf`)}");
+                }
+                @font-face {
+                    font-family: "Gentium Plus Italic";
+                    src: url("${Utils.Resolve_Path(`fonts/Latin/Gentium/GentiumPlus-I.ttf`)}");
+                }
+
+                /* English */
+                @font-face {
+                    font-family: "Quivira";
+                    src: url("${Utils.Resolve_Path(`fonts/English/Quivira/Quivira.otf`)}");
+                }
+
+                @font-face {
+                    font-family: "Orkney-Regular";
+                    src: url("${Utils.Resolve_Path(`fonts/English/Orkney/Orkney Regular.ttf`)}");
                 }
             `,
         );
