@@ -410,7 +410,6 @@ class Line
                 border-style: solid;
                 border-color: #3B3A32;
 
-                font-size: 20px;
                 direction: ${editor.Direction() === Direction.LEFT_TO_RIGHT ? `ltr` : `rtl`};
             `,
         );
@@ -1273,13 +1272,55 @@ class Editor
                     if (this.Is_Meta_Key_Active()) {
                         keyboard_event.preventDefault();
 
-                        this.Highlight_Next([`⸨err⸩`, `⸨/err⸩`]);
+                        this.Highlight_Next(
+                            [
+                                `⸨err⸩`,
+                                `⸨/err⸩`,
+                            ],
+                        );
                     }
                 } else if (keyboard_event.key === `!`) {
                     if (this.Is_Meta_Key_Active()) {
                         keyboard_event.preventDefault();
 
-                        this.Highlight_Next([`⸨b⸩`, `⸨/b⸩`]);
+                        this.Highlight_Next(
+                            [
+                                `⸨b⸩`,
+                                `⸨/b⸩`,
+                            ],
+                        );
+                    }
+                } else if (keyboard_event.key === `)`) {
+                    if (this.Is_Meta_Key_Active()) {
+                        keyboard_event.preventDefault();
+
+                        // English
+                        document.body.style.fontFamily = `sans-serif`;
+                        document.body.style.fontSize = `20px`;
+                    }
+                } else if (keyboard_event.key === `(`) {
+                    if (this.Is_Meta_Key_Active()) {
+                        keyboard_event.preventDefault();
+
+                        // Hebrew
+                        document.body.style.fontFamily = `Ezra SIL SR`;
+                        document.body.style.fontSize = `30px`;
+                    }
+                } else if (keyboard_event.key === `*`) {
+                    if (this.Is_Meta_Key_Active()) {
+                        keyboard_event.preventDefault();
+
+                        // Greek
+                        document.body.style.fontFamily = `Cardo`;
+                        document.body.style.fontSize = `28px`;
+                    }
+                } else if (keyboard_event.key === `&`) {
+                    if (this.Is_Meta_Key_Active()) {
+                        keyboard_event.preventDefault();
+
+                        // Latin
+                        document.body.style.fontFamily = `Gentium Plus`;
+                        document.body.style.fontSize = `26px`;
                     }
                 }
             }.bind(this),
@@ -1311,6 +1352,8 @@ class Editor
 
                 width: 100%;
                 padding: 2px 0;
+
+                font-size: 16px;
             `,
         );
 
@@ -2547,6 +2590,19 @@ class Editor
     void
 {
     Utils.Create_Style_Element(`
+        @font-face {
+            font-family: "Ezra SIL SR";
+            src: url("${Utils.Resolve_Path(`fonts/Hebrew/Ezra/SILEOTSR.ttf`)}");
+        }
+        @font-face {
+            font-family: "Cardo";
+            src: url("${Utils.Resolve_Path(`fonts/Greek/Cardo/Cardo-Regular.ttf`)}");
+        }
+        @font-face {
+            font-family: "Gentium Plus";
+            src: url("${Utils.Resolve_Path(`fonts/Latin/Gentium/GentiumPlus-R.ttf`)}");
+        }
+        
         * {
             box-sizing: border-box;
             margin: 0;
@@ -2564,9 +2620,7 @@ class Editor
             background-color: black;
 
             font-family: sans-serif;
-            font-family: Ezra SIL SR; /* Hebrew */
-            font-family: Cardo; /* Greek */
-            font-family: Gentium Plus; /* Latin */
+            font-size: 20px;
         }
 
         body {
