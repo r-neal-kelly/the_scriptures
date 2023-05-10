@@ -2564,9 +2564,9 @@ class Editor
             background-color: black;
 
             font-family: sans-serif;
+            font-family: Ezra SIL SR; /* Hebrew */
             font-family: Cardo; /* Greek */
             font-family: Gentium Plus; /* Latin */
-            font-family: Ezra SIL SR; /* Hebrew */
         }
 
         body {
