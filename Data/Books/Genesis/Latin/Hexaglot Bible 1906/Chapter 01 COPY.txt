@@ -1,6 +1,6 @@
 ⸨cen⸩GENESIS, CAPUT I⸼
 
-1 ⸨sc⸩In⸨/sc⸩ principio creavit Deus cælum et terram⸨err⸩⸨/err⸩
+1 ⸨sc⸩In⸨/sc⸩ principio creavit Deus cælum et terram.
 2 Terra autem erat inanis et vacua, et tenebræ erant super faciem abyssi: et Spiritus Dei ferebatur super aquas.
 3 Dixitque Deus: Fiat lux. Et facta est lux.
 4 Et vidit Deus lucem quod esset bona: et divisit lucem a tenebris.
