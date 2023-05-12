@@ -281,7 +281,7 @@ async function Generate():
     const unique_names: Unique_Names = new Unique_Names();
     const unique_parts: { [language_name: Name]: Unique_Parts } = {};
 
-    const data_path: Path = `./Data`;
+    const data_path: Path = `./data`;
     const books_path: Path = `${data_path}/Books`;
     for (const book_name of (await Folder_Names(books_path)).sort()) {
         const languages_path: Path = `${books_path}/${book_name}`;

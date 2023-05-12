@@ -40,7 +40,7 @@ export class Instance extends Async.Instance
     {
         super();
 
-        this.name = `Data`;
+        this.name = `data`;
         this.path = this.name;
         this.books_path = `${this.path}/Books`;
         this.info = null;
