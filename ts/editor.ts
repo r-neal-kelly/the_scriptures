@@ -1296,7 +1296,7 @@ class Editor
 
                         // English
                         document.body.style.fontFamily = `sans-serif`;
-                        document.body.style.fontSize = `20px`;
+                        document.body.style.fontSize = `24px`;
                     }
                 } else if (keyboard_event.key === `(`) {
                     if (this.Is_Meta_Key_Active()) {
@@ -2620,7 +2620,7 @@ class Editor
             background-color: black;
 
             font-family: sans-serif;
-            font-size: 20px;
+            font-size: 24px;
         }
 
         body {
