@@ -102,6 +102,7 @@ export class Instance extends Entity.Instance
     {
         return `
             font-family: ${this.Model().Font_Name()};
+            font-size: ${this.Model().Font_Size()};
         `;
     }
 

@@ -104,7 +104,7 @@ export class Instance extends Entity.Instance
             if (maybe_language_name === `Hebrew`) {
                 return `Ezra SIL SR`;
             } else if (maybe_language_name === `Greek`) {
-                return `Cardo`;
+                return `Gentium Plus`;
             } else if (maybe_language_name === `Latin`) {
                 return `Gentium Plus`;
             } else if (maybe_language_name === `English`) {
@@ -114,6 +114,29 @@ export class Instance extends Entity.Instance
             }
         } else {
             return `sans-serif`;
+        }
+    }
+
+    Font_Size():
+        string
+    {
+        const maybe_language_name: Name | null =
+            this.Body().Selector().Maybe_Selected_Language_Name();
+
+        if (maybe_language_name) {
+            if (maybe_language_name === `Hebrew`) {
+                return `18px`;
+            } else if (maybe_language_name === `Greek`) {
+                return `20px`;
+            } else if (maybe_language_name === `Latin`) {
+                return `18px`;
+            } else if (maybe_language_name === `English`) {
+                return `16px`;
+            } else {
+                return `16px`;
+            }
+        } else {
+            return `16px`;
         }
     }
 }

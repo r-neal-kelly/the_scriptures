@@ -1311,8 +1311,8 @@ class Editor
                         keyboard_event.preventDefault();
 
                         // Greek
-                        document.body.style.fontFamily = `Cardo`;
-                        document.body.style.fontSize = `28px`;
+                        document.body.style.fontFamily = `Gentium Plus`;
+                        document.body.style.fontSize = `32px`;
                     }
                 } else if (keyboard_event.key === `&`) {
                     if (this.Is_Meta_Key_Active()) {
