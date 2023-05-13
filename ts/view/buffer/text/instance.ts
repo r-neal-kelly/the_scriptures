@@ -65,6 +65,8 @@ export class Instance extends Entity.Instance
                 .Line {
                     display: block;
 
+                    padding: 3px 0px;
+
                     color: inherit;
                 }
 

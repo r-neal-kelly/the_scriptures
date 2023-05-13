@@ -94,49 +94,50 @@ export class Instance extends Entity.Instance
         }
     }
 
-    Font_Name():
-        Name
+    Language_Styles():
+        { [index: string]: string }
     {
         const maybe_language_name: Name | null =
             this.Body().Selector().Maybe_Selected_Language_Name();
 
         if (maybe_language_name) {
             if (maybe_language_name === `Hebrew`) {
-                return `Ezra SIL SR`;
+                return {
+                    "font-family": `Ezra SIL SR`,
+                    "font-size": `18px`,
+                    "line-height": `1.45`,
+                };
             } else if (maybe_language_name === `Greek`) {
-                return `Gentium Plus`;
+                return {
+                    "font-family": `Gentium Plus`,
+                    "font-size": `20px`,
+                    "line-height": `1.3`,
+                };
             } else if (maybe_language_name === `Latin`) {
-                return `Gentium Plus`;
+                return {
+                    "font-family": `Gentium Plus`,
+                    "font-size": `18px`,
+                    "line-height": `1.1`,
+                };
             } else if (maybe_language_name === `English`) {
-                return `Orkney-Regular`;
+                return {
+                    "font-family": `Orkney-Regular`,
+                    "font-size": `16px`,
+                    "line-height": `1.2`,
+                };
             } else {
-                return `sans-serif`;
+                return {
+                    "font-family": `sans-serif`,
+                    "font-size": `16px`,
+                    "line-height": `normal`,
+                };
             }
         } else {
-            return `sans-serif`;
-        }
-    }
-
-    Font_Size():
-        string
-    {
-        const maybe_language_name: Name | null =
-            this.Body().Selector().Maybe_Selected_Language_Name();
-
-        if (maybe_language_name) {
-            if (maybe_language_name === `Hebrew`) {
-                return `18px`;
-            } else if (maybe_language_name === `Greek`) {
-                return `20px`;
-            } else if (maybe_language_name === `Latin`) {
-                return `18px`;
-            } else if (maybe_language_name === `English`) {
-                return `16px`;
-            } else {
-                return `16px`;
-            }
-        } else {
-            return `16px`;
+            return {
+                "font-family": `sans-serif`,
+                "font-size": `16px`,
+                "line-height": `normal`,
+            };
         }
     }
 }

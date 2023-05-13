@@ -100,10 +100,7 @@ export class Instance extends Entity.Instance
     override On_Restyle():
         string | { [index: string]: string }
     {
-        return `
-            font-family: ${this.Model().Font_Name()};
-            font-size: ${this.Model().Font_Size()};
-        `;
+        return this.Model().Language_Styles();
     }
 
     Model():
