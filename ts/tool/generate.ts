@@ -44,6 +44,14 @@ async function Read_Directory(
     );
 }
 
+function Has_File(
+    file_path: Path,
+):
+    boolean
+{
+    return fs.existsSync(file_path);
+}
+
 async function Read_File(
     file_path: Path,
 ):
@@ -313,8 +321,17 @@ async function Generate():
                         json: await Read_File(`${files_path}/Dictionary.json`),
                     },
                 );
-                const file_names: Array<string> =
-                    (await File_Names(files_path)).filter(Filter_File_Names).sort();
+                const file_names: Array<string> = await (
+                    async function ():
+                        Promise<Array<string>>
+                    {
+                        if (Has_File(`${files_path}/Order.json`)) {
+                            return JSON.parse(await Read_File(`${files_path}/Order.json`));
+                        } else {
+                            return (await File_Names(files_path)).filter(Filter_File_Names).sort();
+                        }
+                    }
+                )();
                 language_branch.versions.push(version_branch);
                 unique_names.Add_Version(version_name);
                 for (const [file_index, file_name] of file_names.entries()) {
