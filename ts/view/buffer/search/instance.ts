@@ -101,6 +101,8 @@ export class Instance extends Entity.Instance
                 }
 
                 .Highlighted_Division {
+                    min-width: 3px;
+                    
                     background-color: white;
 
                     color: black;
