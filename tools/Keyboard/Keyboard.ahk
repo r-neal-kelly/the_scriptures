@@ -277,7 +277,8 @@
  !-:: Send — ; Em Dash
  !k:: Send ϗ ; Greek Kai Symbol
  !p:: Send ¶ ; Pilcrow Sign
- !s:: Send § ; Section Sign
+  \:: Send ϛ ; U+03DB GREEK SMALL LETTER STIGMA
+ +\:: Send Ϛ ; U+03DA GREEK LETTER STIGMA
 
 #If (lang = "Greek") && (subset = "Polytonic")
    `;:: αdeadkey("A")   ; Acute
