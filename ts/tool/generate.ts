@@ -274,6 +274,18 @@ function Filter_File_Names(
     );
 };
 
+async function Sorted_File_Names(
+    files_path: Path,
+):
+    Promise<Array<string>>
+{
+    if (Has_File(`${files_path}/Order.json`)) {
+        return JSON.parse(await Read_File(`${files_path}/Order.json`));
+    } else {
+        return (await File_Names(files_path)).filter(Filter_File_Names).sort();
+    }
+}
+
 async function Generate():
     Promise<void>
 {
@@ -321,17 +333,7 @@ async function Generate():
                         json: await Read_File(`${files_path}/Dictionary.json`),
                     },
                 );
-                const file_names: Array<string> = await (
-                    async function ():
-                        Promise<Array<string>>
-                    {
-                        if (Has_File(`${files_path}/Order.json`)) {
-                            return JSON.parse(await Read_File(`${files_path}/Order.json`));
-                        } else {
-                            return (await File_Names(files_path)).filter(Filter_File_Names).sort();
-                        }
-                    }
-                )();
+                const file_names: Array<string> = await Sorted_File_Names(files_path);
                 language_branch.versions.push(version_branch);
                 unique_names.Add_Version(version_name);
                 for (const [file_index, file_name] of file_names.entries()) {
@@ -390,8 +392,7 @@ async function Generate():
             );
             for (const version_name of (await Folder_Names(versions_path)).sort()) {
                 const files_path: Path = `${versions_path}/${version_name}`;
-                const file_names: Array<string> =
-                    (await File_Names(files_path)).filter(Filter_File_Names).sort();
+                const file_names: Array<string> = await Sorted_File_Names(files_path);
                 const file_texts: Array<string> = [];
                 const version_dictionary_json: Text.Value =
                     await Read_File(`${files_path}/Dictionary.json`);
