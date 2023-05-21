@@ -127,13 +127,17 @@ export class Instance extends Entity.Instance
 
                 .Slot_Item {
                     width: 100%;
-                    padding: 2px 2px;
+                    padding: 5px 2px;
+
+                    /*border-bottom: solid 1px rgba(255, 255, 255, 0.3);*/
                     
                     overflow-x: hidden;
                     overflow-y: hidden;
 
                     background-color: transparent;
                     color: white;
+                    
+                    text-align: center;
 
                     cursor: pointer;
                     -webkit-user-select: none;
