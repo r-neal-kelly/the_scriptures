@@ -444,6 +444,27 @@ export class Instance
                     return false;
                 }
             }
+        } else if (
+            segment_type === Type.MACRO_LEFT_TO_RIGHT ||
+            segment_type === Type.MACRO_RIGHT_TO_LEFT
+        ) {
+            Utils.Assert(
+                (
+                    item.Is_Part() &&
+                    (
+                        (item as Part.Instance).Is_Point() ||
+                        (item as Part.Instance).Is_Word() ||
+                        (item as Part.Instance).Is_Command()
+                    )
+                ) ||
+                item.Is_Split(),
+                `Can only add macro parts to a macro segment.`,
+            );
+
+            this.items.push(item);
+
+            return true;
+
         } else {
             Utils.Assert(
                 false,

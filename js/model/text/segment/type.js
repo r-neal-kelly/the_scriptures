@@ -1,1 +1,1 @@
-export var Type;!function(e){e[e.MICRO=0]="MICRO",e[e.MACRO=1]="MACRO"}(Type||(Type={}));
+export var Type;!function(T){T[T.MICRO=0]="MICRO",T[T.MACRO=1]="MACRO",T[T.MACRO_LEFT_TO_RIGHT=2]="MACRO_LEFT_TO_RIGHT",T[T.MACRO_RIGHT_TO_LEFT=3]="MACRO_RIGHT_TO_LEFT"}(Type||(Type={}));

@@ -36,6 +36,12 @@ export enum Known_Value
 
     OPEN_ERROR = `⸨err⸩`,
     CLOSE_ERROR = `⸨/err⸩`,
+
+    OPEN_LEFT_TO_RIGHT = `⸨ltr⸩`,
+    CLOSE_LEFT_TO_RIGHT = `⸨/ltr⸩`,
+
+    OPEN_RIGHT_TO_LEFT = `⸨rtl⸩`,
+    CLOSE_RIGHT_TO_LEFT = `⸨/rtl⸩`,
 }
 
 export function Is_Valid_Value(
@@ -82,7 +88,13 @@ export function Is_Known_Value(
         value === Known_Value.CLOSE_SMALL_CAPS ||
 
         value === Known_Value.OPEN_ERROR ||
-        value === Known_Value.CLOSE_ERROR
+        value === Known_Value.CLOSE_ERROR ||
+
+        value === Known_Value.OPEN_LEFT_TO_RIGHT ||
+        value === Known_Value.CLOSE_LEFT_TO_RIGHT ||
+
+        value === Known_Value.OPEN_RIGHT_TO_LEFT ||
+        value === Known_Value.CLOSE_RIGHT_TO_LEFT
     );
 }
 
@@ -261,5 +273,29 @@ export class Instance extends Part.Instance
         boolean
     {
         return this.Value() === Known_Value.CLOSE_ERROR;
+    }
+
+    Is_Open_Left_To_Right():
+        boolean
+    {
+        return this.Value() === Known_Value.OPEN_LEFT_TO_RIGHT;
+    }
+
+    Is_Close_Left_To_Right():
+        boolean
+    {
+        return this.Value() === Known_Value.CLOSE_LEFT_TO_RIGHT;
+    }
+
+    Is_Open_Right_To_Left():
+        boolean
+    {
+        return this.Value() === Known_Value.OPEN_RIGHT_TO_LEFT;
+    }
+
+    Is_Close_Right_To_Left():
+        boolean
+    {
+        return this.Value() === Known_Value.CLOSE_RIGHT_TO_LEFT;
     }
 }

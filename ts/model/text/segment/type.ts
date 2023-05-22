@@ -17,4 +17,6 @@ export enum Type
             Split
     */
     MACRO,
+    MACRO_LEFT_TO_RIGHT,
+    MACRO_RIGHT_TO_LEFT,
 }

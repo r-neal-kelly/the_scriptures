@@ -68,6 +68,10 @@ export class Instance extends Entity.Instance
         classes.push(`Segment`);
         if (model.Is_Blank()) {
             classes.push(`Blank`);
+        } else if (model.Has_Left_To_Right_Style()) {
+            classes.push(`Left_To_Right`);
+        } else if (model.Has_Right_To_Left_Style()) {
+            classes.push(`Right_To_Left`);
         }
 
         return classes;

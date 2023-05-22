@@ -199,6 +199,52 @@ export class Instance
             }
             this.macro_part_index_to_segment_item_indices[part_index].push(segment_item_index);
         }.bind(this);
+        const Update_Macro_Segments_With_Command: (
+            command: Part.Command.Instance,
+        ) => void = function (
+            this: Instance,
+            command: Part.Command.Instance,
+        ):
+            void
+        {
+            if (
+                command.Value() === Part.Command.Known_Value.OPEN_LEFT_TO_RIGHT
+            ) {
+                Update_Macro_Segments(command);
+                this.macro_segments.push(current_macro_segment);
+                current_macro_segment = new Segment.Instance(
+                    {
+                        segment_type: Segment.Type.MACRO_LEFT_TO_RIGHT,
+                        index: this.macro_segments.length,
+                    },
+                );
+            } else if (
+                command.Value() === Part.Command.Known_Value.OPEN_RIGHT_TO_LEFT
+            ) {
+                Update_Macro_Segments(command);
+                this.macro_segments.push(current_macro_segment);
+                current_macro_segment = new Segment.Instance(
+                    {
+                        segment_type: Segment.Type.MACRO_RIGHT_TO_LEFT,
+                        index: this.macro_segments.length,
+                    },
+                );
+            } else if (
+                command.Value() === Part.Command.Known_Value.CLOSE_LEFT_TO_RIGHT ||
+                command.Value() === Part.Command.Known_Value.CLOSE_RIGHT_TO_LEFT
+            ) {
+                this.macro_segments.push(current_macro_segment);
+                current_macro_segment = new Segment.Instance(
+                    {
+                        segment_type: Segment.Type.MACRO,
+                        index: this.macro_segments.length,
+                    },
+                );
+                Update_Macro_Segments(command);
+            } else {
+                Update_Macro_Segments(command);
+            }
+        }.bind(this);
 
         for (let it = current_start; !it.Is_At_End();) {
             const maybe_valid_command: Value | null =
@@ -246,7 +292,7 @@ export class Instance
                 this.micro_parts.push(micro_command);
                 this.macro_parts.push(macro_command);
                 Update_Micro_Segments(micro_command);
-                Update_Macro_Segments(macro_command);
+                Update_Macro_Segments_With_Command(macro_command);
 
                 it = new Unicode.Iterator(
                     {

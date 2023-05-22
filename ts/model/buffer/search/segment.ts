@@ -161,4 +161,16 @@ export class Instance extends Entity.Instance
     {
         return this.text == null;
     }
+
+    Has_Left_To_Right_Style():
+        boolean
+    {
+        return this.Text().Segment_Type() === Text.Segment.Type.MACRO_LEFT_TO_RIGHT;
+    }
+
+    Has_Right_To_Left_Style():
+        boolean
+    {
+        return this.Text().Segment_Type() === Text.Segment.Type.MACRO_RIGHT_TO_LEFT;
+    }
 }
