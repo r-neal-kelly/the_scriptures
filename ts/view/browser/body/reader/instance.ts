@@ -97,12 +97,6 @@ export class Instance extends Entity.Instance
         return [`Reader`];
     }
 
-    override On_Restyle():
-        string | { [index: string]: string }
-    {
-        return this.Model().Language_Styles();
-    }
-
     Model():
         Model.Instance
     {

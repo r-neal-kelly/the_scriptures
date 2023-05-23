@@ -4,6 +4,7 @@ import { ID } from "../../../types.js";
 import * as Event from "../../../event.js";
 
 import * as Model from "../../../model/buffer/search/instance.js";
+import * as Model_Languages from "../../../model/languages.js";
 
 import * as Entity from "../../entity.js";
 import * as Line from "./line.js";
@@ -42,6 +43,18 @@ export class Instance extends Entity.Instance
     override On_Life():
         Array<Event.Listener_Info>
     {
+        this.Add_CSS(
+            `
+                .Left_To_Right {
+                    direction: ltr;
+                }
+
+                .Right_To_Left {
+                    direction: rtl;
+                }
+            `,
+        );
+
         this.Add_This_CSS(
             `
                 .Search {
@@ -58,6 +71,10 @@ export class Instance extends Entity.Instance
             `
                 .Line {
                     display: block;
+
+                    padding: 3px 0px;
+
+                    border-bottom: solid 1px rgba(255, 255, 255, 0.5);
 
                     color: inherit;
                 }
@@ -139,14 +156,6 @@ export class Instance extends Entity.Instance
 
                     color: #ffcbcb;
                 }
-
-                .Left_To_Right {
-                    direction: ltr;
-                }
-
-                .Right_To_Left {
-                    direction: rtl;
-                }
             `,
         );
 
@@ -173,7 +182,22 @@ export class Instance extends Entity.Instance
     override On_Reclass():
         Array<string>
     {
-        return [`Search`];
+        const classes: Array<string> = [];
+
+        classes.push(`Search`);
+        if (this.Model().Default_Text_Direction() === Model_Languages.Direction.LEFT_TO_RIGHT) {
+            classes.push(`Left_To_Right`);
+        } else {
+            classes.push(`Right_To_Left`);
+        }
+
+        return classes;
+    }
+
+    override On_Restyle():
+        string | { [index: string]: string; }
+    {
+        return this.Model().Default_Text_Styles();
     }
 
     Model():

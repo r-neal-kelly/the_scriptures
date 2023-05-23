@@ -2,6 +2,7 @@ import { Index } from "../../../types.js"
 
 import * as Utils from "../../../utils.js";
 
+import * as Languages from "../../languages.js";
 import { Value } from "../value.js";
 import * as Item from "../item.js";
 import { Type } from "./type.js";
@@ -15,6 +16,7 @@ export class Instance implements Item.Instance
     private value: Value;
     private status: Status;
     private style: Style;
+    private language: Languages.Name | null;
 
     constructor(
         {
@@ -23,12 +25,14 @@ export class Instance implements Item.Instance
             value,
             status,
             style,
+            language,
         }: {
             part_type: Type,
             index: Index,
             value: Value,
             status: Status,
             style: Style | Array<Style>,
+            language: Languages.Name | null,
         },
     )
     {
@@ -53,6 +57,7 @@ export class Instance implements Item.Instance
         } else {
             this.style = style;
         }
+        this.language = language;
     }
 
     Item_Type():
@@ -191,5 +196,11 @@ export class Instance implements Item.Instance
         boolean
     {
         return (this.style & Style.ERROR) != 0;
+    }
+
+    Language():
+        Languages.Name | null
+    {
+        return this.language;
     }
 }

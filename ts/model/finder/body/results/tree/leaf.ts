@@ -1,12 +1,14 @@
 import { Name } from "../../../../../types.js";
 
+import * as Languages from "../../../../languages.js";
 import * as Entity from "../../../../entity.js";
+import * as File from "../../../../data/file.js";
 import * as Search from "../../../../search.js";
 import * as Tree from "./instance.js";
 import * as Branch from "./branch.js";
 
 export type Data = {
-    name: Name,
+    file: File.Instance,
     results: Array<Search.Result.Instance>,
 }
 
@@ -43,10 +45,22 @@ export class Instance extends Entity.Instance
         return this.parent;
     }
 
+    File():
+        File.Instance
+    {
+        return this.data.file;
+    }
+
     Name():
         Name
     {
-        return this.data.name;
+        return this.data.file.Name();
+    }
+
+    Default_Language():
+        Languages.Name
+    {
+        return this.File().Default_Language_Name();
     }
 
     Results():

@@ -2,6 +2,7 @@ import { Count } from "../../../types.js";
 import { ID } from "../../../types.js";
 
 import * as Model from "../../../model/buffer/search/item.js";
+import * as Model_Languages from "../../../model/languages.js";
 
 import * as Entity from "../../entity.js";
 import * as Segment from "./segment.js";
@@ -93,6 +94,23 @@ export class Instance extends Entity.Instance
         }
 
         return classes;
+    }
+
+    override On_Restyle():
+        string | { [index: string]: string; }
+    {
+        const model: Model.Instance = this.Model();
+        if (!model.Is_Blank()) {
+            const language: Model_Languages.Name | null =
+                model.Language();
+            if (language) {
+                return Model_Languages.Styles(language);
+            } else {
+                return ``;
+            }
+        } else {
+            return ``;
+        }
     }
 
     Model():

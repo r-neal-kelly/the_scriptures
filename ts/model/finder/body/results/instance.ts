@@ -3,6 +3,7 @@ import { Name } from "../../../../types.js";
 
 import * as Utils from "../../../../utils.js";
 
+import * as Languages from "../../../languages.js";
 import * as Entity from "../../../entity.js";
 import * as Search from "../../../search.js";
 import * as Filter from "../../../selector.js";
@@ -88,7 +89,7 @@ export class Instance extends Entity.Instance
 
                 tree_root[name_a][name_b][name_c].push(
                     {
-                        name: file_results[0].Name(),
+                        file: file_results[0],
                         results: file_results[1],
                     },
                 );
@@ -229,6 +230,7 @@ export class Instance extends Entity.Instance
         this.is_showing_commands = is_showing_commands;
         this.buffer = new Buffer.Instance(
             {
+                default_language_name: Languages.Name.ENGLISH,
                 results: [],
                 is_showing_commands: is_showing_commands,
             },
@@ -261,12 +263,14 @@ export class Instance extends Entity.Instance
     }
 
     Set_Buffer(
+        default_language_name: Languages.Name,
         results: Array<Search.Result.Instance>,
     ):
         void
     {
         this.buffer = new Buffer.Instance(
             {
+                default_language_name: default_language_name,
                 results: results,
                 is_showing_commands: this.is_showing_commands,
             },

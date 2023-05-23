@@ -122,6 +122,7 @@ class Body extends Entity.Instance
                     background-color: black;
 
                     font-family: sans-serif;
+                    font-size: 16px;
                 }
             `,
         );

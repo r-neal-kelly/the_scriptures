@@ -2,6 +2,7 @@ import { Index } from "../../../types.js";
 
 import * as Utils from "../../../utils.js";
 
+import * as Languages from "../../languages.js";
 import * as Entity from "../../entity.js";
 import * as Text from "../../text.js";
 import * as Segment from "./segment.js";
@@ -178,5 +179,11 @@ export class Instance extends Entity.Instance
         boolean
     {
         return this.Part().Has_Error_Style();
+    }
+
+    Language():
+        Languages.Name | null
+    {
+        return this.Part().Language();
     }
 }

@@ -4,6 +4,7 @@ import { Index } from "../../../types.js";
 import * as Utils from "../../../utils.js";
 
 import * as Entity from "../../entity.js";
+import * as Languages from "../../languages.js";
 import * as Text from "../../text.js";
 import * as Line from "./line.js";
 
@@ -38,24 +39,24 @@ export class Instance extends Entity.Instance
         Instance.min_line_count = min_line_count;
     }
 
+    private default_language_name: Languages.Name;
     private text: Text.Instance;
-    private text_direction: Text.Direction;
     private lines: Array<Line.Instance>;
 
     constructor(
         {
+            default_language_name,
             text,
-            text_direction,
         }: {
+            default_language_name: Languages.Name,
             text: Text.Instance,
-            text_direction: Text.Direction,
         },
     )
     {
         super();
 
+        this.default_language_name = default_language_name;
         this.text = text;
-        this.text_direction = text_direction;
         this.lines = [];
 
         for (let idx = 0, end = text.Line_Count(); idx < end; idx += 1) {
@@ -75,16 +76,28 @@ export class Instance extends Entity.Instance
         );
     }
 
+    Default_Language_Name():
+        Languages.Name
+    {
+        return this.default_language_name;
+    }
+
+    Default_Text_Direction():
+        Languages.Direction
+    {
+        return Languages.Default_Direction(this.default_language_name);
+    }
+
+    Default_Text_Styles():
+        any
+    {
+        return Languages.Styles(this.default_language_name);
+    }
+
     Text():
         Text.Instance
     {
         return this.text;
-    }
-
-    Text_Direction():
-        Text.Direction
-    {
-        return this.text_direction;
     }
 
     Line_Count():

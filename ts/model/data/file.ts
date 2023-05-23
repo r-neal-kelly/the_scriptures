@@ -4,6 +4,7 @@ import { Path } from "../../types.js";
 
 import * as Utils from "../../utils.js";
 
+import * as Languages from "../languages.js";
 import * as Entity from "../entity.js";
 import * as Text from "../text.js";
 import * as Compressor from "./compressor.js";
@@ -70,24 +71,18 @@ export class Instance extends Entity.Instance
         return this.path;
     }
 
+    Default_Language_Name():
+        Languages.Name
+    {
+        return this.Version().Language().Name() as Languages.Name;
+    }
+
     async Text():
         Promise<Text.Instance>
     {
         await this.Ready();
 
         return this.text as Text.Instance;
-    }
-
-    Default_Text_Direction():
-        Text.Direction
-    {
-        const language_name: Name = this.Version().Language().Name();
-
-        if (language_name === `Hebrew`) {
-            return Text.Direction.RIGHT_TO_LEFT;
-        } else {
-            return Text.Direction.LEFT_TO_RIGHT;
-        }
     }
 
     override async After_Dependencies_Are_Ready():

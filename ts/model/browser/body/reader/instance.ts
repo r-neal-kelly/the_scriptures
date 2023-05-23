@@ -1,6 +1,7 @@
 import { Name } from "../../../../types.js";
 
 import * as Entity from "../../../entity.js";
+import * as Languages from "../../../languages.js";
 import * as Data from "../../../data.js";
 import * as Text from "../../../text.js";
 import * as Buffer from "../../../buffer.js";
@@ -10,6 +11,7 @@ export class Instance extends Entity.Instance
 {
     private static blank_file: Buffer.Text.Instance = new Buffer.Text.Instance(
         {
+            default_language_name: Languages.Name.ENGLISH,
             text: new Text.Instance(
                 {
                     dictionary: new Text.Dictionary.Instance(
@@ -20,7 +22,6 @@ export class Instance extends Entity.Instance
                     value: ``,
                 },
             ),
-            text_direction: Text.Direction.LEFT_TO_RIGHT,
         },
     );
 
@@ -83,61 +84,14 @@ export class Instance extends Entity.Instance
             if (new_data != null) {
                 this.current_file = new Buffer.Text.Instance(
                     {
+                        default_language_name: new_data.Default_Language_Name(),
                         text: await new_data.Text(),
-                        text_direction: new_data.Default_Text_Direction(),
                     },
                 );
             } else {
                 this.current_file = Instance.Blank_File();
             }
             await this.current_file.Ready();
-        }
-    }
-
-    Language_Styles():
-        { [index: string]: string }
-    {
-        const maybe_language_name: Name | null =
-            this.Body().Selector().Maybe_Selected_Language_Name();
-
-        if (maybe_language_name) {
-            if (maybe_language_name === `Hebrew`) {
-                return {
-                    "font-family": `Ezra SIL SR`,
-                    "font-size": `18px`,
-                    "line-height": `1.45`,
-                };
-            } else if (maybe_language_name === `Greek`) {
-                return {
-                    "font-family": `Gentium Plus`,
-                    "font-size": `20px`,
-                    "line-height": `1.3`,
-                };
-            } else if (maybe_language_name === `Latin`) {
-                return {
-                    "font-family": `Gentium Plus`,
-                    "font-size": `18px`,
-                    "line-height": `1.1`,
-                };
-            } else if (maybe_language_name === `English`) {
-                return {
-                    "font-family": `Orkney-Regular`,
-                    "font-size": `16px`,
-                    "line-height": `1.2`,
-                };
-            } else {
-                return {
-                    "font-family": `sans-serif`,
-                    "font-size": `16px`,
-                    "line-height": `normal`,
-                };
-            }
-        } else {
-            return {
-                "font-family": `sans-serif`,
-                "font-size": `16px`,
-                "line-height": `normal`,
-            };
         }
     }
 }

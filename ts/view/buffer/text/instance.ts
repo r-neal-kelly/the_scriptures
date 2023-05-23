@@ -4,7 +4,7 @@ import { ID } from "../../../types.js";
 import * as Event from "../../../event.js";
 
 import * as Model from "../../../model/buffer/text.js";
-import * as Model_Text from "../../../model/text.js";
+import * as Model_Languages from "../../../model/languages.js";
 
 import * as Entity from "../../entity.js";
 import * as Line from "./line.js";
@@ -43,19 +43,23 @@ export class Instance extends Entity.Instance
     override On_Life():
         Array<Event.Listener_Info>
     {
-        this.Add_This_CSS(
+        this.Add_CSS(
             `
-                .Text {
-                    width: 100%;
-                    padding: 12px 4px 36px 4px;
-                }
-
                 .Left_To_Right {
                     direction: ltr;
                 }
 
                 .Right_To_Left {
                     direction: rtl;
+                }
+            `,
+        );
+
+        this.Add_This_CSS(
+            `
+                .Text {
+                    width: 100%;
+                    padding: 12px 4px 36px 4px;
                 }
             `,
         );
@@ -135,14 +139,6 @@ export class Instance extends Entity.Instance
 
                     color: #ffcbcb;
                 }
-
-                .Left_To_Right {
-                    direction: ltr;
-                }
-
-                .Right_To_Left {
-                    direction: rtl;
-                }
             `,
         );
 
@@ -172,13 +168,19 @@ export class Instance extends Entity.Instance
         const classes: Array<string> = [];
 
         classes.push(`Text`);
-        if (this.Model().Text_Direction() === Model_Text.Direction.LEFT_TO_RIGHT) {
+        if (this.Model().Default_Text_Direction() === Model_Languages.Direction.LEFT_TO_RIGHT) {
             classes.push(`Left_To_Right`);
         } else {
             classes.push(`Right_To_Left`);
         }
 
         return classes;
+    }
+
+    override On_Restyle():
+        string | { [index: string]: string; }
+    {
+        return this.Model().Default_Text_Styles();
     }
 
     Model():

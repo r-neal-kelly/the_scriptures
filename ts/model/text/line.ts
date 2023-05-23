@@ -4,6 +4,7 @@ import { Index } from "../../types.js";
 import * as Utils from "../../utils.js";
 import * as Unicode from "../../unicode.js";
 
+import * as Languages from "../languages.js";
 import * as Text from "./instance.js";
 import { Value } from "./value.js";
 import * as Dictionary from "./dictionary.js";
@@ -118,6 +119,7 @@ export class Instance
         const dictionary: Dictionary.Instance = this.Text().Dictionary();
 
         let current_style: Part.Style = Part.Style._NONE_;
+        let current_language: Array<Languages.Name> = [];
         let current_type: Current_Type = Current_Type.POINT;
         let current_start: Unicode.Iterator = new Unicode.Iterator(
             {
@@ -287,6 +289,20 @@ export class Instance
                     current_style |= Part.Style.ERROR;
                 } else if (macro_command.Is_Close_Error()) {
                     current_style &= ~Part.Style.ERROR;
+
+                } else if (macro_command.Is_Open_English()) {
+                    current_language.push(Languages.Name.ENGLISH);
+                } else if (macro_command.Is_Open_Hebrew()) {
+                    current_language.push(Languages.Name.HEBREW);
+                } else if (macro_command.Is_Open_Greek()) {
+                    current_language.push(Languages.Name.GREEK);
+                } else if (macro_command.Is_Open_Latin()) {
+                    current_language.push(Languages.Name.LATIN);
+                } else if (macro_command.Is_Close_Language()) {
+                    if (current_language.length > 0) {
+                        current_language.pop();
+                    }
+
                 }
 
                 this.micro_parts.push(micro_command);
@@ -315,6 +331,9 @@ export class Instance
                             index: this.micro_parts.length,
                             value: this_point,
                             style: current_style,
+                            language: current_language.length > 0 ?
+                                current_language[current_language.length - 1] :
+                                null,
                         },
                     );
 
@@ -328,6 +347,9 @@ export class Instance
                             index: this.micro_parts.length,
                             value: this_point,
                             style: current_style,
+                            language: current_language.length > 0 ?
+                                current_language[current_language.length - 1] :
+                                null,
                         },
                     );
 
@@ -341,6 +363,9 @@ export class Instance
                             index: this.micro_parts.length,
                             value: this_point,
                             style: current_style,
+                            language: current_language.length > 0 ?
+                                current_language[current_language.length - 1] :
+                                null,
                         },
                     );
                     const macro_point: Part.Point.Instance = new Part.Point.Instance(
@@ -348,6 +373,9 @@ export class Instance
                             index: this.macro_parts.length,
                             value: this_point,
                             style: current_style,
+                            language: current_language.length > 0 ?
+                                current_language[current_language.length - 1] :
+                                null,
                         },
                     );
 
@@ -392,6 +420,9 @@ export class Instance
                                 value: word,
                                 status: status,
                                 style: current_style,
+                                language: current_language.length > 0 ?
+                                    current_language[current_language.length - 1] :
+                                    null,
                             },
                         );
 
@@ -431,6 +462,9 @@ export class Instance
                                 value: break_,
                                 status: status,
                                 style: current_style,
+                                language: current_language.length > 0 ?
+                                    current_language[current_language.length - 1] :
+                                    null,
                             },
                         );
 

@@ -65,6 +65,6 @@ export class Instance extends Entity.Instance
             parent = parent.Parent();
         }
 
-        this.Results().Set_Buffer(leaf.Results());
+        this.Results().Set_Buffer(leaf.Default_Language(), leaf.Results());
     }
 }

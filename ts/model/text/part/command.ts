@@ -3,17 +3,24 @@ import { Index } from "../../../types.js";
 import * as Utils from "../../../utils.js";
 import * as Unicode from "../../../unicode.js";
 
+import * as Languages from "../../languages.js";
 import { Value } from "../value.js";
-
 import * as Part from "./instance.js";
 import { Type } from "./type.js";
 import { Status } from "./status.js";
 import { Style } from "./style.js";
 
-export enum Brace
+export enum Symbol
 {
-    OPEN = `⸨`,
-    CLOSE = `⸩`,
+    FIRST = `⸨`,
+    LAST = `⸩`,
+    CLOSE = `/`,
+    ARGUMENT = `:`,
+}
+
+enum Parameter
+{
+    LANGUAGE = `lang`,
 }
 
 export enum Known_Value
@@ -42,6 +49,37 @@ export enum Known_Value
 
     OPEN_RIGHT_TO_LEFT = `⸨rtl⸩`,
     CLOSE_RIGHT_TO_LEFT = `⸨/rtl⸩`,
+
+    CLOSE_LANGUAGE = `⸨/lang⸩`,
+}
+
+function Interior_Value(
+    value: Value,
+):
+    Value
+{
+    return value.replace(/^⸨\/?/, ``).replace(/⸩$/, ``);
+}
+
+function Interior_Parameter_Argument(
+    value: Value,
+):
+    [Value, Value] | null
+{
+    const interior_value: Value = Interior_Value(value);
+    const interior_split: Array<Value> = interior_value.split(Symbol.ARGUMENT);
+
+    if (
+        interior_split.length === 2 &&
+        interior_split[0] != null &&
+        interior_split[1] != null &&
+        interior_split[0].length > 0 &&
+        interior_split[1].length > 0
+    ) {
+        return interior_split as [Value, Value];
+    } else {
+        return null;
+    }
 }
 
 export function Is_Valid_Value(
@@ -49,8 +87,7 @@ export function Is_Valid_Value(
 ):
     boolean
 {
-    const interior_value: Value =
-        value.replace(/^⸨\/?/, ``).replace(/⸩$/, ``);
+    const interior_value: Value = Interior_Value(value);
 
     return (
         value.length > 2 &&
@@ -70,7 +107,7 @@ export function Is_Known_Value(
 ):
     boolean
 {
-    return (
+    if (
         value === Known_Value.CENTER ||
 
         value === Known_Value.INDENT ||
@@ -94,20 +131,30 @@ export function Is_Known_Value(
         value === Known_Value.CLOSE_LEFT_TO_RIGHT ||
 
         value === Known_Value.OPEN_RIGHT_TO_LEFT ||
-        value === Known_Value.CLOSE_RIGHT_TO_LEFT
-    );
-}
+        value === Known_Value.CLOSE_RIGHT_TO_LEFT ||
 
-export function Valid_Value_From(
-    text: string,
-):
-    string | null
-{
-    const matches: RegExpMatchArray | null = text.match(/^⸨\/?[^⸨\/⸩]+⸩/);
-    if (matches != null) {
-        return matches[0];
+        value === Known_Value.CLOSE_LANGUAGE
+    ) {
+        return true;
+
     } else {
-        return null;
+        const parameter_argument: [Value, Value] | null =
+            Interior_Parameter_Argument(value);
+        if (parameter_argument != null) {
+            if (parameter_argument[0] === Parameter.LANGUAGE) {
+                return (
+                    parameter_argument[1] === Languages.Name.ENGLISH ||
+                    parameter_argument[1] === Languages.Name.HEBREW ||
+                    parameter_argument[1] === Languages.Name.GREEK ||
+                    parameter_argument[1] === Languages.Name.LATIN
+                );
+
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
     }
 }
 
@@ -161,6 +208,9 @@ export function Last_Non_Value_Index(
 
 export class Instance extends Part.Instance
 {
+    private parameter: Value | null;
+    private argument: Value | null;
+
     constructor(
         {
             index,
@@ -182,6 +232,7 @@ export class Instance extends Part.Instance
                         Status.UNKNOWN :
                         Status.ERROR,
                 style: Style._NONE_,
+                language: null,
             }
         );
 
@@ -189,6 +240,28 @@ export class Instance extends Part.Instance
             value.length >= 2,
             `A command must have a length of at least 2.`,
         );
+
+        const parameter_argument: [Value, Value] | null =
+            Interior_Parameter_Argument(value);
+        if (parameter_argument != null) {
+            this.parameter = parameter_argument[0];
+            this.argument = parameter_argument[1];
+        } else {
+            this.parameter = null;
+            this.argument = null;
+        }
+    }
+
+    Parameter():
+        Value | null
+    {
+        return this.parameter;
+    }
+
+    Argument():
+        Value | null
+    {
+        return this.argument;
     }
 
     Is_Center():
@@ -297,5 +370,47 @@ export class Instance extends Part.Instance
         boolean
     {
         return this.Value() === Known_Value.CLOSE_RIGHT_TO_LEFT;
+    }
+
+    Is_Open_English():
+        boolean
+    {
+        return (
+            this.Parameter() === Parameter.LANGUAGE &&
+            this.Argument() === Languages.Name.ENGLISH
+        );
+    }
+
+    Is_Open_Hebrew():
+        boolean
+    {
+        return (
+            this.Parameter() === Parameter.LANGUAGE &&
+            this.Argument() === Languages.Name.HEBREW
+        );
+    }
+
+    Is_Open_Greek():
+        boolean
+    {
+        return (
+            this.Parameter() === Parameter.LANGUAGE &&
+            this.Argument() === Languages.Name.GREEK
+        );
+    }
+
+    Is_Open_Latin():
+        boolean
+    {
+        return (
+            this.Parameter() === Parameter.LANGUAGE &&
+            this.Argument() === Languages.Name.LATIN
+        );
+    }
+
+    Is_Close_Language():
+        boolean
+    {
+        return this.Value() === Known_Value.CLOSE_LANGUAGE;
     }
 }

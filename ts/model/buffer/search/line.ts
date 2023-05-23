@@ -98,6 +98,7 @@ export class Instance extends Entity.Instance
                             value: ` `,
                             status: Text.Part.Status.GOOD,
                             style: Text.Part.Style._NONE_,
+                            language: null,
                         },
                     ),
                 );

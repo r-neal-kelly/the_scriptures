@@ -3,6 +3,7 @@ import { Index } from "../../../types.js";
 
 import * as Utils from "../../../utils.js";
 
+import * as Languages from "../../languages.js";
 import * as Entity from "../../entity.js";
 import * as Search from "../../search.js";
 import * as Line from "./line.js";
@@ -38,14 +39,17 @@ export class Instance extends Entity.Instance
         Instance.min_line_count = min_line_count;
     }
 
+    private default_language_name: Languages.Name;
     private lines: Array<Line.Instance>;
     private is_showing_commands: boolean;
 
     constructor(
         {
+            default_language_name,
             results,
             is_showing_commands,
         }: {
+            default_language_name: Languages.Name,
             results: Array<Search.Result.Instance>,
             is_showing_commands: boolean,
         },
@@ -53,6 +57,7 @@ export class Instance extends Entity.Instance
     {
         super();
 
+        this.default_language_name = default_language_name;
         this.lines = [];
         this.is_showing_commands = is_showing_commands;
 
@@ -71,6 +76,24 @@ export class Instance extends Entity.Instance
         this.Add_Dependencies(
             this.lines,
         );
+    }
+
+    Default_Language_Name():
+        Languages.Name
+    {
+        return this.default_language_name;
+    }
+
+    Default_Text_Direction():
+        Languages.Direction
+    {
+        return Languages.Default_Direction(this.default_language_name);
+    }
+
+    Default_Text_Styles():
+        any
+    {
+        return Languages.Styles(this.default_language_name);
     }
 
     Line_Count():

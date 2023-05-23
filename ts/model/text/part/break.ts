@@ -1,7 +1,7 @@
 import { Index } from "../../../types.js";
 
+import * as Languages from "../../languages.js";
 import { Value } from "../value.js";
-
 import * as Part from "./instance.js";
 import { Type } from "./type.js";
 import { Status } from "./status.js";
@@ -15,11 +15,13 @@ export class Instance extends Part.Instance
             value,
             status,
             style,
+            language,
         }: {
             index: Index,
             value: Value,
             status: Status,
             style: Style | Array<Style>,
+            language: Languages.Name | null,
         },
     )
     {
@@ -30,6 +32,7 @@ export class Instance extends Part.Instance
                 value: value,
                 status: status,
                 style: style,
+                language,
             }
         );
     }
