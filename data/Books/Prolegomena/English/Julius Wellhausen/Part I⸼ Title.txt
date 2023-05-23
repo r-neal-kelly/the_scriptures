@@ -4,4 +4,4 @@
 
 ⸨cen⸩————
 
-⸨cen⸩“⸨i⸩Legem non habentes natura faciunt legis opera.⸨/i⸩”—⸨sc⸩Rom⸼⸨/sc⸩ ii⸼
+⸨cen⸩“⸨lang:Latin⸩⸨i⸩Legem non habentes natura faciunt legis opera.⸨/i⸩⸨/lang⸩”—⸨sc⸩Rom⸼⸨/sc⸩ ii⸼
