@@ -53,7 +53,6 @@ Parameter #1:
 /* Array<string_t> */ async function Compare(
     /* string_t */ file_path_a,
     /* string_t */ file_path_b,
-    /* string_t */ indent = ``,
 )
 {
     const /* Array<string_t> */ results = [];
@@ -76,7 +75,7 @@ Parameter #1:
 
     for (let row = 0, end = rows_a.length; row < end; row += 1) {
         if (row >= rows_b.length) {
-            results.push(`${indent}Row: ${row + 1}, Column: --`);
+            results.push(`Row: ${row + 1}, Column: --`);
         } else {
             let /* string_t */ columns_a;
             let /* string_t */ columns_b;
@@ -92,7 +91,7 @@ Parameter #1:
                     column >= columns_b.length ||
                     columns_a[column] !== columns_b[column]
                 ) {
-                    results.push(`${indent}Row: ${row + 1}, Column: ${column + 1}`);
+                    results.push(`Row: ${row + 1}, Column: ${column + 1}`);
                     break;
                 }
             }
@@ -102,31 +101,71 @@ Parameter #1:
     return results;
 }
 
-(/* void_t */ async function Main()
+(async function Main()
 {
-    const /* string_t[] */ args = process.argv.slice(2);
+    const args = process.argv.slice(2);
 
     if (args.includes(`-h`) || args.includes(`--help`) || args.length < 1) {
         console.log(help_message);
     } else {
-        const /* string_t */ tag = args[0];
-        const /* regex_t */ regex = new RegExp(`${tag}(\\..+)$`);
+        const tag = args[0];
+        const regex = new RegExp(`${tag}(\\..+)$`);
 
-        const /* Array<string_t> */ files = await Read_Directory(path.resolve(`.`));
+        const messages = [];
+        let message_indent = 0;
+
+        const files = await Read_Directory(path.resolve(`.`));
         for (const file of files) {
             if (regex.test(file.name)) {
-                const /* string_t */ untagged_file_name = file.name.replace(regex, `$1`);
-                const /* Array<string_t> */ results = await Compare(`./${file.name}`, `./${untagged_file_name}`, `    `);
+                const untagged_file_name = file.name.replace(regex, `$1`);
+                const results = await Compare(`./${file.name}`, `./${untagged_file_name}`);
                 if (results.length === 0) {
-                    console.log(`${untagged_file_name} - Perfect Match!`);
+                    messages.push(
+                        {
+                            name: untagged_file_name,
+                            mismatches: null,
+                        },
+                    );
                 } else {
-                    console.log(untagged_file_name);
-                    for (let idx = 0, end = results.length > 50 ? 50 : results.length; idx < end; idx += 1) {
-                        console.log(results[idx]);
-                    }
-                    if (results.length > 50) {
-                        console.log(`    ` + `+ ${results.length - 50} more lines...`)
-                    }
+                    messages.push(
+                        {
+                            name: untagged_file_name,
+                            mismatches: results,
+                        },
+                    );
+                }
+                if (untagged_file_name.length > message_indent) {
+                    message_indent = untagged_file_name.length;
+                }
+            }
+        }
+
+        for (const message of messages) {
+            let spaces = ``;
+            for (let idx = 0, end = message_indent - message.name.length; idx < end; idx += 1) {
+                spaces += ` `;
+            }
+
+            const name = message.name + spaces;
+            const mismatches = message.mismatches;
+
+            if (message.mismatches == null) {
+                console.log(`${name} - Perfect Match!`);
+            } else {
+                for (let idx = 0, end = message.name.length; idx < end; idx += 1) {
+                    spaces += ` `;
+                }
+
+                console.log(`${name} - Mismatch:`);
+                for (
+                    let idx = 0, end = mismatches.length > 50 ? 50 : mismatches.length;
+                    idx < end;
+                    idx += 1
+                ) {
+                    console.log(spaces + `   ` + mismatches[idx]);
+                }
+                if (mismatches.length > 50) {
+                    console.log(spaces + ` + ${mismatches.length - 50} more lines...`)
                 }
             }
         }
