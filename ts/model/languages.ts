@@ -1,3 +1,5 @@
+export * as Greek from "./languages/greek.js"
+
 export enum Name
 {
     ENGLISH = `English`,
