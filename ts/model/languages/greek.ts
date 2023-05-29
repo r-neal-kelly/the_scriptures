@@ -164,6 +164,22 @@ const SECONDARY_COMBINING_POINT_PRECEDENCE: { [secondary_combining_point: string
 }
 Object.freeze(SECONDARY_COMBINING_POINT_PRECEDENCE);
 
+function Some_Secondary_Combining_Point_Precedence(
+    secondary_combining_point: string,
+):
+    Secondary_Combining_Point_Precedence
+{
+    Utils.Assert(
+        SECONDARY_COMBINING_POINT_PRECEDENCE.hasOwnProperty(secondary_combining_point),
+        `invalid secondary_combining_point`,
+    );
+
+    return (
+        SECONDARY_COMBINING_POINT_PRECEDENCE[secondary_combining_point] as
+        Secondary_Combining_Point_Precedence
+    );
+}
+
 const COMBINING_CLUSTER_TO_BAKED_POINT: { [combining_cluster: string]: string } = {
     "ἀ": "ἀ", // Lower      Άλφα        + Ψιλὸν Πνεῦμα
     "ἐ": "ἐ", // Lower      Έψιλον      + Ψιλὸν Πνεῦμα
@@ -686,42 +702,10 @@ export function Baked_Point_To_Combining_Cluster(
     return BAKED_POINT_TO_COMBINING_CLUSTER[baked_point];
 }
 
-export class Normalize_Error
-{
-    private unit_index: Index;
-    private message: string;
-
-    constructor(
-        {
-            unit_index,
-            message,
-        }: {
-            unit_index: Index,
-            message: string,
-        },
-    )
-    {
-        this.unit_index = unit_index;
-        this.message = message;
-    }
-
-    Unit_Index():
-        Index
-    {
-        return this.unit_index;
-    }
-
-    Message():
-        string
-    {
-        return this.message;
-    }
-}
-
 export function Normalize_With_Baked_Points(
     text: string,
 ):
-    string | Normalize_Error
+    string
 {
     let result: string = ``;
 
@@ -738,23 +722,25 @@ export function Normalize_With_Baked_Points(
         if (Is_Primary_Combining_Point(point)) {
             const primary_combining_point: string = point;
             const secondary_combining_points: Array<string> = [];
+            const precedence_counts: { [precedence: string]: Count } = {};
+            precedence_counts[Secondary_Combining_Point_Precedence.UNARY] = 0;
+            precedence_counts[Secondary_Combining_Point_Precedence.PRIMARY] = 0;
+            precedence_counts[Secondary_Combining_Point_Precedence.SECONDARY] = 0;
+            precedence_counts[Secondary_Combining_Point_Precedence.TERTIARY] = 0;
 
             iterator = iterator.Next();
             while (
                 !iterator.Is_At_End() &&
                 Is_Secondary_Combining_Point(iterator.Point())
             ) {
-                secondary_combining_points.push(iterator.Point());
+                const point: string = iterator.Point();
+                secondary_combining_points.push(point);
+                precedence_counts[Some_Secondary_Combining_Point_Precedence(point)] += 1;
                 iterator = iterator.Next();
             }
 
             if (secondary_combining_points.length > 0) {
                 let has_invalid_unary_secondary_combining_point: boolean = false;
-                let precedence_counts: { [precedence: string]: Count } = {};
-                precedence_counts[Secondary_Combining_Point_Precedence.UNARY] = 0;
-                precedence_counts[Secondary_Combining_Point_Precedence.PRIMARY] = 0;
-                precedence_counts[Secondary_Combining_Point_Precedence.SECONDARY] = 0;
-                precedence_counts[Secondary_Combining_Point_Precedence.TERTIARY] = 0;
 
                 secondary_combining_points.sort(
                     function (
@@ -763,92 +749,104 @@ export function Normalize_With_Baked_Points(
                     ):
                         Integer
                     {
-                        const maybe_a_precedence: Secondary_Combining_Point_Precedence | null =
-                            SECONDARY_COMBINING_POINT_PRECEDENCE[a];
-                        const maybe_b_precedence: Secondary_Combining_Point_Precedence | null =
-                            SECONDARY_COMBINING_POINT_PRECEDENCE[b];
-
-                        Utils.Assert(
-                            maybe_a_precedence != null &&
-                            maybe_b_precedence != null,
-                            `a valid secondary combining point must have a precedence.`,
-                        );
-
                         const a_precedence: Secondary_Combining_Point_Precedence =
-                            maybe_a_precedence as Secondary_Combining_Point_Precedence;
-                        const b_precedence: Secondary_Combining_Point_Precedence =
-                            maybe_b_precedence as Secondary_Combining_Point_Precedence;
-
-                        precedence_counts[a_precedence] += 1;
-                        precedence_counts[b_precedence] += 1;
+                            Some_Secondary_Combining_Point_Precedence(a);
+                        const b_precedence: Secondary_Combining_Point_Precedence | null =
+                            Some_Secondary_Combining_Point_Precedence(b);
 
                         if (
                             a_precedence == Secondary_Combining_Point_Precedence.UNARY ||
                             b_precedence == Secondary_Combining_Point_Precedence.UNARY
                         ) {
                             has_invalid_unary_secondary_combining_point = true;
-
-                            return 0;
-                        } else {
-
-                            return (a_precedence as Integer) - (b_precedence as Integer);
                         }
+
+                        return (a_precedence as Integer) - (b_precedence as Integer);
                     },
                 );
 
                 if (has_invalid_unary_secondary_combining_point) {
-                    return new Normalize_Error(
-                        {
-                            unit_index: unit_index,
-                            message: `invalid secondary combining point with unary precedence`,
-                        },
+                    Utils.Assert(
+                        false,
+                        `
+                            invalid secondary combining point with unary precedence
+                            at: ${unit_index}
+                            primary: ${primary_combining_point}
+                            secondary: ${secondary_combining_points}
+                            context: ${text.slice(unit_index, unit_index + 100)}
+                            from: ${text}
+                        `,
                     );
+
+                    return ``;
                 } else if (precedence_counts[Secondary_Combining_Point_Precedence.PRIMARY] > 1) {
-                    return new Normalize_Error(
-                        {
-                            unit_index: unit_index,
-                            message: `too many secondary combining points with primary precedence`,
-                        },
+                    Utils.Assert(
+                        false,
+                        `
+                            too many secondary combining points with primary precedence
+                            at: ${unit_index}
+                            primary: ${primary_combining_point}
+                            secondary: ${secondary_combining_points}
+                            context: ${text.slice(unit_index, unit_index + 100)}
+                            from: ${text}
+                        `,
                     );
+
+                    return ``;
                 } else if (precedence_counts[Secondary_Combining_Point_Precedence.SECONDARY] > 1) {
-                    return new Normalize_Error(
-                        {
-                            unit_index: unit_index,
-                            message: `too many secondary combining points with secondary precedence`,
-                        },
+                    Utils.Assert(
+                        false,
+                        `
+                            too many secondary combining points with secondary precedence
+                            at: ${unit_index}
+                            primary: ${primary_combining_point}
+                            secondary: ${secondary_combining_points}
+                            context: ${text.slice(unit_index, unit_index + 100)}
+                            from: ${text}
+                        `,
                     );
+
+                    return ``;
                 } else if (precedence_counts[Secondary_Combining_Point_Precedence.TERTIARY] > 1) {
-                    return new Normalize_Error(
-                        {
-                            unit_index: unit_index,
-                            message: `too many secondary combining points with tertiary precedence`,
-                        },
+                    Utils.Assert(
+                        false,
+                        `
+                            too many secondary combining points with tertiary precedence
+                            at: ${unit_index}
+                            primary: ${primary_combining_point}
+                            secondary: ${secondary_combining_points}
+                            context: ${text.slice(unit_index, unit_index + 100)}
+                            from: ${text}
+                        `,
                     );
+
+                    return ``;
                 } else {
+                    const combining_cluster: string =
+                        `${primary_combining_point}${secondary_combining_points.join(``)}`;
                     const baked_point: string | null = Combining_Cluster_To_Baked_Point(
-                        `${primary_combining_point}${secondary_combining_points.join(``)}`,
+                        combining_cluster,
                     );
                     if (baked_point != null) {
                         result += baked_point;
                     } else {
-                        return new Normalize_Error(
-                            {
-                                unit_index: unit_index,
-                                message: `invalid combining cluster`,
-                            },
+                        console.log(
+                            `
+                                warning: unknown combining cluster
+                                at: ${unit_index}
+                                primary: ${primary_combining_point}
+                                secondary: ${secondary_combining_points}
+                                context: ${text.slice(unit_index, unit_index + 100)}
+                                from: ${text}
+                            `,
                         );
+
+                        result += combining_cluster;
                     }
                 }
             } else {
                 result += point;
             }
-        } else if (Is_Secondary_Combining_Point(point)) {
-            return new Normalize_Error(
-                {
-                    unit_index: unit_index,
-                    message: `secondary combining point orphaned or on bad primary`,
-                },
-            );
         } else {
             result += point;
 
@@ -862,7 +860,7 @@ export function Normalize_With_Baked_Points(
 export function Normalize_With_Combined_Points(
     text: string,
 ):
-    string | Normalize_Error
+    string
 {
     let result: string = ``;
 

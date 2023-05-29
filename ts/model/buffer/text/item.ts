@@ -60,6 +60,12 @@ export class Instance extends Entity.Instance
                     .replace(/^ /, ` `)
                     .replace(/ $/, ` `)
                     .replace(/  /g, `  `);
+
+                /*
+                if (this.Is_Greek()) {
+                    this.value = Languages.Greek.Normalize_With_Baked_Points(this.value);
+                }
+                */
             }
         }
 
@@ -181,9 +187,20 @@ export class Instance extends Entity.Instance
         return this.Part().Has_Error_Style();
     }
 
-    Language():
+    Override_Language_Name():
         Languages.Name | null
     {
         return this.Part().Language();
+    }
+
+    Is_Greek():
+        boolean
+    {
+        const override: Languages.Name | null = this.Override_Language_Name();
+        if (override != null) {
+            return override === Languages.Name.GREEK;
+        } else {
+            return this.Segment().Line().Buffer().Default_Language_Name() === Languages.Name.GREEK;
+        }
     }
 }

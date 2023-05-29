@@ -102,7 +102,7 @@ export class Instance extends Entity.Instance
         const model: Model.Instance = this.Model();
         if (!model.Is_Blank()) {
             const language: Model_Languages.Name | null =
-                model.Language();
+                model.Override_Language_Name();
             if (language) {
                 return Model_Languages.Styles(language);
             } else {

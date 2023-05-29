@@ -7,6 +7,7 @@ import { Path } from "../types.js";
 
 import * as Utils from "../utils.js";
 
+import * as Languages from "../model/languages.js";
 import * as Data from "../model/data.js";
 import * as Text from "../model/text.js";
 
@@ -286,6 +287,23 @@ async function Sorted_File_Names(
     }
 }
 
+function Assert_Greek_Normalization(
+    file_path: Path,
+    file_text: string,
+):
+    void
+{
+    Utils.Assert(
+        Languages.Greek.Normalize_With_Combined_Points(
+            Languages.Greek.Normalize_With_Baked_Points(file_text),
+        ) === file_text,
+        `
+            failed to reproduce original file_text after Greek normalization
+            ${file_path}
+        `,
+    );
+}
+
 async function Generate():
     Promise<void>
 {
@@ -417,6 +435,7 @@ async function Generate():
                     const file_path: Path = `${files_path}/${file_name}`;
                     const file_text: Text.Value = await Read_File(file_path);
                     file_texts.push(file_text);
+                    Assert_Greek_Normalization(file_path, file_text);
                     const compressed_file_text: string =
                         compressor.Compress(
                             {

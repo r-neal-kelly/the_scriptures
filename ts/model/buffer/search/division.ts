@@ -2,6 +2,7 @@ import { Index } from "../../../types.js";
 
 import * as Utils from "../../../utils.js";
 
+import * as Languages from "../../languages.js";
 import * as Entity from "../../entity.js";
 import * as Text from "../../text.js";
 import * as Item from "./item.js";
@@ -122,6 +123,12 @@ export class Instance extends Entity.Instance
             .replace(/^ /, ` `)
             .replace(/ $/, ` `)
             .replace(/  /g, `  `);
+
+        /*
+        if (this.Item().Is_Greek()) {
+            this.value = Languages.Greek.Normalize_With_Baked_Points(this.value);
+        }
+        */
     }
 
     Is_Blank():
