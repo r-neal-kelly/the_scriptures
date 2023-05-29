@@ -45,25 +45,25 @@ export function Styles(
         return Default_Styles();
     } else if (language === Name.ENGLISH) {
         return {
-            "font-family": `Orkney-Regular`,
+            "font-family": `"Orkney-Regular"`,
             "font-size": `1em`, // 16px
             "line-height": `1.2`,
         };
     } else if (language === Name.HEBREW) {
         return {
-            "font-family": `Ezra SIL SR`,
+            "font-family": `"Ezra SIL SR"`,
             "font-size": `1.125em`, // 18px
             "line-height": `1.45`,
         };
     } else if (language === Name.GREEK) {
         return {
-            "font-family": `Gentium Plus`,
+            "font-family": `"Quivira, Gentium Plus"`,
             "font-size": `1.25em`, // 20px
             "line-height": `1.3`,
         };
     } else if (language === Name.LATIN) {
         return {
-            "font-family": `Gentium Plus`,
+            "font-family": `"Gentium Plus"`,
             "font-size": `1.125em`, // 18px
             "line-height": `1.1`,
         };

@@ -1295,7 +1295,7 @@ class Editor
                         keyboard_event.preventDefault();
 
                         // English
-                        document.body.style.fontFamily = `sans-serif`;
+                        document.body.style.fontFamily = `"sans-serif"`;
                         document.body.style.fontSize = `24px`;
                     }
                 } else if (keyboard_event.key === `(`) {
@@ -1303,7 +1303,7 @@ class Editor
                         keyboard_event.preventDefault();
 
                         // Hebrew
-                        document.body.style.fontFamily = `Ezra SIL SR`;
+                        document.body.style.fontFamily = `"Ezra SIL SR"`;
                         document.body.style.fontSize = `30px`;
                     }
                 } else if (keyboard_event.key === `*`) {
@@ -1311,7 +1311,7 @@ class Editor
                         keyboard_event.preventDefault();
 
                         // Greek
-                        document.body.style.fontFamily = `Gentium Plus`;
+                        document.body.style.fontFamily = `"Gentium Plus"`;
                         document.body.style.fontSize = `32px`;
                     }
                 } else if (keyboard_event.key === `&`) {
@@ -1319,7 +1319,7 @@ class Editor
                         keyboard_event.preventDefault();
 
                         // Latin
-                        document.body.style.fontFamily = `Gentium Plus`;
+                        document.body.style.fontFamily = `"Gentium Plus"`;
                         document.body.style.fontSize = `26px`;
                     }
                 }
@@ -2591,16 +2591,16 @@ class Editor
 {
     Utils.Create_Style_Element(`
         @font-face {
-            font-family: "Ezra SIL SR";
-            src: url("${Utils.Resolve_Path(`fonts/Hebrew/Ezra/SILEOTSR.ttf`)}");
+            font-family: "Cardo";
+            src: url("${Utils.Resolve_Path(`fonts/Cardo/Cardo-Regular.ttf`)}");
         }
         @font-face {
-            font-family: "Cardo";
-            src: url("${Utils.Resolve_Path(`fonts/Greek/Cardo/Cardo-Regular.ttf`)}");
+            font-family: "Ezra SIL SR";
+            src: url("${Utils.Resolve_Path(`fonts/Ezra/SILEOTSR.ttf`)}");
         }
         @font-face {
             font-family: "Gentium Plus";
-            src: url("${Utils.Resolve_Path(`fonts/Latin/Gentium/GentiumPlus-R.ttf`)}");
+            src: url("${Utils.Resolve_Path(`fonts/Gentium/GentiumPlus-R.ttf`)}");
         }
         
         * {
