@@ -57,7 +57,7 @@ export function Styles(
         };
     } else if (language === Name.GREEK) {
         return {
-            "font-family": `"Quivira, Gentium Plus"`,
+            "font-family": `"Quivira"`,
             "font-size": `1.25em`, // 20px
             "line-height": `1.3`,
         };
