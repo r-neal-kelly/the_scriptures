@@ -57,6 +57,11 @@ class Body extends Entity.Instance
                 }
 
                 @font-face {
+                    font-family: "Catrinity";
+                    src: url("${Utils.Resolve_Path(`fonts/Catrinity/Catrinity.otf`)}");
+                }
+
+                @font-face {
                     font-family: "Ezra SIL";
                     src: url("${Utils.Resolve_Path(`fonts/Ezra/SILEOT.ttf`)}");
                 }
