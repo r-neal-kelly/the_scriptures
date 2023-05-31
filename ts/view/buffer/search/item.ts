@@ -104,7 +104,7 @@ export class Instance extends Entity.Instance
             const language: Model_Languages.Name | null =
                 model.Override_Language_Name();
             if (language) {
-                return Model_Languages.Styles(language);
+                return Model_Languages.Default_Global_CSS_Styles(language);
             } else {
                 return ``;
             }

@@ -1,6 +1,7 @@
 import * as Utils from "./utils.js";
 import * as Unicode from "./unicode.js";
 
+import * as Languages from "./model/languages.js";
 import * as Model from "./model/text.js";
 
 function Escape_Text(
@@ -1295,7 +1296,7 @@ class Editor
                         keyboard_event.preventDefault();
 
                         // English
-                        document.body.style.fontFamily = `"sans-serif"`;
+                        document.body.style.fontFamily = `sans-serif`;
                         document.body.style.fontSize = `24px`;
                     }
                 } else if (keyboard_event.key === `(`) {
@@ -1311,7 +1312,7 @@ class Editor
                         keyboard_event.preventDefault();
 
                         // Greek
-                        document.body.style.fontFamily = `"Gentium Plus"`;
+                        document.body.style.fontFamily = `"GentiumPlusW"`;
                         document.body.style.fontSize = `32px`;
                     }
                 } else if (keyboard_event.key === `&`) {
@@ -1319,7 +1320,7 @@ class Editor
                         keyboard_event.preventDefault();
 
                         // Latin
-                        document.body.style.fontFamily = `"Gentium Plus"`;
+                        document.body.style.fontFamily = `"GentiumPlusW"`;
                         document.body.style.fontSize = `26px`;
                     }
                 }
@@ -2590,18 +2591,7 @@ class Editor
     void
 {
     Utils.Create_Style_Element(`
-        @font-face {
-            font-family: "Cardo";
-            src: url("${Utils.Resolve_Path(`fonts/Cardo/Cardo-Regular.ttf`)}");
-        }
-        @font-face {
-            font-family: "Ezra SIL SR";
-            src: url("${Utils.Resolve_Path(`fonts/Ezra/SILEOTSR.ttf`)}");
-        }
-        @font-face {
-            font-family: "Gentium Plus";
-            src: url("${Utils.Resolve_Path(`fonts/Gentium/GentiumPlus-R.ttf`)}");
-        }
+        ${Languages.CSS_Font_Faces()}
         
         * {
             box-sizing: border-box;

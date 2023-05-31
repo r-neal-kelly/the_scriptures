@@ -6,6 +6,7 @@ import * as Entity from "./entity.js";
 import * as Model from "../model/layout.js";
 import * as View from "./layout.js";
 
+import * as Languages_Model from "../model/languages.js";
 import * as Data_Model from "../model/data.js";
 import * as Selector_Model from "../model/selector.js";
 import * as Browser_Model from "../model/browser.js";
@@ -41,64 +42,7 @@ class Body extends Entity.Instance
     override On_Life():
         Array<Event.Listener_Info>
     {
-        Utils.Create_Style_Element(
-            `
-                @font-face {
-                    font-family: "Cardo";
-                    src: url("${Utils.Resolve_Path(`fonts/Cardo/Cardo-Regular.ttf`)}");
-                }
-                @font-face {
-                    font-family: "Cardo Bold";
-                    src: url("${Utils.Resolve_Path(`fonts/Cardo/Cardo-Bold.ttf`)}");
-                }
-                @font-face {
-                    font-family: "Cardo Italic";
-                    src: url("${Utils.Resolve_Path(`fonts/Cardo/Cardo-Italic.ttf`)}");
-                }
-
-                @font-face {
-                    font-family: "Catrinity";
-                    src: url("${Utils.Resolve_Path(`fonts/Catrinity/Catrinity.otf`)}");
-                }
-
-                @font-face {
-                    font-family: "Ezra SIL";
-                    src: url("${Utils.Resolve_Path(`fonts/Ezra/SILEOT.ttf`)}");
-                }
-                @font-face {
-                    font-family: "Ezra SIL SR";
-                    src: url("${Utils.Resolve_Path(`fonts/Ezra/SILEOTSR.ttf`)}");
-                }
-
-                @font-face {
-                    font-family: "Galatia SIL";
-                    src: url("${Utils.Resolve_Path(`fonts/Galatia/GalSILR.ttf`)}");
-                }
-                @font-face {
-                    font-family: "Galatia SIL Bold";
-                    src: url("${Utils.Resolve_Path(`fonts/Galatia/GalSILB.ttf`)}");
-                }
-
-                @font-face {
-                    font-family: "Gentium Plus";
-                    src: url("${Utils.Resolve_Path(`fonts/Gentium/GentiumPlus-R.ttf`)}");
-                }
-                @font-face {
-                    font-family: "Gentium Plus Italic";
-                    src: url("${Utils.Resolve_Path(`fonts/Gentium/GentiumPlus-I.ttf`)}");
-                }
-
-                @font-face {
-                    font-family: "Orkney-Regular";
-                    src: url("${Utils.Resolve_Path(`fonts/Orkney/Orkney Regular.ttf`)}");
-                }
-
-                @font-face {
-                    font-family: "Quivira";
-                    src: url("${Utils.Resolve_Path(`fonts/Quivira/Quivira.otf`)}");
-                }
-            `,
-        );
+        Utils.Create_Style_Element(Languages_Model.CSS_Font_Faces());
 
         this.Add_CSS(
             `

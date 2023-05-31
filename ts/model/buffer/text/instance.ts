@@ -91,7 +91,7 @@ export class Instance extends Entity.Instance
     Default_Text_Styles():
         any
     {
-        return Languages.Styles(this.default_language_name);
+        return Languages.Current_Global_CSS_Styles(this.default_language_name);
     }
 
     Text():

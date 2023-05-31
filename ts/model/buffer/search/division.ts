@@ -124,11 +124,10 @@ export class Instance extends Entity.Instance
             .replace(/ $/, ` `)
             .replace(/  /g, `  `);
 
-        /*
-        if (this.Item().Is_Greek()) {
-            this.value = Languages.Greek.Normalize_With_Baked_Points(this.value);
-        }
-        */
+        this.value = Languages.Adapt_Text_To_Default_Global_Font(
+            this.Item().Language_Name(),
+            this.value,
+        );
     }
 
     Is_Blank():

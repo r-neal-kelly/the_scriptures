@@ -344,14 +344,20 @@ export class Instance extends Entity.Instance
         return this.Part().Language();
     }
 
-    Is_Greek():
-        boolean
+    Language_Name():
+        Languages.Name
     {
         const override: Languages.Name | null = this.Override_Language_Name();
         if (override != null) {
-            return override === Languages.Name.GREEK;
+            return override;
         } else {
-            return this.Segment().Line().Buffer().Default_Language_Name() === Languages.Name.GREEK;
+            return this.Segment().Line().Buffer().Default_Language_Name();
         }
+    }
+
+    Is_Greek():
+        boolean
+    {
+        return this.Language_Name() === Languages.Name.GREEK;
     }
 }
