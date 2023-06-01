@@ -144,6 +144,14 @@ export class Instance implements Item.Instance
         return this.status;
     }
 
+    Set_Status(
+        status: Status,
+    ):
+        void
+    {
+        this.status = status;
+    }
+
     Is_Good():
         boolean
     {

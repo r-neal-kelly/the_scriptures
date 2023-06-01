@@ -15,13 +15,19 @@ export enum Symbol
     FIRST = `⸨`,
     LAST = `⸩`,
     CLOSE = `/`,
-    ARGUMENT = `:`,
+    DIVIDER = `:`,
 }
 
 enum Parameter
 {
+    ERROR = `err`,
     LANGUAGE = `lang`,
 }
+
+type Parameter_And_Argument = {
+    parameter: Value,
+    argument: Value,
+};
 
 export enum Known_Value
 {
@@ -61,22 +67,28 @@ function Interior_Value(
     return value.replace(/^⸨\/?/, ``).replace(/⸩$/, ``);
 }
 
-function Interior_Parameter_Argument(
+function Interior_Parameter_And_Argument(
     value: Value,
 ):
-    [Value, Value] | null
+    Parameter_And_Argument | null
 {
-    const interior_value: Value = Interior_Value(value);
-    const interior_split: Array<Value> = interior_value.split(Symbol.ARGUMENT);
+    const interior_value: Value =
+        Interior_Value(value);
+    const interior_divider_index: Index =
+        interior_value.indexOf(Symbol.DIVIDER);
+    const interior_parameter: Value =
+        interior_value.slice(0, interior_divider_index);
+    const interior_argument: Value =
+        interior_value.slice(interior_divider_index + Symbol.DIVIDER.length);
 
     if (
-        interior_split.length === 2 &&
-        interior_split[0] != null &&
-        interior_split[1] != null &&
-        interior_split[0].length > 0 &&
-        interior_split[1].length > 0
+        interior_parameter.length > 0 &&
+        interior_argument.length > 0
     ) {
-        return interior_split as [Value, Value];
+        return {
+            parameter: interior_parameter,
+            argument: interior_argument,
+        };
     } else {
         return null;
     }
@@ -138,16 +150,20 @@ export function Is_Known_Value(
         return true;
 
     } else {
-        const parameter_argument: [Value, Value] | null =
-            Interior_Parameter_Argument(value);
-        if (parameter_argument != null) {
-            if (parameter_argument[0] === Parameter.LANGUAGE) {
+        const parameter_and_argument: Parameter_And_Argument | null =
+            Interior_Parameter_And_Argument(value);
+
+        if (parameter_and_argument != null) {
+            if (parameter_and_argument.parameter === Parameter.LANGUAGE) {
                 return (
-                    parameter_argument[1] === Languages.Name.ENGLISH ||
-                    parameter_argument[1] === Languages.Name.HEBREW ||
-                    parameter_argument[1] === Languages.Name.GREEK ||
-                    parameter_argument[1] === Languages.Name.LATIN
+                    parameter_and_argument.argument === Languages.Name.ENGLISH ||
+                    parameter_and_argument.argument === Languages.Name.HEBREW ||
+                    parameter_and_argument.argument === Languages.Name.GREEK ||
+                    parameter_and_argument.argument === Languages.Name.LATIN
                 );
+
+            } else if (parameter_and_argument.parameter === Parameter.ERROR) {
+                return true;
 
             } else {
                 return false;
@@ -241,15 +257,21 @@ export class Instance extends Part.Instance
             `A command must have a length of at least 2.`,
         );
 
-        const parameter_argument: [Value, Value] | null =
-            Interior_Parameter_Argument(value);
-        if (parameter_argument != null) {
-            this.parameter = parameter_argument[0];
-            this.argument = parameter_argument[1];
+        const parameter_and_argument: Parameter_And_Argument | null =
+            Interior_Parameter_And_Argument(value);
+        if (parameter_and_argument != null) {
+            this.parameter = parameter_and_argument.parameter;
+            this.argument = parameter_and_argument.argument;
         } else {
             this.parameter = null;
             this.argument = null;
         }
+    }
+
+    Has_Parameter():
+        boolean
+    {
+        return this.parameter != null;
     }
 
     Parameter():
@@ -258,10 +280,38 @@ export class Instance extends Part.Instance
         return this.parameter;
     }
 
+    Some_Parameter():
+        Value
+    {
+        Utils.Assert(
+            this.Has_Parameter(),
+            `doesn't have a parameter`,
+        );
+
+        return this.parameter as Value;
+    }
+
+    Has_Argument():
+        boolean
+    {
+        return this.argument != null;
+    }
+
     Argument():
         Value | null
     {
         return this.argument;
+    }
+
+    Some_Argument():
+        Value
+    {
+        Utils.Assert(
+            this.Has_Argument(),
+            `doesn't have an argument`,
+        );
+
+        return this.argument as Value;
     }
 
     Is_Center():
@@ -339,7 +389,10 @@ export class Instance extends Part.Instance
     Is_Open_Error():
         boolean
     {
-        return this.Value() === Known_Value.OPEN_ERROR;
+        return (
+            this.Value() === Known_Value.OPEN_ERROR ||
+            this.Parameter() === Parameter.ERROR
+        );
     }
 
     Is_Close_Error():
@@ -370,6 +423,12 @@ export class Instance extends Part.Instance
         boolean
     {
         return this.Value() === Known_Value.CLOSE_RIGHT_TO_LEFT;
+    }
+
+    Is_Open_Language():
+        boolean
+    {
+        return this.Parameter() === Parameter.LANGUAGE;
     }
 
     Is_Open_English():
