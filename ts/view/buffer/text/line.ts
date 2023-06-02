@@ -60,9 +60,9 @@ export class Instance extends Entity.Instance
         classes.push(`Line`);
         if (model.Is_Blank()) {
             classes.push(`Blank`);
-        } else if (model.Text().Value() === ``) {
+        } else if (model.Value() === ``) {
             classes.push(`Transparent`);
-        } else if (model.Text().Is_Centered()) {
+        } else if (model.Is_Centered()) {
             classes.push(`Centered_Line`);
         }
 

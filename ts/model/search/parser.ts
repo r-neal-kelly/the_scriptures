@@ -10,6 +10,9 @@ import { Sequence_Type } from "./sequence_type.js";
 import * as Class from "./class.js";
 import * as Token from "./token.js";
 
+const LINE_PATH_TYPE: Text.Line.Path_Type =
+    Text.Line.Path_Type.DEFAULT;
+
 export class Help
 {
     private message: string;
@@ -100,11 +103,11 @@ export class Instance
             if (sequence_depth < 1) {
                 sequence_depth += 1;
                 tokens.push(new Token.Open_Sequence());
-                for (let idx = 0, end = text.Line(0).Macro_Part_Count(); idx < end; idx += 1) {
+                for (let idx = 0, end = text.Line(0).Macro_Part_Count(LINE_PATH_TYPE); idx < end; idx += 1) {
                     tokens.push(
                         new Token.Text(
                             {
-                                part: text.Line(0).Macro_Part(idx),
+                                part: text.Line(0).Macro_Part(idx, LINE_PATH_TYPE),
                             },
                         ),
                     );
@@ -121,7 +124,7 @@ export class Instance
                     ),
                 );
             } else {
-                const text_part_count: Count = text.Line(0).Macro_Part_Count();
+                const text_part_count: Count = text.Line(0).Macro_Part_Count(LINE_PATH_TYPE);
                 const has_group: boolean = text_part_count > 1 || sequence_has_and;
                 if (has_group) {
                     group_depth += 1;
@@ -129,7 +132,7 @@ export class Instance
                 }
                 if (sequence_has_and && false) {
                     const text_first_part: Text.Part.Instance =
-                        text.Line(0).Macro_Part(0);
+                        text.Line(0).Macro_Part(0, LINE_PATH_TYPE);
                     if (text_first_part.Is_Word()) {
                         tokens.push(
                             new Token.Class(
@@ -154,7 +157,7 @@ export class Instance
                     tokens.push(
                         new Token.Text(
                             {
-                                part: text.Line(0).Macro_Part(idx),
+                                part: text.Line(0).Macro_Part(idx, LINE_PATH_TYPE),
                             },
                         ),
                     );
@@ -234,7 +237,7 @@ export class Instance
                                     `Newline inside ${Operator.VERBATIM}`,
                                     it.Index(),
                                 );
-                            } else if (text.Line(0).Macro_Part_Count() === 0) {
+                            } else if (text.Line(0).Macro_Part_Count(LINE_PATH_TYPE) === 0) {
                                 return new Help(
                                     `Empty ${Operator.VERBATIM}`,
                                     it.Index(),

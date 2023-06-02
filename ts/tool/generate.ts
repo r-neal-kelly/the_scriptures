@@ -11,6 +11,9 @@ import * as Languages from "../model/languages.js";
 import * as Data from "../model/data.js";
 import * as Text from "../model/text.js";
 
+const LINE_PATH_TYPE: Text.Line.Path_Type =
+    Text.Line.Path_Type.DEFAULT;
+
 async function Read_Directory(
     directory_path: Path,
 ):
@@ -374,11 +377,11 @@ async function Generate():
                     ) {
                         const line: Text.Line.Instance = text.Line(line_idx);
                         for (
-                            let part_idx = 0, part_end = line.Macro_Part_Count();
+                            let part_idx = 0, part_end = line.Macro_Part_Count(LINE_PATH_TYPE);
                             part_idx < part_end;
                             part_idx += 1
                         ) {
-                            const part: Text.Part.Instance = line.Macro_Part(part_idx);
+                            const part: Text.Part.Instance = line.Macro_Part(part_idx, LINE_PATH_TYPE);
                             unique_parts[language_name].Add(part.Value());
                         }
                     }

@@ -5,6 +5,7 @@ import * as Utils from "../../../utils.js";
 
 import * as Languages from "../../languages.js";
 import * as Entity from "../../entity.js";
+import * as Text from "../../text.js";
 import * as Search from "../../search.js";
 import * as Line from "./line.js";
 

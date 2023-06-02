@@ -11,6 +11,9 @@ import * as Token from "./token.js";
 import * as Node from "./node.js";
 import * as Result from "./result.js";
 
+const LINE_PATH_TYPE: Text.Line.Path_Type =
+    Text.Line.Path_Type.DEFAULT;
+
 export enum Mode
 {
     INITIAL = 0,
@@ -382,16 +385,16 @@ export class Instance
 
         const new_result: Result.Instance = new Result.Instance(result.Line());
         for (
-            let search_idx = 0, search_end = search_line.Macro_Part_Count();
+            let search_idx = 0, search_end = search_line.Macro_Part_Count(LINE_PATH_TYPE);
             search_idx < search_end;
             search_idx += 1
         ) {
             if (
                 (mode & Mode.META) ||
-                !search_line.Macro_Part(search_idx).Is_Command()
+                !search_line.Macro_Part(search_idx, LINE_PATH_TYPE).Is_Command()
             ) {
                 const search_part: Text.Part.Instance =
-                    search_line.Macro_Part(search_idx);
+                    search_line.Macro_Part(search_idx, LINE_PATH_TYPE);
                 const search_value: Text.Value = mode & Mode.CASE ?
                     search_part.Value() :
                     search_part.Value().toLowerCase();
@@ -471,16 +474,16 @@ export class Instance
 
         const new_result: Result.Instance = new Result.Instance(result.Line());
         for (
-            let search_idx = 0, search_end = search_line.Macro_Part_Count();
+            let search_idx = 0, search_end = search_line.Macro_Part_Count(LINE_PATH_TYPE);
             search_idx < search_end;
             search_idx += 1
         ) {
             if (
                 (mode & Mode.META) ||
-                !search_line.Macro_Part(search_idx).Is_Command()
+                !search_line.Macro_Part(search_idx, LINE_PATH_TYPE).Is_Command()
             ) {
                 const search_part: Text.Part.Instance =
-                    search_line.Macro_Part(search_idx);
+                    search_line.Macro_Part(search_idx, LINE_PATH_TYPE);
                 const search_value: Text.Value = mode & Mode.CASE ?
                     search_part.Value() :
                     search_part.Value().toLowerCase();
@@ -552,24 +555,24 @@ export class Instance
             const old_match: Result.Match = result.Match(match_idx);
             let search_idx: Index = old_match.End_Part_Index();
             const old_search_part: Text.Part.Instance =
-                search_line.Macro_Part(search_idx - 1);
+                search_line.Macro_Part(search_idx - 1, LINE_PATH_TYPE);
             const old_search_value: Text.Value = mode & Mode.CASE ?
                 old_search_part.Value() :
                 old_search_part.Value().toLowerCase();
             if (old_match.Last_Part_End_Unit_Index() === old_search_value.length) {
-                const search_end: Index = search_line.Macro_Part_Count();
+                const search_end: Index = search_line.Macro_Part_Count(LINE_PATH_TYPE);
                 let command_count: Count = 0;
                 if (!(mode & Mode.META)) {
                     while (
                         search_idx + command_count < search_end &&
-                        search_line.Macro_Part(search_idx + command_count).Is_Command()
+                        search_line.Macro_Part(search_idx + command_count, LINE_PATH_TYPE).Is_Command()
                     ) {
                         command_count += 1;
                     }
                 }
                 if (search_idx + command_count < search_end) {
                     const search_part: Text.Part.Instance =
-                        search_line.Macro_Part(search_idx + command_count);
+                        search_line.Macro_Part(search_idx + command_count, LINE_PATH_TYPE);
                     const search_value: Text.Value = mode & Mode.CASE ?
                         search_part.Value() :
                         search_part.Value().toLowerCase();
@@ -621,24 +624,24 @@ export class Instance
             const old_match: Result.Match = result.Match(match_idx);
             let search_idx: Index = old_match.End_Part_Index();
             const old_search_part: Text.Part.Instance =
-                search_line.Macro_Part(search_idx - 1);
+                search_line.Macro_Part(search_idx - 1, LINE_PATH_TYPE);
             const old_search_value: Text.Value = mode & Mode.CASE ?
                 old_search_part.Value() :
                 old_search_part.Value().toLowerCase();
             if (old_match.Last_Part_End_Unit_Index() === old_search_value.length) {
-                const search_end: Index = search_line.Macro_Part_Count();
+                const search_end: Index = search_line.Macro_Part_Count(LINE_PATH_TYPE);
                 let command_count: Count = 0;
                 if (!(mode & Mode.META)) {
                     while (
                         search_idx + command_count < search_end &&
-                        search_line.Macro_Part(search_idx + command_count).Is_Command()
+                        search_line.Macro_Part(search_idx + command_count, LINE_PATH_TYPE).Is_Command()
                     ) {
                         command_count += 1;
                     }
                 }
                 if (search_idx + command_count < search_end) {
                     const search_part: Text.Part.Instance =
-                        search_line.Macro_Part(search_idx + command_count);
+                        search_line.Macro_Part(search_idx + command_count, LINE_PATH_TYPE);
                     const search_value: Text.Value = mode & Mode.CASE ?
                         search_part.Value() :
                         search_part.Value().toLowerCase();
@@ -787,16 +790,16 @@ export class Instance
 
         const new_result: Result.Instance = new Result.Instance(result.Line());
         for (
-            let search_idx = 0, search_end = search_line.Macro_Part_Count();
+            let search_idx = 0, search_end = search_line.Macro_Part_Count(LINE_PATH_TYPE);
             search_idx < search_end;
             search_idx += 1
         ) {
             if (
                 (mode & Mode.META) ||
-                !search_line.Macro_Part(search_idx).Is_Command()
+                !search_line.Macro_Part(search_idx, LINE_PATH_TYPE).Is_Command()
             ) {
                 const search_part: Text.Part.Instance =
-                    search_line.Macro_Part(search_idx);
+                    search_line.Macro_Part(search_idx, LINE_PATH_TYPE);
                 const search_value: Text.Value = mode & Mode.CASE ?
                     search_part.Value() :
                     search_part.Value().toLowerCase();
@@ -906,16 +909,16 @@ export class Instance
 
         const new_result: Result.Instance = new Result.Instance(result.Line());
         for (
-            let search_idx = 0, search_end = search_line.Macro_Part_Count();
+            let search_idx = 0, search_end = search_line.Macro_Part_Count(LINE_PATH_TYPE);
             search_idx < search_end;
             search_idx += 1
         ) {
             if (
                 (mode & Mode.META) ||
-                !search_line.Macro_Part(search_idx).Is_Command()
+                !search_line.Macro_Part(search_idx, LINE_PATH_TYPE).Is_Command()
             ) {
                 const search_part: Text.Part.Instance =
-                    search_line.Macro_Part(search_idx);
+                    search_line.Macro_Part(search_idx, LINE_PATH_TYPE);
                 const search_value: Text.Value = mode & Mode.CASE ?
                     search_part.Value() :
                     search_part.Value().toLowerCase();
@@ -1019,24 +1022,24 @@ export class Instance
             const old_candidate: Result.Match = result.Candidate(candidate_idx);
             let search_idx: Index = old_candidate.End_Part_Index();
             const old_search_part: Text.Part.Instance =
-                search_line.Macro_Part(search_idx - 1);
+                search_line.Macro_Part(search_idx - 1, LINE_PATH_TYPE);
             const old_search_value: Text.Value = mode & Mode.CASE ?
                 old_search_part.Value() :
                 old_search_part.Value().toLowerCase();
             if (old_candidate.Last_Part_End_Unit_Index() === old_search_value.length) {
-                const search_end: Index = search_line.Macro_Part_Count();
+                const search_end: Index = search_line.Macro_Part_Count(LINE_PATH_TYPE);
                 let command_count: Count = 0;
                 if (!(mode & Mode.META)) {
                     while (
                         search_idx + command_count < search_end &&
-                        search_line.Macro_Part(search_idx + command_count).Is_Command()
+                        search_line.Macro_Part(search_idx + command_count, LINE_PATH_TYPE).Is_Command()
                     ) {
                         command_count += 1;
                     }
                 }
                 if (search_idx + command_count < search_end) {
                     const search_part: Text.Part.Instance =
-                        search_line.Macro_Part(search_idx + command_count);
+                        search_line.Macro_Part(search_idx + command_count, LINE_PATH_TYPE);
                     const search_value: Text.Value = mode & Mode.CASE ?
                         search_part.Value() :
                         search_part.Value().toLowerCase();
@@ -1099,24 +1102,24 @@ export class Instance
             const old_candidate: Result.Match = result.Candidate(candidate_idx);
             let search_idx: Index = old_candidate.End_Part_Index();
             const old_search_part: Text.Part.Instance =
-                search_line.Macro_Part(search_idx - 1);
+                search_line.Macro_Part(search_idx - 1, LINE_PATH_TYPE);
             const old_search_value: Text.Value = mode & Mode.CASE ?
                 old_search_part.Value() :
                 old_search_part.Value().toLowerCase();
             if (old_candidate.Last_Part_End_Unit_Index() === old_search_value.length) {
-                const search_end: Index = search_line.Macro_Part_Count();
+                const search_end: Index = search_line.Macro_Part_Count(LINE_PATH_TYPE);
                 let command_count: Count = 0;
                 if (!(mode & Mode.META)) {
                     while (
                         search_idx + command_count < search_end &&
-                        search_line.Macro_Part(search_idx + command_count).Is_Command()
+                        search_line.Macro_Part(search_idx + command_count, LINE_PATH_TYPE).Is_Command()
                     ) {
                         command_count += 1;
                     }
                 }
                 if (search_idx + command_count < search_end) {
                     const search_part: Text.Part.Instance =
-                        search_line.Macro_Part(search_idx + command_count);
+                        search_line.Macro_Part(search_idx + command_count, LINE_PATH_TYPE);
                     const search_value: Text.Value = mode & Mode.CASE ?
                         search_part.Value() :
                         search_part.Value().toLowerCase();
@@ -1250,16 +1253,16 @@ export class Instance
 
         const new_result: Result.Instance = new Result.Instance(result.Line());
         for (
-            let search_idx = 0, search_end = search_line.Macro_Part_Count();
+            let search_idx = 0, search_end = search_line.Macro_Part_Count(LINE_PATH_TYPE);
             search_idx < search_end;
             search_idx += 1
         ) {
             if (
                 (mode & Mode.META) ||
-                !search_line.Macro_Part(search_idx).Is_Command()
+                !search_line.Macro_Part(search_idx, LINE_PATH_TYPE).Is_Command()
             ) {
                 const search_part: Text.Part.Instance =
-                    search_line.Macro_Part(search_idx);
+                    search_line.Macro_Part(search_idx, LINE_PATH_TYPE);
                 const search_value: Text.Value = mode & Mode.CASE ?
                     search_part.Value() :
                     search_part.Value().toLowerCase();
@@ -1310,24 +1313,24 @@ export class Instance
             const old_match: Result.Match = result.Match(match_idx);
             let search_idx: Index = old_match.End_Part_Index();
             const old_search_part: Text.Part.Instance =
-                search_line.Macro_Part(search_idx - 1);
+                search_line.Macro_Part(search_idx - 1, LINE_PATH_TYPE);
             const old_search_value: Text.Value = mode & Mode.CASE ?
                 old_search_part.Value() :
                 old_search_part.Value().toLowerCase();
             if (old_match.Last_Part_End_Unit_Index() === old_search_value.length) {
-                const search_end: Index = search_line.Macro_Part_Count();
+                const search_end: Index = search_line.Macro_Part_Count(LINE_PATH_TYPE);
                 let command_count: Count = 0;
                 if (!(mode & Mode.META)) {
                     while (
                         search_idx + command_count < search_end &&
-                        search_line.Macro_Part(search_idx + command_count).Is_Command()
+                        search_line.Macro_Part(search_idx + command_count, LINE_PATH_TYPE).Is_Command()
                     ) {
                         command_count += 1;
                     }
                 }
                 if (search_idx + command_count < search_end) {
                     const search_part: Text.Part.Instance =
-                        search_line.Macro_Part(search_idx + command_count);
+                        search_line.Macro_Part(search_idx + command_count, LINE_PATH_TYPE);
                     const search_value: Text.Value = mode & Mode.CASE ?
                         search_part.Value() :
                         search_part.Value().toLowerCase();
@@ -1451,16 +1454,16 @@ export class Instance
 
         const new_result: Result.Instance = new Result.Instance(result.Line());
         for (
-            let search_idx = 0, search_end = search_line.Macro_Part_Count();
+            let search_idx = 0, search_end = search_line.Macro_Part_Count(LINE_PATH_TYPE);
             search_idx < search_end;
             search_idx += 1
         ) {
             if (
                 (mode & Mode.META) ||
-                !search_line.Macro_Part(search_idx).Is_Command()
+                !search_line.Macro_Part(search_idx, LINE_PATH_TYPE).Is_Command()
             ) {
                 const search_part: Text.Part.Instance =
-                    search_line.Macro_Part(search_idx);
+                    search_line.Macro_Part(search_idx, LINE_PATH_TYPE);
                 const search_value: Text.Value = mode & Mode.CASE ?
                     search_part.Value() :
                     search_part.Value().toLowerCase();
@@ -1520,16 +1523,16 @@ export class Instance
 
         const new_result: Result.Instance = new Result.Instance(result.Line());
         for (
-            let search_idx = 0, search_end = search_line.Macro_Part_Count();
+            let search_idx = 0, search_end = search_line.Macro_Part_Count(LINE_PATH_TYPE);
             search_idx < search_end;
             search_idx += 1
         ) {
             if (
                 (mode & Mode.META) ||
-                !search_line.Macro_Part(search_idx).Is_Command()
+                !search_line.Macro_Part(search_idx, LINE_PATH_TYPE).Is_Command()
             ) {
                 const search_part: Text.Part.Instance =
-                    search_line.Macro_Part(search_idx);
+                    search_line.Macro_Part(search_idx, LINE_PATH_TYPE);
                 const search_value: Text.Value = mode & Mode.CASE ?
                     search_part.Value() :
                     search_part.Value().toLowerCase();
@@ -1587,24 +1590,24 @@ export class Instance
             const old_candidate: Result.Match = result.Candidate(candidate_idx);
             let search_idx: Index = old_candidate.End_Part_Index();
             const old_search_part: Text.Part.Instance =
-                search_line.Macro_Part(search_idx - 1);
+                search_line.Macro_Part(search_idx - 1, LINE_PATH_TYPE);
             const old_search_value: Text.Value = mode & Mode.CASE ?
                 old_search_part.Value() :
                 old_search_part.Value().toLowerCase();
             if (old_candidate.Last_Part_End_Unit_Index() === old_search_value.length) {
-                const search_end: Index = search_line.Macro_Part_Count();
+                const search_end: Index = search_line.Macro_Part_Count(LINE_PATH_TYPE);
                 let command_count: Count = 0;
                 if (!(mode & Mode.META)) {
                     while (
                         search_idx + command_count < search_end &&
-                        search_line.Macro_Part(search_idx + command_count).Is_Command()
+                        search_line.Macro_Part(search_idx + command_count, LINE_PATH_TYPE).Is_Command()
                     ) {
                         command_count += 1;
                     }
                 }
                 if (search_idx + command_count < search_end) {
                     const search_part: Text.Part.Instance =
-                        search_line.Macro_Part(search_idx + command_count);
+                        search_line.Macro_Part(search_idx + command_count, LINE_PATH_TYPE);
                     const search_value: Text.Value = mode & Mode.CASE ?
                         search_part.Value() :
                         search_part.Value().toLowerCase();
@@ -1663,24 +1666,24 @@ export class Instance
             const old_candidate: Result.Match = result.Candidate(candidate_idx);
             let search_idx: Index = old_candidate.End_Part_Index();
             const old_search_part: Text.Part.Instance =
-                search_line.Macro_Part(search_idx - 1);
+                search_line.Macro_Part(search_idx - 1, LINE_PATH_TYPE);
             const old_search_value: Text.Value = mode & Mode.CASE ?
                 old_search_part.Value() :
                 old_search_part.Value().toLowerCase();
             if (old_candidate.Last_Part_End_Unit_Index() === old_search_value.length) {
-                const search_end: Index = search_line.Macro_Part_Count();
+                const search_end: Index = search_line.Macro_Part_Count(LINE_PATH_TYPE);
                 let command_count: Count = 0;
                 if (!(mode & Mode.META)) {
                     while (
                         search_idx + command_count < search_end &&
-                        search_line.Macro_Part(search_idx + command_count).Is_Command()
+                        search_line.Macro_Part(search_idx + command_count, LINE_PATH_TYPE).Is_Command()
                     ) {
                         command_count += 1;
                     }
                 }
                 if (search_idx + command_count < search_end) {
                     const search_part: Text.Part.Instance =
-                        search_line.Macro_Part(search_idx + command_count);
+                        search_line.Macro_Part(search_idx + command_count, LINE_PATH_TYPE);
                     const search_value: Text.Value = mode & Mode.CASE ?
                         search_part.Value() :
                         search_part.Value().toLowerCase();

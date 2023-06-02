@@ -42,6 +42,7 @@ export class Instance extends Entity.Instance
     private default_language_name: Languages.Name;
     private text: Text.Instance;
     private lines: Array<Line.Instance>;
+    private line_path_type: Text.Line.Path_Type;
 
     constructor(
         {
@@ -58,6 +59,7 @@ export class Instance extends Entity.Instance
         this.default_language_name = default_language_name;
         this.text = text;
         this.lines = [];
+        this.line_path_type = Text.Line.Path_Type.ERRORLESS;
 
         for (let idx = 0, end = text.Line_Count(); idx < end; idx += 1) {
             this.lines.push(
@@ -121,5 +123,11 @@ export class Instance extends Entity.Instance
         } else {
             return Instance.blank_line;
         }
+    }
+
+    Line_Path_Type():
+        Text.Line.Path_Type
+    {
+        return this.line_path_type;
     }
 }

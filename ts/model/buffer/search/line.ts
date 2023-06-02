@@ -9,6 +9,9 @@ import * as Search from "../../search.js";
 import * as Buffer from "./instance.js";
 import * as Segment from "./segment.js";
 
+const LINE_PATH_TYPE: Text.Line.Path_Type =
+    Text.Line.Path_Type.DEFAULT;
+
 export class Instance extends Entity.Instance
 {
     private static min_segment_count: Count = 70;
@@ -83,7 +86,7 @@ export class Instance extends Entity.Instance
                 `index must not be null, and must be greater than -1.`,
             );
 
-            if (result.Line().Value() === ``) {
+            if (result.Line().Value(LINE_PATH_TYPE) === ``) {
                 const segment: Text.Segment.Instance = new Text.Segment.Instance(
                     {
                         segment_type: Text.Segment.Type.MICRO,
@@ -112,13 +115,13 @@ export class Instance extends Entity.Instance
                     ),
                 );
             } else {
-                for (let idx = 0, end = result.Line().Macro_Segment_Count(); idx < end; idx += 1) {
+                for (let idx = 0, end = result.Line().Macro_Segment_Count(LINE_PATH_TYPE); idx < end; idx += 1) {
                     this.segments.push(
                         new Segment.Instance(
                             {
                                 line: this,
                                 index: idx,
-                                text: result.Line().Macro_Segment(idx),
+                                text: result.Line().Macro_Segment(idx, LINE_PATH_TYPE),
                             },
                         ),
                     );
@@ -148,7 +151,7 @@ export class Instance extends Entity.Instance
                         part_idx += 1
                     ) {
                         const segment_item_indices: Array<Text.Line.Segment_Item_Index> =
-                            result.Line().Macro_Part_Segment_Item_Indices(part_idx);
+                            result.Line().Macro_Part_Segment_Item_Indices(part_idx, LINE_PATH_TYPE);
                         if (
                             part_idx === first_part_index &&
                             part_idx === last_part_index
@@ -165,7 +168,7 @@ export class Instance extends Entity.Instance
                                 }: Text.Line.Segment_Item_Index =
                                     segment_item_indices[segment_item_idx];
                                 const text_segment: Text.Segment.Instance =
-                                    result.Line().Macro_Segment(segment_index);
+                                    result.Line().Macro_Segment(segment_index, LINE_PATH_TYPE);
                                 const text_item: Text.Item.Instance =
                                     text_segment.Item(item_index);
                                 if (text_item.Is_Part()) {
@@ -249,7 +252,7 @@ export class Instance extends Entity.Instance
                                 }: Text.Line.Segment_Item_Index =
                                     segment_item_indices[segment_item_idx];
                                 const text_segment: Text.Segment.Instance =
-                                    result.Line().Macro_Segment(segment_index);
+                                    result.Line().Macro_Segment(segment_index, LINE_PATH_TYPE);
                                 const text_item: Text.Item.Instance =
                                     text_segment.Item(item_index);
                                 if (text_item.Is_Part()) {
@@ -308,7 +311,7 @@ export class Instance extends Entity.Instance
                                 }: Text.Line.Segment_Item_Index =
                                     segment_item_indices[segment_item_idx];
                                 const text_segment: Text.Segment.Instance =
-                                    result.Line().Macro_Segment(segment_index);
+                                    result.Line().Macro_Segment(segment_index, LINE_PATH_TYPE);
                                 const text_item: Text.Item.Instance =
                                     text_segment.Item(item_index);
                                 if (text_item.Is_Part()) {
@@ -363,7 +366,7 @@ export class Instance extends Entity.Instance
                                 }: Text.Line.Segment_Item_Index =
                                     segment_item_indices[segment_item_idx];
                                 const text_segment: Text.Segment.Instance =
-                                    result.Line().Macro_Segment(segment_index);
+                                    result.Line().Macro_Segment(segment_index, LINE_PATH_TYPE);
                                 const text_item: Text.Item.Instance =
                                     text_segment.Item(item_index);
                                 this.Segment_At(segment_index).Item_At(item_index).Highlight(
@@ -419,6 +422,12 @@ export class Instance extends Entity.Instance
         return this.result as Search.Result.Instance;
     }
 
+    Value():
+        Text.Value
+    {
+        return this.Result().Line().Value(LINE_PATH_TYPE);
+    }
+
     Segment_Count():
         Count
     {
@@ -451,6 +460,12 @@ export class Instance extends Entity.Instance
     Is_New_Line():
         boolean
     {
-        return this.Result().Line().Value() === ``;
+        return this.Result().Line().Value(LINE_PATH_TYPE) === ``;
+    }
+
+    Is_Centered():
+        boolean
+    {
+        return this.Result().Line().Is_Centered(LINE_PATH_TYPE);
     }
 }

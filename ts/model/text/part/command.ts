@@ -410,6 +410,117 @@ function Test_Closing_Command_Index_From_Opening_Command():
     Utils.Assert(Closing_Command_Index_From_Opening_Command(`⸨1⸩a⸨2⸩b⸨3⸩c⸨/3⸩d⸨/2⸩e⸨/1⸩f`) === 22);
 }
 
+export function Resolve_Errors(
+    text: string,
+    remove_unresolvable_errors: boolean,
+):
+    string
+{
+    let result: string = ``;
+
+    let it: Unicode.Iterator = new Unicode.Iterator(
+        {
+            text: text,
+        },
+    );
+
+    function From(
+        text: string,
+    ):
+        {
+            full: string,
+            interior: string,
+        }
+    {
+        const opening_command: string =
+            Maybe_Valid_Value_From(it.Points()) as string;
+        Utils.Assert(
+            opening_command != null,
+        );
+
+        const closing_command_index: Index | null =
+            Closing_Command_Index_From_Opening_Command(text);
+        if (closing_command_index != null) {
+            const closing_command: string =
+                Maybe_Valid_Value_From(text.slice(closing_command_index)) as string;
+            Utils.Assert(
+                closing_command != null,
+            );
+
+            return {
+                full: text.slice(0, closing_command_index + closing_command.length),
+                interior: text.slice(opening_command.length, closing_command_index),
+            };
+        } else {
+            return {
+                full: text,
+                interior: text.slice(opening_command.length),
+            };
+        }
+    }
+
+    while (!it.Is_At_End()) {
+        const maybe_command: string | null = Maybe_Valid_Value_From(it.Points());
+        if (maybe_command) {
+            const command: Instance = new Instance(
+                {
+                    index: 0,
+                    value: maybe_command,
+                },
+            );
+            if (command.Is_Open_Error()) {
+                if (command.Has_Argument()) {
+                    const { full } = From(it.Points());
+                    result += Resolve_Errors(command.Some_Argument(), remove_unresolvable_errors);
+                    it = new Unicode.Iterator(
+                        {
+                            text: it.Text(),
+                            index: it.Index() + full.length,
+                        },
+                    );
+                } else {
+                    if (remove_unresolvable_errors) {
+                        const { full, interior } = From(it.Points());
+                        result += Resolve_Errors(interior, remove_unresolvable_errors);
+                        it = new Unicode.Iterator(
+                            {
+                                text: it.Text(),
+                                index: it.Index() + full.length,
+                            },
+                        );
+                    } else {
+                        result += command.Value();
+                        it = new Unicode.Iterator(
+                            {
+                                text: it.Text(),
+                                index: it.Index() + command.Value().length,
+                            },
+                        );
+                    }
+                }
+            } else {
+                if (
+                    !command.Is_Close_Error() ||
+                    !remove_unresolvable_errors
+                ) {
+                    result += command.Value();
+                    it = new Unicode.Iterator(
+                        {
+                            text: it.Text(),
+                            index: it.Index() + command.Value().length,
+                        },
+                    );
+                }
+            }
+        } else {
+            result += it.Point();
+            it = it.Next();
+        }
+    }
+
+    return result;
+}
+
 export class Instance extends Part.Instance
 {
     private parameter: Value | null;

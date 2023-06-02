@@ -4,6 +4,9 @@ import * as Unicode from "./unicode.js";
 import * as Languages from "./model/languages.js";
 import * as Model from "./model/text.js";
 
+const LINE_PATH_TYPE: Model.Line.Path_Type =
+    Model.Line.Path_Type.DEFAULT;
+
 function Escape_Text(
     text: String,
 ):
@@ -931,8 +934,8 @@ class Line
         const line: Model.Line.Instance = model.Line(0);
 
         let inner_html: string = ``;
-        for (let idx = 0, end = line.Macro_Part_Count(); idx < end; idx += 1) {
-            const part = line.Macro_Part(idx);
+        for (let idx = 0, end = line.Macro_Part_Count(LINE_PATH_TYPE); idx < end; idx += 1) {
+            const part = line.Macro_Part(idx, LINE_PATH_TYPE);
             if (part.Is_Command()) {
                 const command = part as Model.Part.Command.Instance;
                 let command_classes: string = ``;
@@ -1013,7 +1016,7 @@ class Line
 
         return ({
             html: inner_html,
-            is_centered: line.Is_Centered(),
+            is_centered: line.Is_Centered(LINE_PATH_TYPE),
         });
     }
 
@@ -1035,8 +1038,8 @@ class Line
         const line: Model.Line.Instance = model.Line(0);
 
         let inner_html: string = ``;
-        for (let idx = 0, end = line.Micro_Part_Count(); idx < end; idx += 1) {
-            const part = line.Micro_Part(idx);
+        for (let idx = 0, end = line.Micro_Part_Count(LINE_PATH_TYPE); idx < end; idx += 1) {
+            const part = line.Micro_Part(idx, LINE_PATH_TYPE);
             if (part.Is_Command()) {
                 let it: Unicode.Iterator = new Unicode.Iterator(
                     {

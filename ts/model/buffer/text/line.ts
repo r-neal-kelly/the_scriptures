@@ -82,7 +82,7 @@ export class Instance extends Entity.Instance
                 `index must not be null, and must be greater than -1.`,
             );
 
-            if (text.Value() === ``) {
+            if (text.Value(this.Buffer().Line_Path_Type()) === ``) {
                 const segment: Text.Segment.Instance = new Text.Segment.Instance(
                     {
                         segment_type: Text.Segment.Type.MACRO,
@@ -111,13 +111,14 @@ export class Instance extends Entity.Instance
                     ),
                 );
             } else {
-                for (let idx = 0, end = text.Macro_Segment_Count(); idx < end; idx += 1) {
+                const line_path_type: Text.Line.Path_Type = this.Buffer().Line_Path_Type();
+                for (let idx = 0, end = text.Macro_Segment_Count(line_path_type); idx < end; idx += 1) {
                     this.segments.push(
                         new Segment.Instance(
                             {
                                 line: this,
                                 index: idx,
-                                text: text.Macro_Segment(idx),
+                                text: text.Macro_Segment(idx, line_path_type),
                             },
                         ),
                     );
@@ -163,6 +164,12 @@ export class Instance extends Entity.Instance
         return this.text as Text.Line.Instance;
     }
 
+    Value():
+        Text.Value
+    {
+        return this.Text().Value(this.Buffer().Line_Path_Type());
+    }
+
     Segment_Count():
         Count
     {
@@ -195,6 +202,12 @@ export class Instance extends Entity.Instance
     Is_New_Line():
         boolean
     {
-        return this.Text().Value() === ``;
+        return this.Text().Value(this.Buffer().Line_Path_Type()) === ``;
+    }
+
+    Is_Centered():
+        boolean
+    {
+        return this.Text().Is_Centered(this.Buffer().Line_Path_Type());
     }
 }

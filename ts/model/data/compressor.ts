@@ -6,6 +6,9 @@ import * as Unicode from "../../unicode.js";
 
 import * as Text from "../text.js";
 
+const LINE_PATH_TYPE: Text.Line.Path_Type =
+    Text.Line.Path_Type.DEFAULT;
+
 export enum Symbol
 {
     NEWLINE,
@@ -73,11 +76,11 @@ export class Instance
             const line: Text.Line.Instance = text.Line(line_idx);
             let previous_part_is_word: boolean = false;
             for (
-                let part_idx = 0, part_end = line.Macro_Part_Count();
+                let part_idx = 0, part_end = line.Macro_Part_Count(LINE_PATH_TYPE);
                 part_idx < part_end;
                 part_idx += 1
             ) {
-                const part: Text.Part.Instance = line.Macro_Part(part_idx);
+                const part: Text.Part.Instance = line.Macro_Part(part_idx, LINE_PATH_TYPE);
                 const value: Text.Value = part.Value();
                 if (this.indices.hasOwnProperty(value)) {
                     const index: string = String.fromCodePoint(this.indices[value]);
@@ -90,7 +93,7 @@ export class Instance
                                 value === ` ` &&
                                 previous_part_is_word &&
                                 part_idx + 1 < part_end &&
-                                line.Macro_Part(part_idx + 1).Is_Word()
+                                line.Macro_Part(part_idx + 1, LINE_PATH_TYPE).Is_Word()
                             )
                         ) {
                             compressed_parts.push(index);

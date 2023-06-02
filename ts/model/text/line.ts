@@ -454,10 +454,14 @@ export class Instance
     }
 
     Value(
-        path_type: Path_Type = Path_Type.DEFAULT,
+        path_type: Path_Type,
     ):
         Value
     {
+        if (!this.paths.hasOwnProperty(path_type)) {
+            path_type = Path_Type.DEFAULT;
+        }
+
         return this.paths[path_type].Value();
     }
 
@@ -476,23 +480,31 @@ export class Instance
 
         this.Set_Path(Path_Type.DEFAULT, value);
         if (this.has_errorless_path) {
-            this.Set_Path(Path_Type.ERRORLESS, value);
+            this.Set_Path(Path_Type.ERRORLESS, Part.Command.Resolve_Errors(value, true));
         }
     }
 
     Is_Centered(
-        path_type: Path_Type = Path_Type.DEFAULT,
+        path_type: Path_Type,
     ):
         boolean
     {
+        if (!this.paths.hasOwnProperty(path_type)) {
+            path_type = Path_Type.DEFAULT;
+        }
+
         return this.paths[path_type].Is_Centered();
     }
 
     Is_Indented(
-        path_type: Path_Type = Path_Type.DEFAULT,
+        path_type: Path_Type,
     ):
         boolean
     {
+        if (!this.paths.hasOwnProperty(path_type)) {
+            path_type = Path_Type.DEFAULT;
+        }
+
         return this.paths[path_type].Is_Indented();
     }
 
@@ -682,10 +694,7 @@ export class Instance
                 } else if (macro_command.Is_Open_Error()) {
                     this.has_errorless_path = true;
 
-                    if (
-                        path_type === Path_Type.DEFAULT &&
-                        macro_command.Has_Argument()
-                    ) {
+                    if (macro_command.Has_Argument()) {
                         const new_value: Value =
                             Part.Command.Symbol.FIRST +
                             macro_command.Some_Parameter() +
@@ -923,7 +932,7 @@ export class Instance
 
     Has_Micro_Part(
         micro_part_index: Index,
-        path_type: Path_Type = Path_Type.DEFAULT,
+        path_type: Path_Type,
     ):
         boolean
     {
@@ -935,7 +944,7 @@ export class Instance
     }
 
     Micro_Part_Count(
-        path_type: Path_Type = Path_Type.DEFAULT,
+        path_type: Path_Type,
     ):
         Count
     {
@@ -948,7 +957,7 @@ export class Instance
 
     Micro_Part(
         micro_part_index: Index,
-        path_type: Path_Type = Path_Type.DEFAULT,
+        path_type: Path_Type,
     ):
         Part.Instance
     {
@@ -961,7 +970,7 @@ export class Instance
 
     Has_Macro_Part(
         macro_part_index: Index,
-        path_type: Path_Type = Path_Type.DEFAULT,
+        path_type: Path_Type,
     ):
         boolean
     {
@@ -973,7 +982,7 @@ export class Instance
     }
 
     Macro_Part_Count(
-        path_type: Path_Type = Path_Type.DEFAULT,
+        path_type: Path_Type,
     ):
         Count
     {
@@ -986,7 +995,7 @@ export class Instance
 
     Macro_Part(
         macro_part_index: Index,
-        path_type: Path_Type = Path_Type.DEFAULT,
+        path_type: Path_Type,
     ):
         Part.Instance
     {
@@ -998,7 +1007,7 @@ export class Instance
     }
 
     Micro_Segment_Count(
-        path_type: Path_Type = Path_Type.DEFAULT,
+        path_type: Path_Type,
     ):
         Count
     {
@@ -1011,7 +1020,7 @@ export class Instance
 
     Micro_Segment(
         micro_segment_index: Index,
-        path_type: Path_Type = Path_Type.DEFAULT,
+        path_type: Path_Type,
     ):
         Segment.Instance
     {
@@ -1024,7 +1033,7 @@ export class Instance
 
     Micro_Part_Segment_Item_Indices(
         micro_part_index: Index,
-        path_type: Path_Type = Path_Type.DEFAULT,
+        path_type: Path_Type,
     ):
         Array<Segment_Item_Index>
     {
@@ -1036,7 +1045,7 @@ export class Instance
     }
 
     Macro_Segment_Count(
-        path_type: Path_Type = Path_Type.DEFAULT,
+        path_type: Path_Type,
     ):
         Count
     {
@@ -1049,7 +1058,7 @@ export class Instance
 
     Macro_Segment(
         macro_segment_index: Index,
-        path_type: Path_Type = Path_Type.DEFAULT,
+        path_type: Path_Type,
     ):
         Segment.Instance
     {
@@ -1062,7 +1071,7 @@ export class Instance
 
     Macro_Part_Segment_Item_Indices(
         macro_part_index: Index,
-        path_type: Path_Type = Path_Type.DEFAULT,
+        path_type: Path_Type,
     ):
         Array<Segment_Item_Index>
     {
