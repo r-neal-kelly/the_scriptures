@@ -416,14 +416,6 @@ export function Resolve_Errors(
 ):
     string
 {
-    let result: string = ``;
-
-    let it: Unicode.Iterator = new Unicode.Iterator(
-        {
-            text: text,
-        },
-    );
-
     function From(
         text: string,
     ):
@@ -459,6 +451,13 @@ export function Resolve_Errors(
         }
     }
 
+    let result: string = ``;
+
+    let it: Unicode.Iterator = new Unicode.Iterator(
+        {
+            text: text,
+        },
+    );
     while (!it.Is_At_End()) {
         const maybe_command: string | null = Maybe_Valid_Value_From(it.Points());
         if (maybe_command) {
@@ -504,13 +503,13 @@ export function Resolve_Errors(
                     !remove_unresolvable_errors
                 ) {
                     result += command.Value();
-                    it = new Unicode.Iterator(
-                        {
-                            text: it.Text(),
-                            index: it.Index() + command.Value().length,
-                        },
-                    );
                 }
+                it = new Unicode.Iterator(
+                    {
+                        text: it.Text(),
+                        index: it.Index() + command.Value().length,
+                    },
+                );
             }
         } else {
             result += it.Point();
