@@ -120,6 +120,18 @@ export class Instance implements Item.Instance
         return this.part_type === Type.COMMAND;
     }
 
+    Is_Argument():
+        boolean
+    {
+        return this.Has_Argument_Style();
+    }
+
+    Is_Command_Or_Argument():
+        boolean
+    {
+        return this.Is_Command() || this.Is_Argument();
+    }
+
     Index():
         Index
     {
@@ -204,6 +216,12 @@ export class Instance implements Item.Instance
         boolean
     {
         return (this.style & Style.ERROR) != 0;
+    }
+
+    Has_Argument_Style():
+        boolean
+    {
+        return (this.style & Style.ARGUMENT) != 0;
     }
 
     Language():

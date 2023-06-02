@@ -1,1 +1,1 @@
-export var Style;!function(L){L[L._NONE_=0]="_NONE_",L[L.ITALIC=1]="ITALIC",L[L.BOLD=2]="BOLD",L[L.UNDERLINE=4]="UNDERLINE",L[L.SMALL_CAPS=8]="SMALL_CAPS",L[L.ERROR=16]="ERROR"}(Style||(Style={}));
+export var Style;!function(E){E[E._NONE_=0]="_NONE_",E[E.ITALIC=1]="ITALIC",E[E.BOLD=2]="BOLD",E[E.UNDERLINE=4]="UNDERLINE",E[E.SMALL_CAPS=8]="SMALL_CAPS",E[E.ERROR=16]="ERROR",E[E.ARGUMENT=32]="ARGUMENT"}(Style||(Style={}));

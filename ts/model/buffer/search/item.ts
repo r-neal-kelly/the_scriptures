@@ -338,6 +338,12 @@ export class Instance extends Entity.Instance
         return this.Part().Has_Error_Style();
     }
 
+    Has_Argument_Style():
+        boolean
+    {
+        return this.Part().Has_Argument_Style();
+    }
+
     Override_Language_Name():
         Languages.Name | null
     {

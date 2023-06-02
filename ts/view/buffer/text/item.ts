@@ -70,6 +70,9 @@ export class Instance extends Entity.Instance
             ) {
                 classes.push(`Error`);
             }
+            if (model.Has_Argument_Style()) {
+                classes.push(`Argument`);
+            }
         }
 
         return classes;

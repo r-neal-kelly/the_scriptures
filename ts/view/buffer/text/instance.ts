@@ -139,6 +139,10 @@ export class Instance extends Entity.Instance
 
                     color: #ffcbcb;
                 }
+
+                .Argument {
+                    
+                }
             `,
         );
 

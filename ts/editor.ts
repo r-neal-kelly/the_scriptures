@@ -968,6 +968,9 @@ class Line
                 if (part.Has_Error_Style()) {
                     command_classes += ` ERROR`;
                 }
+                if (part.Has_Argument_Style()) {
+                    command_classes += ` ARGUMENT`;
+                }
 
                 if (part.Is_Point()) {
                     inner_html +=
@@ -2615,6 +2618,10 @@ class Editor
 
         .ERROR {
             color: #ffcbcb;
+        }
+
+        .Argument {
+
         }
 
         .INDENT {

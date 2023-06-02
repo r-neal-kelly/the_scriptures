@@ -391,7 +391,7 @@ export class Instance
         ) {
             if (
                 (mode & Mode.META) ||
-                !search_line.Macro_Part(search_idx, LINE_PATH_TYPE).Is_Command()
+                !search_line.Macro_Part(search_idx, LINE_PATH_TYPE).Is_Command_Or_Argument()
             ) {
                 const search_part: Text.Part.Instance =
                     search_line.Macro_Part(search_idx, LINE_PATH_TYPE);
@@ -480,7 +480,7 @@ export class Instance
         ) {
             if (
                 (mode & Mode.META) ||
-                !search_line.Macro_Part(search_idx, LINE_PATH_TYPE).Is_Command()
+                !search_line.Macro_Part(search_idx, LINE_PATH_TYPE).Is_Command_Or_Argument()
             ) {
                 const search_part: Text.Part.Instance =
                     search_line.Macro_Part(search_idx, LINE_PATH_TYPE);
@@ -565,7 +565,7 @@ export class Instance
                 if (!(mode & Mode.META)) {
                     while (
                         search_idx + command_count < search_end &&
-                        search_line.Macro_Part(search_idx + command_count, LINE_PATH_TYPE).Is_Command()
+                        search_line.Macro_Part(search_idx + command_count, LINE_PATH_TYPE).Is_Command_Or_Argument()
                     ) {
                         command_count += 1;
                     }
@@ -634,7 +634,7 @@ export class Instance
                 if (!(mode & Mode.META)) {
                     while (
                         search_idx + command_count < search_end &&
-                        search_line.Macro_Part(search_idx + command_count, LINE_PATH_TYPE).Is_Command()
+                        search_line.Macro_Part(search_idx + command_count, LINE_PATH_TYPE).Is_Command_Or_Argument()
                     ) {
                         command_count += 1;
                     }
@@ -796,7 +796,7 @@ export class Instance
         ) {
             if (
                 (mode & Mode.META) ||
-                !search_line.Macro_Part(search_idx, LINE_PATH_TYPE).Is_Command()
+                !search_line.Macro_Part(search_idx, LINE_PATH_TYPE).Is_Command_Or_Argument()
             ) {
                 const search_part: Text.Part.Instance =
                     search_line.Macro_Part(search_idx, LINE_PATH_TYPE);
@@ -915,7 +915,7 @@ export class Instance
         ) {
             if (
                 (mode & Mode.META) ||
-                !search_line.Macro_Part(search_idx, LINE_PATH_TYPE).Is_Command()
+                !search_line.Macro_Part(search_idx, LINE_PATH_TYPE).Is_Command_Or_Argument()
             ) {
                 const search_part: Text.Part.Instance =
                     search_line.Macro_Part(search_idx, LINE_PATH_TYPE);
@@ -1032,7 +1032,7 @@ export class Instance
                 if (!(mode & Mode.META)) {
                     while (
                         search_idx + command_count < search_end &&
-                        search_line.Macro_Part(search_idx + command_count, LINE_PATH_TYPE).Is_Command()
+                        search_line.Macro_Part(search_idx + command_count, LINE_PATH_TYPE).Is_Command_Or_Argument()
                     ) {
                         command_count += 1;
                     }
@@ -1112,7 +1112,7 @@ export class Instance
                 if (!(mode & Mode.META)) {
                     while (
                         search_idx + command_count < search_end &&
-                        search_line.Macro_Part(search_idx + command_count, LINE_PATH_TYPE).Is_Command()
+                        search_line.Macro_Part(search_idx + command_count, LINE_PATH_TYPE).Is_Command_Or_Argument()
                     ) {
                         command_count += 1;
                     }
@@ -1259,7 +1259,7 @@ export class Instance
         ) {
             if (
                 (mode & Mode.META) ||
-                !search_line.Macro_Part(search_idx, LINE_PATH_TYPE).Is_Command()
+                !search_line.Macro_Part(search_idx, LINE_PATH_TYPE).Is_Command_Or_Argument()
             ) {
                 const search_part: Text.Part.Instance =
                     search_line.Macro_Part(search_idx, LINE_PATH_TYPE);
@@ -1323,7 +1323,7 @@ export class Instance
                 if (!(mode & Mode.META)) {
                     while (
                         search_idx + command_count < search_end &&
-                        search_line.Macro_Part(search_idx + command_count, LINE_PATH_TYPE).Is_Command()
+                        search_line.Macro_Part(search_idx + command_count, LINE_PATH_TYPE).Is_Command_Or_Argument()
                     ) {
                         command_count += 1;
                     }
@@ -1460,7 +1460,7 @@ export class Instance
         ) {
             if (
                 (mode & Mode.META) ||
-                !search_line.Macro_Part(search_idx, LINE_PATH_TYPE).Is_Command()
+                !search_line.Macro_Part(search_idx, LINE_PATH_TYPE).Is_Command_Or_Argument()
             ) {
                 const search_part: Text.Part.Instance =
                     search_line.Macro_Part(search_idx, LINE_PATH_TYPE);
@@ -1529,7 +1529,7 @@ export class Instance
         ) {
             if (
                 (mode & Mode.META) ||
-                !search_line.Macro_Part(search_idx, LINE_PATH_TYPE).Is_Command()
+                !search_line.Macro_Part(search_idx, LINE_PATH_TYPE).Is_Command_Or_Argument()
             ) {
                 const search_part: Text.Part.Instance =
                     search_line.Macro_Part(search_idx, LINE_PATH_TYPE);
@@ -1600,7 +1600,7 @@ export class Instance
                 if (!(mode & Mode.META)) {
                     while (
                         search_idx + command_count < search_end &&
-                        search_line.Macro_Part(search_idx + command_count, LINE_PATH_TYPE).Is_Command()
+                        search_line.Macro_Part(search_idx + command_count, LINE_PATH_TYPE).Is_Command_Or_Argument()
                     ) {
                         command_count += 1;
                     }
@@ -1676,7 +1676,7 @@ export class Instance
                 if (!(mode & Mode.META)) {
                     while (
                         search_idx + command_count < search_end &&
-                        search_line.Macro_Part(search_idx + command_count, LINE_PATH_TYPE).Is_Command()
+                        search_line.Macro_Part(search_idx + command_count, LINE_PATH_TYPE).Is_Command_Or_Argument()
                     ) {
                         command_count += 1;
                     }

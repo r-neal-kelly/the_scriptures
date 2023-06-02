@@ -53,7 +53,7 @@ export class Instance extends Entity.Instance
                 `index must not be null, and must be greater than -1.`,
             );
 
-            if (text.Is_Part() && (text as Text.Part.Instance).Is_Command()) {
+            if (text.Is_Part() && (text as Text.Part.Instance).Is_Command_Or_Argument()) {
                 this.value = ``;
             } else {
                 this.value = text.Value()
@@ -184,6 +184,12 @@ export class Instance extends Entity.Instance
         boolean
     {
         return this.Part().Has_Error_Style();
+    }
+
+    Has_Argument_Style():
+        boolean
+    {
+        return this.Part().Has_Argument_Style();
     }
 
     Override_Language_Name():

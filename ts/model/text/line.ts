@@ -725,6 +725,8 @@ export class Instance
                         );
                         micro_command.Set_Status(Part.Status.GOOD);
                         macro_command.Set_Status(Part.Status.GOOD);
+
+                        current_style |= Part.Style.ARGUMENT;
                     } else {
                         current_style |= Part.Style.ERROR;
                     }
@@ -763,6 +765,10 @@ export class Instance
                 it.Point() === Part.Command.Symbol.LAST
             ) {
                 error_argument_stack.pop();
+
+                if (error_argument_stack.length === 0) {
+                    current_style &= ~Part.Style.ARGUMENT;
+                }
 
                 const micro_command: Part.Command.Instance = new Part.Command.Instance(
                     {

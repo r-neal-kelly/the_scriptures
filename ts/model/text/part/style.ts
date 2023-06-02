@@ -7,4 +7,5 @@ export enum Style
     UNDERLINE = 1 << 2,
     SMALL_CAPS = 1 << 3,
     ERROR = 1 << 4,
+    ARGUMENT = 1 << 5,
 }
