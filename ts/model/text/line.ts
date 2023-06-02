@@ -523,13 +523,82 @@ export class Instance
         );
 
         const first_non_command_index: Index | null =
-            Part.Command.First_Non_Value_Index(this.paths[path_type].Value());
+            Part.Command.First_Non_Command_Index(this.paths[path_type].Value());
         const last_non_command_index: Index | null =
-            Part.Command.Last_Non_Value_Index(this.paths[path_type].Value());
+            Part.Command.Last_Non_Command_Index(this.paths[path_type].Value());
 
-        let is_evaluating_error_argument: boolean = false;
-        let first_error_argument_non_command_index: Index | null = null;
-        let last_error_argument_non_command_index: Index | null = null;
+        class Error_Argument_Frame
+        {
+            private first_non_command_index: Index | null;
+            private last_non_command_index: Index | null;
+            private closing_command_index: Index;
+
+            constructor(
+                {
+                    parameter,
+                    argument,
+                    from_text,
+                    from_text_index,
+                }: {
+                    parameter: Value,
+                    argument: Value,
+                    from_text: Value,
+                    from_text_index: Index,
+                }
+            )
+            {
+                this.first_non_command_index =
+                    Part.Command.First_Non_Command_Index(argument);
+                if (this.first_non_command_index != null) {
+                    this.first_non_command_index =
+                        from_text_index +
+                        Part.Command.Symbol.FIRST.length +
+                        parameter.length +
+                        Part.Command.Symbol.DIVIDER.length +
+                        this.first_non_command_index;
+                }
+
+                this.last_non_command_index =
+                    Part.Command.Last_Non_Command_Index(argument);
+                if (this.last_non_command_index != null) {
+                    this.last_non_command_index =
+                        from_text_index +
+                        Part.Command.Symbol.FIRST.length +
+                        parameter.length +
+                        Part.Command.Symbol.DIVIDER.length +
+                        this.last_non_command_index;
+                }
+
+                this.closing_command_index =
+                    Part.Command.Closing_Command_Index_From_Opening_Command(from_text) || -1;
+                if (this.closing_command_index !== -1) {
+                    this.closing_command_index =
+                        from_text_index +
+                        this.closing_command_index;
+                } else {
+                    this.closing_command_index = from_text_index + from_text.length;
+                }
+            }
+
+            First_Non_Command_Index():
+                Index | null
+            {
+                return this.first_non_command_index;
+            }
+
+            Last_Non_Command_Index():
+                Index | null
+            {
+                return this.last_non_command_index;
+            }
+
+            Closing_Command_Index():
+                Index
+            {
+                return this.closing_command_index;
+            }
+        };
+        const error_argument_stack: Array<Error_Argument_Frame> = [];
 
         function Break_Boundary(
             first: Unicode.Iterator,
@@ -537,9 +606,11 @@ export class Instance
         ):
             Dictionary.Boundary
         {
-            if (is_evaluating_error_argument) {
+            if (error_argument_stack.length > 0) {
+                const error_argument_frame: Error_Argument_Frame =
+                    error_argument_stack[error_argument_stack.length - 1];
                 if (
-                    first.Index() === first_error_argument_non_command_index &&
+                    first.Index() === error_argument_frame.First_Non_Command_Index() &&
                     (
                         first_non_command_index != null ?
                             last.Index() < first_non_command_index :
@@ -547,6 +618,15 @@ export class Instance
                     )
                 ) {
                     return Dictionary.Boundary.START;
+                } else if (
+                    last.Index() === error_argument_frame.Last_Non_Command_Index() &&
+                    (
+                        last_non_command_index != null ?
+                            error_argument_frame.Closing_Command_Index() > last_non_command_index :
+                            true
+                    )
+                ) {
+                    return Dictionary.Boundary.END;
                 } else {
                     return Dictionary.Boundary.MIDDLE;
                 }
@@ -606,34 +686,32 @@ export class Instance
                         path_type === Path_Type.DEFAULT &&
                         macro_command.Has_Argument()
                     ) {
-                        is_evaluating_error_argument = true;
-                        first_error_argument_non_command_index = null;
-                        last_error_argument_non_command_index =
-                            it.Index() +
-                            macro_command.Value().length -
-                            Part.Command.Symbol.LAST.length;
-                        // this is not right. we should reuse the functions we have in command
-                        // and add indices relative to this string.
-
-                        const value: Value =
+                        const new_value: Value =
                             Part.Command.Symbol.FIRST +
                             macro_command.Some_Parameter() +
                             Part.Command.Symbol.DIVIDER;
-                        Utils.Assert(
-                            it.Points().slice(0, value.length) === value,
-                            `bad error command construction`,
+
+                        error_argument_stack.push(
+                            new Error_Argument_Frame(
+                                {
+                                    parameter: macro_command.Some_Parameter(),
+                                    argument: macro_command.Some_Argument(),
+                                    from_text: it.Points(),
+                                    from_text_index: it.Index(),
+                                },
+                            ),
                         );
 
                         micro_command = new Part.Command.Instance(
                             {
                                 index: this.paths[path_type].Micro_Part_Count(),
-                                value: value,
+                                value: new_value,
                             },
                         );
                         macro_command = new Part.Command.Instance(
                             {
                                 index: this.paths[path_type].Macro_Part_Count(),
-                                value: value,
+                                value: new_value,
                             },
                         );
                         micro_command.Set_Status(Part.Status.GOOD);
@@ -672,10 +750,10 @@ export class Instance
 
                 current_start = it;
             } else if (
-                is_evaluating_error_argument &&
+                error_argument_stack.length > 0 &&
                 it.Point() === Part.Command.Symbol.LAST
             ) {
-                is_evaluating_error_argument = false;
+                error_argument_stack.pop();
 
                 const micro_command: Part.Command.Instance = new Part.Command.Instance(
                     {
@@ -763,13 +841,6 @@ export class Instance
 
                     current_type = Current_Type.POINT;
 
-                    if (
-                        is_evaluating_error_argument &&
-                        first_error_argument_non_command_index == null
-                    ) {
-                        first_error_argument_non_command_index = current_start.Index();
-                    }
-
                     this.paths[path_type].Update_Macro(macro_point);
 
                     current_start = it.Next();
@@ -781,13 +852,6 @@ export class Instance
                         next_maybe_valid_command != null ||
                         !dictionary.Has_Letter(next_point)
                     ) {
-                        if (
-                            is_evaluating_error_argument &&
-                            first_error_argument_non_command_index == null
-                        ) {
-                            first_error_argument_non_command_index = current_start.Index();
-                        }
-
                         const word: Value = it.Text().slice(
                             current_start.Index(),
                             it.Look_Forward_Index(),
@@ -820,13 +884,6 @@ export class Instance
                         next_maybe_valid_command != null ||
                         !dictionary.Has_Marker(next_point)
                     ) {
-                        if (
-                            is_evaluating_error_argument &&
-                            first_error_argument_non_command_index == null
-                        ) {
-                            first_error_argument_non_command_index = current_start.Index();
-                        }
-
                         const break_: Value = it.Text().slice(
                             current_start.Index(),
                             it.Look_Forward_Index(),
@@ -847,6 +904,7 @@ export class Instance
                                 language: current_language.length > 0 ?
                                     current_language[current_language.length - 1] :
                                     null,
+                                boundary: boundary,
                             },
                         );
 

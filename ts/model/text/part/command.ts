@@ -219,7 +219,7 @@ function Test_Maybe_Valid_Value_From():
     Utils.Assert(Maybe_Valid_Value_From(`⸨anything ⸨can be⸩ in here⸨⸩⸨⸩`) === null);
 }
 
-export function First_Non_Value_Index(
+export function First_Non_Command_Index(
     text: string,
 ):
     Index | null
@@ -259,24 +259,25 @@ export function First_Non_Value_Index(
     }
 }
 
-function Test_First_Non_Value_Index():
+function Test_First_Non_Command_Index():
     void
 {
-    Utils.Assert(First_Non_Value_Index(``) === null);
-    Utils.Assert(First_Non_Value_Index(`⸩`) === 0);
-    Utils.Assert(First_Non_Value_Index(`⸨⸩`) === null);
-    Utils.Assert(First_Non_Value_Index(`⸩⸨⸩`) === 0);
-    Utils.Assert(First_Non_Value_Index(`⸨⸩⸨⸩`) === null);
-    Utils.Assert(First_Non_Value_Index(`⸩⸨⸩⸨⸩`) === 0);
-    Utils.Assert(First_Non_Value_Index(`⸩⸩⸨⸩⸨⸩`) === 0);
-    Utils.Assert(First_Non_Value_Index(`⸨⸩⸩⸨⸩⸨⸩`) === 2);
-    Utils.Assert(First_Non_Value_Index(`⸨⸨⸩⸩⸨⸩⸨⸩`) === null);
-    Utils.Assert(First_Non_Value_Index(`0⸨⸨⸩⸩⸨⸩⸨⸩`) === 0);
-    Utils.Assert(First_Non_Value_Index(`⸨⸨⸩⸩⸨⸩6⸨⸩`) === 6);
-    Utils.Assert(First_Non_Value_Index(`⸨anything ⸨can⸩ be in here⸩⸨⸩29⸨⸩`) === 29);
+    Utils.Assert(First_Non_Command_Index(``) === null);
+    Utils.Assert(First_Non_Command_Index(`⸩`) === 0);
+    Utils.Assert(First_Non_Command_Index(`⸨⸩`) === null);
+    Utils.Assert(First_Non_Command_Index(`⸩⸨⸩`) === 0);
+    Utils.Assert(First_Non_Command_Index(`⸨⸩⸨⸩`) === null);
+    Utils.Assert(First_Non_Command_Index(`⸩⸨⸩⸨⸩`) === 0);
+    Utils.Assert(First_Non_Command_Index(`⸩⸩⸨⸩⸨⸩`) === 0);
+    Utils.Assert(First_Non_Command_Index(`⸨⸩⸩⸨⸩⸨⸩`) === 2);
+    Utils.Assert(First_Non_Command_Index(`⸨⸨⸩⸩⸨⸩⸨⸩`) === null);
+    Utils.Assert(First_Non_Command_Index(`0⸨⸨⸩⸩⸨⸩⸨⸩`) === 0);
+    Utils.Assert(First_Non_Command_Index(`⸨⸨⸩⸩⸨⸩6⸨⸩`) === 6);
+    Utils.Assert(First_Non_Command_Index(`⸨anything ⸨can⸩ be in here⸩⸨⸩29⸨⸩`) === 29);
+    Utils.Assert(First_Non_Command_Index(`⸨err:^ ⸩* ⸨/err⸩`) === 8);
 }
 
-export function Last_Non_Value_Index(
+export function Last_Non_Command_Index(
     text: string,
 ):
     Index | null
@@ -321,21 +322,92 @@ export function Last_Non_Value_Index(
     }
 }
 
-function Test_Last_Non_Value_Index():
+function Test_Last_Non_Command_Index():
     void
 {
-    Utils.Assert(Last_Non_Value_Index(``) === null);
-    Utils.Assert(Last_Non_Value_Index(`⸩`) === 0);
-    Utils.Assert(Last_Non_Value_Index(`⸨⸩`) === null);
-    Utils.Assert(Last_Non_Value_Index(`⸩⸨⸩`) === 0);
-    Utils.Assert(Last_Non_Value_Index(`⸨⸩⸨⸩`) === null);
-    Utils.Assert(Last_Non_Value_Index(`⸩⸨⸩⸨⸩`) === 0);
-    Utils.Assert(Last_Non_Value_Index(`⸩⸩⸨⸩⸨⸩`) === 1);
-    Utils.Assert(Last_Non_Value_Index(`⸨⸩⸩⸨⸩⸨⸩`) === 2);
-    Utils.Assert(Last_Non_Value_Index(`⸨⸨⸩⸩⸨⸩⸨⸩`) === null);
-    Utils.Assert(Last_Non_Value_Index(`0⸨⸨⸩⸩⸨⸩⸨⸩`) === 0);
-    Utils.Assert(Last_Non_Value_Index(`0⸨⸨⸩⸩⸨⸩7⸨⸩`) === 7);
-    Utils.Assert(Last_Non_Value_Index(`0⸨⸨⸩⸩⸨⸩7⸨anything ⸨can be⸩ in here⸩`) === 7);
+    Utils.Assert(Last_Non_Command_Index(``) === null);
+    Utils.Assert(Last_Non_Command_Index(`⸩`) === 0);
+    Utils.Assert(Last_Non_Command_Index(`⸨⸩`) === null);
+    Utils.Assert(Last_Non_Command_Index(`⸩⸨⸩`) === 0);
+    Utils.Assert(Last_Non_Command_Index(`⸨⸩⸨⸩`) === null);
+    Utils.Assert(Last_Non_Command_Index(`⸩⸨⸩⸨⸩`) === 0);
+    Utils.Assert(Last_Non_Command_Index(`⸩⸩⸨⸩⸨⸩`) === 1);
+    Utils.Assert(Last_Non_Command_Index(`⸨⸩⸩⸨⸩⸨⸩`) === 2);
+    Utils.Assert(Last_Non_Command_Index(`⸨⸨⸩⸩⸨⸩⸨⸩`) === null);
+    Utils.Assert(Last_Non_Command_Index(`0⸨⸨⸩⸩⸨⸩⸨⸩`) === 0);
+    Utils.Assert(Last_Non_Command_Index(`0⸨⸨⸩⸩⸨⸩7⸨⸩`) === 7);
+    Utils.Assert(Last_Non_Command_Index(`0⸨⸨⸩⸩⸨⸩7⸨anything ⸨can be⸩ in here⸩`) === 7);
+}
+
+export function Closing_Command_Index_From_Opening_Command(
+    from_opening_command: string,
+):
+    Index | null
+{
+    let it: Unicode.Iterator = new Unicode.Iterator(
+        {
+            text: from_opening_command,
+        },
+    );
+
+    let command: Value | null = Maybe_Valid_Value_From(from_opening_command);
+    if (command != null) {
+        if (command.length > 1 && command[1] != Symbol.CLOSE) {
+            it = new Unicode.Iterator(
+                {
+                    text: from_opening_command,
+                    index: it.Index() + command.length,
+                },
+            );
+
+            let depth: Count = 1;
+            let index: Index | null = null;
+            while (!it.Is_At_End() && depth > 0) {
+                command = Maybe_Valid_Value_From(it.Points());
+                if (command != null) {
+                    if (command.length > 1 && command[1] != Symbol.CLOSE) {
+                        depth += 1;
+                    } else {
+                        depth -= 1;
+                    }
+
+                    if (depth < 1) {
+                        index = it.Index();
+                    } else {
+                        it = new Unicode.Iterator(
+                            {
+                                text: from_opening_command,
+                                index: it.Index() + command.length,
+                            },
+                        );
+                    }
+                } else {
+                    it = it.Next();
+                }
+            }
+
+            if (index != null) {
+                return index;
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
+    } else {
+        return null;
+    }
+}
+
+function Test_Closing_Command_Index_From_Opening_Command():
+    void
+{
+    Utils.Assert(Closing_Command_Index_From_Opening_Command(`⸨⸩⸨/⸩`) === 2);
+    Utils.Assert(Closing_Command_Index_From_Opening_Command(`⸨⸩⸨⸩⸨/⸩⸨/⸩`) === 7);
+    Utils.Assert(Closing_Command_Index_From_Opening_Command(`⸨⸩⸨⸩⸨/⸩⸨⸩⸨/⸩⸨/⸩`) === 12);
+    Utils.Assert(Closing_Command_Index_From_Opening_Command(`⸨⸩⸨⸩⸨⸩⸨/⸩⸨/⸩⸨/⸩`) === 12);
+    Utils.Assert(Closing_Command_Index_From_Opening_Command(`⸨⸩a⸨⸩b⸨⸩c⸨/⸩d⸨/⸩e⸨/⸩f`) === 17);
+    Utils.Assert(Closing_Command_Index_From_Opening_Command(`⸨1⸩a⸨2⸩b⸨3⸩c⸨/3⸩d⸨/2⸩e⸨/1⸩f`) === 22);
 }
 
 export class Instance extends Part.Instance

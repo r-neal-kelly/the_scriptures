@@ -1,6 +1,7 @@
 import { Index } from "../../../types.js";
 
 import * as Languages from "../../languages.js";
+import * as Dictionary from "../dictionary.js";
 import { Value } from "../value.js";
 import * as Part from "./instance.js";
 import { Type } from "./type.js";
@@ -9,6 +10,8 @@ import { Style } from "./style.js";
 
 export class Instance extends Part.Instance
 {
+    private boundary: Dictionary.Boundary;
+
     constructor(
         {
             index,
@@ -16,12 +19,14 @@ export class Instance extends Part.Instance
             status,
             style,
             language,
+            boundary,
         }: {
             index: Index,
             value: Value,
             status: Status,
             style: Style | Array<Style>,
             language: Languages.Name | null,
+            boundary: Dictionary.Boundary,
         },
     )
     {
@@ -35,5 +40,13 @@ export class Instance extends Part.Instance
                 language,
             }
         );
+
+        this.boundary = boundary;
+    }
+
+    Boundary():
+        Dictionary.Boundary
+    {
+        return this.boundary;
     }
 }

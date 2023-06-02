@@ -1,1 +1,1 @@
-import*as Part from"./instance.js";import{Type}from"./type.js";export class Instance extends Part.Instance{constructor({index:t,value:e,status:s,style:a,language:n}){super({part_type:Type.BREAK,index:t,value:e,status:s,style:a,language:n})}}
+import*as Part from"./instance.js";import{Type}from"./type.js";export class Instance extends Part.Instance{constructor({index:t,value:a,status:e,style:s,language:n,boundary:r}){super({part_type:Type.BREAK,index:t,value:a,status:e,style:s,language:n}),this.boundary=r}Boundary(){return this.boundary}}

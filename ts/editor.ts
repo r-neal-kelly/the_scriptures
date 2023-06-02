@@ -243,36 +243,6 @@ type Dictionary_Treatment = {
     is_centered: boolean,
 };
 
-function First_Part_Index(
-    element: HTMLElement,
-):
-    number | null
-{
-    for (let idx = 0, end = element.children.length; idx < end;) {
-        if (!element.children[idx].classList.contains(`COMMAND`)) {
-            return idx;
-        }
-        idx += 1;
-    }
-
-    return null;
-}
-
-function Last_Part_Index(
-    element: HTMLElement,
-):
-    number | null
-{
-    for (let idx = element.children.length, end = 0; idx > end;) {
-        idx -= 1;
-        if (!element.children[idx].classList.contains(`COMMAND`)) {
-            return idx;
-        }
-    }
-
-    return null;
-}
-
 function Selected_Part():
     Dictionary_Entry | null
 {
@@ -321,11 +291,10 @@ function Selected_Part():
                     }
 
                     if (dictionary_class !== Part_Class._NONE_) {
-                        const span_index: number = Array.from(span.parentElement.children).indexOf(span);
                         let dictionary_boundary: Model.Dictionary.Boundary = Model.Dictionary.Boundary.MIDDLE;
-                        if (span_index === First_Part_Index(span.parentElement)) {
+                        if (span.classList.contains(Model.Dictionary.Boundary.START)) {
                             dictionary_boundary = Model.Dictionary.Boundary.START;
-                        } else if (span_index === Last_Part_Index(span.parentElement)) {
+                        } else if (span.classList.contains(Model.Dictionary.Boundary.END)) {
                             dictionary_boundary = Model.Dictionary.Boundary.END;
                         }
 
@@ -1017,15 +986,16 @@ class Line
                         );
                     }
                 } else if (part.Is_Break()) {
+                    let boundary_class: string = ` ` + (part as Model.Part.Break.Instance).Boundary();
                     if (part.Is_Good()) {
                         inner_html +=
-                            `<span class="KNOWN_BREAK${command_classes}">${Escape_Text(part.Value())}</span>`;
+                            `<span class="KNOWN_BREAK${boundary_class}${command_classes}">${Escape_Text(part.Value())}</span>`;
                     } else if (part.Is_Error()) {
                         inner_html +=
-                            `<span class="KNOWN_BREAK_ERROR${command_classes}">${Escape_Text(part.Value())}</span>`;
+                            `<span class="KNOWN_BREAK_ERROR${boundary_class}${command_classes}">${Escape_Text(part.Value())}</span>`;
                     } else if (part.Is_Unknown()) {
                         inner_html +=
-                            `<span class="UNKNOWN_BREAK${command_classes}">${Escape_Text(part.Value())}</span>`;
+                            `<span class="UNKNOWN_BREAK${boundary_class}${command_classes}">${Escape_Text(part.Value())}</span>`;
                     } else {
                         Utils.Assert(
                             false,
