@@ -480,7 +480,7 @@ export class Instance
 
         this.Set_Path(Path_Type.DEFAULT, value);
         if (this.has_errorless_path) {
-            this.Set_Path(Path_Type.ERRORLESS, Part.Command.Resolve_Errors(value, true));
+            this.Set_Path(Path_Type.ERRORLESS, Part.Command.Resolve_Errors(value, false));
         }
     }
 
