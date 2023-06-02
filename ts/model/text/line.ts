@@ -31,6 +31,11 @@ export enum Path_Type
 
 class Path
 {
+    private value: Value;
+
+    private is_centered: boolean;
+    private is_indented: boolean;
+
     private micro_parts: Array<Part.Instance>;
     private macro_parts: Array<Part.Instance>;
 
@@ -43,8 +48,23 @@ class Path
     private working_micro_segment: Segment.Instance;
     private working_macro_segment: Segment.Instance;
 
-    constructor()
+    constructor(
+        value: Value,
+    )
     {
+        this.value = value;
+
+        this.is_centered =
+            this.value.slice(
+                0,
+                Part.Command.Known_Value.CENTER.length,
+            ) === Part.Command.Known_Value.CENTER;
+        this.is_indented =
+            this.value.slice(
+                0,
+                Part.Command.Known_Value.INDENT.length,
+            ) === Part.Command.Known_Value.INDENT;
+
         this.micro_parts = [];
         this.macro_parts = [];
 
@@ -227,6 +247,24 @@ class Path
         Object.freeze(this.working_macro_segment);
     }
 
+    Value():
+        Value
+    {
+        return this.value;
+    }
+
+    Is_Centered():
+        boolean
+    {
+        return this.is_centered;
+    }
+
+    Is_Indented():
+        boolean
+    {
+        return this.is_indented;
+    }
+
     Has_Micro_Part(
         micro_part_index: Index,
     ):
@@ -380,11 +418,8 @@ export class Instance
 {
     private text: Text.Instance;
     private index: Index;
-    private value: Value;
-    private is_centered: boolean;
-    private is_indented: boolean;
-    private has_errorless_path: boolean;
     private paths: { [path_type: Integer]: Path };
+    private has_errorless_path: boolean;
 
     constructor(
         {
@@ -400,11 +435,8 @@ export class Instance
     {
         this.text = text;
         this.index = index;
-        this.value = ``;
-        this.is_centered = false;
-        this.is_indented = false;
-        this.has_errorless_path = false;
         this.paths = {};
+        this.has_errorless_path = false;
 
         this.Set_Value(value);
     }
@@ -421,10 +453,12 @@ export class Instance
         return this.index;
     }
 
-    Value():
+    Value(
+        path_type: Path_Type = Path_Type.DEFAULT,
+    ):
         Value
     {
-        return this.value;
+        return this.paths[path_type].Value();
     }
 
     Set_Value(
@@ -437,43 +471,34 @@ export class Instance
             `A line cannot have any line-breaks.`,
         );
 
-        this.value = value;
-
-        this.is_centered =
-            this.value.slice(
-                0,
-                Part.Command.Known_Value.CENTER.length,
-            ) === Part.Command.Known_Value.CENTER;
-
-        this.is_indented =
-            this.value.slice(
-                0,
-                Part.Command.Known_Value.INDENT.length,
-            ) === Part.Command.Known_Value.INDENT;
-
+        this.paths = {};
         this.has_errorless_path = false;
 
-        this.paths = {};
-        this.Set_Path(Path_Type.DEFAULT);
+        this.Set_Path(Path_Type.DEFAULT, value);
         if (this.has_errorless_path) {
-            this.Set_Path(Path_Type.ERRORLESS);
+            this.Set_Path(Path_Type.ERRORLESS, value);
         }
     }
 
-    Is_Centered():
+    Is_Centered(
+        path_type: Path_Type = Path_Type.DEFAULT,
+    ):
         boolean
     {
-        return this.is_centered;
+        return this.paths[path_type].Is_Centered();
     }
 
-    Is_Indented():
+    Is_Indented(
+        path_type: Path_Type = Path_Type.DEFAULT,
+    ):
         boolean
     {
-        return this.is_indented;
+        return this.paths[path_type].Is_Indented();
     }
 
     private Set_Path(
         path_type: Path_Type,
+        value: Value,
     ):
         void
     {
@@ -486,38 +511,74 @@ export class Instance
 
         const dictionary: Dictionary.Instance = this.Text().Dictionary();
 
-        this.paths[path_type] = new Path();
+        this.paths[path_type] = new Path(value);
 
         let current_style: Part.Style = Part.Style._NONE_;
         let current_language: Array<Languages.Name> = [];
         let current_type: Current_Type = Current_Type.POINT;
         let current_start: Unicode.Iterator = new Unicode.Iterator(
             {
-                text: this.value,
+                text: this.paths[path_type].Value(),
             },
         );
 
-        let first_non_command_index: Index | null = null;
+        const first_non_command_index: Index | null =
+            Part.Command.First_Non_Value_Index(this.paths[path_type].Value());
         const last_non_command_index: Index | null =
-            Part.Command.Last_Non_Value_Index(this.value);
+            Part.Command.Last_Non_Value_Index(this.paths[path_type].Value());
+
+        let is_evaluating_error_argument: boolean = false;
+        let first_error_argument_non_command_index: Index | null = null;
+        let last_error_argument_non_command_index: Index | null = null;
+
+        function Break_Boundary(
+            first: Unicode.Iterator,
+            last: Unicode.Iterator,
+        ):
+            Dictionary.Boundary
+        {
+            if (is_evaluating_error_argument) {
+                if (
+                    first.Index() === first_error_argument_non_command_index &&
+                    (
+                        first_non_command_index != null ?
+                            last.Index() < first_non_command_index :
+                            true
+                    )
+                ) {
+                    return Dictionary.Boundary.START;
+                } else {
+                    return Dictionary.Boundary.MIDDLE;
+                }
+            } else {
+                if (first.Index() === first_non_command_index) {
+                    return Dictionary.Boundary.START;
+                } else if (last.Index() === last_non_command_index) {
+                    return Dictionary.Boundary.END;
+                } else {
+                    return Dictionary.Boundary.MIDDLE;
+                }
+            }
+        }
 
         for (let it = current_start; !it.Is_At_End();) {
-            const maybe_valid_command: Value | null =
+            const maybe_valid_command_value: Value | null =
                 Part.Command.Maybe_Valid_Value_From(it.Points());
 
-            if (maybe_valid_command != null) {
-                const micro_command: Part.Command.Instance = new Part.Command.Instance(
+            if (maybe_valid_command_value != null) {
+                let micro_command: Part.Command.Instance = new Part.Command.Instance(
                     {
                         index: this.paths[path_type].Micro_Part_Count(),
-                        value: maybe_valid_command,
+                        value: maybe_valid_command_value,
                     },
                 );
-                const macro_command: Part.Command.Instance = new Part.Command.Instance(
+                let macro_command: Part.Command.Instance = new Part.Command.Instance(
                     {
                         index: this.paths[path_type].Macro_Part_Count(),
-                        value: maybe_valid_command,
+                        value: maybe_valid_command_value,
                     },
                 );
+
                 if (macro_command.Is_Open_Italic()) {
                     current_style |= Part.Style.ITALIC;
                 } else if (macro_command.Is_Close_Italic()) {
@@ -539,52 +600,46 @@ export class Instance
                     current_style &= ~Part.Style.SMALL_CAPS;
 
                 } else if (macro_command.Is_Open_Error()) {
-                    current_style |= Part.Style.ERROR;
+                    this.has_errorless_path = true;
 
                     if (
                         path_type === Path_Type.DEFAULT &&
                         macro_command.Has_Argument()
                     ) {
-                        this.has_errorless_path = true;
-                    } else if (
-                        path_type === Path_Type.ERRORLESS &&
-                        macro_command.Has_Argument()
-                    ) {
-                        // here we can determine if the argument is
-                        // valid and then manually set the status on
-                        // both micro and macro commands.
-                        // That will tell interpreters whether or not
-                        // to render this command as an error, but
-                        // here we still have to determine if the
-                        // argument can actually replace the wrapped
-                        // value. If the wrapped value is not a single
-                        // part that matches the argument part type,
-                        // then we set these commands as errors in that
-                        // case also, I think. It's important to pass
-                        // the argument part as the update argument. I
-                        // almost think we can just get the part to replace here
-                        // by looking for the close error command or end of string.
-                        // another thing is we'll need to break apart a valid
-                        // error command with valid argument so the argument
-                        // can be treated as a part if desired by interpreter.
-                        // we should have a static function for that in command module?
-                        // or just create the two special commands on either side here?
-                        // "⸨err:" {part} "⸩"
-                        // com     x      com
-                        // we can just manually make them good commands through Set_Status.
-                        // also we should be able to get the right break boundary
-                        // so it sees it in the place of the next part index.
-                        // again, if there is more than one part before the close command
-                        // or end of string, it's considered a straight up error just on the
-                        // command we're working with.
-                        // we also shouldn't keep the error styling if everything is valid.
-                        // In the errorless path, we may not even want the commands. we
-                        // actually want the breakup to occur in the default which is what
-                        // editor uses.
+                        is_evaluating_error_argument = true;
+                        first_error_argument_non_command_index = null;
+                        last_error_argument_non_command_index =
+                            it.Index() +
+                            macro_command.Value().length -
+                            Part.Command.Symbol.LAST.length;
+                        // this is not right. we should reuse the functions we have in command
+                        // and add indices relative to this string.
 
-                        // we'll want to set a flag here and do execution in an if, to
-                        // make it more obvious below, because after this if/else branching
-                        // it falls
+                        const value: Value =
+                            Part.Command.Symbol.FIRST +
+                            macro_command.Some_Parameter() +
+                            Part.Command.Symbol.DIVIDER;
+                        Utils.Assert(
+                            it.Points().slice(0, value.length) === value,
+                            `bad error command construction`,
+                        );
+
+                        micro_command = new Part.Command.Instance(
+                            {
+                                index: this.paths[path_type].Micro_Part_Count(),
+                                value: value,
+                            },
+                        );
+                        macro_command = new Part.Command.Instance(
+                            {
+                                index: this.paths[path_type].Macro_Part_Count(),
+                                value: value,
+                            },
+                        );
+                        micro_command.Set_Status(Part.Status.GOOD);
+                        macro_command.Set_Status(Part.Status.GOOD);
+                    } else {
+                        current_style |= Part.Style.ERROR;
                     }
 
                 } else if (macro_command.Is_Close_Error()) {
@@ -611,9 +666,38 @@ export class Instance
                 it = new Unicode.Iterator(
                     {
                         text: it.Text(),
-                        index: it.Index() + maybe_valid_command.length,
+                        index: it.Index() + macro_command.Value().length,
                     },
                 );
+
+                current_start = it;
+            } else if (
+                is_evaluating_error_argument &&
+                it.Point() === Part.Command.Symbol.LAST
+            ) {
+                is_evaluating_error_argument = false;
+
+                const micro_command: Part.Command.Instance = new Part.Command.Instance(
+                    {
+                        index: this.paths[path_type].Micro_Part_Count(),
+                        value: Part.Command.Symbol.LAST,
+                    },
+                );
+                const macro_command: Part.Command.Instance = new Part.Command.Instance(
+                    {
+                        index: this.paths[path_type].Macro_Part_Count(),
+                        value: Part.Command.Symbol.LAST,
+                    },
+                );
+                micro_command.Set_Status(Part.Status.GOOD);
+                macro_command.Set_Status(Part.Status.GOOD);
+
+                current_style |= Part.Style.ERROR;
+
+                this.paths[path_type].Update_Micro(micro_command);
+                this.paths[path_type].Update_Macro(macro_command);
+
+                it = it.Next();
 
                 current_start = it;
             } else {
@@ -679,8 +763,11 @@ export class Instance
 
                     current_type = Current_Type.POINT;
 
-                    if (first_non_command_index == null) {
-                        first_non_command_index = it.Index();
+                    if (
+                        is_evaluating_error_argument &&
+                        first_error_argument_non_command_index == null
+                    ) {
+                        first_error_argument_non_command_index = current_start.Index();
                     }
 
                     this.paths[path_type].Update_Macro(macro_point);
@@ -694,8 +781,11 @@ export class Instance
                         next_maybe_valid_command != null ||
                         !dictionary.Has_Letter(next_point)
                     ) {
-                        if (first_non_command_index == null) {
-                            first_non_command_index = it.Index();
+                        if (
+                            is_evaluating_error_argument &&
+                            first_error_argument_non_command_index == null
+                        ) {
+                            first_error_argument_non_command_index = current_start.Index();
                         }
 
                         const word: Value = it.Text().slice(
@@ -730,19 +820,18 @@ export class Instance
                         next_maybe_valid_command != null ||
                         !dictionary.Has_Marker(next_point)
                     ) {
-                        if (first_non_command_index == null) {
-                            first_non_command_index = it.Index();
+                        if (
+                            is_evaluating_error_argument &&
+                            first_error_argument_non_command_index == null
+                        ) {
+                            first_error_argument_non_command_index = current_start.Index();
                         }
 
                         const break_: Value = it.Text().slice(
                             current_start.Index(),
                             it.Look_Forward_Index(),
                         );
-                        const boundary: Dictionary.Boundary = it.Index() === first_non_command_index ?
-                            Dictionary.Boundary.START :
-                            it.Index() === last_non_command_index ?
-                                Dictionary.Boundary.END :
-                                Dictionary.Boundary.MIDDLE;
+                        const boundary: Dictionary.Boundary = Break_Boundary(current_start, it);
                         const status: Part.Status = dictionary.Has_Break(break_, boundary) ?
                             Part.Status.GOOD :
                             dictionary.Has_Break_Error(break_, boundary) ?

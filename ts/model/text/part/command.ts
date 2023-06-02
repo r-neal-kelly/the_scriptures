@@ -1,3 +1,4 @@
+import { Count } from "../../../types.js";
 import { Index } from "../../../types.js";
 
 import * as Utils from "../../../utils.js";
@@ -59,6 +60,18 @@ export enum Known_Value
     CLOSE_LANGUAGE = `⸨/lang⸩`,
 }
 
+export function Is_Valid_Value(
+    value: Value,
+):
+    boolean
+{
+    return (
+        value.length > 2 &&
+        value[0] === `⸨` &&
+        value[value.length - 1] === `⸩`
+    );
+}
+
 function Interior_Value(
     value: Value,
 ):
@@ -76,42 +89,23 @@ function Interior_Parameter_And_Argument(
         Interior_Value(value);
     const interior_divider_index: Index =
         interior_value.indexOf(Symbol.DIVIDER);
-    const interior_parameter: Value =
-        interior_value.slice(0, interior_divider_index);
-    const interior_argument: Value =
-        interior_value.slice(interior_divider_index + Symbol.DIVIDER.length);
+    if (interior_divider_index > -1) {
+        const interior_parameter: Value =
+            interior_value.slice(0, interior_divider_index);
+        if (interior_parameter.length > 0) {
+            const interior_argument: Value =
+                interior_value.slice(interior_divider_index + Symbol.DIVIDER.length);
 
-    if (
-        interior_parameter.length > 0 &&
-        interior_argument.length > 0
-    ) {
-        return {
-            parameter: interior_parameter,
-            argument: interior_argument,
-        };
+            return {
+                parameter: interior_parameter,
+                argument: interior_argument,
+            };
+        } else {
+            return null;
+        }
     } else {
         return null;
     }
-}
-
-export function Is_Valid_Value(
-    value: Value,
-):
-    boolean
-{
-    const interior_value: Value = Interior_Value(value);
-
-    return (
-        value.length > 2 &&
-        value[0] === `⸨` &&
-        value[value.length - 1] === `⸩` &&
-
-        interior_value.length > 0 &&
-        !/⸨/.test(interior_value) &&
-        !/\//.test(interior_value) &&
-        !/\s/.test(interior_value) &&
-        !/⸩/.test(interior_value)
-    );
 }
 
 export function Is_Known_Value(
@@ -179,12 +173,107 @@ export function Maybe_Valid_Value_From(
 ):
     string | null
 {
-    const matches: RegExpMatchArray | null = text.match(/^⸨[^⸩]*⸩/);
-    if (matches != null) {
-        return matches[0];
+    let it: Unicode.Iterator = new Unicode.Iterator(
+        {
+            text: text,
+        },
+    );
+
+    if (!it.Is_At_End() && it.Point() === Symbol.FIRST) {
+        let depth: Count = 1;
+
+        it = it.Next();
+        for (; !it.Is_At_End() && depth > 0; it = it.Next()) {
+            const point: string = it.Point();
+            if (point === Symbol.FIRST) {
+                depth += 1;
+            } else if (point === Symbol.LAST) {
+                depth -= 1;
+            }
+        }
+
+        if (depth < 1) {
+            return text.slice(0, it.Index());
+        } else {
+            return null;
+        }
     } else {
         return null;
     }
+}
+
+function Test_Maybe_Valid_Value_From():
+    void
+{
+    Utils.Assert(Maybe_Valid_Value_From(``) === null);
+    Utils.Assert(Maybe_Valid_Value_From(`⸩`) === null);
+    Utils.Assert(Maybe_Valid_Value_From(`⸨⸩`) === `⸨⸩`);
+    Utils.Assert(Maybe_Valid_Value_From(`⸩⸨⸩`) === null);
+    Utils.Assert(Maybe_Valid_Value_From(`⸨⸩⸨⸩`) === `⸨⸩`);
+    Utils.Assert(Maybe_Valid_Value_From(`⸩⸨⸩⸨⸩`) === null);
+    Utils.Assert(Maybe_Valid_Value_From(`⸩⸩⸨⸩⸨⸩`) === null);
+    Utils.Assert(Maybe_Valid_Value_From(`⸨⸩⸩⸨⸩⸨⸩`) === `⸨⸩`);
+    Utils.Assert(Maybe_Valid_Value_From(`⸨⸨⸩⸩⸨⸩⸨⸩`) === `⸨⸨⸩⸩`);
+    Utils.Assert(Maybe_Valid_Value_From(`0⸨⸨⸩⸩⸨⸩⸨⸩`) === null);
+    Utils.Assert(Maybe_Valid_Value_From(`⸨anything ⸨can be⸩ in here⸩⸨⸩⸨⸩`) === `⸨anything ⸨can be⸩ in here⸩`);
+    Utils.Assert(Maybe_Valid_Value_From(`⸨anything ⸨can be⸩ in here⸨⸩⸨⸩`) === null);
+}
+
+export function First_Non_Value_Index(
+    text: string,
+):
+    Index | null
+{
+    let it: Unicode.Iterator = new Unicode.Iterator(
+        {
+            text: text,
+            index: 0,
+        },
+    );
+
+    if (!it.Is_At_End()) {
+        while (!it.Is_At_End() && it.Point() === Symbol.FIRST) {
+            let candidate: Unicode.Iterator = it;
+            let depth: Count = 1;
+
+            it = it.Next();
+            for (; !it.Is_At_End() && depth > 0; it = it.Next()) {
+                const point: string = it.Point();
+                if (point === Symbol.FIRST) {
+                    depth += 1;
+                } else if (point === Symbol.LAST) {
+                    depth -= 1;
+                }
+            }
+
+            if (depth > 0) {
+                return candidate.Index();
+            } else if (it.Is_At_End()) {
+                return null;
+            }
+        }
+
+        return it.Index();
+    } else {
+        return null;
+    }
+}
+
+function Test_First_Non_Value_Index():
+    void
+{
+    Utils.Assert(First_Non_Value_Index(``) === null);
+    Utils.Assert(First_Non_Value_Index(`⸩`) === 0);
+    Utils.Assert(First_Non_Value_Index(`⸨⸩`) === null);
+    Utils.Assert(First_Non_Value_Index(`⸩⸨⸩`) === 0);
+    Utils.Assert(First_Non_Value_Index(`⸨⸩⸨⸩`) === null);
+    Utils.Assert(First_Non_Value_Index(`⸩⸨⸩⸨⸩`) === 0);
+    Utils.Assert(First_Non_Value_Index(`⸩⸩⸨⸩⸨⸩`) === 0);
+    Utils.Assert(First_Non_Value_Index(`⸨⸩⸩⸨⸩⸨⸩`) === 2);
+    Utils.Assert(First_Non_Value_Index(`⸨⸨⸩⸩⸨⸩⸨⸩`) === null);
+    Utils.Assert(First_Non_Value_Index(`0⸨⸨⸩⸩⸨⸩⸨⸩`) === 0);
+    Utils.Assert(First_Non_Value_Index(`⸨⸨⸩⸩⸨⸩6⸨⸩`) === 6);
+    Utils.Assert(First_Non_Value_Index(`⸨anything ⸨can⸩ be in here⸩⸨⸩29⸨⸩`) === 29);
 }
 
 export function Last_Non_Value_Index(
@@ -192,34 +281,61 @@ export function Last_Non_Value_Index(
 ):
     Index | null
 {
-    if (text.length > 0) {
-        const matches: RegExpMatchArray | null = text.match(/(⸨[^⸩]*⸩)*$/);
-        if (
-            matches != null &&
-            matches[0].length > 0
-        ) {
-            const iterator: Unicode.Iterator = new Unicode.Iterator(
-                {
-                    text: text,
-                    index: text.length - matches[0].length,
-                },
-            );
-            if (iterator.Is_At_Start()) {
+    let it: Unicode.Iterator = new Unicode.Iterator(
+        {
+            text: text,
+            index: text.length,
+        },
+    );
+
+    if (!it.Is_At_Start()) {
+        it = it.Previous();
+
+        while (!it.Is_At_Start() && it.Point() === Symbol.LAST) {
+            let candidate: Unicode.Iterator = it;
+            let depth: Count = 1;
+
+            do {
+                it = it.Previous();
+
+                const point: string = it.Point();
+                if (point === Symbol.FIRST) {
+                    depth -= 1;
+                } else if (point === Symbol.LAST) {
+                    depth += 1;
+                }
+            } while (!it.Is_At_Start() && depth > 0);
+
+            if (depth > 0) {
+                return candidate.Index();
+            } else if (it.Is_At_Start()) {
                 return null;
             } else {
-                return iterator.Previous().Index();
+                it = it.Previous();
             }
-        } else {
-            return new Unicode.Iterator(
-                {
-                    text: text,
-                    index: text.length,
-                },
-            ).Previous().Index();
         }
+
+        return it.Index();
     } else {
         return null;
     }
+}
+
+function Test_Last_Non_Value_Index():
+    void
+{
+    Utils.Assert(Last_Non_Value_Index(``) === null);
+    Utils.Assert(Last_Non_Value_Index(`⸩`) === 0);
+    Utils.Assert(Last_Non_Value_Index(`⸨⸩`) === null);
+    Utils.Assert(Last_Non_Value_Index(`⸩⸨⸩`) === 0);
+    Utils.Assert(Last_Non_Value_Index(`⸨⸩⸨⸩`) === null);
+    Utils.Assert(Last_Non_Value_Index(`⸩⸨⸩⸨⸩`) === 0);
+    Utils.Assert(Last_Non_Value_Index(`⸩⸩⸨⸩⸨⸩`) === 1);
+    Utils.Assert(Last_Non_Value_Index(`⸨⸩⸩⸨⸩⸨⸩`) === 2);
+    Utils.Assert(Last_Non_Value_Index(`⸨⸨⸩⸩⸨⸩⸨⸩`) === null);
+    Utils.Assert(Last_Non_Value_Index(`0⸨⸨⸩⸩⸨⸩⸨⸩`) === 0);
+    Utils.Assert(Last_Non_Value_Index(`0⸨⸨⸩⸩⸨⸩7⸨⸩`) === 7);
+    Utils.Assert(Last_Non_Value_Index(`0⸨⸨⸩⸩⸨⸩7⸨anything ⸨can be⸩ in here⸩`) === 7);
 }
 
 export class Instance extends Part.Instance
@@ -250,11 +366,6 @@ export class Instance extends Part.Instance
                 style: Style._NONE_,
                 language: null,
             }
-        );
-
-        Utils.Assert(
-            value.length >= 2,
-            `A command must have a length of at least 2.`,
         );
 
         const parameter_and_argument: Parameter_And_Argument | null =
@@ -329,13 +440,13 @@ export class Instance extends Part.Instance
     Is_Opening():
         boolean
     {
-        return this.Value()[1] !== `/`;
+        return this.Value().length > 1 && this.Value()[1] !== `/`;
     }
 
     Is_Closing():
         boolean
     {
-        return this.Value()[1] === `/`;
+        return this.Value().length > 1 && this.Value()[1] === `/`;
     }
 
     Is_Open_Italic():
