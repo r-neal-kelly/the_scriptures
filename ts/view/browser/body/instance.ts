@@ -73,6 +73,17 @@ export class Instance extends Entity.Instance
                     event_priority: 10,
                 },
             ),
+            new Event.Listener_Info(
+                {
+                    event_name: new Event.Name(
+                        Event.Prefix.ON,
+                        Events.TOGGLE_ALLOW_ERRORS,
+                        this.Browser().ID(),
+                    ),
+                    event_handler: this.On_Toggle_Allow_Errors,
+                    event_priority: 10,
+                },
+            ),
         ];
     }
 
@@ -121,6 +132,12 @@ export class Instance extends Entity.Instance
     }
 
     private async On_Selector_Slot_Item_Select():
+        Promise<void>
+    {
+        await this.Model().Reader().Refresh_File();
+    }
+
+    private async On_Toggle_Allow_Errors():
         Promise<void>
     {
         await this.Model().Reader().Refresh_File();

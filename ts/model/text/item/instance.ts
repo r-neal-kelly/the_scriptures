@@ -13,5 +13,6 @@ export interface Instance
     Index(): Index;
     Part_Index(): Index;
 
+    Has_Meta_Value(): boolean;
     Value(): Value;
 }

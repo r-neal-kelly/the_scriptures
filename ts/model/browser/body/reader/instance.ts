@@ -22,6 +22,7 @@ export class Instance extends Entity.Instance
                     value: ``,
                 },
             ),
+            allow_errors: false,
         },
     );
 
@@ -79,13 +80,19 @@ export class Instance extends Entity.Instance
     {
         const new_data: Data.File.Instance | null =
             this.Body().Selector().Maybe_File();
-        if (this.Maybe_Current_Data() != new_data) {
+        const allows_errors: boolean =
+            this.Body().Browser().Commander().Allow_Errors().Is_Activated();
+        if (
+            this.Maybe_Current_Data() != new_data ||
+            this.current_file.Allows_Errors() != allows_errors
+        ) {
             this.current_data = new_data;
             if (new_data != null) {
                 this.current_file = new Buffer.Text.Instance(
                     {
                         default_language_name: new_data.Default_Language_Name(),
                         text: await new_data.Text(),
+                        allow_errors: allows_errors,
                     },
                 );
             } else {

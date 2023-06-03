@@ -135,6 +135,17 @@ export class Instance extends Entity.Instance
                     event_priority: 0,
                 },
             ),
+            new Event.Listener_Info(
+                {
+                    event_name: new Event.Name(
+                        Event.Prefix.AFTER,
+                        Events.TOGGLE_ALLOW_ERRORS,
+                        this.ID(),
+                    ),
+                    event_handler: this.After_Toggle_Allow_Errors,
+                    event_priority: 0,
+                },
+            ),
         ];
     }
 
@@ -187,6 +198,12 @@ export class Instance extends Entity.Instance
     }
 
     private async After_Selector_Slot_Item_Select():
+        Promise<void>
+    {
+        this.Refresh();
+    }
+
+    private async After_Toggle_Allow_Errors():
         Promise<void>
     {
         this.Refresh();

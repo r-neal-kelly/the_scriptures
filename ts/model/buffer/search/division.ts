@@ -105,7 +105,7 @@ export class Instance extends Entity.Instance
                 return this.value;
             } else {
                 const text: Text.Item.Instance = this.Item().Text();
-                if (text.Is_Part() && (text as Text.Part.Instance).Is_Command_Or_Argument()) {
+                if (text.Has_Meta_Value()) {
                     return ``;
                 } else {
                     return this.value;

@@ -8,6 +8,7 @@ import * as Browser from "../instance.js";
 import * as Previous from "./previous.js";
 import * as Selector from "./selector.js";
 import * as Next from "./next.js";
+import * as Allow_Errors from "./allow_errors.js";
 
 export class Instance extends Entity.Instance
 {
@@ -88,6 +89,14 @@ export class Instance extends Entity.Instance
 
                     cursor: pointer;
                 }
+
+                .Commander_Allow_Errors {
+                    width: 100%;
+
+                    text-align: center;
+
+                    cursor: pointer;
+                }
             `,
         );
 
@@ -100,7 +109,8 @@ export class Instance extends Entity.Instance
         if (
             !this.Has_Previous() ||
             !this.Has_Selector() ||
-            !this.Has_Next()
+            !this.Has_Next() ||
+            !this.Has_Allow_Errors()
         ) {
             this.Abort_All_Children();
 
@@ -119,6 +129,12 @@ export class Instance extends Entity.Instance
             new Next.Instance(
                 {
                     model: () => this.Model().Next(),
+                    commander: this,
+                },
+            );
+            new Allow_Errors.Instance(
+                {
+                    model: () => this.Model().Allow_Errors(),
                     commander: this,
                 },
             );
@@ -201,5 +217,25 @@ export class Instance extends Entity.Instance
         );
 
         return this.Child(2) as Next.Instance;
+    }
+
+    Has_Allow_Errors():
+        boolean
+    {
+        return (
+            this.Has_Child(3) &&
+            this.Child(3) instanceof Allow_Errors.Instance
+        );
+    }
+
+    Allow_Errors():
+        Allow_Errors.Instance
+    {
+        Utils.Assert(
+            this.Has_Allow_Errors(),
+            `Doesn't have allow_errors.`,
+        );
+
+        return this.Child(3) as Allow_Errors.Instance;
     }
 }

@@ -139,6 +139,12 @@ export class Instance implements Item.Instance
         return this.end_unit_index;
     }
 
+    Has_Meta_Value():
+        boolean
+    {
+        return this.Break().Has_Meta_Value();
+    }
+
     Value():
         Value
     {

@@ -53,7 +53,7 @@ export class Instance extends Entity.Instance
                 `index must not be null, and must be greater than -1.`,
             );
 
-            if (text.Is_Part() && (text as Text.Part.Instance).Is_Command_Or_Argument()) {
+            if (text.Has_Meta_Value()) {
                 this.value = ``;
             } else {
                 this.value = text.Value()

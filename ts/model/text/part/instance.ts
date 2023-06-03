@@ -144,6 +144,12 @@ export class Instance implements Item.Instance
         return this.index;
     }
 
+    Has_Meta_Value():
+        boolean
+    {
+        return this.Is_Command_Or_Argument();
+    }
+
     Value():
         Value
     {

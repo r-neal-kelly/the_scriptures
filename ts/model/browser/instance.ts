@@ -16,10 +16,12 @@ export class Instance extends Entity.Instance
             selection = null,
             selector_slot_order = Selector.Slot.Order.BOOKS_LANGUAGES_VERSIONS,
             is_selector_open = false,
+            allow_errors = false,
         }: {
             selection?: Selection.Name | Selection.Index | null,
             selector_slot_order?: Selector.Slot.Order,
             is_selector_open?: boolean,
+            allow_errors?: boolean,
         } = {},
     )
     {
@@ -29,6 +31,7 @@ export class Instance extends Entity.Instance
             {
                 browser: this,
                 is_selector_open: is_selector_open,
+                allow_errors: allow_errors,
             },
         );
         this.body = new Body.Instance(

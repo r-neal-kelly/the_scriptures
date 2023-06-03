@@ -5,7 +5,6 @@ import * as Utils from "../../../utils.js";
 import * as Entity from "../../entity.js";
 import * as Selector from "../../selector.js";
 import * as Commander from "./instance.js";
-import * as Body from "../body.js";
 
 export class Instance extends Entity.Instance
 {
