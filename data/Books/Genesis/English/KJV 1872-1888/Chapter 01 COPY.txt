@@ -1,10 +1,10 @@
-⸨cen⸩⸨sc⸩the first book of ⸨err⸩moses⸨/err⸩,⸨/sc⸩
+⸨cen⸩⸨sc⸩⸨err:The⸩the⸨/err⸩ ⸨err:First⸩first⸨/err⸩ ⸨err:Book⸩book⸨/err⸩ of ⸨err:Moses⸩moses⸨/err⸩,⸨/sc⸩
 ⸨cen⸩⸨sc⸩called⸨/sc⸩
 ⸨cen⸩GENESIS.
 ⸨cen⸩————
 
 ⸨cen⸩CHAPTER I⸼
-⸨i⸩₁ The ⸨err⸩reation⸨/err⸩ of heaven and earth, ₃ of the light, ₆ of the firmament, ₉ of the earth separated from the waters, ₁₁ and made fruitful, ₁₄ of the sun, moon, and stars, ₂₀ of fish and fowl, ₂₄ of beasts and cattle, ₂₆ of man in the image of God. ₂₉ Also the appointment of food.⸨/i⸩
+⸨i⸩₁ The ⸨err:creation⸩reation⸨/err⸩ of heaven and earth, ₃ of the light, ₆ of the firmament, ₉ of the earth separated from the waters, ₁₁ and made fruitful, ₁₄ of the sun, moon, and stars, ₂₀ of fish and fowl, ₂₄ of beasts and cattle, ₂₆ of man in the image of God. ₂₉ Also the appointment of food.⸨/i⸩
 
 ₁ ⸨sc⸩In⸨/sc⸩ ⸨i⸩ᵃ⸨/i⸩ the beginning God created the heaven and the earth.
 ₂ And the earth was without form, and void; and darkness ⸨i⸩was⸨/i⸩ upon the face of the deep. And the Spirit of God moved upon the face of the waters.
@@ -35,7 +35,7 @@
 ₂₇ So God created man in his ⸨i⸩own⸨/i⸩ image, in the image of God created he him; ⸨i⸩ˡ⸨/i⸩ male and female created he them.
 ₂₈ And God blessed them, and God said unto them, ⸨i⸩ᵐ⸨/i⸩ Be fruitful, and multiply, and replenish the earth, and subdue it: and have dominion over the fish of the sea, and over the fowl of the air, and over every living thing that ⁺moveth upon the earth.
 ₂₉ ¶ And God said, Behold, I have given you every herb ⁺bearing seed, which ⸨i⸩is⸨/i⸩ upon the face of all the earth, and every tree, in the which ⸨i⸩is⸨/i⸩ the fruit of a tree yielding seed; ⸨i⸩ⁿ⸨/i⸩ to you it shall be for meat.
-₃₀ And to every beast of the earth, and to every fowl of the air, and to ⸨err⸩everything⸨/err⸩ that creepeth upon the earth, wherein ⸨i⸩there is⸨/i⸩ ⁺life, ⸨i⸩I have given⸨/i⸩ every green herb for meat: and it was so.
+₃₀ And to every beast of the earth, and to every fowl of the air, and to ⸨err:every thing⸩everything⸨/err⸩ that creepeth upon the earth, wherein ⸨i⸩there is⸨/i⸩ ⁺life, ⸨i⸩I have given⸨/i⸩ every green herb for meat: and it was so.
 ₃₁ And ⸨i⸩ᵒ⸨/i⸩ God saw every thing that he had made, and, behold, ⸨i⸩it was⸨/i⸩ very good. And the evening and the morning were the sixth day.
 
 ⸨i⸩ᵃ⸨/i⸩ Psal⸼ 33⸼ 6⸼
@@ -44,7 +44,7 @@ Acts 14⸼ 15⸼
 & 17⸼ 24⸼
 Hebr⸼ 11⸼ 3⸼
 
-⸨i⸩ᵇ⸨/i⸩ 2 Cor⸼ 4⸼ ⸨err⸩6⸨/err⸩
+⸨i⸩ᵇ⸨/i⸩ 2 Cor⸼ 4⸼ ⸨err:6⸼⸩6⸨/err⸩
 
 ⸨i⸩ᶜ⸨/i⸩ Psal⸼ 136⸼ 5⸼
 Jer⸼ 10⸼ 12⸼
@@ -53,7 +53,7 @@ Jer⸼ 10⸼ 12⸼
 ⸨i⸩ᵈ⸨/i⸩ Jer⸼ 51⸼ 15⸼
 
 ⸨i⸩ᵉ⸨/i⸩ Psal⸼ 33⸼ 7⸼
-& 136⸼ ⸨err⸩5⸼⸨/err⸩
+& 136⸼ ⸨err:6⸼⸩5⸼⸨/err⸩
 Job 38⸼ 8⸼
 
 ⸨i⸩ᶠ⸨/i⸩ Deut⸼ 4⸼ 19⸼
@@ -61,16 +61,16 @@ Psal⸼ 136⸼ 7⸼
 
 ⸨i⸩ᵍ⸨/i⸩ Jer⸼ 31⸼ 35⸼
 
-⸨i⸩ʰ⸨/i⸩ ⸨err⸩4⸨/err⸩ Esdr⸼ 6⸼ 47⸼
+⸨i⸩ʰ⸨/i⸩ ⸨err:2⸩4⸨/err⸩ Esdr⸼ 6⸼ 47⸼
 
-⸨i⸩ⁱ⸨/i⸩ chap⸼ ⸨err⸩8⸨/err⸩ 17⸼
+⸨i⸩ⁱ⸨/i⸩ chap⸼ ⸨err:8⸼⸩8⸨/err⸩ 17⸼
 & 9⸼ 1⸼
 
 ⸨i⸩ᵏ⸨/i⸩ chap⸼ 5⸼ 1⸼
 & 9⸼ 6⸼
 1 Cor⸼ 11⸼ 7⸼
-Ephes⸼ 4⸼ ⸨err⸩14⸼⸨/err⸩
-⸨err⸩Col⸨/err⸩ 3⸼ 10⸼
+Ephes⸼ 4⸼ ⸨err:24⸼⸩14⸼⸨/err⸩
+⸨err:Col⸼⸩Col⸨/err⸩ 3⸼ 10⸼
 
 ⸨i⸩ˡ⸨/i⸩ Matt⸼ 19⸼ 4⸼
 Wisd⸼ 2⸼ 23⸼

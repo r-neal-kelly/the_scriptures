@@ -38,15 +38,15 @@
 
 ⸨i⸩ᵇ⸨/i⸩ Wisd⸼ 2⸼ 23⸼
 
-⸨i⸩ᶜ⸨/i⸩ 1 ⸨err⸩Chron⸨/err⸩ ⸨err⸩1⸨/err⸩⸨err⸩, ⸨/err⸩1⸼ &c⸼
+⸨i⸩ᶜ⸨/i⸩ 1 ⸨err:Chron⸼⸩Chron⸨/err⸩ ⸨err:1⸼⸩1⸨/err⸩⸨err: ⸩, ⸨/err⸩1⸼ &c⸼
 
 ⸨i⸩ᵈ⸨/i⸩ Ecclus⸼ 44⸼ 16⸼
-⸨err⸩Heb⸼⸨/err⸩ 11⸼ 5⸼
+⸨err:Hebr⸼⸩Heb⸼⸨/err⸩ 11⸼ 5⸼
 
-⁺ Heb⸼ ⸨i⸩Enosh⸨/i⸩⸨err⸩⸨/err⸩
+⁺ Heb⸼ ⸨i⸩Enosh⸨/i⸩⸨err:.⸩⸨/err⸩
 ⁺ Heb⸼ ⸨i⸩Kenan⸨/i⸩.
 ⁺ Gr⸼ ⸨i⸩Maleleel⸨/i⸩.
 ⁺ Heb⸼ ⸨i⸩Jered⸨/i⸩.
 ⁺ Gr⸼ ⸨i⸩Mathusala⸨/i⸩.
 ⁺ Heb⸼ ⸨i⸩Lemech⸨/i⸩.
-⁺ Gr⸼ ⸨i⸩⸨err⸩Noa⸨/err⸩⸨/i⸩⸨err⸩⸨/err⸩
+⁺ Gr⸼ ⸨i⸩⸨err:Noe⸩Noa⸨/err⸩⸨/i⸩⸨err:.⸩⸨/err⸩

@@ -26,7 +26,7 @@
 
 ⸨i⸩ᵃ⸨/i⸩ Hos⸼ 12⸼ 12⸼
 
-⸨i⸩ᵇ⸨/i⸩ Called, Acts 7⸼ ⸨err⸩2⸨/err⸩, ⸨i⸩Charran⸨/i⸩⸨err⸩⸨/err⸩
+⸨i⸩ᵇ⸨/i⸩ Called, Acts 7⸼ ⸨err:2⸼⸩2⸨/err⸩, ⸨i⸩Charran⸨/i⸩⸨err:.⸩⸨/err⸩
 
 ⸨i⸩ᶜ⸨/i⸩ chap⸼ 35⸼ 1⸼
 & 48⸼ 3⸼

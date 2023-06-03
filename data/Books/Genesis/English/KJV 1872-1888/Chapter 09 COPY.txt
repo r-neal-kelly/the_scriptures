@@ -31,10 +31,10 @@
 ₂₈ ¶ And Noah lived after the flood three hundred and fifty years.
 ₂₉ And all the days of Noah were nine hundred and fifty years: and he died.
 
-⸨i⸩ᵃ⸨/i⸩ ⸨err⸩hap⸼⸨/err⸩ ⸨err⸩1⸨/err⸩ ⸨err⸩28⸨/err⸩
-& 8⸼ ⸨err⸩17⸨/err⸩
+⸨i⸩ᵃ⸨/i⸩ ⸨err:chap⸼⸩hap⸼⸨/err⸩ ⸨err:1⸼⸩1⸨/err⸩ ⸨err:28⸼⸩28⸨/err⸩
+& 8⸼ ⸨err:17⸼⸩17⸨/err⸩
 
-⸨i⸩ᵇ⸨/i⸩ ⸨err⸩chap⸨/err⸩ 1⸼ 29⸼
+⸨i⸩ᵇ⸨/i⸩ ⸨err:chap⸼⸩chap⸨/err⸩ 1⸼ 29⸼
 
 ⸨i⸩ᶜ⸨/i⸩ Lev⸼ 17⸼ 14⸼
 
@@ -47,7 +47,7 @@ Rev⸼ 13⸼ 10⸼
 
 ⸨i⸩ᵍ⸨/i⸩ Ecclus⸼ 43⸼ 11, 12⸼
 
-⁺ ⸨err⸩Heb⸨/err⸩ ⸨i⸩Chenaan⸨/i⸩.
+⁺ ⸨err:Heb⸼⸩Heb⸨/err⸩ ⸨i⸩Chenaan⸨/i⸩.
 
 ˈ Or, ⸨i⸩servant to them⸨/i⸩.
 ˈ Or, ⸨i⸩persuade⸨/i⸩.
