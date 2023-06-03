@@ -173,7 +173,7 @@ async function Main():
             Selector_Model.Slot.Order.BOOKS_LANGUAGES_VERSIONS,
             `Genesis`,
             `English`,
-            `KJV 1872-1888+`,
+            `KJV 1872-1888`,
             `Chapter 01`,
         ],
         /*
