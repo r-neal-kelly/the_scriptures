@@ -4,7 +4,7 @@
 ₁ ⸨sc⸩And⸨/sc⸩ Israel took his journey with all that he had, and came to Beer‑sheba, and offered sacrifices unto the God of his father Isaac.
 ₂ And God spake unto Israel in the visions of the night, and said, Jacob, Jacob. And he said, Here ⸨i⸩am⸨/i⸩ I.
 ₃ And he said, I ⸨i⸩am⸨/i⸩ God, the God of thy father: fear not to go down into Egypt; for I will there make of thee a great nation:
-₄ I will go down with thee into Egypt; and I will also surely bring thee up ⸨i⸩again⸨/i⸩⸨err⸩⸨i⸩: ⸨/i⸩⸨/err⸩and Joseph shall put his hand upon thine eyes.
+₄ I will go down with thee into Egypt; and I will also surely bring thee up ⸨i⸩again⸨/i⸩⸨err:: ⸩⸨i⸩: ⸨/i⸩⸨/err⸩and Joseph shall put his hand upon thine eyes.
 ₅ And Jacob rose up from Beer‑sheba: and the sons of Israel carried Jacob their father, and their little ones, and their wives, in the wagons which Pharaoh had sent to carry him.
 ₆ And they took their cattle, and their goods, which they had gotten in the land of Canaan, and came into Egypt, ⸨i⸩ᵃ⸨/i⸩ Jacob, and all his seed with him:
 ₇ His sons, and his sonsʼ sons with him, his daughters, and his sonsʼ daughters, and all his seed brought he with him into Egypt.
@@ -36,11 +36,12 @@
 ₃₃ And it shall come to pass, when Pharaoh shall call you, and shall say, What ⸨i⸩is⸨/i⸩ your occupation?
 ₃₄ That ye shall say, Thy servantsʼ trade hath been about cattle from our youth even until now, both we, ⸨i⸩and⸨/i⸩ also our fathers: that ye may dwell in the land of Goshen; for every shepherd ⸨i⸩is⸨/i⸩ an abomination unto the Egyptians.
 
-⸨i⸩ᵃ⸨/i⸩ Josh⸼ 24⸼ ⸨err⸩4⸨/err⸩
-⸨err⸩·sal⸼⸨/err⸩ 105⸼ 23⸼
-⸨err⸩Is⸼⸨/err⸩ 52⸼ ⸨err⸩4⸨/err⸩
+⸨i⸩ᵃ⸨/i⸩ Josh⸼ 24⸼ ⸨err:4⸼⸩4⸨/err⸩
+⸨err:Psal⸼⸩·sal⸼⸨/err⸩ 105⸼ 23⸼
+⸨err:Isai⸼⸩Is⸼⸨/err⸩ 52⸼ ⸨err:4⸼⸩4⸨/err⸩
 
-⸨i⸩ᵇ⸨/i⸩ Exod⸼ 1⸼ 1⸼⸨err⸩ ⸨/err⸩& 6⸼ 14⸼
+⸨i⸩ᵇ⸨/i⸩ Exod⸼ 1⸼ 1⸼
+& 6⸼ 14⸼
 
 ⸨i⸩ᶜ⸨/i⸩ Numb⸼ 26⸼ 5⸼
 1 Chron⸼ 5⸼ 1⸼
@@ -56,11 +57,12 @@ chap⸼ 38⸼ 3⸼
 
 ⸨i⸩ᵍ⸨/i⸩ 1 Chron⸼ 7⸼ 1⸼
 
-⸨i⸩ʰ⸨/i⸩ 1 Chron⸼ ⸨err⸩7⸨/err⸩ 30⸼
+⸨i⸩ʰ⸨/i⸩ 1 Chron⸼ ⸨err:7⸼⸩7⸨/err⸩ 30⸼
 
 ⸨i⸩ⁱ⸨/i⸩ chap⸼ 41⸼ 50⸼
 
-⸨i⸩ᵏ⸨/i⸩ 1 ⸨err⸩Chron⸨/err⸩ 7⸼ ⸨err⸩6⸨/err⸩⸨err⸩ ⸨/err⸩& 8⸼ ⸨err⸩·⸨/err⸩
+⸨i⸩ᵏ⸨/i⸩ 1 ⸨err:Chron⸼⸩Chron⸨/err⸩ 7⸼ ⸨err:6⸼⸩6⸨/err⸩
+& 8⸼ ⸨err:1⸼⸩·⸨/err⸩
 
 ⸨i⸩ˡ⸨/i⸩ Deut⸼ 10⸼ 22⸼
 
