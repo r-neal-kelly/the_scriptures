@@ -55,7 +55,7 @@ II⸼
 
 III⸼
 ⸨in⸩1⸼ In RQ the feasts have lost their reference to harvest and the first fruits; and this essentially changes their nature
-⸨in⸩2⸼ The metamorphosis was due to the centralisation of worship, and may ⸨err⸩he⸨/err⸩ traced down through Deuteronomy and Ezekiel to RQ
+⸨in⸩2⸼ The metamorphosis was due to the centralisation of worship, and may ⸨err:be⸩he⸨/err⸩ traced down through Deuteronomy and Ezekiel to RQ
 ⸨in⸩3⸼ To the three festivals RQ adds the great day of atonement, which arose out of the fast‑days of the exile
 
 IV⸼
@@ -96,7 +96,7 @@ II⸼
 ⸨sc⸩Chap⸼ VI⸼ Chronicles—⸨/sc⸩
 
 I⸼
-⸨in⸩⸨err⸩1⸨/err⸩ David becomes Saulʼs successor without any exertion, all Israel being already on his side, namely, the priests and Levites
+⸨in⸩⸨err:1⸼⸩1⸨/err⸩ David becomes Saulʼs successor without any exertion, all Israel being already on his side, namely, the priests and Levites
 ⸨in⸩Distortion of the original story of the bringing of the ark to Jerusalem. Omission of unedifying incidents in Davidʼs life
 ⸨in⸩2⸼ Preparation for the building of the temple. Delight of the narrator in numbers and names. Inconsistency with 1 Kings i⸼ ii⸼
 ⸨in⸩Picture of David in Chronicles
@@ -165,7 +165,7 @@ I⸼
 II⸼
 ⸨in⸩1⸼ The final revision of the Hexateuch proceeds from the Priestly Code, as we see from Lev⸼ xvii⸼ seq⸼
 ⸨in⸩2⸼ Examination of Lev⸼ xxvi⸼
-⸨in⸩3⸼ R ⸨err⸩cannnot⸨/err⸩ be separated from RQ
+⸨in⸩3⸼ R ⸨err:cannot⸩cannnot⸨/err⸩ be separated from RQ
 
 III⸼
 ⸨in⸩The language of the Priestly Code
@@ -188,11 +188,11 @@ I⸼
 ⸨in⸩1⸼ Freshness and naturalness of early Israelite history
 ⸨in⸩2⸼ Rise of the state. Relation of Religion and of the Deity to the life of state and nation
 ⸨in⸩3⸼ The Messianic theocracy of the older prophets is built up on the foundations afforded by the actual community of their time
-⸨in⸩4⸼ The idea of the covenant⸨err⸩.⸨/err⸩
+⸨in⸩4⸼ The idea of the covenant⸨err:⸩.⸨/err⸩
 
 II⸼
 ⸨in⸩1⸼ Foundation of the theocratic constitution under the foreign domination
-⸨in⸩2⸼ The law and the prophets⸨err⸩.⸨/err⸩
+⸨in⸩2⸼ The law and the prophets⸨err:⸩.⸨/err⸩
 
 ⸨cen⸩————
 
