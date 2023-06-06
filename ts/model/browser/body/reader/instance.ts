@@ -1,7 +1,7 @@
 import { Name } from "../../../../types.js";
 
 import * as Entity from "../../../entity.js";
-import * as Languages from "../../../languages.js";
+import * as Language from "../../../language.js";
 import * as Data from "../../../data.js";
 import * as Text from "../../../text.js";
 import * as Buffer from "../../../buffer.js";
@@ -11,7 +11,7 @@ export class Instance extends Entity.Instance
 {
     private static blank_file: Buffer.Text.Instance = new Buffer.Text.Instance(
         {
-            default_language_name: Languages.Name.ENGLISH,
+            default_language_name: Language.Name.ENGLISH,
             text: new Text.Instance(
                 {
                     dictionary: new Text.Dictionary.Instance(

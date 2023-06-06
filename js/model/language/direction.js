@@ -1,0 +1,1 @@
+export var Direction;!function(T){T[T.LEFT_TO_RIGHT=0]="LEFT_TO_RIGHT",T[T.RIGHT_TO_LEFT=1]="RIGHT_TO_LEFT"}(Direction||(Direction={}));

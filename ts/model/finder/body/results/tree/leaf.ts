@@ -1,6 +1,6 @@
 import { Name } from "../../../../../types.js";
 
-import * as Languages from "../../../../languages.js";
+import * as Language from "../../../../language.js";
 import * as Entity from "../../../../entity.js";
 import * as File from "../../../../data/file.js";
 import * as Search from "../../../../search.js";
@@ -58,7 +58,7 @@ export class Instance extends Entity.Instance
     }
 
     Default_Language():
-        Languages.Name
+        Language.Name
     {
         return this.File().Default_Language_Name();
     }

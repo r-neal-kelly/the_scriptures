@@ -1,0 +1,186 @@
+import * as Utils from "../../utils.js";
+import * as Font from "../font.js";
+
+import { Name } from "./name.js";
+import { Direction } from "./direction.js";
+import * as Font_Adaptor from "./font_adaptor.js";
+
+export class Instance
+{
+    private name: Name;
+    private direction: Direction;
+
+    private font_names: Array<Font.Name>;
+    private default_font_name: Font.Name;
+    private current_font_name: Font.Name;
+    private font_adaptors: { [font_name: string]: Font_Adaptor.Instance };
+
+    constructor(
+        {
+            name,
+            direction,
+
+            default_font_name,
+            current_font_name = default_font_name,
+            font_adaptors,
+        }: {
+            name: Name,
+            direction: Direction,
+
+            default_font_name: Font.Name,
+            current_font_name?: Font.Name,
+            font_adaptors: Array<Font_Adaptor.Instance>,
+        },
+    )
+    {
+        this.name = name;
+        this.direction = direction;
+
+        this.font_names = [];
+        this.default_font_name = default_font_name;
+        this.current_font_name = current_font_name;
+        this.font_adaptors = {};
+
+        for (const font_adaptor of font_adaptors) {
+            const font_name: Font.Name = font_adaptor.Font().Name();
+
+            this.font_names.push(font_name);
+
+            Utils.Assert(
+                !this.font_adaptors.hasOwnProperty(font_name),
+                `can only have one adaptor per font_name`,
+            );
+            this.font_adaptors[font_name] = font_adaptor;
+        }
+
+        Object.freeze(this.font_names);
+        if (!Object.isFrozen(this.font_adaptors)) {
+            Object.freeze(this.font_adaptors);
+        }
+
+        Utils.Assert(
+            this.Has_Font_Adaptor(this.Default_Font_Name()),
+            `missing font_adaptor for default_font_name: ${default_font_name}`,
+        );
+        Utils.Assert(
+            this.Has_Font_Adaptor(this.Current_Font_Name()),
+            `missing font_adaptor for current_font_name: ${current_font_name}`,
+        );
+    }
+
+    Name():
+        Name
+    {
+        return this.name;
+    }
+
+    Direction():
+        Direction
+    {
+        return this.direction;
+    }
+
+    Font_Names():
+        Array<Font.Name>
+    {
+        return Array.from(this.font_names);
+    }
+
+    Default_Font_Name():
+        Font.Name
+    {
+        return this.default_font_name;
+    }
+
+    Default_Font_Styles():
+        { [css_property: string]: string }
+    {
+        return this.Some_Font_Adaptor(this.Default_Font_Name()).Styles();
+    }
+
+    Current_Font_Name():
+        Font.Name
+    {
+        return this.current_font_name;
+    }
+
+    Set_Current_Font_Name(
+        font_name: Font.Name,
+    ):
+        void
+    {
+        Utils.Assert(
+            this.Has_Font_Adaptor(font_name),
+            `missing font_adaptor for font_name: ${font_name}`,
+        );
+
+        this.current_font_name = font_name;
+    }
+
+    Current_Font_Styles():
+        { [css_property: string]: string }
+    {
+        return this.Some_Font_Adaptor(this.Current_Font_Name()).Styles();
+    }
+
+    Has_Font_Adaptor(
+        font_name: Font.Name,
+    ):
+        boolean
+    {
+        return this.font_adaptors.hasOwnProperty(font_name);
+    }
+
+    Some_Font_Adaptor(
+        font_name: Font.Name,
+    ):
+        Font_Adaptor.Instance
+    {
+        Utils.Assert(
+            this.Has_Font_Adaptor(font_name),
+            `missing font_adaptor for font_name: ${font_name}`,
+        );
+
+        return this.font_adaptors[font_name];
+    }
+
+    Adapt_Text_To_Font(
+        {
+            text,
+            font_name = this.Current_Font_Name(),
+        }: {
+            text: string,
+            font_name?: Font.Name,
+        },
+    ):
+        string
+    {
+        return this.Some_Font_Adaptor(font_name).Treat_Text(text);
+    }
+
+    Adapt_Text_To_Default_Font(
+        text: string,
+    ):
+        string
+    {
+        return this.Adapt_Text_To_Font(
+            {
+                text: text,
+                font_name: this.Default_Font_Name(),
+            },
+        );
+    }
+
+    Adapt_Text_To_Current_Font(
+        text: string,
+    ):
+        string
+    {
+        return this.Adapt_Text_To_Font(
+            {
+                text: text,
+                font_name: this.Current_Font_Name(),
+            },
+        );
+    }
+}

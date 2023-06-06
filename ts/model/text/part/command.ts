@@ -4,7 +4,7 @@ import { Index } from "../../../types.js";
 import * as Utils from "../../../utils.js";
 import * as Unicode from "../../../unicode.js";
 
-import * as Languages from "../../languages.js";
+import * as Language from "../../language.js";
 import { Value } from "../value.js";
 import * as Part from "./instance.js";
 import { Type } from "./type.js";
@@ -150,10 +150,10 @@ export function Is_Known_Value(
         if (parameter_and_argument != null) {
             if (parameter_and_argument.parameter === Parameter.LANGUAGE) {
                 return (
-                    parameter_and_argument.argument === Languages.Name.ENGLISH ||
-                    parameter_and_argument.argument === Languages.Name.HEBREW ||
-                    parameter_and_argument.argument === Languages.Name.GREEK ||
-                    parameter_and_argument.argument === Languages.Name.LATIN
+                    parameter_and_argument.argument === Language.Name.ENGLISH ||
+                    parameter_and_argument.argument === Language.Name.HEBREW ||
+                    parameter_and_argument.argument === Language.Name.GREEK ||
+                    parameter_and_argument.argument === Language.Name.LATIN
                 );
 
             } else if (parameter_and_argument.parameter === Parameter.ERROR) {
@@ -729,7 +729,7 @@ export class Instance extends Part.Instance
     {
         return (
             this.Parameter() === Parameter.LANGUAGE &&
-            this.Argument() === Languages.Name.ENGLISH
+            this.Argument() === Language.Name.ENGLISH
         );
     }
 
@@ -738,7 +738,7 @@ export class Instance extends Part.Instance
     {
         return (
             this.Parameter() === Parameter.LANGUAGE &&
-            this.Argument() === Languages.Name.HEBREW
+            this.Argument() === Language.Name.HEBREW
         );
     }
 
@@ -747,7 +747,7 @@ export class Instance extends Part.Instance
     {
         return (
             this.Parameter() === Parameter.LANGUAGE &&
-            this.Argument() === Languages.Name.GREEK
+            this.Argument() === Language.Name.GREEK
         );
     }
 
@@ -756,7 +756,7 @@ export class Instance extends Part.Instance
     {
         return (
             this.Parameter() === Parameter.LANGUAGE &&
-            this.Argument() === Languages.Name.LATIN
+            this.Argument() === Language.Name.LATIN
         );
     }
 

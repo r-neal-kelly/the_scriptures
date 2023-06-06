@@ -5,7 +5,7 @@ import { Index } from "../../types.js";
 import * as Utils from "../../utils.js";
 import * as Unicode from "../../unicode.js";
 
-import * as Languages from "../languages.js";
+import * as Language from "../language.js";
 import * as Text from "./instance.js";
 import { Value } from "./value.js";
 import * as Dictionary from "./dictionary.js";
@@ -526,7 +526,7 @@ export class Instance
         this.paths[path_type] = new Path(value);
 
         let current_style: Part.Style = Part.Style._NONE_;
-        let current_language: Array<Languages.Name> = [];
+        let current_language: Array<Language.Name> = [];
         let current_type: Current_Type = Current_Type.POINT;
         let current_start: Unicode.Iterator = new Unicode.Iterator(
             {
@@ -735,13 +735,13 @@ export class Instance
                     current_style &= ~Part.Style.ERROR;
 
                 } else if (macro_command.Is_Open_English()) {
-                    current_language.push(Languages.Name.ENGLISH);
+                    current_language.push(Language.Name.ENGLISH);
                 } else if (macro_command.Is_Open_Hebrew()) {
-                    current_language.push(Languages.Name.HEBREW);
+                    current_language.push(Language.Name.HEBREW);
                 } else if (macro_command.Is_Open_Greek()) {
-                    current_language.push(Languages.Name.GREEK);
+                    current_language.push(Language.Name.GREEK);
                 } else if (macro_command.Is_Open_Latin()) {
-                    current_language.push(Languages.Name.LATIN);
+                    current_language.push(Language.Name.LATIN);
                 } else if (macro_command.Is_Close_Language()) {
                     if (current_language.length > 0) {
                         current_language.pop();

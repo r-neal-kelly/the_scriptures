@@ -1320,3 +1320,43 @@ export function Adapt_Text_To_Font(
 
     return (FONT_NAME_TO_TEXT_ADAPTOR[font_name] as (text: string) => string)(text);
 }
+
+import * as Font from "../font.js";
+
+import { Name } from "./name.js";
+import { Direction } from "./direction.js";
+import * as Language from "./instance.js";
+import * as Font_Adaptor from "./font_adaptor.js";
+
+export class Instance extends Language.Instance
+{
+    constructor()
+    {
+        super(
+            {
+                name: Name.GREEK,
+                direction: Direction.LEFT_TO_RIGHT,
+
+                default_font_name: Font.Name.QUIVIRA,
+                font_adaptors: [
+                    new Font_Adaptor.Instance(
+                        {
+                            font_name: Font.Name.QUIVIRA,
+                            styles: {
+                                "font-size": `1.25em`,
+                                "line-height": `1.3`,
+                            },
+                            treater: function (
+                                text: string,
+                            ):
+                                string
+                            {
+                                return text;
+                            },
+                        },
+                    ),
+                ],
+            },
+        );
+    }
+}

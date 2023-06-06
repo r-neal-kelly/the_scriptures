@@ -4,7 +4,7 @@ import { Path } from "../../types.js";
 
 import * as Utils from "../../utils.js";
 
-import * as Languages from "../languages.js";
+import * as Language from "../language.js";
 import * as Entity from "../entity.js";
 import * as Text from "../text.js";
 import * as Compressor from "./compressor.js";
@@ -72,9 +72,9 @@ export class Instance extends Entity.Instance
     }
 
     Default_Language_Name():
-        Languages.Name
+        Language.Name
     {
-        return this.Version().Language().Name() as Languages.Name;
+        return this.Version().Language().Name() as Language.Name;
     }
 
     async Text():

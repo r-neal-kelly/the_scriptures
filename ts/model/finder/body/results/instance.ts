@@ -3,7 +3,7 @@ import { Name } from "../../../../types.js";
 
 import * as Utils from "../../../../utils.js";
 
-import * as Languages from "../../../languages.js";
+import * as Language from "../../../language.js";
 import * as Entity from "../../../entity.js";
 import * as Search from "../../../search.js";
 import * as Filter from "../../../selector.js";
@@ -230,7 +230,7 @@ export class Instance extends Entity.Instance
         this.is_showing_commands = is_showing_commands;
         this.buffer = new Buffer.Instance(
             {
-                default_language_name: Languages.Name.ENGLISH,
+                default_language_name: Language.Name.ENGLISH,
                 results: [],
                 is_showing_commands: is_showing_commands,
             },
@@ -263,7 +263,7 @@ export class Instance extends Entity.Instance
     }
 
     Set_Buffer(
-        default_language_name: Languages.Name,
+        default_language_name: Language.Name,
         results: Array<Search.Result.Instance>,
     ):
         void

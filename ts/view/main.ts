@@ -6,7 +6,7 @@ import * as Entity from "./entity.js";
 import * as Model from "../model/layout.js";
 import * as View from "./layout.js";
 
-import * as Languages_Model from "../model/languages.js";
+import * as Fonts_Model from "../model/fonts.js";
 import * as Data_Model from "../model/data.js";
 import * as Selector_Model from "../model/selector.js";
 import * as Browser_Model from "../model/browser.js";
@@ -42,7 +42,7 @@ class Body extends Entity.Instance
     override On_Life():
         Array<Event.Listener_Info>
     {
-        Utils.Create_Style_Element(Languages_Model.CSS_Font_Faces());
+        Utils.Create_Style_Element(Fonts_Model.Singleton().CSS_Definitions());
 
         this.Add_CSS(
             `

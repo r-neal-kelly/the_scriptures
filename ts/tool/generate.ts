@@ -7,7 +7,7 @@ import { Path } from "../types.js";
 
 import * as Utils from "../utils.js";
 
-import * as Languages from "../model/languages.js";
+import * as Language from "../model/language.js";
 import * as Data from "../model/data.js";
 import * as Text from "../model/text.js";
 
@@ -297,8 +297,8 @@ function Assert_Greek_Normalization(
     void
 {
     Utils.Assert(
-        Languages.Greek.Normalize_With_Combined_Points(
-            Languages.Greek.Normalize_With_Baked_Points(file_text),
+        Language.Greek.Normalize_With_Combined_Points(
+            Language.Greek.Normalize_With_Baked_Points(file_text),
         ) === file_text,
         `
             failed to reproduce original file_text after Greek normalization

@@ -2,7 +2,7 @@ import { Index } from "../../../types.js"
 
 import * as Utils from "../../../utils.js";
 
-import * as Languages from "../../languages.js";
+import * as Language from "../../language.js";
 import { Value } from "../value.js";
 import * as Item from "../item.js";
 import { Type } from "./type.js";
@@ -16,7 +16,7 @@ export class Instance implements Item.Instance
     private value: Value;
     private status: Status;
     private style: Style;
-    private language: Languages.Name | null;
+    private language: Language.Name | null;
 
     constructor(
         {
@@ -32,7 +32,7 @@ export class Instance implements Item.Instance
             value: Value,
             status: Status,
             style: Style | Array<Style>,
-            language: Languages.Name | null,
+            language: Language.Name | null,
         },
     )
     {
@@ -231,7 +231,7 @@ export class Instance implements Item.Instance
     }
 
     Language():
-        Languages.Name | null
+        Language.Name | null
     {
         return this.language;
     }

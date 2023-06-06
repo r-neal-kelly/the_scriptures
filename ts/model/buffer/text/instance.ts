@@ -4,6 +4,7 @@ import { Index } from "../../../types.js";
 import * as Utils from "../../../utils.js";
 
 import * as Entity from "../../entity.js";
+import * as Language from "../../language.js";
 import * as Languages from "../../languages.js";
 import * as Text from "../../text.js";
 import * as Line from "./line.js";
@@ -39,7 +40,7 @@ export class Instance extends Entity.Instance
         Instance.min_line_count = min_line_count;
     }
 
-    private default_language_name: Languages.Name;
+    private default_language_name: Language.Name;
     private text: Text.Instance;
     private lines: Array<Line.Instance>;
     private line_path_type: Text.Line.Path_Type;
@@ -50,7 +51,7 @@ export class Instance extends Entity.Instance
             text,
             allow_errors,
         }: {
-            default_language_name: Languages.Name,
+            default_language_name: Language.Name,
             text: Text.Instance,
             allow_errors: boolean,
         },
@@ -85,21 +86,21 @@ export class Instance extends Entity.Instance
     }
 
     Default_Language_Name():
-        Languages.Name
+        Language.Name
     {
         return this.default_language_name;
     }
 
     Default_Text_Direction():
-        Languages.Direction
+        Language.Direction
     {
-        return Languages.Default_Direction(this.default_language_name);
+        return Languages.Singleton().Direction(this.default_language_name);
     }
 
     Default_Text_Styles():
         any
     {
-        return Languages.Current_Global_CSS_Styles(this.default_language_name);
+        return Languages.Singleton().Current_Global_Font_Styles(this.default_language_name);
     }
 
     Text():

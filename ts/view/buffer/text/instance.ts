@@ -4,7 +4,7 @@ import { ID } from "../../../types.js";
 import * as Event from "../../../event.js";
 
 import * as Model from "../../../model/buffer/text.js";
-import * as Model_Languages from "../../../model/languages.js";
+import * as Model_Language from "../../../model/language.js";
 
 import * as Entity from "../../entity.js";
 import * as Line from "./line.js";
@@ -172,7 +172,7 @@ export class Instance extends Entity.Instance
         const classes: Array<string> = [];
 
         classes.push(`Text`);
-        if (this.Model().Default_Text_Direction() === Model_Languages.Direction.LEFT_TO_RIGHT) {
+        if (this.Model().Default_Text_Direction() === Model_Language.Direction.LEFT_TO_RIGHT) {
             classes.push(`Left_To_Right`);
         } else {
             classes.push(`Right_To_Left`);

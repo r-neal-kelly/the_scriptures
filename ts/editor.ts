@@ -1,7 +1,8 @@
 import * as Utils from "./utils.js";
 import * as Unicode from "./unicode.js";
 
-import * as Languages from "./model/languages.js";
+import * as Font from "./model/font.js";
+import * as Fonts from "./model/fonts.js";
 import * as Model from "./model/text.js";
 
 const LINE_PATH_TYPE: Model.Line.Path_Type =
@@ -1280,7 +1281,7 @@ class Editor
                         keyboard_event.preventDefault();
 
                         // Hebrew
-                        document.body.style.fontFamily = `"Ezra SIL SR"`;
+                        document.body.style.fontFamily = `"${Font.Name.EZRA_SR}"`;
                         document.body.style.fontSize = `30px`;
                     }
                 } else if (keyboard_event.key === `*`) {
@@ -1288,7 +1289,7 @@ class Editor
                         keyboard_event.preventDefault();
 
                         // Greek
-                        document.body.style.fontFamily = `"GentiumPlusW"`;
+                        document.body.style.fontFamily = `"${Font.Name.GENTIUM}"`;
                         document.body.style.fontSize = `32px`;
                     }
                 } else if (keyboard_event.key === `&`) {
@@ -1296,7 +1297,7 @@ class Editor
                         keyboard_event.preventDefault();
 
                         // Latin
-                        document.body.style.fontFamily = `"GentiumPlusW"`;
+                        document.body.style.fontFamily = `"${Font.Name.GENTIUM}"`;
                         document.body.style.fontSize = `26px`;
                     }
                 }
@@ -2567,7 +2568,7 @@ class Editor
     void
 {
     Utils.Create_Style_Element(`
-        ${Languages.CSS_Font_Faces()}
+        ${Fonts.Singleton().CSS_Definitions()}
         
         * {
             box-sizing: border-box;

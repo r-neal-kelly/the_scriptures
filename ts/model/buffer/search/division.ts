@@ -124,9 +124,11 @@ export class Instance extends Entity.Instance
             .replace(/ $/, ` `)
             .replace(/  /g, `  `);
 
-        this.value = Languages.Adapt_Text_To_Default_Global_Font(
-            this.Item().Language_Name(),
-            this.value,
+        this.value = Languages.Singleton().Adapt_Text_To_Default_Global_Font(
+            {
+                language_name: this.Item().Language_Name(),
+                text: this.value,
+            },
         );
     }
 

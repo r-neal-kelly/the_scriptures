@@ -2,6 +2,7 @@ import { Index } from "../../../types.js";
 
 import * as Utils from "../../../utils.js";
 
+import * as Language from "../../language.js";
 import * as Languages from "../../languages.js";
 import * as Entity from "../../entity.js";
 import * as Text from "../../text.js";
@@ -61,9 +62,11 @@ export class Instance extends Entity.Instance
                     .replace(/ $/, ` `)
                     .replace(/  /g, `  `);
 
-                this.value = Languages.Adapt_Text_To_Current_Global_Font(
-                    this.Language_Name(),
-                    this.value,
+                this.value = Languages.Singleton().Adapt_Text_To_Current_Global_Font(
+                    {
+                        language_name: this.Language_Name(),
+                        text: this.value,
+                    },
                 );
             }
         }
@@ -193,15 +196,15 @@ export class Instance extends Entity.Instance
     }
 
     Override_Language_Name():
-        Languages.Name | null
+        Language.Name | null
     {
         return this.Part().Language();
     }
 
     Language_Name():
-        Languages.Name
+        Language.Name
     {
-        const override: Languages.Name | null = this.Override_Language_Name();
+        const override: Language.Name | null = this.Override_Language_Name();
         if (override != null) {
             return override;
         } else {
@@ -212,6 +215,6 @@ export class Instance extends Entity.Instance
     Is_Greek():
         boolean
     {
-        return this.Language_Name() === Languages.Name.GREEK;
+        return this.Language_Name() === Language.Name.GREEK;
     }
 }

@@ -1,6 +1,7 @@
 import { ID } from "../../../types.js";
 
 import * as Model from "../../../model/buffer/text/item.js";
+import * as Model_Language from "../../../model/language.js";
 import * as Model_Languages from "../../../model/languages.js";
 
 import * as Entity from "../../entity.js";
@@ -83,10 +84,10 @@ export class Instance extends Entity.Instance
     {
         const model: Model.Instance = this.Model();
         if (!model.Is_Blank()) {
-            const language: Model_Languages.Name | null =
+            const language: Model_Language.Name | null =
                 model.Override_Language_Name();
             if (language) {
-                return Model_Languages.Current_Global_CSS_Styles(language);
+                return Model_Languages.Singleton().Current_Global_Font_Styles(language);
             } else {
                 return ``;
             }
