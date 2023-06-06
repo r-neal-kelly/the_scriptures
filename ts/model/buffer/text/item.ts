@@ -2,6 +2,7 @@ import { Index } from "../../../types.js";
 
 import * as Utils from "../../../utils.js";
 
+import * as Font from "../../font.js";
 import * as Language from "../../language.js";
 import * as Languages from "../../languages.js";
 import * as Entity from "../../entity.js";
@@ -62,9 +63,10 @@ export class Instance extends Entity.Instance
                     .replace(/ $/, ` `)
                     .replace(/  /g, `  `);
 
-                this.value = Languages.Singleton().Adapt_Text_To_Current_Global_Font(
+                this.value = Languages.Singleton().Adapt_Text_To_Font(
                     {
                         language_name: this.Language_Name(),
+                        font_name: this.Font_Name(),
                         text: this.value,
                     },
                 );
@@ -210,6 +212,12 @@ export class Instance extends Entity.Instance
         } else {
             return this.Segment().Line().Buffer().Default_Language_Name();
         }
+    }
+
+    Font_Name():
+        Font.Name
+    {
+        return this.Segment().Line().Buffer().Default_Font_Name();
     }
 
     Is_Greek():

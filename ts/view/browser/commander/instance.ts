@@ -5,10 +5,20 @@ import * as Model from "../../../model/browser/commander.js";
 
 import * as Entity from "../../entity.js";
 import * as Browser from "../instance.js";
+import * as Allow_Errors from "./allow_errors.js";
+import * as Font_Selector from "./font_selector.js";
 import * as Previous from "./previous.js";
 import * as Selector from "./selector.js";
 import * as Next from "./next.js";
-import * as Allow_Errors from "./allow_errors.js";
+
+enum Child_Index
+{
+    ALLOW_ERRORS,
+    FONT_SELECTOR,
+    PREVIOUS,
+    SELECTOR,
+    NEXT,
+}
 
 export class Instance extends Entity.Instance
 {
@@ -66,6 +76,22 @@ export class Instance extends Entity.Instance
 
         this.Add_Children_CSS(
             `
+                .Commander_Allow_Errors {
+                    width: 100%;
+
+                    text-align: center;
+
+                    cursor: pointer;
+                }
+                
+                .Commander_Font_Selector {
+                    width: 100%;
+
+                    text-align: center;
+
+                    cursor: pointer;
+                }
+
                 .Commander_Previous {
                     width: 100%;
 
@@ -89,14 +115,6 @@ export class Instance extends Entity.Instance
 
                     cursor: pointer;
                 }
-
-                .Commander_Allow_Errors {
-                    width: 100%;
-
-                    text-align: center;
-
-                    cursor: pointer;
-                }
             `,
         );
 
@@ -107,13 +125,26 @@ export class Instance extends Entity.Instance
         void
     {
         if (
+            !this.Has_Allow_Errors() ||
+            !this.Has_Font_Selector() ||
             !this.Has_Previous() ||
             !this.Has_Selector() ||
-            !this.Has_Next() ||
-            !this.Has_Allow_Errors()
+            !this.Has_Next()
         ) {
             this.Abort_All_Children();
 
+            new Allow_Errors.Instance(
+                {
+                    model: () => this.Model().Allow_Errors(),
+                    commander: this,
+                },
+            );
+            new Font_Selector.Instance(
+                {
+                    model: () => this.Model().Font_Selector(),
+                    commander: this,
+                },
+            );
             new Previous.Instance(
                 {
                     model: () => this.Model().Previous(),
@@ -129,12 +160,6 @@ export class Instance extends Entity.Instance
             new Next.Instance(
                 {
                     model: () => this.Model().Next(),
-                    commander: this,
-                },
-            );
-            new Allow_Errors.Instance(
-                {
-                    model: () => this.Model().Allow_Errors(),
                     commander: this,
                 },
             );
@@ -159,72 +184,12 @@ export class Instance extends Entity.Instance
         return this.Parent() as Browser.Instance;
     }
 
-    Has_Previous():
-        boolean
-    {
-        return (
-            this.Has_Child(0) &&
-            this.Child(0) instanceof Previous.Instance
-        );
-    }
-
-    Previous():
-        Previous.Instance
-    {
-        Utils.Assert(
-            this.Has_Previous(),
-            `Doesn't have previous.`,
-        );
-
-        return this.Child(0) as Previous.Instance;
-    }
-
-    Has_Selector():
-        boolean
-    {
-        return (
-            this.Has_Child(1) &&
-            this.Child(1) instanceof Selector.Instance
-        );
-    }
-
-    Selector():
-        Selector.Instance
-    {
-        Utils.Assert(
-            this.Has_Selector(),
-            `Doesn't have selector.`,
-        );
-
-        return this.Child(1) as Selector.Instance;
-    }
-
-    Has_Next():
-        boolean
-    {
-        return (
-            this.Has_Child(2) &&
-            this.Child(2) instanceof Next.Instance
-        );
-    }
-
-    Next():
-        Next.Instance
-    {
-        Utils.Assert(
-            this.Has_Next(),
-            `Doesn't have next.`,
-        );
-
-        return this.Child(2) as Next.Instance;
-    }
-
     Has_Allow_Errors():
         boolean
     {
         return (
-            this.Has_Child(3) &&
-            this.Child(3) instanceof Allow_Errors.Instance
+            this.Has_Child(Child_Index.ALLOW_ERRORS) &&
+            this.Child(Child_Index.ALLOW_ERRORS) instanceof Allow_Errors.Instance
         );
     }
 
@@ -236,6 +201,86 @@ export class Instance extends Entity.Instance
             `Doesn't have allow_errors.`,
         );
 
-        return this.Child(3) as Allow_Errors.Instance;
+        return this.Child(Child_Index.ALLOW_ERRORS) as Allow_Errors.Instance;
+    }
+
+    Has_Font_Selector():
+        boolean
+    {
+        return (
+            this.Has_Child(Child_Index.FONT_SELECTOR) &&
+            this.Child(Child_Index.FONT_SELECTOR) instanceof Font_Selector.Instance
+        );
+    }
+
+    Allow_Font_Selector():
+        Font_Selector.Instance
+    {
+        Utils.Assert(
+            this.Has_Font_Selector(),
+            `Doesn't have font_selector.`,
+        );
+
+        return this.Child(Child_Index.FONT_SELECTOR) as Font_Selector.Instance;
+    }
+
+    Has_Previous():
+        boolean
+    {
+        return (
+            this.Has_Child(Child_Index.PREVIOUS) &&
+            this.Child(Child_Index.PREVIOUS) instanceof Previous.Instance
+        );
+    }
+
+    Previous():
+        Previous.Instance
+    {
+        Utils.Assert(
+            this.Has_Previous(),
+            `Doesn't have previous.`,
+        );
+
+        return this.Child(Child_Index.PREVIOUS) as Previous.Instance;
+    }
+
+    Has_Selector():
+        boolean
+    {
+        return (
+            this.Has_Child(Child_Index.SELECTOR) &&
+            this.Child(Child_Index.SELECTOR) instanceof Selector.Instance
+        );
+    }
+
+    Selector():
+        Selector.Instance
+    {
+        Utils.Assert(
+            this.Has_Selector(),
+            `Doesn't have selector.`,
+        );
+
+        return this.Child(Child_Index.SELECTOR) as Selector.Instance;
+    }
+
+    Has_Next():
+        boolean
+    {
+        return (
+            this.Has_Child(Child_Index.NEXT) &&
+            this.Child(Child_Index.NEXT) instanceof Next.Instance
+        );
+    }
+
+    Next():
+        Next.Instance
+    {
+        Utils.Assert(
+            this.Has_Next(),
+            `Doesn't have next.`,
+        );
+
+        return this.Child(Child_Index.NEXT) as Next.Instance;
     }
 }

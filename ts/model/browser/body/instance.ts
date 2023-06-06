@@ -2,12 +2,14 @@ import * as Entity from "../../entity.js";
 import * as Browser from "../instance.js";
 import * as Selection from "../../data/selection.js";
 import * as Selector from "../../selector.js";
+import * as Font_Selector from "../../font_selector.js";
 import * as Reader from "./reader.js";
 
 export class Instance extends Entity.Instance
 {
     private browser: Browser.Instance;
     private selector: Selector.Instance;
+    private font_selector: Font_Selector.Instance;
     private reader: Reader.Instance;
 
     constructor(
@@ -32,6 +34,7 @@ export class Instance extends Entity.Instance
                 does_smart_item_selection: true,
             },
         );
+        this.font_selector = new Font_Selector.Instance();
         this.reader = new Reader.Instance(
             {
                 body: this,
@@ -41,6 +44,7 @@ export class Instance extends Entity.Instance
         this.Add_Dependencies(
             [
                 this.selector,
+                this.font_selector,
                 this.reader,
             ],
         );
@@ -56,6 +60,12 @@ export class Instance extends Entity.Instance
         Selector.Instance
     {
         return this.selector;
+    }
+
+    Font_Selector():
+        Font_Selector.Instance
+    {
+        return this.font_selector;
     }
 
     Reader():

@@ -5,9 +5,17 @@ import * as Model from "../../../model/browser/body.js";
 
 import * as Events from "../../events.js";
 import * as Entity from "../../entity.js";
+import * as Font_Selector from "../../font_selector.js";
 import * as Selector from "../../selector.js";
 import * as Browser from "../instance.js";
 import * as Reader from "./reader.js";
+
+enum Child_Index
+{
+    FONT_SELECTOR,
+    SELECTOR,
+    READER,
+}
 
 export class Instance extends Entity.Instance
 {
@@ -77,6 +85,17 @@ export class Instance extends Entity.Instance
                 {
                     event_name: new Event.Name(
                         Event.Prefix.ON,
+                        Events.FONT_SELECTOR_SLOT_ITEM_SELECT,
+                        this.Browser().ID(),
+                    ),
+                    event_handler: this.On_Font_Selector_Slot_Item_Select,
+                    event_priority: 10,
+                },
+            ),
+            new Event.Listener_Info(
+                {
+                    event_name: new Event.Name(
+                        Event.Prefix.ON,
                         Events.TOGGLE_ALLOW_ERRORS,
                         this.Browser().ID(),
                     ),
@@ -91,11 +110,20 @@ export class Instance extends Entity.Instance
         void
     {
         if (
+            !this.Has_Font_Selector() ||
             !this.Has_Selector() ||
             !this.Has_Reader()
         ) {
             this.Abort_All_Children();
 
+            new Font_Selector.Instance(
+                {
+                    parent: this,
+                    model: () => this.Model().Font_Selector(),
+                    event_grid_id: () => this.Browser().ID(),
+                    is_visible: () => this.Model().Browser().Commander().Font_Selector().Is_Activated(),
+                },
+            );
             new Selector.Instance(
                 {
                     parent: this,
@@ -137,6 +165,12 @@ export class Instance extends Entity.Instance
         await this.Model().Reader().Refresh_File();
     }
 
+    private async On_Font_Selector_Slot_Item_Select():
+        Promise<void>
+    {
+        await this.Model().Reader().Refresh_File();
+    }
+
     private async On_Toggle_Allow_Errors():
         Promise<void>
     {
@@ -155,12 +189,32 @@ export class Instance extends Entity.Instance
         return this.Parent() as Browser.Instance;
     }
 
+    Has_Font_Selector():
+        boolean
+    {
+        return (
+            this.Has_Child(Child_Index.FONT_SELECTOR) &&
+            this.Child(Child_Index.FONT_SELECTOR) instanceof Font_Selector.Instance
+        );
+    }
+
+    Font_Selector():
+        Font_Selector.Instance
+    {
+        Utils.Assert(
+            this.Has_Font_Selector(),
+            `Does not have a font_selector.`,
+        );
+
+        return this.Child(Child_Index.FONT_SELECTOR) as Font_Selector.Instance;
+    }
+
     Has_Selector():
         boolean
     {
         return (
-            this.Has_Child(0) &&
-            this.Child(0) instanceof Selector.Instance
+            this.Has_Child(Child_Index.SELECTOR) &&
+            this.Child(Child_Index.SELECTOR) instanceof Selector.Instance
         );
     }
 
@@ -172,15 +226,15 @@ export class Instance extends Entity.Instance
             `Does not have a selector.`,
         );
 
-        return this.Child(0) as Selector.Instance;
+        return this.Child(Child_Index.SELECTOR) as Selector.Instance;
     }
 
     Has_Reader():
         boolean
     {
         return (
-            this.Has_Child(1) &&
-            this.Child(1) instanceof Reader.Instance
+            this.Has_Child(Child_Index.READER) &&
+            this.Child(Child_Index.READER) instanceof Reader.Instance
         );
     }
 
@@ -192,6 +246,6 @@ export class Instance extends Entity.Instance
             `Does not have a reader.`,
         );
 
-        return this.Child(1) as Reader.Instance;
+        return this.Child(Child_Index.READER) as Reader.Instance;
     }
 }

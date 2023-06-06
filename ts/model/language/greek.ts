@@ -1171,40 +1171,6 @@ export function Normalize_With_Combined_Points(
     return result;
 }
 
-const FONT_NAME_TO_CSS_STYLES: { [font_name: string]: { [property: string]: string } } = {
-    "Gentium": {
-        "font-family": `"GentiumPlusW"`,
-        "font-size": `1.25em`,
-        "line-height": `1.3`,
-    },
-
-    "Quivira": {
-        "font-family": `"Quivira"`,
-        "font-size": `1.25em`,
-        "line-height": `1.3`,
-    },
-
-    "Archaic": {
-        "font-family": `"Archaic Greek"`,
-        "font-size": `1.25em`,
-        "line-height": `1.3`,
-        "word-spacing": `0.215em`,
-    },
-};
-
-export function Font_CSS_Styles(
-    font_name: string,
-):
-    { [property: string]: string }
-{
-    Utils.Assert(
-        FONT_NAME_TO_CSS_STYLES.hasOwnProperty(font_name),
-        `Unknown font_name.`,
-    );
-
-    return FONT_NAME_TO_CSS_STYLES[font_name];
-}
-
 const GREEK_POINT_TO_ARCHAIC_POINT: { [baked_point: string]: string } = {
     "α": "a",
     "Α": "A",
@@ -1265,62 +1231,6 @@ export function Greek_Point_To_Archaic_Point(
     return GREEK_POINT_TO_ARCHAIC_POINT[greek_point];
 }
 
-const FONT_NAME_TO_TEXT_ADAPTOR: { [font_name: string]: (text: string) => string } = {
-    "Gentium": (text: string) => text,
-
-    "Quivira": (text: string) => text,
-
-    "Archaic": function (text: string):
-        string
-    {
-        let result: string = ``;
-
-        for (
-            let iterator: Unicode.Iterator = new Unicode.Iterator(
-                {
-                    text: text,
-                },
-            );
-            !iterator.Is_At_End();
-            iterator = iterator.Next()
-        ) {
-            let point: string = iterator.Point();
-
-            if (!Is_Secondary_Combining_Point(point)) {
-                const maybe_primary_combining_point: string | null =
-                    Baked_Point_To_Primary_Combining_Point(point);
-                if (maybe_primary_combining_point != null) {
-                    point = maybe_primary_combining_point;
-                }
-
-                const maybe_archaic_point: string | null =
-                    Greek_Point_To_Archaic_Point(point);
-                if (maybe_archaic_point != null) {
-                    point = maybe_archaic_point;
-                }
-
-                result += point;
-            }
-        }
-
-        return result;
-    },
-};
-
-export function Adapt_Text_To_Font(
-    font_name: string,
-    text: string,
-):
-    string
-{
-    Utils.Assert(
-        FONT_NAME_TO_TEXT_ADAPTOR.hasOwnProperty(font_name),
-        `Unknown font_name.`,
-    );
-
-    return (FONT_NAME_TO_TEXT_ADAPTOR[font_name] as (text: string) => string)(text);
-}
-
 import * as Font from "../font.js";
 
 import { Name } from "./name.js";
@@ -1341,17 +1251,79 @@ export class Instance extends Language.Instance
                 font_adaptors: [
                     new Font_Adaptor.Instance(
                         {
-                            font_name: Font.Name.QUIVIRA,
+                            font_name: Font.Name.GENTIUM,
+                            short_font_name: Font.Name.GENTIUM,
                             styles: {
                                 "font-size": `1.25em`,
                                 "line-height": `1.3`,
+                            },
+                        },
+                    ),
+                    new Font_Adaptor.Instance(
+                        {
+                            font_name: Font.Name.GENTIUM_BOOK,
+                            short_font_name: Font.Name.GENTIUM_BOOK,
+                            styles: {
+                                "font-size": `1.25em`,
+                                "line-height": `1.3`,
+                            },
+                        },
+                    ),
+                    new Font_Adaptor.Instance(
+                        {
+                            font_name: Font.Name.QUIVIRA,
+                            short_font_name: Font.Name.QUIVIRA,
+                            styles: {
+                                "font-size": `1.25em`,
+                                "line-height": `1.3`,
+                            },
+                        },
+                    ),
+                    new Font_Adaptor.Instance(
+                        {
+                            font_name: Font.Name.KRIS_J_UDD_GREEK_ARCHAIC,
+                            short_font_name: `K.J.U. Archaic`,
+                            styles: {
+                                "font-size": `1.25em`,
+                                "line-height": `1.3`,
+                                "word-spacing": `0.215em`,
                             },
                             treater: function (
                                 text: string,
                             ):
                                 string
                             {
-                                return text;
+                                let result: string = ``;
+
+                                for (
+                                    let iterator: Unicode.Iterator = new Unicode.Iterator(
+                                        {
+                                            text: text,
+                                        },
+                                    );
+                                    !iterator.Is_At_End();
+                                    iterator = iterator.Next()
+                                ) {
+                                    let point: string = iterator.Point();
+
+                                    if (!Is_Secondary_Combining_Point(point)) {
+                                        const maybe_primary_combining_point: string | null =
+                                            Baked_Point_To_Primary_Combining_Point(point);
+                                        if (maybe_primary_combining_point != null) {
+                                            point = maybe_primary_combining_point;
+                                        }
+
+                                        const maybe_archaic_point: string | null =
+                                            Greek_Point_To_Archaic_Point(point);
+                                        if (maybe_archaic_point != null) {
+                                            point = maybe_archaic_point;
+                                        }
+
+                                        result += point;
+                                    }
+                                }
+
+                                return result;
                             },
                         },
                     ),

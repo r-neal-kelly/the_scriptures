@@ -5,19 +5,30 @@ import * as Fonts from "../fonts.js";
 
 export class Instance
 {
+    private static DEFAULT_TREATER: (text: string) => string = function (
+        text: string,
+    ):
+        string
+    {
+        return text;
+    }
+
     private font: Font.Instance;
+    private short_font_name: string;
     private styles: { [css_property: string]: string };
     private treater: (text: string) => string;
 
     constructor(
         {
             font_name,
+            short_font_name,
             styles,
-            treater
+            treater = Instance.DEFAULT_TREATER,
         }: {
             font_name: Font.Name,
+            short_font_name: string,
             styles: { [css_property: string]: string },
-            treater: (text: string) => string,
+            treater?: (text: string) => string,
         },
     )
     {
@@ -27,6 +38,7 @@ export class Instance
         );
 
         this.font = Fonts.Singleton().Font(font_name);
+        this.short_font_name = short_font_name;
         this.styles = styles;
         this.treater = treater;
 
@@ -39,6 +51,12 @@ export class Instance
         Font.Instance
     {
         return this.font;
+    }
+
+    Short_Font_Name():
+        string
+    {
+        return this.short_font_name;
     }
 
     Styles():

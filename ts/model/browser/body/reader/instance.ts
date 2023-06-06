@@ -1,7 +1,7 @@
-import { Name } from "../../../../types.js";
-
 import * as Entity from "../../../entity.js";
+import * as Font from "../../../font.js";
 import * as Language from "../../../language.js";
+import * as Languages from "../../../languages.js";
 import * as Data from "../../../data.js";
 import * as Text from "../../../text.js";
 import * as Buffer from "../../../buffer.js";
@@ -12,6 +12,7 @@ export class Instance extends Entity.Instance
     private static blank_file: Buffer.Text.Instance = new Buffer.Text.Instance(
         {
             default_language_name: Language.Name.ENGLISH,
+            default_font_name: Languages.Singleton().Default_Global_Font_Name(Language.Name.ENGLISH),
             text: new Text.Instance(
                 {
                     dictionary: new Text.Dictionary.Instance(
@@ -80,25 +81,35 @@ export class Instance extends Entity.Instance
     {
         const new_data: Data.File.Instance | null =
             this.Body().Selector().Maybe_File();
-        const allows_errors: boolean =
-            this.Body().Browser().Commander().Allow_Errors().Is_Activated();
-        if (
-            this.Maybe_Current_Data() != new_data ||
-            this.current_file.Allows_Errors() != allows_errors
-        ) {
-            this.current_data = new_data;
-            if (new_data != null) {
+        if (new_data != null) {
+            const default_language_name: Language.Name | null =
+                new_data.Default_Language_Name();
+            const default_font_name: Font.Name | null =
+                this.Body().Font_Selector().Some_Selected_Font_Name(default_language_name);
+            const allows_errors: boolean =
+                this.Body().Browser().Commander().Allow_Errors().Is_Activated();
+            if (
+                this.Maybe_Current_Data() != new_data ||
+                this.current_file.Default_Font_Name() != default_font_name ||
+                this.current_file.Allows_Errors() != allows_errors
+            ) {
+                this.current_data = new_data;
                 this.current_file = new Buffer.Text.Instance(
                     {
-                        default_language_name: new_data.Default_Language_Name(),
+                        default_language_name: default_language_name,
+                        default_font_name: default_font_name,
                         text: await new_data.Text(),
                         allow_errors: allows_errors,
                     },
                 );
-            } else {
-                this.current_file = Instance.Blank_File();
+                await this.current_file.Ready();
             }
-            await this.current_file.Ready();
+        } else {
+            if (this.Maybe_Current_Data() != null) {
+                this.current_data = new_data;
+                this.current_file = Instance.Blank_File();
+                await this.current_file.Ready();
+            }
         }
     }
 }

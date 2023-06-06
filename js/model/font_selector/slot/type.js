@@ -1,0 +1,1 @@
+export var Type;!function(T){T[T.LANGUAGES=0]="LANGUAGES",T[T.FONTS=1]="FONTS"}(Type||(Type={}));

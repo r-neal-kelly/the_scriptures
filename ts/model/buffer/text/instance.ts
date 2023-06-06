@@ -4,6 +4,7 @@ import { Index } from "../../../types.js";
 import * as Utils from "../../../utils.js";
 
 import * as Entity from "../../entity.js";
+import * as Font from "../../font.js";
 import * as Language from "../../language.js";
 import * as Languages from "../../languages.js";
 import * as Text from "../../text.js";
@@ -41,6 +42,7 @@ export class Instance extends Entity.Instance
     }
 
     private default_language_name: Language.Name;
+    private default_font_name: Font.Name;
     private text: Text.Instance;
     private lines: Array<Line.Instance>;
     private line_path_type: Text.Line.Path_Type;
@@ -48,10 +50,12 @@ export class Instance extends Entity.Instance
     constructor(
         {
             default_language_name,
+            default_font_name,
             text,
             allow_errors,
         }: {
             default_language_name: Language.Name,
+            default_font_name: Font.Name,
             text: Text.Instance,
             allow_errors: boolean,
         },
@@ -60,6 +64,7 @@ export class Instance extends Entity.Instance
         super();
 
         this.default_language_name = default_language_name;
+        this.default_font_name = default_font_name;
         this.text = text;
         this.lines = [];
         if (allow_errors) {
@@ -91,6 +96,12 @@ export class Instance extends Entity.Instance
         return this.default_language_name;
     }
 
+    Default_Font_Name():
+        Font.Name
+    {
+        return this.default_font_name;
+    }
+
     Default_Text_Direction():
         Language.Direction
     {
@@ -100,7 +111,10 @@ export class Instance extends Entity.Instance
     Default_Text_Styles():
         any
     {
-        return Languages.Singleton().Current_Global_Font_Styles(this.default_language_name);
+        return Languages.Singleton().Font_Styles(
+            this.Default_Language_Name(),
+            this.Default_Font_Name(),
+        );
     }
 
     Text():

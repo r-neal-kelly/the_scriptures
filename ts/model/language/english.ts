@@ -19,6 +19,7 @@ export class Instance extends Language.Instance
                     new Font_Adaptor.Instance(
                         {
                             font_name: Font.Name.ORKNEY,
+                            short_font_name: Font.Name.ORKNEY,
                             styles: {
                                 "font-size": `1em`,
                                 "line-height": `1.2`,

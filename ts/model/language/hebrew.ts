@@ -18,17 +18,21 @@ export class Instance extends Language.Instance
                 font_adaptors: [
                     new Font_Adaptor.Instance(
                         {
-                            font_name: Font.Name.EZRA_SR,
+                            font_name: Font.Name.EZRA,
+                            short_font_name: Font.Name.EZRA,
                             styles: {
                                 "font-size": `1.125em`,
                                 "line-height": `1.45`,
                             },
-                            treater: function (
-                                text: string,
-                            ):
-                                string
-                            {
-                                return text;
+                        },
+                    ),
+                    new Font_Adaptor.Instance(
+                        {
+                            font_name: Font.Name.EZRA_SR,
+                            short_font_name: Font.Name.EZRA_SR,
+                            styles: {
+                                "font-size": `1.125em`,
+                                "line-height": `1.45`,
                             },
                         },
                     ),

@@ -11,6 +11,9 @@ export class Instance
     private direction: Direction;
 
     private font_names: Array<Font.Name>;
+    private short_font_names: Array<string>;
+    private font_name_to_short_font_names: { [font_name: string]: string };
+    private short_font_name_to_font_names: { [short_font_name: string]: Font.Name };
     private default_font_name: Font.Name;
     private current_font_name: Font.Name;
     private font_adaptors: { [font_name: string]: Font_Adaptor.Instance };
@@ -37,14 +40,30 @@ export class Instance
         this.direction = direction;
 
         this.font_names = [];
+        this.short_font_names = [];
+        this.font_name_to_short_font_names = {};
+        this.short_font_name_to_font_names = {};
         this.default_font_name = default_font_name;
         this.current_font_name = current_font_name;
         this.font_adaptors = {};
 
         for (const font_adaptor of font_adaptors) {
             const font_name: Font.Name = font_adaptor.Font().Name();
+            const short_font_name: string = font_adaptor.Short_Font_Name();
 
             this.font_names.push(font_name);
+            this.short_font_names.push(short_font_name);
+
+            Utils.Assert(
+                !this.font_name_to_short_font_names.hasOwnProperty(font_name),
+                `cannot have the same font_name for multiple fonts`,
+            );
+            this.font_name_to_short_font_names[font_name] = short_font_name;
+            Utils.Assert(
+                !this.short_font_name_to_font_names.hasOwnProperty(short_font_name),
+                `cannot have the same short_font_name for multiple fonts`,
+            );
+            this.short_font_name_to_font_names[short_font_name] = font_name;
 
             Utils.Assert(
                 !this.font_adaptors.hasOwnProperty(font_name),
@@ -52,11 +71,13 @@ export class Instance
             );
             this.font_adaptors[font_name] = font_adaptor;
         }
+        this.font_names.sort();
+        this.short_font_names.sort();
 
         Object.freeze(this.font_names);
-        if (!Object.isFrozen(this.font_adaptors)) {
-            Object.freeze(this.font_adaptors);
-        }
+        Object.freeze(this.short_font_names);
+        Object.freeze(this.short_font_name_to_font_names);
+        Object.freeze(this.font_adaptors);
 
         Utils.Assert(
             this.Has_Font_Adaptor(this.Default_Font_Name()),
@@ -86,10 +107,56 @@ export class Instance
         return Array.from(this.font_names);
     }
 
+    Short_Font_Names():
+        Array<string>
+    {
+        return Array.from(this.short_font_names);
+    }
+
+    Font_Name_To_Short_Font_Name(
+        font_name: Font.Name,
+    ):
+        string
+    {
+        Utils.Assert(
+            this.font_name_to_short_font_names.hasOwnProperty(font_name),
+            `does not have font_name: ${font_name}`,
+        );
+
+        return this.font_name_to_short_font_names[font_name];
+    }
+
+    Short_Font_Name_To_Font_Name(
+        short_font_name: string,
+    ):
+        Font.Name
+    {
+        Utils.Assert(
+            this.short_font_name_to_font_names.hasOwnProperty(short_font_name),
+            `does not have short_font_name: ${short_font_name}`,
+        );
+
+        return this.short_font_name_to_font_names[short_font_name];
+    }
+
+    Font_Styles(
+        font_name: Font.Name,
+    ):
+        { [css_property: string]: string }
+    {
+        return this.Some_Font_Adaptor(font_name).Styles();
+    }
+
     Default_Font_Name():
         Font.Name
     {
         return this.default_font_name;
+    }
+
+    Default_Short_Font_Name():
+        string
+    {
+        return this.Font_Name_To_Short_Font_Name(this.Default_Font_Name());
     }
 
     Default_Font_Styles():
@@ -115,6 +182,12 @@ export class Instance
         );
 
         this.current_font_name = font_name;
+    }
+
+    Current_Short_Font_Name():
+        string
+    {
+        return this.Font_Name_To_Short_Font_Name(this.Current_Font_Name());
     }
 
     Current_Font_Styles():

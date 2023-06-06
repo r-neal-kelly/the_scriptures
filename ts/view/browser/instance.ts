@@ -139,6 +139,28 @@ export class Instance extends Entity.Instance
                 {
                     event_name: new Event.Name(
                         Event.Prefix.AFTER,
+                        Events.FONT_SELECTOR_TOGGLE,
+                        this.ID(),
+                    ),
+                    event_handler: this.After_Font_Selector_Toggle,
+                    event_priority: 0,
+                },
+            ),
+            new Event.Listener_Info(
+                {
+                    event_name: new Event.Name(
+                        Event.Prefix.AFTER,
+                        Events.FONT_SELECTOR_SLOT_ITEM_SELECT,
+                        this.ID(),
+                    ),
+                    event_handler: this.After_Font_Selector_Slot_Item_Select,
+                    event_priority: 0,
+                },
+            ),
+            new Event.Listener_Info(
+                {
+                    event_name: new Event.Name(
+                        Event.Prefix.AFTER,
                         Events.TOGGLE_ALLOW_ERRORS,
                         this.ID(),
                     ),
@@ -198,6 +220,18 @@ export class Instance extends Entity.Instance
     }
 
     private async After_Selector_Slot_Item_Select():
+        Promise<void>
+    {
+        this.Refresh();
+    }
+
+    private async After_Font_Selector_Toggle():
+        Promise<void>
+    {
+        this.Refresh();
+    }
+
+    private async After_Font_Selector_Slot_Item_Select():
         Promise<void>
     {
         this.Refresh();
