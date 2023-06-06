@@ -168,7 +168,7 @@ export class Instance extends Entity.Instance
     private async On_Font_Selector_Slot_Item_Select():
         Promise<void>
     {
-        await this.Model().Reader().Refresh_File();
+        await this.Model().Reader().Refresh_File(true);
     }
 
     private async On_Toggle_Allow_Errors():

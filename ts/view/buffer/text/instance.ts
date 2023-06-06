@@ -184,7 +184,7 @@ export class Instance extends Entity.Instance
     override On_Restyle():
         string | { [index: string]: string; }
     {
-        return this.Model().Default_Text_Styles();
+        return this.Model().Default_Font_Styles();
     }
 
     Model():

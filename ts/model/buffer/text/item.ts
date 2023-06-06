@@ -197,10 +197,27 @@ export class Instance extends Entity.Instance
         return this.Part().Has_Argument_Style();
     }
 
+    Has_Override_Language_Name():
+        boolean
+    {
+        return this.Part().Language() != null;
+    }
+
     Override_Language_Name():
         Language.Name | null
     {
         return this.Part().Language();
+    }
+
+    Some_Override_Language_Name():
+        Language.Name
+    {
+        Utils.Assert(
+            this.Has_Override_Language_Name(),
+            `doesn't have an override language`,
+        );
+
+        return this.Part().Language() as Language.Name;
     }
 
     Language_Name():
@@ -214,10 +231,43 @@ export class Instance extends Entity.Instance
         }
     }
 
+    Override_Font_Name():
+        Font.Name | null
+    {
+        const language_name: Language.Name | null = this.Override_Language_Name();
+        if (language_name != null) {
+            return this.Segment().Line().Buffer().Language_Font_Name(language_name);
+        } else {
+            return null;
+        }
+    }
+
     Font_Name():
         Font.Name
     {
-        return this.Segment().Line().Buffer().Default_Font_Name();
+        const override: Font.Name | null = this.Override_Font_Name();
+        if (override != null) {
+            return override;
+        } else {
+            return this.Segment().Line().Buffer().Default_Font_Name();
+        }
+    }
+
+    Has_Override_Font_Styles():
+        boolean
+    {
+        return this.Has_Override_Language_Name();
+    }
+
+    Some_Override_Font_Styles():
+        { [css_property: string]: string }
+    {
+        Utils.Assert(
+            this.Has_Override_Font_Styles(),
+            `doesn't have override font styles`,
+        );
+
+        return this.Segment().Line().Buffer().Override_Font_Styles(this.Some_Override_Language_Name());
     }
 
     Is_Greek():

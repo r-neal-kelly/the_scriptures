@@ -43,6 +43,7 @@ export class Instance extends Entity.Instance
 
     private default_language_name: Language.Name;
     private default_font_name: Font.Name;
+    private language_font_name: (language_name: Language.Name) => Font.Name;
     private text: Text.Instance;
     private lines: Array<Line.Instance>;
     private line_path_type: Text.Line.Path_Type;
@@ -51,11 +52,13 @@ export class Instance extends Entity.Instance
         {
             default_language_name,
             default_font_name,
+            language_font_name,
             text,
             allow_errors,
         }: {
             default_language_name: Language.Name,
             default_font_name: Font.Name,
+            language_font_name: (language_name: Language.Name) => Font.Name,
             text: Text.Instance,
             allow_errors: boolean,
         },
@@ -65,6 +68,7 @@ export class Instance extends Entity.Instance
 
         this.default_language_name = default_language_name;
         this.default_font_name = default_font_name;
+        this.language_font_name = language_font_name;
         this.text = text;
         this.lines = [];
         if (allow_errors) {
@@ -102,18 +106,37 @@ export class Instance extends Entity.Instance
         return this.default_font_name;
     }
 
+    Language_Font_Name(
+        language_name: Language.Name,
+    ):
+        Font.Name
+    {
+        return this.language_font_name(language_name);
+    }
+
     Default_Text_Direction():
         Language.Direction
     {
         return Languages.Singleton().Direction(this.default_language_name);
     }
 
-    Default_Text_Styles():
-        any
+    Default_Font_Styles():
+        { [css_property: string]: string }
     {
         return Languages.Singleton().Font_Styles(
             this.Default_Language_Name(),
             this.Default_Font_Name(),
+        );
+    }
+
+    Override_Font_Styles(
+        language_name: Language.Name,
+    ):
+        { [css_property: string]: string }
+    {
+        return Languages.Singleton().Font_Styles(
+            language_name,
+            this.Language_Font_Name(language_name),
         );
     }
 

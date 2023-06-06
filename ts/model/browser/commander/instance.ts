@@ -6,6 +6,12 @@ import * as Previous from "./previous.js";
 import * as Selector from "./selector.js";
 import * as Next from "./next.js";
 
+interface Selector_i
+{
+    Activate(): void;
+    Deactivate(): void;
+}
+
 export class Instance extends Entity.Instance
 {
     private browser: Browser.Instance;
@@ -14,6 +20,7 @@ export class Instance extends Entity.Instance
     private previous: Previous.Instance;
     private selector: Selector.Instance;
     private next: Next.Instance;
+    private current_selector: Selector_i | null;
 
     constructor(
         {
@@ -58,6 +65,7 @@ export class Instance extends Entity.Instance
                 commander: this,
             },
         );
+        this.current_selector = null;
 
         this.Add_Dependencies(
             [
@@ -104,5 +112,22 @@ export class Instance extends Entity.Instance
         Next.Instance
     {
         return this.next;
+    }
+
+    __Set_Current_Selector__(
+        selector: Selector_i | null,
+    ):
+        void
+    {
+        if (this.current_selector != null) {
+            this.current_selector.Deactivate();
+        }
+        this.current_selector = selector;
+    }
+
+    __Unset_Current_Selector__():
+        void
+    {
+        this.current_selector = null;
     }
 }

@@ -43,6 +43,18 @@ export class Instance
         this.treater = treater;
 
         this.styles[`font-family`] = `"${this.font.Family()}"`;
+        if (!this.styles.hasOwnProperty(`font-size`)) {
+            this.styles[`font-size`] = `1em`;
+        }
+        if (!this.styles.hasOwnProperty(`line-height`)) {
+            this.styles[`line-height`] = `1`;
+        }
+        if (!this.styles.hasOwnProperty(`letter-spacing`)) {
+            this.styles[`letter-spacing`] = `normal`;
+        }
+        if (!this.styles.hasOwnProperty(`word-spacing`)) {
+            this.styles[`word-spacing`] = `normal`;
+        }
 
         Object.freeze(this.styles);
     }

@@ -59,12 +59,14 @@ export class Instance extends Entity.Instance
         void
     {
         this.is_activated = true;
+        this.Commander().__Set_Current_Selector__(this);
     }
 
     Deactivate():
         void
     {
         this.is_activated = false;
+        this.Commander().__Unset_Current_Selector__();
     }
 
     Toggle():

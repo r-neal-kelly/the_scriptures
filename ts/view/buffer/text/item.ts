@@ -84,10 +84,8 @@ export class Instance extends Entity.Instance
     {
         const model: Model.Instance = this.Model();
         if (!model.Is_Blank()) {
-            const language: Model_Language.Name | null =
-                model.Override_Language_Name();
-            if (language) {
-                return Model_Languages.Singleton().Current_Global_Font_Styles(language);
+            if (model.Has_Override_Font_Styles()) {
+                return model.Some_Override_Font_Styles();
             } else {
                 return ``;
             }

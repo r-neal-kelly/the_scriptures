@@ -13,6 +13,13 @@ export class Instance extends Entity.Instance
         {
             default_language_name: Language.Name.ENGLISH,
             default_font_name: Languages.Singleton().Default_Global_Font_Name(Language.Name.ENGLISH),
+            language_font_name: function (
+                language_name: Language.Name,
+            ):
+                Font.Name
+            {
+                return Languages.Singleton().Default_Global_Font_Name(language_name);
+            },
             text: new Text.Instance(
                 {
                     dictionary: new Text.Dictionary.Instance(
@@ -76,7 +83,9 @@ export class Instance extends Entity.Instance
         return this.current_file;
     }
 
-    async Refresh_File():
+    async Refresh_File(
+        force: boolean = false,
+    ):
         Promise<void>
     {
         const new_data: Data.File.Instance | null =
@@ -89,6 +98,7 @@ export class Instance extends Entity.Instance
             const allows_errors: boolean =
                 this.Body().Browser().Commander().Allow_Errors().Is_Activated();
             if (
+                force ||
                 this.Maybe_Current_Data() != new_data ||
                 this.current_file.Default_Font_Name() != default_font_name ||
                 this.current_file.Allows_Errors() != allows_errors
@@ -98,6 +108,16 @@ export class Instance extends Entity.Instance
                     {
                         default_language_name: default_language_name,
                         default_font_name: default_font_name,
+                        language_font_name: function (
+                            this: Instance,
+                            language_name: Language.Name,
+                        ):
+                            Font.Name
+                        {
+                            return this.Body()
+                                .Font_Selector()
+                                .Some_Selected_Font_Name(language_name);
+                        }.bind(this),
                         text: await new_data.Text(),
                         allow_errors: allows_errors,
                     },
@@ -105,7 +125,10 @@ export class Instance extends Entity.Instance
                 await this.current_file.Ready();
             }
         } else {
-            if (this.Maybe_Current_Data() != null) {
+            if (
+                force ||
+                this.Maybe_Current_Data() != null
+            ) {
                 this.current_data = new_data;
                 this.current_file = Instance.Blank_File();
                 await this.current_file.Ready();
