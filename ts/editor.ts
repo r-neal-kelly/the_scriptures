@@ -1281,7 +1281,7 @@ class Editor
                         keyboard_event.preventDefault();
 
                         // Hebrew
-                        document.body.style.fontFamily = `"${Font.Name.EZRA_SR}"`;
+                        document.body.style.fontFamily = `"${Font.Family.EZRA_SR}"`;
                         document.body.style.fontSize = `30px`;
                     }
                 } else if (keyboard_event.key === `*`) {
@@ -1289,7 +1289,7 @@ class Editor
                         keyboard_event.preventDefault();
 
                         // Greek
-                        document.body.style.fontFamily = `"${Font.Name.GENTIUM}"`;
+                        document.body.style.fontFamily = `"${Font.Family.GENTIUM}"`;
                         document.body.style.fontSize = `32px`;
                     }
                 } else if (keyboard_event.key === `&`) {
@@ -1297,7 +1297,7 @@ class Editor
                         keyboard_event.preventDefault();
 
                         // Latin
-                        document.body.style.fontFamily = `"${Font.Name.GENTIUM}"`;
+                        document.body.style.fontFamily = `"${Font.Family.GENTIUM}"`;
                         document.body.style.fontSize = `26px`;
                     }
                 }
