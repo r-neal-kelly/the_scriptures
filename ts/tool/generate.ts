@@ -58,6 +58,7 @@ function Has_File(
 
 async function Read_File(
     file_path: Path,
+    encoding: string = `utf8`,
 ):
     Promise<string>
 {
@@ -70,7 +71,7 @@ async function Read_File(
         {
             fs.readFile(
                 file_path,
-                `utf8`,
+                encoding,
                 function (
                     error: Error | null,
                     file_text: string,
@@ -91,6 +92,7 @@ async function Read_File(
 async function Write_File(
     file_path: Path,
     data: string,
+    encoding: string = `utf8`,
 ):
     Promise<void>
 {
@@ -104,7 +106,7 @@ async function Write_File(
             fs.writeFile(
                 file_path,
                 data,
-                `utf8`,
+                encoding,
                 function (
                     error: Error | null,
                 ):
@@ -360,7 +362,7 @@ async function Generate():
                 for (const [file_index, file_name] of file_names.entries()) {
                     const file_path: Path = `${files_path}/${file_name}`;
                     const file_leaf: Data.File.Leaf = {
-                        name: file_name.replace(/\.[^.]*$/, `.comp`),
+                        name: file_name.replace(/\.[^.]*$/, `.${Data.Version.Dictionary.Symbol.EXTENSION}`),
                         index: file_index,
                     };
                     const text: Text.Instance = new Text.Instance(
@@ -458,7 +460,7 @@ async function Generate():
                         `Invalid decompression!`,
                     );
                     await Write_File(
-                        `${files_path}/${file_name.replace(/\.[^.]*$/, `.comp`)}`,
+                        `${files_path}/${file_name.replace(/\.[^.]*$/, `.${Data.Version.Dictionary.Symbol.EXTENSION}`)}`,
                         compressed_file_text,
                     );
                 }
