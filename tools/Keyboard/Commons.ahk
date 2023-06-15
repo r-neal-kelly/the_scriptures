@@ -3,7 +3,7 @@ global subset   := "Standard"
 global langs    := [ "English", "Hebrew", "Greek", "Latin", "Ge'ez", "Aramaic" ]
 global subsets  := { "English": [ "Default" ]
                    , "Hebrew" : [ "Phonetic", "International", "Points", "Accents" ]
-                   , "Greek"  : [ "Polytonic", "Monotonic", "Combining" ]
+                   , "Greek"  : [ "Combining", "Polytonic", "Monotonic" ]
                    , "Latin"  : [ "Classical", "Italic" ] 
                    , "Ge'ez"  : [ "Abugida", "Abjad" ]
                    , "Aramaic": [ "Syriac", "Samaritan", "Imperial", "Phoenician" ] }

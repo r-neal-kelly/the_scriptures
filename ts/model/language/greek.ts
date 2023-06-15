@@ -1116,6 +1116,7 @@ export function Normalize_With_Baked_Points(
                     if (baked_point != null) {
                         result += baked_point;
                     } else {
+                        /*
                         console.log(
                             `
                                 warning: unknown combining cluster
@@ -1126,6 +1127,7 @@ export function Normalize_With_Baked_Points(
                                 from: ${text}
                             `,
                         );
+                        */
 
                         result += combining_cluster;
                     }

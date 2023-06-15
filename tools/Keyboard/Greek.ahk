@@ -384,3 +384,23 @@ Greek.Com := { "ε": "̓" ; Combining Comma Above (Smooth Breath)
              , "μ": "̄" ; Combining Macron
              , "β": "̆" ; Combining Breve
              , "": "" }
+
+Greek.Separate := { "̓": "᾿" ; Psili
+                  ;, "0": "῎" ; Psili and Oxia
+                  ;, "0": "῍" ; Psili and Varia
+                  ;, "0": "῏" ; Psili and Perispomeni
+                  , "̔": "῾" ; Dasia
+                  ;, "0": "῞" ; Dasia and Oxia
+                  ;, "0": "῝" ; Dasia and Varia
+                  ;, "0": "῟" ; Dasia and Perispomeni
+                  ;, "0": "´" ; Oxia
+                  ;, "0": "`" ; Varia
+                  ;, "0": "῀" ; Perispomeni
+                  ;, "0": "ͺ" ; Ypogegrammeni
+                  ;, "0": "¨" ; Diaeresis
+                  ;, "0": "΅" ; Dialytika and Oxia
+                  ;, "0": "῭" ; Dialytika and Varia
+                  ;, "0": "῁" ; Dialytika and Perispomeni
+                  ;, "0": "¯" ; Macron
+                  ;, "0": "˘" ; Breve
+                  , "": "" }

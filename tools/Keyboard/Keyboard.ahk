@@ -343,7 +343,7 @@
   !':: Send ̓  ; Combining Greek Koronis
   ![:: Send ̈́  ; Combining Greek Dialytika Tonos
 
-  ?:: αdeadkey("Com")
+  ?:: αdeadkey("Separate")
 
 #If (lang = "Latin")
   LAlt:: ædeadkey()
