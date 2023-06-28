@@ -91,7 +91,13 @@ Parameter #1:
                     column >= columns_b.length ||
                     columns_a[column] !== columns_b[column]
                 ) {
-                    results.push(`Row: ${row + 1}, Column: ${column + 1}`);
+                    const COLUMNS_A_FRONT_COUNT = 24;
+                    const columns_a_front = columns_a.length > COLUMNS_A_FRONT_COUNT ?
+                        `${columns_a.slice(0, COLUMNS_A_FRONT_COUNT)}...` :
+                        columns_a.slice(0, COLUMNS_A_FRONT_COUNT);
+
+                    results.push(`Row: ${row + 1}, Column: ${column + 1}, Front: ${columns_a_front}`);
+
                     break;
                 }
             }
