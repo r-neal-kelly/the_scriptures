@@ -1,64 +1,33 @@
-⸨cen⸩פרשה כב׃
+⸨cen⸩CAPUT XXII⸼
 
-¹ אִם־בַּמַּחְתֶּ֛רֶת יִמָּצֵ֥א הַגַּנָּ֖ב וְהֻכָּ֣ה וָמֵ֑ת אֵ֥ין לֹ֖ו דָּמִֽים׃
-² אִם־זָֽרְחָ֥ה הַשֶּׁ֛מֶשׁ עָלָ֖יו דָּמִ֣ים לֹ֑ו שַׁלֵּ֣ם יְשַׁלֵּ֔ם אִם⸨err:־⸩־־⸨/err⸩אֵ֣ין לֹ֔ו וְנִמְכַּ֖ר בִּגְנֵֽבָתֹֽו׃
-³ אִם־הִמָּצֵא֩ תִמָּצֵ֨א בְיָדֹ֜ו הַגְּנֵבָ֗ה מִשֹּׁ֧ור עַד־חֲמֹ֛ור עַד־שֶׂ֖ה חַיִּ֑ים שְׁנַ֖יִם יְשַׁלֵּֽם׃
-
-ס
-
-⁴ כִּ֤י יַבְעֶר־אִישׁ֙ שָׂדֶ֣ה אֹו־כֶ֔רֶם וְשִׁלַּח֙ אֶת־בְּעִ֯ירֹ֔ה וּבִעֵ֖ר בִּשְׂדֵ֣ה אַחֵ֑ר מֵיטַ֥ב שָׂדֵ֛הוּ וּמֵיטַ֥ב כַּרְמֹ֖ו יְשַׁלֵּֽם׃
-
-ס
-
-⁵ כִּֽי־תֵצֵ֨א אֵ֜שׁ וּמָֽצְאָ֤ה קֹצִים֙ וְנֶֽאֱכַ֣ל גָּדִ֔ישׁ אֹ֥ו הַקָּמָ֖ה אֹ֣ו הַשָּׂדֶ֑ה שַׁלֵּ֣ם יְשַׁלֵּ֔ם הַמַּבְעִ֖ר אֶת־הַבְּעֵרָֽה׃
-
-ס
-
-⁶ כִּֽי־יִתֵּן֩ אִ֨ישׁ אֶל־רֵעֵ֜הוּ כֶּ֤סֶף אֹֽו־כֵלִים֙ לִשְׁמֹ֔ר וְגֻנַּ֖ב מִבֵּ֣ית הָאִ֑ישׁ אִם־יִמָּצֵ֥א הַגַּנָּ֖ב יְשַׁלֵּ֥ם שְׁנָֽיִם׃
-⁷ אִם־לֹ֤א יִמָּצֵא֙ הַגַּנָּ֔ב וְנִקְרַ֥ב בַּֽעַל־הַבַּ֖יִת אֶל־הָֽאֱלֹהִ֑ים אִם־לֹ֥א שָׁלַ֛ח יָדֹ֖ו בִּמְלֶ֥אכֶת רֵעֵֽהוּ׃
-⁸ עַל־כָּל־דְּבַר־פֶּ֡שַׁע עַל־שֹׁ֡ור עַל־חֲמֹור֩ עַל־שֶׂ֨ה עַל־שַׂלְמָ֜ה עַל־כָּל־אֲבֵדָ֗ה אֲשֶׁ֤ר יֹאמַר֙ כִּי־ה֣וּא זֶ֔ה עַ֚ד הָֽאֱלֹהִ֔ים יָבֹ֖א דְּבַר־שְׁנֵיהֶ֑ם אֲשֶׁ֤ר יַרְשִׁיעֻן֙ אֱלֹהִ֔ים יְשַׁלֵּ֥ם שְׁנַ֖יִם לְרֵעֵֽהוּ׃
-
-ס
-
-⁹ כִּֽי־יִתֵּן֩ אִ֨ישׁ אֶל־רֵעֵ֜הוּ חֲמֹ֨ור אֹו־שֹׁ֥ור אֹו־שֶׂ֛ה וְכָל־בְּהֵמָ֖ה לִשְׁמֹ֑ר וּמֵ֛ת אֹֽו־נִשְׁבַּ֥ר אֹֽו־נִשְׁבָּ֖ה אֵ֥ין רֹאֶֽה׃
-¹⁰ שְׁבֻעַ֣ת יְהֹוָ֗ה תִּֽהְיֶה֙ בֵּ֣ין שְׁנֵיהֶ֔ם אִם־לֹ֥א שָׁלַ֛ח יָדֹ֖ו בִּמְלֶ֣אכֶת רֵעֵ֑הוּ וְלָקַ֥ח בְּעָלָ֖יו וְלֹ֥א יְשַׁלֵּֽם׃
-¹¹ וְאִם־גָּנֹ֥ב יִגָּנֵ֖ב מֵֽעִמֹּ֑ו יְשַׁלֵּ֖ם לִבְעָלָֽיו׃
-¹² אִם־טָרֹ֥ף יִטָּרֵ֖ף יְבִאֵ֣הוּ עֵ֑ד הַטְּרֵפָ֖ה לֹ֥א יְשַׁלֵּֽם׃
-
-פ
-
-¹³ וְכִֽי־יִשְׁאַ֥ל אִ֛ישׁ מֵעִ֥ם רֵעֵ֖הוּ וְנִשְׁבַּ֣ר אֹו־מֵ֑ת בְּעָלָ֥יו אֵֽין־עִמֹּ֖ו שַׁלֵּ֥ם יְשַׁלֵּֽם׃
-¹⁴ אִם־בְּעָלָ֥יו עִמֹּ֖ו לֹ֣א יְשַׁלֵּ֑ם אִם־שָׂכִ֣יר ה֔וּא בָּ֖א בִּשְׂכָרֹֽו׃
-
-ס
-
-¹⁵ וְכִֽי־יְפַתֶּ֣ה אִ֗ישׁ בְּתוּלָ֛ה אֲשֶׁ֥ר לֹֽא־אֹרָ֖שָׂה וְשָׁכַ֣ב עִמָּ֑הּ מָהֹ֛ר יִמְהָרֶ֥נָּה לֹּ֖ו לְאִשָּֽׁה׃
-¹⁶ אִם־מָאֵ֧ן יְמָאֵ֛ן אָבִ֖יהָ לְתִתָּ֣הּ לֹ֑ו כֶּ֣סֶף יִשְׁקֹ֔ל כְּמֹ֖חַר הַבְּתוּלֹֽת׃
-
-ס
-
-¹⁷ מְכַשֵּׁפָ֖ה לֹ֥א תְחַיֶּֽה׃
-¹⁸ כָּל־שֹׁכֵ֥ב עִם־בְּהֵמָ֖ה מֹ֥ות יוּמָֽת׃
-
-ס
-
-¹⁹ זֹבֵ֥חַ לָֽאֱלֹהִ֖ים יָֽחֳרָ֑ם בִּלְתִּ֥י לַֽיהֹוָ֖ה לְבַדֹּֽו׃
-²⁰ וְגֵ֥ר לֹֽא־תֹונֶ֖ה וְלֹ֣א תִלְחָצֶ֑נּוּ כִּֽי־גֵרִ֥ים הֱיִיתֵ֖ם בְּאֶ֥רֶץ מִצְרָֽיִם׃
-²¹ כָּל־אַלְמָנָ֥ה וְיָתֹ֖ום לֹ֥א תְעַנּֽוּן׃
-²² אִם־עַנֵּ֥ה תְעַנֵּ֖ה אֹתֹ֑ו כִּ֣י אִם־צָעֹ֤ק יִצְעַק֙ אֵלַ֔י שָׁמֹ֥עַ אֶשְׁמַ֖ע צַֽעֲקָתֹֽו׃
-²³ וְחָרָ֣ה אַפִּ֔י וְהָֽרַגְתִּ֥י אֶתְכֶ֖ם בֶּחָ֑רֶב וְהָי֤וּ נְשֵׁיכֶם֙ אַלְמָנֹ֔ות וּבְנֵיכֶ֖ם יְתֹמִֽים׃
-
-פ
-
-²⁴ אִם־כֶּ֣סֶף ׀ תַּלְוֶ֣ה אֶת־עַמִּ֗י אֶת־הֶֽעָנִי֙ עִמָּ֔ךְ לֹֽא־תִֽהְיֶ֥ה לֹ֖ו ⸨err:כְּנֹשֶׁ֑ה⸩כְּנשֶׁ֑ה⸨/err⸩ לֹֽא־תְשִׂימ֥וּן עָלָ֖יו נֶֽשֶׁךְ׃
-²⁵ אִם־חַבֹ֥ל תּחְבֹּ֖ל שַׂלְמַ֣ת רֵעֶ֑ךָ עַד־בֹּ֥א הַשֶּׁ֖מֶשׁ תְּשִׁיבֶ֥נּו לֹֽו׃
-²⁶ כִּ֣י הִ֤וא כְסוּתֹ֯ה֙ לְבַדָּ֔הּ הִ֥וא שִׂמְלָתֹ֖ו לְעֹרֹ֑ו בַּמֶּ֣ה יִשְׁכָּ֗֔ב וְהָיָה֙ כִּֽי־יִצְעַ֣ק אֵלַ֔י וְשָֽׁמַעְתִּ֖י כִּֽי־חַנּ֥וּן אָֽנִי׃
-
-ס
-
-²⁷ אֱלֹהִ֖ים לֹ֣א תְקַלֵּ֑ל וְנָשִׂ֥יא בְעַמְּךָ֖ לֹ֥א תָאֹֽר׃
-²⁸ מְלֵאָֽתְךָ֥ וְדִמְעֲךָ֖ לֹ֣א תְאַחֵ֑ר בְּכֹ֥ור בָּנֶ֖יךָ תִּתֶּן־לִֽי׃
-²⁹ כֵּן־תַּֽעֲשֶׂ֥ה לְשֹֽׁרְךָ֖ לְצֹאנֶ֑ךָ שִׁבְעַ֤ת יָמִים֙ יִֽהְיֶ֣ה עִם־עִמֹּ֔ו בַּיֹּ֥ום הַשְּׁמִינִ֖י תִּתְּנֹו־לִֽי׃
-³⁰ וְאַנְשֵׁי־קֹ֖דֶשׁ תִּֽהְי֣וּן לִ֑י וּבָשָׂ֨ר בַּשָּׂדֶ֤ה טְרֵפָה֙ לֹ֣א תֹאכֵ֔לוּ לַכֶּ֖לֶב תַּשְׁלִכ֥וּן אֹתֹֽו׃
-
-ס
+1 ⸨sc⸩Si⸨/sc⸩ quis furatus fuerit bovem, aut ovem, et occiderit vel vendiderit: quinque boves pro uno bove restituet, et quatuor oves pro una ove.
+2 Si effringens fur domum sive suffodiens fuerit inventus, et accepto vulnere mortuus fuerit: percussor non erit reus sanguinis.
+3 Quod si orto sole hoc fecerit, homicidium perpetravit, et ipse morietur. Si non habuerit quod pro furte reddat, ipse venundabitur
+4 Si inventum fuerit apud eum quod furatus est, vivens, sive bos, sive asinus, sive ovis: duplum restituet.
+5 Si læserit quispiam agrum vel vineam, et dimiserit jumentum suum ut depascatur aliena: quidquid optimum habuerit in agro suo, vel in vinea, pro damni æstimatione restituet.
+6 Si egressus ignis invenerit spinas, et comprehenderit acervos frugum, sive stantes segetes in agris, reddet damnum qui ignem succenderit.
+7 Si quis commendaverit amico pecuniam, aut vas in custodiam, et ab eo qui susceperat, furto ablata fuerint: si invenitur fur, duplum reddet.
+8 Si latet fur, dominus domus applicabitur ad deos, et jurabit quod non extenderit manum in rem proximi sui,
+9 Ad perpetrandam fraudem, tam in bove, quam in asino, et ove ac vestimento, et quidquid damnum inferre potest: ad deos utriusque causa perveniet; et si illi judicaverint, duplum restituet proximo suo.
+10 Si quis commendaverit proximo suo asinum, bovem, ovem, et omne jumentum ad custodiam, et mortuum fuerit, aut debilitatum, vel captum ab hostibus, nullusque hoc viderit:
+11 Jusjurandum erit in medio, quod non extenderit manum ad rem proximi sui: suscipietque dominus juramentum, et ille reddere non cogetur.
+12 Quod si furto ablatum fuerit, restituet damnum domino.
+13 Si comestum a bestia, deferat ad eum quod occisum est, et non restituet.
+14 Qui a proximo suo quidquam horum mutuo postulaverit, et debilitatum aut mortuum fuerit domino non præsente, reddere compelletur.
+15 Quod si impræsentiarum dominus fuerit, non restituet, maxime si conductum venerat pro mercede operis sui.
+16 Si seduxerit quis virginem necdum desponsatam, dormieritque cum ea: dotabit eam, et habebit eam uxorem.
+17 Si pater virginis dare noluerit, reddet pecuniam juxta modum dotis, quam virgines accipere consueverunt
+18 Maleficos non patieris vivere.
+19 Qui coierit cum jumento, morte moriatur.
+20 Qui immolat diis, occidetur, præterquam Domino soli.
+21 Advenam non contristabis, neque affliges eum: advenæ enim et ipsi fuistis in terra Ægypti.
+22 Viduæ et pupillo non nocebitis.
+23 Si læseritis eos, vociferabuntur ad me, et ego audiam clamorem corum:
+24 Et indignabitur furor meus, percutiamque vos gladio, et erunt uxores vestræ viduæ, et filii vestri pupilli.
+25 Si pecuniam mutuam dederis populo meo pauperi qui habitat tecum, non urgebis eum quasi exactor, nec usuris opprimes.
+26 Si pignus a proximo tuo acceperis vestimentum, ante solis occasum reddes ei
+27 Ipsum enim est solum quo operitur, indumentum carnis ejus, nec habet aliud in quo dormiat: si clamaverit ad me, exaudiam eum, quia misericors sum.
+28 Diis non detrahes, et principi populi tui non maledices.
+29 Decimas tuas et primitias tuas non tardabis reddere: primogenitum filiorum tuorum dabis mihi.
+30 De bobus quoque, et ovibus similiter facies: septem diebus sit cum matre sua, die octava reddes illum mihi.
+31 Viri sancti eritis mihi: carnem, quæ a bestiis fuerit prægustata, non comedetis, sed projicietis canibus.

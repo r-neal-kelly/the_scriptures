@@ -1,25 +1,20 @@
-⸨cen⸩פרשה כד׃
+⸨cen⸩CAPUT XXIV⸼
 
-¹ וְאֶל־⸨err:מֹשֶׁ֨ה⸩משֶׁ֨ה⸨/err⸩ אָמַ֜ר עֲלֵ֣ה אֶל־יְהֹוָ֗ה אַתָּה֙ וְאַֽהֲרֹן֙ נָדָ֣ב וַֽאֲבִיה֔וּא וְשִׁבְעִ֖ים מִזִּקְנֵ֣י יִשְׂרָאֵ֑ל וְהִשְׁתַּֽחֲוִיתֶ֖ם מֵֽרָחֹֽק׃
-² וְנִגַּ֨שׁ ⸨err:מֹשֶׁ֤ה⸩משֶׁ֤ה⸨/err⸩ לְבַדֹּו֙ אֶל־יְהֹוָ֔ה וְהֵ֖ם לֹ֣א יִגָּ֑שׁוּ וְהָעָ֕ם לֹ֥א יַֽעֲל֖וּ עִמֹּֽו׃
-³ וַיָּבֹ֣א ⸨err:מֹשֶׁ֗ה⸩משֶׁ֗ה⸨/err⸩ וַיְסַפֵּ֤ר לָעָם֙ אֵ֚ת כָּל־דִּבְרֵ֣י יְהֹוָ֔ה וְאֵ֖ת כָּל־הַמִּשְׁפָּטִ֑ים וַיַּ֨עַֽן כָּל־הָעָ֜ם קֹ֤ול אֶחָד֙ וַיֹּ֣אמְר֔וּ כָּל־הַדְּבָרִ֛ים אֲשֶׁר־דִּבֶּ֥ר יְהֹוָ֖ה נַֽעֲשֶֽׂה׃
-⁴ וַיִּכְתֹּ֣ב ⸨err:מֹשֶׁ֗ה⸩משֶׁ֗ה⸨/err⸩ אֵ֚ת כָּל־דִּבְרֵ֣י יְהֹוָ֔ה וַיַּשְׁכֵּ֣ם בַּבּ֗קֶר וַיִּ֥בֶן מִזְבֵּ֖חַ תַּ֣חַת הָהָ֑ר וּשְׁתֵּ֤ים עֶשְׂרֵה֙ מַצֵּבָ֔ה לִשְׁנֵ֥ים עָשָׂ֖ר שִׁבְטֵ֥י יִשְׂרָאֵֽל׃
-⁵ וַיִּשְׁלַ֗ח אֶת־נַֽעֲרֵי֙ בְּנֵ֣י יִשְׂרָאֵ֔ל וַיַּֽעֲל֖וּ עֹלֹ֑ת וַיִּזְבְּח֞וּ זְבָחִ֧ים שְׁלָמִ֛ים לַֽיהֹוָ֖ה פָּרִֽים׃
-⁶ וַיִּקַּ֤ח ⸨err:מֹשֶׁה֙⸩משֶׁה֙⸨/err⸩ חֲצִ֣י הַדָּ֗ם וַיָּשֶׂ֭ם בָּֽאַגָּנֹ֑ת וַֽחֲצִ֣י הַדָּ֔ם זָרַ֖ק עַל־הַמִּזְבֵּֽחַ׃
-⁷ וַיִּקַּח֙ סֵ֣פֶר הַבְּרִ֔ית וַיִקְרָ֖א בְּאָזְנֵ֣י הָעָ֑ם וַיֹּ֣אמְ֔רוּ כֹּ֛ל אֲשֶׁר־דִּבֶּ֥ר יְהֹוָ֖ה נַֽעֲשֶׂ֥ה וְנִשְׁמָֽע׃
-⁸ וַיִּקַּ֤ח ⸨err:מֹשֶׁה֙⸩משֶׁה֙⸨/err⸩ אֶת־הַדָּ֔ם וַיִּזְרֹ֖ק עַל־הָעָ֑ם וַיֹּ֗אמֶר הִנֵּ֤ה דַם־הַבְּרִית֙ אֲשֶׁ֨ר כָּרַ֤ת יְהֹוָה֙ עִמָּכֶ֔ם עַ֥ל כָּל־הַדְּבָרִ֖ים הָאֵֽלֶּה׃
-⁹ וַיַּ֥עַל ⸨err:מֹשֶׁ֖ה⸩משֶׁ֖ה⸨/err⸩ וְאַֽהֲרֹ֑ן נָדָב֙ וַֽאֲבִיה֔וּא וְשִׁבְעִ֖ים מִזִּקְנֵ֥י יִשְׂרָאֵֽל׃
-¹⁰ וַיִּרְא֕וּ אֵ֖ת אֱלֹהֵ֣י יִשְׂרָאֵ֑ל וְתַ֣חַת רַגְלָ֗יו כְּמַֽעֲשֵׂה֙ לִבְנַ֣ת הַסַּפִּ֔יר וּכְעֶ֥צֶם הַשָּׁמַ֖יִם לָטֹֽהַר׃
-¹¹ וְאֶל־אֲצִילֵי֙ בְּנֵ֣י יִשְׂרָאֵ֔ל לֹ֥א שָׁלַ֖ח יָדֹ֑ו וַיֶּֽחֱזוּ֙ אֶת־הָֽאֱלֹהִ֔ים וַיֹּֽאכְל֖וּ וַיִּשְׁתּֽוּ׃
-
-ס
-
-¹² וַיֹּ֨אמֶר יְהֹוָ֜ה אֶל־⸨err:מֹשֶׁ֗ה⸩משֶׁ֗ה⸨/err⸩ עֲלֵ֥ה אֵלַ֛י הָהָ֖רָה וֶֽהְיֵה־שָׁ֑ם וְאֶתְּנָ֨ה לְךָ֜ אֶת־לֻחֹ֣ת הָאֶ֗בֶן וְהַתֹּורָה֙ וְהַמִּצְוָ֔ה אֲשֶׁ֥ר כָּתַ֖בְתִּי לְהֹֽורֹתָֽם׃
-¹³ וַיָּקָ֣ם ⸨err:מֹשֶׁ֔ה⸩משֶׁ֔ה⸨/err⸩ וִֽיהֹושֻׁ֖עַ מְשָֽׁרְתֹ֑ו וַיַּ֥עַל ⸨err:מֹשֶׁ֖ה⸩משֶׁ֖ה⸨/err⸩ אֶל־הַ֥ר הָֽאֱלֹהִֽים׃
-¹⁴ וְאֶל־הַזְּקֵנִ֤ים אָמַר֙ שְׁבוּ־לָ֣נוּ בָזֶ֔ה עַ֥ד אֲשֶׁר־נָשׁ֖וּב אֲלֵיכֶ֑ם וְהִנֵּ֨ה אַֽהֲרֹ֤ן וְחוּר֙ עִמָּכֶ֔ם מִי־בַ֥עַל דְּבָרִ֖ים יִגַּ֥שׁ אֲלֵהֶֽם׃
-¹⁵ וַיַּ֥עַל ⸨err:מֹשֶׁ֖ה⸩משֶׁ֖ה⸨/err⸩ אֶל־הָהָ֑ר וַיְכַ֥ס הֶֽעָנָ֖ן אֶת־הָהָֽר׃
-¹⁶ וַיִּשְׁכֹּ֤ן כְּבֹֽוד־יְהֹוָה֙ עַל־הַ֣ר סִינַ֔י וַיְכַסֵּ֥הוּ הֶֽעָנָ֖ן שֵׁ֣שֶׁת יָמִ֑ים וַיִּקְרָ֧א אֶל־⸨err:מֹשֶׁ֛ה⸩משֶׁ֛ה⸨/err⸩ בַּיֹּ֥ום הַשְּׁבִיעִ֖י מִתֹּ֥וךְ הֶֽעָנָֽן׃
-¹⁷ וּמַרְאֵה֙ כְּבֹ֣וד יְהֹוָ֔ה כְּאֵ֥שׁ אֹכֶ֖לֶת בְּרֹ֣אשׁ הָהָ֑ר לְעֵינֵ֖י בְּנֵ֥י יִשְׂרָאֵֽל׃
-¹⁸ וַיָּבֹ֥א ⸨err:מֹשֶׁ֛ה⸩משֶׁ֛ה⸨/err⸩ בְּתֹ֥וךְ הֶֽעָנָ֖ן וַיַּ֣עַל אֶל־הָהָ֑ר וַיְהִ֤י ⸨err:מֹשֶׁה֙⸩משֶׁה֙⸨/err⸩ בָּהָ֔ר אַרְבָּעִ֣ים יֹ֔ום וְאַרְבָּעִ֖ים לָֽיְלָה׃
-
-⸨cen⸩פ פ פ יט
+1 ⸨sc⸩Moysi⸨/sc⸩ quoque dixit: Ascende ad Dominum tu, et Aaron, Nadab, et Abiu, et septuaginta senes ex Israel, et adorabitis procul.
+2 Solusque Moyses ascendet ad Dominum, et illi non appropinquabunt: nec populus ascendet cum eo.
+3 Venit ergo Moyses, et narravit plebi omnia verba Domini, atque judicia: responditque omnis populus una voce: Omnia verba Domini, quæ locutus est, faciemus.
+4 Scripsit autem Moyses universos sermones Domini, et mane consurgens ædificavit altare ad radices montis, et duodecim titulos per duodecim tribus Israel.
+5 Misitque juvenes de filiis Israel, et obtulerunt holocausta, immolaveruntque victimas pacificas Domino, vitulos.
+6 Tulit itaque Moyses dimidiam partem sanguinis, et misit in crateras: partem autem residuam fudit super altare.
+7 Assumensque volumen fœderis, legit audiente populo: qui dixerunt: Omnia quæ locutus est Dominus, faciemus, et erimus obedientes.
+8 Ille vero sumptum sanguinem respersit in populum, et ait: Hic est sanguis fœderis quod pepigit Dominus vobiscum super cunctis sermonibus his.
+9 Ascenderuntque Moyses et Aaron, Nadab et Abiu, et septuaginta de senioribus Israel:
+10 Et viderunt Deum Israel: et sub pedibus ejus quasi opus lapidis sapphirini, et quasi cælum, cum serenum est.
+11 Nec super eos qui procul recesserant de filiis Israel, misit manum suam: videruntque Deum, et comederunt, ac biberunt.
+12 Dixit autem Dominus ad Moysen: Ascende ad me in montem, et esto ibi: daboque tibi tabulas lapideas, et legem ac mandata quæ scripsi, ut doceas eos.
+13 Surrexerunt Moyses et Josue minister ejus: ascendensque Moyses in Montem Dei,
+14 Senioribus ait: Expectate hic donec revertamur ad vos. Habetis Aaron et Hur vobiscum: si quid natum fuerit quæstionis, referetis ad eos.
+15 Cumque ascendisset Moyses, operuit nubes montem,
+16 Et habitavit gloria Domini super Sinai, tegens illum nube sex diebus: septimo autem die vocavit eum de medio caliginis.
+17 Erat autem species gloriæ Domini, quasi ignis ardens super verticem montis, in conspectu filiorum Israel.
+18 Ingressusque Moyses medium nebulæ, ascendit in montem: et fuit ibi ⸨err:quadraginta⸩quad raginta⸨/err⸩ diebus, et quadraginta noctibus.

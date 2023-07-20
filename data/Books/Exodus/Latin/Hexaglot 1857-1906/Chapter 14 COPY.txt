@@ -1,41 +1,33 @@
-⸨cen⸩פרשה יד׃
+⸨cen⸩CAPUT XIV⸼
 
-¹ וַיְדַבֵּ֥ר יְהֹוָ֖ה אֶל־⸨err:מֹשֶׁ֥ה⸩משֶׁ֥ה⸨/err⸩ לַּאמֹֽר׃
-² דַּבֵּר֮ אֶל־בְּנֵ֣י יִשְׂרָאֵל֒ וְיָשֻׁ֗בוּ וְיַֽחֲנוּ֙ לִפְנֵי֙ פִּ֣י הַֽחִירֹ֔ת בֵּ֥ין מִגְדֹּ֖ל וּבֵ֣ין הַיָּ֑ם לִפְנֵי֙ בַּ֣עַל צְפֹ֔ן נִכְחֹ֥ו תַֽחֲנ֖וּ עַל־הַיָּֽם׃
-³ וְאָמַ֣ר פַּרְעֹה֙ לִבְנֵ֣י יִשְׂרָאֵ֔ל נְבֻכִ֥ים הֵ֖ם בָּאָ֑רֶץ סָגַ֥ר עֲלֵיהֶ֖ם הַמִּדְבָּֽר׃
-⁴ וְחִזַּקְתִּ֣י אֶת־לֵֽב־פַּרְעֹה֮ וְרָדַ֣ף אַֽחֲרֵיהֶם֒ וְאִכָּֽבְדָ֤ה בְּפַרְעֹה֙ וּבְכָל־חֵילֹ֔ו וְיָֽדְע֥וּ מִצְרַ֖יִם כִּֽי־אֲנִ֣י יְהֹוָ֑ה וַֽיַֽעֲשׂוּ־כֵֽן׃
-⁵ וַיֻּגַּד֙ לְמֶ֣לֶךְ מִצְרַ֔יִם כִּ֥י בָרַ֖ח הָעָ֑ם וַיֵּֽ֠הָפֵךְ לְבַ֨ב פַּרְעֹ֤ה וַֽעֲבָדָיו֙ אֶל־הָעָ֔ם וַיֹּֽאמְרוּ֙ מַה־זֹּ֣את עָשִׂ֔ינוּ כִּֽי־שִׁלַּ֥חְנוּ אֶת־יִשְׂרָאֵ֖ל מֵֽעָבִדֵֽנוּ׃
-⁶ וַיֶּֽאְסֹ֖ר אֶת־רִכְבֹּ֑ו וְאֶת־עַמֹּ֖ו לָקַ֥ח עִמֹּֽו׃
-⁷ וַיִּקַּ֗ח שֵֽׁשׁ־מֵאֹ֥ות רֶ֙כֶב֙ בָּח֔וּר וְכֹ֖ל רֶ֣כֶב מִצְרָ֑יִם וְשָֽׁלִשִׁ֖ם עַל־כֻּלֹּֽו׃
-⁸ וַיְחַזֵּ֣ק יְהֹוָ֗ה אֶת־לֵ֤ב פַּרְעֹה֙ מֶ֣לֶךְ מִצְרַ֔יִם וַיִּרְדֹּ֕ף אַֽחֲרֵ֖י בְּנֵ֣י יִשְׂרָאֵ֑ל וּבְנֵ֣י יִשְׂרָאֵ֔ל יֹֽצְאִ֖ים בְּיָ֥ד רָמָֽה׃
-⁹ וַיִּרְדְּפ֨וּ מִצְרַ֜יִם אַֽחֲרֵיהֶ֗ם וַיַּשִּׂ֤יגוּ אֹותָם֙ חֹנִ֣ים עַל־הַיָּ֔ם כָּל־סוּס֙ רֶ֣כֶב פַּרְעֹ֔ה וּפָֽרָשָׁ֖יו וְחֵילֹ֑ו עַל־פִּי֙ הַֽחִירֹ֔ת לִפְנֵ֖י בַּ֥עַל צְפֹֽן׃
-¹⁰ וּפַרְעֹ֖ה הִקְרִ֑יב וַיִּשְׂאוּ֩ בְנֵֽי־יִשְׂרָאֵ֨ל אֶת־עֵֽינֵיהֶ֜ם וְהִנֵּ֥ה מִצְרַ֣יִם ׀ נֹסֵ֣עַ אַֽחֲרֵיהֶ֗ם וַיִּֽירְאוּ֙ מְאֹ֔ד וַיִּצְעֲק֥וּ בְנֵֽי־יִשְׂרָאֵ֖ל אֶל־יְהֹוָֽה׃
-¹¹ וַיֹּֽאמְרוּ֮ אֶל־⸨err:מֹשֶׁה֒⸩משֶׁה֒⸨/err⸩ הֲמִבְּלִ֤י אֵֽין־קְבָרִים֙ בְּמִצְרַ֔יִם לְקַחְתָּ֖נוּ לָמ֣וּת בַּמִּדְבָּ֑ר מַה־זֹּאת֙ עָשִׂ֣יתָ לָּ֔נוּ לְהֹֽוצִיאָ֖נוּ מִמִּצְרָֽיִם׃
-¹² הֲלֹא־זֶ֣ה הַדָּבָ֗ר אֲשֶׁר֩ דִּבַּ֨רְנוּ אֵלֶ֤יךָ בְמִצְרַ֙יִם֙ לֵאמֹ֔ר חֲדַ֥ל מִמֶּ֖נּוּ וְנַֽעַבְדָ֣ה אֶת־מִצְרָ֑יִם כִּ֣י טֹ֥וב לָ֙נוּ֙ עֲבֹ֣ד אֶת־מִצְרַ֔יִם מִמֻּתֵ֖נוּ בַּמִּדְבָּֽר׃
-¹³ וַיֹּ֨אמֶר ⸨err:מֹשֶׁ֣ה⸩משֶׁ֣ה⸨/err⸩ אֶל־הָעָם֮ אַל־תִּירָאוּ֒ הִתְיַצְּב֗וּ וּרִאוּ֙ אֶת־יְשׁוּעַ֣ת יְהֹוָ֔ה אֲשֶׁר־יַֽעֲשֶׂ֥ה לָכֶ֖ם הַיֹּ֑ום כִּ֗י אֲשֶׁ֨ר רְאִיתֶ֤ם אֶת־מִצְרַ֙יִם֙ הַיֹּ֔ום לֹ֥א תֹסִ֛פוּ לִרְאֹתָ֥ם עֹ֖וד עַד־עֹולָֽם׃
-¹⁴ יְהֹוָ֖ה יִלָּחֵ֣ם לָכֶ֑ם וְאַתֶּ֖ם תַּֽחֲרִשֽׁוּן׃
-
-פ
-
-¹⁵ וַיֹּ֤אמֶר יְהֹוָה֙ אֶל־⸨err:מֹשֶׁ֔ה⸩משֶׁ֔ה⸨/err⸩ מַה־תִּצְעַ֖ק אֵלָ֑י דַּבֵּ֥ר אֶל־בְּנֵֽי־יִשְׂרָאֵ֖ל וְיִסָּֽעוּ׃
-¹⁶ וְאַתָּ֞ה הָרֵ֣ם אֶת־מַטְּךָ֗ וּנְטֵ֧ה אֶת־יָֽדְךָ֛ עַל־הַיָּ֖ם וּבְקָעֵ֑הוּ וְיָבֹ֧אוּ בְנֵֽי־יִשְׂרָאֵ֛ל בְּתֹ֥וךְ הַיָּ֖ם בַּיַּבָּשָֽׁה׃
-¹⁷ וַֽאֲנִ֗י הִֽנְנִ֤י מִחַזֵּק֙ אֶת־לֵ֣ב מִצְרַ֔יִם וְיָבֹ֖אוּ אַֽחֲרֵיהֶ֑ם וְאִכָּֽבְדָ֤ה בְּפַרְעֹה֙ וּבְכָל־חֵילֹ֔ו בְּרִכְבֹּ֖ו וּבְפָֽרָשָֽׁיו׃
-¹⁸ וְיָֽדְע֥וּ מִצְרַ֖יִם כִּֽי־אֲנִ֣י יְהֹוָ֑ה בְּהִכָּֽבְדִ֣י בְּפַרְעֹ֔ה בְּרִכְבֹּ֖ו וּבִפָֽרָשָֽׁיו׃
-¹⁹ וַיִּסַּ֞ע מַלְאַ֣ךְ הָֽאֱלֹהִ֗ים הַֽהֹלֵךְ֙ לִפְנֵי֙ מַֽחֲנֵ֣ה יִשְׂרָאֵ֔ל וַיֵּ֖לֶךְ מֵאַֽחֲרֵיהֶ֑ם וַיִּסַּ֞ע עַמּ֤וּד הֶֽעָנָן֙ מִפְּנֵיהֶ֗ם וַֽיַּֽעֲמֹ֖ד מֵאַֽחֲרֵיהֶֽם׃
-²⁰ וַיָּבֹ֞א בֵּ֣ין ׀ מַֽחֲנֵ֣ה מִצְרַ֗יִם וּבֵין֙ מַֽחֲנֵ֣ה יִשְׂרָאֵ֔ל וַיְהִ֤י הֶֽעָנָן֙ ⸨err:וְהַחֹ֔שֶׁךְ⸩וְהַח֔שֶׁךְ⸨/err⸩ וַיָּ֖אֶר אֶת־הַלָּ֑יְלָה וְלֹֽא־קָרַ֥ב זֶ֛ה אֶל־זֶ֖ה כָּל־הַלָּֽיְלָה׃
-²¹ וַיֵּ֨ט ⸨err:מֹשֶׁ֣ה⸩משֶׁ֣ה⸨/err⸩ אֶת־יָדֹו֮ עַל־הַיָּם֒ וַיֹּ֣ולֶךְ ⸨err:יְהֹוָ֣ה⸩יִהֹוָ֣ה⸨/err⸩ ׀ אֶת־הַ֠יָּם בְּר֨וּחַ קָדִ֤ים עַזָּה֙ כָּל־הַלַּ֔יְלָה וַיָּ֥שֶׂם אֶת־הַיָּ֖ם לֶחָֽרָבָ֑ה וַיִּבָּֽקְע֖וּ הַמָּֽיִם׃
-²² וַיָּבֹ֧אוּ בְנֵֽי־יִשְׂרָאֵ֛ל בְּתֹ֥וךְ הַיָּ֖ם בַּיַּבָּשָׁ֑ה וְהַמַּ֤יִם לָהֶם֙ חֹומָ֔ה מִֽימִינָ֖ם וּמִשְּׂמֹאלָֽם׃
-²³ וַיִּרְדְּפ֤וּ מִצְרַ֙יִם֙ וַיָּבֹ֣אוּ אַֽחֲרֵיהֶ֔ם כֹּ֤ל ס֣וּס פַּרְעֹ֔ה רִכְבֹּ֖ו וּפָֽרָשָׁ֑יו אֶל־תֹּ֖וךְ הַיָּֽם׃
-²⁴ וַיְהִי֙ בְּאַשְׁמֹ֣רֶת הַבֹּ֔קֶר וַיַּשְׁקֵ֤ף יְהֹוָה֙ אֶל־מַֽחֲנֵ֣ה מִצְרַ֔יִם בְּעַמּ֥וּד אֵ֖שׁ וְעָנָ֑ן וַיָּ֕הָם אֵ֖ת מַֽחֲנֵ֥ה מִצְרָֽיִם׃
-²⁵ וַיָּ֗סַר אֵ֚ת אֹפַ֣ן מַרְכְּבֹתָ֔יו וַֽיְנַֽהֲגֵ֖הוּ בִּכְבֵדֻ֑ת וַיֹּ֣אמֶר מִצְרַ֗יִם אָנ֙וּסָה֙ מִפְּנֵ֣י יִשְׂרָאֵ֔ל כִּ֣י יְהֹוָ֔ה נִלְחָ֥ם לָהֶ֖ם בְּמִצְרָֽיִם׃
-
-פ
-
-²⁶ וַיֹּ֤אמֶר יְהֹוָה֙ אֶל־⸨err:מֹשֶׁ֔ה⸩משֶׁ֔ה⸨/err⸩ נְטֵ֥ה אֶת־יָֽדְךָ֖ עַל־הַיָּ֑ם וְיָשֻׁ֤בוּ הַמַּ֙יִם֙ עַל־מִצְרַ֔יִם עַל־רִכְבֹּ֖ו וְעַל־פָּֽרָשָֽׁיו׃
-²⁷ וַיֵּט֩ ⸨err:מֹשֶׁ֨ה⸩משֶׁ֨ה⸨/err⸩ אֶת־יָדֹ֜ו עַל־הַיָּ֗ם וַיָּ֨שָׁב הַיָּ֜ם לִפְנֹ֥ות בֹּ֙קֶר֙ לְאֵ֣יתָ֔נֹו וּמִצְרַ֖יִם נָסִ֣ים לִקְרָאתֹ֑ו וַיְנַעֵ֧ר יְהֹוָ֛ה אֶת־מִצְרַ֖יִם בְּתֹ֥וךְ הַיָּֽם׃
-²⁸ וַיָּשֻׁ֣בוּ הַמַּ֗יִם וַיְכַסּ֤וּ אֶת־הָרֶ֙כֶב֙ וְאֶת־הַפָּ֣רָשִׁ֔ים לְכֹל֙ חֵ֣יל פַּרְעֹ֔ה הַ֯בָּאִ֥ים אַֽחֲרֵיהֶ֖ם בַּיָּ֑ם לֹֽא־נִשְׁאַ֥ר בָּהֶ֖ם עַד־אֶחָֽד׃
-²⁹ וּבְנֵ֧י יִשְׂרָאֵ֛ל הָֽלְכ֥וּ בַיַּבָּשָׁ֖ה בְּתֹ֣וךְ הַיָּ֑ם וְהַמַּ֤יִם לָהֶם֙ חֹמָ֔ה מִֽימִינָ֖ם וּמִשְּׂמֹאלָֽם׃
-³⁰ וַיֹּ֨ושַׁע יְהֹוָ֜ה בַּיֹּ֥ום הַה֛וּא אֶת־יִשְׂרָאֵ֖ל מִיַּ֣ד מִצְרָ֑יִם וַיַּ֤רְא יִשְׂרָאֵל֙ אֶת־מִצְרַ֔יִם מֵ֖ת עַל־שְׂפַ֥ת הַיָּֽם׃
-³¹ וַיַּ֨רְא יִשְׂרָאֵ֜ל אֶת־הַיָּ֣ד הַגְּדֹלָ֗ה אֲשֶׁ֨ר עָשָׂ֤ה יְהֹוָה֙ בְּמִצְרַ֔יִם וַיִּֽירְא֥וּ הָעָ֖ם אֶת־⸨err:יְהֹוָ֑ה⸩יִהֹוָ֑ה⸨/err⸩ וַיַּֽאֲמִ֙ינוּ֙ בַּֽיהֹוָ֔ה ⸨err:וּבְמֹשֶׁ֖ה⸩וּבְמשֶׁ֖ה⸨/err⸩ עַבְדֹּֽו׃
-
-פ
+⸨err:1 ⸩⸨/err⸩⸨err:⸨sc⸩Locutus⸨/sc⸩⸩Locutus⸨/err⸩ est autem Dominus ad Moysen, dicens:
+2 Loquere filiis Israel: Reversi castrametentur e regione Phihahiroth, quæ est inter Magdalum et mare contra Beelsephon: in conspectu ejus castra ponetis super mare.
+3 Dicturusque est Pharao super filiis Israel: Coarctati sunt in terra, conclusit eos desertum.
+4 Et indurabo cor ejus, ac persequetur vos: et glorificabor in Pharaone, et in omni exercitu ejus; scientque Ægyptii quia ego sum Dominus. Feceruntque ita.
+5 Et nuntiatum est regi Ægyptiorum quod fugisset populus: immutatumque est cor Pharaonis et servorum ejus super populo, et dixerunt: Quid voluimus facere ut dimitteremus Israel, ne serviret nobis?
+6 Junxit ergo currum, et omnem populum suum assumpsit secum.
+7 Tulitque sexcentos currus electos, et quidquid in Ægypto curruum fuit: et duces totius exercitus.
+8 Induravitque Dominus cor Pharaonis regis Ægypti, et persecutus est filios Israel: at illi egressi erant in manu excelsa.
+9 Cumque persequerentur Ægyptii vestigia præcedentium, repererunt eos in castris super mare: omnis equitatus et currus Pharaonis, et universus exercitus, erant in Phihahiroth contra Beelsephon.
+10 Cumque appropinquasset Pharao, levantes filii Israel oculos, viderunt Ægyptios post se: et timuerunt valde: clamaveruntque ad Dominum,
+11 Et dixerunt ad Moysen: Forsitan non erant sepulchra in Ægypto, ideo tulisti nos ut moreremur in solitudine: quid hoc facere voluisti, ut educeres nos ex Ægypto?
+12 Nonne iste est sermo, quem loquebamur ad te in Ægypto, dicentes: Recede a nobis, ut serviamus Ægyptiis? multo enim melius erat servire eis, quam mori in solitudine.
+13 Et ait Moyses ad populum: Nolite timere: state, et videte magnalia Domini quæ facturus est hodie: Ægyptios enim, quos nunc videtis, nequaquam ultra videbitis usque in sempiternum.
+14 Dominus pugnabit pro vobis, et vos tacebitis.
+15 Dixitque Dominus ad Moysen: Quid clamas ad me? Loquere filiis Israel ut proficiscantur.
+16 Tu autem eleva virgam tuam, et extende manum tuam super mare, et divide illud: ut gradiantur filii Israel in medio mari per siccum.
+17 Ego autem indurabo cor Ægyptiorum ut persequantur vos: et glorificabor in Pharaone, et in omni exercitu ejus, et in curribus et in equitibus illius.
+18 Et scient Ægyptii quia ego sum Dominus, cum glorificatus fuero in Pharaone, et in curribus atque in equitibus ejus.
+19 Tollensque se angelus Dei, qui præcedebat castra Israel, abiit post eos: et cum eo pariter columna nubis, priora dimittens, post tergum
+20 Stetit, inter castra Ægyptiorum et castra Israel: et erat nubes tenebrosa, et illuminans noctem, ita ut ad se invicem toto noctis tempore accedere non valerent.
+21 Cumque extendisset Moyses manum super mare, abstulit illud Dominus flante vento vehementi et urente tota nocte, et vertit in siccum: divisaque est aqua.
+22 Et ingressi sunt filii Israel per medium sicci maris: erat enim aqua quasi murus a dextra eorum et læva.
+23 Persequentesque Ægyptii ingressi sunt post eos, et omnis equitatus Pharaonis, currus ejus et equites, per medium maris.
+24 Jamque advenerat vigilia matutina, et ecce respiciens Dominus super castra Ægyptiorum per columnam ignis et nubis, interfecit exercitum eorum:
+25 Et subvertit rotas curruum, ferebanturque in profundum. Dixerunt ergo Ægyptii: Fugiamus Israelem: Dominus enim pugnat pro eis contra nos.
+26 Et ait Dominus ad Moysen: Extende manum tuam super mare, ut revertantur aquæ ad Ægyptios super currus et equites eorum.
+27 Cumque extendisset Moyses manum contra mare, reversum est primo diluculo ad priorem locum: fugientibusque Ægyptiis occurrerunt aquæ, et involvit eos Dominus in mediis fluctibus.
+28 Reversæque sunt aquæ, et operuerunt currus et equites cuncti exercitus Pharaonis, qui sequentes ingressi fuerant mare: nec unus quidem superfuit ex eis.
+29 Filii autem Israel perrexerunt per medium sicci maris, et aquæ eis erant quasi pro muro a dextris et a sinistris:
+30 Liberavitque Dominus in die illa Israel de manu Ægyptiorum.
+31 Et viderunt Ægyptios mortuos super littus maris, et manum magnam quam exercuerat Dominus contra eos: timuitque populus Dominum, et crediderunt Domino, et Moysi servo ejus.

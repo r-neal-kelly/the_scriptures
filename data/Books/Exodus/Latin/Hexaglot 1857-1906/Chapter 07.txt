@@ -1,43 +1,27 @@
-⸨cen⸩פרשה ז׃
+⸨cen⸩CAPUT VII⸼
 
-¹ וַיֹּ֤אמֶר יְהֹוָה֙ אֶל־⸨err:מֹשֶׁ֔ה⸩משֶׁ֔ה⸨/err⸩ רְאֵ֛ה נְתַתִּ֥יךָ אֱלֹהִ֖ים לְפַרְעֹ֑ה וְאַֽהֲרֹ֥ן אָחִ֖יךָ יִֽהְיֶ֥ה נְבִיאֶֽךָ׃
-² אַתָּ֣ה תְדַבֵּ֔ר אֵ֖ת כָּל־אֲשֶׁ֣ר אֲצַוֶּ֑ךָּ וְאַֽהֲרֹ֤ן אָחִיךָ֙ יְדַבֵּ֣ר אֶל־פַּרְעֹ֔ה וְשִׁלַּ֥ח אֶת־בְּנֵֽי־יִשְׂרָאֵ֖ל מֵֽאַרְצֹֽו׃
-³ וַֽאֲנִ֥י אַקְשֶׁ֖ה אֶת־לֵ֣ב פַּרְעֹ֑ה וְהִרְבֵּיתִ֧י אֶת־אֹֽתֹתַ֛י וְאֶת־מֹֽופְתַ֖י בְּאֶ֥רֶץ מִצְרָֽיִם׃
-⁴ וְלֹֽא־יִשְׁמַ֤ע אֲלֵכֶם֙ פַּרְעֹ֔ה וְנָֽתַתִּ֥י אֶת־יָדִ֖י בְּמִצְרָ֑יִם וְהֹֽוצֵאתִ֨י אֶת־צִבְאֹתַ֜י אֶת־עַמִּ֤י בְנֵֽי־יִשְׂרָאֵל֙ מֵאֶ֥רֶץ מִצְרַ֔יִם בִּשְׁפָטִ֖ים גְּדֹלִֽים׃
-⁵ וְיָֽדְע֤וּ מִצְרַ֙יִם֙ כִּֽי־אֲנִ֣י יְהֹוָ֔ה בִּנְטֹתִ֥י אֶת־יָדִ֖י עַל־מִצְרָ֑יִם וְהֹֽוצֵאתִ֥י אֶת־בְּנֵֽי־יִשְׂרָאֵ֖ל מִתֹּוכָֽם׃
-⁶ וַיַּ֥עַשׂ ⸨err:מֹשֶׁ֖ה⸩משֶׁ֖ה⸨/err⸩ וְאַֽהֲרֹ֑ן כַּאֲשֶׁ֨ר צִוָּ֧ה יְהֹוָ֛ה אֹתָ֖ם כֵּ֥ן עָשֽׂוּ׃
-⁷ ⸨err:וּמֹשֶׁה֙⸩וּמשֶׁה֙⸨/err⸩ בֶּן־שְׁמֹנִ֣ים שָׁנָ֔ה וְאַ֣הֲרֹ֔ן בֶּן־⸨err:שָׁלֹ֥שׁ⸩שָׁל֥שׁ⸨/err⸩ וּשְׁמֹנִ֖ים שָׁנָ֑ה בְּדַבְּרָ֖ם אֶל־פַּרְעֹֽה׃
-
-פ
-
-⁸ וַיֹּ֣אמֶר יְהֹוָ֔ה אֶל־⸨err:מֹשֶׁ֥ה⸩משֶׁ֥ה⸨/err⸩ וְאֶל־אַֽהֲרֹ֖ן לֵאמֹֽר׃
-⁹ כִּי֩ יְדַבֵּ֨ר אֲלֵכֶ֤ם פַּרְעֹה֙ לֵאמֹ֔ר תְּנ֥וּ לָכֶ֖ם מֹופֵ֑ת וְאָֽמַרְתָּ֣ אֶל־אַֽהֲרֹ֗ן קַ֧ח אֶת־מַטְּךָ֛ וְהַשְׁלֵ֥ךְ לִפְנֵֽי־פַרְעֹ֖ה יְהִ֥י לְתַנִּֽין׃
-¹⁰ וַיָּבֹ֨א ⸨err:מֹשֶׁ֧ה⸩משֶׁ֧ה⸨/err⸩ וְאַֽהֲרֹן֙ אֶל־פַּרְעֹ֔ה וַיַּ֣עֲשׂוּ כֵ֔ן כַּֽאֲשֶׁ֖ר צִוָּ֣ה יְהֹוָ֑ה וַיַּשְלֵ֨ךְ אַֽהֲרֹ֜ן אֶת־מַטֵּ֗הוּ לִפְנֵ֧י פַרְעֹ֛ה וְלִפְנֵ֥י עֲבָדָ֖יו וַיְהִ֥י לְתַנִּֽין׃
-¹¹ וַיִּקְרָא֙ גַּם־פַּרְעֹ֔ה לַֽחֲכָמִ֖ים וְלַֽמְכַשְׁפִ֑ים וַיַּֽעֲשׂ֨וּ גַם־הֵ֜ם חַרְטֻמֵּ֥י מִצְרַ֛יִם בְּלַֽהֲטֵיהֶ֖ם כֵּֽן׃
-¹² וַיַּשְׁלִ֨יכוּ אִ֣ישׁ מַטֵּ֔הוּ וַיִּֽהְי֖וּ לְתַנִּינִ֑ם וַיִּבְלַ֥ע מַטֵּֽה־אַֽהֲרֹ֖ן אֶת־מַטֹּתָֽם׃
-¹³ וַיֶּֽחֱזַק֙ לֵ֣ב פַּרְעֹ֔ה וְלֹ֥א שָׁמַ֖ע אֲלֵהֶ֑ם כַּֽאֲשֶׁ֖ר דִּבֶּ֥ר יְהֹוָֽה׃
-
-ס
-
-¹⁴ וַיֹּ֤אמֶר יְהֹוָה֙ אֶל־⸨err:מֹשֶׁ֔ה⸩משֶׁ֔ה⸨/err⸩ כָּבֵ֖ד לֵ֣ב פַּרְעֹ֑ה מֵאֵ֖ן לְשַׁלַּ֥ח הָעָֽם׃
-¹⁵ לֵ֣ךְ אֶל־פַּרְעֹ֞ה בַּבֹּ֗קֶר הִנֵּה֙ יֹצֵ֣א הַמַּ֔יְמָה וְנִצַּבְתָּ֥ לִקְרָאתֹ֖ו עַל־שְׂפַ֣ת הַיְאֹ֑ר וְהַמַּטֶּ֛ה אֲשֶׁר־נֶהְפַּ֥ךְ לְנָחָ֖שׁ תִּקַּ֥ח בְּיָדֶֽךָ׃
-¹⁶ וְאָֽמַרְתָּ֣ אֵלָ֗יו יְהֹוָה֞ אֱלֹהֵ֤י הָֽעִבְרִים֙ שְׁלָחַ֤נִי אֵלֶ֙יךָ֙ לֵאמֹ֔ר שַׁלַּח֙ אֶת־עַמִּ֔י וְיַֽעַבְדֻ֖נִי בַּמִּדְבָּ֑ר וְהִנֵּ֥ה לֹֽא־שָׁמַ֖עְתָּ עַד־כֹּֽה׃
-¹⁷ כֹּ֤ה אָמַ֣ר יְהֹוָ֔ה בְּזֹ֣את תֵּדַ֔ע כִּ֖י אֲנִ֣י יְהֹוָ֑ה הִנֵּ֨ה אָֽנֹכִ֜י מַכֶּ֣ה ׀ בַּמַּטֶּ֣ה אֲשֶׁר־בְּיָדִ֗י עַל־הַמַּ֛יִם אֲשֶׁ֥ר בַּיְאֹ֖ר וְנֶֽהֶפְכ֥וּ לְדָֽם׃
-¹⁸ וְהַדָּגָ֧ה אֲשֶׁר־בַּיְאֹ֛ר תָּמ֖וּת וּבָאַ֣שׁ הַיְאֹ֑ר וְנִלְא֣וּ מִצְרַ֔יִם לִשְׁתֹּ֥ות מַ֖יִם מִן־הַיְאֹֽר׃
-
-ס
-
-¹⁹ וַיֹּ֨אמֶר יְהֹוָ֜ה אֶל־⸨err:מֹשֶׁ֗ה⸩משֶׁ֗ה⸨/err⸩ אֱמֹ֣ר אֶל־אַֽהֲרֹ֡ן קַ֣ח מַטְּךָ֣ וּנְטֵֽה־יָֽדְךָ֩ עַל־מֵימֵ֨י מִצְרַ֜יִם עַל־נַֽהֲרֹתָ֣ם ׀ עַל־יְאֹֽרֵיהֶ֣ם וְעַל־אַגְמֵיהֶ֗ם וְעַ֛ל כָּל־מִקְוֵ֥ה מֵֽימֵיהֶ֖ם וְיִֽהְיוּ־דָ֑ם וְהָ֤יָה דָם֙ בְּכָל־אֶ֣רֶץ מִצְרַ֔יִם וּבָֽעֵצִ֖ים וּבָֽאֲבָנִֽים׃
-²⁰ וַיַּֽעֲשׂוּ־כֵן֩ ⸨err:מֹשֶׁ֨ה⸩משֶׁ֨ה⸨/err⸩ וְאַֽהֲרֹ֜ן כַּֽאֲשֶׁ֣ר ׀ צִוָּ֣ה יְהֹוָ֗ה וַיָּ֤רֶם בַּמַּטֶּה֙ וַיַּ֤ךְ אֶת־הַמַּ֙יִם֙ אֲשֶׁ֣ר בַּיְאֹ֔ר לְעֵינֵ֣י פַרְעֹ֔ה וּלְעֵינֵ֖י עֲבָדָ֑יו וַיֵּהָֽפְכ֛וּ כָּל־הַמַּ֥יִם אֲשֶׁר־בַּיְאֹ֖ר לְדָֽם׃
-²¹ וְהַדָּגָ֨ה אֲשֶׁר־בַּיְאֹ֥ר מֵ֙תָה֙ וַיִּבְאַ֣שׁ הַיְאֹ֔ר וְלֹֽא־יָֽכְל֣וּ מִצְרַ֔יִם לִשְׁתֹּ֥ות מַ֖יִם מִן־הַיְאֹ֑ר וַיְהִ֥י הַדָּ֖ם בְּכָל־אֶ֥רֶץ מִצְרָֽיִם׃
-²² וַיַּֽעֲשׂוּ־כֵ֛ן חַרְטֻמֵּ֥י מִצְרַ֖יִם בְּלָֽטֵיהֶ֑ם וַיֶּֽחֱזַ֤ק לֵב־פַּרְעֹה֙ וְלֹֽא־שָׁמַ֣ע אֲלֵהֶ֔ם כַּֽאֲשֶׁ֖ר דִּבֶּ֥ר יְהֹוָֽה׃
-²³ וַיִּ֣פֶן פַּרְעֹ֔ה וַיָּבֹ֖א אֶל־בֵּיתֹ֑ו וְלֹא־שָׁ֥ת לִבֹּ֖ו גַּם־לָזֹֽאת׃
-²⁴ וַיַּֽחְפְּר֧וּ כָל־מִצְרַ֛יִם סְבִיבֹ֥ת הַיְאֹ֖ר מַ֣יִם לִשְׁתֹּ֑ות כִּ֣י לֹ֤א יָֽכְלוּ֙ לִשְׁתֹּ֔ת מִמֵּימֵ֖י הַיְאֹֽר׃
-²⁵ וַיִּמָּלֵ֖א שִׁבְעַ֣ת יָמִ֑ים אַֽחֲרֵ֥י הַכֹּֽות־יְהֹוָ֖ה אֶת־הַיְאֹֽר׃
-
-פ
-
-²⁶ וַיֹּ֤אמֶר יְהֹוָה֙ אֶל־⸨err:מֹשֶׁ֔ה⸩משֶׁ֔ה⸨/err⸩ בֹּ֖א אֶל־פַּרְעֹ֑ה וְאָֽמַרְתָּ֣ אֵלָ֗יו כֹּ֤ה אָמַ֣ר יְהֹוָ֔ה שַׁלַּ֥ח אֶת־עַמִּ֖י וְיַֽעַבְדֻֽנִי׃
-²⁷ וְאִם־מָאֵ֥ן אַתָּ֖ה לְשַׁלֵּ֑חַ הִנֵּ֣ה אָֽנֹכִ֗י נֹגֵ֛ף אֶת־כָּל־גְּבֽוּלְךָ֖ בַּֽצְפַרְדְּעִֽים׃
-²⁸ וְשָׁרַ֣ץ הַיְאֹר֮ צְפַרְדְּעִים֒ וְעָלוּ֙ וּבָ֣אוּ בְבֵיתֶ֔ךָ וּבַֽחֲדַ֥ר֙ מִסְכָּֽבְךָ֖ וְעַל־מִטָּתֶ֑ךָ וּבְבֵ֤ית עֲבָדֶ֙יךָ֙ וּבְעַמֶּ֔ךָ וּבְתַנּוּרֶ֖יךָ וּבְמִשְׁאֲרֹותֶֽיךָ׃
-²⁹ וּבְכָ֥ה וּבְעַמְּךָ֖ וּבְכָל־עֲבָדֶ֑יךָ יַֽעֲל֖וּ הַֽצְפַרְדְּעִֽים׃
+1 ⸨sc⸩Dixitque⸨/sc⸩ Dominus ad Moysen: Ecce constitui te Deum Pharaonis: et Aaron frater tuus erit propheta tuus.
+2 Tu loqueris ei omnia quæ mando tibi: et ille loquetur ad Pharaonem, ut dimittat filios Israel de terra sua.
+3 Sed ego indurabo cor ejus, et multiplicabo signa et ostenta mea in terra Ægypti,
+4 Et non audiet vos: immittamque manum meam super Ægyptum, et educam exercitum et populum meum filios Israel de terra Ægypti per judicia maxima.
+5 Et scient Ægyptii quia ego sum Dominus qui extenderim manum meam super Ægyptum, et eduxerim filios Israel de medio eorum.
+6 Fecit itaque Moyses et Aaron sicut præceperat Dominus: ita egerunt.
+7 Erat autem Moyses octoginta annorum, et Aaron octoginta trium, quando locuti sunt ad Pharaonem.
+8 Dixitque Dominus ad Moysen et Aaron:
+9 Cum dixerit vobis Pharao, Ostendite signa: dices ad Aaron: Tolle virgam tuam, et projice eam coram Pharaone, ac vertetur in colubrum.
+10 Ingressi itaque Moyses et Aaron ad Pharaonem, fecerunt sicut præceperat Dominus: tulitque Aaron virgam coram Pharaone et servis ejus, quæ versa est in colubrum.
+11 Vocavit autem Pharao sapientes et maleficos: et fecerunt etiam ipsi per incantationes Ægyptiacas et arcana quædam similiter.
+12 Projeceruntque singuli virgas suas, quæ versæ sunt in dracones: sed devoravit virga Aaron virgas eorum.
+13 Induratumque est cor Pharaonis, et non audivit eos, sicut præceperat Dominus.
+14 Dixit autem Dominus ad Moysen: Ingravatum est cor Pharaonis; non vult dimittere populum.
+15 Vade ad eum mane, ecce egredietur ad aquas: et stabis in occursum ejus super ripam fluminis: et virgam, quæ conversa est in draconem, tolles in manu tua.
+16 Dicesque ad eum: Dominus Deus Hebræorum misit me ad te, dicens: Dimitte populum meum ut sacrificet mihi in deserto, et usque ad præsens audire noluisti.
+17 Hæc igitur dicit Dominus: In hoc scies quod sim Dominus: ecce percutiam virga, quæ in manu mea est, aquam fluminis, et vertetur in sanguinem.
+18 Pisces quoque, qui sunt in fluvio, morientur, et computrescent aquæ, et affligentur Ægyptii bibentes aquam fluminis.
+19 Dixit quoque Dominus ad Moysen: Dic ad Aaron: Tolle virgam tuam, et extende manum tuam super aquas Ægypti, et super fluvios eorum, et rivos ac paludes, et omnes lacus aquarum, ut vertantur in sanguinem, et sit cruor in omni terra Ægypti, tam in ligneis vasis quam in saxeis.
+20 Feceruntque Moyses et Aaron sicut præceperat Dominus: et elevans virgam, percussit aquam fluminis coram Pharaone et servis ejus: quæ versa est in sanguinem.
+21 Et pisces, qui erant in flumine, mortui sunt: computruitque fluvius, et non poterant Ægyptii bibere aquam fluminis, et fuit sanguis in tota terra Ægypti.
+22 Feceruntque similiter malefici Ægyptiorum incantationibus suis; et induratum est cor Pharaonis nec audivit eos, sicut præceperat Dominus.
+23 Avertitque se, et ingressus est domum suam, nec apposuit cor etiam hac vice.
+24 Foderunt autem omnes Ægyptii per circuitum fluminis aquam, ut biberent: non enim poterant bibere de aqua fluminis.
+25 Impletique sunt septem dies, postquam percussit Dominus fluvium.
