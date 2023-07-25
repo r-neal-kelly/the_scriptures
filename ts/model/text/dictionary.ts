@@ -70,7 +70,11 @@ export class Instance
                     [Boundary.END]: [],
                 },
             };
+    }
 
+    Validate():
+        void
+    {
         // letters, markers
         for (const property of [`letters`, `markers`]) {
             Utils.Assert(

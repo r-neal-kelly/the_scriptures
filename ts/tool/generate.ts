@@ -359,6 +359,7 @@ async function Generate():
                 const file_names: Array<string> = await Sorted_File_Names(files_path);
                 language_branch.versions.push(version_branch);
                 unique_names.Add_Version(version_name);
+                dictionary.Validate();
                 for (const [file_index, file_name] of file_names.entries()) {
                     const file_path: Path = `${files_path}/${file_name}`;
                     const file_leaf: Data.File.Leaf = {
