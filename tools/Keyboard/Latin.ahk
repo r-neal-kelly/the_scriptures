@@ -144,6 +144,7 @@ Latin.Sups_s  := { "a": "ᵃ" ; A
                  ,   7: "⁷" ; U+2077 SUPERSCRIPT SEVEN
                  ,   8: "⁸" ; U+2078 SUPERSCRIPT EIGHT
                  ,   9: "⁹" ; U+2079 SUPERSCRIPT NINE
+                 , "-": "⁻" ; U+207B SUPERSCRIPT MINUS
                  , "": "" }
 
 Latin.Sups_c  := { "a": "ᴬ" ; A
