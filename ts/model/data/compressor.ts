@@ -1,4 +1,3 @@
-import { Integer } from "../../types.js";
 import { Index } from "../../types.js";
 
 import * as Utils from "../../utils.js";
@@ -178,35 +177,64 @@ export class Instance
     {
         const zero: string = String.fromCodePoint(0);
         const one: string = String.fromCodePoint(1);
+        const quote: string = `"`;
+        const comma: string = `,`;
+        const escape: string = `\\`;
 
-        Utils.Assert(
-            dictionary_value.match(zero) == null &&
-            dictionary_value.match(one) == null,
-            `Cannot compress a dictionary that contains a code point of 0 or 1.`,
-        );
+        let compressed_parts: string = ``;
+        let is_in_quote: boolean = false;
+        let part_start_index: Index = 0;
 
-        for (
-            const value of Object.values(this.values).sort(
-                function (
-                    a: string,
-                    b: string,
-                ):
-                    Integer
-                {
-                    return b.length - a.length;
-                },
-            )
-        ) {
-            if (value.length > 1) {
-                dictionary_value = dictionary_value.replace(
-                    value,
-                    zero + String.fromCodePoint(this.indices[value]),
-                );
+        for (let idx = 0, end = dictionary_value.length; idx < end; idx += 1) {
+            const value: string = dictionary_value[idx];
+
+            Utils.Assert(
+                value !== zero &&
+                value !== one,
+                `Cannot compress a dictionary that contains a code point of 0 or 1.`,
+            );
+
+            if (is_in_quote) {
+                if (
+                    value === escape &&
+                    idx + 1 < end &&
+                    dictionary_value[idx + 1] === quote
+                ) {
+                    idx += 1;
+                } else if (value === quote) {
+                    const part: string = dictionary_value.slice(part_start_index, idx);
+                    if (this.indices.hasOwnProperty(part)) {
+                        if (
+                            idx + 1 < end &&
+                            dictionary_value[idx + 1] === comma
+                        ) {
+                            compressed_parts += one;
+                            compressed_parts += String.fromCodePoint(this.indices[part]);
+                            idx += 1;
+                        } else {
+                            compressed_parts += zero;
+                            compressed_parts += String.fromCodePoint(this.indices[part]);
+                        }
+                    } else {
+                        compressed_parts += quote;
+                        compressed_parts += part;
+                        compressed_parts += quote;
+                    }
+
+                    is_in_quote = false;
+                    part_start_index = 0;
+                }
+            } else {
+                if (value === quote) {
+                    is_in_quote = true;
+                    part_start_index = idx + 1;
+                } else {
+                    compressed_parts += value;
+                }
             }
         }
-        dictionary_value = dictionary_value.replace(/","\x00/g, one);
 
-        return dictionary_value;
+        return compressed_parts;
     }
 
     Decompress_Dictionary(
@@ -216,28 +244,33 @@ export class Instance
     {
         const zero: string = String.fromCodePoint(0);
         const one: string = String.fromCodePoint(1);
+        const quote: string = `"`;
+        const comma: string = `,`;
 
-        dictionary_value = dictionary_value.replace(new RegExp(one, `g`), `","\x00`);
-        for (
-            const value of Object.values(this.values).sort(
-                function (
-                    a: string,
-                    b: string,
-                ):
-                    Integer
-                {
-                    return b.length - a.length;
-                },
-            )
-        ) {
-            if (value.length > 1) {
-                dictionary_value = dictionary_value.replace(
-                    zero + String.fromCodePoint(this.indices[value]),
-                    value,
-                );
+        let decompressed_parts: string = ``;
+        let it: Unicode.Iterator = new Unicode.Iterator(
+            {
+                text: dictionary_value,
+            },
+        );
+
+        for (; !it.Is_At_End(); it = it.Next()) {
+            if (it.Point() === zero) {
+                it = it.Next();
+                decompressed_parts += quote;
+                decompressed_parts += this.values[it.Point().codePointAt(0) as Index];
+                decompressed_parts += quote;
+            } else if (it.Point() === one) {
+                it = it.Next();
+                decompressed_parts += quote;
+                decompressed_parts += this.values[it.Point().codePointAt(0) as Index];
+                decompressed_parts += quote;
+                decompressed_parts += comma;
+            } else {
+                decompressed_parts += it.Point();
             }
         }
 
-        return dictionary_value;
+        return decompressed_parts;
     }
 }
