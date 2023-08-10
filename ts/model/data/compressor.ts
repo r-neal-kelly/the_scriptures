@@ -183,6 +183,7 @@ export class Instance
 
         let compressed_parts: string = ``;
         let is_in_quote: boolean = false;
+        let is_in_sequence: boolean = false;
         let part_start_index: Index = 0;
 
         for (let idx = 0, end = dictionary_value.length; idx < end; idx += 1) {
@@ -208,14 +209,25 @@ export class Instance
                             idx + 1 < end &&
                             dictionary_value[idx + 1] === comma
                         ) {
-                            compressed_parts += one;
+                            if (!is_in_sequence) {
+                                compressed_parts += zero;
+                                is_in_sequence = true;
+                            }
                             compressed_parts += String.fromCodePoint(this.indices[part]);
                             idx += 1;
                         } else {
-                            compressed_parts += zero;
+                            if (is_in_sequence) {
+                                compressed_parts += zero;
+                                is_in_sequence = false;
+                            }
+                            compressed_parts += one;
                             compressed_parts += String.fromCodePoint(this.indices[part]);
                         }
                     } else {
+                        if (is_in_sequence) {
+                            compressed_parts += zero;
+                            is_in_sequence = false;
+                        }
                         compressed_parts += quote;
                         compressed_parts += part;
                         compressed_parts += quote;
@@ -229,6 +241,10 @@ export class Instance
                     is_in_quote = true;
                     part_start_index = idx + 1;
                 } else {
+                    if (is_in_sequence) {
+                        compressed_parts += zero;
+                        is_in_sequence = false;
+                    }
                     compressed_parts += value;
                 }
             }
@@ -253,21 +269,29 @@ export class Instance
                 text: dictionary_value,
             },
         );
+        let is_in_sequence: boolean = false;
 
         for (; !it.Is_At_End(); it = it.Next()) {
-            if (it.Point() === zero) {
-                it = it.Next();
-                decompressed_parts += quote;
-                decompressed_parts += this.values[it.Point().codePointAt(0) as Index];
-                decompressed_parts += quote;
-            } else if (it.Point() === one) {
-                it = it.Next();
-                decompressed_parts += quote;
-                decompressed_parts += this.values[it.Point().codePointAt(0) as Index];
-                decompressed_parts += quote;
-                decompressed_parts += comma;
+            if (is_in_sequence) {
+                if (it.Point() === zero) {
+                    is_in_sequence = false;
+                } else {
+                    decompressed_parts += quote;
+                    decompressed_parts += this.values[it.Point().codePointAt(0) as Index];
+                    decompressed_parts += quote;
+                    decompressed_parts += comma;
+                }
             } else {
-                decompressed_parts += it.Point();
+                if (it.Point() === zero) {
+                    is_in_sequence = true;
+                } else if (it.Point() === one) {
+                    it = it.Next();
+                    decompressed_parts += quote;
+                    decompressed_parts += this.values[it.Point().codePointAt(0) as Index];
+                    decompressed_parts += quote;
+                } else {
+                    decompressed_parts += it.Point();
+                }
             }
         }
 
