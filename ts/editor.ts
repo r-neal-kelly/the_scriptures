@@ -1275,6 +1275,7 @@ class Editor
                         // English
                         document.body.style.fontFamily = `sans-serif`;
                         document.body.style.fontSize = `24px`;
+                        this.Set_Direction(Direction.LEFT_TO_RIGHT);
                     }
                 } else if (keyboard_event.key === `(`) {
                     if (this.Is_Meta_Key_Active()) {
@@ -1283,6 +1284,7 @@ class Editor
                         // Hebrew
                         document.body.style.fontFamily = `"${Font.Family.EZRA_SR}"`;
                         document.body.style.fontSize = `30px`;
+                        this.Set_Direction(Direction.RIGHT_TO_LEFT);
                     }
                 } else if (keyboard_event.key === `*`) {
                     if (this.Is_Meta_Key_Active()) {
@@ -1291,6 +1293,7 @@ class Editor
                         // Greek
                         document.body.style.fontFamily = `"${Font.Family.GENTIUM}"`;
                         document.body.style.fontSize = `32px`;
+                        this.Set_Direction(Direction.LEFT_TO_RIGHT);
                     }
                 } else if (keyboard_event.key === `&`) {
                     if (this.Is_Meta_Key_Active()) {
@@ -1299,6 +1302,7 @@ class Editor
                         // Latin
                         document.body.style.fontFamily = `"${Font.Family.GENTIUM}"`;
                         document.body.style.fontSize = `26px`;
+                        this.Set_Direction(Direction.LEFT_TO_RIGHT);
                     }
                 }
             }.bind(this),
@@ -2347,10 +2351,12 @@ class Editor
 
             if (next_error_element) {
                 (next_error_element.parentElement as HTMLElement).focus();
+                next_error_element.scrollIntoView();
                 selection.getRangeAt(0).setStart(next_error_element, 0);
                 selection.getRangeAt(0).setEnd(next_error_element, 1);
             } else {
                 this.lines[0].Element().focus();
+                this.lines[0].Element().scrollIntoView();
                 selection.getRangeAt(0).setStart(this.lines[0].Element(), 0);
                 selection.getRangeAt(0).setEnd(this.lines[0].Element(), 0);
             }
@@ -2434,10 +2440,12 @@ class Editor
 
             if (next_error_element) {
                 (next_error_element.parentElement as HTMLElement).focus();
+                next_error_element.scrollIntoView();
                 selection.getRangeAt(0).setStart(next_error_element, 0);
                 selection.getRangeAt(0).setEnd(next_error_element, 1);
             } else {
                 this.lines[0].Element().focus();
+                this.lines[0].Element().scrollIntoView();
                 selection.getRangeAt(0).setStart(this.lines[0].Element(), 0);
                 selection.getRangeAt(0).setEnd(this.lines[0].Element(), 0);
             }
