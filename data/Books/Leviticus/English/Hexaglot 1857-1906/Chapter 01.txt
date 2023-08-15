@@ -1,6 +1,6 @@
 ⸨cen⸩LEVITICUS, CHAPTER I⸼
 
-1 ⸨sc⸩And⸨/sc⸩ the ⸨sc⸩Lord⸨/sc⸩ called unto Moses, and spake unto him out of the tabernacle of the congregation, saying,
+⸨err:1 ⸩⸨/err⸩⸨sc⸩And⸨/sc⸩ the ⸨sc⸩Lord⸨/sc⸩ called unto Moses, and spake unto him out of the tabernacle of the congregation, saying,
 2 Speak unto the children of Israel, and say unto them, If any man of you bring an offering unto the ⸨sc⸩Lord⸨/sc⸩, ye shall bring your offering of the cattle, ⸨i⸩even⸨/i⸩ of the herd, and of the flock.
 3 If his offering ⸨i⸩be⸨/i⸩ a burnt sacrifice of the herd, let him offer a male without blemish: he shall offer it of his own voluntary will at the door of the tabernacle of the congregation before the ⸨sc⸩Lord⸨/sc⸩.
 4 And he shall put his hand upon the head of the burnt offering; and it shall be accepted for him to make atonement for him.

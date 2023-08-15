@@ -1,6 +1,6 @@
 ⸨cen⸩EXODUS, CAPUT I⸼
 
-1 ⸨sc⸩Hæc⸨/sc⸩ sunt nomina filiorum Israel qui ingressi sunt in Ægyptum cum Jacob: singuli cum domibus suis introierunt:
+⸨err:1 ⸩⸨/err⸩⸨sc⸩Hæc⸨/sc⸩ sunt nomina filiorum Israel qui ingressi sunt in Ægyptum cum Jacob: singuli cum domibus suis introierunt:
 2 Ruben, Simeon, Levi, Judas,
 3 Issachar, Zabulon et Benjamin,
 4 Dan, et Nephthali, Gad, et Aser.
