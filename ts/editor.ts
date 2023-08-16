@@ -218,6 +218,20 @@ function Set_Text_Offset(
     }
 }
 
+function Put_Child_At_Top_Y(
+    parent_element: Element,
+    child_element: Element,
+):
+    void
+{
+
+    const parent_rect = parent_element.getBoundingClientRect();
+    const child_rect = child_element.getBoundingClientRect();
+    const child_y = child_rect.y - parent_rect.y;
+
+    parent_element.scrollTop += child_y;
+}
+
 enum Part_Class
 {
     _NONE_ = -1,
@@ -2350,11 +2364,11 @@ class Editor
                 }.bind(this))();
 
             if (next_error_element) {
-                next_error_element.scrollIntoView();
+                Put_Child_At_Top_Y(this.children.lines, next_error_element);
                 selection.getRangeAt(0).setStart(next_error_element, 0);
                 selection.getRangeAt(0).setEnd(next_error_element, 1);
             } else {
-                this.lines[0].Element().scrollIntoView();
+                this.lines[0].Element().focus();
                 selection.getRangeAt(0).setStart(this.lines[0].Element(), 0);
                 selection.getRangeAt(0).setEnd(this.lines[0].Element(), 0);
             }
@@ -2366,6 +2380,7 @@ class Editor
                         line.Element().focus();
 
                         const selection: Selection = document.getSelection() as Selection;
+                        Put_Child_At_Top_Y(this.children.lines, child);
                         selection.getRangeAt(0).setStart(child, 0);
                         selection.getRangeAt(0).setEnd(child, 1);
                         return;
@@ -2437,11 +2452,11 @@ class Editor
                 }.bind(this))();
 
             if (next_error_element) {
-                next_error_element.scrollIntoView();
+                Put_Child_At_Top_Y(this.children.lines, next_error_element);
                 selection.getRangeAt(0).setStart(next_error_element, 0);
                 selection.getRangeAt(0).setEnd(next_error_element, 1);
             } else {
-                this.lines[0].Element().scrollIntoView();
+                this.lines[0].Element().focus();
                 selection.getRangeAt(0).setStart(this.lines[0].Element(), 0);
                 selection.getRangeAt(0).setEnd(this.lines[0].Element(), 0);
             }
@@ -2454,6 +2469,7 @@ class Editor
                             line.Element().focus();
 
                             const selection: Selection = document.getSelection() as Selection;
+                            Put_Child_At_Top_Y(this.children.lines, child);
                             selection.getRangeAt(0).setStart(child, 0);
                             selection.getRangeAt(0).setEnd(child, 1);
                             return;
