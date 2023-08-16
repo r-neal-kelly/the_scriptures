@@ -2350,12 +2350,10 @@ class Editor
                 }.bind(this))();
 
             if (next_error_element) {
-                (next_error_element.parentElement as HTMLElement).focus();
                 next_error_element.scrollIntoView();
                 selection.getRangeAt(0).setStart(next_error_element, 0);
                 selection.getRangeAt(0).setEnd(next_error_element, 1);
             } else {
-                this.lines[0].Element().focus();
                 this.lines[0].Element().scrollIntoView();
                 selection.getRangeAt(0).setStart(this.lines[0].Element(), 0);
                 selection.getRangeAt(0).setEnd(this.lines[0].Element(), 0);
@@ -2439,12 +2437,10 @@ class Editor
                 }.bind(this))();
 
             if (next_error_element) {
-                (next_error_element.parentElement as HTMLElement).focus();
                 next_error_element.scrollIntoView();
                 selection.getRangeAt(0).setStart(next_error_element, 0);
                 selection.getRangeAt(0).setEnd(next_error_element, 1);
             } else {
-                this.lines[0].Element().focus();
                 this.lines[0].Element().scrollIntoView();
                 selection.getRangeAt(0).setStart(this.lines[0].Element(), 0);
                 selection.getRangeAt(0).setEnd(this.lines[0].Element(), 0);
