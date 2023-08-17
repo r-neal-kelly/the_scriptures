@@ -110,6 +110,14 @@ export function Escape_Regular_Expression(
     );
 }
 
+export function Remove_File_Extension(
+    file_name_or_path: string,
+):
+    string
+{
+    return file_name_or_path.replace(/\.[^.]*$/, ``);
+}
+
 export function Resolve_Path(
     path_from_root: Path,
 ):

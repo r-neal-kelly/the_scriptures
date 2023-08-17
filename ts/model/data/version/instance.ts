@@ -57,12 +57,13 @@ export class Instance extends Entity.Instance
             },
         );
         this.files = [];
-        for (const file_leaf of branch.files) {
+        for (let idx = 0, end = branch.files.length; idx < end; idx += 1) {
             this.files.push(
                 new File.Instance(
                     {
                         version: this,
-                        leaf: file_leaf,
+                        name: branch.files[idx],
+                        index: idx,
                     },
                 ),
             );

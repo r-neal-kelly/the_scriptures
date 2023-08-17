@@ -360,12 +360,9 @@ async function Generate():
                 language_branch.versions.push(version_branch);
                 unique_names.Add_Version(version_name);
                 dictionary.Validate();
-                for (const [file_index, file_name] of file_names.entries()) {
+                for (const file_name of file_names) {
                     const file_path: Path = `${files_path}/${file_name}`;
-                    const file_leaf: Data.File.Leaf = {
-                        name: file_name.replace(/\.[^.]*$/, `.${Data.Version.Dictionary.Symbol.EXTENSION}`),
-                        index: file_index,
-                    };
+                    const file_leaf: Data.File.Leaf = Utils.Remove_File_Extension(file_name);
                     const text: Text.Instance = new Text.Instance(
                         {
                             dictionary: dictionary,

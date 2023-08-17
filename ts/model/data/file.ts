@@ -10,10 +10,12 @@ import * as Text from "../text.js";
 import * as Compressor from "./compressor.js";
 import * as Version from "./version.js";
 
-export type Leaf = {
-    name: Name,
-    index: Index,
-};
+export type Leaf = Name;
+
+export enum Symbol
+{
+    EXTENSION = `comp`,
+}
 
 export class Instance extends Entity.Instance
 {
@@ -26,19 +28,21 @@ export class Instance extends Entity.Instance
     constructor(
         {
             version,
-            leaf,
+            name,
+            index,
         }: {
             version: Version.Instance,
-            leaf: Leaf,
+            name: Name,
+            index: Index,
         },
     )
     {
         super();
 
         this.version = version;
-        this.name = leaf.name.replace(/\.[^.]*$/, ``);
-        this.index = leaf.index;
-        this.path = `${version.Path()}/${leaf.name}`;
+        this.name = name;
+        this.index = index;
+        this.path = `${version.Path()}/${name}.${Symbol.EXTENSION}`;
         this.text = null;
 
         this.Add_Dependencies(
