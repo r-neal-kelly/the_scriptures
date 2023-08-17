@@ -19,12 +19,22 @@ export type Tree = {
 
 export type Info = {
     tree: Tree;
+
     unique_book_names: Array<Name>,
     unique_language_names: Array<Name>,
     unique_version_names: Array<Name>,
     unique_part_values: {
         [language_name: Name]: Array<string>,
     },
+
+    total_unit_count: Count,
+    total_point_count: Count,
+    total_letter_count: Count,
+    total_marker_count: Count,
+    total_word_count: Count,
+    total_break_count: Count,
+    total_command_count: Count,
+    total_part_count: Count,
 };
 
 export class Instance extends Async.Instance
@@ -1216,10 +1226,20 @@ export class Instance extends Async.Instance
                 tree: {
                     books: [],
                 },
+
                 unique_book_names: [],
                 unique_language_names: [],
                 unique_version_names: [],
                 unique_part_values: {},
+
+                total_unit_count: 0,
+                total_point_count: 0,
+                total_letter_count: 0,
+                total_marker_count: 0,
+                total_word_count: 0,
+                total_break_count: 0,
+                total_command_count: 0,
+                total_part_count: 0,
             };
         }
     }

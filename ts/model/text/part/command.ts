@@ -19,6 +19,19 @@ export enum Symbol
     DIVIDER = `:`,
 }
 
+export function Is_Symbol(
+    point: Value,
+):
+    boolean
+{
+    return (
+        point === Symbol.FIRST ||
+        point === Symbol.LAST ||
+        point === Symbol.CLOSE ||
+        point === Symbol.DIVIDER
+    );
+}
+
 enum Parameter
 {
     ERROR = `err`,
@@ -764,5 +777,55 @@ export class Instance extends Part.Instance
         boolean
     {
         return this.Value() === Known_Value.CLOSE_LANGUAGE;
+    }
+
+    Is_First_Of_Split():
+        boolean
+    {
+        return this.Value()[this.Value().length - 1] === Symbol.DIVIDER;
+    }
+
+    Is_Last_Of_Split():
+        boolean
+    {
+        return this.Value()[0] === Symbol.LAST;
+    }
+
+    Symbol_Point_Count():
+        Count
+    {
+        let result: Count = 0;
+
+        let it: Unicode.Iterator = new Unicode.Iterator(
+            {
+                text: this.Value(),
+            },
+        );
+        for (; !it.Is_At_End(); it = it.Next()) {
+            if (Is_Symbol(it.Point())) {
+                result += 1;
+            }
+        }
+
+        return result;
+    }
+
+    Non_Symbol_Point_Count():
+        Count
+    {
+        let result: Count = 0;
+
+        let it: Unicode.Iterator = new Unicode.Iterator(
+            {
+                text: this.Value(),
+            },
+        );
+        for (; !it.Is_At_End(); it = it.Next()) {
+            if (!Is_Symbol(it.Point())) {
+                result += 1;
+            }
+        }
+
+        return result;
     }
 }

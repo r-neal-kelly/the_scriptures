@@ -6,6 +6,7 @@ import { Name } from "../types.js";
 import { Path } from "../types.js";
 
 import * as Utils from "../utils.js";
+import * as Unicode from "../unicode.js";
 
 import * as Language from "../model/language.js";
 import * as Data from "../model/data.js";
@@ -316,13 +317,85 @@ async function Generate():
         tree: {
             books: [],
         },
+
         unique_book_names: [],
         unique_language_names: [],
         unique_version_names: [],
         unique_part_values: {},
+
+        total_unit_count: 0,
+        total_point_count: 0,
+        total_letter_count: 0,
+        total_marker_count: 0,
+        total_word_count: 0,
+        total_break_count: 0,
+        total_command_count: 0,
+        total_part_count: 0,
     };
     const unique_names: Unique_Names = new Unique_Names();
     const unique_parts: { [language_name: Name]: Unique_Parts } = {};
+
+    function Update_Info_Counts(
+        info: Data.Info,
+        part: Text.Part.Instance,
+    ):
+        void
+    {
+        const part_type: Text.Part.Type = part.Part_Type();
+        const part_value: string = part.Value();
+        const part_unit_count: Count = part_value.length;
+        const part_point_count: Count = Unicode.Point_Count(part_value);
+
+        Utils.Assert(info.total_unit_count + part_unit_count <= Number.MAX_SAFE_INTEGER);
+        info.total_unit_count += part_unit_count;
+
+        Utils.Assert(info.total_point_count + part_point_count <= Number.MAX_SAFE_INTEGER);
+        info.total_point_count += part_point_count;
+
+        if (part_type === Text.Part.Type.LETTER) {
+            Utils.Assert(info.total_letter_count + 1 <= Number.MAX_SAFE_INTEGER);
+            info.total_letter_count += 1;
+
+        } else if (part_type === Text.Part.Type.MARKER) {
+            Utils.Assert(info.total_marker_count + 1 <= Number.MAX_SAFE_INTEGER);
+            info.total_marker_count += 1;
+
+        } else if (part_type === Text.Part.Type.WORD) {
+            Utils.Assert(info.total_letter_count + part_point_count <= Number.MAX_SAFE_INTEGER);
+            info.total_letter_count += part_point_count;
+
+            Utils.Assert(info.total_word_count + 1 <= Number.MAX_SAFE_INTEGER);
+            info.total_word_count += 1;
+
+        } else if (part_type === Text.Part.Type.BREAK) {
+            Utils.Assert(info.total_marker_count + part_point_count <= Number.MAX_SAFE_INTEGER);
+            info.total_marker_count += part_point_count;
+
+            Utils.Assert(info.total_break_count + 1 <= Number.MAX_SAFE_INTEGER);
+            info.total_break_count += 1;
+
+        } else if (part_type === Text.Part.Type.COMMAND) {
+            // We just treat the command as if it is wholly a single word.
+            // Keep in mind, these commands can be split, so we don't actually
+            // need to work with complex inner arguments, as they are already
+            // separated for us, but we do need to skip counting the last_of_split.
+            const command: Text.Part.Command.Instance = (part as Text.Part.Command.Instance);
+            if (!command.Is_Last_Of_Split()) {
+                Utils.Assert(info.total_letter_count + part_point_count <= Number.MAX_SAFE_INTEGER);
+                info.total_letter_count += part_point_count;
+
+                Utils.Assert(info.total_word_count + 1 <= Number.MAX_SAFE_INTEGER);
+                info.total_word_count += 1;
+
+                Utils.Assert(info.total_command_count + 1 <= Number.MAX_SAFE_INTEGER);
+                info.total_command_count += 1;
+            }
+
+        }
+
+        Utils.Assert(info.total_part_count + 1 <= Number.MAX_SAFE_INTEGER);
+        info.total_part_count += 1;
+    }
 
     const data_path: Path = `./data`;
     const books_path: Path = `${data_path}/Books`;
@@ -383,6 +456,7 @@ async function Generate():
                         ) {
                             const part: Text.Part.Instance = line.Macro_Part(part_idx, LINE_PATH_TYPE);
                             unique_parts[language_name].Add(part.Value());
+                            Update_Info_Counts(data_info, part);
                         }
                     }
                 }
