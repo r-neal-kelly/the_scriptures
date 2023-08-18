@@ -2,6 +2,7 @@ import * as fs from "fs";
 
 import { Integer } from "../types.js";
 import { Count } from "../types.js";
+import { Index } from "../types.js";
 import { Name } from "../types.js";
 import { Path } from "../types.js";
 
@@ -331,11 +332,13 @@ async function Generate():
         total_break_count: 0,
         total_command_count: 0,
         total_part_count: 0,
+        total_line_count: 0,
+        total_file_count: 0,
     };
     const unique_names: Unique_Names = new Unique_Names();
     const unique_parts: { [language_name: Name]: Unique_Parts } = {};
 
-    function Update_Info_Counts(
+    function Update_Info_Part_Counts(
         info: Data.Info,
         part: Text.Part.Instance,
     ):
@@ -397,6 +400,60 @@ async function Generate():
         info.total_part_count += 1;
     }
 
+    async function Update_Readme(
+        info: Data.Info,
+    ):
+        Promise<void>
+    {
+        let readme_text: string = await Read_File(`./README.md`);
+
+        const end_marker: string = `##`;
+
+        const stats_marker: string = `## Stats`;
+        let stats_first: Index | null = null;
+        let stats_end: Index | null = null;
+
+        for (let idx = 0, end = readme_text.length; idx < end; idx += 1) {
+            const slice: string = readme_text.slice(idx);
+
+            if (stats_first === null) {
+                if (slice.slice(0, stats_marker.length) === stats_marker) {
+                    stats_first = idx;
+                }
+            } else if (stats_end === null) {
+                if (slice.slice(0, end_marker.length) === end_marker) {
+                    stats_end = idx;
+                }
+            }
+        }
+
+        if (stats_first !== null) {
+            if (stats_end === null) {
+                stats_end = readme_text.length;
+            }
+
+            readme_text =
+                readme_text.slice(0, stats_first) +
+                `## Stats\n` +
+                `Total Unique Languages: ${info.unique_language_names.length}\n` +
+                `Total Unique Versions: ${info.unique_version_names.length}\n` +
+                `Total Unique Books: ${info.unique_book_names.length}\n` +
+                `Total Text Files: ${info.total_file_count}\n` +
+                `Total Text Lines: ${info.total_line_count}\n` +
+                `Total Text Parts: ${info.total_part_count}\n` +
+                `Total Words: ${info.total_word_count}\n` +
+                `Total Meta Words: ${info.total_command_count}\n` +
+                `Total Breaks (Non-Words): ${info.total_break_count}\n` +
+                `Total Letters: ${info.total_letter_count}\n` +
+                `Total Markers (Non-Letters): ${info.total_marker_count}\n` +
+                `Total Unicode Points: ${info.total_point_count}\n` +
+                `Total UTF16 Codes: ${info.total_unit_count}\n` +
+                readme_text.slice(stats_end, readme_text.length);
+        }
+
+        await Write_File(`./README.md`, readme_text);
+    }
+
     const data_path: Path = `./data`;
     const books_path: Path = `${data_path}/Books`;
     for (const book_name of (await Folder_Names(books_path)).sort()) {
@@ -433,6 +490,7 @@ async function Generate():
                 language_branch.versions.push(version_branch);
                 unique_names.Add_Version(version_name);
                 dictionary.Validate();
+                data_info.total_file_count += file_names.length;
                 for (const file_name of file_names) {
                     const file_path: Path = `${files_path}/${file_name}`;
                     const file_leaf: Data.File.Leaf = Utils.Remove_File_Extension(file_name);
@@ -443,6 +501,7 @@ async function Generate():
                         },
                     );
                     version_branch.files.push(file_leaf);
+                    data_info.total_line_count += text.Line_Count();
                     for (
                         let line_idx = 0, line_end = text.Line_Count();
                         line_idx < line_end;
@@ -456,7 +515,7 @@ async function Generate():
                         ) {
                             const part: Text.Part.Instance = line.Macro_Part(part_idx, LINE_PATH_TYPE);
                             unique_parts[language_name].Add(part.Value());
-                            Update_Info_Counts(data_info, part);
+                            Update_Info_Part_Counts(data_info, part);
                         }
                     }
                 }
@@ -562,6 +621,8 @@ async function Generate():
             }
         }
     }
+
+    await Update_Readme(data_info);
 }
 
 (

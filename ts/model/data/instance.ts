@@ -35,6 +35,8 @@ export type Info = {
     total_break_count: Count,
     total_command_count: Count,
     total_part_count: Count,
+    total_line_count: Count,
+    total_file_count: Count,
 };
 
 export class Instance extends Async.Instance
@@ -1240,6 +1242,8 @@ export class Instance extends Async.Instance
                 total_break_count: 0,
                 total_command_count: 0,
                 total_part_count: 0,
+                total_line_count: 0,
+                total_file_count: 0,
             };
         }
     }
