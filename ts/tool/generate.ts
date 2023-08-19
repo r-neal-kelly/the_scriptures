@@ -334,6 +334,7 @@ async function Generate():
         total_part_count: 0,
         total_line_count: 0,
         total_file_count: 0,
+        total_book_count: 0,
     };
     const unique_names: Unique_Names = new Unique_Names();
     const unique_parts: { [language_name: Name]: Unique_Parts } = {};
@@ -378,18 +379,16 @@ async function Generate():
             info.total_break_count += 1;
 
         } else if (part_type === Text.Part.Type.COMMAND) {
-            // We just treat the command as if it is wholly a single word.
             // Keep in mind, these commands can be split, so we don't actually
             // need to work with complex inner arguments, as they are already
-            // separated for us, but we do need to skip counting the last_of_split.
+            // separated for us. We avoid counting the last_of_split as a whole
+            // command, but we still count everything including it as a letter.
+
+            Utils.Assert(info.total_letter_count + part_point_count <= Number.MAX_SAFE_INTEGER);
+            info.total_letter_count += part_point_count;
+
             const command: Text.Part.Command.Instance = (part as Text.Part.Command.Instance);
             if (!command.Is_Last_Of_Split()) {
-                Utils.Assert(info.total_letter_count + part_point_count <= Number.MAX_SAFE_INTEGER);
-                info.total_letter_count += part_point_count;
-
-                Utils.Assert(info.total_word_count + 1 <= Number.MAX_SAFE_INTEGER);
-                info.total_word_count += 1;
-
                 Utils.Assert(info.total_command_count + 1 <= Number.MAX_SAFE_INTEGER);
                 info.total_command_count += 1;
             }
@@ -434,20 +433,21 @@ async function Generate():
 
             readme_text =
                 readme_text.slice(0, stats_first) +
-                `## Stats\n` +
-                `Total Unique Languages: ${info.unique_language_names.length}\n` +
-                `Total Unique Versions: ${info.unique_version_names.length}\n` +
-                `Total Unique Books: ${info.unique_book_names.length}\n` +
-                `Total Text Files: ${info.total_file_count}\n` +
-                `Total Text Lines: ${info.total_line_count}\n` +
-                `Total Text Parts: ${info.total_part_count}\n` +
-                `Total Words: ${info.total_word_count}\n` +
-                `Total Meta Words: ${info.total_command_count}\n` +
-                `Total Breaks (Non-Words): ${info.total_break_count}\n` +
-                `Total Letters: ${info.total_letter_count}\n` +
-                `Total Markers (Non-Letters): ${info.total_marker_count}\n` +
-                `Total Unicode Points: ${info.total_point_count}\n` +
-                `Total UTF16 Codes: ${info.total_unit_count}\n` +
+                `## Stats\n\n` +
+                `Unique Languages: ${info.unique_language_names.length}\n\n` +
+                `Unique Versions: ${info.unique_version_names.length}\n\n` +
+                `Unique Books: ${info.unique_book_names.length}\n\n` +
+                `Total Books: ${info.total_book_count}\n\n` +
+                `Total Files: ${info.total_file_count}\n\n` +
+                `Total Lines: ${info.total_line_count}\n\n` +
+                `Total Parts (Words, Commands, Breaks): ${info.total_part_count}\n\n` +
+                `Total Words: ${info.total_word_count}\n\n` +
+                `Total Commands (Meta-Words): ${info.total_command_count}\n\n` +
+                `Total Breaks (Non-Words): ${info.total_break_count}\n\n` +
+                `Total Letters (Word-Points, Command-Points): ${info.total_letter_count}\n\n` +
+                `Total Markers (Break-Points): ${info.total_marker_count}\n\n` +
+                `Total Unicode Points: ${info.total_point_count}\n\n` +
+                `Total UTF16 Codes: ${info.total_unit_count}\n\n` +
                 readme_text.slice(stats_end, readme_text.length);
         }
 
@@ -490,6 +490,7 @@ async function Generate():
                 language_branch.versions.push(version_branch);
                 unique_names.Add_Version(version_name);
                 dictionary.Validate();
+                data_info.total_book_count += 1;
                 data_info.total_file_count += file_names.length;
                 for (const file_name of file_names) {
                     const file_path: Path = `${files_path}/${file_name}`;
