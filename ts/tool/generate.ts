@@ -328,9 +328,10 @@ async function Generate():
         total_point_count: 0,
         total_letter_count: 0,
         total_marker_count: 0,
+        total_meta_letter_count: 0,
         total_word_count: 0,
         total_break_count: 0,
-        total_command_count: 0,
+        total_meta_word_count: 0,
         total_part_count: 0,
         total_line_count: 0,
         total_file_count: 0,
@@ -360,9 +361,15 @@ async function Generate():
             Utils.Assert(info.total_letter_count + 1 <= Number.MAX_SAFE_INTEGER);
             info.total_letter_count += 1;
 
+            Utils.Assert(info.total_part_count + 1 <= Number.MAX_SAFE_INTEGER);
+            info.total_part_count += 1;
+
         } else if (part_type === Text.Part.Type.MARKER) {
             Utils.Assert(info.total_marker_count + 1 <= Number.MAX_SAFE_INTEGER);
             info.total_marker_count += 1;
+
+            Utils.Assert(info.total_part_count + 1 <= Number.MAX_SAFE_INTEGER);
+            info.total_part_count += 1;
 
         } else if (part_type === Text.Part.Type.WORD) {
             Utils.Assert(info.total_letter_count + part_point_count <= Number.MAX_SAFE_INTEGER);
@@ -371,6 +378,9 @@ async function Generate():
             Utils.Assert(info.total_word_count + 1 <= Number.MAX_SAFE_INTEGER);
             info.total_word_count += 1;
 
+            Utils.Assert(info.total_part_count + 1 <= Number.MAX_SAFE_INTEGER);
+            info.total_part_count += 1;
+
         } else if (part_type === Text.Part.Type.BREAK) {
             Utils.Assert(info.total_marker_count + part_point_count <= Number.MAX_SAFE_INTEGER);
             info.total_marker_count += part_point_count;
@@ -378,25 +388,29 @@ async function Generate():
             Utils.Assert(info.total_break_count + 1 <= Number.MAX_SAFE_INTEGER);
             info.total_break_count += 1;
 
+            Utils.Assert(info.total_part_count + 1 <= Number.MAX_SAFE_INTEGER);
+            info.total_part_count += 1;
+
         } else if (part_type === Text.Part.Type.COMMAND) {
             // Keep in mind, these commands can be split, so we don't actually
             // need to work with complex inner arguments, as they are already
-            // separated for us. We avoid counting the last_of_split as a whole
-            // command, but we still count everything including it as a letter.
-
-            Utils.Assert(info.total_letter_count + part_point_count <= Number.MAX_SAFE_INTEGER);
-            info.total_letter_count += part_point_count;
+            // separated for us. We avoid counting the last_of_split as a separate
+            // command, but we still count everything including it as a meta_letter.
 
             const command: Text.Part.Command.Instance = (part as Text.Part.Command.Instance);
+
+            Utils.Assert(info.total_meta_letter_count + part_point_count <= Number.MAX_SAFE_INTEGER);
+            info.total_meta_letter_count += part_point_count;
+
             if (!command.Is_Last_Of_Split()) {
-                Utils.Assert(info.total_command_count + 1 <= Number.MAX_SAFE_INTEGER);
-                info.total_command_count += 1;
+                Utils.Assert(info.total_meta_word_count + 1 <= Number.MAX_SAFE_INTEGER);
+                info.total_meta_word_count += 1;
+
+                Utils.Assert(info.total_part_count + 1 <= Number.MAX_SAFE_INTEGER);
+                info.total_part_count += 1;
             }
 
         }
-
-        Utils.Assert(info.total_part_count + 1 <= Number.MAX_SAFE_INTEGER);
-        info.total_part_count += 1;
     }
 
     async function Update_Readme(
@@ -431,23 +445,35 @@ async function Generate():
                 stats_end = readme_text.length;
             }
 
+            const total_word_percent: Integer = Math.round(info.total_word_count * 100 / info.total_part_count);
+            const total_meta_word_percent: Integer = Math.round(info.total_meta_word_count * 100 / info.total_part_count);
+            const total_non_word_percent: Integer = Math.round(info.total_break_count * 100 / info.total_part_count);
+            const total_letter_percent: Integer = Math.round(info.total_letter_count * 100 / info.total_point_count);
+            const total_meta_letter_percent: Integer = Math.round(info.total_meta_letter_count * 100 / info.total_point_count);
+            const total_non_letter_percent: Integer = Math.round(info.total_marker_count * 100 / info.total_point_count);
+
             readme_text =
                 readme_text.slice(0, stats_first) +
                 `## Stats\n\n` +
-                `Unique Languages: ${info.unique_language_names.length}\n\n` +
-                `Unique Versions: ${info.unique_version_names.length}\n\n` +
-                `Unique Books: ${info.unique_book_names.length}\n\n` +
-                `Total Books: ${info.total_book_count}\n\n` +
-                `Total Files: ${info.total_file_count}\n\n` +
-                `Total Lines: ${info.total_line_count}\n\n` +
-                `Total Parts (Words, Commands, Breaks): ${info.total_part_count}\n\n` +
-                `Total Words: ${info.total_word_count}\n\n` +
-                `Total Commands (Meta-Words): ${info.total_command_count}\n\n` +
-                `Total Breaks (Non-Words): ${info.total_break_count}\n\n` +
-                `Total Letters (Word-Points, Command-Points): ${info.total_letter_count}\n\n` +
-                `Total Markers (Break-Points): ${info.total_marker_count}\n\n` +
-                `Total Unicode Points: ${info.total_point_count}\n\n` +
-                `Total UTF16 Codes: ${info.total_unit_count}\n\n` +
+
+                `- Unique Languages: ${Utils.Add_Commas_To_Number(info.unique_language_names.length)}\n` +
+                `- Unique Versions: ${Utils.Add_Commas_To_Number(info.unique_version_names.length)}\n` +
+                `- Unique Books: ${Utils.Add_Commas_To_Number(info.unique_book_names.length)}\n\n` +
+
+                `<br>\n\n` +
+
+                `- Total Books: ${Utils.Add_Commas_To_Number(info.total_book_count)}\n` +
+                `- Total Files: ${Utils.Add_Commas_To_Number(info.total_file_count)}\n` +
+                `- Total Lines: ${Utils.Add_Commas_To_Number(info.total_line_count)}\n` +
+                `- Total Parts: ${Utils.Add_Commas_To_Number(info.total_part_count)}\n` +
+                `    - Words: ${Utils.Add_Commas_To_Number(info.total_word_count)} (~${total_word_percent}%)\n` +
+                `    - Meta-Words: ${Utils.Add_Commas_To_Number(info.total_meta_word_count)} (~${total_meta_word_percent}%)\n` +
+                `    - Non-Words: ${Utils.Add_Commas_To_Number(info.total_break_count)} (~${total_non_word_percent}%)\n` +
+                `- Total Unicode Points: ${Utils.Add_Commas_To_Number(info.total_point_count)}\n` +
+                `    - Letters: ${Utils.Add_Commas_To_Number(info.total_letter_count)} (~${total_letter_percent}%)\n` +
+                `    - Meta-Letters: ${Utils.Add_Commas_To_Number(info.total_meta_letter_count)} (~${total_meta_letter_percent}%)\n` +
+                `    - Non-Letters: ${Utils.Add_Commas_To_Number(info.total_marker_count)} (~${total_non_letter_percent}%)\n` +
+
                 readme_text.slice(stats_end, readme_text.length);
         }
 
@@ -530,6 +556,24 @@ async function Generate():
     for (const language_name of Object.keys(unique_parts)) {
         data_info.unique_part_values[language_name] = unique_parts[language_name].Values();
     }
+
+    Utils.Assert(
+        (
+            data_info.total_word_count +
+            data_info.total_meta_word_count +
+            data_info.total_break_count
+        ) === data_info.total_part_count,
+        `Miscount of total_part_count`,
+    );
+
+    Utils.Assert(
+        (
+            data_info.total_letter_count +
+            data_info.total_meta_letter_count +
+            data_info.total_marker_count
+        ) === data_info.total_point_count,
+        `Miscount of total_point_count`,
+    );
 
     await Write_File(
         `${data_path}/Info.json`,

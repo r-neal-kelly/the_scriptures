@@ -1,4 +1,6 @@
 import { Integer } from "./types.js";
+import { Count } from "./types.js";
+import { Index } from "./types.js";
 import { Path } from "./types.js";
 
 export function Assert(
@@ -116,6 +118,30 @@ export function Remove_File_Extension(
     string
 {
     return file_name_or_path.replace(/\.[^.]*$/, ``);
+}
+
+export function Add_Commas_To_Number(
+    number: Integer,
+):
+    string
+{
+    const string: string = `${number}`;
+    const remainder: Count = string.length % 3;
+
+    let result: string = ``;
+    let slice: string = string;
+
+    if (remainder !== 0) {
+        result += `${slice.slice(0, remainder)},`;
+        slice = slice.slice(remainder);
+    }
+
+    while (slice.length > 0) {
+        result += `${slice.slice(0, 3)},`;
+        slice = slice.slice(3);
+    }
+
+    return result.slice(0, result.length - 1);
 }
 
 export function Resolve_Path(
