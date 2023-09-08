@@ -13,13 +13,13 @@ Currently adding Numbers in Hebrew, Greek, Latin, and English sourced from a Hex
 <br>
 
 - Total Books: 19
-- Total Files: 720
-- Total Lines: 26,620
-- Total Parts: 1,062,177
-    - Words: 521,352 (~49%)
-    - Meta-Words: 21,627 (~2%)
-    - Non-Words: 519,198 (~49%)
-- Total Unicode Points: 3,313,268
-    - Letters: 2,647,218 (~80%)
-    - Meta-Letters: 91,891 (~3%)
-    - Non-Letters: 574,159 (~17%)
+- Total Files: 733
+- Total Lines: 27,196
+- Total Parts: 1,079,587
+    - Words: 529,974 (~49%)
+    - Meta-Words: 21,845 (~2%)
+    - Non-Words: 527,768 (~49%)
+- Total Unicode Points: 3,372,255
+    - Letters: 2,696,087 (~80%)
+    - Meta-Letters: 92,839 (~3%)
+    - Non-Letters: 583,329 (~17%)
