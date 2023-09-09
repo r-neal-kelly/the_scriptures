@@ -8,18 +8,18 @@ Currently adding Numbers in Hebrew, Greek, Latin, and English sourced from a Hex
 
 - Unique Languages: 4
 - Unique Versions: 4
-- Unique Books: 6
+- Unique Books: 7
 
 <br>
 
-- Total Books: 19
-- Total Files: 738
-- Total Lines: 27,297
-- Total Parts: 1,083,201
-    - Words: 531,762 (~49%)
-    - Meta-Words: 21,900 (~2%)
-    - Non-Words: 529,539 (~49%)
-- Total Unicode Points: 3,385,525
-    - Letters: 2,707,231 (~80%)
-    - Meta-Letters: 93,107 (~3%)
-    - Non-Letters: 585,187 (~17%)
+- Total Books: 23
+- Total Files: 739
+- Total Lines: 27,345
+- Total Parts: 1,085,944
+    - Words: 533,074 (~49%)
+    - Meta-Words: 22,019 (~2%)
+    - Non-Words: 530,851 (~49%)
+- Total Unicode Points: 3,392,569
+    - Letters: 2,712,303 (~80%)
+    - Meta-Letters: 93,595 (~3%)
+    - Non-Letters: 586,671 (~17%)
