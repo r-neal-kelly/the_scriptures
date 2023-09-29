@@ -13,13 +13,13 @@ Currently adding Deuteronomy in Hebrew, Greek, Latin, and English sourced from a
 <br>
 
 - Total Books: 23
-- Total Files: 830
-- Total Lines: 30,311
-- Total Parts: 1,202,972
-    - Words: 590,689 (~49%)
-    - Meta-Words: 24,075 (~2%)
-    - Non-Words: 588,208 (~49%)
-- Total Unicode Points: 3,776,374
-    - Letters: 3,024,705 (~80%)
-    - Meta-Letters: 102,404 (~3%)
-    - Non-Letters: 649,265 (~17%)
+- Total Files: 840
+- Total Lines: 30,576
+- Total Parts: 1,212,950
+    - Words: 595,587 (~49%)
+    - Meta-Words: 24,280 (~2%)
+    - Non-Words: 593,083 (~49%)
+- Total Unicode Points: 3,807,564
+    - Letters: 3,049,710 (~80%)
+    - Meta-Letters: 103,226 (~3%)
+    - Non-Letters: 654,628 (~17%)
