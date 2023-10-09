@@ -65,6 +65,8 @@ Latin.Symbols_c :=  { "+": "—" ; U+2014 EM DASH
                     , ">": "⟩" ; U+27E9 MATHEMATICAL RIGHT ANGLE BRACKET
                     , "S": "᾿" ; U+1FBF GREEK PSILI
                     , "R": "῾" ; U+1FFE GREEK DASIA
+                    , "M": "⏞" ; U+23DE TOP CURLY BRACKET
+                    , "N": "⏟" ; U+23DF BOTTOM CURLY BRACKET
                     , "": "" }
 
 Latin.Commas_s := {   0: "🄁" ; U+1F101 DIGIT ZERO COMMA
