@@ -12,6 +12,7 @@ import * as Query from "./query.js";
 import * as Book from "./book.js";
 import * as Version from "./version.js";
 import * as File from "./file.js";
+import * as Name_Sorter from "./name_sorter.js";
 
 export type Tree = {
     books: Array<Book.Branch>,
@@ -49,6 +50,7 @@ export class Instance extends Async.Instance
     private info: Info | null;
     private books: Array<Book.Instance>;
     private compressors: { [language_name: Name]: Compressor.Instance };
+    private name_sorter: Name_Sorter.Instance;
 
     constructor()
     {
@@ -60,6 +62,7 @@ export class Instance extends Async.Instance
         this.info = null;
         this.books = [];
         this.compressors = {};
+        this.name_sorter = new Name_Sorter.Instance();
 
         this.Add_Dependencies(
             [
@@ -182,6 +185,12 @@ export class Instance extends Async.Instance
         );
 
         return this.compressors[language_name];
+    }
+
+    Name_Sorter():
+        Name_Sorter.Instance
+    {
+        return this.name_sorter;
     }
 
     Names(
@@ -684,7 +693,10 @@ export class Instance extends Async.Instance
             }
         }
 
-        return Array.from(language_names).sort();
+        return this.Name_Sorter().With_Set(
+            Name_Sorter.Type.LANGUAGES,
+            language_names,
+        );
     }
 
     Book_Version_Names(
@@ -714,7 +726,10 @@ export class Instance extends Async.Instance
             }
         }
 
-        return Array.from(version_names).sort();
+        return this.Name_Sorter().With_Set(
+            Name_Sorter.Type.VERSIONS,
+            version_names,
+        );
     }
 
     Book_Language_Version_Names(
@@ -749,7 +764,10 @@ export class Instance extends Async.Instance
             }
         }
 
-        return Array.from(version_names).sort();
+        return this.Name_Sorter().With_Set(
+            Name_Sorter.Type.VERSIONS,
+            version_names,
+        );
     }
 
     Book_Version_Language_Names(
@@ -784,7 +802,10 @@ export class Instance extends Async.Instance
             }
         }
 
-        return Array.from(language_names).sort();
+        return this.Name_Sorter().With_Set(
+            Name_Sorter.Type.LANGUAGES,
+            language_names,
+        );
     }
 
     Language_Names():
@@ -823,7 +844,10 @@ export class Instance extends Async.Instance
             }
         }
 
-        return Array.from(book_names).sort();
+        return this.Name_Sorter().With_Set(
+            Name_Sorter.Type.BOOKS,
+            book_names,
+        );
     }
 
     Language_Version_Names(
@@ -853,7 +877,10 @@ export class Instance extends Async.Instance
             }
         }
 
-        return Array.from(version_names).sort();
+        return this.Name_Sorter().With_Set(
+            Name_Sorter.Type.VERSIONS,
+            version_names,
+        );
     }
 
     Language_Book_Version_Names(
@@ -888,7 +915,10 @@ export class Instance extends Async.Instance
             }
         }
 
-        return Array.from(version_names).sort();
+        return this.Name_Sorter().With_Set(
+            Name_Sorter.Type.VERSIONS,
+            version_names,
+        );
     }
 
     Language_Version_Book_Names(
@@ -923,7 +953,10 @@ export class Instance extends Async.Instance
             }
         }
 
-        return Array.from(book_names).sort();
+        return this.Name_Sorter().With_Set(
+            Name_Sorter.Type.BOOKS,
+            book_names,
+        );
     }
 
     Version_Names():
@@ -964,7 +997,10 @@ export class Instance extends Async.Instance
             }
         }
 
-        return Array.from(book_names).sort();
+        return this.Name_Sorter().With_Set(
+            Name_Sorter.Type.BOOKS,
+            book_names,
+        );
     }
 
     Version_Language_Names(
@@ -994,7 +1030,10 @@ export class Instance extends Async.Instance
             }
         }
 
-        return Array.from(language_names).sort();
+        return this.Name_Sorter().With_Set(
+            Name_Sorter.Type.LANGUAGES,
+            language_names,
+        );
     }
 
     Version_Book_Language_Names(
@@ -1029,7 +1068,10 @@ export class Instance extends Async.Instance
             }
         }
 
-        return Array.from(language_names).sort();
+        return this.Name_Sorter().With_Set(
+            Name_Sorter.Type.LANGUAGES,
+            language_names,
+        );
     }
 
     Version_Language_Book_Names(
@@ -1064,7 +1106,10 @@ export class Instance extends Async.Instance
             }
         }
 
-        return Array.from(book_names).sort();
+        return this.Name_Sorter().With_Set(
+            Name_Sorter.Type.BOOKS,
+            book_names,
+        );
     }
 
     Versions(

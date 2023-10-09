@@ -9,5 +9,6 @@ export * as Language from "./data/language.js";
 export * as Version from "./data/version.js";
 export * as File from "./data/file.js";
 export * as Selection from "./data/selection.js";
+export * as Name_Sorter from "./data/name_sorter.js";
 
 export { Singleton } from "./data/instance.js";

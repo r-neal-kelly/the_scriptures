@@ -161,12 +161,14 @@ async function File_Names(
 
 class Unique_Names
 {
+    private name_sorter: Data.Name_Sorter.Instance;
     private books: Set<Name>;
     private languages: Set<Name>;
     private versions: Set<Name>;
 
     constructor()
     {
+        this.name_sorter = new Data.Name_Sorter.Instance();
         this.books = new Set();
         this.languages = new Set();
         this.versions = new Set();
@@ -199,19 +201,28 @@ class Unique_Names
     Books():
         Array<Name>
     {
-        return Array.from(this.books).sort();
+        return this.name_sorter.With_Set(
+            Data.Name_Sorter.Type.BOOKS,
+            this.books,
+        );
     }
 
     Languages():
         Array<Name>
     {
-        return Array.from(this.languages).sort();
+        return this.name_sorter.With_Set(
+            Data.Name_Sorter.Type.LANGUAGES,
+            this.languages,
+        );
     }
 
     Versions():
         Array<Name>
     {
-        return Array.from(this.versions).sort();
+        return this.name_sorter.With_Set(
+            Data.Name_Sorter.Type.VERSIONS,
+            this.versions,
+        );
     }
 }
 

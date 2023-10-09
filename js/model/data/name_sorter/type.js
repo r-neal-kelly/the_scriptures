@@ -1,0 +1,1 @@
+export var Type;!function(S){S[S.BOOKS=0]="BOOKS",S[S.LANGUAGES=1]="LANGUAGES",S[S.VERSIONS=2]="VERSIONS"}(Type||(Type={}));
