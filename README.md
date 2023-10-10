@@ -2,7 +2,9 @@
 
 **[Read Online](https://r-neal-kelly.github.io/the_scriptures/)**
 
-Currently adding Deuteronomy in Hebrew, Greek, Latin, and English sourced from a Hexaglot, and Wellhausen's Prolegomena in English.
+Just finished adding the Pentateuch in Hebrew, Greek, Latin, and English sourced from a Hexaglot.
+
+Also working on Wellhausen's Prolegomena in English, on the side.
 
 ## Stats
 
