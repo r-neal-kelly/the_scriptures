@@ -4,9 +4,9 @@
 
 Currently adding the Prolegomenon from the same Hexaglot we've copied the Pentateuch from.
 
-After that, will start on Joshua in Hebrew, Greek, Latin, and English, sourced from the same Hexaglot.
+After that, we will start on Joshua in Hebrew, Greek, Latin, and English, sourced from the same Hexaglot.
 
-Also still working on Wellhausen's Prolegomena in English, on the side.
+Also still working on Wellhausen's Prolegomena in English, but on the side.
 
 ## Stats
 
