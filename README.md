@@ -2,26 +2,28 @@
 
 **[Read Online](https://r-neal-kelly.github.io/the_scriptures/)**
 
-Just finished adding the Pentateuch in Hebrew, Greek, Latin, and English sourced from a Hexaglot.
+Currently adding the Prolegomenon from the same Hexaglot we've copied the Pentateuch from.
 
-Also working on Wellhausen's Prolegomena in English, on the side.
+After that, will start on Joshua in Hebrew, Greek, Latin, and English, sourced from the same Hexaglot.
+
+Also still working on Wellhausen's Prolegomena in English, on the side.
 
 ## Stats
 
 - Unique Languages: 4
 - Unique Versions: 4
-- Unique Books: 8
+- Unique Books: 9
 
 <br>
 
-- Total Books: 24
-- Total Files: 880
-- Total Lines: 32,758
-- Total Parts: 1,267,968
-    - Words: 622,870 (~49%)
-    - Meta-Words: 25,499 (~2%)
-    - Non-Words: 619,599 (~49%)
-- Total Unicode Points: 3,984,798
-    - Letters: 3,192,695 (~80%)
-    - Meta-Letters: 108,579 (~3%)
-    - Non-Letters: 683,524 (~17%)
+- Total Books: 25
+- Total Files: 881
+- Total Lines: 32,770
+- Total Parts: 1,270,997
+    - Words: 624,335 (~49%)
+    - Meta-Words: 25,592 (~2%)
+    - Non-Words: 621,070 (~49%)
+- Total Unicode Points: 3,994,959
+    - Letters: 3,200,542 (~80%)
+    - Meta-Letters: 109,117 (~3%)
+    - Non-Letters: 685,300 (~17%)

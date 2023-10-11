@@ -43,6 +43,7 @@ Latin.Symbols_s :=  { "p": "¶" ; Pilcrow Sign
                     , "s": "§" ; Section Sign
                     , "c": "⸿" ; U+2E3F CAPITULUM
                     , "n": "№" ; U+2116 NUMERO SIGN
+                    ,   3: "£" ; U+00A3 POUND SIGN
                     , "-": "‑" ; U+2011 NON-BREAKING HYPHEN
                     , "=": "–" ; U+2013 EN DASH
                     , "'": "ʼ" ; U+02BC MODIFIER LETTER APOSTROPHE

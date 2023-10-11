@@ -3,6 +3,7 @@ import { Type } from "./type.js";
 
 const KNOWN_BOOK_NAMES: Set<Name> = new Set(
     [
+        `Prolegomenon`,
         `Genesis`,
         `Exodus`,
         `Leviticus`,
