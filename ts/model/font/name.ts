@@ -1,5 +1,7 @@
 export enum Name
 {
+    ALEGREYA = `Alegreya`,
+
     CARDO = `Cardo`,
 
     CATRINITY = `Catrinity`,

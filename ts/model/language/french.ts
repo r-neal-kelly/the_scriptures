@@ -14,8 +14,26 @@ export class Instance extends Language.Instance
                 name: Name.FRENCH,
                 direction: Direction.LEFT_TO_RIGHT,
 
-                default_font_name: Font.Name.GENTIUM,
+                default_font_name: Font.Name.ALEGREYA,
                 font_adaptors: [
+                    new Font_Adaptor.Instance(
+                        {
+                            font_name: Font.Name.ALEGREYA,
+                            short_font_name: Font.Name.ALEGREYA,
+                            styles: {
+                                "font-size": `1.1em`,
+                                "line-height": `1.1`,
+                            },
+                            treater: function (
+                                text: string,
+                            ):
+                                string
+                            {
+                                return text;
+                            },
+                        },
+                    ),
+
                     new Font_Adaptor.Instance(
                         {
                             font_name: Font.Name.GENTIUM,

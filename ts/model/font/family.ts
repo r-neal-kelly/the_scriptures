@@ -1,5 +1,7 @@
 export enum Family
 {
+    ALEGREYA = `Alegreya`,
+
     CARDO = `Cardo`,
 
     CATRINITY = `Catrinity`,

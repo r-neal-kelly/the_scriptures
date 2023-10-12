@@ -10,6 +10,42 @@ export class Instance
     {
         this.fonts = {};
 
+        this.fonts[Font.Name.ALEGREYA] = new Font.Instance(
+            {
+                name: Font.Name.ALEGREYA,
+                faces: [
+                    new Font.Face.Instance(
+                        {
+                            css_family: Font.Family.ALEGREYA,
+                            css_url: `fonts/Alegreya/Alegreya-Regular.otf`,
+                        },
+                    ),
+                    new Font.Face.Instance(
+                        {
+                            css_family: Font.Family.ALEGREYA,
+                            css_url: `fonts/Alegreya/Alegreya-Bold.otf`,
+                            css_weight: `bold`,
+                        },
+                    ),
+                    new Font.Face.Instance(
+                        {
+                            css_family: Font.Family.ALEGREYA,
+                            css_url: `fonts/Alegreya/Alegreya-Italic.otf`,
+                            css_style: `italic`,
+                        },
+                    ),
+                    new Font.Face.Instance(
+                        {
+                            css_family: Font.Family.ALEGREYA,
+                            css_url: `fonts/Alegreya/Alegreya-BoldItalic.otf`,
+                            css_weight: `bold`,
+                            css_style: `italic`,
+                        },
+                    ),
+                ],
+            },
+        );
+
         this.fonts[Font.Name.CARDO] = new Font.Instance(
             {
                 name: Font.Name.CARDO,
