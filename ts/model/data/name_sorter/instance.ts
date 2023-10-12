@@ -25,6 +25,7 @@ const KNOWN_LANGUAGE_NAMES: Set<Name> = new Set(
         Language.Name.GERMAN,
         Language.Name.FRENCH,
         Language.Name.ENGLISH,
+        Language.Name.DUTCH,
     ],
 );
 Object.freeze(KNOWN_LANGUAGE_NAMES);
