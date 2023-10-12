@@ -4,4 +4,6 @@ export enum Name
     HEBREW = `Hebrew`,
     GREEK = `Greek`,
     LATIN = `Latin`,
+    GERMAN = `German`,
+    FRENCH = `French`,
 }

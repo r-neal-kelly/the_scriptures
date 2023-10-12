@@ -250,6 +250,20 @@ export class Instance
             },
         );
 
+        this.fonts[Font.Name.UNIFRAKTUR_MAGUNTIA] = new Font.Instance(
+            {
+                name: Font.Name.UNIFRAKTUR_MAGUNTIA,
+                faces: [
+                    new Font.Face.Instance(
+                        {
+                            css_family: Font.Family.UNIFRAKTUR_MAGUNTIA,
+                            css_url: `fonts/Unifraktur Maguntia/UnifrakturMaguntia.ttf`,
+                        },
+                    ),
+                ],
+            },
+        );
+
         this.fonts[Font.Name.ANCIENT_SEMETIC_ARAMAIC_EARLY_BR_RKB] = new Font.Instance(
             {
                 name: Font.Name.ANCIENT_SEMETIC_ARAMAIC_EARLY_BR_RKB,

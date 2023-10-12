@@ -166,7 +166,9 @@ export function Is_Known_Value(
                     parameter_and_argument.argument === Language.Name.ENGLISH ||
                     parameter_and_argument.argument === Language.Name.HEBREW ||
                     parameter_and_argument.argument === Language.Name.GREEK ||
-                    parameter_and_argument.argument === Language.Name.LATIN
+                    parameter_and_argument.argument === Language.Name.LATIN ||
+                    parameter_and_argument.argument === Language.Name.GERMAN ||
+                    parameter_and_argument.argument === Language.Name.FRENCH
                 );
 
             } else if (parameter_and_argument.parameter === Parameter.ERROR) {
@@ -770,6 +772,24 @@ export class Instance extends Part.Instance
         return (
             this.Parameter() === Parameter.LANGUAGE &&
             this.Argument() === Language.Name.LATIN
+        );
+    }
+
+    Is_Open_German():
+        boolean
+    {
+        return (
+            this.Parameter() === Parameter.LANGUAGE &&
+            this.Argument() === Language.Name.GERMAN
+        );
+    }
+
+    Is_Open_French():
+        boolean
+    {
+        return (
+            this.Parameter() === Parameter.LANGUAGE &&
+            this.Argument() === Language.Name.FRENCH
         );
     }
 

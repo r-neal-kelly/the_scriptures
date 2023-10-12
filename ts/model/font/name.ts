@@ -18,6 +18,8 @@ export enum Name
 
     NEAL_PALEO_HEBREW = `Neal - Paleo Hebrew`,
 
+    UNIFRAKTUR_MAGUNTIA = `Unifraktur Maguntia`,
+
     ANCIENT_SEMETIC_ARAMAIC_EARLY_BR_RKB = `Ancient Semetic - Aramaic Early Br Rkb`,
     ANCIENT_SEMETIC_ARAMAIC_IMPERIAL_YEB = `Ancient Semetic - Aramaic Imperial Yeb`,
     ANCIENT_SEMETIC_ARAMAIC_VIIBCE = `Ancient Semetic - Aramaic VIIBCE`,

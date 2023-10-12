@@ -1318,6 +1318,24 @@ class Editor
                         document.body.style.fontSize = `26px`;
                         this.Set_Direction(Direction.LEFT_TO_RIGHT);
                     }
+                } else if (keyboard_event.key === `^`) {
+                    if (this.Is_Meta_Key_Active()) {
+                        keyboard_event.preventDefault();
+
+                        // German
+                        document.body.style.fontFamily = `"${Font.Family.GENTIUM}"`;
+                        document.body.style.fontSize = `26px`;
+                        this.Set_Direction(Direction.LEFT_TO_RIGHT);
+                    }
+                } else if (keyboard_event.key === `%`) {
+                    if (this.Is_Meta_Key_Active()) {
+                        keyboard_event.preventDefault();
+
+                        // French
+                        document.body.style.fontFamily = `"${Font.Family.GENTIUM}"`;
+                        document.body.style.fontSize = `26px`;
+                        this.Set_Direction(Direction.LEFT_TO_RIGHT);
+                    }
                 }
             }.bind(this),
         );

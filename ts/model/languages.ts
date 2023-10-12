@@ -18,6 +18,8 @@ export class Instance
             new Language.Hebrew.Instance(),
             new Language.Greek.Instance(),
             new Language.Latin.Instance(),
+            new Language.German.Instance(),
+            new Language.French.Instance(),
         ]) {
             const language_name: Language.Name = language.Name();
             this.languages[language_name] = language;
@@ -78,6 +80,18 @@ export class Instance
         Language.Latin.Instance
     {
         return this.Language(Language.Name.LATIN) as Language.Latin.Instance;
+    }
+
+    German():
+        Language.German.Instance
+    {
+        return this.Language(Language.Name.GERMAN) as Language.German.Instance;
+    }
+
+    French():
+        Language.French.Instance
+    {
+        return this.Language(Language.Name.FRENCH) as Language.French.Instance;
     }
 
     Direction(

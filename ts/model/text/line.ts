@@ -742,6 +742,10 @@ export class Instance
                     current_language.push(Language.Name.GREEK);
                 } else if (macro_command.Is_Open_Latin()) {
                     current_language.push(Language.Name.LATIN);
+                } else if (macro_command.Is_Open_German()) {
+                    current_language.push(Language.Name.GERMAN);
+                } else if (macro_command.Is_Open_French()) {
+                    current_language.push(Language.Name.FRENCH);
                 } else if (macro_command.Is_Close_Language()) {
                     if (current_language.length > 0) {
                         current_language.pop();

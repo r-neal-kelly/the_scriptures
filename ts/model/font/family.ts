@@ -18,6 +18,8 @@ export enum Family
 
     NEAL_PALEO_HEBREW = `CustomHebrew`,
 
+    UNIFRAKTUR_MAGUNTIA = `UnifrakturMaguntia`,
+
     ANCIENT_SEMETIC_ARAMAIC_EARLY_BR_RKB = `Aramaic Early Br Rkb`,
     ANCIENT_SEMETIC_ARAMAIC_IMPERIAL_YEB = `Aramaic Imperial Yeb`,
     ANCIENT_SEMETIC_ARAMAIC_VIIBCE = `Aramaic VIIBCE`,

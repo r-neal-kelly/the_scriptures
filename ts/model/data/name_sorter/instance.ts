@@ -1,5 +1,6 @@
 import { Name } from "../../../types.js";
 import { Type } from "./type.js";
+import * as Language from "../../language.js"
 
 const KNOWN_BOOK_NAMES: Set<Name> = new Set(
     [
@@ -11,17 +12,19 @@ const KNOWN_BOOK_NAMES: Set<Name> = new Set(
         `Deuteronomy`,
         `Jubilees`,
         `Masoretic Notes`,
-        `Prolegomena`,
+        `Prolegomena to the History of Israel`,
     ],
 );
 Object.freeze(KNOWN_BOOK_NAMES);
 
 const KNOWN_LANGUAGE_NAMES: Set<Name> = new Set(
     [
-        `Hebrew`,
-        `Greek`,
-        `Latin`,
-        `English`,
+        Language.Name.HEBREW,
+        Language.Name.GREEK,
+        Language.Name.LATIN,
+        Language.Name.GERMAN,
+        Language.Name.FRENCH,
+        Language.Name.ENGLISH,
     ],
 );
 Object.freeze(KNOWN_LANGUAGE_NAMES);
