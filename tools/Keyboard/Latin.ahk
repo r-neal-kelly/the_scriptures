@@ -13,6 +13,8 @@
     set := "Symbols"
   else if (key1 = ",")
     set := "Commas"
+  else if (key1 = "'")
+    set := "Letters"
   else
     set := "Ligs"
 
@@ -37,6 +39,12 @@
 }
 
 global Latin := {}
+
+; Letters
+Latin.Letters_s :=  { "s": "ſ" ; U+017F LATIN SMALL LETTER LONG S
+                    , "": "" }
+
+Latin.Letters_c :=  { "": "" }
 
 ; Symbols
 Latin.Symbols_s :=  { "p": "¶" ; Pilcrow Sign
@@ -93,6 +101,7 @@ Latin.Ligs_s  := { "aa": "ꜳ" ; Aa
                  , "oo": "ꝏ" ; Oo
                  , "ou": "ȣ" ; Ou
                  , "sz": "ß" ; ſz (Sharp S)
+                 , "tz": "ꜩ" ; U+A729 LATIN SMALL LETTER TZ
                  , "ue": "ᵫ" ; Ue
                  , "uo": "ꭣ" ; Uo
                  , "vy": "ꝡ" ; Vy
@@ -108,6 +117,7 @@ Latin.Ligs_c  := { "aa": "Ꜳ" ; Aa
                  , "oo": "Ꝏ" ; Oo
                  , "ou": "Ȣ" ; Ou
                  , "sz": "ẞ" ; ſz (Sharp S)
+                 , "tz": "Ꜩ" ; U+A728 LATIN CAPITAL LETTER TZ
                  , "vy": "Ꝡ" ; Vy
                  , "": "" }
 
