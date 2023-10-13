@@ -8,3 +8,4 @@ export * as Latin from "./language/latin.js";
 export * as German from "./language/german.js";
 export * as French from "./language/french.js";
 export * as Dutch from "./language/dutch.js";
+export * as Italian from "./language/italian.js";

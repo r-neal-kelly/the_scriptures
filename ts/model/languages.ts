@@ -21,6 +21,7 @@ export class Instance
             new Language.German.Instance(),
             new Language.French.Instance(),
             new Language.Dutch.Instance(),
+            new Language.Italian.Instance(),
         ]) {
             const language_name: Language.Name = language.Name();
             this.languages[language_name] = language;
@@ -99,6 +100,12 @@ export class Instance
         Language.Dutch.Instance
     {
         return this.Language(Language.Name.DUTCH) as Language.Dutch.Instance;
+    }
+
+    Italian():
+        Language.Italian.Instance
+    {
+        return this.Language(Language.Name.ITALIAN) as Language.Italian.Instance;
     }
 
     Direction(

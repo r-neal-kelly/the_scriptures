@@ -7,4 +7,5 @@ export enum Name
     GERMAN = `German`,
     FRENCH = `French`,
     DUTCH = `Dutch`,
+    ITALIAN = `Italian`,
 }
