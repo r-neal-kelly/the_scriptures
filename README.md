@@ -17,13 +17,13 @@ Also still working on Wellhausen's Prolegomena in English, but on the side.
 <br>
 
 - Total Books: 25
-- Total Files: 881
-- Total Lines: 32,772
-- Total Parts: 1,271,701
-    - Words: 624,627 (~49%)
-    - Meta-Words: 25,714 (~2%)
-    - Non-Words: 621,360 (~49%)
-- Total Unicode Points: 3,998,064
-    - Letters: 3,202,202 (~80%)
-    - Meta-Letters: 110,222 (~3%)
-    - Non-Letters: 685,640 (~17%)
+- Total Files: 882
+- Total Lines: 32,786
+- Total Parts: 1,275,906
+    - Words: 626,656 (~49%)
+    - Meta-Words: 25,859 (~2%)
+    - Non-Words: 623,391 (~49%)
+- Total Unicode Points: 4,011,035
+    - Letters: 3,211,696 (~80%)
+    - Meta-Letters: 111,362 (~3%)
+    - Non-Letters: 687,977 (~17%)
