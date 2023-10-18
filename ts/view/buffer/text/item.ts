@@ -1,8 +1,8 @@
 import { ID } from "../../../types.js";
 
+import * as Utils from "../../../utils.js";
+
 import * as Model from "../../../model/buffer/text/item.js";
-import * as Model_Language from "../../../model/language.js";
-import * as Model_Languages from "../../../model/languages.js";
 
 import * as Entity from "../../entity.js";
 import * as Segment from "./segment.js";
@@ -37,7 +37,29 @@ export class Instance extends Entity.Instance
     override On_Refresh():
         void
     {
-        this.Element().textContent = this.Model().Value();
+        const model: Model.Instance = this.Model();
+        const element: HTMLElement = this.Element();
+
+        if (element instanceof HTMLDivElement) {
+            if (model.Has_Image_Value()) {
+                this.Replace_Element(`img`);
+                this.Element().setAttribute(`src`, model.Value());
+            } else {
+                this.Element().textContent = model.Value();
+            }
+        } else if (element instanceof HTMLImageElement) {
+            if (model.Has_Image_Value()) {
+                this.Element().setAttribute(`src`, model.Value());
+            } else {
+                this.Replace_Element(`div`);
+                this.Element().textContent = model.Value();
+            }
+        } else {
+            Utils.Assert(
+                false,
+                `invalid element type.`,
+            );
+        }
     }
 
     override On_Reclass():
@@ -49,6 +71,8 @@ export class Instance extends Entity.Instance
         classes.push(`Item`);
         if (model.Is_Blank()) {
             classes.push(`Blank`);
+        } else if (model.Has_Image_Value()) {
+            classes.push(`Image`);
         } else {
             if (model.Is_Indented()) {
                 classes.push(`Indented_Item`);
@@ -83,7 +107,7 @@ export class Instance extends Entity.Instance
         string | { [index: string]: string; }
     {
         const model: Model.Instance = this.Model();
-        if (!model.Is_Blank()) {
+        if (!model.Is_Blank() && !model.Has_Image_Value()) {
             if (model.Has_Override_Font_Styles()) {
                 return model.Some_Override_Font_Styles();
             } else {

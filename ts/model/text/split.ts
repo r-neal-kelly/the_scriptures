@@ -150,4 +150,21 @@ export class Instance implements Item.Instance
     {
         return this.value;
     }
+
+    Has_Image_Value():
+        boolean
+    {
+        return false;
+    }
+
+    Image_Value():
+        Value
+    {
+        Utils.Assert(
+            false,
+            `Does not have an image value.`,
+        );
+
+        return ``;
+    }
 }

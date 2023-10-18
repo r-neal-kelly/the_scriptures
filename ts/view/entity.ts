@@ -38,8 +38,6 @@ export interface Info_API
     ID(): ID;
 
     HTML_ID(): ID;
-
-    Element(): HTMLElement;
 }
 
 export interface Life_Cycle_Sender_API
@@ -153,6 +151,15 @@ export interface CSS_API
     */
     Add_Children_CSS(
         css: string,
+    ): void;
+}
+
+export interface Element_API
+{
+    Element(): HTMLElement;
+
+    Replace_Element(
+        element: string | HTMLElement,
     ): void;
 }
 
@@ -326,6 +333,7 @@ export class Instance implements
     Life_Cycle_Sender_API,
     Life_Cycle_Listener_API,
     CSS_API,
+    Element_API,
     Parent_API,
     Child_API,
     Event_API,
@@ -684,17 +692,6 @@ export class Instance implements
         return `Entity_${Instance.class_id}_${this.ID()}`;
     }
 
-    Element():
-        HTMLElement
-    {
-        Utils.Assert(
-            this.Is_Alive(),
-            `Cannot get an element from a dead entity.`,
-        );
-
-        return this.element;
-    }
-
     // We still need to handle things like is:() and where:() I think
     Add_CSS(
         css: string,
@@ -833,6 +830,35 @@ export class Instance implements
                 return `${left}${result}${right}`;
             },
         );
+    }
+
+    Element():
+        HTMLElement
+    {
+        Utils.Assert(
+            this.Is_Alive(),
+            `Cannot get an element from a dead entity.`,
+        );
+
+        return this.element;
+    }
+
+    Replace_Element(
+        element: string | HTMLElement,
+    ):
+        void
+    {
+        Utils.Assert(
+            this.Is_Alive(),
+            `Cannot replace an element on a dead entity.`,
+        );
+
+        const new_element: HTMLElement = element instanceof HTMLElement ?
+            element :
+            document.createElement(element);
+
+        this.Element().replaceWith(new_element);
+        this.element = new_element;
     }
 
     Has_Parent():

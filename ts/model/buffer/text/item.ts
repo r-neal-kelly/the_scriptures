@@ -55,7 +55,9 @@ export class Instance extends Entity.Instance
                 `index must not be null, and must be greater than -1.`,
             );
 
-            if (text.Has_Meta_Value()) {
+            if (text.Has_Image_Value()) {
+                this.value = text.Image_Value();
+            } else if (text.Has_Meta_Value()) {
                 this.value = ``;
             } else {
                 this.value = text.Value()
@@ -138,6 +140,12 @@ export class Instance extends Entity.Instance
         boolean
     {
         return this.text == null;
+    }
+
+    Has_Image_Value():
+        boolean
+    {
+        return !this.Is_Blank() && this.Text().Has_Image_Value();
     }
 
     Is_Indented():

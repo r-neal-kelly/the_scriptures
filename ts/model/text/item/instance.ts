@@ -15,4 +15,7 @@ export interface Instance
 
     Has_Meta_Value(): boolean;
     Value(): Value;
+
+    Has_Image_Value(): boolean;
+    Image_Value(): Value;
 }

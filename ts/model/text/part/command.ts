@@ -32,10 +32,11 @@ export function Is_Symbol(
     );
 }
 
-enum Parameter
+export enum Parameter
 {
     ERROR = `err`,
     LANGUAGE = `lang`,
+    IMAGE = `img`,
 }
 
 type Parameter_And_Argument = {
@@ -175,6 +176,9 @@ export function Is_Known_Value(
 
             } else if (parameter_and_argument.parameter === Parameter.ERROR) {
                 return true;
+
+            } else if (parameter_and_argument.parameter === Parameter.IMAGE) {
+                return parameter_and_argument.argument != null;
 
             } else {
                 return false;
@@ -578,6 +582,23 @@ export class Instance extends Part.Instance
         }
     }
 
+    override Has_Image_Value():
+        boolean
+    {
+        return this.Is_Image() && this.Is_Good();
+    }
+
+    override Image_Value():
+        Value
+    {
+        Utils.Assert(
+            this.Has_Image_Value(),
+            `Does not have an image value.`,
+        );
+
+        return Utils.Resolve_Path(this.Argument() || ``);
+    }
+
     Has_Parameter():
         boolean
     {
@@ -634,6 +655,12 @@ export class Instance extends Part.Instance
         boolean
     {
         return this.Value() === Known_Value.INDENT;
+    }
+
+    Is_Image():
+        boolean
+    {
+        return this.Parameter() === Parameter.IMAGE;
     }
 
     Is_Opening():

@@ -583,7 +583,7 @@ async function Generate():
             data_info.total_meta_letter_count +
             data_info.total_marker_count
         ) === data_info.total_point_count,
-        `Miscount of total_point_count`,
+        `Miscount of total_point_count.`,
     );
 
     await Write_File(
