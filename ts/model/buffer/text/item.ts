@@ -148,6 +148,38 @@ export class Instance extends Entity.Instance
         return !this.Is_Blank() && this.Text().Has_Image_Value();
     }
 
+    Is_Image_Value_Inline():
+        boolean
+    {
+        return this.Has_Image_Value() && this.Text().Is_Image_Value_Inline();
+    }
+
+    Has_Inline_Image_Styles():
+        boolean
+    {
+        return this.Is_Image_Value_Inline();
+    }
+
+    Some_Inline_Image_Styles():
+        { [css_property: string]: string }
+    {
+        Utils.Assert(
+            this.Has_Inline_Image_Styles(),
+            `Does not have inline image styles.`,
+        );
+
+        let height;
+        if (this.Has_Override_Font_Styles()) {
+            height = this.Some_Override_Font_Styles()[`font-size`];
+        } else {
+            height = this.Segment().Line().Buffer().Default_Font_Styles()[`font-size`];
+        }
+
+        return {
+            "height": height,
+        };
+    }
+
     Is_Indented():
         boolean
     {

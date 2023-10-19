@@ -662,12 +662,18 @@ export class Instance
                     {
                         index: this.paths[path_type].Micro_Part_Count(),
                         value: maybe_valid_command_value,
+                        language: current_language.length > 0 ?
+                            current_language[current_language.length - 1] :
+                            null,
                     },
                 );
                 let macro_command: Part.Command.Instance = new Part.Command.Instance(
                     {
                         index: this.paths[path_type].Macro_Part_Count(),
                         value: maybe_valid_command_value,
+                        language: current_language.length > 0 ?
+                            current_language[current_language.length - 1] :
+                            null,
                     },
                 );
 
@@ -715,12 +721,18 @@ export class Instance
                             {
                                 index: this.paths[path_type].Micro_Part_Count(),
                                 value: new_value,
+                                language: current_language.length > 0 ?
+                                    current_language[current_language.length - 1] :
+                                    null,
                             },
                         );
                         macro_command = new Part.Command.Instance(
                             {
                                 index: this.paths[path_type].Macro_Part_Count(),
                                 value: new_value,
+                                language: current_language.length > 0 ?
+                                    current_language[current_language.length - 1] :
+                                    null,
                             },
                         );
                         micro_command.Set_Status(Part.Status.GOOD);
@@ -782,12 +794,18 @@ export class Instance
                     {
                         index: this.paths[path_type].Micro_Part_Count(),
                         value: Part.Command.Symbol.LAST,
+                        language: current_language.length > 0 ?
+                            current_language[current_language.length - 1] :
+                            null,
                     },
                 );
                 const macro_command: Part.Command.Instance = new Part.Command.Instance(
                     {
                         index: this.paths[path_type].Macro_Part_Count(),
                         value: Part.Command.Symbol.LAST,
+                        language: current_language.length > 0 ?
+                            current_language[current_language.length - 1] :
+                            null,
                     },
                 );
                 micro_command.Set_Status(Part.Status.GOOD);

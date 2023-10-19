@@ -107,14 +107,21 @@ export class Instance extends Entity.Instance
         string | { [index: string]: string; }
     {
         const model: Model.Instance = this.Model();
-        if (!model.Is_Blank() && !model.Has_Image_Value()) {
+
+        if (model.Is_Blank()) {
+            return ``;
+        } else if (model.Has_Image_Value()) {
+            if (model.Has_Inline_Image_Styles()) {
+                return model.Some_Inline_Image_Styles();
+            } else {
+                return ``;
+            }
+        } else {
             if (model.Has_Override_Font_Styles()) {
                 return model.Some_Override_Font_Styles();
             } else {
                 return ``;
             }
-        } else {
-            return ``;
         }
     }
 

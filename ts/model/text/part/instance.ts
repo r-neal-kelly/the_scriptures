@@ -162,6 +162,12 @@ export class Instance implements Item.Instance
         return false;
     }
 
+    Is_Image_Value_Inline():
+        boolean
+    {
+        return false;
+    }
+
     Image_Value():
         Value
     {

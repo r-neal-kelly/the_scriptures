@@ -116,7 +116,9 @@ export class Instance extends Entity.Instance
 
                 .Image {
                     max-width: 100%;
-                    max-height: 100vh;
+                    max-height: 90vh;
+
+                    vertical-align: middle;
                 }
 
                 .Transparent {

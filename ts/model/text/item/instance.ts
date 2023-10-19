@@ -17,5 +17,6 @@ export interface Instance
     Value(): Value;
 
     Has_Image_Value(): boolean;
+    Is_Image_Value_Inline(): boolean;
     Image_Value(): Value;
 }

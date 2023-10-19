@@ -37,6 +37,7 @@ export enum Parameter
     ERROR = `err`,
     LANGUAGE = `lang`,
     IMAGE = `img`,
+    INLINE_IMAGE = `inl-img`,
 }
 
 type Parameter_And_Argument = {
@@ -178,6 +179,9 @@ export function Is_Known_Value(
                 return true;
 
             } else if (parameter_and_argument.parameter === Parameter.IMAGE) {
+                return parameter_and_argument.argument != null;
+
+            } else if (parameter_and_argument.parameter === Parameter.INLINE_IMAGE) {
                 return parameter_and_argument.argument != null;
 
             } else {
@@ -486,6 +490,7 @@ export function Resolve_Errors(
                 {
                     index: 0,
                     value: maybe_command,
+                    language: null,
                 },
             );
             if (command.Is_Open_Error()) {
@@ -550,9 +555,11 @@ export class Instance extends Part.Instance
         {
             index,
             value,
+            language,
         }: {
             index: Index,
             value: Value,
+            language: Language.Name | null,
         },
     )
     {
@@ -567,7 +574,7 @@ export class Instance extends Part.Instance
                         Status.UNKNOWN :
                         Status.ERROR,
                 style: Style._NONE_,
-                language: null,
+                language: language,
             }
         );
 
@@ -585,7 +592,13 @@ export class Instance extends Part.Instance
     override Has_Image_Value():
         boolean
     {
-        return this.Is_Image() && this.Is_Good();
+        return (this.Is_Image() || this.Is_Inline_Image()) && this.Has_Argument();
+    }
+
+    override Is_Image_Value_Inline():
+        boolean
+    {
+        return this.Is_Inline_Image() && this.Has_Argument();
     }
 
     override Image_Value():
@@ -596,7 +609,7 @@ export class Instance extends Part.Instance
             `Does not have an image value.`,
         );
 
-        return Utils.Resolve_Path(this.Argument() || ``);
+        return Utils.Resolve_Path(this.Some_Argument());
     }
 
     Has_Parameter():
@@ -661,6 +674,12 @@ export class Instance extends Part.Instance
         boolean
     {
         return this.Parameter() === Parameter.IMAGE;
+    }
+
+    Is_Inline_Image():
+        boolean
+    {
+        return this.Parameter() === Parameter.INLINE_IMAGE;
     }
 
     Is_Opening():
