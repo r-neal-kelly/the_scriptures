@@ -4,6 +4,7 @@ import * as Language from "../../language.js"
 
 const KNOWN_BOOK_NAMES: Set<Name> = new Set(
     [
+        `Introduction`,
         `Prolegomenon`,
         `Genesis`,
         `Exodus`,
@@ -13,6 +14,7 @@ const KNOWN_BOOK_NAMES: Set<Name> = new Set(
         `Jubilees`,
         `Masoretic Notes`,
         `Prolegomena to the History of Israel`,
+        `Glossary`,
     ],
 );
 Object.freeze(KNOWN_BOOK_NAMES);

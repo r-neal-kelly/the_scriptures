@@ -72,6 +72,7 @@ Latin.Symbols_c :=  { "+": "—" ; U+2014 EM DASH
                     , ")": "⸩" ; U+2E29 RIGHT DOUBLE PARENTHESIS
                     , "<": "⟨" ; U+27E8 MATHEMATICAL LEFT ANGLE BRACKET
                     , ">": "⟩" ; U+27E9 MATHEMATICAL RIGHT ANGLE BRACKET
+                    , "T": "‡" ; U+2021 DOUBLE DAGGER
                     , "S": "᾿" ; U+1FBF GREEK PSILI
                     , "R": "῾" ; U+1FFE GREEK DASIA
                     , "M": "⏞" ; U+23DE TOP CURLY BRACKET
