@@ -154,11 +154,17 @@ export class Instance extends Entity.Instance
         return this.index as Index;
     }
 
+    Has_Text():
+        boolean
+    {
+        return this.text != null;
+    }
+
     Text():
         Text.Line.Instance
     {
         Utils.Assert(
-            this.text != null,
+            this.Has_Text(),
             `Doesn't have text.`,
         );
 
@@ -215,7 +221,11 @@ export class Instance extends Entity.Instance
     Padding_Count():
         Count
     {
-        return this.Text().Padding_Count(this.Buffer().Line_Path_Type());
+        if (this.Has_Text()) {
+            return this.Text().Padding_Count(this.Buffer().Line_Path_Type());
+        } else {
+            return 0;
+        }
     }
 
     Padding_Direction():
