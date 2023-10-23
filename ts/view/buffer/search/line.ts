@@ -64,6 +64,8 @@ export class Instance extends Entity.Instance
             classes.push(`Transparent`);
         } else if (model.Is_Centered()) {
             classes.push(`Centered_Line`);
+        } else if (model.Is_Padded()) {
+            classes.push(`Padded_Line`);
         }
 
         return classes;

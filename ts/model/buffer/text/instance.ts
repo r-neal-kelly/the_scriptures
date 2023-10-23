@@ -181,9 +181,21 @@ export class Instance extends Entity.Instance
         return this.Line_Path_Type() === Text.Line.Path_Type.DEFAULT;
     }
 
-    Indentation_Amount():
+    Indent_EM():
         Count
     {
         return 3;
+    }
+
+    Pad_EM(
+        pad_count: Count,
+    ):
+        Count
+    {
+        if (pad_count > 0) {
+            return this.Indent_EM() * pad_count;
+        } else {
+            return 0;
+        }
     }
 }

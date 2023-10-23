@@ -71,7 +71,8 @@ export class Instance extends Entity.Instance
                 .Line {
                     display: block;
 
-                    padding: 3px 0px;
+                    margin: 0.35em 0;
+                    padding: 0 0;
 
                     color: inherit;
                 }
@@ -82,6 +83,14 @@ export class Instance extends Entity.Instance
                     justify-content: center;
 
                     text-align: center;
+                }
+
+                .Padded_Line {
+                    padding: 0 1em;
+                    
+                    border-style: solid;
+                    border-width: 0 0 0 0;
+                    border-color: rgba(255, 255, 255, 0.4);
                 }
 
                 .Segment {
@@ -107,7 +116,7 @@ export class Instance extends Entity.Instance
                 }
                 
                 .Indented_Item {
-                    width: ${model.Indentation_Amount()}em;
+                    width: ${model.Indent_EM()}em;
                 }
 
                 .Blank {

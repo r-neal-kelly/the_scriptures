@@ -476,6 +476,12 @@ export class Instance extends Entity.Instance
         return this.Result().Line().Is_Centered(LINE_PATH_TYPE);
     }
 
+    Is_Padded():
+        boolean
+    {
+        return this.Result().Line().Is_Padded(LINE_PATH_TYPE);
+    }
+
     Padding_Count():
         Count
     {
@@ -503,15 +509,16 @@ export class Instance extends Entity.Instance
     {
         if (this.Has_Styles()) {
             const padding_value: string =
-                `${this.Padding_Count() * this.Buffer().Indentation_Amount()}em`;
+                `${this.Buffer().Pad_EM(this.Padding_Count())}em`;
             const padding_direction: string =
                 this.Padding_Direction() === Language.Direction.LEFT_TO_RIGHT ?
                     `left` :
                     `right`;
 
             return `
-            padding-${padding_direction}: ${padding_value};
-        `;
+                margin-${padding_direction}: ${padding_value};
+                border-${padding_direction}-width: 1px;
+            `;
         } else {
             return ``;
         }

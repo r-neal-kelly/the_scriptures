@@ -132,9 +132,21 @@ export class Instance extends Entity.Instance
         this.is_showing_commands = !this.is_showing_commands;
     }
 
-    Indentation_Amount():
+    Indent_EM():
         Count
     {
         return 3;
+    }
+
+    Pad_EM(
+        pad_count: Count,
+    ):
+        Count
+    {
+        if (pad_count > 0) {
+            return this.Indent_EM() * pad_count;
+        } else {
+            return 0;
+        }
     }
 }
