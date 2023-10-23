@@ -28,20 +28,20 @@
 ²¹ And Isaac, his father, said unto him: ‘Come near and kiss me, my son⸨err:.’ ⸩. ⸨/err⸩And he came near and kissed him.
 ²² And he smelled the smell of his raiment, and he blessed him and said: ‘Behold, the smell of my son is as the smell of a ⟨full⟩ field which the Lord hath blessed.
 
-⸨in⸩²³ And may the Lord give thee of the dew of heaven
-⸨in⸩And of the dew of the earth, and plenty of corn and oil:
+⸨pad⸩²³ And may the Lord give thee of the dew of heaven
+⸨pad⸩And of the dew of the earth, and plenty of corn and oil:
 
-⸨in⸩Let nations serve thee,
-⸨in⸩And peoples bow down to thee.
+⸨pad⸩Let nations serve thee,
+⸨pad⸩And peoples bow down to thee.
 
-⸨in⸩²⁴ Be lord over thy brethren,
-⸨in⸩And let thy motherʼs sons bow down to thee;
+⸨pad⸩²⁴ Be lord over thy brethren,
+⸨pad⸩And let thy motherʼs sons bow down to thee;
 
-⸨in⸩And may all the blessings wherewith the Lord hath blessed me and blessed Abraham, my father,
-⸨in⸩Be imparted to thee and to thy seed for ever:
+⸨pad⸩And may all the blessings wherewith the Lord hath blessed me and blessed Abraham, my father,
+⸨pad⸩Be imparted to thee and to thy seed for ever:
 
-⸨in⸩Cursed be he that curseth thee,
-⸨in⸩And blessed be he that blesseth thee.’
+⸨pad⸩Cursed be he that curseth thee,
+⸨pad⸩And blessed be he that blesseth thee.’
 
 ²⁵ And it came to pass as soon as Isaac had made an end of blessing his son Jacob, and Jacob had gone forth from Isaac his father⸨err:, †⸩ †⸨/err⸩he hid himself and† Esau, his brother, came in from his hunting.
 ²⁶ And he also made savoury meat, and brought (it) to his father, and said unto his father: ‘Let my father arise, and eat of my venison that thy soul may bless me.’
@@ -50,22 +50,22 @@
 ²⁹ And it came to pass when Esau heard the words of his father Isaac that he cried with an ⸨err:exceedingly⸩exceeding⸨/err⸩ great and bitter cry, and said unto his father: ‘Bless me, (even) me also, father.’
 ³⁰ And he said unto him: ‘Thy brother came with guile, and hath taken away thy blessing.’ And he said: ‘Now I know why his name is named Jacob: behold, he hath supplanted me these two times: he took away my ⸨err:birthright⸩birth‑right⸨/err⸩, and now he hath taken away my blessing.’
 ³¹ And he said: ‘Hast thou not reserved a blessing for me, father?’ and Isaac answered and said unto Esau:
-⸨in⸩‘Behold, I have made him thy lord,
-⸨in⸩And all his brethren have I given to him for servants,
-⸨in⸩And with plenty of corn and wine and oil have I strengthened him:
-⸨in⸩And what now shall I do for thee, my son?’
+⸨pad⸩‘Behold, I have made him thy lord,
+⸨pad⸩And all his brethren have I given to him for servants,
+⸨pad⸩And with plenty of corn and wine and oil have I strengthened him:
+⸨pad⸩And what now shall I do for thee, my son?’
 ³² And Esau said to Isaac, his father:
-⸨in⸩‘Hast thou but one blessing, O father?
-⸨in⸩Bless me, (even) me also, father:’
+⸨pad⸩‘Hast thou but one blessing, O father?
+⸨pad⸩Bless me, (even) me also, father:’
 ³³ And Esau lifted up his voice and wept. And Isaac answered and said unto him:
-⸨in⸩‘Behold, far from the dew of the earth shall be thy dwelling,
-⸨in⸩And far from the dew of heaven from above.
+⸨pad⸩‘Behold, far from the dew of the earth shall be thy dwelling,
+⸨pad⸩And far from the dew of heaven from above.
 
-⸨in⸩³⁴ And by thy sword wilt thou live,
-⸨in⸩And thou wilt serve thy brother.
+⸨pad⸩³⁴ And by thy sword wilt thou live,
+⸨pad⸩And thou wilt serve thy brother.
 
-⸨in⸩And it shall come to pass when thou becomest great,
-⸨in⸩And dost shake his yoke from off thy neck,
-⸨in⸩Thou shalt sin a complete sin unto death,
-⸨in⸩And thy seed shall be rooted out from under heaven.’
+⸨pad⸩And it shall come to pass when thou becomest great,
+⸨pad⸩And dost shake his yoke from off thy neck,
+⸨pad⸩Thou shalt sin a complete sin unto death,
+⸨pad⸩And thy seed shall be rooted out from under heaven.’
 ³⁵ And Esau kept threatening Jacob because of the blessing wherewith his father blessed him, and he said in his heart: ‘May the days of mourning for my father now come, so that I may slay my brother Jacob.’
