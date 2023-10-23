@@ -8,6 +8,8 @@ After that, we will start on Joshua in Hebrew, Greek, Latin, and English, source
 
 Also still working on Wellhausen's Prolegomena in English, but on the side.
 
+Additionally, we've begun adding the World English Bible with Apocrypha.
+
 ## Stats
 
 - Unique Languages: 4
