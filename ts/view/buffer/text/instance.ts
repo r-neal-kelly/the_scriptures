@@ -43,6 +43,8 @@ export class Instance extends Entity.Instance
     override On_Life():
         Array<Event.Listener_Info>
     {
+        const model: Model.Instance = this.Model();
+
         this.Add_CSS(
             `
                 .Left_To_Right {
@@ -105,7 +107,7 @@ export class Instance extends Entity.Instance
                 }
                 
                 .Indented_Item {
-                    width: 3em;
+                    width: ${model.Indentation_Amount()}em;
                 }
 
                 .Blank {

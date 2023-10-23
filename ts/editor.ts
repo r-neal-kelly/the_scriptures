@@ -1,3 +1,5 @@
+import { Count } from "./types.js";
+
 import * as Utils from "./utils.js";
 import * as Unicode from "./unicode.js";
 
@@ -7,6 +9,8 @@ import * as Model from "./model/text.js";
 
 const LINE_PATH_TYPE: Model.Line.Path_Type =
     Model.Line.Path_Type.DEFAULT;
+
+const INDENT_AMOUNT: Count = 6;
 
 function Escape_Text(
     text: String,
@@ -259,6 +263,7 @@ type Dictionary_Entry = {
 type Dictionary_Treatment = {
     html: string,
     is_centered: boolean,
+    padding_count: Count,
 };
 
 function Selected_Part():
@@ -912,6 +917,14 @@ class Line
             } else {
                 this.element.style.display = `block`;
             }
+            if (treatment.padding_count > 0) {
+                const direction: Direction = this.Editor().Direction();
+                if (direction === Direction.RIGHT_TO_LEFT) {
+                    this.element.style.paddingRight = `${treatment.padding_count * INDENT_AMOUNT}em`;
+                } else {
+                    this.element.style.paddingLeft = `${treatment.padding_count * INDENT_AMOUNT}em`;
+                }
+            }
         }
     }
 
@@ -1035,6 +1048,7 @@ class Line
         return ({
             html: inner_html,
             is_centered: line.Is_Centered(LINE_PATH_TYPE),
+            padding_count: line.Padding_Count(LINE_PATH_TYPE),
         });
     }
 
@@ -2664,7 +2678,7 @@ class Editor
         }
 
         .INDENT {
-            width: 6em;
+            width: ${INDENT_AMOUNT}em;
         }
 
         .SEPARATE_POINT {

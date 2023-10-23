@@ -4,6 +4,7 @@ import { Index } from "../../../types.js";
 import * as Utils from "../../../utils.js";
 
 import * as Entity from "../../entity.js";
+import * as Language from "../../language.js";
 import * as Text from "../../text.js";
 import * as Buffer from "./instance.js";
 import * as Segment from "./segment.js";
@@ -209,5 +210,42 @@ export class Instance extends Entity.Instance
         boolean
     {
         return this.Text().Is_Centered(this.Buffer().Line_Path_Type());
+    }
+
+    Padding_Count():
+        Count
+    {
+        return this.Text().Padding_Count(this.Buffer().Line_Path_Type());
+    }
+
+    Padding_Direction():
+        Language.Direction
+    {
+        return this.Buffer().Default_Text_Direction();
+    }
+
+    Has_Styles():
+        boolean
+    {
+        return this.Padding_Count() > 0;
+    }
+
+    Styles():
+        string | { [index: string]: string; }
+    {
+        if (this.Has_Styles()) {
+            const padding_value: string =
+                `${this.Padding_Count() * this.Buffer().Indentation_Amount()}em`;
+            const padding_direction: string =
+                this.Padding_Direction() === Language.Direction.LEFT_TO_RIGHT ?
+                    `left` :
+                    `right`;
+
+            return `
+            padding-${padding_direction}: ${padding_value};
+        `;
+        } else {
+            return ``;
+        }
     }
 }

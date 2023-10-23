@@ -69,6 +69,14 @@ export class Instance extends Entity.Instance
         return classes;
     }
 
+    override On_Restyle():
+        string | { [index: string]: string; }
+    {
+        const model: Model.Instance = this.Model();
+
+        return model.Styles();
+    }
+
     Model():
         Model.Instance
     {

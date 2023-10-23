@@ -51,6 +51,8 @@ export enum Known_Value
 
     INDENT = `⸨in⸩`,
 
+    PAD = `⸨pad⸩`,
+
     OPEN_ITALIC = `⸨i⸩`,
     CLOSE_ITALIC = `⸨/i⸩`,
 
@@ -132,6 +134,8 @@ export function Is_Known_Value(
         value === Known_Value.CENTER ||
 
         value === Known_Value.INDENT ||
+
+        value === Known_Value.PAD ||
 
         value === Known_Value.OPEN_ITALIC ||
         value === Known_Value.CLOSE_ITALIC ||
@@ -546,6 +550,38 @@ export function Resolve_Errors(
     return result;
 }
 
+export function Is_Centered(
+    text: string,
+):
+    boolean
+{
+    return (
+        text.slice(
+            0,
+            Known_Value.CENTER.length,
+        ) === Known_Value.CENTER
+    );
+}
+
+export function Padding_Count(
+    text: string,
+):
+    Count
+{
+    let count: Count = 0;
+    while (
+        text.slice(
+            0,
+            Known_Value.PAD.length,
+        ) === Known_Value.PAD
+    ) {
+        count += 1;
+        text = text.slice(Known_Value.PAD.length);
+    }
+
+    return count;
+}
+
 export class Instance extends Part.Instance
 {
     private parameter: Value | null;
@@ -668,6 +704,12 @@ export class Instance extends Part.Instance
         boolean
     {
         return this.Value() === Known_Value.INDENT;
+    }
+
+    Is_Pad():
+        boolean
+    {
+        return this.Value() === Known_Value.PAD;
     }
 
     Is_Image():

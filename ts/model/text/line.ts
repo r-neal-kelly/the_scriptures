@@ -34,7 +34,7 @@ class Path
     private value: Value;
 
     private is_centered: boolean;
-    private is_indented: boolean;
+    private padding_count: Count;
 
     private micro_parts: Array<Part.Instance>;
     private macro_parts: Array<Part.Instance>;
@@ -54,16 +54,8 @@ class Path
     {
         this.value = value;
 
-        this.is_centered =
-            this.value.slice(
-                0,
-                Part.Command.Known_Value.CENTER.length,
-            ) === Part.Command.Known_Value.CENTER;
-        this.is_indented =
-            this.value.slice(
-                0,
-                Part.Command.Known_Value.INDENT.length,
-            ) === Part.Command.Known_Value.INDENT;
+        this.is_centered = Part.Command.Is_Centered(this.value);
+        this.padding_count = Part.Command.Padding_Count(this.value);
 
         this.micro_parts = [];
         this.macro_parts = [];
@@ -259,10 +251,16 @@ class Path
         return this.is_centered;
     }
 
-    Is_Indented():
+    Is_Padded():
         boolean
     {
-        return this.is_indented;
+        return this.padding_count > 0;
+    }
+
+    Padding_Count():
+        Count
+    {
+        return this.padding_count;
     }
 
     Has_Micro_Part(
@@ -496,7 +494,7 @@ export class Instance
         return this.paths[path_type].Is_Centered();
     }
 
-    Is_Indented(
+    Is_Padded(
         path_type: Path_Type,
     ):
         boolean
@@ -505,7 +503,19 @@ export class Instance
             path_type = Path_Type.DEFAULT;
         }
 
-        return this.paths[path_type].Is_Indented();
+        return this.paths[path_type].Is_Padded();
+    }
+
+    Padding_Count(
+        path_type: Path_Type,
+    ):
+        Count
+    {
+        if (!this.paths.hasOwnProperty(path_type)) {
+            path_type = Path_Type.DEFAULT;
+        }
+
+        return this.paths[path_type].Padding_Count();
     }
 
     private Set_Path(

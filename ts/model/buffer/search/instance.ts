@@ -131,4 +131,10 @@ export class Instance extends Entity.Instance
     {
         this.is_showing_commands = !this.is_showing_commands;
     }
+
+    Indentation_Amount():
+        Count
+    {
+        return 3;
+    }
 }

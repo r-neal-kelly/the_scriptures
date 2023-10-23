@@ -180,4 +180,10 @@ export class Instance extends Entity.Instance
     {
         return this.Line_Path_Type() === Text.Line.Path_Type.DEFAULT;
     }
+
+    Indentation_Amount():
+        Count
+    {
+        return 3;
+    }
 }
