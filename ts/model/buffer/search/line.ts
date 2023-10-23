@@ -412,11 +412,17 @@ export class Instance extends Entity.Instance
         return this.index as Index;
     }
 
+    Has_Result():
+        boolean
+    {
+        return this.result != null;
+    }
+
     Result():
         Search.Result.Instance
     {
         Utils.Assert(
-            this.result != null,
+            this.Has_Result(),
             `Doesn't have result.`,
         );
 
@@ -473,7 +479,11 @@ export class Instance extends Entity.Instance
     Padding_Count():
         Count
     {
-        return this.Result().Line().Padding_Count(LINE_PATH_TYPE);
+        if (this.Has_Result()) {
+            return this.Result().Line().Padding_Count(LINE_PATH_TYPE);
+        } else {
+            return 0;
+        }
     }
 
     Padding_Direction():
