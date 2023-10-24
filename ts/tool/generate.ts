@@ -228,7 +228,7 @@ class Unique_Names
 
 class Unique_Parts
 {
-    private parts: { [index: string]: Count };
+    private parts: { [part: string]: Count };
 
     constructor()
     {
@@ -552,6 +552,30 @@ async function Generate():
                             part_idx += 1
                         ) {
                             const part: Text.Part.Instance = line.Macro_Part(part_idx, LINE_PATH_TYPE);
+                            Utils.Assert(
+                                !part.Is_Unknown(),
+                                `Unknown part! Cannot generate:\n` +
+                                `   Book Name:          ${book_name}\n` +
+                                `   Language Name:      ${language_name}\n` +
+                                `   Version Name:       ${version_name}\n` +
+                                `   File Name:          ${file_name}\n` +
+                                `   Line Index:         ${line_idx}\n` +
+                                `   Macro Part Index:   ${part_idx}\n` +
+                                `   Macro Part Value:   ${part.Value()}\n`,
+                            );
+                            if (part.Is_Error()) {
+                                Utils.Assert(
+                                    part.Has_Error_Style(),
+                                    `Error not wrapped with error command! Should not generate:\n` +
+                                    `   Book Name:          ${book_name}\n` +
+                                    `   Language Name:      ${language_name}\n` +
+                                    `   Version Name:       ${version_name}\n` +
+                                    `   File Name:          ${file_name}\n` +
+                                    `   Line Index:         ${line_idx}\n` +
+                                    `   Macro Part Index:   ${part_idx}\n` +
+                                    `   Macro Part Value:   ${part.Value()}\n`,
+                                );
+                            }
                             unique_parts[language_name].Add(part.Value());
                             Update_Info_Part_Counts(data_info, part);
                         }

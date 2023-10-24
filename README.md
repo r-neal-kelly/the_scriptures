@@ -19,13 +19,13 @@ Additionally, we've begun adding the World English Bible with Apocrypha.
 <br>
 
 - Total Books: 27
-- Total Files: 910
-- Total Lines: 33,202
-- Total Parts: 1,320,521
-    - Words: 647,851 (~49%)
-    - Meta-Words: 28,026 (~2%)
-    - Non-Words: 644,644 (~49%)
-- Total Unicode Points: 4,146,502
-    - Letters: 3,307,269 (~80%)
-    - Meta-Letters: 126,382 (~3%)
-    - Non-Letters: 712,851 (~17%)
+- Total Files: 911
+- Total Lines: 33,216
+- Total Parts: 1,321,716
+    - Words: 648,436 (~49%)
+    - Meta-Words: 28,049 (~2%)
+    - Non-Words: 645,231 (~49%)
+- Total Unicode Points: 4,149,804
+    - Letters: 3,309,812 (~80%)
+    - Meta-Letters: 126,479 (~3%)
+    - Non-Letters: 713,513 (~17%)
