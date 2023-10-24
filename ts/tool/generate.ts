@@ -322,6 +322,47 @@ function Assert_Greek_Normalization(
     );
 }
 
+async function Read_And_Write_No_Carriage_Returns(
+    file_path: string,
+):
+    Promise<string>
+{
+    let file_text: string = await Read_File(file_path);
+    if (/\r/.test(file_text)) {
+        file_text = file_text.replace(/\r?\n/g, `\n`);
+        await Write_File(file_path, file_text);
+    }
+
+    return file_text;
+}
+
+function Decompression_Line_Mismatches(
+    uncompressed_text: string,
+    decompressed_text: string,
+):
+    string
+{
+    const uncompressed_lines: Array<string> = uncompressed_text.split(/\r?\n/);
+    const decompressed_lines: Array<string> = decompressed_text.split(/\r?\n/);
+
+    let result: string = ``;
+    for (let idx = 0, end = uncompressed_lines.length; idx < end; idx += 1) {
+        if (idx < decompressed_lines.length) {
+            if (uncompressed_lines[idx] !== decompressed_lines[idx]) {
+                result += `${idx}: ${uncompressed_lines[idx]} !== ${decompressed_lines[idx]}\n`;
+            }
+        } else {
+            result += `${idx}: <missing line>\n`;
+        }
+    }
+
+    if (result === ``) {
+        return `<no mismatching lines>`;
+    } else {
+        return result;
+    }
+}
+
 async function Generate():
     Promise<void>
 {
@@ -532,10 +573,11 @@ async function Generate():
                 for (const file_name of file_names) {
                     const file_path: Path = `${files_path}/${file_name}`;
                     const file_leaf: Data.File.Leaf = Utils.Remove_File_Extension(file_name);
+                    const file_text: string = await Read_And_Write_No_Carriage_Returns(file_path);
                     const text: Text.Instance = new Text.Instance(
                         {
                             dictionary: dictionary,
-                            value: await Read_File(file_path),
+                            value: file_text,
                         },
                     );
                     version_branch.files.push(file_leaf);
@@ -668,7 +710,12 @@ async function Generate():
                         );
                     Utils.Assert(
                         uncompressed_file_text === file_text,
-                        `Invalid decompression!`,
+                        `Invalid decompression!\n` +
+                        `   Book Name: ${book_name}\n` +
+                        `   Language Name: ${language_name}\n` +
+                        `   Version Name: ${version_name}\n` +
+                        `   File Name: ${file_name}\n` +
+                        `${Decompression_Line_Mismatches(file_text, uncompressed_file_text)}`,
                     );
                     await Write_File(
                         `${files_path}/${file_name.replace(/\.[^.]*$/, `.${Data.Version.Dictionary.Symbol.EXTENSION}`)}`,
@@ -692,7 +739,11 @@ async function Generate():
                     );
                 Utils.Assert(
                     uncompressed_version_text === version_text,
-                    `Invalid decompression!`,
+                    `Invalid decompression!\n` +
+                    `   Book Name: ${book_name}\n` +
+                    `   Language Name: ${language_name}\n` +
+                    `   Version Name: ${version_name}\n` +
+                    `${Decompression_Line_Mismatches(version_text, uncompressed_version_text)}`,
                 );
                 await Write_File(
                     `${files_path}/${Data.Version.Text.Symbol.NAME}.${Data.Version.Text.Symbol.EXTENSION}`,
