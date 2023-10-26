@@ -36,7 +36,7 @@ export class Instance extends Async.Instance
 
         this.Add_Dependencies(
             [
-                this.Version().Language().Book().Data(),
+                this.Version(),
             ],
         );
     }
@@ -89,8 +89,12 @@ export class Instance extends Async.Instance
             await fetch(Utils.Resolve_Path(this.Path()));
         if (response.ok) {
             const compressor: Compressor.Instance =
-                this.Version().Compressor();
-            text_dictionary_json = compressor.Decompress_Dictionary(await response.text());
+                await this.Version().Compressor();
+            text_dictionary_json = compressor.Decompress_Dictionary(
+                {
+                    dictionary_value: await response.text(),
+                },
+            );
         } else {
             text_dictionary_json = null;
         }

@@ -38,7 +38,7 @@ export class Instance extends Async.Instance
 
         this.Add_Dependencies(
             [
-                this.Version().Language().Book().Data(),
+                this.Version(),
             ],
         );
     }
@@ -111,13 +111,13 @@ export class Instance extends Async.Instance
             const dictionary: Text.Dictionary.Instance =
                 (await this.Version().Dictionary()).Text_Dictionary();
             const compressor: Compressor.Instance =
-                this.Version().Compressor();
+                await this.Version().Compressor();
             for (
                 const text_file of
-                compressor.Decompress(
+                compressor.Decompress_File(
                     {
-                        value: text_version,
                         dictionary: dictionary,
+                        file_value: text_version,
                     },
                 ).split(Version.Symbol.FILE_BREAK)
             ) {

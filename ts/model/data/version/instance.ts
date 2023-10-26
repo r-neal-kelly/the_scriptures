@@ -27,6 +27,7 @@ export class Instance extends Entity.Instance
     private language: Language.Instance;
     private name: Name;
     private path: Path;
+    private compressor: Compressor.Instance | null;
     private dictionary: Dictionary.Instance;
     private text: Text.Instance;
     private files: Array<File.Instance>;
@@ -46,6 +47,7 @@ export class Instance extends Entity.Instance
         this.language = language;
         this.name = branch.name;
         this.path = `${language.Path()}/${branch.name}`;
+        this.compressor = null;
         this.dictionary = new Dictionary.Instance(
             {
                 version: this,
@@ -91,6 +93,52 @@ export class Instance extends Entity.Instance
         Path
     {
         return this.path;
+    }
+
+    async Compressor(
+        {
+            fetch_attempt_count,
+            fetch_attempt_limit,
+        }: {
+            fetch_attempt_count: Count,
+            fetch_attempt_limit: Count,
+        } = {
+                fetch_attempt_count: 0,
+                fetch_attempt_limit: 3,
+            },
+    ):
+        Promise<Compressor.Instance>
+    {
+        if (this.compressor != null) {
+            return this.compressor;
+        } else {
+            if (fetch_attempt_count < fetch_attempt_limit) {
+                const response: Response =
+                    await fetch(Utils.Resolve_Path(`${this.Path()}/Unique_Parts.json`));
+                if (response.ok) {
+                    this.compressor = new Compressor.Instance(
+                        {
+                            unique_parts: JSON.parse(await response.text()) as Array<string>,
+                        },
+                    );
+
+                    return this.compressor;
+                } else {
+                    return await this.Compressor(
+                        {
+                            fetch_attempt_count: fetch_attempt_count + 1,
+                            fetch_attempt_limit: fetch_attempt_limit,
+                        },
+                    );
+                }
+            } else {
+                return new Compressor.Instance(
+                    {
+                        unique_parts: [],
+                    },
+                );
+            }
+        }
     }
 
     async Dictionary():
@@ -155,11 +203,5 @@ export class Instance extends Entity.Instance
         Array<File.Instance>
     {
         return Array.from(this.files);
-    }
-
-    Compressor():
-        Compressor.Instance
-    {
-        return this.Language().Book().Data().Compressor(this.Language().Name());
     }
 }

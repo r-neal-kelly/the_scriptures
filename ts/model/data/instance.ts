@@ -7,7 +7,6 @@ import * as Utils from "../../utils.js";
 import * as Async from "../../async.js";
 
 import { Type } from "./type.js";
-import * as Compressor from "./compressor.js";
 import * as Query from "./query.js";
 import * as Book from "./book.js";
 import * as Version from "./version.js";
@@ -24,9 +23,6 @@ export type Info = {
     unique_book_names: Array<Name>,
     unique_language_names: Array<Name>,
     unique_version_names: Array<Name>,
-    unique_part_values: {
-        [language_name: Name]: Array<string>,
-    },
 
     total_unit_count: Count,
     total_point_count: Count,
@@ -49,7 +45,6 @@ export class Instance extends Async.Instance
     private books_path: Path;
     private info: Info | null;
     private books: Array<Book.Instance>;
-    private compressors: { [language_name: Name]: Compressor.Instance };
     private name_sorter: Name_Sorter.Instance;
 
     constructor()
@@ -61,7 +56,6 @@ export class Instance extends Async.Instance
         this.books_path = `${this.path}/Books`;
         this.info = null;
         this.books = [];
-        this.compressors = {};
         this.name_sorter = new Name_Sorter.Instance();
 
         this.Add_Dependencies(
@@ -168,23 +162,6 @@ export class Instance extends Async.Instance
         );
 
         return Array.from(this.books);
-    }
-
-    Compressor(
-        language_name: Name,
-    ):
-        Compressor.Instance
-    {
-        Utils.Assert(
-            this.Is_Ready(),
-            `Not ready.`,
-        );
-        Utils.Assert(
-            this.compressors[language_name] != null,
-            `Doesn't have compressor for language ${language_name}`,
-        );
-
-        return this.compressors[language_name];
     }
 
     Name_Sorter():
@@ -1262,14 +1239,6 @@ export class Instance extends Async.Instance
                     ),
                 );
             }
-
-            for (const language_name of Object.keys(this.info.unique_part_values)) {
-                this.compressors[language_name] = new Compressor.Instance(
-                    {
-                        unique_parts: this.info.unique_part_values[language_name],
-                    },
-                );
-            }
         } else {
             this.info = {
                 tree: {
@@ -1279,7 +1248,6 @@ export class Instance extends Async.Instance
                 unique_book_names: [],
                 unique_language_names: [],
                 unique_version_names: [],
-                unique_part_values: {},
 
                 total_unit_count: 0,
                 total_point_count: 0,
