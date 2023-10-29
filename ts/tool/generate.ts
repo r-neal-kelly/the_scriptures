@@ -34,19 +34,20 @@ const UNIQUE_PARTS_JSON_NAME: Name =
 const DEFAULT_LAST_TIMESTAMP: Count =
     0;
 
+const NAME_SORTER: Data.Name_Sorter.Instance =
+    Data.Name_Sorter.Singleton();
+
 const LINE_PATH_TYPE: Text.Line.Path_Type =
     Text.Line.Path_Type.DEFAULT;
 
 class Unique_Names
 {
-    private name_sorter: Data.Name_Sorter.Instance;
     private books: Set<Name>;
     private languages: Set<Name>;
     private versions: Set<Name>;
 
     constructor()
     {
-        this.name_sorter = new Data.Name_Sorter.Instance();
         this.books = new Set();
         this.languages = new Set();
         this.versions = new Set();
@@ -79,7 +80,7 @@ class Unique_Names
     Books():
         Array<Name>
     {
-        return this.name_sorter.With_Set(
+        return NAME_SORTER.With_Set(
             Data.Name_Sorter.Type.BOOKS,
             this.books,
         );
@@ -88,7 +89,7 @@ class Unique_Names
     Languages():
         Array<Name>
     {
-        return this.name_sorter.With_Set(
+        return NAME_SORTER.With_Set(
             Data.Name_Sorter.Type.LANGUAGES,
             this.languages,
         );
@@ -97,7 +98,7 @@ class Unique_Names
     Versions():
         Array<Name>
     {
-        return this.name_sorter.With_Set(
+        return NAME_SORTER.With_Set(
             Data.Name_Sorter.Type.VERSIONS,
             this.versions,
         );
@@ -310,6 +311,19 @@ async function Generate(
         total_line_count: 0,
         total_file_count: 0,
         total_book_count: 0,
+
+        language_unit_counts: {},
+        language_point_counts: {},
+        language_letter_counts: {},
+        language_marker_counts: {},
+        language_meta_letter_counts: {},
+        language_word_counts: {},
+        language_break_counts: {},
+        language_meta_word_counts: {},
+        language_part_counts: {},
+        language_line_counts: {},
+        language_file_counts: {},
+        language_book_counts: {},
     };
     const unique_names: Unique_Names = new Unique_Names();
 
@@ -333,6 +347,20 @@ async function Generate(
                 };
                 book_branch.languages.push(language_branch);
                 unique_names.Add_Language(language_name);
+                if (data_info.language_unit_counts[language_name] == null) {
+                    data_info.language_unit_counts[language_name] = 0;
+                    data_info.language_point_counts[language_name] = 0;
+                    data_info.language_letter_counts[language_name] = 0;
+                    data_info.language_marker_counts[language_name] = 0;
+                    data_info.language_meta_letter_counts[language_name] = 0;
+                    data_info.language_word_counts[language_name] = 0;
+                    data_info.language_break_counts[language_name] = 0;
+                    data_info.language_meta_word_counts[language_name] = 0;
+                    data_info.language_part_counts[language_name] = 0;
+                    data_info.language_line_counts[language_name] = 0;
+                    data_info.language_file_counts[language_name] = 0;
+                    data_info.language_book_counts[language_name] = 0;
+                }
                 for (const version_name of (await File_System.Folder_Names(versions_path)).sort()) {
                     const files_path: Path = `${versions_path}/${version_name}`;
                     const file_names: Array<string> = await Read_And_Sort_File_Names(files_path);
@@ -586,6 +614,18 @@ async function Generate(
                     Utils.Assert(data_info.total_line_count + version_info.total_line_count <= Number.MAX_SAFE_INTEGER);
                     Utils.Assert(data_info.total_file_count + version_info.total_file_count <= Number.MAX_SAFE_INTEGER);
                     Utils.Assert(data_info.total_book_count + 1 <= Number.MAX_SAFE_INTEGER);
+                    Utils.Assert(data_info.language_unit_counts[language_name] + version_info.total_unit_count <= Number.MAX_SAFE_INTEGER);
+                    Utils.Assert(data_info.language_point_counts[language_name] + version_info.total_point_count <= Number.MAX_SAFE_INTEGER);
+                    Utils.Assert(data_info.language_letter_counts[language_name] + version_info.total_letter_count <= Number.MAX_SAFE_INTEGER);
+                    Utils.Assert(data_info.language_marker_counts[language_name] + version_info.total_marker_count <= Number.MAX_SAFE_INTEGER);
+                    Utils.Assert(data_info.language_meta_letter_counts[language_name] + version_info.total_meta_letter_count <= Number.MAX_SAFE_INTEGER);
+                    Utils.Assert(data_info.language_word_counts[language_name] + version_info.total_word_count <= Number.MAX_SAFE_INTEGER);
+                    Utils.Assert(data_info.language_break_counts[language_name] + version_info.total_break_count <= Number.MAX_SAFE_INTEGER);
+                    Utils.Assert(data_info.language_meta_word_counts[language_name] + version_info.total_meta_word_count <= Number.MAX_SAFE_INTEGER);
+                    Utils.Assert(data_info.language_part_counts[language_name] + version_info.total_part_count <= Number.MAX_SAFE_INTEGER);
+                    Utils.Assert(data_info.language_line_counts[language_name] + version_info.total_line_count <= Number.MAX_SAFE_INTEGER);
+                    Utils.Assert(data_info.language_file_counts[language_name] + version_info.total_file_count <= Number.MAX_SAFE_INTEGER);
+                    Utils.Assert(data_info.language_book_counts[language_name] + 1 <= Number.MAX_SAFE_INTEGER);
                     data_info.total_unit_count += version_info.total_unit_count;
                     data_info.total_point_count += version_info.total_point_count;
                     data_info.total_letter_count += version_info.total_letter_count;
@@ -598,6 +638,18 @@ async function Generate(
                     data_info.total_line_count += version_info.total_line_count;
                     data_info.total_file_count += version_info.total_file_count;
                     data_info.total_book_count += 1;
+                    data_info.language_unit_counts[language_name] += version_info.total_unit_count;
+                    data_info.language_point_counts[language_name] += version_info.total_point_count;
+                    data_info.language_letter_counts[language_name] += version_info.total_letter_count;
+                    data_info.language_marker_counts[language_name] += version_info.total_marker_count;
+                    data_info.language_meta_letter_counts[language_name] += version_info.total_meta_letter_count;
+                    data_info.language_word_counts[language_name] += version_info.total_word_count;
+                    data_info.language_break_counts[language_name] += version_info.total_break_count;
+                    data_info.language_meta_word_counts[language_name] += version_info.total_meta_word_count;
+                    data_info.language_part_counts[language_name] += version_info.total_part_count;
+                    data_info.language_line_counts[language_name] += version_info.total_line_count;
+                    data_info.language_file_counts[language_name] += version_info.total_file_count;
+                    data_info.language_book_counts[language_name] += 1;
                 }
             }
         }
@@ -663,6 +715,26 @@ async function Generate(
             const total_meta_letter_percent: Integer = Math.round(data_info.total_meta_letter_count * 100 / data_info.total_point_count);
             const total_non_letter_percent: Integer = Math.round(data_info.total_marker_count * 100 / data_info.total_point_count);
 
+            function Breakdown_By_Language(
+                current_indent: string,
+                total_count: Count,
+                language_counts: { [language_name: string]: Count },
+            ):
+                string
+            {
+                let result: string = ``;
+
+                for (const language_name of data_info.unique_language_names) {
+                    if (language_counts[language_name] != null) {
+                        const count: Count = language_counts[language_name];
+                        const percent: Integer = Math.round(count * 100 / total_count);
+                        result += `${current_indent}    - ${language_name}: ${Utils.Add_Commas_To_Number(count)} (~${percent}%)\n`;
+                    }
+                }
+
+                return result;
+            }
+
             readme_text =
                 readme_text.slice(0, stats_first) +
                 `## Stats\n\n` +
@@ -674,16 +746,31 @@ async function Generate(
                 `<br>\n\n` +
 
                 `- Total Books: ${Utils.Add_Commas_To_Number(data_info.total_book_count)}\n` +
+                Breakdown_By_Language(``, data_info.total_book_count, data_info.language_book_counts) +
                 `- Total Files: ${Utils.Add_Commas_To_Number(data_info.total_file_count)}\n` +
+                Breakdown_By_Language(``, data_info.total_file_count, data_info.language_file_counts) +
                 `- Total Lines: ${Utils.Add_Commas_To_Number(data_info.total_line_count)}\n` +
+                Breakdown_By_Language(``, data_info.total_line_count, data_info.language_line_counts) +
                 `- Total Parts: ${Utils.Add_Commas_To_Number(data_info.total_part_count)}\n` +
-                `    - Words: ${Utils.Add_Commas_To_Number(data_info.total_word_count)} (~${total_word_percent}%)\n` +
-                `    - Meta-Words: ${Utils.Add_Commas_To_Number(data_info.total_meta_word_count)} (~${total_meta_word_percent}%)\n` +
-                `    - Non-Words: ${Utils.Add_Commas_To_Number(data_info.total_break_count)} (~${total_non_word_percent}%)\n` +
+                `    - <i>By Language</i>\n` +
+                Breakdown_By_Language(`    `, data_info.total_part_count, data_info.language_part_counts) +
+                `    - <i>By Components</i>\n` +
+                `        - Words: ${Utils.Add_Commas_To_Number(data_info.total_word_count)} (~${total_word_percent}%)\n` +
+                Breakdown_By_Language(`        `, data_info.total_word_count, data_info.language_word_counts) +
+                `        - Meta-Words: ${Utils.Add_Commas_To_Number(data_info.total_meta_word_count)} (~${total_meta_word_percent}%)\n` +
+                Breakdown_By_Language(`        `, data_info.total_meta_word_count, data_info.language_meta_word_counts) +
+                `        - Non-Words: ${Utils.Add_Commas_To_Number(data_info.total_break_count)} (~${total_non_word_percent}%)\n` +
+                Breakdown_By_Language(`        `, data_info.total_break_count, data_info.language_break_counts) +
                 `- Total Unicode Points: ${Utils.Add_Commas_To_Number(data_info.total_point_count)}\n` +
-                `    - Letters: ${Utils.Add_Commas_To_Number(data_info.total_letter_count)} (~${total_letter_percent}%)\n` +
-                `    - Meta-Letters: ${Utils.Add_Commas_To_Number(data_info.total_meta_letter_count)} (~${total_meta_letter_percent}%)\n` +
-                `    - Non-Letters: ${Utils.Add_Commas_To_Number(data_info.total_marker_count)} (~${total_non_letter_percent}%)\n` +
+                `    - <i>By Language</i>\n` +
+                Breakdown_By_Language(`    `, data_info.total_point_count, data_info.language_point_counts) +
+                `    - <i>By Components</i>\n` +
+                `        - Letters: ${Utils.Add_Commas_To_Number(data_info.total_letter_count)} (~${total_letter_percent}%)\n` +
+                Breakdown_By_Language(`        `, data_info.total_letter_count, data_info.language_letter_counts) +
+                `        - Meta-Letters: ${Utils.Add_Commas_To_Number(data_info.total_meta_letter_count)} (~${total_meta_letter_percent}%)\n` +
+                Breakdown_By_Language(`        `, data_info.total_meta_letter_count, data_info.language_meta_letter_counts) +
+                `        - Non-Letters: ${Utils.Add_Commas_To_Number(data_info.total_marker_count)} (~${total_non_letter_percent}%)\n` +
+                Breakdown_By_Language(`        `, data_info.total_marker_count, data_info.language_marker_counts) +
 
                 readme_text.slice(stats_end, readme_text.length);
         }

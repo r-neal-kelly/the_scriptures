@@ -99,3 +99,10 @@ export class Instance
         return known_names.concat(unknown_names.sort());
     }
 }
+
+const SINGLETON = new Instance();
+export function Singleton():
+    Instance
+{
+    return SINGLETON;
+}

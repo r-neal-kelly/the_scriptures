@@ -36,6 +36,19 @@ export type Info = {
     total_line_count: Count,
     total_file_count: Count,
     total_book_count: Count,
+
+    language_unit_counts: { [language_name: string]: Count };
+    language_point_counts: { [language_name: string]: Count };
+    language_letter_counts: { [language_name: string]: Count };
+    language_marker_counts: { [language_name: string]: Count };
+    language_meta_letter_counts: { [language_name: string]: Count };
+    language_word_counts: { [language_name: string]: Count };
+    language_break_counts: { [language_name: string]: Count };
+    language_meta_word_counts: { [language_name: string]: Count };
+    language_part_counts: { [language_name: string]: Count };
+    language_line_counts: { [language_name: string]: Count };
+    language_file_counts: { [language_name: string]: Count };
+    language_book_counts: { [language_name: string]: Count };
 };
 
 export class Instance extends Async.Instance
@@ -1261,6 +1274,19 @@ export class Instance extends Async.Instance
                 total_line_count: 0,
                 total_file_count: 0,
                 total_book_count: 0,
+
+                language_unit_counts: {},
+                language_point_counts: {},
+                language_letter_counts: {},
+                language_marker_counts: {},
+                language_meta_letter_counts: {},
+                language_word_counts: {},
+                language_break_counts: {},
+                language_meta_word_counts: {},
+                language_part_counts: {},
+                language_line_counts: {},
+                language_file_counts: {},
+                language_book_counts: {},
             };
         }
     }
