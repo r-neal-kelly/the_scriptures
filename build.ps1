@@ -1,7 +1,8 @@
 param(
     [switch]$help,
+    [switch]$minify,
     [switch]$generate,
-    [switch]$minify
+    [switch]$force_generate
 )
 
 if ($help.IsPresent) {
@@ -11,8 +12,9 @@ if ($help.IsPresent) {
     Write-Host
     Write-Host "Parameters:"
     Write-Host "    -help: Brings up this help message."
-    Write-Host "    -generate: Calls the ./js/tool/generate.js tool."
     Write-Host "    -minify: Calls the ./js/tool/minify.js tool."
+    Write-Host "    -generate: Calls the ./js/tool/generate.js tool."
+    Write-Host "    -force_generate: Calls the ./js/tool/generate.js tool with the -f (--force) option."
     Write-Host
 }
 else {
@@ -32,12 +34,26 @@ else {
         Write-Host
     }
     else {
-        tsc --build
-        if ($generate.IsPresent) {
-            node ./js/tool/generate.js
-        }
         if ($minify.IsPresent) {
+            Write-Host "    Removing old JavaScript..."
+            Remove-Item -Recurse -Force ./js
+        }
+        
+        Write-Host "    Compiling TypeScript into JavaScript..."
+        tsc --build
+
+        if ($minify.IsPresent) {
+            Write-Host "    Minifying all JavaScript files..."
             node ./js/tool/minify.js
         }
+
+        if ($force_generate.IsPresent) {
+            node ./js/tool/generate.js --force
+        }
+        elseif ($generate.IsPresent) {
+            node ./js/tool/generate.js
+        }
+
+        Write-Host "    Done building."
     }
 }
