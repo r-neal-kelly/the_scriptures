@@ -170,7 +170,7 @@ async function Main():
     >;
     const data: Data = [
         [
-            Selector_Model.Slot.Order.BOOKS_LANGUAGES_VERSIONS,
+            Selector_Model.Slot.Order.LANGUAGES_VERSIONS_BOOKS,
             `Genesis`,
             `English`,
             `KJV 1872-1888`,
