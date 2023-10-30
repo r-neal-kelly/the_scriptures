@@ -13,8 +13,27 @@ Additionally, we've begun adding the World English Bible with Apocrypha.
 ## Stats
 
 - Unique Languages: 4
+    - Hebrew
+    - Greek
+    - Latin
+    - English
 - Unique Versions: 5
+    - Hexaglot 1857-1906
+    - Julius Wellhausen
+    - KJV 1872-1888
+    - R. H. Charles 1913
+    - World English Bible with Apocrypha
 - Unique Books: 10
+    - Introduction
+    - Prolegomenon
+    - Genesis
+    - Exodus
+    - Leviticus
+    - Numbers
+    - Deuteronomy
+    - Jubilees
+    - Masoretic Notes
+    - Prolegomena to the History of Israel
 
 <br>
 

@@ -715,6 +715,21 @@ async function Generate(
             const total_meta_letter_percent: Integer = Math.round(data_info.total_meta_letter_count * 100 / data_info.total_point_count);
             const total_non_letter_percent: Integer = Math.round(data_info.total_marker_count * 100 / data_info.total_point_count);
 
+            function List_Items(
+                current_indent: string,
+                items: Array<string>,
+            ):
+                string
+            {
+                let result: string = ``;
+
+                for (const item of items) {
+                    result += `${current_indent}    - ${item}\n`;
+                }
+
+                return result;
+            }
+
             function Breakdown_By_Language(
                 current_indent: string,
                 total_count: Count,
@@ -740,10 +755,13 @@ async function Generate(
                 `## Stats\n\n` +
 
                 `- Unique Languages: ${Utils.Add_Commas_To_Number(data_info.unique_language_names.length)}\n` +
+                List_Items(``, data_info.unique_language_names) +
                 `- Unique Versions: ${Utils.Add_Commas_To_Number(data_info.unique_version_names.length)}\n` +
-                `- Unique Books: ${Utils.Add_Commas_To_Number(data_info.unique_book_names.length)}\n\n` +
+                List_Items(``, data_info.unique_version_names) +
+                `- Unique Books: ${Utils.Add_Commas_To_Number(data_info.unique_book_names.length)}\n` +
+                List_Items(``, data_info.unique_book_names) +
 
-                `<br>\n\n` +
+                `\n<br>\n\n` +
 
                 `- Total Books: ${Utils.Add_Commas_To_Number(data_info.total_book_count)}\n` +
                 Breakdown_By_Language(``, data_info.total_book_count, data_info.language_book_counts) +
