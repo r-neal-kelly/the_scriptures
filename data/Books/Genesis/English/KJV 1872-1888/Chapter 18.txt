@@ -47,6 +47,6 @@
 Acts 3⸼ 25⸼
 Gal⸼ 3⸼ 8⸼
 
-⁺ Heb⸼ ⸨i⸩stay⸨/i⸩.
-⁺ Heb⸼ ⸨i⸩you have passed⸨/i⸩⸨err:.⸩⸨/err⸩
-⁺ Heb⸼ ⸨i⸩Hasten⸨/i⸩.
+⁺ ⸨add⸩⸨b⸩Ver⸼ 5⸼ ⸨/b⸩⸨/add⸩Heb⸼ ⸨i⸩stay⸨/i⸩.
+⁺ ⸨add⸩⸨b⸩Ver⸼ 5⸼ ⸨/b⸩⸨/add⸩Heb⸼ ⸨i⸩you have passed⸨/i⸩⸨err:.⸩⸨/err⸩
+⁺ ⸨add⸩⸨b⸩Ver⸼ 6⸼ ⸨/b⸩⸨/add⸩Heb⸼ ⸨i⸩Hasten⸨/i⸩.

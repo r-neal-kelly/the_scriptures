@@ -53,6 +53,6 @@
 
 ⸨i⸩ᵈ⸨/i⸩ 1 Chron⸼ 1⸼ 38⸼
 
-⁺ Heb⸼ ⸨i⸩souls⸨/i⸩⸨err:.⸩⸨/err⸩
-⁺ Heb⸼ ⸨i⸩Edom⸨/i⸩.
-⁺ Heb⸼ ⸨i⸩Edom⸨/i⸩.
+⁺ ⸨add⸩⸨b⸩Ver⸼ 6⸼ ⸨/b⸩⸨/add⸩Heb⸼ ⸨i⸩souls⸨/i⸩⸨err:.⸩⸨/err⸩
+⁺ ⸨add⸩⸨b⸩Ver⸼ 9⸼ ⸨/b⸩⸨/add⸩Heb⸼ ⸨i⸩Edom⸨/i⸩.
+⁺ ⸨add⸩⸨b⸩Ver⸼ 43⸼ ⸨/b⸩⸨/add⸩Heb⸼ ⸨i⸩Edom⸨/i⸩.

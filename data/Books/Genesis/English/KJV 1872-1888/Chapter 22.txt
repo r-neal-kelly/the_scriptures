@@ -43,9 +43,9 @@ Gal⸼ 3⸼ 8⸼
 
 ⸨i⸩ᵉ⸨/i⸩ Called, Rom⸼ 9⸼ ⸨err:10⸼⸩10⸨/err⸩, ⸨i⸩Rebecca⸨/i⸩.
 
-⁺ Heb⸼ ⸨i⸩Behold me⸨/i⸩.
-⁺ Heb⸼ ⸨i⸩Behold me⸨/i⸩.
-⸨err:⁺ ⸩⸨/err⸩Heb⸼ ⸨i⸩lip⸨/i⸩.
+⁺ ⸨add⸩⸨b⸩Ver⸼ 1⸼ ⸨/b⸩⸨/add⸩Heb⸼ ⸨i⸩Behold me⸨/i⸩.
+⁺ ⸨add⸩⸨b⸩Ver⸼ 7⸼ ⸨/b⸩⸨/add⸩Heb⸼ ⸨i⸩Behold me⸨/i⸩.
+⸨err:⁺ ⸩⸨/err⸩⸨add⸩⸨b⸩Ver⸼ 17⸼ ⸨/b⸩⸨/add⸩Heb⸼ ⸨i⸩lip⸨/i⸩.
 
-ˈ Or, ⸨i⸩kid⸨/i⸩.
-ˈ That is, ⸨i⸩The ⸨err:⸨sc⸩Lord⸨/sc⸩⸩LORD⸨/err⸩ will see⸨/i⸩, or, ⸨i⸩provide⸨/i⸩.
+ˈ ⸨add⸩⸨b⸩Ver⸼ 7⸼ ⸨/b⸩⸨/add⸩Or, ⸨i⸩kid⸨/i⸩.
+ˈ ⸨add⸩⸨b⸩Ver⸼ 14⸼ ⸨/b⸩⸨/add⸩That is, ⸨i⸩The ⸨err:⸨sc⸩Lord⸨/sc⸩⸩LORD⸨/err⸩ will see⸨/i⸩, or, ⸨i⸩provide⸨/i⸩.

@@ -61,15 +61,15 @@
 
 ⸨i⸩ᵇ⸨/i⸩ ⸨err:Exod⸼⸩Ex⸼⸨/err⸩ 22⸼ 12⸼
 
-⁺ Heb⸼ ⸨i⸩as yesterday and the day before⸨/i⸩.
-⁺ Heb⸼ ⸨i⸩⸨err:teraphim⸩teraphi·⸨/err⸩⸨/i⸩⸨err:.⸩⸨/err⸩
-⁺ Heb⸼ ⸨i⸩the ⸨err:heart⸩hea·⸨/err⸩ of ⸨err:Laban⸩Laba⸨/err⸩⸨/i⸩⸨err:.⸩⸨/err⸩
-⁺ Heb⸼ ⸨i⸩from good to bad⸨/i⸩.
-⁺ Heb⸼ ⸨i⸩hast stolen me⸨/i⸩.
-⸨err:⁺ ⸩⸨/err⸩Heb⸼ ⸨i⸩felt⸨/i⸩.
-⸨err:⁺ ⸩⸨/err⸩Heb⸼ ⸨i⸩⸨err:felt⸩t⸨/err⸩⸨/i⸩.
+⁺ ⸨add⸩⸨b⸩Ver⸼ 2⸼ ⸨/b⸩⸨/add⸩Heb⸼ ⸨i⸩as yesterday and the day before⸨/i⸩.
+⁺ ⸨add⸩⸨b⸩Ver⸼ 19⸼ ⸨/b⸩⸨/add⸩Heb⸼ ⸨i⸩⸨err:teraphim⸩teraphi·⸨/err⸩⸨/i⸩⸨err:.⸩⸨/err⸩
+⁺ ⸨add⸩⸨b⸩Ver⸼ 20⸼ ⸨/b⸩⸨/add⸩Heb⸼ ⸨i⸩the ⸨err:heart⸩hea·⸨/err⸩ of ⸨err:Laban⸩Laba⸨/err⸩⸨/i⸩⸨err:.⸩⸨/err⸩
+⁺ ⸨add⸩⸨b⸩Ver⸼ 24⸼ ⸨/b⸩⸨/add⸩Heb⸼ ⸨i⸩from good to bad⸨/i⸩.
+⁺ ⸨add⸩⸨b⸩Ver⸼ 27⸼ ⸨/b⸩⸨/add⸩Heb⸼ ⸨i⸩hast stolen me⸨/i⸩.
+⸨err:⁺ ⸩⸨/err⸩⸨add⸩⸨b⸩Ver⸼ 34⸼ ⸨/b⸩⸨/add⸩Heb⸼ ⸨i⸩felt⸨/i⸩.
+⸨err:⁺ ⸩⸨/err⸩⸨add⸩⸨b⸩Ver⸼ 37⸼ ⸨/b⸩⸨/add⸩Heb⸼ ⸨i⸩⸨err:felt⸩t⸨/err⸩⸨/i⸩.
 
-ˈ Or, ⸨i⸩he goats⸨/i⸩.
-ˈ That is, ⸨i⸩the heap of witness⸨/i⸩⸨err:.⸩⸨/err⸩
-⸨err:ˈ ⸩⸨/err⸩⸨err:That⸩·hat⸨/err⸩ is, ⸨i⸩⸨err:a beacon⸩····n⸨/err⸩⸨/i⸩, ⸨err:or⸩⸨/err⸩⸨err:, ⸩ ⸨/err⸩⸨i⸩⸨err:watch‑tower⸩watch‑·er⸨/err⸩⸨/i⸩.
-ˈ Or, ⸨i⸩killed beasts⸨/i⸩.
+ˈ ⸨add⸩⸨b⸩Ver⸼ 10⸼ ⸨/b⸩⸨/add⸩Or, ⸨i⸩he goats⸨/i⸩.
+ˈ ⸨add⸩⸨b⸩Ver⸼ 47⸼ ⸨/b⸩⸨/add⸩That is, ⸨i⸩the heap of witness⸨/i⸩⸨err:.⸩⸨/err⸩
+⸨err:ˈ ⸩⸨/err⸩⸨add⸩⸨b⸩Ver⸼ 49⸼ ⸨/b⸩⸨/add⸩⸨err:That⸩·hat⸨/err⸩ is, ⸨i⸩⸨err:a beacon⸩····n⸨/err⸩⸨/i⸩, ⸨err:or⸩⸨/err⸩⸨err:, ⸩ ⸨/err⸩⸨i⸩⸨err:watch‑tower⸩watch‑·er⸨/err⸩⸨/i⸩.
+ˈ ⸨add⸩⸨b⸩Ver⸼ 54⸼ ⸨/b⸩⸨/add⸩Or, ⸨i⸩killed beasts⸨/i⸩.

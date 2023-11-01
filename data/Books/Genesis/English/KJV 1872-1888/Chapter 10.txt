@@ -42,11 +42,11 @@
 
 ⸨i⸩ᵈ⸨/i⸩ 1 Chron⸼ 1⸼ 19⸼
 
-⁺ Gr⸼ ⸨i⸩Babylon⸨/i⸩.
-⁺ ⸨err:Heb⸼⸩Heb⸨/err⸩ ⸨i⸩Tzidon⸨/i⸩.
-⁺ ⸨err:Heb⸼⸩Heb⸨/err⸩ ⸨i⸩Azzah⸨/i⸩.
-⁺ ⸨err:Heb⸼⸩Heb⸨/err⸩ ⸨i⸩Arpachshad⸨/i⸩.
-⁺ Heb⸼ ⸨i⸩Shelah⸨/i⸩.
+⁺ ⸨add⸩⸨b⸩Ver⸼ 10⸼ ⸨/b⸩⸨/add⸩Gr⸼ ⸨i⸩Babylon⸨/i⸩.
+⁺ ⸨add⸩⸨b⸩Ver⸼ 15⸼ ⸨/b⸩⸨/add⸩⸨err:Heb⸼⸩Heb⸨/err⸩ ⸨i⸩Tzidon⸨/i⸩.
+⁺ ⸨add⸩⸨b⸩Ver⸼ 19⸼ ⸨/b⸩⸨/add⸩⸨err:Heb⸼⸩Heb⸨/err⸩ ⸨i⸩Azzah⸨/i⸩.
+⁺ ⸨add⸩⸨b⸩Ver⸼ 22⸼ ⸨/b⸩⸨/add⸩⸨err:Heb⸼⸩Heb⸨/err⸩ ⸨i⸩Arpachshad⸨/i⸩.
+⁺ ⸨add⸩⸨b⸩Ver⸼ 24⸼ ⸨/b⸩⸨/add⸩Heb⸼ ⸨i⸩Shelah⸨/i⸩.
 
-ˈ Or, ⸨i⸩he went out⸨/i⸩ into ⸨i⸩Assyria⸨/i⸩.
-ˈ Or, ⸨i⸩the streets of the city⸨/i⸩.
+ˈ ⸨add⸩⸨b⸩Ver⸼ 11⸼ ⸨/b⸩⸨/add⸩Or, ⸨i⸩he went out⸨/i⸩ into ⸨i⸩Assyria⸨/i⸩.
+ˈ ⸨add⸩⸨b⸩Ver⸼ 11⸼ ⸨/b⸩⸨/add⸩Or, ⸨i⸩the streets of the city⸨/i⸩.

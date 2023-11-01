@@ -27,10 +27,10 @@
 ⸨i⸩ᵃ⸨/i⸩ chap⸼ 6⸼ 5⸼
 ⸨err:Matt⸼⸩Matt⸨/err⸩ 15⸼ 19⸼
 
-⁺ Heb⸼ in ⸨i⸩going and returning⸨/i⸩.
-⁺ Heb⸼ were ⸨i⸩in going and decreasing⸨/i⸩.
-⁺ Heb⸼ in ⸨i⸩going forth and returning⸨/i⸩.
-⁺ Heb⸼ ⸨i⸩caused her to come⸨/i⸩.
-⁺ Heb⸼ ⸨i⸩families⸨/i⸩.
-⁺ ⸨err:Heb⸼⸩Heb⸨/err⸩ ⸨i⸩a savour of rest⸨/i⸩.
-⁺ Heb⸼ ⸨i⸩as yet all the days of the earth⸨/i⸩.
+⁺ ⸨add⸩⸨b⸩Ver⸼ 3⸼ ⸨/b⸩⸨/add⸩Heb⸼ in ⸨i⸩going and returning⸨/i⸩.
+⁺ ⸨add⸩⸨b⸩Ver⸼ 5⸼ ⸨/b⸩⸨/add⸩Heb⸼ were ⸨i⸩in going and decreasing⸨/i⸩.
+⁺ ⸨add⸩⸨b⸩Ver⸼ 7⸼ ⸨/b⸩⸨/add⸩Heb⸼ in ⸨i⸩going forth and returning⸨/i⸩.
+⁺ ⸨add⸩⸨b⸩Ver⸼ 9⸼ ⸨/b⸩⸨/add⸩Heb⸼ ⸨i⸩caused her to come⸨/i⸩.
+⁺ ⸨add⸩⸨b⸩Ver⸼ 19⸼ ⸨/b⸩⸨/add⸩Heb⸼ ⸨i⸩families⸨/i⸩.
+⁺ ⸨add⸩⸨b⸩Ver⸼ 21⸼ ⸨/b⸩⸨/add⸩⸨err:Heb⸼⸩Heb⸨/err⸩ ⸨i⸩a savour of rest⸨/i⸩.
+⁺ ⸨add⸩⸨b⸩Ver⸼ 22⸼ ⸨/b⸩⸨/add⸩Heb⸼ ⸨i⸩as yet all the days of the earth⸨/i⸩.

@@ -53,9 +53,9 @@
 Judith 5⸼ 7⸼
 Acts 7⸼ 4⸼
 
-⁺ Heb⸼ ⸨i⸩lip⸨/i⸩⸨err:.⸩⸨/err⸩
-⁺ Heb⸼ ⸨i⸩words⸨/i⸩.
-⁺ Heb⸼ ⸨i⸩a man said to his neighbour⸨/i⸩.
-⁺ Heb⸼ ⸨i⸩burn them to a burning⸨/i⸩.
+⁺ ⸨add⸩⸨b⸩Ver⸼ 1⸼ ⸨/b⸩⸨/add⸩Heb⸼ ⸨i⸩lip⸨/i⸩⸨err:.⸩⸨/err⸩
+⁺ ⸨add⸩⸨b⸩Ver⸼ 1⸼ ⸨/b⸩⸨/add⸩Heb⸼ ⸨i⸩words⸨/i⸩.
+⁺ ⸨add⸩⸨b⸩Ver⸼ 3⸼ ⸨/b⸩⸨/add⸩Heb⸼ ⸨i⸩a man said to his neighbour⸨/i⸩.
+⁺ ⸨add⸩⸨b⸩Ver⸼ 3⸼ ⸨/b⸩⸨/add⸩Heb⸼ ⸨i⸩burn them to a burning⸨/i⸩.
 
-⸨err:ˈ ⸩⸨/err⸩That is, ⸨i⸩⸨err:confusion⸩onfusion⸨/err⸩⸨/i⸩.
+⸨err:ˈ ⸩⸨/err⸩⸨add⸩⸨b⸩Ver⸼ 9⸼ ⸨/b⸩⸨/add⸩That is, ⸨i⸩⸨err:confusion⸩onfusion⸨/err⸩⸨/i⸩.

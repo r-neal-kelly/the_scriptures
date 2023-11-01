@@ -43,10 +43,10 @@
 ⸨i⸩ᵈ⸨/i⸩ Ecclus⸼ 44⸼ 16⸼
 ⸨err:Hebr⸼⸩Heb⸼⸨/err⸩ 11⸼ 5⸼
 
-⁺ Heb⸼ ⸨i⸩Enosh⸨/i⸩⸨err:.⸩⸨/err⸩
-⁺ Heb⸼ ⸨i⸩Kenan⸨/i⸩.
-⁺ Gr⸼ ⸨i⸩Maleleel⸨/i⸩.
-⁺ Heb⸼ ⸨i⸩Jered⸨/i⸩.
-⁺ Gr⸼ ⸨i⸩Mathusala⸨/i⸩.
-⁺ Heb⸼ ⸨i⸩Lemech⸨/i⸩.
-⁺ Gr⸼ ⸨i⸩⸨err:Noe⸩Noa⸨/err⸩⸨/i⸩⸨err:.⸩⸨/err⸩
+⁺ ⸨add⸩⸨b⸩Ver⸼ 6⸼ ⸨/b⸩⸨/add⸩Heb⸼ ⸨i⸩Enosh⸨/i⸩⸨err:.⸩⸨/err⸩
+⁺ ⸨add⸩⸨b⸩Ver⸼ 9⸼ ⸨/b⸩⸨/add⸩Heb⸼ ⸨i⸩Kenan⸨/i⸩.
+⁺ ⸨add⸩⸨b⸩Ver⸼ 12⸼ ⸨/b⸩⸨/add⸩Gr⸼ ⸨i⸩Maleleel⸨/i⸩.
+⁺ ⸨add⸩⸨b⸩Ver⸼ 15⸼ ⸨/b⸩⸨/add⸩Heb⸼ ⸨i⸩Jered⸨/i⸩.
+⁺ ⸨add⸩⸨b⸩Ver⸼ 21⸼ ⸨/b⸩⸨/add⸩Gr⸼ ⸨i⸩Mathusala⸨/i⸩.
+⁺ ⸨add⸩⸨b⸩Ver⸼ 25⸼ ⸨/b⸩⸨/add⸩Heb⸼ ⸨i⸩Lemech⸨/i⸩.
+⁺ ⸨add⸩⸨b⸩Ver⸼ 29⸼ ⸨/b⸩⸨/add⸩Gr⸼ ⸨i⸩⸨err:Noe⸩Noa⸨/err⸩⸨/i⸩⸨err:.⸩⸨/err⸩

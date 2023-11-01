@@ -33,10 +33,10 @@
 ⸨i⸩ᶜ⸨/i⸩ ⸨err:Wisd⸼⸩Wisd⸨/err⸩ 10⸼ 4⸼
 2 Pet⸼ 2⸼ 5⸼
 
-⁺ Heb⸼ ⸨i⸩seven seven⸨/i⸩⸨err:.⸩⸨/err⸩
-⁺ Heb⸼ ⸨i⸩blot out⸨/i⸩⸨err:.⸩⸨/err⸩
-⁺ Heb⸼ ⸨i⸩wing⸨/i⸩.
-⁺ Heb⸼ ⸨i⸩the breath of the spirit of life⸨/i⸩.
+⁺ ⸨add⸩⸨b⸩Ver⸼ 2⸼ ⸨/b⸩⸨/add⸩Heb⸼ ⸨i⸩seven seven⸨/i⸩⸨err:.⸩⸨/err⸩
+⁺ ⸨add⸩⸨b⸩Ver⸼ 4⸼ ⸨/b⸩⸨/add⸩Heb⸼ ⸨i⸩blot out⸨/i⸩⸨err:.⸩⸨/err⸩
+⁺ ⸨add⸩⸨b⸩Ver⸼ 14⸼ ⸨/b⸩⸨/add⸩Heb⸼ ⸨i⸩wing⸨/i⸩.
+⁺ ⸨add⸩⸨b⸩Ver⸼ 22⸼ ⸨/b⸩⸨/add⸩Heb⸼ ⸨i⸩the breath of the spirit of life⸨/i⸩.
 
-ˈ Or, ⸨i⸩on the seventh day⸨/i⸩.
-ˈ Or, ⸨i⸩floodgates⸨/i⸩⸨err:.⸩⸨/err⸩
+ˈ ⸨add⸩⸨b⸩Ver⸼ 10⸼ ⸨/b⸩⸨/add⸩Or, ⸨i⸩on the seventh day⸨/i⸩.
+ˈ ⸨add⸩⸨b⸩Ver⸼ 11⸼ ⸨/b⸩⸨/add⸩Or, ⸨i⸩floodgates⸨/i⸩⸨err:.⸩⸨/err⸩
