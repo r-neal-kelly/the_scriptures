@@ -1,43 +1,12 @@
 /*
-    Copyright 2022 r-neal-kelly
+    Copyright 2023 r-neal-kelly
 */
 
 `use strict`;
 
-import * as fs from "fs";
-import * as path from "path";
+import * as File_System from "./file_system.mjs";
 
-/* string_t[] */ async function Read_Directory(directory_path)
-{
-    return new Promise(function (/* function_t */ Resolve, /* function_t */ Reject)
-    {
-        fs.readdir(directory_path, { withFileTypes: true }, function (/* error_t */ error, /* string_t[] */ files)
-        {
-            if (error) {
-                Reject(error);
-            } else {
-                Resolve(files);
-            }
-        });
-    });
-}
-
-/* string_t */ async function Read_File(/* string_t */ path_to_file)
-{
-    return new Promise(function (/* function_t */ Resolve, /* function_t */ Reject)
-    {
-        fs.readFile(path_to_file, `utf8`, function (/* error_t */ error, /* string_t */ file_text)
-        {
-            if (error) {
-                Reject(error);
-            } else {
-                Resolve(file_text);
-            }
-        });
-    });
-}
-
-const /* string_t */ help_message = `
+const help_message = `
 Info:
     Prints a list of any lines that differ between each file in the cwd and its tagged complement.
 
@@ -50,21 +19,21 @@ Parameter #1:
         without the tag. E.G. With a supplied tag of "TAG", "fileTAG.txt" would be compared to "file.txt"
 `;
 
-/* Array<string_t> */ async function Compare(
-    /* string_t */ file_path_a,
-    /* string_t */ file_path_b,
+async function Compare(
+    file_path_a,
+    file_path_b,
 )
 {
-    const /* Array<string_t> */ results = [];
+    const results = [];
 
-    const /* string_t */ file_data_a = await Read_File(path.resolve(file_path_a));
-    const /* string_t */ file_data_b = await Read_File(path.resolve(file_path_b));
+    const file_data_a = await File_System.Read_File(file_path_a);
+    const file_data_b = await File_System.Read_File(file_path_b);
 
-    const /* Array<string_t> */ file_lines_a = file_data_a.split(/\r?\n/);
-    const /* Array<string_t> */ file_lines_b = file_data_b.split(/\r?\n/);
+    const file_lines_a = file_data_a.split(/\r?\n/);
+    const file_lines_b = file_data_b.split(/\r?\n/);
 
-    let /* Array<string_t> */ rows_a;
-    let /* Array<string_t> */ rows_b;
+    let rows_a;
+    let rows_b;
     if (file_lines_a.length > file_lines_b.length) {
         rows_a = file_lines_a;
         rows_b = file_lines_b;
@@ -77,8 +46,8 @@ Parameter #1:
         if (row >= rows_b.length) {
             results.push(`Row: ${row + 1}, Column: --`);
         } else {
-            let /* string_t */ columns_a;
-            let /* string_t */ columns_b;
+            let columns_a;
+            let columns_b;
             if (rows_a[row] > rows_b[row]) {
                 columns_a = rows_a[row];
                 columns_b = rows_b[row];
@@ -120,7 +89,7 @@ Parameter #1:
         const messages = [];
         let message_indent = 0;
 
-        const files = await Read_Directory(path.resolve(`.`));
+        const files = await File_System.Read_Folder(`./`);
         for (const file of files) {
             if (regex.test(file.name)) {
                 const untagged_file_name = file.name.replace(regex, `$1`);

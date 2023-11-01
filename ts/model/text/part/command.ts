@@ -65,6 +65,13 @@ export enum Known_Value
     OPEN_SMALL_CAPS = `⸨sc⸩`,
     CLOSE_SMALL_CAPS = `⸨/sc⸩`,
 
+    // We can probably just put this in the style bitbools,
+    // and the buffer item can just check if it should get a
+    // value or not depending on whether or not additions are
+    // being allowed in the render. We'd want to rename the bitbool.
+    OPEN_ADDITION = `⸨add⸩`,
+    CLOSE_ADDITION = `⸨/add⸩`,
+
     OPEN_ERROR = `⸨err⸩`,
     CLOSE_ERROR = `⸨/err⸩`,
 
@@ -148,6 +155,9 @@ export function Is_Known_Value(
 
         value === Known_Value.OPEN_SMALL_CAPS ||
         value === Known_Value.CLOSE_SMALL_CAPS ||
+
+        value === Known_Value.OPEN_ADDITION ||
+        value === Known_Value.CLOSE_ADDITION ||
 
         value === Known_Value.OPEN_ERROR ||
         value === Known_Value.CLOSE_ERROR ||
@@ -782,6 +792,18 @@ export class Instance extends Part.Instance
         boolean
     {
         return this.Value() === Known_Value.CLOSE_SMALL_CAPS;
+    }
+
+    Is_Open_Addition():
+        boolean
+    {
+        return this.Value() === Known_Value.OPEN_ADDITION;
+    }
+
+    Is_Close_Addition():
+        boolean
+    {
+        return this.Value() === Known_Value.CLOSE_ADDITION;
     }
 
     Is_Open_Error():
