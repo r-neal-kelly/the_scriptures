@@ -15,7 +15,6 @@ export class Info
 {
     private tree: Tree;
 
-    // now that we are interpreting the json, we can use sets to speed this up again
     private unique_book_names: Array<Name>;
     private unique_language_names: Array<Name>;
     private unique_version_names: Array<Name>;
@@ -33,18 +32,18 @@ export class Info
     private total_file_count: Count;
     private total_book_count: Count;
 
-    private language_unit_counts: { [language_name: string]: Count };
-    private language_point_counts: { [language_name: string]: Count };
-    private language_letter_counts: { [language_name: string]: Count };
-    private language_marker_counts: { [language_name: string]: Count };
-    private language_meta_letter_counts: { [language_name: string]: Count };
-    private language_word_counts: { [language_name: string]: Count };
-    private language_break_counts: { [language_name: string]: Count };
-    private language_meta_word_counts: { [language_name: string]: Count };
-    private language_part_counts: { [language_name: string]: Count };
-    private language_line_counts: { [language_name: string]: Count };
-    private language_file_counts: { [language_name: string]: Count };
-    private language_book_counts: { [language_name: string]: Count };
+    private language_unit_counts: { [language_name: Name]: Count };
+    private language_point_counts: { [language_name: Name]: Count };
+    private language_letter_counts: { [language_name: Name]: Count };
+    private language_marker_counts: { [language_name: Name]: Count };
+    private language_meta_letter_counts: { [language_name: Name]: Count };
+    private language_word_counts: { [language_name: Name]: Count };
+    private language_break_counts: { [language_name: Name]: Count };
+    private language_meta_word_counts: { [language_name: Name]: Count };
+    private language_part_counts: { [language_name: Name]: Count };
+    private language_line_counts: { [language_name: Name]: Count };
+    private language_file_counts: { [language_name: Name]: Count };
+    private language_book_counts: { [language_name: Name]: Count };
 
     constructor(
         {
@@ -130,59 +129,66 @@ export class Info
     Is_Frozen():
         boolean
     {
-        return Object.isFrozen(this.unique_book_names);
+        return Object.isFrozen(this.unique_language_names);
     }
 
     Freeze():
         void
     {
-        Utils.Assert(
-            !this.Is_Frozen(),
-            `already frozen`,
-        );
+        if (!this.Is_Frozen()) {
+            const name_sorter: Name_Sorter.Instance = Name_Sorter.Singleton();
 
-        const name_sorter: Name_Sorter.Instance = Name_Sorter.Singleton();
+            this.unique_book_names =
+                name_sorter.With_Array(Name_Sorter.Type.BOOKS, this.unique_book_names);
+            this.unique_language_names =
+                name_sorter.With_Array(Name_Sorter.Type.LANGUAGES, this.unique_language_names);
+            this.unique_version_names =
+                name_sorter.With_Array(Name_Sorter.Type.VERSIONS, this.unique_version_names);
 
-        this.unique_book_names =
-            name_sorter.With_Array(Name_Sorter.Type.BOOKS, this.unique_book_names);
-        this.unique_language_names =
-            name_sorter.With_Array(Name_Sorter.Type.LANGUAGES, this.unique_language_names);
-        this.unique_version_names =
-            name_sorter.With_Array(Name_Sorter.Type.VERSIONS, this.unique_version_names);
+            Object.freeze(this.unique_book_names);
+            Object.freeze(this.unique_language_names);
+            Object.freeze(this.unique_version_names);
 
-        Object.freeze(this.unique_book_names);
-        Object.freeze(this.unique_language_names);
-        Object.freeze(this.unique_version_names);
+            Object.freeze(this.language_unit_counts);
+            Object.freeze(this.language_point_counts);
+            Object.freeze(this.language_letter_counts);
+            Object.freeze(this.language_marker_counts);
+            Object.freeze(this.language_meta_letter_counts);
+            Object.freeze(this.language_word_counts);
+            Object.freeze(this.language_break_counts);
+            Object.freeze(this.language_meta_word_counts);
+            Object.freeze(this.language_part_counts);
+            Object.freeze(this.language_line_counts);
+            Object.freeze(this.language_file_counts);
+            Object.freeze(this.language_book_counts);
 
-        Object.freeze(this.language_unit_counts);
-        Object.freeze(this.language_point_counts);
-        Object.freeze(this.language_letter_counts);
-        Object.freeze(this.language_marker_counts);
-        Object.freeze(this.language_meta_letter_counts);
-        Object.freeze(this.language_word_counts);
-        Object.freeze(this.language_break_counts);
-        Object.freeze(this.language_meta_word_counts);
-        Object.freeze(this.language_part_counts);
-        Object.freeze(this.language_line_counts);
-        Object.freeze(this.language_file_counts);
-        Object.freeze(this.language_book_counts);
+            Utils.Assert(
+                (
+                    this.Total_Word_Count() +
+                    this.Total_Meta_Word_Count() +
+                    this.Total_Break_Count()
+                ) === this.Total_Part_Count(),
+                `miscount of total_part_count!`,
+            );
+            Utils.Assert(
+                (
+                    this.Total_Letter_Count() +
+                    this.Total_Meta_Letter_Count() +
+                    this.Total_Marker_Count()
+                ) === this.Total_Point_Count(),
+                `miscount of total_point_count!`,
+            );
+        }
+    }
 
-        Utils.Assert(
-            (
-                this.Total_Word_Count() +
-                this.Total_Meta_Word_Count() +
-                this.Total_Break_Count()
-            ) === this.Total_Part_Count(),
-            `miscount of total_part_count!`,
-        );
-        Utils.Assert(
-            (
-                this.Total_Letter_Count() +
-                this.Total_Meta_Letter_Count() +
-                this.Total_Marker_Count()
-            ) === this.Total_Point_Count(),
-            `miscount of total_point_count!`,
-        );
+    JSON_String():
+        string
+    {
+        if (!this.Is_Frozen()) {
+            this.Freeze();
+        }
+
+        return JSON.stringify(this as any);
     }
 
     Tree():
@@ -210,7 +216,7 @@ export class Info
     }
 
     Has_Unique_Book_Name(
-        book_name: string,
+        book_name: Name,
     ):
         boolean
     {
@@ -218,7 +224,7 @@ export class Info
     }
 
     Add_Unique_Book_Name(
-        book_name: string,
+        book_name: Name,
     ):
         void
     {
@@ -251,7 +257,7 @@ export class Info
     }
 
     Has_Unique_Language_Name(
-        language_name: string,
+        language_name: Name,
     ):
         boolean
     {
@@ -259,7 +265,7 @@ export class Info
     }
 
     Add_Unique_Language_Name(
-        language_name: string,
+        language_name: Name,
     ):
         void
     {
@@ -305,7 +311,7 @@ export class Info
     }
 
     Has_Unique_Version_Name(
-        version_name: string,
+        version_name: Name,
     ):
         boolean
     {
@@ -313,7 +319,7 @@ export class Info
     }
 
     Add_Unique_Version_Name(
-        version_name: string,
+        version_name: Name,
     ):
         void
     {
@@ -339,14 +345,87 @@ export class Info
         return Utils.Add_Commas_To_Number(this.Total_Unit_Count());
     }
 
-    Increment_Total_Unit_Count(
+    Language_Unit_Count(
+        language_name: Name,
+    ):
+        Count
+    {
+        Utils.Assert(
+            this.Has_Unique_Language_Name(language_name),
+            `does not have language: ${language_name}`,
+        );
+
+        return this.language_unit_counts[language_name];
+    }
+
+    Language_Unit_Percent(
+        language_name: Name,
+    ):
+        Count
+    {
+        return Math.round(this.Language_Unit_Count(language_name) * 100 / this.Total_Unit_Count());
+    }
+
+    Language_Unit_Counts():
+        Array<[Name, Count]>
+    {
+        const results: Array<[Name, Count]> = [];
+
+        for (const language_name of this.unique_language_names) {
+            results.push(
+                [
+                    language_name,
+                    this.Language_Unit_Count(language_name),
+                ],
+            );
+        }
+
+        return results;
+    }
+
+    Language_Unit_Counts_And_Percents():
+        Array<[Name, Count, Count]>
+    {
+        const results: Array<[Name, Count, Count]> = [];
+
+        for (const language_name of this.unique_language_names) {
+            results.push(
+                [
+                    language_name,
+                    this.Language_Unit_Count(language_name),
+                    this.Language_Unit_Percent(language_name),
+                ],
+            );
+        }
+
+        return results;
+    }
+
+    Increment_Unit_Count(
+        language_name: Name,
         count: Count,
     ):
         void
     {
+        if (!this.Has_Unique_Language_Name(language_name)) {
+            this.Add_Unique_Language_Name(language_name);
+        }
+
         Utils.Assert(this.Total_Unit_Count() + count <= Number.MAX_SAFE_INTEGER);
+        Utils.Assert(this.Language_Unit_Count(language_name) + count <= Number.MAX_SAFE_INTEGER);
 
         this.total_unit_count += count;
+        this.language_unit_counts[language_name] += count;
+    }
+
+    Increment_Unit_Counts(
+        language_counts: Array<[Name, Count]>,
+    ):
+        void
+    {
+        for (const [language_name, count] of language_counts) {
+            this.Increment_Unit_Count(language_name, count);
+        }
     }
 
     Total_Point_Count():
@@ -361,14 +440,87 @@ export class Info
         return Utils.Add_Commas_To_Number(this.Total_Point_Count());
     }
 
-    Increment_Total_Point_Count(
+    Language_Point_Count(
+        language_name: Name,
+    ):
+        Count
+    {
+        Utils.Assert(
+            this.Has_Unique_Language_Name(language_name),
+            `does not have language: ${language_name}`,
+        );
+
+        return this.language_point_counts[language_name];
+    }
+
+    Language_Point_Percent(
+        language_name: Name,
+    ):
+        Count
+    {
+        return Math.round(this.Language_Point_Count(language_name) * 100 / this.Total_Point_Count());
+    }
+
+    Language_Point_Counts():
+        Array<[Name, Count]>
+    {
+        const results: Array<[Name, Count]> = [];
+
+        for (const language_name of this.unique_language_names) {
+            results.push(
+                [
+                    language_name,
+                    this.Language_Point_Count(language_name),
+                ],
+            );
+        }
+
+        return results;
+    }
+
+    Language_Point_Counts_And_Percents():
+        Array<[Name, Count, Count]>
+    {
+        const results: Array<[Name, Count, Count]> = [];
+
+        for (const language_name of this.unique_language_names) {
+            results.push(
+                [
+                    language_name,
+                    this.Language_Point_Count(language_name),
+                    this.Language_Point_Percent(language_name),
+                ],
+            );
+        }
+
+        return results;
+    }
+
+    Increment_Point_Count(
+        language_name: Name,
         count: Count,
     ):
         void
     {
+        if (!this.Has_Unique_Language_Name(language_name)) {
+            this.Add_Unique_Language_Name(language_name);
+        }
+
         Utils.Assert(this.Total_Point_Count() + count <= Number.MAX_SAFE_INTEGER);
+        Utils.Assert(this.Language_Point_Count(language_name) + count <= Number.MAX_SAFE_INTEGER);
 
         this.total_point_count += count;
+        this.language_point_counts[language_name] += count;
+    }
+
+    Increment_Point_Counts(
+        language_counts: Array<[Name, Count]>,
+    ):
+        void
+    {
+        for (const [language_name, count] of language_counts) {
+            this.Increment_Point_Count(language_name, count);
+        }
     }
 
     Total_Letter_Count():
@@ -389,14 +541,87 @@ export class Info
         return Math.round(this.Total_Letter_Count() * 100 / this.Total_Point_Count());
     }
 
-    Increment_Total_Letter_Count(
+    Language_Letter_Count(
+        language_name: Name,
+    ):
+        Count
+    {
+        Utils.Assert(
+            this.Has_Unique_Language_Name(language_name),
+            `does not have language: ${language_name}`,
+        );
+
+        return this.language_letter_counts[language_name];
+    }
+
+    Language_Letter_Percent(
+        language_name: Name,
+    ):
+        Count
+    {
+        return Math.round(this.Language_Letter_Count(language_name) * 100 / this.Total_Letter_Count());
+    }
+
+    Language_Letter_Counts():
+        Array<[Name, Count]>
+    {
+        const results: Array<[Name, Count]> = [];
+
+        for (const language_name of this.unique_language_names) {
+            results.push(
+                [
+                    language_name,
+                    this.Language_Letter_Count(language_name),
+                ],
+            );
+        }
+
+        return results;
+    }
+
+    Language_Letter_Counts_And_Percents():
+        Array<[Name, Count, Count]>
+    {
+        const results: Array<[Name, Count, Count]> = [];
+
+        for (const language_name of this.unique_language_names) {
+            results.push(
+                [
+                    language_name,
+                    this.Language_Letter_Count(language_name),
+                    this.Language_Letter_Percent(language_name),
+                ],
+            );
+        }
+
+        return results;
+    }
+
+    Increment_Letter_Count(
+        language_name: Name,
         count: Count,
     ):
         void
     {
+        if (!this.Has_Unique_Language_Name(language_name)) {
+            this.Add_Unique_Language_Name(language_name);
+        }
+
         Utils.Assert(this.Total_Letter_Count() + count <= Number.MAX_SAFE_INTEGER);
+        Utils.Assert(this.Language_Letter_Count(language_name) + count <= Number.MAX_SAFE_INTEGER);
 
         this.total_letter_count += count;
+        this.language_letter_counts[language_name] += count;
+    }
+
+    Increment_Letter_Counts(
+        language_counts: Array<[Name, Count]>,
+    ):
+        void
+    {
+        for (const [language_name, count] of language_counts) {
+            this.Increment_Letter_Count(language_name, count);
+        }
     }
 
     Total_Marker_Count():
@@ -417,14 +642,87 @@ export class Info
         return Math.round(this.Total_Marker_Count() * 100 / this.Total_Point_Count());
     }
 
-    Increment_Total_Marker_Count(
+    Language_Marker_Count(
+        language_name: Name,
+    ):
+        Count
+    {
+        Utils.Assert(
+            this.Has_Unique_Language_Name(language_name),
+            `does not have language: ${language_name}`,
+        );
+
+        return this.language_marker_counts[language_name];
+    }
+
+    Language_Marker_Percent(
+        language_name: Name,
+    ):
+        Count
+    {
+        return Math.round(this.Language_Marker_Count(language_name) * 100 / this.Total_Marker_Count());
+    }
+
+    Language_Marker_Counts():
+        Array<[Name, Count]>
+    {
+        const results: Array<[Name, Count]> = [];
+
+        for (const language_name of this.unique_language_names) {
+            results.push(
+                [
+                    language_name,
+                    this.Language_Marker_Count(language_name),
+                ],
+            );
+        }
+
+        return results;
+    }
+
+    Language_Marker_Counts_And_Percents():
+        Array<[Name, Count, Count]>
+    {
+        const results: Array<[Name, Count, Count]> = [];
+
+        for (const language_name of this.unique_language_names) {
+            results.push(
+                [
+                    language_name,
+                    this.Language_Marker_Count(language_name),
+                    this.Language_Marker_Percent(language_name),
+                ],
+            );
+        }
+
+        return results;
+    }
+
+    Increment_Marker_Count(
+        language_name: Name,
         count: Count,
     ):
         void
     {
+        if (!this.Has_Unique_Language_Name(language_name)) {
+            this.Add_Unique_Language_Name(language_name);
+        }
+
         Utils.Assert(this.Total_Marker_Count() + count <= Number.MAX_SAFE_INTEGER);
+        Utils.Assert(this.Language_Marker_Count(language_name) + count <= Number.MAX_SAFE_INTEGER);
 
         this.total_marker_count += count;
+        this.language_marker_counts[language_name] += count;
+    }
+
+    Increment_Marker_Counts(
+        language_counts: Array<[Name, Count]>,
+    ):
+        void
+    {
+        for (const [language_name, count] of language_counts) {
+            this.Increment_Marker_Count(language_name, count);
+        }
     }
 
     Total_Meta_Letter_Count():
@@ -445,14 +743,87 @@ export class Info
         return Math.round(this.Total_Meta_Letter_Count() * 100 / this.Total_Point_Count());
     }
 
-    Increment_Total_Meta_Letter_Count(
+    Language_Meta_Letter_Count(
+        language_name: Name,
+    ):
+        Count
+    {
+        Utils.Assert(
+            this.Has_Unique_Language_Name(language_name),
+            `does not have language: ${language_name}`,
+        );
+
+        return this.language_meta_letter_counts[language_name];
+    }
+
+    Language_Meta_Letter_Percent(
+        language_name: Name,
+    ):
+        Count
+    {
+        return Math.round(this.Language_Meta_Letter_Count(language_name) * 100 / this.Total_Meta_Letter_Count());
+    }
+
+    Language_Meta_Letter_Counts():
+        Array<[Name, Count]>
+    {
+        const results: Array<[Name, Count]> = [];
+
+        for (const language_name of this.unique_language_names) {
+            results.push(
+                [
+                    language_name,
+                    this.Language_Meta_Letter_Count(language_name),
+                ],
+            );
+        }
+
+        return results;
+    }
+
+    Language_Meta_Letter_Counts_And_Percents():
+        Array<[Name, Count, Count]>
+    {
+        const results: Array<[Name, Count, Count]> = [];
+
+        for (const language_name of this.unique_language_names) {
+            results.push(
+                [
+                    language_name,
+                    this.Language_Meta_Letter_Count(language_name),
+                    this.Language_Meta_Letter_Percent(language_name),
+                ],
+            );
+        }
+
+        return results;
+    }
+
+    Increment_Meta_Letter_Count(
+        language_name: Name,
         count: Count,
     ):
         void
     {
+        if (!this.Has_Unique_Language_Name(language_name)) {
+            this.Add_Unique_Language_Name(language_name);
+        }
+
         Utils.Assert(this.Total_Meta_Letter_Count() + count <= Number.MAX_SAFE_INTEGER);
+        Utils.Assert(this.Language_Meta_Letter_Count(language_name) + count <= Number.MAX_SAFE_INTEGER);
 
         this.total_meta_letter_count += count;
+        this.language_meta_letter_counts[language_name] += count;
+    }
+
+    Increment_Meta_Letter_Counts(
+        language_counts: Array<[Name, Count]>,
+    ):
+        void
+    {
+        for (const [language_name, count] of language_counts) {
+            this.Increment_Meta_Letter_Count(language_name, count);
+        }
     }
 
     Total_Word_Count():
@@ -473,14 +844,87 @@ export class Info
         return Math.round(this.Total_Word_Count() * 100 / this.Total_Part_Count());
     }
 
-    Increment_Total_Word_Count(
+    Language_Word_Count(
+        language_name: Name,
+    ):
+        Count
+    {
+        Utils.Assert(
+            this.Has_Unique_Language_Name(language_name),
+            `does not have language: ${language_name}`,
+        );
+
+        return this.language_word_counts[language_name];
+    }
+
+    Language_Word_Percent(
+        language_name: Name,
+    ):
+        Count
+    {
+        return Math.round(this.Language_Word_Count(language_name) * 100 / this.Total_Word_Count());
+    }
+
+    Language_Word_Counts():
+        Array<[Name, Count]>
+    {
+        const results: Array<[Name, Count]> = [];
+
+        for (const language_name of this.unique_language_names) {
+            results.push(
+                [
+                    language_name,
+                    this.Language_Word_Count(language_name),
+                ],
+            );
+        }
+
+        return results;
+    }
+
+    Language_Word_Counts_And_Percents():
+        Array<[Name, Count, Count]>
+    {
+        const results: Array<[Name, Count, Count]> = [];
+
+        for (const language_name of this.unique_language_names) {
+            results.push(
+                [
+                    language_name,
+                    this.Language_Word_Count(language_name),
+                    this.Language_Word_Percent(language_name),
+                ],
+            );
+        }
+
+        return results;
+    }
+
+    Increment_Word_Count(
+        language_name: Name,
         count: Count,
     ):
         void
     {
+        if (!this.Has_Unique_Language_Name(language_name)) {
+            this.Add_Unique_Language_Name(language_name);
+        }
+
         Utils.Assert(this.Total_Word_Count() + count <= Number.MAX_SAFE_INTEGER);
+        Utils.Assert(this.Language_Word_Count(language_name) + count <= Number.MAX_SAFE_INTEGER);
 
         this.total_word_count += count;
+        this.language_word_counts[language_name] += count;
+    }
+
+    Increment_Word_Counts(
+        language_counts: Array<[Name, Count]>,
+    ):
+        void
+    {
+        for (const [language_name, count] of language_counts) {
+            this.Increment_Word_Count(language_name, count);
+        }
     }
 
     Total_Break_Count():
@@ -501,14 +945,87 @@ export class Info
         return Math.round(this.Total_Break_Count() * 100 / this.Total_Part_Count());
     }
 
-    Increment_Total_Break_Count(
+    Language_Break_Count(
+        language_name: Name,
+    ):
+        Count
+    {
+        Utils.Assert(
+            this.Has_Unique_Language_Name(language_name),
+            `does not have language: ${language_name}`,
+        );
+
+        return this.language_break_counts[language_name];
+    }
+
+    Language_Break_Percent(
+        language_name: Name,
+    ):
+        Count
+    {
+        return Math.round(this.Language_Break_Count(language_name) * 100 / this.Total_Break_Count());
+    }
+
+    Language_Break_Counts():
+        Array<[Name, Count]>
+    {
+        const results: Array<[Name, Count]> = [];
+
+        for (const language_name of this.unique_language_names) {
+            results.push(
+                [
+                    language_name,
+                    this.Language_Break_Count(language_name),
+                ],
+            );
+        }
+
+        return results;
+    }
+
+    Language_Break_Counts_And_Percents():
+        Array<[Name, Count, Count]>
+    {
+        const results: Array<[Name, Count, Count]> = [];
+
+        for (const language_name of this.unique_language_names) {
+            results.push(
+                [
+                    language_name,
+                    this.Language_Break_Count(language_name),
+                    this.Language_Break_Percent(language_name),
+                ],
+            );
+        }
+
+        return results;
+    }
+
+    Increment_Break_Count(
+        language_name: Name,
         count: Count,
     ):
         void
     {
+        if (!this.Has_Unique_Language_Name(language_name)) {
+            this.Add_Unique_Language_Name(language_name);
+        }
+
         Utils.Assert(this.Total_Break_Count() + count <= Number.MAX_SAFE_INTEGER);
+        Utils.Assert(this.Language_Break_Count(language_name) + count <= Number.MAX_SAFE_INTEGER);
 
         this.total_break_count += count;
+        this.language_break_counts[language_name] += count;
+    }
+
+    Increment_Break_Counts(
+        language_counts: Array<[Name, Count]>,
+    ):
+        void
+    {
+        for (const [language_name, count] of language_counts) {
+            this.Increment_Break_Count(language_name, count);
+        }
     }
 
     Total_Meta_Word_Count():
@@ -529,456 +1046,8 @@ export class Info
         return Math.round(this.Total_Meta_Word_Count() * 100 / this.Total_Part_Count());
     }
 
-    Increment_Total_Meta_Word_Count(
-        count: Count,
-    ):
-        void
-    {
-        Utils.Assert(this.Total_Meta_Word_Count() + count <= Number.MAX_SAFE_INTEGER);
-
-        this.total_meta_word_count += count;
-    }
-
-    Total_Part_Count():
-        Count
-    {
-        return this.total_part_count;
-    }
-
-    Total_Part_Count_String():
-        string
-    {
-        return Utils.Add_Commas_To_Number(this.Total_Part_Count());
-    }
-
-    Increment_Total_Part_Count(
-        count: Count,
-    ):
-        void
-    {
-        Utils.Assert(this.Total_Part_Count() + count <= Number.MAX_SAFE_INTEGER);
-
-        this.total_part_count += count;
-    }
-
-    Total_Line_Count():
-        Count
-    {
-        return this.total_line_count;
-    }
-
-    Total_Line_Count_String():
-        string
-    {
-        return Utils.Add_Commas_To_Number(this.Total_Line_Count());
-    }
-
-    Increment_Total_Line_Count(
-        count: Count,
-    ):
-        void
-    {
-        Utils.Assert(this.Total_Line_Count() + count <= Number.MAX_SAFE_INTEGER);
-
-        this.total_line_count += count;
-    }
-
-    Total_File_Count():
-        Count
-    {
-        return this.total_file_count;
-    }
-
-    Total_File_Count_String():
-        string
-    {
-        return Utils.Add_Commas_To_Number(this.Total_File_Count());
-    }
-
-    Increment_Total_File_Count(
-        count: Count,
-    ):
-        void
-    {
-        Utils.Assert(this.Total_File_Count() + count <= Number.MAX_SAFE_INTEGER);
-
-        this.total_file_count += count;
-    }
-
-    Total_Book_Count():
-        Count
-    {
-        return this.total_book_count;
-    }
-
-    Total_Book_Count_String():
-        string
-    {
-        return Utils.Add_Commas_To_Number(this.Total_Book_Count());
-    }
-
-    Increment_Total_Book_Count(
-        count: Count,
-    ):
-        void
-    {
-        Utils.Assert(this.Total_Book_Count() + count <= Number.MAX_SAFE_INTEGER);
-
-        this.total_book_count += count;
-    }
-
-    Language_Unit_Count(
-        language_name: string,
-    ):
-        Count
-    {
-        Utils.Assert(
-            this.Has_Unique_Language_Name(language_name),
-            `does not have language: ${language_name}`,
-        );
-
-        return this.language_unit_counts[language_name];
-    }
-
-    Language_Unit_Percent(
-        language_name: string,
-    ):
-        Count
-    {
-        return Math.round(this.Language_Unit_Count(language_name) * 100 / this.Total_Unit_Count());
-    }
-
-    Language_Unit_Counts_And_Percents_Array():
-        Array<[string, Count, Count]>
-    {
-        const results: Array<[string, Count, Count]> = [];
-
-        for (const language_name of this.unique_language_names) {
-            results.push(
-                [
-                    language_name,
-                    this.Language_Unit_Count(language_name),
-                    this.Language_Unit_Percent(language_name),
-                ],
-            );
-        }
-
-        return results;
-    }
-
-    Increment_Language_Unit_Count(
-        language_name: string,
-        count: Count,
-    ):
-        void
-    {
-        Utils.Assert(this.Language_Unit_Count(language_name) + count <= Number.MAX_SAFE_INTEGER);
-
-        this.language_unit_counts[language_name] += count;
-    }
-
-    Language_Point_Count(
-        language_name: string,
-    ):
-        Count
-    {
-        Utils.Assert(
-            this.Has_Unique_Language_Name(language_name),
-            `does not have language: ${language_name}`,
-        );
-
-        return this.language_point_counts[language_name];
-    }
-
-    Language_Point_Percent(
-        language_name: string,
-    ):
-        Count
-    {
-        return Math.round(this.Language_Point_Count(language_name) * 100 / this.Total_Point_Count());
-    }
-
-    Language_Point_Counts_And_Percents_Array():
-        Array<[string, Count, Count]>
-    {
-        const results: Array<[string, Count, Count]> = [];
-
-        for (const language_name of this.unique_language_names) {
-            results.push(
-                [
-                    language_name,
-                    this.Language_Point_Count(language_name),
-                    this.Language_Point_Percent(language_name),
-                ],
-            );
-        }
-
-        return results;
-    }
-
-    Increment_Language_Point_Count(
-        language_name: string,
-        count: Count,
-    ):
-        void
-    {
-        Utils.Assert(this.Language_Point_Count(language_name) + count <= Number.MAX_SAFE_INTEGER);
-
-        this.language_point_counts[language_name] += count;
-    }
-
-    Language_Letter_Count(
-        language_name: string,
-    ):
-        Count
-    {
-        Utils.Assert(
-            this.Has_Unique_Language_Name(language_name),
-            `does not have language: ${language_name}`,
-        );
-
-        return this.language_letter_counts[language_name];
-    }
-
-    Language_Letter_Percent(
-        language_name: string,
-    ):
-        Count
-    {
-        return Math.round(this.Language_Letter_Count(language_name) * 100 / this.Total_Letter_Count());
-    }
-
-    Language_Letter_Counts_And_Percents_Array():
-        Array<[string, Count, Count]>
-    {
-        const results: Array<[string, Count, Count]> = [];
-
-        for (const language_name of this.unique_language_names) {
-            results.push(
-                [
-                    language_name,
-                    this.Language_Letter_Count(language_name),
-                    this.Language_Letter_Percent(language_name),
-                ],
-            );
-        }
-
-        return results;
-    }
-
-    Increment_Language_Letter_Count(
-        language_name: string,
-        count: Count,
-    ):
-        void
-    {
-        Utils.Assert(this.Language_Letter_Count(language_name) + count <= Number.MAX_SAFE_INTEGER);
-
-        this.language_letter_counts[language_name] += count;
-    }
-
-    Language_Marker_Count(
-        language_name: string,
-    ):
-        Count
-    {
-        Utils.Assert(
-            this.Has_Unique_Language_Name(language_name),
-            `does not have language: ${language_name}`,
-        );
-
-        return this.language_marker_counts[language_name];
-    }
-
-    Language_Marker_Percent(
-        language_name: string,
-    ):
-        Count
-    {
-        return Math.round(this.Language_Marker_Count(language_name) * 100 / this.Total_Marker_Count());
-    }
-
-    Language_Marker_Counts_And_Percents_Array():
-        Array<[string, Count, Count]>
-    {
-        const results: Array<[string, Count, Count]> = [];
-
-        for (const language_name of this.unique_language_names) {
-            results.push(
-                [
-                    language_name,
-                    this.Language_Marker_Count(language_name),
-                    this.Language_Marker_Percent(language_name),
-                ],
-            );
-        }
-
-        return results;
-    }
-
-    Increment_Language_Marker_Count(
-        language_name: string,
-        count: Count,
-    ):
-        void
-    {
-        Utils.Assert(this.Language_Marker_Count(language_name) + count <= Number.MAX_SAFE_INTEGER);
-
-        this.language_marker_counts[language_name] += count;
-    }
-
-    Language_Meta_Letter_Count(
-        language_name: string,
-    ):
-        Count
-    {
-        Utils.Assert(
-            this.Has_Unique_Language_Name(language_name),
-            `does not have language: ${language_name}`,
-        );
-
-        return this.language_meta_letter_counts[language_name];
-    }
-
-    Language_Meta_Letter_Percent(
-        language_name: string,
-    ):
-        Count
-    {
-        return Math.round(this.Language_Meta_Letter_Count(language_name) * 100 / this.Total_Meta_Letter_Count());
-    }
-
-    Language_Meta_Letter_Counts_And_Percents_Array():
-        Array<[string, Count, Count]>
-    {
-        const results: Array<[string, Count, Count]> = [];
-
-        for (const language_name of this.unique_language_names) {
-            results.push(
-                [
-                    language_name,
-                    this.Language_Meta_Letter_Count(language_name),
-                    this.Language_Meta_Letter_Percent(language_name),
-                ],
-            );
-        }
-
-        return results;
-    }
-
-    Increment_Language_Meta_Letter_Count(
-        language_name: string,
-        count: Count,
-    ):
-        void
-    {
-        Utils.Assert(this.Language_Meta_Letter_Count(language_name) + count <= Number.MAX_SAFE_INTEGER);
-
-        this.language_meta_letter_counts[language_name] += count;
-    }
-
-    Language_Word_Count(
-        language_name: string,
-    ):
-        Count
-    {
-        Utils.Assert(
-            this.Has_Unique_Language_Name(language_name),
-            `does not have language: ${language_name}`,
-        );
-
-        return this.language_word_counts[language_name];
-    }
-
-    Language_Word_Percent(
-        language_name: string,
-    ):
-        Count
-    {
-        return Math.round(this.Language_Word_Count(language_name) * 100 / this.Total_Word_Count());
-    }
-
-    Language_Word_Counts_And_Percents_Array():
-        Array<[string, Count, Count]>
-    {
-        const results: Array<[string, Count, Count]> = [];
-
-        for (const language_name of this.unique_language_names) {
-            results.push(
-                [
-                    language_name,
-                    this.Language_Word_Count(language_name),
-                    this.Language_Word_Percent(language_name),
-                ],
-            );
-        }
-
-        return results;
-    }
-
-    Increment_Language_Word_Count(
-        language_name: string,
-        count: Count,
-    ):
-        void
-    {
-        Utils.Assert(this.Language_Word_Count(language_name) + count <= Number.MAX_SAFE_INTEGER);
-
-        this.language_word_counts[language_name] += count;
-    }
-
-    Language_Break_Count(
-        language_name: string,
-    ):
-        Count
-    {
-        Utils.Assert(
-            this.Has_Unique_Language_Name(language_name),
-            `does not have language: ${language_name}`,
-        );
-
-        return this.language_break_counts[language_name];
-    }
-
-    Language_Break_Percent(
-        language_name: string,
-    ):
-        Count
-    {
-        return Math.round(this.Language_Break_Count(language_name) * 100 / this.Total_Break_Count());
-    }
-
-    Language_Break_Counts_And_Percents_Array():
-        Array<[string, Count, Count]>
-    {
-        const results: Array<[string, Count, Count]> = [];
-
-        for (const language_name of this.unique_language_names) {
-            results.push(
-                [
-                    language_name,
-                    this.Language_Break_Count(language_name),
-                    this.Language_Break_Percent(language_name),
-                ],
-            );
-        }
-
-        return results;
-    }
-
-    Increment_Language_Break_Count(
-        language_name: string,
-        count: Count,
-    ):
-        void
-    {
-        Utils.Assert(this.Language_Break_Count(language_name) + count <= Number.MAX_SAFE_INTEGER);
-
-        this.language_break_counts[language_name] += count;
-    }
-
     Language_Meta_Word_Count(
-        language_name: string,
+        language_name: Name,
     ):
         Count
     {
@@ -991,17 +1060,34 @@ export class Info
     }
 
     Language_Meta_Word_Percent(
-        language_name: string,
+        language_name: Name,
     ):
         Count
     {
         return Math.round(this.Language_Meta_Word_Count(language_name) * 100 / this.Total_Meta_Word_Count());
     }
 
-    Language_Meta_Word_Counts_And_Percents_Array():
-        Array<[string, Count, Count]>
+    Language_Meta_Word_Counts():
+        Array<[Name, Count]>
     {
-        const results: Array<[string, Count, Count]> = [];
+        const results: Array<[Name, Count]> = [];
+
+        for (const language_name of this.unique_language_names) {
+            results.push(
+                [
+                    language_name,
+                    this.Language_Meta_Word_Count(language_name),
+                ],
+            );
+        }
+
+        return results;
+    }
+
+    Language_Meta_Word_Counts_And_Percents():
+        Array<[Name, Count, Count]>
+    {
+        const results: Array<[Name, Count, Count]> = [];
 
         for (const language_name of this.unique_language_names) {
             results.push(
@@ -1016,19 +1102,47 @@ export class Info
         return results;
     }
 
-    Increment_Language_Meta_Word_Count(
-        language_name: string,
+    Increment_Meta_Word_Count(
+        language_name: Name,
         count: Count,
     ):
         void
     {
+        if (!this.Has_Unique_Language_Name(language_name)) {
+            this.Add_Unique_Language_Name(language_name);
+        }
+
+        Utils.Assert(this.Total_Meta_Word_Count() + count <= Number.MAX_SAFE_INTEGER);
         Utils.Assert(this.Language_Meta_Word_Count(language_name) + count <= Number.MAX_SAFE_INTEGER);
 
+        this.total_meta_word_count += count;
         this.language_meta_word_counts[language_name] += count;
     }
 
+    Increment_Meta_Word_Counts(
+        language_counts: Array<[Name, Count]>,
+    ):
+        void
+    {
+        for (const [language_name, count] of language_counts) {
+            this.Increment_Meta_Word_Count(language_name, count);
+        }
+    }
+
+    Total_Part_Count():
+        Count
+    {
+        return this.total_part_count;
+    }
+
+    Total_Part_Count_String():
+        string
+    {
+        return Utils.Add_Commas_To_Number(this.Total_Part_Count());
+    }
+
     Language_Part_Count(
-        language_name: string,
+        language_name: Name,
     ):
         Count
     {
@@ -1041,17 +1155,34 @@ export class Info
     }
 
     Language_Part_Percent(
-        language_name: string,
+        language_name: Name,
     ):
         Count
     {
         return Math.round(this.Language_Part_Count(language_name) * 100 / this.Total_Part_Count());
     }
 
-    Language_Part_Counts_And_Percents_Array():
-        Array<[string, Count, Count]>
+    Language_Part_Counts():
+        Array<[Name, Count]>
     {
-        const results: Array<[string, Count, Count]> = [];
+        const results: Array<[Name, Count]> = [];
+
+        for (const language_name of this.unique_language_names) {
+            results.push(
+                [
+                    language_name,
+                    this.Language_Part_Count(language_name),
+                ],
+            );
+        }
+
+        return results;
+    }
+
+    Language_Part_Counts_And_Percents():
+        Array<[Name, Count, Count]>
+    {
+        const results: Array<[Name, Count, Count]> = [];
 
         for (const language_name of this.unique_language_names) {
             results.push(
@@ -1066,19 +1197,47 @@ export class Info
         return results;
     }
 
-    Increment_Language_Part_Count(
-        language_name: string,
+    Increment_Part_Count(
+        language_name: Name,
         count: Count,
     ):
         void
     {
+        if (!this.Has_Unique_Language_Name(language_name)) {
+            this.Add_Unique_Language_Name(language_name);
+        }
+
+        Utils.Assert(this.Total_Part_Count() + count <= Number.MAX_SAFE_INTEGER);
         Utils.Assert(this.Language_Part_Count(language_name) + count <= Number.MAX_SAFE_INTEGER);
 
+        this.total_part_count += count;
         this.language_part_counts[language_name] += count;
     }
 
+    Increment_Part_Counts(
+        language_counts: Array<[Name, Count]>,
+    ):
+        void
+    {
+        for (const [language_name, count] of language_counts) {
+            this.Increment_Part_Count(language_name, count);
+        }
+    }
+
+    Total_Line_Count():
+        Count
+    {
+        return this.total_line_count;
+    }
+
+    Total_Line_Count_String():
+        string
+    {
+        return Utils.Add_Commas_To_Number(this.Total_Line_Count());
+    }
+
     Language_Line_Count(
-        language_name: string,
+        language_name: Name,
     ):
         Count
     {
@@ -1091,17 +1250,34 @@ export class Info
     }
 
     Language_Line_Percent(
-        language_name: string,
+        language_name: Name,
     ):
         Count
     {
         return Math.round(this.Language_Line_Count(language_name) * 100 / this.Total_Line_Count());
     }
 
-    Language_Line_Counts_And_Percents_Array():
-        Array<[string, Count, Count]>
+    Language_Line_Counts():
+        Array<[Name, Count]>
     {
-        const results: Array<[string, Count, Count]> = [];
+        const results: Array<[Name, Count]> = [];
+
+        for (const language_name of this.unique_language_names) {
+            results.push(
+                [
+                    language_name,
+                    this.Language_Line_Count(language_name),
+                ],
+            );
+        }
+
+        return results;
+    }
+
+    Language_Line_Counts_And_Percents():
+        Array<[Name, Count, Count]>
+    {
+        const results: Array<[Name, Count, Count]> = [];
 
         for (const language_name of this.unique_language_names) {
             results.push(
@@ -1116,19 +1292,47 @@ export class Info
         return results;
     }
 
-    Increment_Language_Line_Count(
-        language_name: string,
+    Increment_Line_Count(
+        language_name: Name,
         count: Count,
     ):
         void
     {
+        if (!this.Has_Unique_Language_Name(language_name)) {
+            this.Add_Unique_Language_Name(language_name);
+        }
+
+        Utils.Assert(this.Total_Line_Count() + count <= Number.MAX_SAFE_INTEGER);
         Utils.Assert(this.Language_Line_Count(language_name) + count <= Number.MAX_SAFE_INTEGER);
 
+        this.total_line_count += count;
         this.language_line_counts[language_name] += count;
     }
 
+    Increment_Line_Counts(
+        language_counts: Array<[Name, Count]>,
+    ):
+        void
+    {
+        for (const [language_name, count] of language_counts) {
+            this.Increment_Line_Count(language_name, count);
+        }
+    }
+
+    Total_File_Count():
+        Count
+    {
+        return this.total_file_count;
+    }
+
+    Total_File_Count_String():
+        string
+    {
+        return Utils.Add_Commas_To_Number(this.Total_File_Count());
+    }
+
     Language_File_Count(
-        language_name: string,
+        language_name: Name,
     ):
         Count
     {
@@ -1141,17 +1345,34 @@ export class Info
     }
 
     Language_File_Percent(
-        language_name: string,
+        language_name: Name,
     ):
         Count
     {
         return Math.round(this.Language_File_Count(language_name) * 100 / this.Total_File_Count());
     }
 
-    Language_File_Counts_And_Percents_Array():
-        Array<[string, Count, Count]>
+    Language_File_Counts():
+        Array<[Name, Count]>
     {
-        const results: Array<[string, Count, Count]> = [];
+        const results: Array<[Name, Count]> = [];
+
+        for (const language_name of this.unique_language_names) {
+            results.push(
+                [
+                    language_name,
+                    this.Language_File_Count(language_name),
+                ],
+            );
+        }
+
+        return results;
+    }
+
+    Language_File_Counts_And_Percents():
+        Array<[Name, Count, Count]>
+    {
+        const results: Array<[Name, Count, Count]> = [];
 
         for (const language_name of this.unique_language_names) {
             results.push(
@@ -1166,19 +1387,47 @@ export class Info
         return results;
     }
 
-    Increment_Language_File_Count(
-        language_name: string,
+    Increment_File_Count(
+        language_name: Name,
         count: Count,
     ):
         void
     {
+        if (!this.Has_Unique_Language_Name(language_name)) {
+            this.Add_Unique_Language_Name(language_name);
+        }
+
+        Utils.Assert(this.Total_File_Count() + count <= Number.MAX_SAFE_INTEGER);
         Utils.Assert(this.Language_File_Count(language_name) + count <= Number.MAX_SAFE_INTEGER);
 
+        this.total_file_count += count;
         this.language_file_counts[language_name] += count;
     }
 
+    Increment_File_Counts(
+        language_counts: Array<[Name, Count]>,
+    ):
+        void
+    {
+        for (const [language_name, count] of language_counts) {
+            this.Increment_File_Count(language_name, count);
+        }
+    }
+
+    Total_Book_Count():
+        Count
+    {
+        return this.total_book_count;
+    }
+
+    Total_Book_Count_String():
+        string
+    {
+        return Utils.Add_Commas_To_Number(this.Total_Book_Count());
+    }
+
     Language_Book_Count(
-        language_name: string,
+        language_name: Name,
     ):
         Count
     {
@@ -1191,17 +1440,34 @@ export class Info
     }
 
     Language_Book_Percent(
-        language_name: string,
+        language_name: Name,
     ):
         Count
     {
         return Math.round(this.Language_Book_Count(language_name) * 100 / this.Total_Book_Count());
     }
 
-    Language_Book_Counts_And_Percents_Array():
-        Array<[string, Count, Count]>
+    Language_Book_Counts():
+        Array<[Name, Count]>
     {
-        const results: Array<[string, Count, Count]> = [];
+        const results: Array<[Name, Count]> = [];
+
+        for (const language_name of this.unique_language_names) {
+            results.push(
+                [
+                    language_name,
+                    this.Language_Book_Count(language_name),
+                ],
+            );
+        }
+
+        return results;
+    }
+
+    Language_Book_Counts_And_Percents():
+        Array<[Name, Count, Count]>
+    {
+        const results: Array<[Name, Count, Count]> = [];
 
         for (const language_name of this.unique_language_names) {
             results.push(
@@ -1216,20 +1482,30 @@ export class Info
         return results;
     }
 
-    Increment_Language_Book_Count(
-        language_name: string,
+    Increment_Book_Count(
+        language_name: Name,
         count: Count,
     ):
         void
     {
+        if (!this.Has_Unique_Language_Name(language_name)) {
+            this.Add_Unique_Language_Name(language_name);
+        }
+
+        Utils.Assert(this.Total_Book_Count() + count <= Number.MAX_SAFE_INTEGER);
         Utils.Assert(this.Language_Book_Count(language_name) + count <= Number.MAX_SAFE_INTEGER);
 
+        this.total_book_count += count;
         this.language_book_counts[language_name] += count;
     }
 
-    To_JSON_String():
-        string
+    Increment_Book_Counts(
+        language_counts: Array<[Name, Count]>,
+    ):
+        void
     {
-        return JSON.parse(this as any);
+        for (const [language_name, count] of language_counts) {
+            this.Increment_Book_Count(language_name, count);
+        }
     }
 }

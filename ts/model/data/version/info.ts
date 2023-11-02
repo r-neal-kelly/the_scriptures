@@ -1,15 +1,1294 @@
 import { Count } from "../../../types.js";
+import { Name } from "../../../types.js";
 
-export type Info = {
-    total_unit_count: Count,
-    total_point_count: Count,
-    total_letter_count: Count,
-    total_marker_count: Count,
-    total_meta_letter_count: Count,
-    total_word_count: Count,
-    total_break_count: Count,
-    total_meta_word_count: Count,
-    total_part_count: Count,
-    total_line_count: Count,
-    total_file_count: Count,
-};
+import * as Utils from "../../../utils.js";
+
+import * as Name_Sorter from "../../name_sorter.js";
+
+export class Info
+{
+    private unique_language_names: Array<Name>;
+
+    private total_unit_count: Count;
+    private total_point_count: Count;
+    private total_letter_count: Count;
+    private total_marker_count: Count;
+    private total_meta_letter_count: Count;
+    private total_word_count: Count;
+    private total_break_count: Count;
+    private total_meta_word_count: Count;
+    private total_part_count: Count;
+    private total_line_count: Count;
+    private total_file_count: Count;
+
+    private language_unit_counts: { [language_name: Name]: Count };
+    private language_point_counts: { [language_name: Name]: Count };
+    private language_letter_counts: { [language_name: Name]: Count };
+    private language_marker_counts: { [language_name: Name]: Count };
+    private language_meta_letter_counts: { [language_name: Name]: Count };
+    private language_word_counts: { [language_name: Name]: Count };
+    private language_break_counts: { [language_name: Name]: Count };
+    private language_meta_word_counts: { [language_name: Name]: Count };
+    private language_part_counts: { [language_name: Name]: Count };
+    private language_line_counts: { [language_name: Name]: Count };
+    private language_file_counts: { [language_name: Name]: Count };
+
+    constructor(
+        {
+            json = null,
+        }: {
+            json?: string | null,
+        },
+    )
+    {
+        if (json) {
+            const primitive: Info = JSON.parse(json) as Info;
+
+            this.unique_language_names = primitive.unique_language_names;
+
+            this.total_unit_count = primitive.total_unit_count;
+            this.total_point_count = primitive.total_point_count;
+            this.total_letter_count = primitive.total_letter_count;
+            this.total_marker_count = primitive.total_marker_count;
+            this.total_meta_letter_count = primitive.total_meta_letter_count;
+            this.total_word_count = primitive.total_word_count;
+            this.total_break_count = primitive.total_break_count;
+            this.total_meta_word_count = primitive.total_meta_word_count;
+            this.total_part_count = primitive.total_part_count;
+            this.total_line_count = primitive.total_line_count;
+            this.total_file_count = primitive.total_file_count;
+
+            this.language_unit_counts = primitive.language_unit_counts;
+            this.language_point_counts = primitive.language_point_counts;
+            this.language_letter_counts = primitive.language_letter_counts;
+            this.language_marker_counts = primitive.language_marker_counts;
+            this.language_meta_letter_counts = primitive.language_meta_letter_counts;
+            this.language_word_counts = primitive.language_word_counts;
+            this.language_break_counts = primitive.language_break_counts;
+            this.language_meta_word_counts = primitive.language_meta_word_counts;
+            this.language_part_counts = primitive.language_part_counts;
+            this.language_line_counts = primitive.language_line_counts;
+            this.language_file_counts = primitive.language_file_counts;
+
+            this.Freeze();
+        } else {
+            this.unique_language_names = [];
+
+            this.total_unit_count = 0;
+            this.total_point_count = 0;
+            this.total_letter_count = 0;
+            this.total_marker_count = 0;
+            this.total_meta_letter_count = 0;
+            this.total_word_count = 0;
+            this.total_break_count = 0;
+            this.total_meta_word_count = 0;
+            this.total_part_count = 0;
+            this.total_line_count = 0;
+            this.total_file_count = 0;
+
+            this.language_unit_counts = {};
+            this.language_point_counts = {};
+            this.language_letter_counts = {};
+            this.language_marker_counts = {};
+            this.language_meta_letter_counts = {};
+            this.language_word_counts = {};
+            this.language_break_counts = {};
+            this.language_meta_word_counts = {};
+            this.language_part_counts = {};
+            this.language_line_counts = {};
+            this.language_file_counts = {};
+        }
+    }
+
+    Is_Frozen():
+        boolean
+    {
+        return Object.isFrozen(this.unique_language_names);
+    }
+
+    Freeze():
+        void
+    {
+        if (!this.Is_Frozen()) {
+            const name_sorter: Name_Sorter.Instance = Name_Sorter.Singleton();
+
+            this.unique_language_names =
+                name_sorter.With_Array(Name_Sorter.Type.LANGUAGES, this.unique_language_names);
+
+            Object.freeze(this.unique_language_names);
+
+            Object.freeze(this.language_unit_counts);
+            Object.freeze(this.language_point_counts);
+            Object.freeze(this.language_letter_counts);
+            Object.freeze(this.language_marker_counts);
+            Object.freeze(this.language_meta_letter_counts);
+            Object.freeze(this.language_word_counts);
+            Object.freeze(this.language_break_counts);
+            Object.freeze(this.language_meta_word_counts);
+            Object.freeze(this.language_part_counts);
+            Object.freeze(this.language_line_counts);
+            Object.freeze(this.language_file_counts);
+
+            Utils.Assert(
+                (
+                    this.Total_Word_Count() +
+                    this.Total_Meta_Word_Count() +
+                    this.Total_Break_Count()
+                ) === this.Total_Part_Count(),
+                `miscount of total_part_count!`,
+            );
+            Utils.Assert(
+                (
+                    this.Total_Letter_Count() +
+                    this.Total_Meta_Letter_Count() +
+                    this.Total_Marker_Count()
+                ) === this.Total_Point_Count(),
+                `miscount of total_point_count!`,
+            );
+        }
+    }
+
+    JSON_String():
+        string
+    {
+        if (!this.Is_Frozen()) {
+            this.Freeze();
+        }
+
+        return JSON.stringify(this as any);
+    }
+
+    Unique_Language_Names():
+        Array<Name>
+    {
+        return Array.from(this.unique_language_names);
+    }
+
+    Unique_Language_Name_Count():
+        Count
+    {
+        return this.unique_language_names.length;
+    }
+
+    Unique_Language_Name_Count_String():
+        string
+    {
+        return Utils.Add_Commas_To_Number(this.Unique_Language_Name_Count());
+    }
+
+    Has_Unique_Language_Name(
+        language_name: Name,
+    ):
+        boolean
+    {
+        return this.language_unit_counts[language_name] != null;
+    }
+
+    Add_Unique_Language_Name(
+        language_name: Name,
+    ):
+        void
+    {
+        Utils.Assert(
+            !this.Is_Frozen(),
+            `is frozen!`,
+        );
+
+        if (!this.Has_Unique_Language_Name(language_name)) {
+            this.unique_language_names.push(language_name);
+
+            this.language_unit_counts[language_name] = 0;
+            this.language_point_counts[language_name] = 0;
+            this.language_letter_counts[language_name] = 0;
+            this.language_marker_counts[language_name] = 0;
+            this.language_meta_letter_counts[language_name] = 0;
+            this.language_word_counts[language_name] = 0;
+            this.language_break_counts[language_name] = 0;
+            this.language_meta_word_counts[language_name] = 0;
+            this.language_part_counts[language_name] = 0;
+            this.language_line_counts[language_name] = 0;
+            this.language_file_counts[language_name] = 0;
+        }
+    }
+
+    Total_Unit_Count():
+        Count
+    {
+        return this.total_unit_count;
+    }
+
+    Total_Unit_Count_String():
+        string
+    {
+        return Utils.Add_Commas_To_Number(this.Total_Unit_Count());
+    }
+
+    Language_Unit_Count(
+        language_name: Name,
+    ):
+        Count
+    {
+        Utils.Assert(
+            this.Has_Unique_Language_Name(language_name),
+            `does not have language: ${language_name}`,
+        );
+
+        return this.language_unit_counts[language_name];
+    }
+
+    Language_Unit_Percent(
+        language_name: Name,
+    ):
+        Count
+    {
+        return Math.round(this.Language_Unit_Count(language_name) * 100 / this.Total_Unit_Count());
+    }
+
+    Language_Unit_Counts():
+        Array<[Name, Count]>
+    {
+        const results: Array<[Name, Count]> = [];
+
+        for (const language_name of this.unique_language_names) {
+            results.push(
+                [
+                    language_name,
+                    this.Language_Unit_Count(language_name),
+                ],
+            );
+        }
+
+        return results;
+    }
+
+    Language_Unit_Counts_And_Percents():
+        Array<[Name, Count, Count]>
+    {
+        const results: Array<[Name, Count, Count]> = [];
+
+        for (const language_name of this.unique_language_names) {
+            results.push(
+                [
+                    language_name,
+                    this.Language_Unit_Count(language_name),
+                    this.Language_Unit_Percent(language_name),
+                ],
+            );
+        }
+
+        return results;
+    }
+
+    Increment_Unit_Count(
+        language_name: Name,
+        count: Count,
+    ):
+        void
+    {
+        if (!this.Has_Unique_Language_Name(language_name)) {
+            this.Add_Unique_Language_Name(language_name);
+        }
+
+        Utils.Assert(this.Total_Unit_Count() + count <= Number.MAX_SAFE_INTEGER);
+        Utils.Assert(this.Language_Unit_Count(language_name) + count <= Number.MAX_SAFE_INTEGER);
+
+        this.total_unit_count += count;
+        this.language_unit_counts[language_name] += count;
+    }
+
+    Increment_Unit_Counts(
+        language_counts: Array<[Name, Count]>,
+    ):
+        void
+    {
+        for (const [language_name, count] of language_counts) {
+            this.Increment_Unit_Count(language_name, count);
+        }
+    }
+
+    Total_Point_Count():
+        Count
+    {
+        return this.total_point_count;
+    }
+
+    Total_Point_Count_String():
+        string
+    {
+        return Utils.Add_Commas_To_Number(this.Total_Point_Count());
+    }
+
+    Language_Point_Count(
+        language_name: Name,
+    ):
+        Count
+    {
+        Utils.Assert(
+            this.Has_Unique_Language_Name(language_name),
+            `does not have language: ${language_name}`,
+        );
+
+        return this.language_point_counts[language_name];
+    }
+
+    Language_Point_Percent(
+        language_name: Name,
+    ):
+        Count
+    {
+        return Math.round(this.Language_Point_Count(language_name) * 100 / this.Total_Point_Count());
+    }
+
+    Language_Point_Counts():
+        Array<[Name, Count]>
+    {
+        const results: Array<[Name, Count]> = [];
+
+        for (const language_name of this.unique_language_names) {
+            results.push(
+                [
+                    language_name,
+                    this.Language_Point_Count(language_name),
+                ],
+            );
+        }
+
+        return results;
+    }
+
+    Language_Point_Counts_And_Percents():
+        Array<[Name, Count, Count]>
+    {
+        const results: Array<[Name, Count, Count]> = [];
+
+        for (const language_name of this.unique_language_names) {
+            results.push(
+                [
+                    language_name,
+                    this.Language_Point_Count(language_name),
+                    this.Language_Point_Percent(language_name),
+                ],
+            );
+        }
+
+        return results;
+    }
+
+    Increment_Point_Count(
+        language_name: Name,
+        count: Count,
+    ):
+        void
+    {
+        if (!this.Has_Unique_Language_Name(language_name)) {
+            this.Add_Unique_Language_Name(language_name);
+        }
+
+        Utils.Assert(this.Total_Point_Count() + count <= Number.MAX_SAFE_INTEGER);
+        Utils.Assert(this.Language_Point_Count(language_name) + count <= Number.MAX_SAFE_INTEGER);
+
+        this.total_point_count += count;
+        this.language_point_counts[language_name] += count;
+    }
+
+    Increment_Point_Counts(
+        language_counts: Array<[Name, Count]>,
+    ):
+        void
+    {
+        for (const [language_name, count] of language_counts) {
+            this.Increment_Point_Count(language_name, count);
+        }
+    }
+
+    Total_Letter_Count():
+        Count
+    {
+        return this.total_letter_count;
+    }
+
+    Total_Letter_Count_String():
+        string
+    {
+        return Utils.Add_Commas_To_Number(this.Total_Letter_Count());
+    }
+
+    Total_Letter_Percent():
+        Count
+    {
+        return Math.round(this.Total_Letter_Count() * 100 / this.Total_Point_Count());
+    }
+
+    Language_Letter_Count(
+        language_name: Name,
+    ):
+        Count
+    {
+        Utils.Assert(
+            this.Has_Unique_Language_Name(language_name),
+            `does not have language: ${language_name}`,
+        );
+
+        return this.language_letter_counts[language_name];
+    }
+
+    Language_Letter_Percent(
+        language_name: Name,
+    ):
+        Count
+    {
+        return Math.round(this.Language_Letter_Count(language_name) * 100 / this.Total_Letter_Count());
+    }
+
+    Language_Letter_Counts():
+        Array<[Name, Count]>
+    {
+        const results: Array<[Name, Count]> = [];
+
+        for (const language_name of this.unique_language_names) {
+            results.push(
+                [
+                    language_name,
+                    this.Language_Letter_Count(language_name),
+                ],
+            );
+        }
+
+        return results;
+    }
+
+    Language_Letter_Counts_And_Percents():
+        Array<[Name, Count, Count]>
+    {
+        const results: Array<[Name, Count, Count]> = [];
+
+        for (const language_name of this.unique_language_names) {
+            results.push(
+                [
+                    language_name,
+                    this.Language_Letter_Count(language_name),
+                    this.Language_Letter_Percent(language_name),
+                ],
+            );
+        }
+
+        return results;
+    }
+
+    Increment_Letter_Count(
+        language_name: Name,
+        count: Count,
+    ):
+        void
+    {
+        if (!this.Has_Unique_Language_Name(language_name)) {
+            this.Add_Unique_Language_Name(language_name);
+        }
+
+        Utils.Assert(this.Total_Letter_Count() + count <= Number.MAX_SAFE_INTEGER);
+        Utils.Assert(this.Language_Letter_Count(language_name) + count <= Number.MAX_SAFE_INTEGER);
+
+        this.total_letter_count += count;
+        this.language_letter_counts[language_name] += count;
+    }
+
+    Increment_Letter_Counts(
+        language_counts: Array<[Name, Count]>,
+    ):
+        void
+    {
+        for (const [language_name, count] of language_counts) {
+            this.Increment_Letter_Count(language_name, count);
+        }
+    }
+
+    Total_Marker_Count():
+        Count
+    {
+        return this.total_marker_count;
+    }
+
+    Total_Marker_Count_String():
+        string
+    {
+        return Utils.Add_Commas_To_Number(this.Total_Marker_Count());
+    }
+
+    Total_Marker_Percent():
+        Count
+    {
+        return Math.round(this.Total_Marker_Count() * 100 / this.Total_Point_Count());
+    }
+
+    Language_Marker_Count(
+        language_name: Name,
+    ):
+        Count
+    {
+        Utils.Assert(
+            this.Has_Unique_Language_Name(language_name),
+            `does not have language: ${language_name}`,
+        );
+
+        return this.language_marker_counts[language_name];
+    }
+
+    Language_Marker_Percent(
+        language_name: Name,
+    ):
+        Count
+    {
+        return Math.round(this.Language_Marker_Count(language_name) * 100 / this.Total_Marker_Count());
+    }
+
+    Language_Marker_Counts():
+        Array<[Name, Count]>
+    {
+        const results: Array<[Name, Count]> = [];
+
+        for (const language_name of this.unique_language_names) {
+            results.push(
+                [
+                    language_name,
+                    this.Language_Marker_Count(language_name),
+                ],
+            );
+        }
+
+        return results;
+    }
+
+    Language_Marker_Counts_And_Percents():
+        Array<[Name, Count, Count]>
+    {
+        const results: Array<[Name, Count, Count]> = [];
+
+        for (const language_name of this.unique_language_names) {
+            results.push(
+                [
+                    language_name,
+                    this.Language_Marker_Count(language_name),
+                    this.Language_Marker_Percent(language_name),
+                ],
+            );
+        }
+
+        return results;
+    }
+
+    Increment_Marker_Count(
+        language_name: Name,
+        count: Count,
+    ):
+        void
+    {
+        if (!this.Has_Unique_Language_Name(language_name)) {
+            this.Add_Unique_Language_Name(language_name);
+        }
+
+        Utils.Assert(this.Total_Marker_Count() + count <= Number.MAX_SAFE_INTEGER);
+        Utils.Assert(this.Language_Marker_Count(language_name) + count <= Number.MAX_SAFE_INTEGER);
+
+        this.total_marker_count += count;
+        this.language_marker_counts[language_name] += count;
+    }
+
+    Increment_Marker_Counts(
+        language_counts: Array<[Name, Count]>,
+    ):
+        void
+    {
+        for (const [language_name, count] of language_counts) {
+            this.Increment_Marker_Count(language_name, count);
+        }
+    }
+
+    Total_Meta_Letter_Count():
+        Count
+    {
+        return this.total_meta_letter_count;
+    }
+
+    Total_Meta_Letter_Count_String():
+        string
+    {
+        return Utils.Add_Commas_To_Number(this.Total_Meta_Letter_Count());
+    }
+
+    Total_Meta_Letter_Percent():
+        Count
+    {
+        return Math.round(this.Total_Meta_Letter_Count() * 100 / this.Total_Point_Count());
+    }
+
+    Language_Meta_Letter_Count(
+        language_name: Name,
+    ):
+        Count
+    {
+        Utils.Assert(
+            this.Has_Unique_Language_Name(language_name),
+            `does not have language: ${language_name}`,
+        );
+
+        return this.language_meta_letter_counts[language_name];
+    }
+
+    Language_Meta_Letter_Percent(
+        language_name: Name,
+    ):
+        Count
+    {
+        return Math.round(this.Language_Meta_Letter_Count(language_name) * 100 / this.Total_Meta_Letter_Count());
+    }
+
+    Language_Meta_Letter_Counts():
+        Array<[Name, Count]>
+    {
+        const results: Array<[Name, Count]> = [];
+
+        for (const language_name of this.unique_language_names) {
+            results.push(
+                [
+                    language_name,
+                    this.Language_Meta_Letter_Count(language_name),
+                ],
+            );
+        }
+
+        return results;
+    }
+
+    Language_Meta_Letter_Counts_And_Percents():
+        Array<[Name, Count, Count]>
+    {
+        const results: Array<[Name, Count, Count]> = [];
+
+        for (const language_name of this.unique_language_names) {
+            results.push(
+                [
+                    language_name,
+                    this.Language_Meta_Letter_Count(language_name),
+                    this.Language_Meta_Letter_Percent(language_name),
+                ],
+            );
+        }
+
+        return results;
+    }
+
+    Increment_Meta_Letter_Count(
+        language_name: Name,
+        count: Count,
+    ):
+        void
+    {
+        if (!this.Has_Unique_Language_Name(language_name)) {
+            this.Add_Unique_Language_Name(language_name);
+        }
+
+        Utils.Assert(this.Total_Meta_Letter_Count() + count <= Number.MAX_SAFE_INTEGER);
+        Utils.Assert(this.Language_Meta_Letter_Count(language_name) + count <= Number.MAX_SAFE_INTEGER);
+
+        this.total_meta_letter_count += count;
+        this.language_meta_letter_counts[language_name] += count;
+    }
+
+    Increment_Meta_Letter_Counts(
+        language_counts: Array<[Name, Count]>,
+    ):
+        void
+    {
+        for (const [language_name, count] of language_counts) {
+            this.Increment_Meta_Letter_Count(language_name, count);
+        }
+    }
+
+    Total_Word_Count():
+        Count
+    {
+        return this.total_word_count;
+    }
+
+    Total_Word_Count_String():
+        string
+    {
+        return Utils.Add_Commas_To_Number(this.Total_Word_Count());
+    }
+
+    Total_Word_Percent():
+        Count
+    {
+        return Math.round(this.Total_Word_Count() * 100 / this.Total_Part_Count());
+    }
+
+    Language_Word_Count(
+        language_name: Name,
+    ):
+        Count
+    {
+        Utils.Assert(
+            this.Has_Unique_Language_Name(language_name),
+            `does not have language: ${language_name}`,
+        );
+
+        return this.language_word_counts[language_name];
+    }
+
+    Language_Word_Percent(
+        language_name: Name,
+    ):
+        Count
+    {
+        return Math.round(this.Language_Word_Count(language_name) * 100 / this.Total_Word_Count());
+    }
+
+    Language_Word_Counts():
+        Array<[Name, Count]>
+    {
+        const results: Array<[Name, Count]> = [];
+
+        for (const language_name of this.unique_language_names) {
+            results.push(
+                [
+                    language_name,
+                    this.Language_Word_Count(language_name),
+                ],
+            );
+        }
+
+        return results;
+    }
+
+    Language_Word_Counts_And_Percents():
+        Array<[Name, Count, Count]>
+    {
+        const results: Array<[Name, Count, Count]> = [];
+
+        for (const language_name of this.unique_language_names) {
+            results.push(
+                [
+                    language_name,
+                    this.Language_Word_Count(language_name),
+                    this.Language_Word_Percent(language_name),
+                ],
+            );
+        }
+
+        return results;
+    }
+
+    Increment_Word_Count(
+        language_name: Name,
+        count: Count,
+    ):
+        void
+    {
+        if (!this.Has_Unique_Language_Name(language_name)) {
+            this.Add_Unique_Language_Name(language_name);
+        }
+
+        Utils.Assert(this.Total_Word_Count() + count <= Number.MAX_SAFE_INTEGER);
+        Utils.Assert(this.Language_Word_Count(language_name) + count <= Number.MAX_SAFE_INTEGER);
+
+        this.total_word_count += count;
+        this.language_word_counts[language_name] += count;
+    }
+
+    Increment_Word_Counts(
+        language_counts: Array<[Name, Count]>,
+    ):
+        void
+    {
+        for (const [language_name, count] of language_counts) {
+            this.Increment_Word_Count(language_name, count);
+        }
+    }
+
+    Total_Break_Count():
+        Count
+    {
+        return this.total_break_count;
+    }
+
+    Total_Break_Count_String():
+        string
+    {
+        return Utils.Add_Commas_To_Number(this.Total_Break_Count());
+    }
+
+    Total_Break_Percent():
+        Count
+    {
+        return Math.round(this.Total_Break_Count() * 100 / this.Total_Part_Count());
+    }
+
+    Language_Break_Count(
+        language_name: Name,
+    ):
+        Count
+    {
+        Utils.Assert(
+            this.Has_Unique_Language_Name(language_name),
+            `does not have language: ${language_name}`,
+        );
+
+        return this.language_break_counts[language_name];
+    }
+
+    Language_Break_Percent(
+        language_name: Name,
+    ):
+        Count
+    {
+        return Math.round(this.Language_Break_Count(language_name) * 100 / this.Total_Break_Count());
+    }
+
+    Language_Break_Counts():
+        Array<[Name, Count]>
+    {
+        const results: Array<[Name, Count]> = [];
+
+        for (const language_name of this.unique_language_names) {
+            results.push(
+                [
+                    language_name,
+                    this.Language_Break_Count(language_name),
+                ],
+            );
+        }
+
+        return results;
+    }
+
+    Language_Break_Counts_And_Percents():
+        Array<[Name, Count, Count]>
+    {
+        const results: Array<[Name, Count, Count]> = [];
+
+        for (const language_name of this.unique_language_names) {
+            results.push(
+                [
+                    language_name,
+                    this.Language_Break_Count(language_name),
+                    this.Language_Break_Percent(language_name),
+                ],
+            );
+        }
+
+        return results;
+    }
+
+    Increment_Break_Count(
+        language_name: Name,
+        count: Count,
+    ):
+        void
+    {
+        if (!this.Has_Unique_Language_Name(language_name)) {
+            this.Add_Unique_Language_Name(language_name);
+        }
+
+        Utils.Assert(this.Total_Break_Count() + count <= Number.MAX_SAFE_INTEGER);
+        Utils.Assert(this.Language_Break_Count(language_name) + count <= Number.MAX_SAFE_INTEGER);
+
+        this.total_break_count += count;
+        this.language_break_counts[language_name] += count;
+    }
+
+    Increment_Break_Counts(
+        language_counts: Array<[Name, Count]>,
+    ):
+        void
+    {
+        for (const [language_name, count] of language_counts) {
+            this.Increment_Break_Count(language_name, count);
+        }
+    }
+
+    Total_Meta_Word_Count():
+        Count
+    {
+        return this.total_meta_word_count;
+    }
+
+    Total_Meta_Word_Count_String():
+        string
+    {
+        return Utils.Add_Commas_To_Number(this.Total_Meta_Word_Count());
+    }
+
+    Total_Meta_Word_Percent():
+        Count
+    {
+        return Math.round(this.Total_Meta_Word_Count() * 100 / this.Total_Part_Count());
+    }
+
+    Language_Meta_Word_Count(
+        language_name: Name,
+    ):
+        Count
+    {
+        Utils.Assert(
+            this.Has_Unique_Language_Name(language_name),
+            `does not have language: ${language_name}`,
+        );
+
+        return this.language_meta_word_counts[language_name];
+    }
+
+    Language_Meta_Word_Percent(
+        language_name: Name,
+    ):
+        Count
+    {
+        return Math.round(this.Language_Meta_Word_Count(language_name) * 100 / this.Total_Meta_Word_Count());
+    }
+
+    Language_Meta_Word_Counts():
+        Array<[Name, Count]>
+    {
+        const results: Array<[Name, Count]> = [];
+
+        for (const language_name of this.unique_language_names) {
+            results.push(
+                [
+                    language_name,
+                    this.Language_Meta_Word_Count(language_name),
+                ],
+            );
+        }
+
+        return results;
+    }
+
+    Language_Meta_Word_Counts_And_Percents():
+        Array<[Name, Count, Count]>
+    {
+        const results: Array<[Name, Count, Count]> = [];
+
+        for (const language_name of this.unique_language_names) {
+            results.push(
+                [
+                    language_name,
+                    this.Language_Meta_Word_Count(language_name),
+                    this.Language_Meta_Word_Percent(language_name),
+                ],
+            );
+        }
+
+        return results;
+    }
+
+    Increment_Meta_Word_Count(
+        language_name: Name,
+        count: Count,
+    ):
+        void
+    {
+        if (!this.Has_Unique_Language_Name(language_name)) {
+            this.Add_Unique_Language_Name(language_name);
+        }
+
+        Utils.Assert(this.Total_Meta_Word_Count() + count <= Number.MAX_SAFE_INTEGER);
+        Utils.Assert(this.Language_Meta_Word_Count(language_name) + count <= Number.MAX_SAFE_INTEGER);
+
+        this.total_meta_word_count += count;
+        this.language_meta_word_counts[language_name] += count;
+    }
+
+    Increment_Meta_Word_Counts(
+        language_counts: Array<[Name, Count]>,
+    ):
+        void
+    {
+        for (const [language_name, count] of language_counts) {
+            this.Increment_Meta_Word_Count(language_name, count);
+        }
+    }
+
+    Total_Part_Count():
+        Count
+    {
+        return this.total_part_count;
+    }
+
+    Total_Part_Count_String():
+        string
+    {
+        return Utils.Add_Commas_To_Number(this.Total_Part_Count());
+    }
+
+    Language_Part_Count(
+        language_name: Name,
+    ):
+        Count
+    {
+        Utils.Assert(
+            this.Has_Unique_Language_Name(language_name),
+            `does not have language: ${language_name}`,
+        );
+
+        return this.language_part_counts[language_name];
+    }
+
+    Language_Part_Percent(
+        language_name: Name,
+    ):
+        Count
+    {
+        return Math.round(this.Language_Part_Count(language_name) * 100 / this.Total_Part_Count());
+    }
+
+    Language_Part_Counts():
+        Array<[Name, Count]>
+    {
+        const results: Array<[Name, Count]> = [];
+
+        for (const language_name of this.unique_language_names) {
+            results.push(
+                [
+                    language_name,
+                    this.Language_Part_Count(language_name),
+                ],
+            );
+        }
+
+        return results;
+    }
+
+    Language_Part_Counts_And_Percents():
+        Array<[Name, Count, Count]>
+    {
+        const results: Array<[Name, Count, Count]> = [];
+
+        for (const language_name of this.unique_language_names) {
+            results.push(
+                [
+                    language_name,
+                    this.Language_Part_Count(language_name),
+                    this.Language_Part_Percent(language_name),
+                ],
+            );
+        }
+
+        return results;
+    }
+
+    Increment_Part_Count(
+        language_name: Name,
+        count: Count,
+    ):
+        void
+    {
+        if (!this.Has_Unique_Language_Name(language_name)) {
+            this.Add_Unique_Language_Name(language_name);
+        }
+
+        Utils.Assert(this.Total_Part_Count() + count <= Number.MAX_SAFE_INTEGER);
+        Utils.Assert(this.Language_Part_Count(language_name) + count <= Number.MAX_SAFE_INTEGER);
+
+        this.total_part_count += count;
+        this.language_part_counts[language_name] += count;
+    }
+
+    Increment_Part_Counts(
+        language_counts: Array<[Name, Count]>,
+    ):
+        void
+    {
+        for (const [language_name, count] of language_counts) {
+            this.Increment_Part_Count(language_name, count);
+        }
+    }
+
+    Total_Line_Count():
+        Count
+    {
+        return this.total_line_count;
+    }
+
+    Total_Line_Count_String():
+        string
+    {
+        return Utils.Add_Commas_To_Number(this.Total_Line_Count());
+    }
+
+    Language_Line_Count(
+        language_name: Name,
+    ):
+        Count
+    {
+        Utils.Assert(
+            this.Has_Unique_Language_Name(language_name),
+            `does not have language: ${language_name}`,
+        );
+
+        return this.language_line_counts[language_name];
+    }
+
+    Language_Line_Percent(
+        language_name: Name,
+    ):
+        Count
+    {
+        return Math.round(this.Language_Line_Count(language_name) * 100 / this.Total_Line_Count());
+    }
+
+    Language_Line_Counts():
+        Array<[Name, Count]>
+    {
+        const results: Array<[Name, Count]> = [];
+
+        for (const language_name of this.unique_language_names) {
+            results.push(
+                [
+                    language_name,
+                    this.Language_Line_Count(language_name),
+                ],
+            );
+        }
+
+        return results;
+    }
+
+    Language_Line_Counts_And_Percents():
+        Array<[Name, Count, Count]>
+    {
+        const results: Array<[Name, Count, Count]> = [];
+
+        for (const language_name of this.unique_language_names) {
+            results.push(
+                [
+                    language_name,
+                    this.Language_Line_Count(language_name),
+                    this.Language_Line_Percent(language_name),
+                ],
+            );
+        }
+
+        return results;
+    }
+
+    Increment_Line_Count(
+        language_name: Name,
+        count: Count,
+    ):
+        void
+    {
+        if (!this.Has_Unique_Language_Name(language_name)) {
+            this.Add_Unique_Language_Name(language_name);
+        }
+
+        Utils.Assert(this.Total_Line_Count() + count <= Number.MAX_SAFE_INTEGER);
+        Utils.Assert(this.Language_Line_Count(language_name) + count <= Number.MAX_SAFE_INTEGER);
+
+        this.total_line_count += count;
+        this.language_line_counts[language_name] += count;
+    }
+
+    Increment_Line_Counts(
+        language_counts: Array<[Name, Count]>,
+    ):
+        void
+    {
+        for (const [language_name, count] of language_counts) {
+            this.Increment_Line_Count(language_name, count);
+        }
+    }
+
+    Total_File_Count():
+        Count
+    {
+        return this.total_file_count;
+    }
+
+    Total_File_Count_String():
+        string
+    {
+        return Utils.Add_Commas_To_Number(this.Total_File_Count());
+    }
+
+    Language_File_Count(
+        language_name: Name,
+    ):
+        Count
+    {
+        Utils.Assert(
+            this.Has_Unique_Language_Name(language_name),
+            `does not have language: ${language_name}`,
+        );
+
+        return this.language_file_counts[language_name];
+    }
+
+    Language_File_Percent(
+        language_name: Name,
+    ):
+        Count
+    {
+        return Math.round(this.Language_File_Count(language_name) * 100 / this.Total_File_Count());
+    }
+
+    Language_File_Counts():
+        Array<[Name, Count]>
+    {
+        const results: Array<[Name, Count]> = [];
+
+        for (const language_name of this.unique_language_names) {
+            results.push(
+                [
+                    language_name,
+                    this.Language_File_Count(language_name),
+                ],
+            );
+        }
+
+        return results;
+    }
+
+    Language_File_Counts_And_Percents():
+        Array<[Name, Count, Count]>
+    {
+        const results: Array<[Name, Count, Count]> = [];
+
+        for (const language_name of this.unique_language_names) {
+            results.push(
+                [
+                    language_name,
+                    this.Language_File_Count(language_name),
+                    this.Language_File_Percent(language_name),
+                ],
+            );
+        }
+
+        return results;
+    }
+
+    Increment_File_Count(
+        language_name: Name,
+        count: Count,
+    ):
+        void
+    {
+        if (!this.Has_Unique_Language_Name(language_name)) {
+            this.Add_Unique_Language_Name(language_name);
+        }
+
+        Utils.Assert(this.Total_File_Count() + count <= Number.MAX_SAFE_INTEGER);
+        Utils.Assert(this.Language_File_Count(language_name) + count <= Number.MAX_SAFE_INTEGER);
+
+        this.total_file_count += count;
+        this.language_file_counts[language_name] += count;
+    }
+
+    Increment_File_Counts(
+        language_counts: Array<[Name, Count]>,
+    ):
+        void
+    {
+        for (const [language_name, count] of language_counts) {
+            this.Increment_File_Count(language_name, count);
+        }
+    }
+}

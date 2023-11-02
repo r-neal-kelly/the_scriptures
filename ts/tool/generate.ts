@@ -258,19 +258,7 @@ async function Generate(
                     language_branch.versions.push(version_branch);
                     data_info.Add_Unique_Version_Name(version_name);
                     if (await Should_Version_Be_Updated(last_timestamp, files_path, file_names)) {
-                        const version_info: Data.Version.Info = {
-                            total_unit_count: 0,
-                            total_point_count: 0,
-                            total_letter_count: 0,
-                            total_marker_count: 0,
-                            total_meta_letter_count: 0,
-                            total_word_count: 0,
-                            total_break_count: 0,
-                            total_meta_word_count: 0,
-                            total_part_count: 0,
-                            total_line_count: 0,
-                            total_file_count: 0,
-                        };
+                        const version_info: Data.Version.Info = new Data.Version.Info({});
                         const dictionary_json: string = await File_System.Read_File(`${files_path}/${DICTIONARY_JSON_NAME}`);
                         const dictionary: Text.Dictionary.Instance = new Text.Dictionary.Instance(
                             {
@@ -279,9 +267,8 @@ async function Generate(
                         );
                         const unique_parts: Unique_Parts = new Unique_Parts();
                         const file_texts: Array<string> = [];
-                        Utils.Assert(version_info.total_file_count + file_names.length <= Number.MAX_SAFE_INTEGER);
+                        version_info.Increment_File_Count(language_name, file_names.length);
                         dictionary.Validate();
-                        version_info.total_file_count += file_names.length;
                         for (const file_name of file_names) {
                             const file_path: Path = `${files_path}/${file_name}`;
                             const file_text: string = await Read_File_Text(file_path);
@@ -291,9 +278,8 @@ async function Generate(
                                     value: file_text,
                                 },
                             );
-                            Utils.Assert(version_info.total_line_count + text.Line_Count() <= Number.MAX_SAFE_INTEGER);
+                            version_info.Increment_Line_Count(language_name, text.Line_Count());
                             file_texts.push(file_text);
-                            version_info.total_line_count += text.Line_Count();
                             for (
                                 let line_idx = 0, line_end = text.Line_Count();
                                 line_idx < line_end;
@@ -310,6 +296,7 @@ async function Generate(
                                     const part_value: string = part.Value();
                                     const part_unit_count: Count = part_value.length;
                                     const part_point_count: Count = Unicode.Point_Count(part_value);
+                                    const part_language_name: Name = part.Language() ? part.Language() as Name : language_name;
                                     Utils.Assert(
                                         !part.Is_Unknown(),
                                         `Unknown part! Cannot generate:\n` +
@@ -334,48 +321,33 @@ async function Generate(
                                             `   Macro Part Value:   ${part_value}\n`,
                                         );
                                     }
-                                    Utils.Assert(version_info.total_unit_count + part_unit_count <= Number.MAX_SAFE_INTEGER);
-                                    Utils.Assert(version_info.total_point_count + part_point_count <= Number.MAX_SAFE_INTEGER);
                                     unique_parts.Add(part_value);
-                                    version_info.total_unit_count += part_unit_count;
-                                    version_info.total_point_count += part_point_count;
+                                    version_info.Increment_Unit_Count(part_language_name, part_unit_count);
+                                    version_info.Increment_Point_Count(part_language_name, part_point_count);
                                     if (part_type === Text.Part.Type.LETTER) {
-                                        Utils.Assert(version_info.total_letter_count + 1 <= Number.MAX_SAFE_INTEGER);
-                                        Utils.Assert(version_info.total_part_count + 1 <= Number.MAX_SAFE_INTEGER);
-                                        version_info.total_letter_count += 1;
-                                        version_info.total_part_count += 1;
+                                        version_info.Increment_Letter_Count(part_language_name, 1);
+                                        version_info.Increment_Part_Count(part_language_name, 1);
                                     } else if (part_type === Text.Part.Type.MARKER) {
-                                        Utils.Assert(version_info.total_marker_count + 1 <= Number.MAX_SAFE_INTEGER);
-                                        Utils.Assert(version_info.total_part_count + 1 <= Number.MAX_SAFE_INTEGER);
-                                        version_info.total_marker_count += 1;
-                                        version_info.total_part_count += 1;
+                                        version_info.Increment_Marker_Count(part_language_name, 1);
+                                        version_info.Increment_Part_Count(part_language_name, 1);
                                     } else if (part_type === Text.Part.Type.WORD) {
-                                        Utils.Assert(version_info.total_letter_count + part_point_count <= Number.MAX_SAFE_INTEGER);
-                                        Utils.Assert(version_info.total_word_count + 1 <= Number.MAX_SAFE_INTEGER);
-                                        Utils.Assert(version_info.total_part_count + 1 <= Number.MAX_SAFE_INTEGER);
-                                        version_info.total_letter_count += part_point_count;
-                                        version_info.total_word_count += 1;
-                                        version_info.total_part_count += 1;
+                                        version_info.Increment_Letter_Count(part_language_name, part_point_count);
+                                        version_info.Increment_Word_Count(part_language_name, 1);
+                                        version_info.Increment_Part_Count(part_language_name, 1);
                                     } else if (part_type === Text.Part.Type.BREAK) {
-                                        Utils.Assert(version_info.total_marker_count + part_point_count <= Number.MAX_SAFE_INTEGER);
-                                        Utils.Assert(version_info.total_break_count + 1 <= Number.MAX_SAFE_INTEGER);
-                                        Utils.Assert(version_info.total_part_count + 1 <= Number.MAX_SAFE_INTEGER);
-                                        version_info.total_marker_count += part_point_count;
-                                        version_info.total_break_count += 1;
-                                        version_info.total_part_count += 1;
+                                        version_info.Increment_Marker_Count(part_language_name, part_point_count);
+                                        version_info.Increment_Break_Count(part_language_name, 1);
+                                        version_info.Increment_Part_Count(part_language_name, 1);
                                     } else if (part_type === Text.Part.Type.COMMAND) {
                                         // Keep in mind, these commands can be split, so we don't actually
                                         // need to work with complex inner arguments, as they are already
                                         // separated for us. We avoid counting the last_of_split as a separate
                                         // command, but we still count everything including it as a meta_letter.
                                         const command: Text.Part.Command.Instance = (part as Text.Part.Command.Instance);
-                                        Utils.Assert(version_info.total_meta_letter_count + part_point_count <= Number.MAX_SAFE_INTEGER);
-                                        version_info.total_meta_letter_count += part_point_count;
+                                        version_info.Increment_Meta_Letter_Count(part_language_name, part_point_count);
                                         if (!command.Is_Last_Of_Split()) {
-                                            Utils.Assert(version_info.total_meta_word_count + 1 <= Number.MAX_SAFE_INTEGER);
-                                            Utils.Assert(version_info.total_part_count + 1 <= Number.MAX_SAFE_INTEGER);
-                                            version_info.total_meta_word_count += 1;
-                                            version_info.total_part_count += 1;
+                                            version_info.Increment_Meta_Word_Count(part_language_name, 1);
+                                            version_info.Increment_Part_Count(part_language_name, 1);
                                         }
                                     }
                                 }
@@ -430,7 +402,7 @@ async function Generate(
                         files_to_write.push(
                             File_System.Write_File(
                                 `${files_path}/${INFO_JSON_NAME}`,
-                                JSON.stringify(version_info),
+                                version_info.JSON_String(),
                             ),
                         );
                         files_to_write.push(
@@ -487,39 +459,29 @@ async function Generate(
                         await Promise.all(files_to_write);
                         console.log(`        Generated ${book_name}/${language_name}/${version_name}...`);
                     }
-                    const version_info: Data.Version.Info =
-                        JSON.parse(await File_System.Read_File(`${files_path}/${INFO_JSON_NAME}`));
-                    data_info.Increment_Total_Unit_Count(version_info.total_unit_count);
-                    data_info.Increment_Total_Point_Count(version_info.total_point_count);
-                    data_info.Increment_Total_Letter_Count(version_info.total_letter_count);
-                    data_info.Increment_Total_Marker_Count(version_info.total_marker_count);
-                    data_info.Increment_Total_Meta_Letter_Count(version_info.total_meta_letter_count);
-                    data_info.Increment_Total_Word_Count(version_info.total_word_count);
-                    data_info.Increment_Total_Break_Count(version_info.total_break_count);
-                    data_info.Increment_Total_Meta_Word_Count(version_info.total_meta_word_count);
-                    data_info.Increment_Total_Part_Count(version_info.total_part_count);
-                    data_info.Increment_Total_Line_Count(version_info.total_line_count);
-                    data_info.Increment_Total_File_Count(version_info.total_file_count);
-                    data_info.Increment_Total_Book_Count(1);
-                    data_info.Increment_Language_Unit_Count(language_name, version_info.total_unit_count);
-                    data_info.Increment_Language_Point_Count(language_name, version_info.total_point_count);
-                    data_info.Increment_Language_Letter_Count(language_name, version_info.total_letter_count);
-                    data_info.Increment_Language_Marker_Count(language_name, version_info.total_marker_count);
-                    data_info.Increment_Language_Meta_Letter_Count(language_name, version_info.total_meta_letter_count);
-                    data_info.Increment_Language_Word_Count(language_name, version_info.total_word_count);
-                    data_info.Increment_Language_Break_Count(language_name, version_info.total_break_count);
-                    data_info.Increment_Language_Meta_Word_Count(language_name, version_info.total_meta_word_count);
-                    data_info.Increment_Language_Part_Count(language_name, version_info.total_part_count);
-                    data_info.Increment_Language_Line_Count(language_name, version_info.total_line_count);
-                    data_info.Increment_Language_File_Count(language_name, version_info.total_file_count);
-                    data_info.Increment_Language_Book_Count(language_name, 1);
+                    const version_info: Data.Version.Info = new Data.Version.Info(
+                        {
+                            json: await File_System.Read_File(`${files_path}/${INFO_JSON_NAME}`),
+                        },
+                    );
+                    data_info.Increment_Unit_Counts(version_info.Language_Unit_Counts());
+                    data_info.Increment_Point_Counts(version_info.Language_Point_Counts());
+                    data_info.Increment_Letter_Counts(version_info.Language_Letter_Counts());
+                    data_info.Increment_Marker_Counts(version_info.Language_Marker_Counts());
+                    data_info.Increment_Meta_Letter_Counts(version_info.Language_Meta_Letter_Counts());
+                    data_info.Increment_Word_Counts(version_info.Language_Word_Counts());
+                    data_info.Increment_Break_Counts(version_info.Language_Break_Counts());
+                    data_info.Increment_Meta_Word_Counts(version_info.Language_Meta_Word_Counts());
+                    data_info.Increment_Part_Counts(version_info.Language_Part_Counts());
+                    data_info.Increment_Line_Counts(version_info.Language_Line_Counts());
+                    data_info.Increment_File_Counts(version_info.Language_File_Counts());
+                    data_info.Increment_Book_Count(language_name, 1);
                 }
             }
         }
-        data_info.Freeze();
         await File_System.Write_File(
             `${DATA_PATH}/${INFO_JSON_NAME}`,
-            JSON.stringify(data_info),
+            data_info.JSON_String(),
         );
     }
 
@@ -597,31 +559,31 @@ async function Generate(
                 `\n<br>\n\n` +
 
                 `- Total Books: ${data_info.Total_Book_Count_String()}\n` +
-                Breakdown_By_Language(``, data_info.Language_Book_Counts_And_Percents_Array()) +
+                Breakdown_By_Language(``, data_info.Language_Book_Counts_And_Percents()) +
                 `- Total Files: ${data_info.Total_File_Count_String()}\n` +
-                Breakdown_By_Language(``, data_info.Language_File_Counts_And_Percents_Array()) +
+                Breakdown_By_Language(``, data_info.Language_File_Counts_And_Percents()) +
                 `- Total Lines: ${data_info.Total_Line_Count_String()}\n` +
-                Breakdown_By_Language(``, data_info.Language_Line_Counts_And_Percents_Array()) +
+                Breakdown_By_Language(``, data_info.Language_Line_Counts_And_Percents()) +
                 `- Total Parts: ${data_info.Total_Part_Count_String()}\n` +
                 `    - <i>By Language</i>\n` +
-                Breakdown_By_Language(`    `, data_info.Language_Part_Counts_And_Percents_Array()) +
+                Breakdown_By_Language(`    `, data_info.Language_Part_Counts_And_Percents()) +
                 `    - <i>By Components</i>\n` +
                 `        - Words: ${data_info.Total_Word_Count_String()} (~${data_info.Total_Word_Percent()}%)\n` +
-                Breakdown_By_Language(`        `, data_info.Language_Word_Counts_And_Percents_Array()) +
+                Breakdown_By_Language(`        `, data_info.Language_Word_Counts_And_Percents()) +
                 `        - Meta-Words: ${data_info.Total_Meta_Word_Count_String()} (~${data_info.Total_Meta_Word_Percent()}%)\n` +
-                Breakdown_By_Language(`        `, data_info.Language_Meta_Word_Counts_And_Percents_Array()) +
+                Breakdown_By_Language(`        `, data_info.Language_Meta_Word_Counts_And_Percents()) +
                 `        - Non-Words: ${data_info.Total_Break_Count_String()} (~${data_info.Total_Break_Percent()}%)\n` +
-                Breakdown_By_Language(`        `, data_info.Language_Break_Counts_And_Percents_Array()) +
+                Breakdown_By_Language(`        `, data_info.Language_Break_Counts_And_Percents()) +
                 `- Total Unicode Points: ${data_info.Total_Point_Count_String()}\n` +
                 `    - <i>By Language</i>\n` +
-                Breakdown_By_Language(`    `, data_info.Language_Point_Counts_And_Percents_Array()) +
+                Breakdown_By_Language(`    `, data_info.Language_Point_Counts_And_Percents()) +
                 `    - <i>By Components</i>\n` +
                 `        - Letters: ${data_info.Total_Letter_Count_String()} (~${data_info.Total_Letter_Percent()}%)\n` +
-                Breakdown_By_Language(`        `, data_info.Language_Letter_Counts_And_Percents_Array()) +
+                Breakdown_By_Language(`        `, data_info.Language_Letter_Counts_And_Percents()) +
                 `        - Meta-Letters: ${data_info.Total_Meta_Letter_Count_String()} (~${data_info.Total_Meta_Letter_Percent()}%)\n` +
-                Breakdown_By_Language(`        `, data_info.Language_Meta_Letter_Counts_And_Percents_Array()) +
+                Breakdown_By_Language(`        `, data_info.Language_Meta_Letter_Counts_And_Percents()) +
                 `        - Non-Letters: ${data_info.Total_Marker_Count_String()} (~${data_info.Total_Marker_Percent()}%)\n` +
-                Breakdown_By_Language(`        `, data_info.Language_Marker_Counts_And_Percents_Array()) +
+                Breakdown_By_Language(`        `, data_info.Language_Marker_Counts_And_Percents()) +
 
                 readme_text.slice(stats_end, readme_text.length);
         }
