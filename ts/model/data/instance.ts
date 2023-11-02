@@ -1214,6 +1214,7 @@ export class Instance extends Async.Instance
             }
         } else {
             this.info = new Info({});
+            this.info.Freeze();
         }
     }
 }

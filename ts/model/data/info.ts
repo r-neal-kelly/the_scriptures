@@ -15,6 +15,7 @@ export class Info
 {
     private tree: Tree;
 
+    // now that we are interpreting the json, we can use sets to speed this up again
     private unique_book_names: Array<Name>;
     private unique_language_names: Array<Name>;
     private unique_version_names: Array<Name>;
