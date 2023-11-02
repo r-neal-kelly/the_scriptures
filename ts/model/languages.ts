@@ -2,6 +2,7 @@ import * as Utils from "../utils.js";
 
 import * as Font from "./font.js";
 import * as Language from "./language.js";
+import * as Name_Sorter from "./name_sorter.js";
 
 export class Instance
 {
@@ -27,7 +28,11 @@ export class Instance
             this.languages[language_name] = language;
             this.language_names.push(language_name);
         }
-        this.language_names.sort();
+        this.language_names =
+            Name_Sorter.Singleton().With_Array(
+                Name_Sorter.Type.LANGUAGES,
+                this.language_names,
+            ) as Array<Language.Name>;
 
         Object.freeze(this.languages);
         Object.freeze(this.language_names);

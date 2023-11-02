@@ -10,6 +10,7 @@ import * as Utils from "../utils.js";
 import * as Unicode from "../unicode.js";
 
 import * as Language from "../model/language.js";
+import * as Name_Sorter from "../model/name_sorter.js";
 import * as Data from "../model/data.js";
 import * as Text from "../model/text.js";
 
@@ -34,76 +35,11 @@ const UNIQUE_PARTS_JSON_NAME: Name =
 const DEFAULT_LAST_TIMESTAMP: Count =
     0;
 
-const NAME_SORTER: Data.Name_Sorter.Instance =
-    Data.Name_Sorter.Singleton();
+const NAME_SORTER: Name_Sorter.Instance =
+    Name_Sorter.Singleton();
 
 const LINE_PATH_TYPE: Text.Line.Path_Type =
     Text.Line.Path_Type.DEFAULT;
-
-class Unique_Names
-{
-    private books: Set<Name>;
-    private languages: Set<Name>;
-    private versions: Set<Name>;
-
-    constructor()
-    {
-        this.books = new Set();
-        this.languages = new Set();
-        this.versions = new Set();
-    }
-
-    Add_Book(
-        name: Name,
-    ):
-        void
-    {
-        this.books.add(name);
-    }
-
-    Add_Language(
-        name: Name,
-    ):
-        void
-    {
-        this.languages.add(name);
-    }
-
-    Add_Version(
-        name: Name,
-    ):
-        void
-    {
-        this.versions.add(name);
-    }
-
-    Books():
-        Array<Name>
-    {
-        return NAME_SORTER.With_Set(
-            Data.Name_Sorter.Type.BOOKS,
-            this.books,
-        );
-    }
-
-    Languages():
-        Array<Name>
-    {
-        return NAME_SORTER.With_Set(
-            Data.Name_Sorter.Type.LANGUAGES,
-            this.languages,
-        );
-    }
-
-    Versions():
-        Array<Name>
-    {
-        return NAME_SORTER.With_Set(
-            Data.Name_Sorter.Type.VERSIONS,
-            this.versions,
-        );
-    }
-}
 
 class Unique_Parts
 {
@@ -290,42 +226,7 @@ async function Generate(
         File_System.Has_File(TIMESTAMP_PATH) ?
             await File_System.Read_Entity_Last_Modified_Time(TIMESTAMP_PATH) :
             DEFAULT_LAST_TIMESTAMP;
-    const data_info: Data.Info = {
-        tree: {
-            books: [],
-        },
-
-        unique_book_names: [],
-        unique_language_names: [],
-        unique_version_names: [],
-
-        total_unit_count: 0,
-        total_point_count: 0,
-        total_letter_count: 0,
-        total_marker_count: 0,
-        total_meta_letter_count: 0,
-        total_word_count: 0,
-        total_break_count: 0,
-        total_meta_word_count: 0,
-        total_part_count: 0,
-        total_line_count: 0,
-        total_file_count: 0,
-        total_book_count: 0,
-
-        language_unit_counts: {},
-        language_point_counts: {},
-        language_letter_counts: {},
-        language_marker_counts: {},
-        language_meta_letter_counts: {},
-        language_word_counts: {},
-        language_break_counts: {},
-        language_meta_word_counts: {},
-        language_part_counts: {},
-        language_line_counts: {},
-        language_file_counts: {},
-        language_book_counts: {},
-    };
-    const unique_names: Unique_Names = new Unique_Names();
+    const data_info: Data.Info = new Data.Info({});
 
     async function Update_Data():
         Promise<void>
@@ -337,8 +238,8 @@ async function Generate(
                 name: book_name,
                 languages: [],
             };
-            data_info.tree.books.push(book_branch);
-            unique_names.Add_Book(book_name);
+            data_info.Tree().books.push(book_branch);
+            data_info.Add_Unique_Book_Name(book_name);
             for (const language_name of (await File_System.Folder_Names(languages_path)).sort()) {
                 const versions_path: Path = `${languages_path}/${language_name}`;
                 const language_branch: Data.Language.Branch = {
@@ -346,21 +247,7 @@ async function Generate(
                     versions: [],
                 };
                 book_branch.languages.push(language_branch);
-                unique_names.Add_Language(language_name);
-                if (data_info.language_unit_counts[language_name] == null) {
-                    data_info.language_unit_counts[language_name] = 0;
-                    data_info.language_point_counts[language_name] = 0;
-                    data_info.language_letter_counts[language_name] = 0;
-                    data_info.language_marker_counts[language_name] = 0;
-                    data_info.language_meta_letter_counts[language_name] = 0;
-                    data_info.language_word_counts[language_name] = 0;
-                    data_info.language_break_counts[language_name] = 0;
-                    data_info.language_meta_word_counts[language_name] = 0;
-                    data_info.language_part_counts[language_name] = 0;
-                    data_info.language_line_counts[language_name] = 0;
-                    data_info.language_file_counts[language_name] = 0;
-                    data_info.language_book_counts[language_name] = 0;
-                }
+                data_info.Add_Unique_Language_Name(language_name);
                 for (const version_name of (await File_System.Folder_Names(versions_path)).sort()) {
                     const files_path: Path = `${versions_path}/${version_name}`;
                     const file_names: Array<string> = await Read_And_Sort_File_Names(files_path);
@@ -369,7 +256,7 @@ async function Generate(
                         files: file_names.map(Utils.Remove_File_Extension),
                     };
                     language_branch.versions.push(version_branch);
-                    unique_names.Add_Version(version_name);
+                    data_info.Add_Unique_Version_Name(version_name);
                     if (await Should_Version_Be_Updated(last_timestamp, files_path, file_names)) {
                         const version_info: Data.Version.Info = {
                             total_unit_count: 0,
@@ -602,76 +489,34 @@ async function Generate(
                     }
                     const version_info: Data.Version.Info =
                         JSON.parse(await File_System.Read_File(`${files_path}/${INFO_JSON_NAME}`));
-                    Utils.Assert(data_info.total_unit_count + version_info.total_unit_count <= Number.MAX_SAFE_INTEGER);
-                    Utils.Assert(data_info.total_point_count + version_info.total_point_count <= Number.MAX_SAFE_INTEGER);
-                    Utils.Assert(data_info.total_letter_count + version_info.total_letter_count <= Number.MAX_SAFE_INTEGER);
-                    Utils.Assert(data_info.total_marker_count + version_info.total_marker_count <= Number.MAX_SAFE_INTEGER);
-                    Utils.Assert(data_info.total_meta_letter_count + version_info.total_meta_letter_count <= Number.MAX_SAFE_INTEGER);
-                    Utils.Assert(data_info.total_word_count + version_info.total_word_count <= Number.MAX_SAFE_INTEGER);
-                    Utils.Assert(data_info.total_break_count + version_info.total_break_count <= Number.MAX_SAFE_INTEGER);
-                    Utils.Assert(data_info.total_meta_word_count + version_info.total_meta_word_count <= Number.MAX_SAFE_INTEGER);
-                    Utils.Assert(data_info.total_part_count + version_info.total_part_count <= Number.MAX_SAFE_INTEGER);
-                    Utils.Assert(data_info.total_line_count + version_info.total_line_count <= Number.MAX_SAFE_INTEGER);
-                    Utils.Assert(data_info.total_file_count + version_info.total_file_count <= Number.MAX_SAFE_INTEGER);
-                    Utils.Assert(data_info.total_book_count + 1 <= Number.MAX_SAFE_INTEGER);
-                    Utils.Assert(data_info.language_unit_counts[language_name] + version_info.total_unit_count <= Number.MAX_SAFE_INTEGER);
-                    Utils.Assert(data_info.language_point_counts[language_name] + version_info.total_point_count <= Number.MAX_SAFE_INTEGER);
-                    Utils.Assert(data_info.language_letter_counts[language_name] + version_info.total_letter_count <= Number.MAX_SAFE_INTEGER);
-                    Utils.Assert(data_info.language_marker_counts[language_name] + version_info.total_marker_count <= Number.MAX_SAFE_INTEGER);
-                    Utils.Assert(data_info.language_meta_letter_counts[language_name] + version_info.total_meta_letter_count <= Number.MAX_SAFE_INTEGER);
-                    Utils.Assert(data_info.language_word_counts[language_name] + version_info.total_word_count <= Number.MAX_SAFE_INTEGER);
-                    Utils.Assert(data_info.language_break_counts[language_name] + version_info.total_break_count <= Number.MAX_SAFE_INTEGER);
-                    Utils.Assert(data_info.language_meta_word_counts[language_name] + version_info.total_meta_word_count <= Number.MAX_SAFE_INTEGER);
-                    Utils.Assert(data_info.language_part_counts[language_name] + version_info.total_part_count <= Number.MAX_SAFE_INTEGER);
-                    Utils.Assert(data_info.language_line_counts[language_name] + version_info.total_line_count <= Number.MAX_SAFE_INTEGER);
-                    Utils.Assert(data_info.language_file_counts[language_name] + version_info.total_file_count <= Number.MAX_SAFE_INTEGER);
-                    Utils.Assert(data_info.language_book_counts[language_name] + 1 <= Number.MAX_SAFE_INTEGER);
-                    data_info.total_unit_count += version_info.total_unit_count;
-                    data_info.total_point_count += version_info.total_point_count;
-                    data_info.total_letter_count += version_info.total_letter_count;
-                    data_info.total_marker_count += version_info.total_marker_count;
-                    data_info.total_meta_letter_count += version_info.total_meta_letter_count;
-                    data_info.total_word_count += version_info.total_word_count;
-                    data_info.total_break_count += version_info.total_break_count;
-                    data_info.total_meta_word_count += version_info.total_meta_word_count;
-                    data_info.total_part_count += version_info.total_part_count;
-                    data_info.total_line_count += version_info.total_line_count;
-                    data_info.total_file_count += version_info.total_file_count;
-                    data_info.total_book_count += 1;
-                    data_info.language_unit_counts[language_name] += version_info.total_unit_count;
-                    data_info.language_point_counts[language_name] += version_info.total_point_count;
-                    data_info.language_letter_counts[language_name] += version_info.total_letter_count;
-                    data_info.language_marker_counts[language_name] += version_info.total_marker_count;
-                    data_info.language_meta_letter_counts[language_name] += version_info.total_meta_letter_count;
-                    data_info.language_word_counts[language_name] += version_info.total_word_count;
-                    data_info.language_break_counts[language_name] += version_info.total_break_count;
-                    data_info.language_meta_word_counts[language_name] += version_info.total_meta_word_count;
-                    data_info.language_part_counts[language_name] += version_info.total_part_count;
-                    data_info.language_line_counts[language_name] += version_info.total_line_count;
-                    data_info.language_file_counts[language_name] += version_info.total_file_count;
-                    data_info.language_book_counts[language_name] += 1;
+                    data_info.Increment_Total_Unit_Count(version_info.total_unit_count);
+                    data_info.Increment_Total_Point_Count(version_info.total_point_count);
+                    data_info.Increment_Total_Letter_Count(version_info.total_letter_count);
+                    data_info.Increment_Total_Marker_Count(version_info.total_marker_count);
+                    data_info.Increment_Total_Meta_Letter_Count(version_info.total_meta_letter_count);
+                    data_info.Increment_Total_Word_Count(version_info.total_word_count);
+                    data_info.Increment_Total_Break_Count(version_info.total_break_count);
+                    data_info.Increment_Total_Meta_Word_Count(version_info.total_meta_word_count);
+                    data_info.Increment_Total_Part_Count(version_info.total_part_count);
+                    data_info.Increment_Total_Line_Count(version_info.total_line_count);
+                    data_info.Increment_Total_File_Count(version_info.total_file_count);
+                    data_info.Increment_Total_Book_Count(1);
+                    data_info.Increment_Language_Unit_Count(language_name, version_info.total_unit_count);
+                    data_info.Increment_Language_Point_Count(language_name, version_info.total_point_count);
+                    data_info.Increment_Language_Letter_Count(language_name, version_info.total_letter_count);
+                    data_info.Increment_Language_Marker_Count(language_name, version_info.total_marker_count);
+                    data_info.Increment_Language_Meta_Letter_Count(language_name, version_info.total_meta_letter_count);
+                    data_info.Increment_Language_Word_Count(language_name, version_info.total_word_count);
+                    data_info.Increment_Language_Break_Count(language_name, version_info.total_break_count);
+                    data_info.Increment_Language_Meta_Word_Count(language_name, version_info.total_meta_word_count);
+                    data_info.Increment_Language_Part_Count(language_name, version_info.total_part_count);
+                    data_info.Increment_Language_Line_Count(language_name, version_info.total_line_count);
+                    data_info.Increment_Language_File_Count(language_name, version_info.total_file_count);
+                    data_info.Increment_Language_Book_Count(language_name, 1);
                 }
             }
         }
-        Utils.Assert(
-            (
-                data_info.total_word_count +
-                data_info.total_meta_word_count +
-                data_info.total_break_count
-            ) === data_info.total_part_count,
-            `Miscount of total_part_count`,
-        );
-        Utils.Assert(
-            (
-                data_info.total_letter_count +
-                data_info.total_meta_letter_count +
-                data_info.total_marker_count
-            ) === data_info.total_point_count,
-            `Miscount of total_point_count.`,
-        );
-        data_info.unique_book_names = unique_names.Books();
-        data_info.unique_language_names = unique_names.Languages();
-        data_info.unique_version_names = unique_names.Versions();
+        data_info.Freeze();
         await File_System.Write_File(
             `${DATA_PATH}/${INFO_JSON_NAME}`,
             JSON.stringify(data_info),
@@ -708,13 +553,6 @@ async function Generate(
                 stats_end = readme_text.length;
             }
 
-            const total_word_percent: Integer = Math.round(data_info.total_word_count * 100 / data_info.total_part_count);
-            const total_meta_word_percent: Integer = Math.round(data_info.total_meta_word_count * 100 / data_info.total_part_count);
-            const total_non_word_percent: Integer = Math.round(data_info.total_break_count * 100 / data_info.total_part_count);
-            const total_letter_percent: Integer = Math.round(data_info.total_letter_count * 100 / data_info.total_point_count);
-            const total_meta_letter_percent: Integer = Math.round(data_info.total_meta_letter_count * 100 / data_info.total_point_count);
-            const total_non_letter_percent: Integer = Math.round(data_info.total_marker_count * 100 / data_info.total_point_count);
-
             function List_Items(
                 current_indent: string,
                 items: Array<string>,
@@ -732,19 +570,14 @@ async function Generate(
 
             function Breakdown_By_Language(
                 current_indent: string,
-                total_count: Count,
-                language_counts: { [language_name: string]: Count },
+                language_counts_and_percents: Array<[string, Count, Count]>,
             ):
                 string
             {
                 let result: string = ``;
 
-                for (const language_name of data_info.unique_language_names) {
-                    if (language_counts[language_name] != null) {
-                        const count: Count = language_counts[language_name];
-                        const percent: Integer = Math.round(count * 100 / total_count);
-                        result += `${current_indent}    - ${language_name}: ${Utils.Add_Commas_To_Number(count)} (~${percent}%)\n`;
-                    }
+                for (const [name, count, percent] of language_counts_and_percents) {
+                    result += `${current_indent}    - ${name}: ${Utils.Add_Commas_To_Number(count)} (~${percent}%)\n`;
                 }
 
                 return result;
@@ -754,41 +587,41 @@ async function Generate(
                 readme_text.slice(0, stats_first) +
                 `## Stats\n\n` +
 
-                `- Unique Languages: ${Utils.Add_Commas_To_Number(data_info.unique_language_names.length)}\n` +
-                List_Items(``, data_info.unique_language_names) +
-                `- Unique Versions: ${Utils.Add_Commas_To_Number(data_info.unique_version_names.length)}\n` +
-                List_Items(``, data_info.unique_version_names) +
-                `- Unique Books: ${Utils.Add_Commas_To_Number(data_info.unique_book_names.length)}\n` +
-                List_Items(``, data_info.unique_book_names) +
+                `- Unique Languages: ${data_info.Unique_Language_Name_Count_String()}\n` +
+                List_Items(``, data_info.Unique_Language_Names()) +
+                `- Unique Versions: ${data_info.Unique_Version_Name_Count_String()}\n` +
+                List_Items(``, data_info.Unique_Version_Names()) +
+                `- Unique Books: ${data_info.Unique_Book_Name_Count_String()}\n` +
+                List_Items(``, data_info.Unique_Book_Names()) +
 
                 `\n<br>\n\n` +
 
-                `- Total Books: ${Utils.Add_Commas_To_Number(data_info.total_book_count)}\n` +
-                Breakdown_By_Language(``, data_info.total_book_count, data_info.language_book_counts) +
-                `- Total Files: ${Utils.Add_Commas_To_Number(data_info.total_file_count)}\n` +
-                Breakdown_By_Language(``, data_info.total_file_count, data_info.language_file_counts) +
-                `- Total Lines: ${Utils.Add_Commas_To_Number(data_info.total_line_count)}\n` +
-                Breakdown_By_Language(``, data_info.total_line_count, data_info.language_line_counts) +
-                `- Total Parts: ${Utils.Add_Commas_To_Number(data_info.total_part_count)}\n` +
+                `- Total Books: ${data_info.Total_Book_Count_String()}\n` +
+                Breakdown_By_Language(``, data_info.Language_Book_Counts_And_Percents_Array()) +
+                `- Total Files: ${data_info.Total_File_Count_String()}\n` +
+                Breakdown_By_Language(``, data_info.Language_File_Counts_And_Percents_Array()) +
+                `- Total Lines: ${data_info.Total_Line_Count_String()}\n` +
+                Breakdown_By_Language(``, data_info.Language_Line_Counts_And_Percents_Array()) +
+                `- Total Parts: ${data_info.Total_Part_Count_String()}\n` +
                 `    - <i>By Language</i>\n` +
-                Breakdown_By_Language(`    `, data_info.total_part_count, data_info.language_part_counts) +
+                Breakdown_By_Language(`    `, data_info.Language_Part_Counts_And_Percents_Array()) +
                 `    - <i>By Components</i>\n` +
-                `        - Words: ${Utils.Add_Commas_To_Number(data_info.total_word_count)} (~${total_word_percent}%)\n` +
-                Breakdown_By_Language(`        `, data_info.total_word_count, data_info.language_word_counts) +
-                `        - Meta-Words: ${Utils.Add_Commas_To_Number(data_info.total_meta_word_count)} (~${total_meta_word_percent}%)\n` +
-                Breakdown_By_Language(`        `, data_info.total_meta_word_count, data_info.language_meta_word_counts) +
-                `        - Non-Words: ${Utils.Add_Commas_To_Number(data_info.total_break_count)} (~${total_non_word_percent}%)\n` +
-                Breakdown_By_Language(`        `, data_info.total_break_count, data_info.language_break_counts) +
-                `- Total Unicode Points: ${Utils.Add_Commas_To_Number(data_info.total_point_count)}\n` +
+                `        - Words: ${data_info.Total_Word_Count_String()} (~${data_info.Total_Word_Percent()}%)\n` +
+                Breakdown_By_Language(`        `, data_info.Language_Word_Counts_And_Percents_Array()) +
+                `        - Meta-Words: ${data_info.Total_Meta_Word_Count_String()} (~${data_info.Total_Meta_Word_Percent()}%)\n` +
+                Breakdown_By_Language(`        `, data_info.Language_Meta_Word_Counts_And_Percents_Array()) +
+                `        - Non-Words: ${data_info.Total_Break_Count_String()} (~${data_info.Total_Break_Percent()}%)\n` +
+                Breakdown_By_Language(`        `, data_info.Language_Break_Counts_And_Percents_Array()) +
+                `- Total Unicode Points: ${data_info.Total_Point_Count_String()}\n` +
                 `    - <i>By Language</i>\n` +
-                Breakdown_By_Language(`    `, data_info.total_point_count, data_info.language_point_counts) +
+                Breakdown_By_Language(`    `, data_info.Language_Point_Counts_And_Percents_Array()) +
                 `    - <i>By Components</i>\n` +
-                `        - Letters: ${Utils.Add_Commas_To_Number(data_info.total_letter_count)} (~${total_letter_percent}%)\n` +
-                Breakdown_By_Language(`        `, data_info.total_letter_count, data_info.language_letter_counts) +
-                `        - Meta-Letters: ${Utils.Add_Commas_To_Number(data_info.total_meta_letter_count)} (~${total_meta_letter_percent}%)\n` +
-                Breakdown_By_Language(`        `, data_info.total_meta_letter_count, data_info.language_meta_letter_counts) +
-                `        - Non-Letters: ${Utils.Add_Commas_To_Number(data_info.total_marker_count)} (~${total_non_letter_percent}%)\n` +
-                Breakdown_By_Language(`        `, data_info.total_marker_count, data_info.language_marker_counts) +
+                `        - Letters: ${data_info.Total_Letter_Count_String()} (~${data_info.Total_Letter_Percent()}%)\n` +
+                Breakdown_By_Language(`        `, data_info.Language_Letter_Counts_And_Percents_Array()) +
+                `        - Meta-Letters: ${data_info.Total_Meta_Letter_Count_String()} (~${data_info.Total_Meta_Letter_Percent()}%)\n` +
+                Breakdown_By_Language(`        `, data_info.Language_Meta_Letter_Counts_And_Percents_Array()) +
+                `        - Non-Letters: ${data_info.Total_Marker_Count_String()} (~${data_info.Total_Marker_Percent()}%)\n` +
+                Breakdown_By_Language(`        `, data_info.Language_Marker_Counts_And_Percents_Array()) +
 
                 readme_text.slice(stats_end, readme_text.length);
         }

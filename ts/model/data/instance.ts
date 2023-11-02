@@ -6,50 +6,14 @@ import { Path } from "../../types.js";
 import * as Utils from "../../utils.js";
 import * as Async from "../../async.js";
 
+import * as Name_Sorter from "../name_sorter.js";
+
 import { Type } from "./type.js";
+import { Info } from "./info.js";
 import * as Query from "./query.js";
 import * as Book from "./book.js";
 import * as Version from "./version.js";
 import * as File from "./file.js";
-import * as Name_Sorter from "./name_sorter.js";
-
-export type Tree = {
-    books: Array<Book.Branch>,
-};
-
-export type Info = {
-    tree: Tree;
-
-    unique_book_names: Array<Name>,
-    unique_language_names: Array<Name>,
-    unique_version_names: Array<Name>,
-
-    total_unit_count: Count,
-    total_point_count: Count,
-    total_letter_count: Count,
-    total_marker_count: Count,
-    total_meta_letter_count: Count,
-    total_word_count: Count,
-    total_break_count: Count,
-    total_meta_word_count: Count,
-    total_part_count: Count,
-    total_line_count: Count,
-    total_file_count: Count,
-    total_book_count: Count,
-
-    language_unit_counts: { [language_name: string]: Count };
-    language_point_counts: { [language_name: string]: Count };
-    language_letter_counts: { [language_name: string]: Count };
-    language_marker_counts: { [language_name: string]: Count };
-    language_meta_letter_counts: { [language_name: string]: Count };
-    language_word_counts: { [language_name: string]: Count };
-    language_break_counts: { [language_name: string]: Count };
-    language_meta_word_counts: { [language_name: string]: Count };
-    language_part_counts: { [language_name: string]: Count };
-    language_line_counts: { [language_name: string]: Count };
-    language_file_counts: { [language_name: string]: Count };
-    language_book_counts: { [language_name: string]: Count };
-};
 
 export class Instance extends Async.Instance
 {
@@ -58,7 +22,6 @@ export class Instance extends Async.Instance
     private books_path: Path;
     private info: Info | null;
     private books: Array<Book.Instance>;
-    private name_sorter: Name_Sorter.Instance;
 
     constructor()
     {
@@ -69,7 +32,6 @@ export class Instance extends Async.Instance
         this.books_path = `${this.path}/Books`;
         this.info = null;
         this.books = [];
-        this.name_sorter = new Name_Sorter.Instance();
 
         this.Add_Dependencies(
             [
@@ -175,12 +137,6 @@ export class Instance extends Async.Instance
         );
 
         return Array.from(this.books);
-    }
-
-    Name_Sorter():
-        Name_Sorter.Instance
-    {
-        return this.name_sorter;
     }
 
     Names(
@@ -655,7 +611,7 @@ export class Instance extends Async.Instance
             `Not ready.`,
         );
 
-        return Array.from(this.Info().unique_book_names);
+        return this.Info().Unique_Book_Names();
     }
 
     Book_Language_Names(
@@ -683,7 +639,7 @@ export class Instance extends Async.Instance
             }
         }
 
-        return this.Name_Sorter().With_Set(
+        return Name_Sorter.Singleton().With_Set(
             Name_Sorter.Type.LANGUAGES,
             language_names,
         );
@@ -716,7 +672,7 @@ export class Instance extends Async.Instance
             }
         }
 
-        return this.Name_Sorter().With_Set(
+        return Name_Sorter.Singleton().With_Set(
             Name_Sorter.Type.VERSIONS,
             version_names,
         );
@@ -754,7 +710,7 @@ export class Instance extends Async.Instance
             }
         }
 
-        return this.Name_Sorter().With_Set(
+        return Name_Sorter.Singleton().With_Set(
             Name_Sorter.Type.VERSIONS,
             version_names,
         );
@@ -792,7 +748,7 @@ export class Instance extends Async.Instance
             }
         }
 
-        return this.Name_Sorter().With_Set(
+        return Name_Sorter.Singleton().With_Set(
             Name_Sorter.Type.LANGUAGES,
             language_names,
         );
@@ -806,7 +762,7 @@ export class Instance extends Async.Instance
             `Not ready.`,
         );
 
-        return Array.from(this.Info().unique_language_names);
+        return this.Info().Unique_Language_Names();
     }
 
     Language_Book_Names(
@@ -834,7 +790,7 @@ export class Instance extends Async.Instance
             }
         }
 
-        return this.Name_Sorter().With_Set(
+        return Name_Sorter.Singleton().With_Set(
             Name_Sorter.Type.BOOKS,
             book_names,
         );
@@ -867,7 +823,7 @@ export class Instance extends Async.Instance
             }
         }
 
-        return this.Name_Sorter().With_Set(
+        return Name_Sorter.Singleton().With_Set(
             Name_Sorter.Type.VERSIONS,
             version_names,
         );
@@ -905,7 +861,7 @@ export class Instance extends Async.Instance
             }
         }
 
-        return this.Name_Sorter().With_Set(
+        return Name_Sorter.Singleton().With_Set(
             Name_Sorter.Type.VERSIONS,
             version_names,
         );
@@ -943,7 +899,7 @@ export class Instance extends Async.Instance
             }
         }
 
-        return this.Name_Sorter().With_Set(
+        return Name_Sorter.Singleton().With_Set(
             Name_Sorter.Type.BOOKS,
             book_names,
         );
@@ -957,7 +913,7 @@ export class Instance extends Async.Instance
             `Not ready.`,
         );
 
-        return Array.from(this.Info().unique_version_names);
+        return this.Info().Unique_Version_Names();
     }
 
     Version_Book_Names(
@@ -987,7 +943,7 @@ export class Instance extends Async.Instance
             }
         }
 
-        return this.Name_Sorter().With_Set(
+        return Name_Sorter.Singleton().With_Set(
             Name_Sorter.Type.BOOKS,
             book_names,
         );
@@ -1020,7 +976,7 @@ export class Instance extends Async.Instance
             }
         }
 
-        return this.Name_Sorter().With_Set(
+        return Name_Sorter.Singleton().With_Set(
             Name_Sorter.Type.LANGUAGES,
             language_names,
         );
@@ -1058,7 +1014,7 @@ export class Instance extends Async.Instance
             }
         }
 
-        return this.Name_Sorter().With_Set(
+        return Name_Sorter.Singleton().With_Set(
             Name_Sorter.Type.LANGUAGES,
             language_names,
         );
@@ -1096,7 +1052,7 @@ export class Instance extends Async.Instance
             }
         }
 
-        return this.Name_Sorter().With_Set(
+        return Name_Sorter.Singleton().With_Set(
             Name_Sorter.Type.BOOKS,
             book_names,
         );
@@ -1240,9 +1196,13 @@ export class Instance extends Async.Instance
         const response: Response =
             await fetch(Utils.Resolve_Path(`${this.Path()}/Info.json`));
         if (response.ok) {
-            this.info = JSON.parse(await response.text()) as Info;
+            this.info = new Info(
+                {
+                    json: await response.text(),
+                },
+            );
 
-            for (const book_branch of this.info.tree.books) {
+            for (const book_branch of this.info.Tree().books) {
                 this.books.push(
                     new Book.Instance(
                         {
@@ -1253,41 +1213,7 @@ export class Instance extends Async.Instance
                 );
             }
         } else {
-            this.info = {
-                tree: {
-                    books: [],
-                },
-
-                unique_book_names: [],
-                unique_language_names: [],
-                unique_version_names: [],
-
-                total_unit_count: 0,
-                total_point_count: 0,
-                total_letter_count: 0,
-                total_marker_count: 0,
-                total_meta_letter_count: 0,
-                total_word_count: 0,
-                total_break_count: 0,
-                total_meta_word_count: 0,
-                total_part_count: 0,
-                total_line_count: 0,
-                total_file_count: 0,
-                total_book_count: 0,
-
-                language_unit_counts: {},
-                language_point_counts: {},
-                language_letter_counts: {},
-                language_marker_counts: {},
-                language_meta_letter_counts: {},
-                language_word_counts: {},
-                language_break_counts: {},
-                language_meta_word_counts: {},
-                language_part_counts: {},
-                language_line_counts: {},
-                language_file_counts: {},
-                language_book_counts: {},
-            };
+            this.info = new Info({});
         }
     }
 }

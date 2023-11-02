@@ -1,6 +1,6 @@
-import { Name } from "../../../types.js";
+import { Name } from "../../types.js";
 import { Type } from "./type.js";
-import * as Language from "../../language.js"
+import * as Language from "../language.js"
 
 const KNOWN_BOOK_NAMES: Set<Name> = new Set(
     [

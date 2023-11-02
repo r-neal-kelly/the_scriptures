@@ -1,6 +1,6 @@
 export { Instance } from "./data/instance.js";
-export { Info } from "./data/instance.js";
-export { Tree } from "./data/instance.js";
+export { Info } from "./data/info.js";
+export { Tree } from "./data/info.js";
 export { Type } from "./data/type.js";
 export * as Compressor from "./data/compressor.js";
 export * as Query from "./data/query.js";
@@ -9,6 +9,5 @@ export * as Language from "./data/language.js";
 export * as Version from "./data/version.js";
 export * as File from "./data/file.js";
 export * as Selection from "./data/selection.js";
-export * as Name_Sorter from "./data/name_sorter.js";
 
 export { Singleton } from "./data/instance.js";
