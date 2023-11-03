@@ -102,21 +102,41 @@ async function Read_And_Sort_File_Names(
 ):
     Promise<Array<string>>
 {
-    function Filter_File_Names(
-        file_name: string,
-    ):
-        boolean
-    {
-        return (
-            /\.txt$/.test(file_name) &&
-            !/COPY\.txt$/.test(file_name)
+    const file_names: Array<Name> =
+        (await File_System.File_Names(
+            folder_path,
+        )).filter(
+            function (
+                file_name: string,
+            ):
+                boolean
+            {
+                return (
+                    /\.txt$/.test(file_name) &&
+                    !/COPY\.txt$/.test(file_name)
+                );
+            },
         );
-    };
 
     if (File_System.Has_File(`${folder_path}/${ORDER_JSON_NAME}`)) {
-        return JSON.parse(await File_System.Read_File(`${folder_path}/${ORDER_JSON_NAME}`));
+        const ordered_file_names: Array<Name> =
+            JSON.parse(await File_System.Read_File(`${folder_path}/${ORDER_JSON_NAME}`));
+
+        const missing_file_names: Array<Name> = [];
+        for (const file_name of file_names) {
+            if (!ordered_file_names.includes(file_name)) {
+                missing_file_names.push(file_name);
+            }
+        }
+
+        Utils.Assert(
+            missing_file_names.length === 0,
+            `${folder_path}/${ORDER_JSON_NAME} is missing various files:\n${JSON.stringify(missing_file_names)}`,
+        );
+
+        return ordered_file_names;
     } else {
-        return (await File_System.File_Names(folder_path)).filter(Filter_File_Names).sort();
+        return file_names.sort();
     }
 }
 
