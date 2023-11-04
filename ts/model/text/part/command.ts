@@ -179,14 +179,15 @@ export function Is_Known_Value(
         if (parameter_and_argument != null) {
             if (parameter_and_argument.parameter === Parameter.LANGUAGE) {
                 return (
-                    parameter_and_argument.argument === Language.Name.ENGLISH ||
                     parameter_and_argument.argument === Language.Name.HEBREW ||
                     parameter_and_argument.argument === Language.Name.GREEK ||
                     parameter_and_argument.argument === Language.Name.LATIN ||
+                    parameter_and_argument.argument === Language.Name.ARAMAIC ||
                     parameter_and_argument.argument === Language.Name.GERMAN ||
                     parameter_and_argument.argument === Language.Name.FRENCH ||
+                    parameter_and_argument.argument === Language.Name.ITALIAN ||
                     parameter_and_argument.argument === Language.Name.DUTCH ||
-                    parameter_and_argument.argument === Language.Name.ITALIAN
+                    parameter_and_argument.argument === Language.Name.ENGLISH
                 );
 
             } else if (parameter_and_argument.parameter === Parameter.ERROR) {
@@ -851,15 +852,6 @@ export class Instance extends Part.Instance
         return this.Parameter() === Parameter.LANGUAGE;
     }
 
-    Is_Open_English():
-        boolean
-    {
-        return (
-            this.Parameter() === Parameter.LANGUAGE &&
-            this.Argument() === Language.Name.ENGLISH
-        );
-    }
-
     Is_Open_Hebrew():
         boolean
     {
@@ -887,6 +879,15 @@ export class Instance extends Part.Instance
         );
     }
 
+    Is_Open_Aramaic():
+        boolean
+    {
+        return (
+            this.Parameter() === Parameter.LANGUAGE &&
+            this.Argument() === Language.Name.ARAMAIC
+        );
+    }
+
     Is_Open_German():
         boolean
     {
@@ -905,6 +906,15 @@ export class Instance extends Part.Instance
         );
     }
 
+    Is_Open_Italian():
+        boolean
+    {
+        return (
+            this.Parameter() === Parameter.LANGUAGE &&
+            this.Argument() === Language.Name.ITALIAN
+        );
+    }
+
     Is_Open_Dutch():
         boolean
     {
@@ -914,12 +924,12 @@ export class Instance extends Part.Instance
         );
     }
 
-    Is_Open_Italian():
+    Is_Open_English():
         boolean
     {
         return (
             this.Parameter() === Parameter.LANGUAGE &&
-            this.Argument() === Language.Name.ITALIAN
+            this.Argument() === Language.Name.ENGLISH
         );
     }
 

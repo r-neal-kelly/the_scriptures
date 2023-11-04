@@ -756,22 +756,24 @@ export class Instance
                 } else if (macro_command.Is_Close_Error()) {
                     current_style &= ~Part.Style.ERROR;
 
-                } else if (macro_command.Is_Open_English()) {
-                    current_language.push(Language.Name.ENGLISH);
                 } else if (macro_command.Is_Open_Hebrew()) {
                     current_language.push(Language.Name.HEBREW);
                 } else if (macro_command.Is_Open_Greek()) {
                     current_language.push(Language.Name.GREEK);
                 } else if (macro_command.Is_Open_Latin()) {
                     current_language.push(Language.Name.LATIN);
+                } else if (macro_command.Is_Open_Aramaic()) {
+                    current_language.push(Language.Name.ARAMAIC);
                 } else if (macro_command.Is_Open_German()) {
                     current_language.push(Language.Name.GERMAN);
                 } else if (macro_command.Is_Open_French()) {
                     current_language.push(Language.Name.FRENCH);
-                } else if (macro_command.Is_Open_Dutch()) {
-                    current_language.push(Language.Name.DUTCH);
                 } else if (macro_command.Is_Open_Italian()) {
                     current_language.push(Language.Name.ITALIAN);
+                } else if (macro_command.Is_Open_Dutch()) {
+                    current_language.push(Language.Name.DUTCH);
+                } else if (macro_command.Is_Open_English()) {
+                    current_language.push(Language.Name.ENGLISH);
                 } else if (macro_command.Is_Close_Language()) {
                     if (current_language.length > 0) {
                         current_language.pop();

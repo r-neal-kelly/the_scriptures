@@ -15,14 +15,15 @@ export class Instance
         this.language_names = [];
 
         for (const language of [
-            new Language.English.Instance(),
             new Language.Hebrew.Instance(),
             new Language.Greek.Instance(),
             new Language.Latin.Instance(),
+            new Language.Aramaic.Instance(),
             new Language.German.Instance(),
             new Language.French.Instance(),
-            new Language.Dutch.Instance(),
             new Language.Italian.Instance(),
+            new Language.Dutch.Instance(),
+            new Language.English.Instance(),
         ]) {
             const language_name: Language.Name = language.Name();
             this.languages[language_name] = language;
@@ -65,12 +66,6 @@ export class Instance
         return Array.from(this.language_names);
     }
 
-    English():
-        Language.English.Instance
-    {
-        return this.Language(Language.Name.ENGLISH) as Language.English.Instance;
-    }
-
     Hebrew():
         Language.Hebrew.Instance
     {
@@ -89,6 +84,12 @@ export class Instance
         return this.Language(Language.Name.LATIN) as Language.Latin.Instance;
     }
 
+    Aramaic():
+        Language.Aramaic.Instance
+    {
+        return this.Language(Language.Name.ARAMAIC) as Language.Aramaic.Instance;
+    }
+
     German():
         Language.German.Instance
     {
@@ -101,16 +102,22 @@ export class Instance
         return this.Language(Language.Name.FRENCH) as Language.French.Instance;
     }
 
+    Italian():
+        Language.Italian.Instance
+    {
+        return this.Language(Language.Name.ITALIAN) as Language.Italian.Instance;
+    }
+
     Dutch():
         Language.Dutch.Instance
     {
         return this.Language(Language.Name.DUTCH) as Language.Dutch.Instance;
     }
 
-    Italian():
-        Language.Italian.Instance
+    English():
+        Language.English.Instance
     {
-        return this.Language(Language.Name.ITALIAN) as Language.Italian.Instance;
+        return this.Language(Language.Name.ENGLISH) as Language.English.Instance;
     }
 
     Direction(
