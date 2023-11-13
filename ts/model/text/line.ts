@@ -764,6 +764,8 @@ export class Instance
                     current_language.push(Language.Name.LATIN);
                 } else if (macro_command.Is_Open_Aramaic()) {
                     current_language.push(Language.Name.ARAMAIC);
+                } else if (macro_command.Is_Open_Arabic()) {
+                    current_language.push(Language.Name.ARABIC);
                 } else if (macro_command.Is_Open_German()) {
                     current_language.push(Language.Name.GERMAN);
                 } else if (macro_command.Is_Open_French()) {

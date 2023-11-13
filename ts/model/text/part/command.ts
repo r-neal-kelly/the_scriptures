@@ -183,6 +183,7 @@ export function Is_Known_Value(
                     parameter_and_argument.argument === Language.Name.GREEK ||
                     parameter_and_argument.argument === Language.Name.LATIN ||
                     parameter_and_argument.argument === Language.Name.ARAMAIC ||
+                    parameter_and_argument.argument === Language.Name.ARABIC ||
                     parameter_and_argument.argument === Language.Name.GERMAN ||
                     parameter_and_argument.argument === Language.Name.FRENCH ||
                     parameter_and_argument.argument === Language.Name.ITALIAN ||
@@ -885,6 +886,15 @@ export class Instance extends Part.Instance
         return (
             this.Parameter() === Parameter.LANGUAGE &&
             this.Argument() === Language.Name.ARAMAIC
+        );
+    }
+
+    Is_Open_Arabic():
+        boolean
+    {
+        return (
+            this.Parameter() === Parameter.LANGUAGE &&
+            this.Argument() === Language.Name.ARABIC
         );
     }
 

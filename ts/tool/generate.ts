@@ -176,8 +176,7 @@ async function Should_Version_Be_Updated(
         if (
             !File_System.Has_File(meta_file_path) ||
             (
-                await File_System.Read_Entity_Last_Modified_Time(meta_file_path) >
-                last_timestamp
+                await File_System.Read_Entity_Last_Modified_Time(meta_file_path) > last_timestamp
             )
         ) {
             return true;
@@ -187,18 +186,21 @@ async function Should_Version_Be_Updated(
     if (
         File_System.Has_File(`${files_path}/${ORDER_JSON_NAME}`) &&
         (
-            await File_System.Read_Entity_Last_Modified_Time(`${files_path}/${ORDER_JSON_NAME}`) >
-            last_timestamp
+            await File_System.Read_Entity_Last_Modified_Time(`${files_path}/${ORDER_JSON_NAME}`) > last_timestamp
         )
     ) {
         return true;
     }
 
     for (const file_name of file_names) {
-        const file_path: Path = `${files_path}/${file_name}`;
+        const compressed_file_path: Path =
+            `${files_path}/${file_name.replace(/\.[^.]*$/, `.${Data.File.Symbol.EXTENSION}`)}`;
         if (
-            await File_System.Read_Entity_Last_Modified_Time(file_path) >
-            last_timestamp
+            !File_System.Has_File(compressed_file_path) ||
+            (
+                await File_System.Read_Entity_Last_Modified_Time(`${files_path}/${file_name}`) > last_timestamp ||
+                await File_System.Read_Entity_Last_Modified_Time(compressed_file_path) > last_timestamp
+            )
         ) {
             return true;
         }

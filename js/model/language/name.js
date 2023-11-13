@@ -1,1 +1,1 @@
-export var Name;!function(a){a.HEBREW="Hebrew",a.GREEK="Greek",a.LATIN="Latin",a.ARAMAIC="Aramaic",a.GERMAN="German",a.FRENCH="French",a.ITALIAN="Italian",a.DUTCH="Dutch",a.ENGLISH="English"}(Name||(Name={}));
+export var Name;!function(a){a.HEBREW="Hebrew",a.GREEK="Greek",a.LATIN="Latin",a.ARAMAIC="Aramaic",a.ARABIC="Arabic",a.GERMAN="German",a.FRENCH="French",a.ITALIAN="Italian",a.DUTCH="Dutch",a.ENGLISH="English"}(Name||(Name={}));

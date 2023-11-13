@@ -1,12 +1,13 @@
 ﻿global lang     := "English"
 global subset   := "Standard"
-global langs    := [ "English", "Hebrew", "Greek", "Latin", "Ge'ez", "Aramaic" ]
+global langs    := [ "English", "Hebrew", "Greek", "Latin", "Ge'ez", "Aramaic", "Arabic" ]
 global subsets  := { "English": [ "Default" ]
                    , "Hebrew" : [ "Phonetic", "International", "Points", "Accents" ]
                    , "Greek"  : [ "Combining", "Polytonic", "Monotonic" ]
                    , "Latin"  : [ "Classical", "Italic" ] 
                    , "Ge'ez"  : [ "Abugida", "Abjad" ]
-                   , "Aramaic": [ "Syriac", "Samaritan", "Imperial", "Phoenician" ] }
+                   , "Aramaic": [ "Syriac", "Samaritan", "Imperial", "Phoenician" ]
+                   , "Arabic" : [ "Default" ] }
 
 ; Main ;
 rotate(arr) {

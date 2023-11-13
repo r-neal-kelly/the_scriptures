@@ -4,6 +4,7 @@ export enum Name
     GREEK = `Greek`,
     LATIN = `Latin`,
     ARAMAIC = `Aramaic`,
+    ARABIC = `Arabic`,
     GERMAN = `German`,
     FRENCH = `French`,
     ITALIAN = `Italian`,
