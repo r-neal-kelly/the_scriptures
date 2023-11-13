@@ -35,8 +35,8 @@ const UNIQUE_PARTS_JSON_NAME: Name =
 const DEFAULT_LAST_TIMESTAMP: Count =
     0;
 
-const NAME_SORTER: Name_Sorter.Instance =
-    Name_Sorter.Singleton();
+const IS_COMPRESSED_FILE_REGEX: RegExp =
+    new RegExp(`\\.${Data.File.Symbol.EXTENSION}$`);
 
 const LINE_PATH_TYPE: Text.Line.Path_Type =
     Text.Line.Path_Type.DEFAULT;
@@ -103,9 +103,7 @@ async function Read_And_Sort_File_Names(
     Promise<Array<string>>
 {
     const file_names: Array<Name> =
-        (await File_System.File_Names(
-            folder_path,
-        )).filter(
+        (await File_System.File_Names(folder_path)).filter(
             function (
                 file_name: string,
             ):
@@ -209,6 +207,29 @@ async function Should_Version_Be_Updated(
     return false;
 }
 
+async function Delete_Compiled_Files(
+    files_path: Path,
+):
+    Promise<void>
+{
+    const file_names: Array<Name> =
+        (await File_System.File_Names(files_path)).filter(
+            function (
+                file_name: string,
+            ):
+                boolean
+            {
+                return IS_COMPRESSED_FILE_REGEX.test(file_name);
+            },
+        );
+
+    await Promise.all(
+        file_names.map(
+            file_name => File_System.Delete_File(`${files_path}/${file_name}`),
+        ),
+    );
+}
+
 function Decompression_Line_Mismatches(
     uncompressed_text: string,
     decompressed_text: string,
@@ -289,6 +310,7 @@ async function Generate(
                         const file_texts: Array<string> = [];
                         version_info.Increment_File_Count(language_name, file_names.length);
                         dictionary.Validate();
+                        await Delete_Compiled_Files(files_path);
                         for (const file_name of file_names) {
                             const file_path: Path = `${files_path}/${file_name}`;
                             const file_text: string = await Read_File_Text(file_path);
@@ -471,7 +493,7 @@ async function Generate(
                             );
                             files_to_write.push(
                                 File_System.Write_File(
-                                    `${files_path}/${file_name.replace(/\.[^.]*$/, `.${Data.Version.Dictionary.Symbol.EXTENSION}`)}`,
+                                    `${files_path}/${file_name.replace(/\.[^.]*$/, `.${Data.File.Symbol.EXTENSION}`)}`,
                                     compressed_file_text,
                                 ),
                             );

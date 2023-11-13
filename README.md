@@ -52,16 +52,16 @@ Additionally, we've begun adding the World English Bible with Apocrypha.
     - Italian: 0 (~0%)
     - Dutch: 0 (~0%)
     - English: 11 (~41%)
-- Total Files: 958
+- Total Files: 959
     - Hebrew: 193 (~20%)
-    - Greek: 187 (~20%)
-    - Latin: 187 (~20%)
+    - Greek: 187 (~19%)
+    - Latin: 187 (~19%)
     - Aramaic: 0 (~0%)
     - German: 0 (~0%)
     - French: 0 (~0%)
     - Italian: 0 (~0%)
     - Dutch: 0 (~0%)
-    - English: 391 (~41%)
+    - English: 392 (~41%)
 - Total Lines: 34,047
     - Hebrew: 9,013 (~26%)
     - Greek: 6,195 (~18%)

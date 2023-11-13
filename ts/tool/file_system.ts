@@ -180,6 +180,36 @@ export async function Write_File(
     );
 }
 
+export async function Delete_File(
+    file_path: Path,
+):
+    Promise<void>
+{
+    return new Promise<void>(
+        function (
+            resolve: () => void,
+            reject: (error: Error) => void,
+        ):
+            void
+        {
+            fs.unlink(
+                file_path,
+                function (
+                    error: Error | null,
+                ):
+                    void
+                {
+                    if (error != null) {
+                        reject(error);
+                    } else {
+                        resolve();
+                    }
+                },
+            );
+        },
+    );
+}
+
 export async function Read_And_Write_File_With_No_Carriage_Returns(
     file_path: string,
 ):
