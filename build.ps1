@@ -1,5 +1,6 @@
 param(
     [switch]$help,
+    [switch]$release,
     [switch]$minify,
     [switch]$generate,
     [switch]$force_generate
@@ -12,9 +13,10 @@ if ($help.IsPresent) {
     Write-Host
     Write-Host "Parameters:"
     Write-Host "    -help: Brings up this help message."
-    Write-Host "    -minify: Calls the ./js/tool/minify.js tool."
-    Write-Host "    -generate: Calls the ./js/tool/generate.js tool."
-    Write-Host "    -force_generate: Calls the ./js/tool/generate.js tool with the -f (--force) option."
+    Write-Host "    -release: Minifies all JavaScript files and removes asserts."
+    Write-Host "    -minify: Minifies all JavaScript files."
+    Write-Host "    -generate: Generates all out of date Info and compressed files in data."
+    Write-Host "    -force_generate: Forcefully generates all Info and compressed files in data."
     Write-Host
 }
 else {
@@ -34,7 +36,7 @@ else {
         Write-Host
     }
     else {
-        if ($minify.IsPresent) {
+        if ($release.IsPresent -or $minify.IsPresent) {
             Write-Host "    Removing old JavaScript..."
             Remove-Item -Recurse -Force ./js
         }
@@ -42,9 +44,13 @@ else {
         Write-Host "    Compiling TypeScript into JavaScript..."
         tsc --build
 
-        if ($minify.IsPresent) {
+        if ($release.IsPresent -or $minify.IsPresent) {
             Write-Host "    Minifying all JavaScript files..."
             node ./js/tool/minify.js
+        }
+        if ($release.IsPresent) {
+            Write-Host "    Removing Asserts from JavaScript files..."
+            node ./js/tool/remove_asserts.js
         }
 
         if ($force_generate.IsPresent) {
