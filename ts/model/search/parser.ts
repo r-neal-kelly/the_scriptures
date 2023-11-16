@@ -10,8 +10,8 @@ import { Sequence_Type } from "./sequence_type.js";
 import * as Class from "./class.js";
 import * as Token from "./token.js";
 
-const LINE_PATH_TYPE: Text.Line.Path_Type =
-    Text.Line.Path_Type.DEFAULT;
+const LINE_PATH_TYPE: Text.Path.Type =
+    Text.Path.Type.DEFAULT;
 
 export class Help
 {

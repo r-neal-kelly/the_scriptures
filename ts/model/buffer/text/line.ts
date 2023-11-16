@@ -112,7 +112,7 @@ export class Instance extends Entity.Instance
                     ),
                 );
             } else {
-                const line_path_type: Text.Line.Path_Type = this.Buffer().Line_Path_Type();
+                const line_path_type: Text.Path.Type = this.Buffer().Line_Path_Type();
                 for (let idx = 0, end = text.Macro_Segment_Count(line_path_type); idx < end; idx += 1) {
                     this.segments.push(
                         new Segment.Instance(

@@ -7,8 +7,8 @@ import * as Font from "./model/font.js";
 import * as Fonts from "./model/fonts.js";
 import * as Model from "./model/text.js";
 
-const LINE_PATH_TYPE: Model.Line.Path_Type =
-    Model.Line.Path_Type.DEFAULT;
+const LINE_PATH_TYPE: Model.Path.Type =
+    Model.Path.Type.DEFAULT;
 
 const INDENT_AMOUNT: Count = 6;
 

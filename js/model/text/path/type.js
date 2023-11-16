@@ -1,0 +1,1 @@
+export var Type;!function(E){E[E.DEFAULT=0]="DEFAULT",E[E.ERRORLESS=1]="ERRORLESS"}(Type||(Type={}));

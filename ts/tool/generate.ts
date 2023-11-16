@@ -38,8 +38,8 @@ const DEFAULT_LAST_TIMESTAMP: Count =
 const IS_COMPRESSED_FILE_REGEX: RegExp =
     new RegExp(`\\.${Data.File.Symbol.EXTENSION}$`);
 
-const LINE_PATH_TYPE: Text.Line.Path_Type =
-    Text.Line.Path_Type.DEFAULT;
+const LINE_PATH_TYPE: Text.Path.Type =
+    Text.Path.Type.DEFAULT;
 
 class Unique_Parts
 {

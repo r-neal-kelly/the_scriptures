@@ -10,8 +10,8 @@ import * as Search from "../../search.js";
 import * as Buffer from "./instance.js";
 import * as Segment from "./segment.js";
 
-const LINE_PATH_TYPE: Text.Line.Path_Type =
-    Text.Line.Path_Type.DEFAULT;
+const LINE_PATH_TYPE: Text.Path.Type =
+    Text.Path.Type.DEFAULT;
 
 export class Instance extends Entity.Instance
 {
@@ -151,7 +151,7 @@ export class Instance extends Entity.Instance
                         part_idx < part_end;
                         part_idx += 1
                     ) {
-                        const segment_item_indices: Array<Text.Line.Segment_Item_Index> =
+                        const segment_item_indices: Array<Text.Segment.Item_Index> =
                             result.Line().Macro_Part_Segment_Item_Indices(part_idx, LINE_PATH_TYPE);
                         if (
                             part_idx === first_part_index &&
@@ -166,7 +166,7 @@ export class Instance extends Entity.Instance
                                 const {
                                     segment_index,
                                     item_index,
-                                }: Text.Line.Segment_Item_Index =
+                                }: Text.Segment.Item_Index =
                                     segment_item_indices[segment_item_idx];
                                 const text_segment: Text.Segment.Instance =
                                     result.Line().Macro_Segment(segment_index, LINE_PATH_TYPE);
@@ -250,7 +250,7 @@ export class Instance extends Entity.Instance
                                 const {
                                     segment_index,
                                     item_index,
-                                }: Text.Line.Segment_Item_Index =
+                                }: Text.Segment.Item_Index =
                                     segment_item_indices[segment_item_idx];
                                 const text_segment: Text.Segment.Instance =
                                     result.Line().Macro_Segment(segment_index, LINE_PATH_TYPE);
@@ -309,7 +309,7 @@ export class Instance extends Entity.Instance
                                 const {
                                     segment_index,
                                     item_index,
-                                }: Text.Line.Segment_Item_Index =
+                                }: Text.Segment.Item_Index =
                                     segment_item_indices[segment_item_idx];
                                 const text_segment: Text.Segment.Instance =
                                     result.Line().Macro_Segment(segment_index, LINE_PATH_TYPE);
@@ -364,7 +364,7 @@ export class Instance extends Entity.Instance
                                 const {
                                     segment_index,
                                     item_index,
-                                }: Text.Line.Segment_Item_Index =
+                                }: Text.Segment.Item_Index =
                                     segment_item_indices[segment_item_idx];
                                 const text_segment: Text.Segment.Instance =
                                     result.Line().Macro_Segment(segment_index, LINE_PATH_TYPE);

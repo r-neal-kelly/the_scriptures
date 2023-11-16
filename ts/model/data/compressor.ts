@@ -5,8 +5,8 @@ import * as Unicode from "../../unicode.js";
 
 import * as Text from "../text.js";
 
-const LINE_PATH_TYPE: Text.Line.Path_Type =
-    Text.Line.Path_Type.DEFAULT;
+const LINE_PATH_TYPE: Text.Path.Type =
+    Text.Path.Type.DEFAULT;
 
 export enum Symbol
 {

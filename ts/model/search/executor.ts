@@ -11,8 +11,8 @@ import * as Token from "./token.js";
 import * as Node from "./node.js";
 import * as Result from "./result.js";
 
-const LINE_PATH_TYPE: Text.Line.Path_Type =
-    Text.Line.Path_Type.DEFAULT;
+const LINE_PATH_TYPE: Text.Path.Type =
+    Text.Path.Type.DEFAULT;
 
 export enum Mode
 {
