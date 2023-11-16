@@ -90,10 +90,9 @@ export class Instance
     {
         this.macro_parts.push(macro_part);
         if (macro_part.Is_Command()) {
-            if (
-                macro_part.Value() === Part.Command.Known_Value.OPEN_LEFT_TO_RIGHT
-            ) {
-                this.Update_Macro_Segments(macro_part);
+            const command: Part.Command.Instance = macro_part as Part.Command.Instance;
+            if (command.Is_Open_Left_To_Right()) {
+                this.Update_Macro_Segments(command);
                 this.macro_segments.push(this.working_macro_segment);
                 this.working_macro_segment = new Segment.Instance(
                     {
@@ -101,10 +100,8 @@ export class Instance
                         index: this.macro_segments.length,
                     },
                 );
-            } else if (
-                macro_part.Value() === Part.Command.Known_Value.OPEN_RIGHT_TO_LEFT
-            ) {
-                this.Update_Macro_Segments(macro_part);
+            } else if (command.Is_Open_Right_To_Left()) {
+                this.Update_Macro_Segments(command);
                 this.macro_segments.push(this.working_macro_segment);
                 this.working_macro_segment = new Segment.Instance(
                     {
@@ -112,10 +109,7 @@ export class Instance
                         index: this.macro_segments.length,
                     },
                 );
-            } else if (
-                macro_part.Value() === Part.Command.Known_Value.CLOSE_LEFT_TO_RIGHT ||
-                macro_part.Value() === Part.Command.Known_Value.CLOSE_RIGHT_TO_LEFT
-            ) {
+            } else if (command.Is_Close_Left_To_Right() || command.Is_Close_Right_To_Left()) {
                 this.macro_segments.push(this.working_macro_segment);
                 this.working_macro_segment = new Segment.Instance(
                     {
@@ -123,9 +117,9 @@ export class Instance
                         index: this.macro_segments.length,
                     },
                 );
-                this.Update_Macro_Segments(macro_part);
+                this.Update_Macro_Segments(command);
             } else {
-                this.Update_Macro_Segments(macro_part);
+                this.Update_Macro_Segments(command);
             }
         } else if (macro_part.Is_Break()) {
             const splits: Array<Split.Instance> = Split.From(macro_part as Part.Break.Instance);

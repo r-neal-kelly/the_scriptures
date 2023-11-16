@@ -1,6 +1,5 @@
 import { Integer } from "./types.js";
 import { Count } from "./types.js";
-import { Index } from "./types.js";
 import { Path } from "./types.js";
 
 export function Assert(

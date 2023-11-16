@@ -21,11 +21,6 @@ function Remove_Asserts_From_Text(
     );
     for (; !iter.Is_At_End();) {
         if (ASSERT_REGEX.test(iter.Points() || ``)) {
-            let previous_point: string = new_file_text[new_file_text.length - 1];
-            if (previous_point === `,`) {
-                new_file_text.pop();
-            }
-
             while (iter.Point() !== `(`) {
                 iter = iter.Next();
             }
@@ -54,21 +49,7 @@ function Remove_Asserts_From_Text(
                 iter = iter.Next();
             }
 
-            const point: string = iter.Point();
-            if (previous_point === `)` && point !== `,` && point !== `;`) {
-                new_file_text.push(`;`);
-            } else if (previous_point === ` ` && point !== `,` && point !== `;`) {
-                if (point === `)`) {
-                    new_file_text.push(`0`);
-                } else {
-                    new_file_text.push(`;`);
-                }
-            } else if (previous_point === `:`) {
-                new_file_text.push(`0`);
-            } else if (previous_point !== `,` && point === `,`) {
-                new_file_text.push(` `);
-                iter = iter.Next();
-            }
+            new_file_text.push(`0`);
         } else {
             new_file_text.push(iter.Point());
             iter = iter.Next();
