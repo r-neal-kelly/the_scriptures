@@ -18,7 +18,7 @@ type Part_Index_To_Segment_Item_Indices = {
 export class Instance
 {
     private type: Type;
-    private value: Value;
+    private value: Value; // we maybe shouldn't store this, but simply construct it on demand. the items themselves ensure that the original source string is kept in memory, because they are slices.
 
     private is_centered: boolean;
     private padding_count: Count;
@@ -223,6 +223,12 @@ export class Instance
         Object.freeze(this.macro_segments);
         Object.freeze(this.macro_part_index_to_segment_item_indices);
         Object.freeze(this.working_macro_segment);
+    }
+
+    Type():
+        Type
+    {
+        return this.type;
     }
 
     Value():

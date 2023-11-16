@@ -119,6 +119,16 @@ export class Instance
         return this.paths[path_type].Padding_Count();
     }
 
+    // I think that we should do both the default and errorless path at the same time
+    // so that we can reuse parts. The errorless path would essentially just resolve
+    // the argument in the command, and create all the parts for that and push those
+    // to the errorless path, skipping what's in the tag, where as the default would
+    // just look at them normally and add everything.
+    // It would be more efficient if we create a validator for the command language
+    // and ensure that there are no error commands within error commands which doesn't
+    // make much sense anyway, for their intended purpose. It would make it easier
+    // to just use the same string instead of having multiple strings in memory,
+    // one with and one without errors.
     private Set_Path(
         path_type: Path.Type,
         value: Value,
@@ -386,6 +396,11 @@ export class Instance
                     if (current_language.length > 0) {
                         current_language.pop();
                     }
+                    const language: Language.Name | null = current_language.length > 0 ?
+                        current_language[current_language.length - 1] :
+                        null;
+                    micro_command.Set_Language(language);
+                    macro_command.Set_Language(language);
 
                 }
 

@@ -258,4 +258,12 @@ export class Instance implements Item.Instance
     {
         return this.language;
     }
+
+    Set_Language(
+        language: Language.Name | null,
+    ):
+        void
+    {
+        this.language = language;
+    }
 }
