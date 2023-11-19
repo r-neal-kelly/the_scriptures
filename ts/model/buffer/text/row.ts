@@ -226,11 +226,7 @@ export class Instance extends Entity.Instance
     Padding_Count():
         Count
     {
-        if (this.Has_Text()) {
-            return this.Text().Padding_Count();
-        } else {
-            return 0;
-        }
+        return this.Text().Padding_Count();
     }
 
     Padding_Direction():
@@ -242,7 +238,7 @@ export class Instance extends Entity.Instance
     Has_Styles():
         boolean
     {
-        return this.Padding_Count() > 0;
+        return this.Has_Text() && this.Padding_Count() > 0;
     }
 
     Styles():

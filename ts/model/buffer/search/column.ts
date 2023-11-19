@@ -149,4 +149,22 @@ export class Instance extends Entity.Instance
     {
         return this.line == null;
     }
+
+    Has_Styles():
+        boolean
+    {
+        return !this.Is_Blank();
+    }
+
+    Styles():
+        string | { [index: string]: string; }
+    {
+        if (this.Has_Styles()) {
+            return `
+                grid-template-rows: repeat(${this.Text().Row_Count()}, 1fr);
+            `;
+        } else {
+            return ``;
+        }
+    }
 }

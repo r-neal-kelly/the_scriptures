@@ -167,4 +167,22 @@ export class Instance extends Entity.Instance
     {
         return this.text == null;
     }
+
+    Has_Styles():
+        boolean
+    {
+        return this.Has_Text();
+    }
+
+    Styles():
+        string | { [index: string]: string; }
+    {
+        if (this.Has_Styles()) {
+            return `
+                grid-template-columns: repeat(${this.Text().Column_Count()}, 1fr);
+            `;
+        } else {
+            return ``;
+        }
+    }
 }

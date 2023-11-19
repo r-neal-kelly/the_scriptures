@@ -69,7 +69,13 @@ export class Instance extends Entity.Instance
         this.Add_Children_CSS(
             `
                 .Line {
-                    display: block;
+                    display: grid;
+                    column-gap: 3%;
+                    row-gap: 0;
+                    justify-items: stretch;
+                    align-items: stretch; /* maybe center, but it's harder to read? */
+                    justify-content: stretch;
+                    align-content: stretch;
 
                     margin: 0.35em 0;
                     padding: 0 0;
@@ -78,7 +84,13 @@ export class Instance extends Entity.Instance
                 }
                 
                 .Column {
-                    display: block;
+                    display: grid;
+                    column-gap: 0;
+                    row-gap: 3%;
+                    justify-items: stretch;
+                    align-items: stretch;
+                    justify-content: stretch;
+                    align-content: stretch;
 
                     margin: 0;
                     padding: 0;

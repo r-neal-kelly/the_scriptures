@@ -991,6 +991,10 @@ class Line
                         let command_classes: string = ``;
                         if (command.Is_Indent()) {
                             command_classes += ` INDENT`;
+                        } else if (command.Is_Column()) {
+                            command_classes += ` COLUMN`;
+                        } else if (command.Is_Row()) {
+                            command_classes += ` ROW`;
                         }
 
                         if (command.Is_Good()) {
@@ -2818,6 +2822,16 @@ class Editor
             border-color: orange;
             
             overflow-wrap: normal;
+        }
+
+        .COLUMN {
+            width: 100%;
+
+            text-align: center;
+        }
+
+        .ROW {
+            padding-left: ${INDENT_AMOUNT}em;
         }
     `);
 
