@@ -5,9 +5,6 @@ import * as Unicode from "../../unicode.js";
 
 import * as Text from "../text.js";
 
-const LINE_PATH_TYPE: Text.Path.Type =
-    Text.Path.Type.DEFAULT;
-
 export enum Symbol
 {
     NEWLINE,
@@ -209,41 +206,55 @@ export class Instance
             line_idx += 1
         ) {
             const line: Text.Line.Instance = text.Line(line_idx);
-            let previous_part_is_word: boolean = false;
             for (
-                let part_idx = 0, part_end = line.Macro_Part_Count(LINE_PATH_TYPE);
-                part_idx < part_end;
-                part_idx += 1
+                let column_idx = 0, column_end = line.Column_Count();
+                column_idx < column_end;
+                column_idx += 1
             ) {
-                const part: Text.Part.Instance = line.Macro_Part(part_idx, LINE_PATH_TYPE);
-                const value: Text.Value = part.Value();
-                if (this.indices.hasOwnProperty(value)) {
-                    const index: string = String.fromCodePoint(this.indices[value]);
-                    if (part.Is_Word()) {
-                        compressed_parts.push(index);
-                        previous_part_is_word = true;
-                    } else {
-                        if (
-                            !(
-                                value === ` ` &&
-                                previous_part_is_word &&
-                                part_idx + 1 < part_end &&
-                                line.Macro_Part(part_idx + 1, LINE_PATH_TYPE).Is_Word()
-                            )
-                        ) {
-                            compressed_parts.push(index);
+                const column: Text.Column.Instance = line.Column(column_idx);
+                for (
+                    let row_idx = 0, row_end = column.Row_Count();
+                    row_idx < row_end;
+                    row_idx += 1
+                ) {
+                    const row: Text.Row.Instance = column.Row(row_idx);
+                    let previous_part_is_word: boolean = false;
+                    for (
+                        let part_idx = 0, part_end = row.Macro_Part_Count();
+                        part_idx < part_end;
+                        part_idx += 1
+                    ) {
+                        const part: Text.Part.Instance = row.Macro_Part(part_idx);
+                        const value: Text.Value = part.Value();
+                        if (this.indices.hasOwnProperty(value)) {
+                            const index: string = String.fromCodePoint(this.indices[value]);
+                            if (part.Is_Word()) {
+                                compressed_parts.push(index);
+                                previous_part_is_word = true;
+                            } else {
+                                if (
+                                    !(
+                                        value === ` ` &&
+                                        previous_part_is_word &&
+                                        part_idx + 1 < part_end &&
+                                        row.Macro_Part(part_idx + 1).Is_Word()
+                                    )
+                                ) {
+                                    compressed_parts.push(index);
+                                }
+                                previous_part_is_word = false;
+                            }
+                        } else {
+                            if (compressed_parts[compressed_parts.length - 1] === verbatim_close) {
+                                compressed_parts.pop();
+                            } else {
+                                compressed_parts.push(verbatim_open);
+                            }
+                            compressed_parts.push(value);
+                            compressed_parts.push(verbatim_close);
+                            previous_part_is_word = false;
                         }
-                        previous_part_is_word = false;
                     }
-                } else {
-                    if (compressed_parts[compressed_parts.length - 1] === verbatim_close) {
-                        compressed_parts.pop();
-                    } else {
-                        compressed_parts.push(verbatim_open);
-                    }
-                    compressed_parts.push(value);
-                    compressed_parts.push(verbatim_close);
-                    previous_part_is_word = false;
                 }
             }
             if (line_idx < line_end - 1) {

@@ -138,6 +138,14 @@ export class Instance implements Item.Instance
         return this.index;
     }
 
+    Set_Index(
+        index: Index,
+    ):
+        void
+    {
+        this.index = index;
+    }
+
     Part_Index():
         Index
     {
@@ -183,14 +191,6 @@ export class Instance implements Item.Instance
         Status
     {
         return this.status;
-    }
-
-    Set_Status(
-        status: Status,
-    ):
-        void
-    {
-        this.status = status;
     }
 
     Is_Good():
@@ -257,13 +257,5 @@ export class Instance implements Item.Instance
         Language.Name | null
     {
         return this.language;
-    }
-
-    Set_Language(
-        language: Language.Name | null,
-    ):
-        void
-    {
-        this.language = language;
     }
 }

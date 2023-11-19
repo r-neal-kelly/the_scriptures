@@ -5,7 +5,7 @@ import * as Utils from "../../../utils.js";
 
 import * as Entity from "../../entity.js";
 import * as Text from "../../text.js";
-import * as Line from "./line.js";
+import * as Row from "./row.js";
 import * as Item from "./item.js";
 
 export class Instance extends Entity.Instance
@@ -39,18 +39,18 @@ export class Instance extends Entity.Instance
         Instance.min_item_count = min_item_count;
     }
 
-    private line: Line.Instance | null;
+    private row: Row.Instance | null;
     private index: Index | null;
     private text: Text.Segment.Instance | null;
     private items: Array<Item.Instance>;
 
     constructor(
         {
-            line,
+            row,
             index,
             text,
         }: {
-            line: Line.Instance | null,
+            row: Row.Instance | null,
             index: Index | null,
             text: Text.Segment.Instance | null,
         },
@@ -58,15 +58,15 @@ export class Instance extends Entity.Instance
     {
         super();
 
-        this.line = line;
+        this.row = row;
         this.index = index;
         this.text = text;
         this.items = [];
 
         if (text == null) {
             Utils.Assert(
-                line == null,
-                `line must be null.`,
+                row == null,
+                `row must be null.`,
             );
             Utils.Assert(
                 index == null,
@@ -74,8 +74,8 @@ export class Instance extends Entity.Instance
             );
         } else {
             Utils.Assert(
-                line != null,
-                `line must not be null.`,
+                row != null,
+                `row must not be null.`,
             );
             Utils.Assert(
                 index != null && index > -1,
@@ -100,15 +100,15 @@ export class Instance extends Entity.Instance
         );
     }
 
-    Line():
-        Line.Instance
+    Row():
+        Row.Instance
     {
         Utils.Assert(
-            this.line != null,
-            `Doesn't have line.`,
+            this.row != null,
+            `Doesn't have row.`,
         );
 
-        return this.line as Line.Instance;
+        return this.row as Row.Instance;
     }
 
     Index():

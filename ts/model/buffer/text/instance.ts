@@ -46,7 +46,6 @@ export class Instance extends Entity.Instance
     private language_font_name: (language_name: Language.Name) => Font.Name;
     private text: Text.Instance;
     private lines: Array<Line.Instance>;
-    private line_path_type: Text.Path.Type;
 
     constructor(
         {
@@ -71,10 +70,11 @@ export class Instance extends Entity.Instance
         this.language_font_name = language_font_name;
         this.text = text;
         this.lines = [];
+
         if (allow_errors) {
-            this.line_path_type = Text.Path.Type.DEFAULT;
+            this.text.Set_Path_Type(Text.Path.Type.DEFAULT);
         } else {
-            this.line_path_type = Text.Path.Type.ERRORLESS;
+            this.text.Set_Path_Type(Text.Path.Type.ERRORLESS);
         }
 
         for (let idx = 0, end = text.Line_Count(); idx < end; idx += 1) {
@@ -169,16 +169,10 @@ export class Instance extends Entity.Instance
         }
     }
 
-    Line_Path_Type():
-        Text.Path.Type
-    {
-        return this.line_path_type;
-    }
-
     Allows_Errors():
         boolean
     {
-        return this.Line_Path_Type() === Text.Path.Type.DEFAULT;
+        return this.Text().Path_Type() === Text.Path.Type.DEFAULT;
     }
 
     Indent_EM():

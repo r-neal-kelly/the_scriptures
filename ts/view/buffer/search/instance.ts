@@ -82,7 +82,21 @@ export class Instance extends Entity.Instance
                     color: inherit;
                 }
 
-                .Centered_Line {
+                .Column {
+                    display: block;
+
+                    margin: 0;
+                    padding: 0;
+                }
+
+                .Row {
+                    display: block;
+
+                    margin: 0;
+                    padding: 0;
+                }
+
+                .Centered_Row {
                     display: flex;
                     flex-wrap: wrap;
                     justify-content: center;
@@ -90,7 +104,7 @@ export class Instance extends Entity.Instance
                     text-align: center;
                 }
 
-                .Padded_Line {
+                .Padded_Row {
                     padding: 0 1em;
                     
                     border-style: solid;
@@ -187,7 +201,7 @@ export class Instance extends Entity.Instance
         for (let idx = count, end = target; idx < end; idx += 1) {
             new Line.Instance(
                 {
-                    text: this,
+                    search: this,
                     model: () => this.Model().Line_At(idx),
                 },
             );

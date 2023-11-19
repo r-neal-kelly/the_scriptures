@@ -4,7 +4,7 @@ import { ID } from "../../../types.js";
 import * as Model from "../../../model/buffer/search/segment.js";
 
 import * as Entity from "../../entity.js";
-import * as Line from "./line.js";
+import * as Row from "./row.js";
 import * as Item from "./item.js";
 
 export class Instance extends Entity.Instance
@@ -13,10 +13,10 @@ export class Instance extends Entity.Instance
 
     constructor(
         {
-            line,
+            row,
             model,
         }: {
-            line: Line.Instance,
+            row: Row.Instance,
             model: () => Model.Instance,
         },
     )
@@ -24,8 +24,8 @@ export class Instance extends Entity.Instance
         super(
             {
                 element: `div`,
-                parent: line,
-                event_grid: line.Event_Grid(),
+                parent: row,
+                event_grid: row.Event_Grid(),
             },
         );
 
@@ -83,15 +83,15 @@ export class Instance extends Entity.Instance
         return this.model();
     }
 
-    Line():
-        Line.Instance
+    Row():
+        Row.Instance
     {
-        return this.Parent() as Line.Instance;
+        return this.Parent() as Row.Instance;
     }
 
     Event_Grid_ID():
         ID
     {
-        return this.Line().Event_Grid_ID();
+        return this.Row().Event_Grid_ID();
     }
 }

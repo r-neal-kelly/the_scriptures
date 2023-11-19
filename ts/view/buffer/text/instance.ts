@@ -76,8 +76,22 @@ export class Instance extends Entity.Instance
 
                     color: inherit;
                 }
+                
+                .Column {
+                    display: block;
 
-                .Centered_Line {
+                    margin: 0;
+                    padding: 0;
+                }
+
+                .Row {
+                    display: block;
+
+                    margin: 0;
+                    padding: 0;
+                }
+
+                .Centered_Row {
                     display: flex;
                     flex-wrap: wrap;
                     justify-content: center;
@@ -85,7 +99,7 @@ export class Instance extends Entity.Instance
                     text-align: center;
                 }
 
-                .Padded_Line {
+                .Padded_Row {
                     padding: 0 1em;
                     
                     border-style: solid;

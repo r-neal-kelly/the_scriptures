@@ -101,7 +101,7 @@ export class Instance extends Entity.Instance
         if (this.Is_Blank()) {
             return ``;
         } else {
-            if (this.Item().Segment().Line().Buffer().Is_Showing_Commands()) {
+            if (this.Item().Segment().Row().Column().Line().Buffer().Is_Showing_Commands()) {
                 return this.value;
             } else {
                 const text: Text.Item.Instance = this.Item().Text();

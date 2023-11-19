@@ -10,9 +10,6 @@ import { Sequence_Type } from "./sequence_type.js";
 import * as Class from "./class.js";
 import * as Token from "./token.js";
 
-const LINE_PATH_TYPE: Text.Path.Type =
-    Text.Path.Type.DEFAULT;
-
 export class Help
 {
     private message: string;
@@ -96,18 +93,18 @@ export class Instance
         }
 
         function Add_Text(
-            text: Text.Instance,
+            text: Text.Row.Instance,
         ):
             void
         {
             if (sequence_depth < 1) {
                 sequence_depth += 1;
                 tokens.push(new Token.Open_Sequence());
-                for (let idx = 0, end = text.Line(0).Macro_Part_Count(LINE_PATH_TYPE); idx < end; idx += 1) {
+                for (let idx = 0, end = text.Macro_Part_Count(); idx < end; idx += 1) {
                     tokens.push(
                         new Token.Text(
                             {
-                                part: text.Line(0).Macro_Part(idx, LINE_PATH_TYPE),
+                                part: text.Macro_Part(idx),
                             },
                         ),
                     );
@@ -124,7 +121,7 @@ export class Instance
                     ),
                 );
             } else {
-                const text_part_count: Count = text.Line(0).Macro_Part_Count(LINE_PATH_TYPE);
+                const text_part_count: Count = text.Macro_Part_Count();
                 const has_group: boolean = text_part_count > 1 || sequence_has_and;
                 if (has_group) {
                     group_depth += 1;
@@ -132,7 +129,7 @@ export class Instance
                 }
                 if (sequence_has_and && false) {
                     const text_first_part: Text.Part.Instance =
-                        text.Line(0).Macro_Part(0, LINE_PATH_TYPE);
+                        text.Macro_Part(0);
                     if (text_first_part.Is_Word()) {
                         tokens.push(
                             new Token.Class(
@@ -157,7 +154,7 @@ export class Instance
                     tokens.push(
                         new Token.Text(
                             {
-                                part: text.Line(0).Macro_Part(idx, LINE_PATH_TYPE),
+                                part: text.Macro_Part(idx),
                             },
                         ),
                     );
@@ -237,14 +234,14 @@ export class Instance
                                     `Newline inside ${Operator.VERBATIM}`,
                                     it.Index(),
                                 );
-                            } else if (text.Line(0).Macro_Part_Count(LINE_PATH_TYPE) === 0) {
+                            } else if (text.Line(0).Value() === ``) {
                                 return new Help(
                                     `Empty ${Operator.VERBATIM}`,
                                     it.Index(),
                                 );
                             } else {
                                 last_expression_index = it.Index();
-                                Add_Text(text);
+                                Add_Text(text.Line(0).Column(0).Row(0));
                             }
                         }
                     }
@@ -900,7 +897,7 @@ export class Instance
                     );
                     it = it.Previous();
                     last_expression_index = first.Index();
-                    Add_Text(text);
+                    Add_Text(text.Line(0).Column(0).Row(0));
 
                 }
             }

@@ -45,12 +45,47 @@ type Parameter_And_Argument = {
     argument: Value,
 };
 
+export function Is_Known_Parameter(
+    value: Value,
+):
+    boolean
+{
+    return (
+        value === Parameter.ERROR ||
+        value === Parameter.LANGUAGE ||
+        value === Parameter.IMAGE ||
+        value === Parameter.INLINE_IMAGE
+    );
+}
+
+export function Is_Known_Open_Parameter(
+    value: Value,
+):
+    boolean
+{
+    return (
+        value.length > 2 &&
+        value[0] === Symbol.FIRST &&
+        value[value.length - 1] === Symbol.DIVIDER &&
+        Is_Known_Parameter(value.slice(1, value.length - 1))
+    );
+}
+
+export function Is_Known_Close_Parameter(
+    value: Value,
+):
+    boolean
+{
+    return value === Symbol.LAST;
+}
+
 export enum Known_Value
 {
+    COLUMN = `⸨col⸩`,
+    ROW = `⸨row⸩`,
+
     CENTER = `⸨cen⸩`,
-
     INDENT = `⸨in⸩`,
-
     PAD = `⸨pad⸩`,
 
     OPEN_ITALIC = `⸨i⸩`,
@@ -138,10 +173,11 @@ export function Is_Known_Value(
     boolean
 {
     if (
+        value === Known_Value.COLUMN ||
+        value === Known_Value.ROW ||
+
         value === Known_Value.CENTER ||
-
         value === Known_Value.INDENT ||
-
         value === Known_Value.PAD ||
 
         value === Known_Value.OPEN_ITALIC ||
@@ -169,6 +205,12 @@ export function Is_Known_Value(
         value === Known_Value.CLOSE_RIGHT_TO_LEFT ||
 
         value === Known_Value.CLOSE_LANGUAGE
+    ) {
+        return true;
+
+    } else if (
+        Is_Known_Open_Parameter(value) ||
+        Is_Known_Close_Parameter(value)
     ) {
         return true;
 
@@ -451,6 +493,73 @@ function Test_Closing_Command_Index_From_Opening_Command():
     Utils.Assert(Closing_Command_Index_From_Opening_Command(`⸨1⸩a⸨2⸩b⸨3⸩c⸨/3⸩d⸨/2⸩e⸨/1⸩f`) === 22);
 }
 
+export function Partition_Into_Column_Rows(
+    text: string,
+):
+    Array<string>
+{
+    const results: Array<string> = [];
+
+    let current_start: Unicode.Iterator = new Unicode.Iterator(
+        {
+            text: text,
+        },
+    );
+    let has_column: boolean = false;
+    let has_row: boolean = false;
+    let has_other: boolean = false;
+
+    for (let it = current_start; !it.Is_At_End();) {
+        const maybe_valid_command_value: Value | null =
+            Maybe_Valid_Value_From(it.Points());
+        if (maybe_valid_command_value != null) {
+            const command: Instance = new Instance(
+                {
+                    index: 0,
+                    value: maybe_valid_command_value,
+                    language: null,
+                },
+            );
+            if (command.Is_Column()) {
+                if (has_column || has_row || has_other) {
+                    results.push(text.slice(current_start.Index(), it.Index()));
+                    current_start = it;
+                    has_column = false;
+                    has_row = false;
+                    has_other = false;
+                }
+                has_column = true;
+            } else if (command.Is_Row()) {
+                if (has_row || has_other) {
+                    results.push(text.slice(current_start.Index(), it.Index()));
+                    current_start = it;
+                    has_column = false;
+                    has_row = false;
+                    has_other = false;
+                }
+                has_row = true;
+            } else {
+                has_other = true;
+            }
+            it = new Unicode.Iterator(
+                {
+                    text: it.Text(),
+                    index: it.Index() + command.Value().length,
+                },
+            );
+        } else {
+            has_other = true;
+
+            it = it.Next();
+        }
+    }
+    if (!current_start.Is_At_End()) {
+        results.push(text.slice(current_start.Index(), text.length));
+    }
+
+    return results;
+}
+
 export function Resolve_Errors(
     text: string,
     remove_unresolvable_errors: boolean,
@@ -704,6 +813,18 @@ export class Instance extends Part.Instance
         );
 
         return this.argument as Value;
+    }
+
+    Is_Column():
+        boolean
+    {
+        return this.Value() === Known_Value.COLUMN;
+    }
+
+    Is_Row():
+        boolean
+    {
+        return this.Value() === Known_Value.ROW;
     }
 
     Is_Center():

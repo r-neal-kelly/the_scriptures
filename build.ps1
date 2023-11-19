@@ -38,7 +38,9 @@ else {
     else {
         if ($release.IsPresent -or $minify.IsPresent) {
             Write-Host "    Removing old JavaScript..."
-            Remove-Item -Recurse -Force ./js
+            if (Test-Path ./js -PathType Container) {
+                Remove-Item -Recurse -Force ./js
+            }
         }
         
         Write-Host "    Compiling TypeScript into JavaScript..."

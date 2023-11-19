@@ -357,7 +357,7 @@ export class Instance extends Entity.Instance
         if (override != null) {
             return override;
         } else {
-            return this.Segment().Line().Buffer().Default_Language_Name();
+            return this.Segment().Row().Column().Line().Buffer().Default_Language_Name();
         }
     }
 

@@ -11,9 +11,6 @@ import * as Token from "./token.js";
 import * as Node from "./node.js";
 import * as Result from "./result.js";
 
-const LINE_PATH_TYPE: Text.Path.Type =
-    Text.Path.Type.DEFAULT;
-
 export enum Mode
 {
     INITIAL = 0,
@@ -58,13 +55,13 @@ export class Instance
 
             for (let idx = 0, end = text.Line_Count(); idx < end; idx += 1) {
                 const line: Text.Line.Instance = text.Line(idx);
-                const maybe_result: Result.Instance | null = this.Step(
+                const maybe_result: Result.Runner | null = this.Step(
                     node,
                     Mode.INITIAL,
-                    new Result.Instance(line),
+                    new Result.Runner(line),
                 );
                 if (maybe_result != null) {
-                    results.push(maybe_result as Result.Instance);
+                    results.push(new Result.Instance(maybe_result as Result.Runner));
                 }
             }
 
@@ -75,9 +72,9 @@ export class Instance
     private Step(
         node: Node.Instance,
         mode: Mode,
-        result: Result.Instance,
+        result: Result.Runner,
     ):
-        Result.Instance | null
+        Result.Runner | null
     {
         const node_type: Node.Type = node.Type();
         if (
@@ -86,7 +83,7 @@ export class Instance
             node_type === Node.Type.ONE_OR_MANY
         ) {
             const unary: Node.Unary = node as Node.Unary;
-            const maybe_operand_result: Result.Instance | null =
+            const maybe_operand_result: Result.Runner | null =
                 this.Step(unary.Operand(), mode, result.Copy());
 
             if (maybe_operand_result != null) {
@@ -98,12 +95,12 @@ export class Instance
         } else if (node_type === Node.Type.SEQUENCE) {
             const sequence: Node.Sequence = node as Node.Sequence;
             const sequence_type: Sequence_Type = sequence.Sequence_Type();
-            const sequence_result: Result.Instance | null = this.Step(
+            const sequence_result: Result.Runner | null = this.Step(
                 sequence.Operand(),
                 sequence_type === Sequence_Type.COMPLEX ?
                     mode | Mode.COMPLEX_SEQUENCE :
                     mode,
-                new Result.Instance(result.Line()),
+                new Result.Runner(result.Line()),
             );
 
             if (sequence_result != null) {
@@ -113,7 +110,7 @@ export class Instance
                         return this.Step(
                             sequence.Next(),
                             mode,
-                            result.Combine(sequence_result as Result.Instance),
+                            result.Combine(sequence_result as Result.Runner),
                         );
                     } else {
                         return null;
@@ -122,7 +119,7 @@ export class Instance
                     return this.Step(
                         sequence.Next(),
                         mode,
-                        result.Combine(sequence_result as Result.Instance),
+                        result.Combine(sequence_result as Result.Runner),
                     );
                 }
             } else {
@@ -131,7 +128,7 @@ export class Instance
 
         } else if (node_type === Node.Type.NOT) {
             const not: Node.Not = node as Node.Not;
-            const not_result: Result.Instance | null = this.Step(
+            const not_result: Result.Runner | null = this.Step(
                 not.Operand(),
                 mode ^ Mode.NOT,
                 result,
@@ -149,7 +146,7 @@ export class Instance
 
         } else if (node_type === Node.Type.CASE) {
             const case_: Node.Case = node as Node.Case;
-            const case_result: Result.Instance | null = this.Step(
+            const case_result: Result.Runner | null = this.Step(
                 case_.Operand(),
                 mode ^ Mode.CASE,
                 result,
@@ -167,7 +164,7 @@ export class Instance
 
         } else if (node_type === Node.Type.ALIGN) {
             const align: Node.Align = node as Node.Align;
-            const align_result: Result.Instance | null = this.Step(
+            const align_result: Result.Runner | null = this.Step(
                 align.Operand(),
                 mode ^ Mode.ALIGN,
                 result,
@@ -185,7 +182,7 @@ export class Instance
 
         } else if (node_type === Node.Type.META) {
             const meta: Node.Meta = node as Node.Meta;
-            const meta_result: Result.Instance | null = this.Step(
+            const meta_result: Result.Runner | null = this.Step(
                 meta.Operand(),
                 mode ^ Mode.META,
                 result,
@@ -221,19 +218,19 @@ export class Instance
                 }
             } else {
                 const xor: Node.Xor = node as Node.Xor;
-                const maybe_left_result: Result.Instance | null =
+                const maybe_left_result: Result.Runner | null =
                     this.Step(xor.Left_Operand(), mode, result.Copy());
-                const maybe_right_result: Result.Instance | null =
+                const maybe_right_result: Result.Runner | null =
                     this.Step(xor.Right_Operand(), mode, result.Copy());
 
                 if (maybe_left_result != null) {
                     if (maybe_right_result != null) {
                         return null;
                     } else {
-                        return maybe_left_result as Result.Instance;
+                        return maybe_left_result as Result.Runner;
                     }
                 } else if (maybe_right_result != null) {
-                    return maybe_right_result as Result.Instance;
+                    return maybe_right_result as Result.Runner;
                 } else {
                     return null;
                 }
@@ -246,13 +243,13 @@ export class Instance
                     // This is probably significantly more expensive than evaluating
                     // a class of user described parts in the text methods. We could
                     // potentially pass user classes then?
-                    const maybe_left_result: Result.Instance | null =
+                    const maybe_left_result: Result.Runner | null =
                         this.Step(or.Left_Operand(), mode, result.Copy());
-                    const maybe_right_result: Result.Instance | null =
+                    const maybe_right_result: Result.Runner | null =
                         this.Step(or.Right_Operand(), mode, result.Copy());
 
                     if (maybe_left_result != null && maybe_right_result != null) {
-                        const new_result: Result.Instance = new Result.Instance(result.Line());
+                        const new_result: Result.Runner = new Result.Runner(result.Line());
                         for (let idx = 0, end = maybe_left_result.Candidate_Count(); idx < end; idx += 1) {
                             if (maybe_right_result.Has_Candidate_Equal_To(maybe_left_result.Candidate(idx))) {
                                 new_result.Try_Add_Candidate(maybe_left_result.Candidate(idx));
@@ -269,7 +266,7 @@ export class Instance
                     }
                 } else {
                     // Isn't this NAND? Is that the inverse of OR?
-                    const maybe_left_result: Result.Instance | null =
+                    const maybe_left_result: Result.Runner | null =
                         this.Step(or.Left_Operand(), mode, result);
 
                     if (maybe_left_result != null) {
@@ -279,19 +276,19 @@ export class Instance
                     }
                 }
             } else {
-                const maybe_left_result: Result.Instance | null =
+                const maybe_left_result: Result.Runner | null =
                     this.Step(or.Left_Operand(), mode, result.Copy());
-                const maybe_right_result: Result.Instance | null =
+                const maybe_right_result: Result.Runner | null =
                     this.Step(or.Right_Operand(), mode, result.Copy());
 
                 if (maybe_left_result != null) {
                     if (maybe_right_result != null) {
                         return maybe_left_result.Combine(maybe_right_result);
                     } else {
-                        return maybe_left_result as Result.Instance;
+                        return maybe_left_result as Result.Runner;
                     }
                 } else if (maybe_right_result != null) {
-                    return maybe_right_result as Result.Instance;
+                    return maybe_right_result as Result.Runner;
                 } else {
                     return null;
                 }
@@ -327,9 +324,9 @@ export class Instance
     private Text(
         node: Node.Instance,
         mode: Mode,
-        result: Result.Instance,
+        result: Result.Runner,
     ):
-        Result.Instance | null
+        Result.Runner | null
     {
         const texts: Array<Node.Text> = [];
         while (!(node instanceof Node.End)) {
@@ -337,7 +334,7 @@ export class Instance
             node = node.Next();
         }
 
-        let text_result: Result.Instance | null;
+        let text_result: Result.Runner | null;
         if (texts.length === 1) {
             text_result = this.Text_Any(texts[0], mode, result);
         } else {
@@ -368,9 +365,9 @@ export class Instance
     private Text_Any(
         text: Node.Text,
         mode: Mode,
-        result: Result.Instance,
+        result: Result.Runner,
     ):
-        Result.Instance | null
+        Result.Runner | null
     {
         Utils.Assert(
             result.Match_Count() === 0,
@@ -383,57 +380,74 @@ export class Instance
             expression_part.Value() :
             expression_part.Value().toLowerCase();
 
-        const new_result: Result.Instance = new Result.Instance(result.Line());
+        const new_result: Result.Runner = new Result.Runner(result.Line());
         for (
-            let search_idx = 0, search_end = search_line.Macro_Part_Count(LINE_PATH_TYPE);
-            search_idx < search_end;
-            search_idx += 1
+            let search_column_idx = 0, search_column_end = search_line.Column_Count();
+            search_column_idx < search_column_end;
+            search_column_idx += 1
         ) {
-            if (
-                (mode & Mode.META) ||
-                !search_line.Macro_Part(search_idx, LINE_PATH_TYPE).Is_Command_Or_Argument()
+            const search_column: Text.Column.Instance = search_line.Column(search_column_idx);
+            for (
+                let search_row_idx = 0, search_row_end = search_column.Row_Count();
+                search_row_idx < search_row_end;
+                search_row_idx += 1
             ) {
-                const search_part: Text.Part.Instance =
-                    search_line.Macro_Part(search_idx, LINE_PATH_TYPE);
-                const search_value: Text.Value = mode & Mode.CASE ?
-                    search_part.Value() :
-                    search_part.Value().toLowerCase();
-                if (mode & Mode.ALIGN) {
-                    if (search_value === expression_value) {
-                        new_result.Try_Add_Match(
-                            new Result.Match(
-                                {
-                                    first_part_index: search_idx,
-                                    end_part_index: search_idx + 1,
-                                    first_part_first_unit_index: 0,
-                                    last_part_end_unit_index: search_value.length,
-                                },
-                            ),
-                        );
-                    }
-                } else {
-                    for (
-                        let search_value_idx = 0,
-                        search_value_end = search_value.length - (expression_value.length - 1);
-                        search_value_idx < search_value_end;
-                        search_value_idx += 1
+                const search_row: Text.Row.Instance = search_column.Row(search_row_idx);
+                for (
+                    let search_part_idx = 0, search_part_end = search_row.Macro_Part_Count();
+                    search_part_idx < search_part_end;
+                    search_part_idx += 1
+                ) {
+                    const search_part: Text.Part.Instance = search_row.Macro_Part(search_part_idx);
+                    if (
+                        (mode & Mode.META) ||
+                        !search_part.Is_Command_Or_Argument()
                     ) {
-                        if (
-                            search_value.slice(
-                                search_value_idx,
-                                search_value_idx + expression_value.length,
-                            ) === expression_value
-                        ) {
-                            new_result.Try_Add_Match(
-                                new Result.Match(
-                                    {
-                                        first_part_index: search_idx,
-                                        end_part_index: search_idx + 1,
-                                        first_part_first_unit_index: search_value_idx,
-                                        last_part_end_unit_index: search_value_idx + expression_value.length,
-                                    },
-                                ),
-                            );
+                        const search_value: Text.Value = mode & Mode.CASE ?
+                            search_part.Value() :
+                            search_part.Value().toLowerCase();
+                        if (mode & Mode.ALIGN) {
+                            if (search_value === expression_value) {
+                                new_result.Try_Add_Match(
+                                    new Result.Candidate(
+                                        {
+                                            column_index: search_column_idx,
+                                            row_index: search_row_idx,
+                                            first_part_index: search_part_idx,
+                                            end_part_index: search_part_idx + 1,
+                                            first_part_first_unit_index: 0,
+                                            last_part_end_unit_index: search_value.length,
+                                        },
+                                    ),
+                                );
+                            }
+                        } else {
+                            for (
+                                let search_value_idx = 0,
+                                search_value_end = search_value.length - (expression_value.length - 1);
+                                search_value_idx < search_value_end;
+                                search_value_idx += 1
+                            ) {
+                                if (
+                                    search_value.slice(
+                                        search_value_idx,
+                                        search_value_idx + expression_value.length,
+                                    ) === expression_value
+                                ) {
+                                    new_result.Try_Add_Match(
+                                        new Result.Candidate(
+                                            {
+                                                column_index: search_column_idx,
+                                                row_index: search_row_idx,
+                                                first_part_index: search_part_idx,
+                                                end_part_index: search_part_idx + 1,
+                                                first_part_first_unit_index: search_value_idx,
+                                                last_part_end_unit_index: search_value_idx + expression_value.length,
+                                            },
+                                        ),
+                                    );
+                                }
+                            }
                         }
                     }
                 }
@@ -457,9 +471,9 @@ export class Instance
     private Text_Start(
         text: Node.Text,
         mode: Mode,
-        result: Result.Instance,
+        result: Result.Runner,
     ):
-        Result.Instance | null
+        Result.Runner | null
     {
         Utils.Assert(
             result.Match_Count() === 0,
@@ -472,52 +486,69 @@ export class Instance
             expression_part.Value() :
             expression_part.Value().toLowerCase();
 
-        const new_result: Result.Instance = new Result.Instance(result.Line());
+        const new_result: Result.Runner = new Result.Runner(result.Line());
         for (
-            let search_idx = 0, search_end = search_line.Macro_Part_Count(LINE_PATH_TYPE);
-            search_idx < search_end;
-            search_idx += 1
+            let search_column_idx = 0, search_column_end = search_line.Column_Count();
+            search_column_idx < search_column_end;
+            search_column_idx += 1
         ) {
-            if (
-                (mode & Mode.META) ||
-                !search_line.Macro_Part(search_idx, LINE_PATH_TYPE).Is_Command_Or_Argument()
+            const search_column: Text.Column.Instance = search_line.Column(search_column_idx);
+            for (
+                let search_row_idx = 0, search_row_end = search_column.Row_Count();
+                search_row_idx < search_row_end;
+                search_row_idx += 1
             ) {
-                const search_part: Text.Part.Instance =
-                    search_line.Macro_Part(search_idx, LINE_PATH_TYPE);
-                const search_value: Text.Value = mode & Mode.CASE ?
-                    search_part.Value() :
-                    search_part.Value().toLowerCase();
-                if (mode & Mode.ALIGN) {
-                    if (search_value === expression_value) {
-                        new_result.Try_Add_Match(
-                            new Result.Match(
-                                {
-                                    first_part_index: search_idx,
-                                    end_part_index: search_idx + 1,
-                                    first_part_first_unit_index: 0,
-                                    last_part_end_unit_index: search_value.length,
-                                },
-                            ),
-                        );
-                    }
-                } else {
+                const search_row: Text.Row.Instance = search_column.Row(search_row_idx);
+                for (
+                    let search_part_idx = 0, search_part_end = search_row.Macro_Part_Count();
+                    search_part_idx < search_part_end;
+                    search_part_idx += 1
+                ) {
+                    const search_part: Text.Part.Instance = search_row.Macro_Part(search_part_idx);
                     if (
-                        search_value.length >= expression_value.length &&
-                        search_value.slice(
-                            search_value.length - expression_value.length,
-                            search_value.length,
-                        ) === expression_value
+                        (mode & Mode.META) ||
+                        !search_part.Is_Command_Or_Argument()
                     ) {
-                        new_result.Try_Add_Match(
-                            new Result.Match(
-                                {
-                                    first_part_index: search_idx,
-                                    end_part_index: search_idx + 1,
-                                    first_part_first_unit_index: search_value.length - expression_value.length,
-                                    last_part_end_unit_index: search_value.length,
-                                },
-                            ),
-                        );
+                        const search_value: Text.Value = mode & Mode.CASE ?
+                            search_part.Value() :
+                            search_part.Value().toLowerCase();
+                        if (mode & Mode.ALIGN) {
+                            if (search_value === expression_value) {
+                                new_result.Try_Add_Match(
+                                    new Result.Candidate(
+                                        {
+                                            column_index: search_column_idx,
+                                            row_index: search_row_idx,
+                                            first_part_index: search_part_idx,
+                                            end_part_index: search_part_idx + 1,
+                                            first_part_first_unit_index: 0,
+                                            last_part_end_unit_index: search_value.length,
+                                        },
+                                    ),
+                                );
+                            }
+                        } else {
+                            if (
+                                search_value.length >= expression_value.length &&
+                                search_value.slice(
+                                    search_value.length - expression_value.length,
+                                    search_value.length,
+                                ) === expression_value
+                            ) {
+                                new_result.Try_Add_Match(
+                                    new Result.Candidate(
+                                        {
+                                            column_index: search_column_idx,
+                                            row_index: search_row_idx,
+                                            first_part_index: search_part_idx,
+                                            end_part_index: search_part_idx + 1,
+                                            first_part_first_unit_index: search_value.length - expression_value.length,
+                                            last_part_end_unit_index: search_value.length,
+                                        },
+                                    ),
+                                );
+                            }
+                        }
                     }
                 }
             }
@@ -536,9 +567,9 @@ export class Instance
     private Text_Middle(
         text: Node.Text,
         mode: Mode,
-        result: Result.Instance,
+        result: Result.Runner,
     ):
-        Result.Instance | null
+        Result.Runner | null
     {
         const search_line: Text.Line.Instance = result.Line();
         const expression_part: Text.Part.Instance = text.Part();
@@ -546,40 +577,44 @@ export class Instance
             expression_part.Value() :
             expression_part.Value().toLowerCase();
 
-        const new_result: Result.Instance = new Result.Instance(result.Line());
+        const new_result: Result.Runner = new Result.Runner(result.Line());
         for (
             let match_idx = 0, match_end = result.Match_Count();
             match_idx < match_end;
             match_idx += 1
         ) {
-            const old_match: Result.Match = result.Match(match_idx);
-            let search_idx: Index = old_match.End_Part_Index();
+            const old_match: Result.Candidate = result.Match(match_idx);
+            const search_column = search_line.Column(old_match.Column_Index());
+            const search_row = search_column.Row(old_match.Row_Index());
+            const search_idx: Index = old_match.End_Part_Index();
             const old_search_part: Text.Part.Instance =
-                search_line.Macro_Part(search_idx - 1, LINE_PATH_TYPE);
+                search_row.Macro_Part(search_idx - 1);
             const old_search_value: Text.Value = mode & Mode.CASE ?
                 old_search_part.Value() :
                 old_search_part.Value().toLowerCase();
             if (old_match.Last_Part_End_Unit_Index() === old_search_value.length) {
-                const search_end: Index = search_line.Macro_Part_Count(LINE_PATH_TYPE);
+                const search_end: Index = search_row.Macro_Part_Count();
                 let command_count: Count = 0;
                 if (!(mode & Mode.META)) {
                     while (
                         search_idx + command_count < search_end &&
-                        search_line.Macro_Part(search_idx + command_count, LINE_PATH_TYPE).Is_Command_Or_Argument()
+                        search_row.Macro_Part(search_idx + command_count).Is_Command_Or_Argument()
                     ) {
                         command_count += 1;
                     }
                 }
                 if (search_idx + command_count < search_end) {
                     const search_part: Text.Part.Instance =
-                        search_line.Macro_Part(search_idx + command_count, LINE_PATH_TYPE);
+                        search_row.Macro_Part(search_idx + command_count);
                     const search_value: Text.Value = mode & Mode.CASE ?
                         search_part.Value() :
                         search_part.Value().toLowerCase();
                     if (search_value === expression_value) {
                         new_result.Try_Add_Match(
-                            new Result.Match(
+                            new Result.Candidate(
                                 {
+                                    column_index: old_match.Column_Index(),
+                                    row_index: old_match.Row_Index(),
                                     first_part_index: old_match.First_Part_Index(),
                                     end_part_index: search_idx + command_count + 1,
                                     first_part_first_unit_index: old_match.First_Part_First_Unit_Index(),
@@ -605,9 +640,9 @@ export class Instance
     private Text_End(
         text: Node.Text,
         mode: Mode,
-        result: Result.Instance,
+        result: Result.Runner,
     ):
-        Result.Instance | null
+        Result.Runner | null
     {
         const search_line: Text.Line.Instance = result.Line();
         const expression_part: Text.Part.Instance = text.Part();
@@ -615,41 +650,45 @@ export class Instance
             expression_part.Value() :
             expression_part.Value().toLowerCase();
 
-        const new_result: Result.Instance = new Result.Instance(result.Line());
+        const new_result: Result.Runner = new Result.Runner(result.Line());
         for (
             let match_idx = 0, match_end = result.Match_Count();
             match_idx < match_end;
             match_idx += 1
         ) {
-            const old_match: Result.Match = result.Match(match_idx);
-            let search_idx: Index = old_match.End_Part_Index();
+            const old_match: Result.Candidate = result.Match(match_idx);
+            const search_column = search_line.Column(old_match.Column_Index());
+            const search_row = search_column.Row(old_match.Row_Index());
+            const search_idx: Index = old_match.End_Part_Index();
             const old_search_part: Text.Part.Instance =
-                search_line.Macro_Part(search_idx - 1, LINE_PATH_TYPE);
+                search_row.Macro_Part(search_idx - 1);
             const old_search_value: Text.Value = mode & Mode.CASE ?
                 old_search_part.Value() :
                 old_search_part.Value().toLowerCase();
             if (old_match.Last_Part_End_Unit_Index() === old_search_value.length) {
-                const search_end: Index = search_line.Macro_Part_Count(LINE_PATH_TYPE);
+                const search_end: Index = search_row.Macro_Part_Count();
                 let command_count: Count = 0;
                 if (!(mode & Mode.META)) {
                     while (
                         search_idx + command_count < search_end &&
-                        search_line.Macro_Part(search_idx + command_count, LINE_PATH_TYPE).Is_Command_Or_Argument()
+                        search_row.Macro_Part(search_idx + command_count).Is_Command_Or_Argument()
                     ) {
                         command_count += 1;
                     }
                 }
                 if (search_idx + command_count < search_end) {
                     const search_part: Text.Part.Instance =
-                        search_line.Macro_Part(search_idx + command_count, LINE_PATH_TYPE);
+                        search_row.Macro_Part(search_idx + command_count);
                     const search_value: Text.Value = mode & Mode.CASE ?
                         search_part.Value() :
                         search_part.Value().toLowerCase();
                     if (mode & Mode.ALIGN) {
                         if (search_value === expression_value) {
                             new_result.Try_Add_Match(
-                                new Result.Match(
+                                new Result.Candidate(
                                     {
+                                        column_index: old_match.Column_Index(),
+                                        row_index: old_match.Row_Index(),
                                         first_part_index: old_match.First_Part_Index(),
                                         end_part_index: search_idx + command_count + 1,
                                         first_part_first_unit_index: old_match.First_Part_First_Unit_Index(),
@@ -667,8 +706,10 @@ export class Instance
                             ) === expression_value
                         ) {
                             new_result.Try_Add_Match(
-                                new Result.Match(
+                                new Result.Candidate(
                                     {
+                                        column_index: old_match.Column_Index(),
+                                        row_index: old_match.Row_Index(),
                                         first_part_index: old_match.First_Part_Index(),
                                         end_part_index: search_idx + command_count + 1,
                                         first_part_first_unit_index: old_match.First_Part_First_Unit_Index(),
@@ -699,18 +740,18 @@ export class Instance
     private Complex_Text(
         node: Node.Instance,
         mode: Mode,
-        result: Result.Instance,
+        result: Result.Runner,
     ):
-        Result.Instance | null
+        Result.Runner | null
     {
         const text: Node.Text = node as Node.Text;
         if (
             result.Candidate_Count() === 0 &&
             result.Match_Count() === 0
         ) {
-            const text_result_any: Result.Instance | null =
+            const text_result_any: Result.Runner | null =
                 this.Complex_Text_Any(text, mode, result);
-            const text_result_start: Result.Instance | null =
+            const text_result_start: Result.Runner | null =
                 this.Complex_Text_Start(text, mode, result);
             if (text_result_any != null) {
                 if (text_result_start != null) {
@@ -736,9 +777,9 @@ export class Instance
                 return null;
             }
         } else {
-            const text_result_middle: Result.Instance | null =
+            const text_result_middle: Result.Runner | null =
                 this.Complex_Text_Middle(text, mode, result);
-            const text_result_end: Result.Instance | null =
+            const text_result_end: Result.Runner | null =
                 this.Complex_Text_End(text, mode, result);
             if (text_result_middle != null) {
                 if (text_result_end != null) {
@@ -769,9 +810,9 @@ export class Instance
     private Complex_Text_Any(
         text: Node.Text,
         mode: Mode,
-        result: Result.Instance,
+        result: Result.Runner,
     ):
-        Result.Instance | null
+        Result.Runner | null
     {
         Utils.Assert(
             result.Candidate_Count() === 0,
@@ -788,91 +829,112 @@ export class Instance
             expression_part.Value() :
             expression_part.Value().toLowerCase();
 
-        const new_result: Result.Instance = new Result.Instance(result.Line());
+        const new_result: Result.Runner = new Result.Runner(result.Line());
         for (
-            let search_idx = 0, search_end = search_line.Macro_Part_Count(LINE_PATH_TYPE);
-            search_idx < search_end;
-            search_idx += 1
+            let search_column_idx = 0, search_column_end = search_line.Column_Count();
+            search_column_idx < search_column_end;
+            search_column_idx += 1
         ) {
-            if (
-                (mode & Mode.META) ||
-                !search_line.Macro_Part(search_idx, LINE_PATH_TYPE).Is_Command_Or_Argument()
+            const search_column: Text.Column.Instance = search_line.Column(search_column_idx);
+            for (
+                let search_row_idx = 0, search_row_end = search_column.Row_Count();
+                search_row_idx < search_row_end;
+                search_row_idx += 1
             ) {
-                const search_part: Text.Part.Instance =
-                    search_line.Macro_Part(search_idx, LINE_PATH_TYPE);
-                const search_value: Text.Value = mode & Mode.CASE ?
-                    search_part.Value() :
-                    search_part.Value().toLowerCase();
-                if (mode & Mode.ALIGN) {
-                    if (mode & Mode.NOT) {
-                        if (search_value !== expression_value) {
-                            new_result.Try_Add_Match(
-                                new Result.Match(
-                                    {
-                                        first_part_index: search_idx,
-                                        end_part_index: search_idx + 1,
-                                        first_part_first_unit_index: 0,
-                                        last_part_end_unit_index: search_value.length,
-                                    },
-                                ),
-                            );
-                        }
-                    } else {
-                        if (search_value === expression_value) {
-                            new_result.Try_Add_Match(
-                                new Result.Match(
-                                    {
-                                        first_part_index: search_idx,
-                                        end_part_index: search_idx + 1,
-                                        first_part_first_unit_index: 0,
-                                        last_part_end_unit_index: search_value.length,
-                                    },
-                                ),
-                            );
-                        }
-                    }
-                } else {
-                    const matching_search_value_indices: Array<Index> = [];
-                    for (
-                        let search_value_idx = 0,
-                        search_value_end = search_value.length - (expression_value.length - 1);
-                        search_value_idx < search_value_end;
-                        search_value_idx += 1
+                const search_row: Text.Row.Instance = search_column.Row(search_row_idx);
+                for (
+                    let search_part_idx = 0, search_part_end = search_row.Macro_Part_Count();
+                    search_part_idx < search_part_end;
+                    search_part_idx += 1
+                ) {
+                    const search_part: Text.Part.Instance = search_row.Macro_Part(search_part_idx);
+                    if (
+                        (mode & Mode.META) ||
+                        !search_part.Is_Command_Or_Argument()
                     ) {
-                        if (
-                            search_value.slice(
-                                search_value_idx,
-                                search_value_idx + expression_value.length,
-                            ) === expression_value
-                        ) {
-                            matching_search_value_indices.push(search_value_idx);
-                        }
-                    }
-                    if (mode & Mode.NOT) {
-                        if (matching_search_value_indices.length === 0) {
-                            new_result.Try_Add_Match(
-                                new Result.Match(
-                                    {
-                                        first_part_index: search_idx,
-                                        end_part_index: search_idx + 1,
-                                        first_part_first_unit_index: 0,
-                                        last_part_end_unit_index: search_value.length,
-                                    },
-                                ),
-                            );
-                        }
-                    } else {
-                        for (const matching_search_value_index of matching_search_value_indices) {
-                            new_result.Try_Add_Match(
-                                new Result.Match(
-                                    {
-                                        first_part_index: search_idx,
-                                        end_part_index: search_idx + 1,
-                                        first_part_first_unit_index: matching_search_value_index,
-                                        last_part_end_unit_index: matching_search_value_index + expression_value.length,
-                                    },
-                                ),
-                            );
+                        const search_value: Text.Value = mode & Mode.CASE ?
+                            search_part.Value() :
+                            search_part.Value().toLowerCase();
+                        if (mode & Mode.ALIGN) {
+                            if (mode & Mode.NOT) {
+                                if (search_value !== expression_value) {
+                                    new_result.Try_Add_Match(
+                                        new Result.Candidate(
+                                            {
+                                                column_index: search_column_idx,
+                                                row_index: search_row_idx,
+                                                first_part_index: search_part_idx,
+                                                end_part_index: search_part_idx + 1,
+                                                first_part_first_unit_index: 0,
+                                                last_part_end_unit_index: search_value.length,
+                                            },
+                                        ),
+                                    );
+                                }
+                            } else {
+                                if (search_value === expression_value) {
+                                    new_result.Try_Add_Match(
+                                        new Result.Candidate(
+                                            {
+                                                column_index: search_column_idx,
+                                                row_index: search_row_idx,
+                                                first_part_index: search_part_idx,
+                                                end_part_index: search_part_idx + 1,
+                                                first_part_first_unit_index: 0,
+                                                last_part_end_unit_index: search_value.length,
+                                            },
+                                        ),
+                                    );
+                                }
+                            }
+                        } else {
+                            const matching_search_value_indices: Array<Index> = [];
+                            for (
+                                let search_value_idx = 0,
+                                search_value_end = search_value.length - (expression_value.length - 1);
+                                search_value_idx < search_value_end;
+                                search_value_idx += 1
+                            ) {
+                                if (
+                                    search_value.slice(
+                                        search_value_idx,
+                                        search_value_idx + expression_value.length,
+                                    ) === expression_value
+                                ) {
+                                    matching_search_value_indices.push(search_value_idx);
+                                }
+                            }
+                            if (mode & Mode.NOT) {
+                                if (matching_search_value_indices.length === 0) {
+                                    new_result.Try_Add_Match(
+                                        new Result.Candidate(
+                                            {
+                                                column_index: search_column_idx,
+                                                row_index: search_row_idx,
+                                                first_part_index: search_part_idx,
+                                                end_part_index: search_part_idx + 1,
+                                                first_part_first_unit_index: 0,
+                                                last_part_end_unit_index: search_value.length,
+                                            },
+                                        ),
+                                    );
+                                }
+                            } else {
+                                for (const matching_search_value_index of matching_search_value_indices) {
+                                    new_result.Try_Add_Match(
+                                        new Result.Candidate(
+                                            {
+                                                column_index: search_column_idx,
+                                                row_index: search_row_idx,
+                                                first_part_index: search_part_idx,
+                                                end_part_index: search_part_idx + 1,
+                                                first_part_first_unit_index: matching_search_value_index,
+                                                last_part_end_unit_index: matching_search_value_index + expression_value.length,
+                                            },
+                                        ),
+                                    );
+                                }
+                            }
                         }
                     }
                 }
@@ -888,9 +950,9 @@ export class Instance
     private Complex_Text_Start(
         text: Node.Text,
         mode: Mode,
-        result: Result.Instance,
+        result: Result.Runner,
     ):
-        Result.Instance | null
+        Result.Runner | null
     {
         Utils.Assert(
             result.Candidate_Count() === 0,
@@ -907,87 +969,108 @@ export class Instance
             expression_part.Value() :
             expression_part.Value().toLowerCase();
 
-        const new_result: Result.Instance = new Result.Instance(result.Line());
+        const new_result: Result.Runner = new Result.Runner(result.Line());
         for (
-            let search_idx = 0, search_end = search_line.Macro_Part_Count(LINE_PATH_TYPE);
-            search_idx < search_end;
-            search_idx += 1
+            let search_column_idx = 0, search_column_end = search_line.Column_Count();
+            search_column_idx < search_column_end;
+            search_column_idx += 1
         ) {
-            if (
-                (mode & Mode.META) ||
-                !search_line.Macro_Part(search_idx, LINE_PATH_TYPE).Is_Command_Or_Argument()
+            const search_column: Text.Column.Instance = search_line.Column(search_column_idx);
+            for (
+                let search_row_idx = 0, search_row_end = search_column.Row_Count();
+                search_row_idx < search_row_end;
+                search_row_idx += 1
             ) {
-                const search_part: Text.Part.Instance =
-                    search_line.Macro_Part(search_idx, LINE_PATH_TYPE);
-                const search_value: Text.Value = mode & Mode.CASE ?
-                    search_part.Value() :
-                    search_part.Value().toLowerCase();
-                if (mode & Mode.ALIGN) {
-                    if (mode & Mode.NOT) {
-                        if (search_value !== expression_value) {
-                            new_result.Try_Add_Candidate(
-                                new Result.Match(
-                                    {
-                                        first_part_index: search_idx,
-                                        end_part_index: search_idx + 1,
-                                        first_part_first_unit_index: 0,
-                                        last_part_end_unit_index: search_value.length,
-                                    },
-                                ),
-                            );
-                        }
-                    } else {
-                        if (search_value === expression_value) {
-                            new_result.Try_Add_Candidate(
-                                new Result.Match(
-                                    {
-                                        first_part_index: search_idx,
-                                        end_part_index: search_idx + 1,
-                                        first_part_first_unit_index: 0,
-                                        last_part_end_unit_index: search_value.length,
-                                    },
-                                ),
-                            );
-                        }
-                    }
-                } else {
-                    if (mode & Mode.NOT) {
-                        if (
-                            search_value.length < expression_value.length ||
-                            search_value.slice(
-                                search_value.length - expression_value.length,
-                                search_value.length,
-                            ) !== expression_value
-                        ) {
-                            new_result.Try_Add_Candidate(
-                                new Result.Match(
-                                    {
-                                        first_part_index: search_idx,
-                                        end_part_index: search_idx + 1,
-                                        first_part_first_unit_index: 0,
-                                        last_part_end_unit_index: search_value.length,
-                                    },
-                                ),
-                            );
-                        }
-                    } else {
-                        if (
-                            search_value.length >= expression_value.length &&
-                            search_value.slice(
-                                search_value.length - expression_value.length,
-                                search_value.length,
-                            ) === expression_value
-                        ) {
-                            new_result.Try_Add_Candidate(
-                                new Result.Match(
-                                    {
-                                        first_part_index: search_idx,
-                                        end_part_index: search_idx + 1,
-                                        first_part_first_unit_index: search_value.length - expression_value.length,
-                                        last_part_end_unit_index: search_value.length,
-                                    },
-                                ),
-                            );
+                const search_row: Text.Row.Instance = search_column.Row(search_row_idx);
+                for (
+                    let search_part_idx = 0, search_part_end = search_row.Macro_Part_Count();
+                    search_part_idx < search_part_end;
+                    search_part_idx += 1
+                ) {
+                    const search_part: Text.Part.Instance = search_row.Macro_Part(search_part_idx);
+                    if (
+                        (mode & Mode.META) ||
+                        !search_part.Is_Command_Or_Argument()
+                    ) {
+                        const search_value: Text.Value = mode & Mode.CASE ?
+                            search_part.Value() :
+                            search_part.Value().toLowerCase();
+                        if (mode & Mode.ALIGN) {
+                            if (mode & Mode.NOT) {
+                                if (search_value !== expression_value) {
+                                    new_result.Try_Add_Candidate(
+                                        new Result.Candidate(
+                                            {
+                                                column_index: search_column_idx,
+                                                row_index: search_row_idx,
+                                                first_part_index: search_part_idx,
+                                                end_part_index: search_part_idx + 1,
+                                                first_part_first_unit_index: 0,
+                                                last_part_end_unit_index: search_value.length,
+                                            },
+                                        ),
+                                    );
+                                }
+                            } else {
+                                if (search_value === expression_value) {
+                                    new_result.Try_Add_Candidate(
+                                        new Result.Candidate(
+                                            {
+                                                column_index: search_column_idx,
+                                                row_index: search_row_idx,
+                                                first_part_index: search_part_idx,
+                                                end_part_index: search_part_idx + 1,
+                                                first_part_first_unit_index: 0,
+                                                last_part_end_unit_index: search_value.length,
+                                            },
+                                        ),
+                                    );
+                                }
+                            }
+                        } else {
+                            if (mode & Mode.NOT) {
+                                if (
+                                    search_value.length < expression_value.length ||
+                                    search_value.slice(
+                                        search_value.length - expression_value.length,
+                                        search_value.length,
+                                    ) !== expression_value
+                                ) {
+                                    new_result.Try_Add_Candidate(
+                                        new Result.Candidate(
+                                            {
+                                                column_index: search_column_idx,
+                                                row_index: search_row_idx,
+                                                first_part_index: search_part_idx,
+                                                end_part_index: search_part_idx + 1,
+                                                first_part_first_unit_index: 0,
+                                                last_part_end_unit_index: search_value.length,
+                                            },
+                                        ),
+                                    );
+                                }
+                            } else {
+                                if (
+                                    search_value.length >= expression_value.length &&
+                                    search_value.slice(
+                                        search_value.length - expression_value.length,
+                                        search_value.length,
+                                    ) === expression_value
+                                ) {
+                                    new_result.Try_Add_Candidate(
+                                        new Result.Candidate(
+                                            {
+                                                column_index: search_column_idx,
+                                                row_index: search_row_idx,
+                                                first_part_index: search_part_idx,
+                                                end_part_index: search_part_idx + 1,
+                                                first_part_first_unit_index: search_value.length - expression_value.length,
+                                                last_part_end_unit_index: search_value.length,
+                                            },
+                                        ),
+                                    );
+                                }
+                            }
                         }
                     }
                 }
@@ -1003,9 +1086,9 @@ export class Instance
     private Complex_Text_Middle(
         text: Node.Text,
         mode: Mode,
-        result: Result.Instance,
+        result: Result.Runner,
     ):
-        Result.Instance | null
+        Result.Runner | null
     {
         const search_line: Text.Line.Instance = result.Line();
         const expression_part: Text.Part.Instance = text.Part();
@@ -1013,41 +1096,45 @@ export class Instance
             expression_part.Value() :
             expression_part.Value().toLowerCase();
 
-        const new_result: Result.Instance = new Result.Instance(result.Line());
+        const new_result: Result.Runner = new Result.Runner(result.Line());
         for (
             let candidate_idx = 0, candidate_end = result.Candidate_Count();
             candidate_idx < candidate_end;
             candidate_idx += 1
         ) {
-            const old_candidate: Result.Match = result.Candidate(candidate_idx);
-            let search_idx: Index = old_candidate.End_Part_Index();
+            const old_candidate: Result.Candidate = result.Candidate(candidate_idx);
+            const search_column = search_line.Column(old_candidate.Column_Index());
+            const search_row = search_column.Row(old_candidate.Row_Index());
+            const search_idx: Index = old_candidate.End_Part_Index();
             const old_search_part: Text.Part.Instance =
-                search_line.Macro_Part(search_idx - 1, LINE_PATH_TYPE);
+                search_row.Macro_Part(search_idx - 1);
             const old_search_value: Text.Value = mode & Mode.CASE ?
                 old_search_part.Value() :
                 old_search_part.Value().toLowerCase();
             if (old_candidate.Last_Part_End_Unit_Index() === old_search_value.length) {
-                const search_end: Index = search_line.Macro_Part_Count(LINE_PATH_TYPE);
+                const search_end: Index = search_row.Macro_Part_Count();
                 let command_count: Count = 0;
                 if (!(mode & Mode.META)) {
                     while (
                         search_idx + command_count < search_end &&
-                        search_line.Macro_Part(search_idx + command_count, LINE_PATH_TYPE).Is_Command_Or_Argument()
+                        search_row.Macro_Part(search_idx + command_count).Is_Command_Or_Argument()
                     ) {
                         command_count += 1;
                     }
                 }
                 if (search_idx + command_count < search_end) {
                     const search_part: Text.Part.Instance =
-                        search_line.Macro_Part(search_idx + command_count, LINE_PATH_TYPE);
+                        search_row.Macro_Part(search_idx + command_count);
                     const search_value: Text.Value = mode & Mode.CASE ?
                         search_part.Value() :
                         search_part.Value().toLowerCase();
                     if (mode & Mode.NOT) {
                         if (search_value !== expression_value) {
                             new_result.Try_Add_Candidate(
-                                new Result.Match(
+                                new Result.Candidate(
                                     {
+                                        column_index: old_candidate.Column_Index(),
+                                        row_index: old_candidate.Row_Index(),
                                         first_part_index: old_candidate.First_Part_Index(),
                                         end_part_index: search_idx + command_count + 1,
                                         first_part_first_unit_index: old_candidate.First_Part_First_Unit_Index(),
@@ -1059,8 +1146,10 @@ export class Instance
                     } else {
                         if (search_value === expression_value) {
                             new_result.Try_Add_Candidate(
-                                new Result.Match(
+                                new Result.Candidate(
                                     {
+                                        column_index: old_candidate.Column_Index(),
+                                        row_index: old_candidate.Row_Index(),
                                         first_part_index: old_candidate.First_Part_Index(),
                                         end_part_index: search_idx + command_count + 1,
                                         first_part_first_unit_index: old_candidate.First_Part_First_Unit_Index(),
@@ -1083,9 +1172,9 @@ export class Instance
     private Complex_Text_End(
         text: Node.Text,
         mode: Mode,
-        result: Result.Instance,
+        result: Result.Runner,
     ):
-        Result.Instance | null
+        Result.Runner | null
     {
         const search_line: Text.Line.Instance = result.Line();
         const expression_part: Text.Part.Instance = text.Part();
@@ -1093,33 +1182,35 @@ export class Instance
             expression_part.Value() :
             expression_part.Value().toLowerCase();
 
-        const new_result: Result.Instance = new Result.Instance(result.Line());
+        const new_result: Result.Runner = new Result.Runner(result.Line());
         for (
             let candidate_idx = 0, candidate_end = result.Candidate_Count();
             candidate_idx < candidate_end;
             candidate_idx += 1
         ) {
-            const old_candidate: Result.Match = result.Candidate(candidate_idx);
-            let search_idx: Index = old_candidate.End_Part_Index();
+            const old_candidate: Result.Candidate = result.Candidate(candidate_idx);
+            const search_column = search_line.Column(old_candidate.Column_Index());
+            const search_row = search_column.Row(old_candidate.Row_Index());
+            const search_idx: Index = old_candidate.End_Part_Index();
             const old_search_part: Text.Part.Instance =
-                search_line.Macro_Part(search_idx - 1, LINE_PATH_TYPE);
+                search_row.Macro_Part(search_idx - 1);
             const old_search_value: Text.Value = mode & Mode.CASE ?
                 old_search_part.Value() :
                 old_search_part.Value().toLowerCase();
             if (old_candidate.Last_Part_End_Unit_Index() === old_search_value.length) {
-                const search_end: Index = search_line.Macro_Part_Count(LINE_PATH_TYPE);
+                const search_end: Index = search_row.Macro_Part_Count();
                 let command_count: Count = 0;
                 if (!(mode & Mode.META)) {
                     while (
                         search_idx + command_count < search_end &&
-                        search_line.Macro_Part(search_idx + command_count, LINE_PATH_TYPE).Is_Command_Or_Argument()
+                        search_row.Macro_Part(search_idx + command_count).Is_Command_Or_Argument()
                     ) {
                         command_count += 1;
                     }
                 }
                 if (search_idx + command_count < search_end) {
                     const search_part: Text.Part.Instance =
-                        search_line.Macro_Part(search_idx + command_count, LINE_PATH_TYPE);
+                        search_row.Macro_Part(search_idx + command_count);
                     const search_value: Text.Value = mode & Mode.CASE ?
                         search_part.Value() :
                         search_part.Value().toLowerCase();
@@ -1127,8 +1218,10 @@ export class Instance
                         if (mode & Mode.NOT) {
                             if (search_value !== expression_value) {
                                 new_result.Try_Add_Match(
-                                    new Result.Match(
+                                    new Result.Candidate(
                                         {
+                                            column_index: old_candidate.Column_Index(),
+                                            row_index: old_candidate.Row_Index(),
                                             first_part_index: old_candidate.First_Part_Index(),
                                             end_part_index: search_idx + command_count + 1,
                                             first_part_first_unit_index: old_candidate.First_Part_First_Unit_Index(),
@@ -1140,8 +1233,10 @@ export class Instance
                         } else {
                             if (search_value === expression_value) {
                                 new_result.Try_Add_Match(
-                                    new Result.Match(
+                                    new Result.Candidate(
                                         {
+                                            column_index: old_candidate.Column_Index(),
+                                            row_index: old_candidate.Row_Index(),
                                             first_part_index: old_candidate.First_Part_Index(),
                                             end_part_index: search_idx + command_count + 1,
                                             first_part_first_unit_index: old_candidate.First_Part_First_Unit_Index(),
@@ -1161,8 +1256,10 @@ export class Instance
                                 ) !== expression_value
                             ) {
                                 new_result.Try_Add_Match(
-                                    new Result.Match(
+                                    new Result.Candidate(
                                         {
+                                            column_index: old_candidate.Column_Index(),
+                                            row_index: old_candidate.Row_Index(),
                                             first_part_index: old_candidate.First_Part_Index(),
                                             end_part_index: search_idx + command_count + 1,
                                             first_part_first_unit_index: old_candidate.First_Part_First_Unit_Index(),
@@ -1180,8 +1277,10 @@ export class Instance
                                 ) === expression_value
                             ) {
                                 new_result.Try_Add_Match(
-                                    new Result.Match(
+                                    new Result.Candidate(
                                         {
+                                            column_index: old_candidate.Column_Index(),
+                                            row_index: old_candidate.Row_Index(),
                                             first_part_index: old_candidate.First_Part_Index(),
                                             end_part_index: search_idx + command_count + 1,
                                             first_part_first_unit_index: old_candidate.First_Part_First_Unit_Index(),
@@ -1205,13 +1304,13 @@ export class Instance
     private Class(
         node: Node.Instance,
         mode: Mode,
-        result: Result.Instance,
+        result: Result.Runner,
     ):
-        Result.Instance | null
+        Result.Runner | null
     {
         const class_: Node.Class = node as Node.Class;
         if (result.Match_Count() === 0) {
-            const class_result: Result.Instance | null =
+            const class_result: Result.Runner | null =
                 this.Class_Any_Or_Start(class_, mode, result);
             if (class_result != null) {
                 return this.Step(
@@ -1223,7 +1322,7 @@ export class Instance
                 return null;
             }
         } else {
-            const class_result: Result.Instance | null =
+            const class_result: Result.Runner | null =
                 this.Class_Middle_Or_End(class_, mode, result);
             if (class_result != null) {
                 return this.Step(
@@ -1240,9 +1339,9 @@ export class Instance
     private Class_Any_Or_Start(
         class_: Node.Class,
         mode: Mode,
-        result: Result.Instance,
+        result: Result.Runner,
     ):
-        Result.Instance | null
+        Result.Runner | null
     {
         Utils.Assert(
             result.Match_Count() === 0,
@@ -1251,32 +1350,47 @@ export class Instance
 
         const search_line: Text.Line.Instance = result.Line();
 
-        const new_result: Result.Instance = new Result.Instance(result.Line());
+        const new_result: Result.Runner = new Result.Runner(result.Line());
         for (
-            let search_idx = 0, search_end = search_line.Macro_Part_Count(LINE_PATH_TYPE);
-            search_idx < search_end;
-            search_idx += 1
+            let search_column_idx = 0, search_column_end = search_line.Column_Count();
+            search_column_idx < search_column_end;
+            search_column_idx += 1
         ) {
-            if (
-                (mode & Mode.META) ||
-                !search_line.Macro_Part(search_idx, LINE_PATH_TYPE).Is_Command_Or_Argument()
+            const search_column: Text.Column.Instance = search_line.Column(search_column_idx);
+            for (
+                let search_row_idx = 0, search_row_end = search_column.Row_Count();
+                search_row_idx < search_row_end;
+                search_row_idx += 1
             ) {
-                const search_part: Text.Part.Instance =
-                    search_line.Macro_Part(search_idx, LINE_PATH_TYPE);
-                const search_value: Text.Value = mode & Mode.CASE ?
-                    search_part.Value() :
-                    search_part.Value().toLowerCase();
-                if (class_.Recognizes(search_part)) {
-                    new_result.Try_Add_Match(
-                        new Result.Match(
-                            {
-                                first_part_index: search_idx,
-                                end_part_index: search_idx + 1,
-                                first_part_first_unit_index: 0,
-                                last_part_end_unit_index: search_value.length,
-                            },
-                        ),
-                    );
+                const search_row: Text.Row.Instance = search_column.Row(search_row_idx);
+                for (
+                    let search_part_idx = 0, search_part_end = search_row.Macro_Part_Count();
+                    search_part_idx < search_part_end;
+                    search_part_idx += 1
+                ) {
+                    const search_part: Text.Part.Instance = search_row.Macro_Part(search_part_idx);
+                    if (
+                        (mode & Mode.META) ||
+                        !search_part.Is_Command_Or_Argument()
+                    ) {
+                        const search_value: Text.Value = mode & Mode.CASE ?
+                            search_part.Value() :
+                            search_part.Value().toLowerCase();
+                        if (class_.Recognizes(search_part)) {
+                            new_result.Try_Add_Match(
+                                new Result.Candidate(
+                                    {
+                                        column_index: search_column_idx,
+                                        row_index: search_row_idx,
+                                        first_part_index: search_part_idx,
+                                        end_part_index: search_part_idx + 1,
+                                        first_part_first_unit_index: 0,
+                                        last_part_end_unit_index: search_value.length,
+                                    },
+                                ),
+                            );
+                        }
+                    }
                 }
             }
         }
@@ -1298,46 +1412,50 @@ export class Instance
     private Class_Middle_Or_End(
         class_: Node.Class,
         mode: Mode,
-        result: Result.Instance,
+        result: Result.Runner,
     ):
-        Result.Instance | null
+        Result.Runner | null
     {
         const search_line: Text.Line.Instance = result.Line();
 
-        const new_result: Result.Instance = new Result.Instance(result.Line());
+        const new_result: Result.Runner = new Result.Runner(result.Line());
         for (
             let match_idx = 0, match_end = result.Match_Count();
             match_idx < match_end;
             match_idx += 1
         ) {
-            const old_match: Result.Match = result.Match(match_idx);
-            let search_idx: Index = old_match.End_Part_Index();
+            const old_match: Result.Candidate = result.Match(match_idx);
+            const search_column = search_line.Column(old_match.Column_Index());
+            const search_row = search_column.Row(old_match.Row_Index());
+            const search_idx: Index = old_match.End_Part_Index();
             const old_search_part: Text.Part.Instance =
-                search_line.Macro_Part(search_idx - 1, LINE_PATH_TYPE);
+                search_row.Macro_Part(search_idx - 1);
             const old_search_value: Text.Value = mode & Mode.CASE ?
                 old_search_part.Value() :
                 old_search_part.Value().toLowerCase();
             if (old_match.Last_Part_End_Unit_Index() === old_search_value.length) {
-                const search_end: Index = search_line.Macro_Part_Count(LINE_PATH_TYPE);
+                const search_end: Index = search_row.Macro_Part_Count();
                 let command_count: Count = 0;
                 if (!(mode & Mode.META)) {
                     while (
                         search_idx + command_count < search_end &&
-                        search_line.Macro_Part(search_idx + command_count, LINE_PATH_TYPE).Is_Command_Or_Argument()
+                        search_row.Macro_Part(search_idx + command_count).Is_Command_Or_Argument()
                     ) {
                         command_count += 1;
                     }
                 }
                 if (search_idx + command_count < search_end) {
                     const search_part: Text.Part.Instance =
-                        search_line.Macro_Part(search_idx + command_count, LINE_PATH_TYPE);
+                        search_row.Macro_Part(search_idx + command_count);
                     const search_value: Text.Value = mode & Mode.CASE ?
                         search_part.Value() :
                         search_part.Value().toLowerCase();
                     if (class_.Recognizes(search_part)) {
                         new_result.Try_Add_Match(
-                            new Result.Match(
+                            new Result.Candidate(
                                 {
+                                    column_index: old_match.Column_Index(),
+                                    row_index: old_match.Row_Index(),
                                     first_part_index: old_match.First_Part_Index(),
                                     end_part_index: search_idx + command_count + 1,
                                     first_part_first_unit_index: old_match.First_Part_First_Unit_Index(),
@@ -1367,18 +1485,18 @@ export class Instance
     private Complex_Class(
         node: Node.Instance,
         mode: Mode,
-        result: Result.Instance,
+        result: Result.Runner,
     ):
-        Result.Instance | null
+        Result.Runner | null
     {
         const class_: Node.Class = node as Node.Class;
         if (
             result.Candidate_Count() === 0 &&
             result.Match_Count() === 0
         ) {
-            const class_result_any: Result.Instance | null =
+            const class_result_any: Result.Runner | null =
                 this.Complex_Class_Any(class_, mode, result);
-            const class_result_start: Result.Instance | null =
+            const class_result_start: Result.Runner | null =
                 this.Complex_Class_Start(class_, mode, result);
             if (class_result_any != null) {
                 if (class_result_start != null) {
@@ -1404,9 +1522,9 @@ export class Instance
                 return null;
             }
         } else {
-            const class_result_middle: Result.Instance | null =
+            const class_result_middle: Result.Runner | null =
                 this.Complex_Class_Middle(class_, mode, result);
-            const class_result_end: Result.Instance | null =
+            const class_result_end: Result.Runner | null =
                 this.Complex_Class_End(class_, mode, result);
             if (class_result_middle != null) {
                 if (class_result_end != null) {
@@ -1437,9 +1555,9 @@ export class Instance
     private Complex_Class_Any(
         class_: Node.Class,
         mode: Mode,
-        result: Result.Instance,
+        result: Result.Runner,
     ):
-        Result.Instance | null
+        Result.Runner | null
     {
         Utils.Assert(
             result.Candidate_Count() === 0,
@@ -1452,46 +1570,63 @@ export class Instance
 
         const search_line: Text.Line.Instance = result.Line();
 
-        const new_result: Result.Instance = new Result.Instance(result.Line());
+        const new_result: Result.Runner = new Result.Runner(result.Line());
         for (
-            let search_idx = 0, search_end = search_line.Macro_Part_Count(LINE_PATH_TYPE);
-            search_idx < search_end;
-            search_idx += 1
+            let search_column_idx = 0, search_column_end = search_line.Column_Count();
+            search_column_idx < search_column_end;
+            search_column_idx += 1
         ) {
-            if (
-                (mode & Mode.META) ||
-                !search_line.Macro_Part(search_idx, LINE_PATH_TYPE).Is_Command_Or_Argument()
+            const search_column: Text.Column.Instance = search_line.Column(search_column_idx);
+            for (
+                let search_row_idx = 0, search_row_end = search_column.Row_Count();
+                search_row_idx < search_row_end;
+                search_row_idx += 1
             ) {
-                const search_part: Text.Part.Instance =
-                    search_line.Macro_Part(search_idx, LINE_PATH_TYPE);
-                const search_value: Text.Value = mode & Mode.CASE ?
-                    search_part.Value() :
-                    search_part.Value().toLowerCase();
-                if (mode & Mode.NOT) {
-                    if (!class_.Recognizes(search_part)) {
-                        new_result.Try_Add_Match(
-                            new Result.Match(
-                                {
-                                    first_part_index: search_idx,
-                                    end_part_index: search_idx + 1,
-                                    first_part_first_unit_index: 0,
-                                    last_part_end_unit_index: search_value.length,
-                                },
-                            ),
-                        );
-                    }
-                } else {
-                    if (class_.Recognizes(search_part)) {
-                        new_result.Try_Add_Match(
-                            new Result.Match(
-                                {
-                                    first_part_index: search_idx,
-                                    end_part_index: search_idx + 1,
-                                    first_part_first_unit_index: 0,
-                                    last_part_end_unit_index: search_value.length,
-                                },
-                            ),
-                        );
+                const search_row: Text.Row.Instance = search_column.Row(search_row_idx);
+                for (
+                    let search_part_idx = 0, search_part_end = search_row.Macro_Part_Count();
+                    search_part_idx < search_part_end;
+                    search_part_idx += 1
+                ) {
+                    const search_part: Text.Part.Instance = search_row.Macro_Part(search_part_idx);
+                    if (
+                        (mode & Mode.META) ||
+                        !search_part.Is_Command_Or_Argument()
+                    ) {
+                        const search_value: Text.Value = mode & Mode.CASE ?
+                            search_part.Value() :
+                            search_part.Value().toLowerCase();
+                        if (mode & Mode.NOT) {
+                            if (!class_.Recognizes(search_part)) {
+                                new_result.Try_Add_Match(
+                                    new Result.Candidate(
+                                        {
+                                            column_index: search_column_idx,
+                                            row_index: search_row_idx,
+                                            first_part_index: search_part_idx,
+                                            end_part_index: search_part_idx + 1,
+                                            first_part_first_unit_index: 0,
+                                            last_part_end_unit_index: search_value.length,
+                                        },
+                                    ),
+                                );
+                            }
+                        } else {
+                            if (class_.Recognizes(search_part)) {
+                                new_result.Try_Add_Match(
+                                    new Result.Candidate(
+                                        {
+                                            column_index: search_column_idx,
+                                            row_index: search_row_idx,
+                                            first_part_index: search_part_idx,
+                                            end_part_index: search_part_idx + 1,
+                                            first_part_first_unit_index: 0,
+                                            last_part_end_unit_index: search_value.length,
+                                        },
+                                    ),
+                                );
+                            }
+                        }
                     }
                 }
             }
@@ -1506,9 +1641,9 @@ export class Instance
     private Complex_Class_Start(
         class_: Node.Class,
         mode: Mode,
-        result: Result.Instance,
+        result: Result.Runner,
     ):
-        Result.Instance | null
+        Result.Runner | null
     {
         Utils.Assert(
             result.Candidate_Count() === 0,
@@ -1521,46 +1656,63 @@ export class Instance
 
         const search_line: Text.Line.Instance = result.Line();
 
-        const new_result: Result.Instance = new Result.Instance(result.Line());
+        const new_result: Result.Runner = new Result.Runner(result.Line());
         for (
-            let search_idx = 0, search_end = search_line.Macro_Part_Count(LINE_PATH_TYPE);
-            search_idx < search_end;
-            search_idx += 1
+            let search_column_idx = 0, search_column_end = search_line.Column_Count();
+            search_column_idx < search_column_end;
+            search_column_idx += 1
         ) {
-            if (
-                (mode & Mode.META) ||
-                !search_line.Macro_Part(search_idx, LINE_PATH_TYPE).Is_Command_Or_Argument()
+            const search_column: Text.Column.Instance = search_line.Column(search_column_idx);
+            for (
+                let search_row_idx = 0, search_row_end = search_column.Row_Count();
+                search_row_idx < search_row_end;
+                search_row_idx += 1
             ) {
-                const search_part: Text.Part.Instance =
-                    search_line.Macro_Part(search_idx, LINE_PATH_TYPE);
-                const search_value: Text.Value = mode & Mode.CASE ?
-                    search_part.Value() :
-                    search_part.Value().toLowerCase();
-                if (mode & Mode.NOT) {
-                    if (!class_.Recognizes(search_part)) {
-                        new_result.Try_Add_Candidate(
-                            new Result.Match(
-                                {
-                                    first_part_index: search_idx,
-                                    end_part_index: search_idx + 1,
-                                    first_part_first_unit_index: 0,
-                                    last_part_end_unit_index: search_value.length,
-                                },
-                            ),
-                        );
-                    }
-                } else {
-                    if (class_.Recognizes(search_part)) {
-                        new_result.Try_Add_Candidate(
-                            new Result.Match(
-                                {
-                                    first_part_index: search_idx,
-                                    end_part_index: search_idx + 1,
-                                    first_part_first_unit_index: 0,
-                                    last_part_end_unit_index: search_value.length,
-                                },
-                            ),
-                        );
+                const search_row: Text.Row.Instance = search_column.Row(search_row_idx);
+                for (
+                    let search_part_idx = 0, search_part_end = search_row.Macro_Part_Count();
+                    search_part_idx < search_part_end;
+                    search_part_idx += 1
+                ) {
+                    const search_part: Text.Part.Instance = search_row.Macro_Part(search_part_idx);
+                    if (
+                        (mode & Mode.META) ||
+                        !search_part.Is_Command_Or_Argument()
+                    ) {
+                        const search_value: Text.Value = mode & Mode.CASE ?
+                            search_part.Value() :
+                            search_part.Value().toLowerCase();
+                        if (mode & Mode.NOT) {
+                            if (!class_.Recognizes(search_part)) {
+                                new_result.Try_Add_Candidate(
+                                    new Result.Candidate(
+                                        {
+                                            column_index: search_column_idx,
+                                            row_index: search_row_idx,
+                                            first_part_index: search_part_idx,
+                                            end_part_index: search_part_idx + 1,
+                                            first_part_first_unit_index: 0,
+                                            last_part_end_unit_index: search_value.length,
+                                        },
+                                    ),
+                                );
+                            }
+                        } else {
+                            if (class_.Recognizes(search_part)) {
+                                new_result.Try_Add_Candidate(
+                                    new Result.Candidate(
+                                        {
+                                            column_index: search_column_idx,
+                                            row_index: search_row_idx,
+                                            first_part_index: search_part_idx,
+                                            end_part_index: search_part_idx + 1,
+                                            first_part_first_unit_index: 0,
+                                            last_part_end_unit_index: search_value.length,
+                                        },
+                                    ),
+                                );
+                            }
+                        }
                     }
                 }
             }
@@ -1575,47 +1727,51 @@ export class Instance
     private Complex_Class_Middle(
         class_: Node.Class,
         mode: Mode,
-        result: Result.Instance,
+        result: Result.Runner,
     ):
-        Result.Instance | null
+        Result.Runner | null
     {
         const search_line: Text.Line.Instance = result.Line();
 
-        const new_result: Result.Instance = new Result.Instance(result.Line());
+        const new_result: Result.Runner = new Result.Runner(result.Line());
         for (
             let candidate_idx = 0, candidate_end = result.Candidate_Count();
             candidate_idx < candidate_end;
             candidate_idx += 1
         ) {
-            const old_candidate: Result.Match = result.Candidate(candidate_idx);
-            let search_idx: Index = old_candidate.End_Part_Index();
+            const old_candidate: Result.Candidate = result.Candidate(candidate_idx);
+            const search_column = search_line.Column(old_candidate.Column_Index());
+            const search_row = search_column.Row(old_candidate.Row_Index());
+            const search_idx: Index = old_candidate.End_Part_Index();
             const old_search_part: Text.Part.Instance =
-                search_line.Macro_Part(search_idx - 1, LINE_PATH_TYPE);
+                search_row.Macro_Part(search_idx - 1);
             const old_search_value: Text.Value = mode & Mode.CASE ?
                 old_search_part.Value() :
                 old_search_part.Value().toLowerCase();
             if (old_candidate.Last_Part_End_Unit_Index() === old_search_value.length) {
-                const search_end: Index = search_line.Macro_Part_Count(LINE_PATH_TYPE);
+                const search_end: Index = search_row.Macro_Part_Count();
                 let command_count: Count = 0;
                 if (!(mode & Mode.META)) {
                     while (
                         search_idx + command_count < search_end &&
-                        search_line.Macro_Part(search_idx + command_count, LINE_PATH_TYPE).Is_Command_Or_Argument()
+                        search_row.Macro_Part(search_idx + command_count).Is_Command_Or_Argument()
                     ) {
                         command_count += 1;
                     }
                 }
                 if (search_idx + command_count < search_end) {
                     const search_part: Text.Part.Instance =
-                        search_line.Macro_Part(search_idx + command_count, LINE_PATH_TYPE);
+                        search_row.Macro_Part(search_idx + command_count);
                     const search_value: Text.Value = mode & Mode.CASE ?
                         search_part.Value() :
                         search_part.Value().toLowerCase();
                     if (mode & Mode.NOT) {
                         if (!class_.Recognizes(search_part)) {
                             new_result.Try_Add_Candidate(
-                                new Result.Match(
+                                new Result.Candidate(
                                     {
+                                        column_index: old_candidate.Column_Index(),
+                                        row_index: old_candidate.Row_Index(),
                                         first_part_index: old_candidate.First_Part_Index(),
                                         end_part_index: search_idx + command_count + 1,
                                         first_part_first_unit_index: old_candidate.First_Part_First_Unit_Index(),
@@ -1627,8 +1783,10 @@ export class Instance
                     } else {
                         if (class_.Recognizes(search_part)) {
                             new_result.Try_Add_Candidate(
-                                new Result.Match(
+                                new Result.Candidate(
                                     {
+                                        column_index: old_candidate.Column_Index(),
+                                        row_index: old_candidate.Row_Index(),
                                         first_part_index: old_candidate.First_Part_Index(),
                                         end_part_index: search_idx + command_count + 1,
                                         first_part_first_unit_index: old_candidate.First_Part_First_Unit_Index(),
@@ -1651,47 +1809,51 @@ export class Instance
     private Complex_Class_End(
         class_: Node.Class,
         mode: Mode,
-        result: Result.Instance,
+        result: Result.Runner,
     ):
-        Result.Instance | null
+        Result.Runner | null
     {
         const search_line: Text.Line.Instance = result.Line();
 
-        const new_result: Result.Instance = new Result.Instance(result.Line());
+        const new_result: Result.Runner = new Result.Runner(result.Line());
         for (
             let candidate_idx = 0, candidate_end = result.Candidate_Count();
             candidate_idx < candidate_end;
             candidate_idx += 1
         ) {
-            const old_candidate: Result.Match = result.Candidate(candidate_idx);
-            let search_idx: Index = old_candidate.End_Part_Index();
+            const old_candidate: Result.Candidate = result.Candidate(candidate_idx);
+            const search_column = search_line.Column(old_candidate.Column_Index());
+            const search_row = search_column.Row(old_candidate.Row_Index());
+            const search_idx: Index = old_candidate.End_Part_Index();
             const old_search_part: Text.Part.Instance =
-                search_line.Macro_Part(search_idx - 1, LINE_PATH_TYPE);
+                search_row.Macro_Part(search_idx - 1);
             const old_search_value: Text.Value = mode & Mode.CASE ?
                 old_search_part.Value() :
                 old_search_part.Value().toLowerCase();
             if (old_candidate.Last_Part_End_Unit_Index() === old_search_value.length) {
-                const search_end: Index = search_line.Macro_Part_Count(LINE_PATH_TYPE);
+                const search_end: Index = search_row.Macro_Part_Count();
                 let command_count: Count = 0;
                 if (!(mode & Mode.META)) {
                     while (
                         search_idx + command_count < search_end &&
-                        search_line.Macro_Part(search_idx + command_count, LINE_PATH_TYPE).Is_Command_Or_Argument()
+                        search_row.Macro_Part(search_idx + command_count).Is_Command_Or_Argument()
                     ) {
                         command_count += 1;
                     }
                 }
                 if (search_idx + command_count < search_end) {
                     const search_part: Text.Part.Instance =
-                        search_line.Macro_Part(search_idx + command_count, LINE_PATH_TYPE);
+                        search_row.Macro_Part(search_idx + command_count);
                     const search_value: Text.Value = mode & Mode.CASE ?
                         search_part.Value() :
                         search_part.Value().toLowerCase();
                     if (mode & Mode.NOT) {
                         if (!class_.Recognizes(search_part)) {
                             new_result.Try_Add_Match(
-                                new Result.Match(
+                                new Result.Candidate(
                                     {
+                                        column_index: old_candidate.Column_Index(),
+                                        row_index: old_candidate.Row_Index(),
                                         first_part_index: old_candidate.First_Part_Index(),
                                         end_part_index: search_idx + command_count + 1,
                                         first_part_first_unit_index: old_candidate.First_Part_First_Unit_Index(),
@@ -1703,8 +1865,10 @@ export class Instance
                     } else {
                         if (class_.Recognizes(search_part)) {
                             new_result.Try_Add_Match(
-                                new Result.Match(
+                                new Result.Candidate(
                                     {
+                                        column_index: old_candidate.Column_Index(),
+                                        row_index: old_candidate.Row_Index(),
                                         first_part_index: old_candidate.First_Part_Index(),
                                         end_part_index: search_idx + command_count + 1,
                                         first_part_first_unit_index: old_candidate.First_Part_First_Unit_Index(),

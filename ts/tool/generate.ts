@@ -10,7 +10,6 @@ import * as Utils from "../utils.js";
 import * as Unicode from "../unicode.js";
 
 import * as Language from "../model/language.js";
-import * as Name_Sorter from "../model/name_sorter.js";
 import * as Data from "../model/data.js";
 import * as Text from "../model/text.js";
 
@@ -37,9 +36,6 @@ const DEFAULT_LAST_TIMESTAMP: Count =
 
 const IS_COMPRESSED_FILE_REGEX: RegExp =
     new RegExp(`\\.${Data.File.Symbol.EXTENSION}$`);
-
-const LINE_PATH_TYPE: Text.Path.Type =
-    Text.Path.Type.DEFAULT;
 
 class Unique_Parts
 {
@@ -331,67 +327,85 @@ async function Generate(
                             ) {
                                 const line: Text.Line.Instance = text.Line(line_idx);
                                 for (
-                                    let part_idx = 0, part_end = line.Macro_Part_Count(LINE_PATH_TYPE);
-                                    part_idx < part_end;
-                                    part_idx += 1
+                                    let column_idx = 0, column_end = line.Column_Count();
+                                    column_idx < column_end;
+                                    column_idx += 1
                                 ) {
-                                    const part: Text.Part.Instance = line.Macro_Part(part_idx, LINE_PATH_TYPE);
-                                    const part_type: Text.Part.Type = part.Part_Type();
-                                    const part_value: string = part.Value();
-                                    const part_unit_count: Count = part_value.length;
-                                    const part_point_count: Count = Unicode.Point_Count(part_value);
-                                    const part_language_name: Name = part.Language() ? part.Language() as Name : language_name;
-                                    Utils.Assert(
-                                        !part.Is_Unknown(),
-                                        `Unknown part! Cannot generate:\n` +
-                                        `   Book Name:          ${book_name}\n` +
-                                        `   Language Name:      ${language_name}\n` +
-                                        `   Version Name:       ${version_name}\n` +
-                                        `   File Name:          ${file_name}\n` +
-                                        `   Line Index:         ${line_idx}\n` +
-                                        `   Macro Part Index:   ${part_idx}\n` +
-                                        `   Macro Part Value:   ${part_value}\n`,
-                                    );
-                                    if (part.Is_Error()) {
-                                        Utils.Assert(
-                                            part.Has_Error_Style(),
-                                            `Error not wrapped with error command! Should not generate:\n` +
-                                            `   Book Name:          ${book_name}\n` +
-                                            `   Language Name:      ${language_name}\n` +
-                                            `   Version Name:       ${version_name}\n` +
-                                            `   File Name:          ${file_name}\n` +
-                                            `   Line Index:         ${line_idx}\n` +
-                                            `   Macro Part Index:   ${part_idx}\n` +
-                                            `   Macro Part Value:   ${part_value}\n`,
-                                        );
-                                    }
-                                    unique_parts.Add(part_value);
-                                    version_info.Increment_Unit_Count(part_language_name, part_unit_count);
-                                    version_info.Increment_Point_Count(part_language_name, part_point_count);
-                                    if (part_type === Text.Part.Type.LETTER) {
-                                        version_info.Increment_Letter_Count(part_language_name, 1);
-                                        version_info.Increment_Part_Count(part_language_name, 1);
-                                    } else if (part_type === Text.Part.Type.MARKER) {
-                                        version_info.Increment_Marker_Count(part_language_name, 1);
-                                        version_info.Increment_Part_Count(part_language_name, 1);
-                                    } else if (part_type === Text.Part.Type.WORD) {
-                                        version_info.Increment_Letter_Count(part_language_name, part_point_count);
-                                        version_info.Increment_Word_Count(part_language_name, 1);
-                                        version_info.Increment_Part_Count(part_language_name, 1);
-                                    } else if (part_type === Text.Part.Type.BREAK) {
-                                        version_info.Increment_Marker_Count(part_language_name, part_point_count);
-                                        version_info.Increment_Break_Count(part_language_name, 1);
-                                        version_info.Increment_Part_Count(part_language_name, 1);
-                                    } else if (part_type === Text.Part.Type.COMMAND) {
-                                        // Keep in mind, these commands can be split, so we don't actually
-                                        // need to work with complex inner arguments, as they are already
-                                        // separated for us. We avoid counting the last_of_split as a separate
-                                        // command, but we still count everything including it as a meta_letter.
-                                        const command: Text.Part.Command.Instance = (part as Text.Part.Command.Instance);
-                                        version_info.Increment_Meta_Letter_Count(part_language_name, part_point_count);
-                                        if (!command.Is_Last_Of_Split()) {
-                                            version_info.Increment_Meta_Word_Count(part_language_name, 1);
-                                            version_info.Increment_Part_Count(part_language_name, 1);
+                                    const column: Text.Column.Instance = line.Column(column_idx);
+                                    for (
+                                        let row_idx = 0, row_end = column.Row_Count();
+                                        row_idx < row_end;
+                                        row_idx += 1
+                                    ) {
+                                        const row: Text.Row.Instance = column.Row(row_idx);
+                                        for (
+                                            let part_idx = 0, part_end = row.Macro_Part_Count();
+                                            part_idx < part_end;
+                                            part_idx += 1
+                                        ) {
+                                            const part: Text.Part.Instance = row.Macro_Part(part_idx);
+                                            const part_type: Text.Part.Type = part.Part_Type();
+                                            const part_value: string = part.Value();
+                                            const part_unit_count: Count = part_value.length;
+                                            const part_point_count: Count = Unicode.Point_Count(part_value);
+                                            const part_language_name: Name = part.Language() ? part.Language() as Name : language_name;
+                                            Utils.Assert(
+                                                !part.Is_Unknown(),
+                                                `Unknown part! Cannot generate:\n` +
+                                                `   Book Name:          ${book_name}\n` +
+                                                `   Language Name:      ${language_name}\n` +
+                                                `   Version Name:       ${version_name}\n` +
+                                                `   File Name:          ${file_name}\n` +
+                                                `   Line Index:         ${line_idx}\n` +
+                                                `   Column Index:       ${column_idx}\n` +
+                                                `   Row Index:          ${row_idx}\n` +
+                                                `   Macro Part Index:   ${part_idx}\n` +
+                                                `   Macro Part Value:   ${part_value}\n`,
+                                            );
+                                            if (part.Is_Error()) {
+                                                Utils.Assert(
+                                                    part.Has_Error_Style(),
+                                                    `Error not wrapped with error command! Should not generate:\n` +
+                                                    `   Book Name:          ${book_name}\n` +
+                                                    `   Language Name:      ${language_name}\n` +
+                                                    `   Version Name:       ${version_name}\n` +
+                                                    `   File Name:          ${file_name}\n` +
+                                                    `   Line Index:         ${line_idx}\n` +
+                                                    `   Column Index:       ${column_idx}\n` +
+                                                    `   Row Index:          ${row_idx}\n` +
+                                                    `   Macro Part Index:   ${part_idx}\n` +
+                                                    `   Macro Part Value:   ${part_value}\n`,
+                                                );
+                                            }
+                                            unique_parts.Add(part_value);
+                                            version_info.Increment_Unit_Count(part_language_name, part_unit_count);
+                                            version_info.Increment_Point_Count(part_language_name, part_point_count);
+                                            if (part_type === Text.Part.Type.LETTER) {
+                                                version_info.Increment_Letter_Count(part_language_name, 1);
+                                                version_info.Increment_Part_Count(part_language_name, 1);
+                                            } else if (part_type === Text.Part.Type.MARKER) {
+                                                version_info.Increment_Marker_Count(part_language_name, 1);
+                                                version_info.Increment_Part_Count(part_language_name, 1);
+                                            } else if (part_type === Text.Part.Type.WORD) {
+                                                version_info.Increment_Letter_Count(part_language_name, part_point_count);
+                                                version_info.Increment_Word_Count(part_language_name, 1);
+                                                version_info.Increment_Part_Count(part_language_name, 1);
+                                            } else if (part_type === Text.Part.Type.BREAK) {
+                                                version_info.Increment_Marker_Count(part_language_name, part_point_count);
+                                                version_info.Increment_Break_Count(part_language_name, 1);
+                                                version_info.Increment_Part_Count(part_language_name, 1);
+                                            } else if (part_type === Text.Part.Type.COMMAND) {
+                                                // Keep in mind, these commands can be split, so we don't actually
+                                                // need to work with complex inner arguments, as they are already
+                                                // separated for us. We avoid counting the last_of_split as a separate
+                                                // command, but we still count everything including it as a meta_letter.
+                                                const command: Text.Part.Command.Instance = (part as Text.Part.Command.Instance);
+                                                version_info.Increment_Meta_Letter_Count(part_language_name, part_point_count);
+                                                if (!command.Is_Last_Of_Split()) {
+                                                    version_info.Increment_Meta_Word_Count(part_language_name, 1);
+                                                    version_info.Increment_Part_Count(part_language_name, 1);
+                                                }
+                                            }
                                         }
                                     }
                                 }

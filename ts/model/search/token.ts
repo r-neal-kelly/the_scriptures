@@ -1,5 +1,3 @@
-import * as Utils from "../../utils.js";
-
 import * as Text_Module from "../text.js";
 import * as Class_Module from "./class.js";
 import { Sequence_Type } from "./sequence_type.js";

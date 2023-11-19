@@ -84,7 +84,7 @@ export class Instance extends Entity.Instance
                 this.file_count += 1;
                 this.line_count += file_results[1].length;
                 for (const result of file_results[1]) {
-                    this.match_count += result.Match_Count();
+                    this.match_count += result.Total_Match_Count();
                 }
 
                 tree_root[name_a][name_b][name_c].push(

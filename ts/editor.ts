@@ -7,9 +7,6 @@ import * as Font from "./model/font.js";
 import * as Fonts from "./model/fonts.js";
 import * as Model from "./model/text.js";
 
-const LINE_PATH_TYPE: Model.Path.Type =
-    Model.Path.Type.DEFAULT;
-
 const INDENT_AMOUNT: Count = 6;
 
 function Escape_Text(
@@ -959,96 +956,123 @@ class Line
             model.Line_Count() === 1,
             `model's line count should be 1.`,
         );
-        const line: Model.Line.Instance = model.Line(0);
 
         let inner_html: string = ``;
-        for (let idx = 0, end = line.Macro_Part_Count(LINE_PATH_TYPE); idx < end; idx += 1) {
-            const part = line.Macro_Part(idx, LINE_PATH_TYPE);
-            if (part.Is_Command()) {
-                const command = part as Model.Part.Command.Instance;
-                let command_classes: string = ``;
-                if (command.Is_Indent()) {
-                    command_classes += ` INDENT`;
-                }
+        let is_centered: boolean | null = null;
+        let padding_count: Count | null = null;
 
-                if (command.Is_Good()) {
-                    inner_html +=
-                        `<span class="COMMAND${command_classes}">${Escape_Text(command.Value())}</span>`;
-                } else {
-                    inner_html +=
-                        `<span class="BAD_COMMAND${command_classes}">${Escape_Text(command.Value())}</span>`;
+        const line: Model.Line.Instance = model.Line(0);
+        for (
+            let column_idx = 0, column_end = line.Column_Count();
+            column_idx < column_end;
+            column_idx += 1
+        ) {
+            const column: Model.Column.Instance = line.Column(column_idx);
+            for (
+                let row_idx = 0, row_end = column.Row_Count();
+                row_idx < row_end;
+                row_idx += 1
+            ) {
+                const row: Model.Row.Instance = column.Row(row_idx);
+                if (is_centered == null) {
+                    is_centered = row.Is_Centered();
                 }
+                if (padding_count == null) {
+                    padding_count = row.Padding_Count();
+                }
+                for (
+                    let part_idx = 0, part_end = row.Macro_Part_Count();
+                    part_idx < part_end;
+                    part_idx += 1
+                ) {
+                    const part: Model.Part.Instance = row.Macro_Part(part_idx);
+                    if (part.Is_Command()) {
+                        const command = part as Model.Part.Command.Instance;
+                        let command_classes: string = ``;
+                        if (command.Is_Indent()) {
+                            command_classes += ` INDENT`;
+                        }
 
-            } else {
-                let command_classes: string = ``;
-                if (part.Has_Italic_Style()) {
-                    command_classes += ` ITALIC`;
-                }
-                if (part.Has_Bold_Style()) {
-                    command_classes += ` BOLD`;
-                }
-                if (part.Has_Underline_Style()) {
-                    command_classes += ` UNDERLINE`;
-                }
-                if (part.Has_Small_Caps_Style()) {
-                    command_classes += ` SMALL_CAPS`;
-                }
-                if (part.Has_Error_Style()) {
-                    command_classes += ` ERROR`;
-                }
-                if (part.Has_Argument_Style()) {
-                    command_classes += ` ARGUMENT`;
-                }
+                        if (command.Is_Good()) {
+                            inner_html +=
+                                `<span class="COMMAND${command_classes}">${Escape_Text(command.Value())}</span>`;
+                        } else {
+                            inner_html +=
+                                `<span class="BAD_COMMAND${command_classes}">${Escape_Text(command.Value())}</span>`;
+                        }
 
-                if (part.Is_Point()) {
-                    inner_html +=
-                        `<span class="UNKNOWN_POINT${command_classes}">${Escape_Text(part.Value())}</span>`;
-                } else if (part.Is_Word()) {
-                    if (part.Is_Good()) {
-                        inner_html +=
-                            `<span class="KNOWN_WORD${command_classes}">${Escape_Text(part.Value())}</span>`;
-                    } else if (part.Is_Error()) {
-                        inner_html +=
-                            `<span class="KNOWN_WORD_ERROR${command_classes}">${Escape_Text(part.Value())}</span>`;
-                    } else if (part.Is_Unknown()) {
-                        inner_html +=
-                            `<span class="UNKNOWN_WORD${command_classes}">${Escape_Text(part.Value())}</span>`;
                     } else {
-                        Utils.Assert(
-                            false,
-                            `unknown part state.`,
-                        );
+                        let command_classes: string = ``;
+                        if (part.Has_Italic_Style()) {
+                            command_classes += ` ITALIC`;
+                        }
+                        if (part.Has_Bold_Style()) {
+                            command_classes += ` BOLD`;
+                        }
+                        if (part.Has_Underline_Style()) {
+                            command_classes += ` UNDERLINE`;
+                        }
+                        if (part.Has_Small_Caps_Style()) {
+                            command_classes += ` SMALL_CAPS`;
+                        }
+                        if (part.Has_Error_Style()) {
+                            command_classes += ` ERROR`;
+                        }
+                        if (part.Has_Argument_Style()) {
+                            command_classes += ` ARGUMENT`;
+                        }
+
+                        if (part.Is_Point()) {
+                            inner_html +=
+                                `<span class="UNKNOWN_POINT${command_classes}">${Escape_Text(part.Value())}</span>`;
+                        } else if (part.Is_Word()) {
+                            if (part.Is_Good()) {
+                                inner_html +=
+                                    `<span class="KNOWN_WORD${command_classes}">${Escape_Text(part.Value())}</span>`;
+                            } else if (part.Is_Error()) {
+                                inner_html +=
+                                    `<span class="KNOWN_WORD_ERROR${command_classes}">${Escape_Text(part.Value())}</span>`;
+                            } else if (part.Is_Unknown()) {
+                                inner_html +=
+                                    `<span class="UNKNOWN_WORD${command_classes}">${Escape_Text(part.Value())}</span>`;
+                            } else {
+                                Utils.Assert(
+                                    false,
+                                    `unknown part state.`,
+                                );
+                            }
+                        } else if (part.Is_Break()) {
+                            let boundary_class: string = ` ` + (part as Model.Part.Break.Instance).Boundary();
+                            if (part.Is_Good()) {
+                                inner_html +=
+                                    `<span class="KNOWN_BREAK${boundary_class}${command_classes}">${Escape_Text(part.Value())}</span>`;
+                            } else if (part.Is_Error()) {
+                                inner_html +=
+                                    `<span class="KNOWN_BREAK_ERROR${boundary_class}${command_classes}">${Escape_Text(part.Value())}</span>`;
+                            } else if (part.Is_Unknown()) {
+                                inner_html +=
+                                    `<span class="UNKNOWN_BREAK${boundary_class}${command_classes}">${Escape_Text(part.Value())}</span>`;
+                            } else {
+                                Utils.Assert(
+                                    false,
+                                    `unknown part state.`,
+                                );
+                            }
+                        } else {
+                            Utils.Assert(
+                                false,
+                                `invalid macro part.`,
+                            );
+                        }
                     }
-                } else if (part.Is_Break()) {
-                    let boundary_class: string = ` ` + (part as Model.Part.Break.Instance).Boundary();
-                    if (part.Is_Good()) {
-                        inner_html +=
-                            `<span class="KNOWN_BREAK${boundary_class}${command_classes}">${Escape_Text(part.Value())}</span>`;
-                    } else if (part.Is_Error()) {
-                        inner_html +=
-                            `<span class="KNOWN_BREAK_ERROR${boundary_class}${command_classes}">${Escape_Text(part.Value())}</span>`;
-                    } else if (part.Is_Unknown()) {
-                        inner_html +=
-                            `<span class="UNKNOWN_BREAK${boundary_class}${command_classes}">${Escape_Text(part.Value())}</span>`;
-                    } else {
-                        Utils.Assert(
-                            false,
-                            `unknown part state.`,
-                        );
-                    }
-                } else {
-                    Utils.Assert(
-                        false,
-                        `invalid macro part.`,
-                    );
                 }
             }
         }
 
         return ({
             html: inner_html,
-            is_centered: line.Is_Centered(LINE_PATH_TYPE),
-            padding_count: line.Padding_Count(LINE_PATH_TYPE),
+            is_centered: is_centered != null ? is_centered : false,
+            padding_count: padding_count != null ? padding_count : 0,
         });
     }
 
@@ -1067,37 +1091,56 @@ class Line
             model.Line_Count() === 1,
             `model's line count should be 1.`,
         );
-        const line: Model.Line.Instance = model.Line(0);
 
         let inner_html: string = ``;
-        for (let idx = 0, end = line.Micro_Part_Count(LINE_PATH_TYPE); idx < end; idx += 1) {
-            const part = line.Micro_Part(idx, LINE_PATH_TYPE);
-            if (part.Is_Command()) {
-                let it: Unicode.Iterator = new Unicode.Iterator(
-                    {
-                        text: part.Value(),
-                        index: 0,
-                    },
-                );
-                for (; !it.Is_At_End(); it = it.Next()) {
-                    inner_html +=
-                        `<span class="COMMAND SEPARATE_POINT">${Escape_Text(it.Point())}</span>`;
-                }
-            } else {
-                if (part.Is_Letter()) {
-                    inner_html +=
-                        `<span class="KNOWN_LETTER SEPARATE_POINT">${Escape_Text(part.Value())}</span>`;
-                } else if (part.Is_Marker()) {
-                    inner_html +=
-                        `<span class="KNOWN_MARKER SEPARATE_POINT">${Escape_Text(part.Value())}</span>`;
-                } else if (part.Is_Point()) {
-                    inner_html +=
-                        `<span class="UNKNOWN_POINT SEPARATE_POINT">${Escape_Text(part.Value())}</span>`;
-                } else {
-                    Utils.Assert(
-                        false,
-                        `invalid micro part.`,
-                    );
+
+        const line: Model.Line.Instance = model.Line(0);
+        for (
+            let column_idx = 0, column_end = line.Column_Count();
+            column_idx < column_end;
+            column_idx += 1
+        ) {
+            const column: Model.Column.Instance = line.Column(column_idx);
+            for (
+                let row_idx = 0, row_end = column.Row_Count();
+                row_idx < row_end;
+                row_idx += 1
+            ) {
+                const row: Model.Row.Instance = column.Row(row_idx);
+                for (
+                    let part_idx = 0, part_end = row.Micro_Part_Count();
+                    part_idx < part_end;
+                    part_idx += 1
+                ) {
+                    const part = row.Micro_Part(part_idx);
+                    if (part.Is_Command()) {
+                        let it: Unicode.Iterator = new Unicode.Iterator(
+                            {
+                                text: part.Value(),
+                                index: 0,
+                            },
+                        );
+                        for (; !it.Is_At_End(); it = it.Next()) {
+                            inner_html +=
+                                `<span class="COMMAND SEPARATE_POINT">${Escape_Text(it.Point())}</span>`;
+                        }
+                    } else {
+                        if (part.Is_Letter()) {
+                            inner_html +=
+                                `<span class="KNOWN_LETTER SEPARATE_POINT">${Escape_Text(part.Value())}</span>`;
+                        } else if (part.Is_Marker()) {
+                            inner_html +=
+                                `<span class="KNOWN_MARKER SEPARATE_POINT">${Escape_Text(part.Value())}</span>`;
+                        } else if (part.Is_Point()) {
+                            inner_html +=
+                                `<span class="UNKNOWN_POINT SEPARATE_POINT">${Escape_Text(part.Value())}</span>`;
+                        } else {
+                            Utils.Assert(
+                                false,
+                                `invalid micro part.`,
+                            );
+                        }
+                    }
                 }
             }
         }
