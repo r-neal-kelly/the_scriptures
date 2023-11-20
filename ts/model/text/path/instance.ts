@@ -16,6 +16,7 @@ export class Instance
     private type: Type;
     private value: Value;
     private columns: Array<Column.Instance>;
+    private margin_count: Count;
 
     constructor(
         {
@@ -30,6 +31,7 @@ export class Instance
         this.type = type;
         this.value = value;
         this.columns = [];
+        this.margin_count = 0;
     }
 
     Update_Empty():
@@ -44,7 +46,7 @@ export class Instance
             `Must not have any other columns.`,
         );
 
-        this.Push_Column();
+        this.Push_Column(false);
 
         this.columns[this.columns.length - 1].Update_Empty();
     }
@@ -86,7 +88,7 @@ export class Instance
         );
 
         if (this.columns.length < 1) {
-            this.Push_Column();
+            this.Push_Column(false);
         }
 
         this.columns[this.columns.length - 1].Update_Point(row_value, micro_point, macro_point);
@@ -121,7 +123,7 @@ export class Instance
         );
 
         if (this.columns.length < 1) {
-            this.Push_Column();
+            this.Push_Column(false);
         }
 
         this.columns[this.columns.length - 1].Update_Letter(row_value, micro_letter);
@@ -156,7 +158,7 @@ export class Instance
         );
 
         if (this.columns.length < 1) {
-            this.Push_Column();
+            this.Push_Column(false);
         }
 
         this.columns[this.columns.length - 1].Update_Marker(row_value, micro_marker);
@@ -194,7 +196,7 @@ export class Instance
         );
 
         if (this.columns.length < 1) {
-            this.Push_Column();
+            this.Push_Column(false);
         }
 
         this.columns[this.columns.length - 1].Update_Word(row_value, macro_word);
@@ -235,7 +237,7 @@ export class Instance
         );
 
         if (this.columns.length < 1) {
-            this.Push_Column();
+            this.Push_Column(false);
         }
 
         this.columns[this.columns.length - 1].Update_Break(row_value, macro_break);
@@ -273,20 +275,27 @@ export class Instance
             },
         );
 
-        if (this.columns.length < 1 || macro_command.Is_Column()) {
-            this.Push_Column();
+        if (this.columns.length < 1 || macro_command.Is_Column() || macro_command.Is_Margin()) {
+            this.Push_Column(macro_command.Is_Margin());
         }
 
         this.columns[this.columns.length - 1].Update_Command(row_value, micro_command, macro_command);
+
+        if (macro_command.Is_Margin()) {
+            this.margin_count += 1;
+        }
     }
 
-    private Push_Column():
+    private Push_Column(
+        is_margin: boolean,
+    ):
         void
     {
         this.columns.push(
             new Column.Instance(
                 {
                     index: this.columns.length,
+                    is_margin: is_margin,
                 },
             ),
         );
@@ -378,5 +387,23 @@ export class Instance
         );
 
         return this.columns[column_index];
+    }
+
+    Has_Margin():
+        boolean
+    {
+        return this.margin_count > 0;
+    }
+
+    Margin_Count():
+        Count
+    {
+        return this.margin_count;
+    }
+
+    Non_Margin_Count():
+        Count
+    {
+        return this.Column_Count() - this.Margin_Count();
     }
 };

@@ -181,7 +181,7 @@ export class Instance
             const dictionary: Dictionary.Instance =
                 this.Text().Dictionary();
             const row_values: Array<string> =
-                Part.Command.Partition_Into_Column_Rows(value);
+                Part.Command.Partition_Into_Row_Values(value);
 
             for (const row_value of row_values) {
                 const first_non_command_index: Index | null =
@@ -533,20 +533,53 @@ export class Instance
         return this.paths[path_type].Column(column_index);
     }
 
-    Is_Multi_Column():
+    Has_Margin():
         boolean
     {
-        return this.Column_Count() > 1;
+        let path_type: Path.Type = this.Text().Path_Type();
+        if (!this.paths.hasOwnProperty(path_type)) {
+            path_type = Path.Type.DEFAULT;
+        }
+
+        return this.paths[path_type].Has_Margin();
     }
 
-    Is_First_Multi_Column():
+    Margin_Count():
+        Count
+    {
+        let path_type: Path.Type = this.Text().Path_Type();
+        if (!this.paths.hasOwnProperty(path_type)) {
+            path_type = Path.Type.DEFAULT;
+        }
+
+        return this.paths[path_type].Margin_Count();
+    }
+
+    Non_Margin_Count():
+        Count
+    {
+        let path_type: Path.Type = this.Text().Path_Type();
+        if (!this.paths.hasOwnProperty(path_type)) {
+            path_type = Path.Type.DEFAULT;
+        }
+
+        return this.paths[path_type].Non_Margin_Count();
+    }
+
+    Is_Part_Of_Table():
+        boolean
+    {
+        return !this.Has_Margin() && this.Column_Count() > 1;
+    }
+
+    Is_First_Part_Of_Table():
         boolean
     {
         return (
-            this.Is_Multi_Column() &&
+            this.Is_Part_Of_Table() &&
             (
                 this.Index() === 0 ||
-                !this.Text().Line(this.Index() - 1).Is_Multi_Column()
+                !this.Text().Line(this.Index() - 1).Is_Part_Of_Table()
             )
         );
     }

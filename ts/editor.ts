@@ -995,6 +995,8 @@ class Line
                             command_classes += ` COLUMN`;
                         } else if (command.Is_Row()) {
                             command_classes += ` ROW`;
+                        } else if (command.Is_Margin()) {
+                            command_classes += ` MARGIN`;
                         }
 
                         if (command.Is_Good()) {
@@ -2831,7 +2833,15 @@ class Editor
         }
 
         .ROW {
-            padding-left: ${INDENT_AMOUNT}em;
+            width: 100%;
+
+            text-align: right;
+        }
+
+        .MARGIN {
+            width: 100%;
+
+            text-align: center;
         }
     `);
 

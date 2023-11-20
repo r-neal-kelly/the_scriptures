@@ -96,7 +96,7 @@ export class Instance extends Entity.Instance
                     color: inherit;
                 }
 
-                .Multi_Column_Line {
+                .Table_Line {
                     margin: 0 10%;
                     padding: 0.35em;
 
@@ -105,14 +105,13 @@ export class Instance extends Entity.Instance
                     border-right: solid 1px rgba(255, 255, 255, 0.3);
                 }
 
-                .First_Multi_Column_Line {
+                .First_Table_Line {
                     border-top: solid 1px rgba(255, 255, 255, 0.3);
                 }
 
                 .Column {
                     display: grid;
                     column-gap: 0;
-                    row-gap: 3%;
                     justify-items: stretch;
                     align-items: stretch;
                     justify-content: stretch;

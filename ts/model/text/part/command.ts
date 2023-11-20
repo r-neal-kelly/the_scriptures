@@ -83,6 +83,7 @@ export enum Known_Value
 {
     COLUMN = `⸨col⸩`,
     ROW = `⸨row⸩`,
+    MARGIN = `⸨marg⸩`,
 
     CENTER = `⸨cen⸩`,
     INDENT = `⸨in⸩`,
@@ -175,6 +176,7 @@ export function Is_Known_Value(
     if (
         value === Known_Value.COLUMN ||
         value === Known_Value.ROW ||
+        value === Known_Value.MARGIN ||
 
         value === Known_Value.CENTER ||
         value === Known_Value.INDENT ||
@@ -493,7 +495,7 @@ function Test_Closing_Command_Index_From_Opening_Command():
     Utils.Assert(Closing_Command_Index_From_Opening_Command(`⸨1⸩a⸨2⸩b⸨3⸩c⸨/3⸩d⸨/2⸩e⸨/1⸩f`) === 22);
 }
 
-export function Partition_Into_Column_Rows(
+export function Partition_Into_Row_Values(
     text: string,
 ):
     Array<string>
@@ -505,7 +507,7 @@ export function Partition_Into_Column_Rows(
             text: text,
         },
     );
-    let has_column: boolean = false;
+    let has_column_or_margin: boolean = false;
     let has_row: boolean = false;
     let has_other: boolean = false;
 
@@ -520,20 +522,20 @@ export function Partition_Into_Column_Rows(
                     language: null,
                 },
             );
-            if (command.Is_Column()) {
-                if (has_column || has_row || has_other) {
+            if (command.Is_Column() || command.Is_Margin()) {
+                if (has_column_or_margin || has_row || has_other) {
                     results.push(text.slice(current_start.Index(), it.Index()));
                     current_start = it;
-                    has_column = false;
+                    has_column_or_margin = false;
                     has_row = false;
                     has_other = false;
                 }
-                has_column = true;
+                has_column_or_margin = true;
             } else if (command.Is_Row()) {
                 if (has_row || has_other) {
                     results.push(text.slice(current_start.Index(), it.Index()));
                     current_start = it;
-                    has_column = false;
+                    has_column_or_margin = false;
                     has_row = false;
                     has_other = false;
                 }
@@ -825,6 +827,12 @@ export class Instance extends Part.Instance
         boolean
     {
         return this.Value() === Known_Value.ROW;
+    }
+
+    Is_Margin():
+        boolean
+    {
+        return this.Value() === Known_Value.MARGIN;
     }
 
     Is_Center():

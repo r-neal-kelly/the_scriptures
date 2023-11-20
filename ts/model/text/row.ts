@@ -165,13 +165,23 @@ export class Instance
             `Must not be finalized before updating.`,
         );
 
-        if (macro_command.Is_Center() && this.can_be_centered) {
+        if (
+            macro_command.Is_Center() &&
+            this.can_be_centered
+        ) {
             this.is_centered = true;
             this.can_add_padding = false;
-        } else if (macro_command.Is_Pad() && this.can_add_padding) {
+        } else if (
+            macro_command.Is_Pad() &&
+            this.can_add_padding
+        ) {
             this.padding_count += 1;
             this.can_be_centered = false;
-        } else if (!macro_command.Is_Column() && !macro_command.Is_Row()) {
+        } else if (
+            !macro_command.Is_Column() &&
+            !macro_command.Is_Row() &&
+            !macro_command.Is_Margin()
+        ) {
             this.can_be_centered = false;
             this.can_add_padding = false;
         }

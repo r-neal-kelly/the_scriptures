@@ -61,10 +61,10 @@ export class Instance extends Entity.Instance
         if (model.Is_Blank()) {
             classes.push(`Blank`);
         } else {
-            if (model.Is_Multi_Column()) {
-                classes.push(`Multi_Column_Line`);
-                if (model.Is_First_Multi_Column()) {
-                    classes.push(`First_Multi_Column_Line`);
+            if (model.Is_Part_Of_Table()) {
+                classes.push(`Table_Line`);
+                if (model.Is_First_Part_Of_Table()) {
+                    classes.push(`First_Table_Line`);
                 }
             }
         }

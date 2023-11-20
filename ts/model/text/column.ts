@@ -10,18 +10,24 @@ import * as Row from "./row.js";
 export class Instance
 {
     private index: Index;
+    private is_margin: boolean;
     private rows: Array<Row.Instance>;
+    private last_command: Part.Command.Instance | null;
 
     constructor(
         {
             index,
+            is_margin,
         }: {
             index: Index,
+            is_margin: boolean,
         },
     )
     {
         this.index = index;
+        this.is_margin = is_margin;
         this.rows = [];
+        this.last_command = null;
     }
 
     Update_Empty():
@@ -55,7 +61,7 @@ export class Instance
             this.Push_Row(row_value);
         }
 
-        this.rows[this.rows.length - 1].Update_Point(micro_point, macro_point);
+        this.Working_Row().Update_Point(micro_point, macro_point);
     }
 
     Update_Letter(
@@ -73,7 +79,7 @@ export class Instance
             this.Push_Row(row_value);
         }
 
-        this.rows[this.rows.length - 1].Update_Letter(micro_letter);
+        this.Working_Row().Update_Letter(micro_letter);
     }
 
     Update_Marker(
@@ -91,7 +97,7 @@ export class Instance
             this.Push_Row(row_value);
         }
 
-        this.rows[this.rows.length - 1].Update_Marker(micro_marker);
+        this.Working_Row().Update_Marker(micro_marker);
     }
 
     Update_Word(
@@ -109,7 +115,7 @@ export class Instance
             this.Push_Row(row_value);
         }
 
-        this.rows[this.rows.length - 1].Update_Word(macro_word);
+        this.Working_Row().Update_Word(macro_word);
     }
 
     Update_Break(
@@ -127,7 +133,7 @@ export class Instance
             this.Push_Row(row_value);
         }
 
-        this.rows[this.rows.length - 1].Update_Break(macro_break);
+        this.Working_Row().Update_Break(macro_break);
     }
 
     Update_Command(
@@ -142,11 +148,25 @@ export class Instance
             `Must not be finalized before updating.`,
         );
 
-        if (this.rows.length < 1 || macro_command.Is_Row()) {
+        if (
+            this.rows.length < 1 ||
+            (
+                macro_command.Is_Row() &&
+                (
+                    !this.last_command ||
+                    (
+                        !this.last_command.Is_Column() &&
+                        !this.last_command.Is_Margin()
+                    )
+                )
+            )
+        ) {
             this.Push_Row(row_value);
         }
 
-        this.rows[this.rows.length - 1].Update_Command(micro_command, macro_command);
+        this.Working_Row().Update_Command(micro_command, macro_command);
+
+        this.last_command = macro_command;
     }
 
     private Push_Row(
@@ -162,6 +182,12 @@ export class Instance
                 },
             ),
         );
+    }
+
+    private Working_Row():
+        Row.Instance
+    {
+        return this.rows[this.rows.length - 1];
     }
 
     Is_Finalized():
@@ -183,6 +209,8 @@ export class Instance
         for (const row of this.rows) {
             row.Finalize();
         }
+
+        this.last_command = null;
     }
 
     Index():
@@ -194,6 +222,12 @@ export class Instance
         );
 
         return this.index;
+    }
+
+    Is_Margin():
+        boolean
+    {
+        return this.is_margin;
     }
 
     Has_Row_Index(

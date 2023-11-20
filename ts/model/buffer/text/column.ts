@@ -178,8 +178,15 @@ export class Instance extends Entity.Instance
         string | { [index: string]: string; }
     {
         if (this.Has_Styles()) {
+            const text: Text.Column.Instance = this.Text();
+            const font_size: string = this.Text().Is_Margin() ?
+                `.85em` :
+                `1em`;
+
             return `
-                grid-template-rows: repeat(${this.Text().Row_Count()}, 1fr);
+                grid-template-rows: repeat(${text.Row_Count()}, min-content);
+
+                font-size: ${font_size};
             `;
         } else {
             return ``;

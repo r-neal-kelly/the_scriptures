@@ -184,16 +184,16 @@ export class Instance extends Entity.Instance
         return this.result == null;
     }
 
-    Is_Multi_Column():
+    Is_Part_Of_Table():
         boolean
     {
-        return this.Has_Text() && this.Text().Is_Multi_Column();
+        return this.Has_Text() && this.Text().Is_Part_Of_Table();
     }
 
-    Is_First_Multi_Column():
+    Is_First_Part_Of_Table():
         boolean
     {
-        return this.Has_Text() && this.Text().Is_First_Multi_Column();
+        return this.Has_Text() && this.Text().Is_First_Part_Of_Table();
     }
 
     Has_Styles():
@@ -206,12 +206,28 @@ export class Instance extends Entity.Instance
         string | { [index: string]: string; }
     {
         if (this.Has_Styles()) {
-            const max_width: string = this.Is_Multi_Column() ?
-                `${this.Text().Column_Count() * 10}em` :
-                `100%`;
+            const text: Text.Line.Instance = this.Text();
+            const column_count: Count = text.Column_Count();
+
+            let grid_template_columns: string = ``;
+            let max_width: string = ``;
+            if (this.Is_Part_Of_Table()) {
+                grid_template_columns = `repeat(${column_count}, 1fr)`;
+                max_width = `${column_count * 10}em`;
+            } else {
+                for (let idx = 0, end = column_count; idx < end; idx += 1) {
+                    const column: Text.Column.Instance = text.Column(idx);
+                    if (column.Is_Margin()) {
+                        grid_template_columns += ` 0.5fr`;
+                    } else {
+                        grid_template_columns += ` 1fr`;
+                    }
+                }
+                max_width = `100%`;
+            }
 
             return `
-                grid-template-columns: repeat(${this.Text().Column_Count()}, 1fr);
+                grid-template-columns: ${grid_template_columns};
 
                 max-width: ${max_width};
             `;
