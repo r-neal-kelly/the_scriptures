@@ -121,11 +121,17 @@ export class Instance extends Entity.Instance
         return this.index as Index;
     }
 
+    Has_Text():
+        boolean
+    {
+        return this.Has_Result();
+    }
+
     Text():
         Text.Line.Instance
     {
         Utils.Assert(
-            this.result != null,
+            this.Has_Text(),
             `Doesn't have text.`,
         );
 
@@ -178,18 +184,36 @@ export class Instance extends Entity.Instance
         return this.result == null;
     }
 
+    Is_Multi_Column():
+        boolean
+    {
+        return this.Has_Text() && this.Text().Is_Multi_Column();
+    }
+
+    Is_First_Multi_Column():
+        boolean
+    {
+        return this.Has_Text() && this.Text().Is_First_Multi_Column();
+    }
+
     Has_Styles():
         boolean
     {
-        return !this.Is_Blank();
+        return this.Has_Text();
     }
 
     Styles():
         string | { [index: string]: string; }
     {
         if (this.Has_Styles()) {
+            const max_width: string = this.Is_Multi_Column() ?
+                `${this.Text().Column_Count() * 10}em` :
+                `100%`;
+
             return `
                 grid-template-columns: repeat(${this.Text().Column_Count()}, 1fr);
+
+                max-width: ${max_width};
             `;
         } else {
             return ``;

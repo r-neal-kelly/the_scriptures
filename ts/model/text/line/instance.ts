@@ -532,4 +532,22 @@ export class Instance
 
         return this.paths[path_type].Column(column_index);
     }
+
+    Is_Multi_Column():
+        boolean
+    {
+        return this.Column_Count() > 1;
+    }
+
+    Is_First_Multi_Column():
+        boolean
+    {
+        return (
+            this.Is_Multi_Column() &&
+            (
+                this.Index() === 0 ||
+                !this.Text().Line(this.Index() - 1).Is_Multi_Column()
+            )
+        );
+    }
 }

@@ -60,6 +60,12 @@ export class Instance extends Entity.Instance
         this.Add_This_CSS(
             `
                 .Text {
+                    display: grid;
+                    justify-items: center;
+                    align-items: center;
+                    justify-content: center;
+                    align-content: center;
+
                     width: 100%;
                     padding: 12px 4px 36px 4px;
                 }
@@ -77,10 +83,25 @@ export class Instance extends Entity.Instance
                     justify-content: stretch;
                     align-content: stretch;
 
+                    width: 100%;
+
                     margin: 0.35em 0;
                     padding: 0 0;
 
                     color: inherit;
+                }
+
+                .Multi_Column_Line {
+                    margin: 0 10%;
+                    padding: 0.35em;
+
+                    border-bottom: solid 1px rgba(255, 255, 255, 0.3);
+                    border-left: solid 1px rgba(255, 255, 255, 0.3);
+                    border-right: solid 1px rgba(255, 255, 255, 0.3);
+                }
+
+                .First_Multi_Column_Line {
+                    border-top: solid 1px rgba(255, 255, 255, 0.3);
                 }
                 
                 .Column {
