@@ -234,6 +234,17 @@ export class Instance extends Entity.Instance
         return this.Text().Is_First_Row_Of_Table();
     }
 
+    Is_Centered():
+        boolean
+    {
+        Utils.Assert(
+            !this.Is_Blank(),
+            `this line is blank`,
+        );
+
+        return this.Text().Is_Centered();
+    }
+
     Has_Styles():
         boolean
     {
@@ -243,32 +254,42 @@ export class Instance extends Entity.Instance
     Styles():
         string | { [index: string]: string; }
     {
-        if (this.Has_Styles() && !this.Has_Interlineation()) {
+        if (this.Has_Styles()) {
             const text: Text.Line.Instance = this.Text();
-            const column_count: Count = text.Column_Count();
+            if (this.Has_Interlineation()) {
+                let justify_content: string = text.Is_Centered() ?
+                    `center` :
+                    `start`;
 
-            let grid_template_columns: string = ``;
-            let max_width: string = ``;
-            if (this.Is_Row_Of_Table()) {
-                grid_template_columns = `repeat(${column_count}, 1fr)`;
-                max_width = `${column_count * 10}em`;
+                return `    
+                    justify-content: ${justify_content};
+                `;
             } else {
-                for (let idx = 0, end = column_count; idx < end; idx += 1) {
-                    const column: Text.Column.Instance = text.Column(idx);
-                    if (column.Is_Marginal()) {
-                        grid_template_columns += ` 0.5fr`;
-                    } else {
-                        grid_template_columns += ` 1fr`;
+                const column_count: Count = text.Column_Count();
+
+                let grid_template_columns: string = ``;
+                let max_width: string = ``;
+                if (this.Is_Row_Of_Table()) {
+                    grid_template_columns = `repeat(${column_count}, 1fr)`;
+                    max_width = `${column_count * 10}em`;
+                } else {
+                    for (let idx = 0, end = column_count; idx < end; idx += 1) {
+                        const column: Text.Column.Instance = text.Column(idx);
+                        if (column.Is_Marginal()) {
+                            grid_template_columns += ` 0.5fr`;
+                        } else {
+                            grid_template_columns += ` 1fr`;
+                        }
                     }
+                    max_width = `100%`;
                 }
-                max_width = `100%`;
+
+                return `
+                    grid-template-columns: ${grid_template_columns};
+    
+                    max-width: ${max_width};
+                `;
             }
-
-            return `
-                grid-template-columns: ${grid_template_columns};
-
-                max-width: ${max_width};
-            `;
         } else {
             return ``;
         }

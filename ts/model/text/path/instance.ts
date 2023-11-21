@@ -482,4 +482,15 @@ export class Instance
 
         return this.Has_Interlineation() && this.has_reverse_interlinear_column;
     }
+
+    Is_Centered():
+        boolean
+    {
+        return (
+            this.Has_Interlineation() &&
+            this.Column_Count() > 0 &&
+            this.Column(0).Row_Count() > 0 &&
+            this.Column(0).Row(0).Is_Centered()
+        );
+    }
 };

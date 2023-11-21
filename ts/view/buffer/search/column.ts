@@ -54,9 +54,19 @@ export class Instance extends Entity.Instance
     override On_Reclass():
         Array<string>
     {
+        const model: Model.Instance = this.Model();
         const classes: Array<string> = [];
 
         classes.push(`Column`);
+        if (model.Is_Blank()) {
+            classes.push(`Blank`);
+        } else {
+            if (model.Is_Marginal()) {
+                classes.push(`Marginal_Column`);
+            } else if (model.Is_Interlinear()) {
+                classes.push(`Interlinear_Column`);
+            }
+        }
 
         return classes;
     }

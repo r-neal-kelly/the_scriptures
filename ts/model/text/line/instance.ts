@@ -204,6 +204,7 @@ export class Instance
 
                 let current_type: Parse_Type = Parse_Type.POINT;
                 let current_style: Part.Style = Part.Style._NONE_;
+                let currently_force_good: boolean = false;
                 let current_start: Unicode.Iterator = new Unicode.Iterator(
                     {
                         text: row_value,
@@ -293,6 +294,11 @@ export class Instance
                             current_style |= Part.Style.SMALL_CAPS;
                         } else if (command.Is_Close_Small_Caps()) {
                             current_style &= ~Part.Style.SMALL_CAPS;
+
+                        } else if (command.Is_Open_Good()) {
+                            currently_force_good = true;
+                        } else if (command.Is_Close_Good()) {
+                            currently_force_good = false;
 
                         } else if (command.Is_Open_Error()) {
                             this.has_errorless_path = true;
@@ -436,11 +442,13 @@ export class Instance
                                     current_start.Index(),
                                     it.Look_Forward_Index(),
                                 );
-                                const status: Part.Status = dictionary.Has_Word(word) ?
+                                const status: Part.Status = currently_force_good ?
                                     Part.Status.GOOD :
-                                    dictionary.Has_Word_Error(word) ?
-                                        Part.Status.ERROR :
-                                        Part.Status.UNKNOWN;
+                                    dictionary.Has_Word(word) ?
+                                        Part.Status.GOOD :
+                                        dictionary.Has_Word_Error(word) ?
+                                            Part.Status.ERROR :
+                                            Part.Status.UNKNOWN;
 
                                 path.Update_Word(
                                     row_value,
@@ -466,11 +474,13 @@ export class Instance
                                 );
                                 const boundary: Dictionary.Boundary =
                                     Break_Boundary(current_start, it);
-                                const status: Part.Status = dictionary.Has_Break(break_, boundary) ?
+                                const status: Part.Status = currently_force_good ?
                                     Part.Status.GOOD :
-                                    dictionary.Has_Break_Error(break_, boundary) ?
-                                        Part.Status.ERROR :
-                                        Part.Status.UNKNOWN;
+                                    dictionary.Has_Break(break_, boundary) ?
+                                        Part.Status.GOOD :
+                                        dictionary.Has_Break_Error(break_, boundary) ?
+                                            Part.Status.ERROR :
+                                            Part.Status.UNKNOWN;
 
                                 path.Update_Break(
                                     row_value,
@@ -591,5 +601,11 @@ export class Instance
                 !this.Text().Line(this.Index() - 1).Is_Row_Of_Table()
             )
         );
+    }
+
+    Is_Centered():
+        boolean
+    {
+        return this.Path().Is_Centered();
     }
 }

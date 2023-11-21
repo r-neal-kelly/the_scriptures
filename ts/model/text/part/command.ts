@@ -103,6 +103,9 @@ export enum Known_Value
     OPEN_SMALL_CAPS = `⸨sc⸩`,
     CLOSE_SMALL_CAPS = `⸨/sc⸩`,
 
+    OPEN_GOOD = `⸨good⸩`,
+    CLOSE_GOOD = `⸨/good⸩`,
+
     // We can probably just put this in the style bitbools,
     // and the buffer item can just check if it should get a
     // value or not depending on whether or not additions are
@@ -197,6 +200,9 @@ export function Is_Known_Value(
 
         value === Known_Value.OPEN_SMALL_CAPS ||
         value === Known_Value.CLOSE_SMALL_CAPS ||
+
+        value === Known_Value.OPEN_GOOD ||
+        value === Known_Value.CLOSE_GOOD ||
 
         value === Known_Value.OPEN_ADDITION ||
         value === Known_Value.CLOSE_ADDITION ||
@@ -945,6 +951,18 @@ export class Instance extends Part.Instance
         boolean
     {
         return this.Value() === Known_Value.CLOSE_SMALL_CAPS;
+    }
+
+    Is_Open_Good():
+        boolean
+    {
+        return this.Value() === Known_Value.OPEN_GOOD;
+    }
+
+    Is_Close_Good():
+        boolean
+    {
+        return this.Value() === Known_Value.CLOSE_GOOD;
     }
 
     Is_Open_Addition():

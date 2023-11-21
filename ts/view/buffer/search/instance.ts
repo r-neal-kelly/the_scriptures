@@ -116,6 +116,10 @@ export class Instance extends Entity.Instance
                 .Interlinear_Line {
                     display: flex;
                     flex-wrap: wrap;
+                    column-gap: 0;
+                    row-gap: 0;
+
+                    margin: 0.20em 0em 0.35em 0em;
                 }
 
                 .Forward_Interlinear_Line {
@@ -136,6 +140,16 @@ export class Instance extends Entity.Instance
 
                     margin: 0;
                     padding: 0;
+                }
+                
+                .Marginal_Column {
+                    font-size: .85em;
+                }
+
+                .Interlinear_Column {
+                    padding: 0.15em 0;
+                    
+                    border-bottom: solid 1px rgba(255, 255, 255, 0.3);
                 }
 
                 .Row {

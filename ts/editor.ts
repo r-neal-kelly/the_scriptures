@@ -994,7 +994,11 @@ class Line
                         } else if (command.Is_Column()) {
                             command_classes += ` COLUMN`;
                         } else if (command.Is_Row()) {
-                            command_classes += ` ROW`;
+                            if (this.editor.Are_Rows_Expanded()) {
+                                command_classes += ` EXPANDED_ROW`;
+                            } else {
+                                command_classes += ` COLLAPSED_ROW`;
+                            }
                         } else if (command.Is_Margin()) {
                             command_classes += ` MARGIN`;
                         } else if (command.Is_Interlinear()) {
@@ -1173,6 +1177,7 @@ class Editor
 
     private is_meta_key_active: boolean;
     private is_in_point_mode: boolean;
+    private are_rows_expanded: boolean;
     private direction: Direction;
 
     private parent: HTMLElement;
@@ -1224,6 +1229,7 @@ class Editor
 
         this.is_meta_key_active = false;
         this.is_in_point_mode = false;
+        this.are_rows_expanded = false;
         this.direction = Direction.LEFT_TO_RIGHT;
 
         this.parent = parent;
@@ -1299,6 +1305,13 @@ class Editor
                 } else if (keyboard_event.key === `ArrowUp`) {
                     if (this.Is_Meta_Key_Active()) {
                         this.is_in_point_mode = false;
+                        this.Touch();
+                    }
+                } else if (keyboard_event.key === `|`) {
+                    if (this.Is_Meta_Key_Active()) {
+                        keyboard_event.preventDefault();
+
+                        this.are_rows_expanded = !this.are_rows_expanded;
                         this.Touch();
                     }
                 } else if (keyboard_event.key === `\``) {
@@ -2375,6 +2388,12 @@ class Editor
         return this.is_in_point_mode;
     }
 
+    Are_Rows_Expanded():
+        boolean
+    {
+        return this.are_rows_expanded;
+    }
+
     Direction():
         Direction
     {
@@ -2834,7 +2853,11 @@ class Editor
             text-align: center;
         }
 
-        .ROW {
+        .COLLAPSED_ROW {
+
+        }
+
+        .EXPANDED_ROW {
             width: 100%;
 
             text-align: right;

@@ -168,6 +168,28 @@ export class Instance extends Entity.Instance
         return this.text == null;
     }
 
+    Is_Marginal():
+        boolean
+    {
+        Utils.Assert(
+            !this.Is_Blank(),
+            `this column is blank`,
+        );
+
+        return this.Text().Is_Marginal();
+    }
+
+    Is_Interlinear():
+        boolean
+    {
+        Utils.Assert(
+            !this.Is_Blank(),
+            `this column is blank`,
+        );
+
+        return this.Text().Is_Interlinear();
+    }
+
     Has_Styles():
         boolean
     {
@@ -179,15 +201,15 @@ export class Instance extends Entity.Instance
     {
         if (this.Has_Styles()) {
             const text: Text.Column.Instance = this.Text();
-            const font_size: string = this.Text().Is_Marginal() ?
-                `.85em` :
-                `1em`;
-
-            return `
-                grid-template-rows: repeat(${text.Row_Count()}, min-content);
-
-                font-size: ${font_size};
-            `;
+            if (text.Is_Interlinear()) {
+                return `
+                    grid-template-rows: repeat(${text.Row_Count()}, 1fr);
+                `;
+            } else {
+                return `
+                    grid-template-rows: repeat(${text.Row_Count()}, min-content);
+                `;
+            }
         } else {
             return ``;
         }
