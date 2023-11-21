@@ -180,7 +180,8 @@ export class Instance
         } else if (
             !macro_command.Is_Column() &&
             !macro_command.Is_Row() &&
-            !macro_command.Is_Margin()
+            !macro_command.Is_Margin() &&
+            !macro_command.Is_Interlinear()
         ) {
             this.can_be_centered = false;
             this.can_add_padding = false;

@@ -161,7 +161,7 @@ export class Instance extends Entity.Instance
     {
         if (this.Has_Styles()) {
             const text: Text.Column.Instance = this.Text();
-            const font_size: string = this.Text().Is_Margin() ?
+            const font_size: string = this.Text().Is_Marginal() ?
                 `.85em` :
                 `1em`;
 

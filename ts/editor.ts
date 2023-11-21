@@ -997,6 +997,8 @@ class Line
                             command_classes += ` ROW`;
                         } else if (command.Is_Margin()) {
                             command_classes += ` MARGIN`;
+                        } else if (command.Is_Interlinear()) {
+                            command_classes += ` INTERLINEAR`;
                         }
 
                         if (command.Is_Good()) {
@@ -2839,6 +2841,12 @@ class Editor
         }
 
         .MARGIN {
+            width: 100%;
+
+            text-align: center;
+        }
+
+        .INTERLINEAR {
             width: 100%;
 
             text-align: center;

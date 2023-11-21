@@ -1,0 +1,1 @@
+export var Type;!function(A){A[A.TABULAR=0]="TABULAR",A[A.MARGINAL=1]="MARGINAL",A[A.INTERLINEAR=2]="INTERLINEAR"}(Type||(Type={}));

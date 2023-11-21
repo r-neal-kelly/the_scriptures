@@ -61,10 +61,19 @@ export class Instance extends Entity.Instance
         if (model.Is_Blank()) {
             classes.push(`Blank`);
         } else {
-            if (model.Is_Part_Of_Table()) {
-                classes.push(`Table_Line`);
-                if (model.Is_First_Part_Of_Table()) {
-                    classes.push(`First_Table_Line`);
+            if (model.Has_Margin()) {
+                classes.push(`Marginal_Line`);
+            } else if (model.Has_Interlineation()) {
+                classes.push(`Interlinear_Line`);
+                if (model.Has_Forward_Interlineation()) {
+                    classes.push(`Forward_Interlinear_Line`);
+                } else {
+                    classes.push(`Reverse_Interlinear_Line`);
+                }
+            } else if (model.Is_Row_Of_Table()) {
+                classes.push(`Tabular_Line`);
+                if (model.Is_First_Row_Of_Table()) {
+                    classes.push(`First_Tabular_Line`);
                 }
             }
         }

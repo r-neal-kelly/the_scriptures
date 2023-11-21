@@ -131,15 +131,26 @@ export class Instance
         return this.index;
     }
 
-    Value():
-        Value
+    Path():
+        Path.Instance
     {
         let path_type: Path.Type = this.Text().Path_Type();
         if (!this.paths.hasOwnProperty(path_type)) {
             path_type = Path.Type.DEFAULT;
         }
 
-        return this.paths[path_type].Value();
+        Utils.Assert(
+            this.paths[path_type] != null,
+            `Path does not exist yet.`,
+        );
+
+        return this.paths[path_type];
+    }
+
+    Value():
+        Value
+    {
+        return this.Path().Value();
     }
 
     Set_Value(
@@ -496,23 +507,13 @@ export class Instance
             `column_index must be greater than -1.`,
         );
 
-        let path_type: Path.Type = this.Text().Path_Type();
-        if (!this.paths.hasOwnProperty(path_type)) {
-            path_type = Path.Type.DEFAULT;
-        }
-
-        return this.paths[path_type].Has_Column_Index(column_index);
+        return this.Path().Has_Column_Index(column_index);
     }
 
     Column_Count():
         Count
     {
-        let path_type: Path.Type = this.Text().Path_Type();
-        if (!this.paths.hasOwnProperty(path_type)) {
-            path_type = Path.Type.DEFAULT;
-        }
-
-        return this.paths[path_type].Column_Count();
+        return this.Path().Column_Count();
     }
 
     Column(
@@ -525,61 +526,69 @@ export class Instance
             `Does not have column at index ${column_index}.`,
         );
 
-        let path_type: Path.Type = this.Text().Path_Type();
-        if (!this.paths.hasOwnProperty(path_type)) {
-            path_type = Path.Type.DEFAULT;
-        }
+        return this.Path().Column(column_index);
+    }
 
-        return this.paths[path_type].Column(column_index);
+    Tabular_Column_Count():
+        Count
+    {
+        return this.Path().Tabular_Column_Count();
+    }
+
+    Marginal_Column_Count():
+        Count
+    {
+        return this.Path().Marginal_Column_Count();
+    }
+
+    Interlinear_Column_Count():
+        Count
+    {
+        return this.Path().Interlinear_Column_Count();
     }
 
     Has_Margin():
         boolean
     {
-        let path_type: Path.Type = this.Text().Path_Type();
-        if (!this.paths.hasOwnProperty(path_type)) {
-            path_type = Path.Type.DEFAULT;
-        }
-
-        return this.paths[path_type].Has_Margin();
+        return this.Path().Has_Margin();
     }
 
-    Margin_Count():
-        Count
-    {
-        let path_type: Path.Type = this.Text().Path_Type();
-        if (!this.paths.hasOwnProperty(path_type)) {
-            path_type = Path.Type.DEFAULT;
-        }
-
-        return this.paths[path_type].Margin_Count();
-    }
-
-    Non_Margin_Count():
-        Count
-    {
-        let path_type: Path.Type = this.Text().Path_Type();
-        if (!this.paths.hasOwnProperty(path_type)) {
-            path_type = Path.Type.DEFAULT;
-        }
-
-        return this.paths[path_type].Non_Margin_Count();
-    }
-
-    Is_Part_Of_Table():
+    Has_Interlineation():
         boolean
     {
-        return !this.Has_Margin() && this.Column_Count() > 1;
+        return this.Path().Has_Interlineation();
     }
 
-    Is_First_Part_Of_Table():
+    Has_Forward_Interlineation():
+        boolean
+    {
+        return this.Path().Has_Forward_Interlineation();
+    }
+
+    Has_Reverse_Interlineation():
+        boolean
+    {
+        return this.Path().Has_Reverse_Interlineation();
+    }
+
+    Is_Row_Of_Table():
         boolean
     {
         return (
-            this.Is_Part_Of_Table() &&
+            !this.Has_Margin() &&
+            !this.Has_Interlineation() &&
+            this.Column_Count() > 1
+        );
+    }
+
+    Is_First_Row_Of_Table():
+        boolean
+    {
+        return (
+            this.Is_Row_Of_Table() &&
             (
                 this.Index() === 0 ||
-                !this.Text().Line(this.Index() - 1).Is_Part_Of_Table()
+                !this.Text().Line(this.Index() - 1).Is_Row_Of_Table()
             )
         );
     }

@@ -79,7 +79,7 @@ export class Instance extends Entity.Instance
                     column-gap: 3%;
                     row-gap: 0;
                     justify-items: stretch;
-                    align-items: stretch; /* maybe center, but it's harder to read? */
+                    align-items: stretch;
                     justify-content: stretch;
                     align-content: stretch;
 
@@ -91,7 +91,7 @@ export class Instance extends Entity.Instance
                     color: inherit;
                 }
 
-                .Table_Line {
+                .Tabular_Line {
                     margin: 0 10%;
                     padding: 0.35em;
 
@@ -100,8 +100,25 @@ export class Instance extends Entity.Instance
                     border-right: solid 1px rgba(255, 255, 255, 0.3);
                 }
 
-                .First_Table_Line {
+                .First_Tabular_Line {
                     border-top: solid 1px rgba(255, 255, 255, 0.3);
+                }
+
+                .Marginal_Line {
+
+                }
+
+                .Interlinear_Line {
+                    display: flex;
+                    flex-wrap: wrap;
+                }
+
+                .Forward_Interlinear_Line {
+                    flex-direction: row;
+                }
+
+                .Reverse_Interlinear_Line {
+                    flex-direction: row-reverse;
                 }
                 
                 .Column {

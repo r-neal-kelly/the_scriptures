@@ -168,16 +168,70 @@ export class Instance extends Entity.Instance
         return this.text == null;
     }
 
-    Is_Part_Of_Table():
+    Has_Margin():
         boolean
     {
-        return this.Has_Text() && this.Text().Is_Part_Of_Table();
+        Utils.Assert(
+            !this.Is_Blank(),
+            `this line is blank`,
+        );
+
+        return this.Text().Has_Margin();
     }
 
-    Is_First_Part_Of_Table():
+    Has_Interlineation():
         boolean
     {
-        return this.Has_Text() && this.Text().Is_First_Part_Of_Table();
+        Utils.Assert(
+            !this.Is_Blank(),
+            `this line is blank`,
+        );
+
+        return this.Text().Has_Interlineation();
+    }
+
+    Has_Forward_Interlineation():
+        boolean
+    {
+        Utils.Assert(
+            !this.Is_Blank(),
+            `this line is blank`,
+        );
+
+        return this.Text().Has_Forward_Interlineation();
+    }
+
+    Has_Reverse_Interlineation():
+        boolean
+    {
+        Utils.Assert(
+            !this.Is_Blank(),
+            `this line is blank`,
+        );
+
+        return this.Text().Has_Reverse_Interlineation();
+    }
+
+    Is_Row_Of_Table():
+        boolean
+    {
+        Utils.Assert(
+            !this.Is_Blank(),
+            `this line is blank`,
+        );
+
+        return this.Text().Is_Row_Of_Table();
+    }
+
+    Is_First_Row_Of_Table():
+        boolean
+    {
+        Utils.Assert(
+            !this.Is_Blank(),
+            `this line is blank`,
+        );
+
+        return this.Text().Is_First_Row_Of_Table();
     }
 
     Has_Styles():
@@ -189,19 +243,19 @@ export class Instance extends Entity.Instance
     Styles():
         string | { [index: string]: string; }
     {
-        if (this.Has_Styles()) {
+        if (this.Has_Styles() && !this.Has_Interlineation()) {
             const text: Text.Line.Instance = this.Text();
             const column_count: Count = text.Column_Count();
 
             let grid_template_columns: string = ``;
             let max_width: string = ``;
-            if (this.Is_Part_Of_Table()) {
+            if (this.Is_Row_Of_Table()) {
                 grid_template_columns = `repeat(${column_count}, 1fr)`;
                 max_width = `${column_count * 10}em`;
             } else {
                 for (let idx = 0, end = column_count; idx < end; idx += 1) {
                     const column: Text.Column.Instance = text.Column(idx);
-                    if (column.Is_Margin()) {
+                    if (column.Is_Marginal()) {
                         grid_template_columns += ` 0.5fr`;
                     } else {
                         grid_template_columns += ` 1fr`;

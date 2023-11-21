@@ -84,6 +84,8 @@ export enum Known_Value
     COLUMN = `⸨col⸩`,
     ROW = `⸨row⸩`,
     MARGIN = `⸨marg⸩`,
+    INTERLINEAR = `⸨intl⸩`,
+    REVERSE_INTERLINEAR = `⸨rev-intl⸩`,
 
     CENTER = `⸨cen⸩`,
     INDENT = `⸨in⸩`,
@@ -177,6 +179,8 @@ export function Is_Known_Value(
         value === Known_Value.COLUMN ||
         value === Known_Value.ROW ||
         value === Known_Value.MARGIN ||
+        value === Known_Value.INTERLINEAR ||
+        value === Known_Value.REVERSE_INTERLINEAR ||
 
         value === Known_Value.CENTER ||
         value === Known_Value.INDENT ||
@@ -507,7 +511,7 @@ export function Partition_Into_Row_Values(
             text: text,
         },
     );
-    let has_column_or_margin: boolean = false;
+    let has_column_or_margin_or_interlinear: boolean = false;
     let has_row: boolean = false;
     let has_other: boolean = false;
 
@@ -522,20 +526,20 @@ export function Partition_Into_Row_Values(
                     language: null,
                 },
             );
-            if (command.Is_Column() || command.Is_Margin()) {
-                if (has_column_or_margin || has_row || has_other) {
+            if (command.Is_Column() || command.Is_Margin() || command.Is_Interlinear()) {
+                if (has_column_or_margin_or_interlinear || has_row || has_other) {
                     results.push(text.slice(current_start.Index(), it.Index()));
                     current_start = it;
-                    has_column_or_margin = false;
+                    has_column_or_margin_or_interlinear = false;
                     has_row = false;
                     has_other = false;
                 }
-                has_column_or_margin = true;
+                has_column_or_margin_or_interlinear = true;
             } else if (command.Is_Row()) {
                 if (has_row || has_other) {
                     results.push(text.slice(current_start.Index(), it.Index()));
                     current_start = it;
-                    has_column_or_margin = false;
+                    has_column_or_margin_or_interlinear = false;
                     has_row = false;
                     has_other = false;
                 }
@@ -833,6 +837,24 @@ export class Instance extends Part.Instance
         boolean
     {
         return this.Value() === Known_Value.MARGIN;
+    }
+
+    Is_Interlinear():
+        boolean
+    {
+        return this.Is_Forward_Interlinear() || this.Is_Reverse_Interlinear();
+    }
+
+    Is_Forward_Interlinear():
+        boolean
+    {
+        return this.Value() === Known_Value.INTERLINEAR;
+    }
+
+    Is_Reverse_Interlinear():
+        boolean
+    {
+        return this.Value() === Known_Value.REVERSE_INTERLINEAR;
     }
 
     Is_Center():

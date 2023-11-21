@@ -16,7 +16,10 @@ export class Instance
     private type: Type;
     private value: Value;
     private columns: Array<Column.Instance>;
-    private margin_count: Count;
+    private tabular_column_count: Count;
+    private marginal_column_count: Count;
+    private interlinear_column_count: Count;
+    private has_reverse_interlinear_column: boolean;
 
     constructor(
         {
@@ -31,7 +34,10 @@ export class Instance
         this.type = type;
         this.value = value;
         this.columns = [];
-        this.margin_count = 0;
+        this.tabular_column_count = 0;
+        this.marginal_column_count = 0;
+        this.interlinear_column_count = 0;
+        this.has_reverse_interlinear_column = false;
     }
 
     Update_Empty():
@@ -46,7 +52,7 @@ export class Instance
             `Must not have any other columns.`,
         );
 
-        this.Push_Column(false);
+        this.Push_Column(Column.Type.TABULAR);
 
         this.columns[this.columns.length - 1].Update_Empty();
     }
@@ -88,7 +94,7 @@ export class Instance
         );
 
         if (this.columns.length < 1) {
-            this.Push_Column(false);
+            this.Push_Column(Column.Type.TABULAR);
         }
 
         this.columns[this.columns.length - 1].Update_Point(row_value, micro_point, macro_point);
@@ -123,7 +129,7 @@ export class Instance
         );
 
         if (this.columns.length < 1) {
-            this.Push_Column(false);
+            this.Push_Column(Column.Type.TABULAR);
         }
 
         this.columns[this.columns.length - 1].Update_Letter(row_value, micro_letter);
@@ -158,7 +164,7 @@ export class Instance
         );
 
         if (this.columns.length < 1) {
-            this.Push_Column(false);
+            this.Push_Column(Column.Type.TABULAR);
         }
 
         this.columns[this.columns.length - 1].Update_Marker(row_value, micro_marker);
@@ -196,7 +202,7 @@ export class Instance
         );
 
         if (this.columns.length < 1) {
-            this.Push_Column(false);
+            this.Push_Column(Column.Type.TABULAR);
         }
 
         this.columns[this.columns.length - 1].Update_Word(row_value, macro_word);
@@ -237,7 +243,7 @@ export class Instance
         );
 
         if (this.columns.length < 1) {
-            this.Push_Column(false);
+            this.Push_Column(Column.Type.TABULAR);
         }
 
         this.columns[this.columns.length - 1].Update_Break(row_value, macro_break);
@@ -275,27 +281,38 @@ export class Instance
             },
         );
 
-        if (this.columns.length < 1 || macro_command.Is_Column() || macro_command.Is_Margin()) {
-            this.Push_Column(macro_command.Is_Margin());
+        if (this.columns.length < 1 || macro_command.Is_Column()) {
+            this.Push_Column(Column.Type.TABULAR);
+        } else if (macro_command.Is_Margin()) {
+            this.Push_Column(Column.Type.MARGINAL);
+        } else if (macro_command.Is_Forward_Interlinear()) {
+            this.Push_Column(Column.Type.INTERLINEAR);
+        } else if (macro_command.Is_Reverse_Interlinear()) {
+            this.Push_Column(Column.Type.INTERLINEAR);
+            this.has_reverse_interlinear_column = true;
         }
 
         this.columns[this.columns.length - 1].Update_Command(row_value, micro_command, macro_command);
-
-        if (macro_command.Is_Margin()) {
-            this.margin_count += 1;
-        }
     }
 
     private Push_Column(
-        is_margin: boolean,
+        column_type: Column.Type,
     ):
         void
     {
+        if (column_type === Column.Type.INTERLINEAR) {
+            this.interlinear_column_count += 1;
+        } else if (column_type === Column.Type.MARGINAL) {
+            this.marginal_column_count += 1;
+        } else {
+            this.tabular_column_count += 1;
+        }
+
         this.columns.push(
             new Column.Instance(
                 {
+                    type: column_type,
                     index: this.columns.length,
-                    is_margin: is_margin,
                 },
             ),
         );
@@ -389,21 +406,80 @@ export class Instance
         return this.columns[column_index];
     }
 
+    Tabular_Column_Count():
+        Count
+    {
+        Utils.Assert(
+            this.Is_Finalized(),
+            `Must be finalized before being accessed.`,
+        );
+
+        return this.tabular_column_count;
+    }
+
+    Marginal_Column_Count():
+        Count
+    {
+        Utils.Assert(
+            this.Is_Finalized(),
+            `Must be finalized before being accessed.`,
+        );
+
+        return this.marginal_column_count;
+    }
+
+    Interlinear_Column_Count():
+        Count
+    {
+        Utils.Assert(
+            this.Is_Finalized(),
+            `Must be finalized before being accessed.`,
+        );
+
+        return this.interlinear_column_count;
+    }
+
     Has_Margin():
         boolean
     {
-        return this.margin_count > 0;
+        Utils.Assert(
+            this.Is_Finalized(),
+            `Must be finalized before being accessed.`,
+        );
+
+        return this.Marginal_Column_Count() > 0;
     }
 
-    Margin_Count():
-        Count
+    Has_Interlineation():
+        boolean
     {
-        return this.margin_count;
+        Utils.Assert(
+            this.Is_Finalized(),
+            `Must be finalized before being accessed.`,
+        );
+
+        return this.Interlinear_Column_Count() > 0;
     }
 
-    Non_Margin_Count():
-        Count
+    Has_Forward_Interlineation():
+        boolean
     {
-        return this.Column_Count() - this.Margin_Count();
+        Utils.Assert(
+            this.Is_Finalized(),
+            `Must be finalized before being accessed.`,
+        );
+
+        return this.Has_Interlineation() && !this.has_reverse_interlinear_column;
+    }
+
+    Has_Reverse_Interlineation():
+        boolean
+    {
+        Utils.Assert(
+            this.Is_Finalized(),
+            `Must be finalized before being accessed.`,
+        );
+
+        return this.Has_Interlineation() && this.has_reverse_interlinear_column;
     }
 };
