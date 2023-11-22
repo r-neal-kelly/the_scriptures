@@ -181,6 +181,7 @@ export class Instance
         const path: Path.Instance =
             new Path.Instance(
                 {
+                    line: this,
                     type: path_type,
                     value: value,
                 },
@@ -607,5 +608,17 @@ export class Instance
         boolean
     {
         return this.Path().Is_Centered();
+    }
+
+    Is_Padded():
+        boolean
+    {
+        return this.Path().Is_Padded();
+    }
+
+    Padding_Count():
+        Count
+    {
+        return this.Path().Padding_Count();
     }
 }

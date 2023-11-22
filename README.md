@@ -122,7 +122,7 @@ Additionally, we've begun adding the World English Bible with Apocrypha.
             - Italian: 8 (~0%)
             - Dutch: 12 (~0%)
             - English: 361,084 (~52%)
-- Total Unicode Points: 4,415,718
+- Total Unicode Points: 4,415,722
     - <i>By Language</i>
         - Hebrew: 790,804 (~18%)
         - Greek: 951,662 (~22%)
@@ -133,7 +133,7 @@ Additionally, we've begun adding the World English Bible with Apocrypha.
         - French: 3,239 (~0%)
         - Italian: 63 (~0%)
         - Dutch: 223 (~0%)
-        - English: 1,998,573 (~45%)
+        - English: 1,998,577 (~45%)
     - <i>By Components</i>
         - Letters: 3,487,040 (~79%)
             - Hebrew: 680,353 (~20%)
@@ -146,7 +146,7 @@ Additionally, we've begun adding the World English Bible with Apocrypha.
             - Italian: 53 (~0%)
             - Dutch: 150 (~0%)
             - English: 1,456,848 (~42%)
-        - Meta-Letters: 163,037 (~4%)
+        - Meta-Letters: 163,041 (~4%)
             - Hebrew: 20,538 (~13%)
             - Greek: 7,009 (~4%)
             - Latin: 3,331 (~2%)
@@ -156,7 +156,7 @@ Additionally, we've begun adding the World English Bible with Apocrypha.
             - French: 77 (~0%)
             - Italian: 0 (~0%)
             - Dutch: 61 (~0%)
-            - English: 131,841 (~81%)
+            - English: 131,845 (~81%)
         - Non-Letters: 765,641 (~17%)
             - Hebrew: 89,913 (~12%)
             - Greek: 144,731 (~19%)

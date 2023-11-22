@@ -130,6 +130,20 @@ export class Instance extends Entity.Instance
                     flex-direction: row-reverse;
                 }
 
+                .Centered_Interlinear_Line {
+                    justify-content: center;    
+                }
+
+                .Padded_Interlinear_Line {
+                    width: auto;
+                    
+                    padding: 0 1em;
+                    
+                    border-style: solid;
+                    border-width: 0 0 0 0;
+                    border-color: rgba(255, 255, 255, 0.4);
+                }
+
                 .Column {
                     display: grid;
                     column-gap: 0;

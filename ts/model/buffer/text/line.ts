@@ -4,6 +4,7 @@ import { Index } from "../../../types.js";
 import * as Utils from "../../../utils.js";
 
 import * as Entity from "../../entity.js";
+import * as Language from "../../language.js";
 import * as Text from "../../text.js";
 import * as Buffer from "./instance.js";
 import * as Column from "./column.js";
@@ -245,6 +246,36 @@ export class Instance extends Entity.Instance
         return this.Text().Is_Centered();
     }
 
+    Is_Padded():
+        boolean
+    {
+        Utils.Assert(
+            !this.Is_Blank(),
+            `this line is blank`,
+        );
+
+        return this.Text().Is_Padded();
+    }
+
+    Padding_Count():
+        Count
+    {
+        Utils.Assert(
+            !this.Is_Blank(),
+            `this line is blank`,
+        );
+
+        return this.Text().Padding_Count();
+    }
+
+    Padding_Direction():
+        Language.Direction
+    {
+        return this.Text().Has_Forward_Interlineation() ?
+            Language.Direction.LEFT_TO_RIGHT :
+            Language.Direction.RIGHT_TO_LEFT;
+    }
+
     Has_Styles():
         boolean
     {
@@ -257,13 +288,21 @@ export class Instance extends Entity.Instance
         if (this.Has_Styles()) {
             const text: Text.Line.Instance = this.Text();
             if (this.Has_Interlineation()) {
-                let justify_content: string = text.Is_Centered() ?
-                    `center` :
-                    `start`;
+                if (this.Is_Padded()) {
+                    const padding_value: string =
+                        `${this.Buffer().Pad_EM(this.Padding_Count())}em`;
+                    const padding_direction: string =
+                        this.Padding_Direction() === Language.Direction.LEFT_TO_RIGHT ?
+                            `left` :
+                            `right`;
 
-                return `    
-                    justify-content: ${justify_content};
-                `;
+                    return `
+                        margin-${padding_direction}: ${padding_value};
+                        border-${padding_direction}-width: 1px;
+                    `;
+                } else {
+                    return ``;
+                }
             } else {
                 const column_count: Count = text.Column_Count();
 

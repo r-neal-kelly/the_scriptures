@@ -8,9 +8,11 @@ import * as Item from "./item.js";
 import * as Part from "./part.js";
 import * as Split from "./split.js";
 import * as Segment from "./segment.js";
+import * as Column from "./column.js";
 
 export class Instance
 {
+    private column: Column.Instance;
     private index: Index;
     private value: Value;
 
@@ -33,14 +35,17 @@ export class Instance
 
     constructor(
         {
+            column,
             index,
             value,
         }: {
+            column: Column.Instance,
             index: Index,
             value: Value,
         },
     )
     {
+        this.column = column;
         this.index = index;
         this.value = value;
 
@@ -360,6 +365,17 @@ export class Instance
         Object.freeze(this.working_macro_segment);
     }
 
+    Column():
+        Column.Instance
+    {
+        Utils.Assert(
+            this.Is_Finalized(),
+            `Must be finalized before being accessed.`,
+        );
+
+        return this.column;
+    }
+
     Index():
         Index
     {
@@ -382,6 +398,17 @@ export class Instance
         return this.value;
     }
 
+    Can_Be_Centered():
+        boolean
+    {
+        Utils.Assert(
+            this.Is_Finalized(),
+            `Must be finalized before being accessed.`,
+        );
+
+        return !this.Column().Path().Has_Interlineation();
+    }
+
     Is_Centered():
         boolean
     {
@@ -391,6 +418,17 @@ export class Instance
         );
 
         return this.is_centered;
+    }
+
+    Can_Be_Padded():
+        boolean
+    {
+        Utils.Assert(
+            this.Is_Finalized(),
+            `Must be finalized before being accessed.`,
+        );
+
+        return !this.Column().Path().Has_Interlineation();
     }
 
     Is_Padded():

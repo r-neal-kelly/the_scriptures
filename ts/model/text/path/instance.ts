@@ -8,11 +8,13 @@ import { Value } from "../value.js";
 import * as Dictionary from "../dictionary.js";
 import * as Part from "../part.js";
 import * as Column from "../column.js";
+import * as Line from "../line.js";
 
 import { Type } from "./type.js";
 
 export class Instance
 {
+    private line: Line.Instance;
     private type: Type;
     private value: Value;
     private columns: Array<Column.Instance>;
@@ -23,14 +25,17 @@ export class Instance
 
     constructor(
         {
+            line,
             type,
             value,
         }: {
+            line: Line.Instance,
             type: Type,
             value: Value,
         },
     )
     {
+        this.line = line;
         this.type = type;
         this.value = value;
         this.columns = [];
@@ -340,6 +345,17 @@ export class Instance
         }
     }
 
+    Line():
+        Line.Instance
+    {
+        Utils.Assert(
+            this.Is_Finalized(),
+            `Must be finalized before being accessed.`,
+        );
+
+        return this.line;
+    }
+
     Type():
         Type
     {
@@ -487,11 +503,47 @@ export class Instance
     Is_Centered():
         boolean
     {
+        Utils.Assert(
+            this.Is_Finalized(),
+            `Must be finalized before being accessed.`,
+        );
+
         return (
             this.Has_Interlineation() &&
             this.Column_Count() > 0 &&
             this.Column(0).Row_Count() > 0 &&
             this.Column(0).Row(0).Is_Centered()
         );
+    }
+
+    Is_Padded():
+        boolean
+    {
+        Utils.Assert(
+            this.Is_Finalized(),
+            `Must be finalized before being accessed.`,
+        );
+
+        return (
+            this.Has_Interlineation() &&
+            this.Column_Count() > 0 &&
+            this.Column(0).Row_Count() > 0 &&
+            this.Column(0).Row(0).Is_Padded()
+        );
+    }
+
+    Padding_Count():
+        Count
+    {
+        Utils.Assert(
+            this.Is_Finalized(),
+            `Must be finalized before being accessed.`,
+        );
+
+        if (this.Is_Padded()) {
+            return this.Column(0).Row(0).Padding_Count();
+        } else {
+            return 0;
+        }
     }
 };

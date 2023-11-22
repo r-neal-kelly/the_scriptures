@@ -502,19 +502,23 @@ export class Instance extends Entity.Instance
     Is_Centered():
         boolean
     {
-        return this.Text().Is_Centered();
+        return this.Text().Can_Be_Centered() && this.Text().Is_Centered();
     }
 
     Is_Padded():
         boolean
     {
-        return this.Text().Is_Padded();
+        return this.Text().Can_Be_Padded() && this.Text().Is_Padded();
     }
 
     Padding_Count():
         Count
     {
-        return this.Text().Padding_Count();
+        if (this.Text().Can_Be_Padded()) {
+            return this.Text().Padding_Count();
+        } else {
+            return 0;
+        }
     }
 
     Padding_Direction():
@@ -526,24 +530,28 @@ export class Instance extends Entity.Instance
     Has_Styles():
         boolean
     {
-        return this.Has_Text() && this.Padding_Count() > 0;
+        return this.Has_Text();
     }
 
     Styles():
         string | { [index: string]: string; }
     {
         if (this.Has_Styles()) {
-            const padding_value: string =
-                `${this.Column().Line().Buffer().Pad_EM(this.Padding_Count())}em`;
-            const padding_direction: string =
-                this.Padding_Direction() === Language.Direction.LEFT_TO_RIGHT ?
-                    `left` :
-                    `right`;
+            if (this.Is_Padded()) {
+                const padding_value: string =
+                    `${this.Column().Line().Buffer().Pad_EM(this.Padding_Count())}em`;
+                const padding_direction: string =
+                    this.Padding_Direction() === Language.Direction.LEFT_TO_RIGHT ?
+                        `left` :
+                        `right`;
 
-            return `
-                margin-${padding_direction}: ${padding_value};
-                border-${padding_direction}-width: 1px;
-            `;
+                return `
+                    margin-${padding_direction}: ${padding_value};
+                    border-${padding_direction}-width: 1px;
+                `;
+            } else {
+                return ``;
+            }
         } else {
             return ``;
         }

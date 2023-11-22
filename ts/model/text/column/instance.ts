@@ -185,6 +185,7 @@ export class Instance
         this.rows.push(
             new Row.Instance(
                 {
+                    column: this,
                     index: this.rows.length,
                     value: row_value,
                 },

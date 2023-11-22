@@ -70,6 +70,11 @@ export class Instance extends Entity.Instance
                 } else {
                     classes.push(`Reverse_Interlinear_Line`);
                 }
+                if (model.Is_Centered()) {
+                    classes.push(`Centered_Interlinear_Line`);
+                } else if (model.Is_Padded()) {
+                    classes.push(`Padded_Interlinear_Line`);
+                }
             } else if (model.Is_Row_Of_Table()) {
                 classes.push(`Tabular_Line`);
                 if (model.Is_First_Row_Of_Table()) {
