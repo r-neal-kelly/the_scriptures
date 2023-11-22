@@ -161,6 +161,17 @@ export class Instance extends Entity.Instance
         return this.Text().Is_Marginal();
     }
 
+    Is_Inter_Marginal():
+        boolean
+    {
+        Utils.Assert(
+            !this.Is_Blank(),
+            `this column is blank`,
+        );
+
+        return this.Text().Is_Inter_Marginal();
+    }
+
     Is_Interlinear():
         boolean
     {
@@ -170,6 +181,17 @@ export class Instance extends Entity.Instance
         );
 
         return this.Text().Is_Interlinear();
+    }
+
+    Is_Inter_Interlinear():
+        boolean
+    {
+        Utils.Assert(
+            !this.Is_Blank(),
+            `this column is blank`,
+        );
+
+        return this.Text().Is_Inter_Interlinear();
     }
 
     Has_Styles():
@@ -183,7 +205,10 @@ export class Instance extends Entity.Instance
     {
         if (this.Has_Styles()) {
             const text: Text.Column.Instance = this.Text();
-            if (text.Is_Interlinear()) {
+            if (
+                text.Is_Interlinear() ||
+                text.Is_Inter_Interlinear()
+            ) {
                 return `
                     grid-template-rows: repeat(${text.Row_Count()}, 1fr);
                 `;

@@ -6,11 +6,13 @@ import * as Utils from "../../../utils.js";
 import { Value } from "../value.js";
 import * as Part from "../part.js";
 import * as Row from "../row.js";
+import * as Path from "../path.js";
 
 import { Type } from "./type.js";
 
 export class Instance
 {
+    private path: Path.Instance;
     private type: Type;
     private index: Index;
     private rows: Array<Row.Instance>;
@@ -18,14 +20,17 @@ export class Instance
 
     constructor(
         {
+            path,
             type,
             index,
         }: {
+            path: Path.Instance,
             type: Type,
             index: Index,
         },
     )
     {
+        this.path = path;
         this.type = type;
         this.index = index;
         this.rows = [];
@@ -216,6 +221,17 @@ export class Instance
         this.last_command = null;
     }
 
+    Path():
+        Path.Instance
+    {
+        Utils.Assert(
+            this.Is_Finalized(),
+            `Must be finalized before being accessed.`,
+        );
+
+        return this.path;
+    }
+
     Type():
         Type
     {
@@ -249,6 +265,17 @@ export class Instance
         return this.type === Type.MARGINAL;
     }
 
+    Is_Inter_Marginal():
+        boolean
+    {
+        Utils.Assert(
+            this.Is_Finalized(),
+            `Must be finalized before being accessed.`,
+        );
+
+        return this.Is_Tabular() && this.Path().Marginal_Column_Count() > 0;
+    }
+
     Is_Interlinear():
         boolean
     {
@@ -258,6 +285,17 @@ export class Instance
         );
 
         return this.type === Type.INTERLINEAR;
+    }
+
+    Is_Inter_Interlinear():
+        boolean
+    {
+        Utils.Assert(
+            this.Is_Finalized(),
+            `Must be finalized before being accessed.`,
+        );
+
+        return this.Is_Tabular() && this.Path().Interlinear_Column_Count() > 0;
     }
 
     Index():

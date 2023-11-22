@@ -8,9 +8,7 @@
 ⸨in⸩Ps⸼ xvi⸼ 8⸨err:–⸩—⸨/err⸩11. ⸨lang:Greek⸩Προωρόμην τὸν Κύριον ἐνώπιόν μου διὰ πάντος⸨err: … , ⸩ … . ⸨/err⸩τερπνότητες ἐν τῇ δεξιᾷ σου εἰς τέλος⸨/lang⸩, agreeing with the original; cited, Acts ii⸼ 25⸨err:–⸩—⸨/err⸩28.
 ⸨in⸩Ps⸼ xvi⸼ 10. ⸨lang:Greek⸩Οὐ δώσεις τὸν ὅσιόν σου ἰδεῖν διαφθοράν⸨/lang⸩, agreeing with the Hebrew; cited, Acts xiii⸼ 35.
 ⸨in⸩Ps⸼ xviii⸼ 2. ⸨lang:Greek⸩Ἐλπιῶ ἐπ᾽ αὐτόν⸨/lang⸩, cited, but only in sense, Heb⸼ ii⸼ 13, ⸨lang:Greek⸩Ἐγὼ ἔσομαι πεποιθὼς ἐπ᾽ αὐτῷ⸨/lang⸩.
-⸨in⸩Ps⸼ xviii⸼ 35.
-⸨pad⸩⸨pad⸩⸨lang:Greek⸩Καὶ ἡ παιδεία σου ἀνώρθωσέ με εἰς τέλος⸨/lang⸩,
-⸨pad⸩⸨pad⸩⸨lang:Greek⸩Καὶ ἡ παιδεία σου αὐτή με διδάξει⸨/lang⸩.
+⸨in⸩Ps⸼ xviii⸼ 35⸨good⸩. ⸨/good⸩⸨row⸩⸨intl⸩⸨lang:Greek⸩Καὶ⸨good⸩ ⸨/good⸩⸨/lang⸩⸨row⸩⸨lang:Greek⸩Καὶ⸨good⸩ ⸨/good⸩⸨/lang⸩⸨intl⸩⸨lang:Greek⸩ἡ⸨good⸩ ⸨/good⸩⸨/lang⸩⸨row⸩⸨lang:Greek⸩ἡ⸨good⸩ ⸨/good⸩⸨/lang⸩⸨intl⸩⸨lang:Greek⸩παιδεία⸨good⸩ ⸨/good⸩⸨/lang⸩⸨row⸩⸨lang:Greek⸩παιδεία⸨good⸩ ⸨/good⸩⸨/lang⸩⸨intl⸩⸨lang:Greek⸩σου⸨good⸩ ⸨/good⸩⸨/lang⸩⸨row⸩⸨lang:Greek⸩σου⸨good⸩ ⸨/good⸩⸨/lang⸩⸨intl⸩⸨lang:Greek⸩ἀνώρθωσέ⸨good⸩ ⸨/good⸩⸨/lang⸩⸨row⸩⸨lang:Greek⸩αὐτή⸨good⸩ ⸨/good⸩⸨/lang⸩⸨intl⸩⸨lang:Greek⸩με⸨good⸩ ⸨/good⸩⸨/lang⸩⸨row⸩⸨lang:Greek⸩με⸨good⸩ ⸨/good⸩⸨/lang⸩⸨intl⸩⸨lang:Greek⸩εἰς τέλος,⸨/lang⸩⸨row⸩⸨lang:Greek⸩διδάξει.⸨/lang⸩
 We meet here with a double rendering, the former from the Septuagint, the latter from Theodotion.
 ⸨in⸩Ps⸼ xviii⸼ 49. ⸨lang:Greek⸩Διὰ τοῦτο ἐξομολογήσομοί σοι ἐν ἔθνεσι (Κύριε), καὶ τῷ ὀνόματί σου ψαλῶ⸨/lang⸩, agreeing with the Hebrew; cited, Rom⸼ xv⸼ 9.
 ⸨in⸩Ps⸼ xix⸼ 4. ⸨lang:Greek⸩Εἰς πᾶσαν τὴν γῆν ἐξῆλθεν ὁ φθόγγος αὐτῶν, καὶ εἰς τὰ πέρατα τῆς οἰκουμενης τὰ ῥήματα αὐτῶν⸨/lang⸩, agreeing with the Hebrew; cited, Rom⸼ x⸼ 18.
@@ -18,10 +16,8 @@ We meet here with a double rendering, the former from the Septuagint, the latter
 ⸨in⸩Ps⸼ xxii⸼ 18. ⸨lang:Greek⸩Διεμερίσαντο τὰ ἱμάτιά μου ἑαυτοῖς καὶ ἐπὶ τὸν ἱματισμόν μου ἔβαλον κλῆρον⸨/lang⸩, agreeing with the Hebrew; cited by St⸼ Matthew, chap⸼ xxvii⸼ 35, but rejected there by Tischendorf and Alford.
 ⸨in⸩Ps⸼ xxii⸼ 22. ⸨lang:Greek⸩Διηγήσομαι τὸ ὄνομά σου τοῖς ἀδελφοῖς μου, ἐν μέσῳ ἐκκλησίας ὑμνήσω σε⸨/lang⸩, agreeing with the Hebrew; cited, Heb⸼ ii⸼ 12, but the Apostle has ⸨lang:Greek⸩ἀπαγγελῶ⸨/lang⸩ for ⸨lang:Greek⸩διηγήσομαι⸨/lang⸩.
 ⸨in⸩Ps⸼ xxix⸼ 1. Here we have a double rendering in the Vulgate as well as in the Septuagint:—
-⸨cen⸩⸨lang:Greek⸩Ἐνέγκατε τῷ Κυρίῳ, υἱοὶ θεοῦ⸨/lang⸩,
-⸨cen⸩⸨lang:Greek⸩ἐνέγκατε τῷ Κυρίῳ υἱοὺς κριῶν⸨/lang⸩,
-⸨cen⸩⸨lang:Latin⸩Afferte Domino, filii Dei⸨/lang⸩,
-⸨cen⸩⸨lang:Latin⸩afferte Domino filios arietum⸨/lang⸩.
+⸨intl⸩⸨cen⸩⸨row⸩⸨cen⸩⸨intl⸩⸨lang:Greek⸩Ἐνέγκατε⸨good⸩ ⸨/good⸩⸨/lang⸩⸨row⸩⸨lang:Greek⸩ἐνέγκατε⸨good⸩ ⸨/good⸩⸨/lang⸩⸨intl⸩⸨lang:Greek⸩τῷ⸨good⸩ ⸨/good⸩⸨/lang⸩⸨row⸩⸨lang:Greek⸩τῷ⸨good⸩ ⸨/good⸩⸨/lang⸩⸨intl⸩⸨lang:Greek⸩Κυρίῳ⸨good⸩, ⸨/good⸩⸨/lang⸩⸨row⸩⸨lang:Greek⸩Κυρίῳ⸨good⸩ ⸨/good⸩⸨/lang⸩⸨intl⸩⸨lang:Greek⸩υἱοὶ⸨good⸩ ⸨/good⸩⸨/lang⸩⸨row⸩⸨lang:Greek⸩υἱοὺς⸨good⸩ ⸨/good⸩⸨/lang⸩⸨intl⸩⸨lang:Greek⸩θεοῦ,⸨/lang⸩⸨row⸩⸨lang:Greek⸩κριῶν,⸨/lang⸩
+⸨intl⸩⸨cen⸩⸨row⸩⸨cen⸩⸨intl⸩⸨lang:Latin⸩Afferte⸨good⸩ ⸨/good⸩⸨/lang⸩⸨row⸩⸨lang:Latin⸩afferte⸨good⸩ ⸨/good⸩⸨/lang⸩⸨intl⸩⸨lang:Latin⸩Domino⸨good⸩, ⸨/good⸩⸨/lang⸩⸨row⸩⸨lang:Latin⸩Domino⸨good⸩ ⸨/good⸩⸨/lang⸩⸨intl⸩⸨lang:Latin⸩filii⸨good⸩ ⸨/good⸩⸨/lang⸩⸨row⸩⸨lang:Latin⸩filios⸨good⸩ ⸨/good⸩⸨/lang⸩⸨intl⸩⸨lang:Latin⸩Dei,⸨/lang⸩⸨row⸩⸨lang:Latin⸩arietum.⸨/lang⸩
 It is obvious that the Hebrew ⸨rtl⸩⸨lang:Hebrew⸩בְּנֵי אֵלִים⸨/lang⸩⸨/rtl⸩ is translated both “sons of God” (vocative) and “sons of rams” (objective). The former is the true reading of the Septuagint.
 ⸨in⸩Ps⸼ xxxii⸼ 1, 2. ⸨lang:Greek⸩Μακάριοι ὧν ἀφέθησαν αἱ ἀνομίαι καὶ ὧν ἐπεκαλύφθησαν αἱ ἁμαρτίαι. Μακάριος ἀνὴρ ᾧ οὐ μὴ λογίσηται Κύριος ἁμαρτίαν⸨/lang⸩, agreeing with the Hebrew; cited, Rom⸼ iv⸼ 7, 8.
 ⸨in⸩Ps⸼ xxxiv⸼ 12⸨err:–⸩—⸨/err⸩17. ⸨lang:Greek⸩Τίς ἐστιν ἄνθρωπος ὁ θέλων ζωήν ……… πρόσωπον δὲ Κυρίου ἐπὶ ποιοῦντας κακά⸨/lang⸩, agreeing with the Hebrew; cited substantially, 1 Pet⸼ iii⸼ 10⸨err:–⸩—⸨/err⸩12.

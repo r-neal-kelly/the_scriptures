@@ -146,10 +146,22 @@ export class Instance extends Entity.Instance
                     font-size: .85em;
                 }
 
+                .Inter_Marginal_Column {
+                    
+                }
+
                 .Interlinear_Column {
+                    align-items: center;
+
                     padding: 0.15em 0;
                     
                     border-bottom: solid 1px rgba(255, 255, 255, 0.3);
+                }
+
+                .Inter_Interlinear_Column {
+                    align-items: center;
+                    
+                    padding: 0.15em 0;
                 }
 
                 .Row {

@@ -1229,7 +1229,7 @@ class Editor
 
         this.is_meta_key_active = false;
         this.is_in_point_mode = false;
-        this.are_rows_expanded = false;
+        this.are_rows_expanded = true;
         this.direction = Direction.LEFT_TO_RIGHT;
 
         this.parent = parent;

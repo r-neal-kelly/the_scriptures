@@ -2,5 +2,7 @@ export enum Type
 {
     TABULAR,
     MARGINAL,
+    INTER_MARGINAL,
     INTERLINEAR,
+    INTER_INTERLINEAR,
 };

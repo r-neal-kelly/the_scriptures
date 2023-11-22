@@ -63,8 +63,12 @@ export class Instance extends Entity.Instance
         } else {
             if (model.Is_Marginal()) {
                 classes.push(`Marginal_Column`);
+            } else if (model.Is_Inter_Marginal()) {
+                classes.push(`Inter_Marginal_Column`);
             } else if (model.Is_Interlinear()) {
                 classes.push(`Interlinear_Column`);
+            } else if (model.Is_Inter_Interlinear()) {
+                classes.push(`Inter_Interlinear_Column`);
             }
         }
 

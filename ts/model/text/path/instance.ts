@@ -311,6 +311,7 @@ export class Instance
         this.columns.push(
             new Column.Instance(
                 {
+                    path: this,
                     type: column_type,
                     index: this.columns.length,
                 },
