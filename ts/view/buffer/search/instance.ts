@@ -63,8 +63,8 @@ export class Instance extends Entity.Instance
                     display: grid;
                     justify-items: center;
                     align-items: center;
-                    justify-content: center;
-                    align-content: center;
+                    justify-content: stretch;
+                    align-content: stretch;
 
                     width: 100%;
                     padding: 12px 4px 36px 4px;
