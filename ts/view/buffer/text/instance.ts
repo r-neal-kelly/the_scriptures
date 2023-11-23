@@ -61,8 +61,8 @@ export class Instance extends Entity.Instance
             `
                 .Text {
                     display: grid;
-                    justify-items: center;
-                    align-items: center;
+                    justify-items: stretch;
+                    align-items: stretch;
                     justify-content: stretch;
                     align-content: stretch;
 
@@ -92,6 +92,9 @@ export class Instance extends Entity.Instance
                 }
 
                 .Tabular_Line {
+                    justify-self: center;
+                    align-self: center;
+
                     margin: 0 10%;
                     padding: 0.35em;
 
@@ -130,6 +133,9 @@ export class Instance extends Entity.Instance
                 }
 
                 .Padded_Interlinear_Line {
+                    justify-self: stretch;
+                    align-self: stretch;
+
                     width: auto;
                     
                     padding: 0 1em;
