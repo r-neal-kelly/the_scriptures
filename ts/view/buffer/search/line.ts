@@ -58,6 +58,7 @@ export class Instance extends Entity.Instance
         const classes: Array<string> = [];
 
         classes.push(`Line`);
+        classes.push(`Search_Line`);
         if (model.Is_Blank()) {
             classes.push(`Blank`);
         } else {

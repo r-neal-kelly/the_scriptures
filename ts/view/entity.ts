@@ -417,7 +417,7 @@ export class Instance implements
     {
         if (
             this.Is_Alive() &&
-            Object.getPrototypeOf(this).hasOwnProperty(`On_Life`)
+            Object.getPrototypeOf(this).On_Life !== Instance.prototype.On_Life
         ) {
             this.life_cycle_listener = Life_Cycle_Listener.ON_LIFE;
             this.css_to_add = ``;
@@ -459,7 +459,7 @@ export class Instance implements
     {
         if (
             this.Is_Alive() &&
-            Object.getPrototypeOf(this).hasOwnProperty(`On_Refresh`)
+            Object.getPrototypeOf(this).On_Refresh !== Instance.prototype.On_Refresh
         ) {
             this.life_cycle_listener = Life_Cycle_Listener.ON_REFRESH;
             this.On_Refresh();
@@ -493,7 +493,7 @@ export class Instance implements
     {
         if (
             this.Is_Alive() &&
-            Object.getPrototypeOf(this).hasOwnProperty(`On_Reclass`)
+            Object.getPrototypeOf(this).On_Reclass !== Instance.prototype.On_Reclass
         ) {
             this.life_cycle_listener = Life_Cycle_Listener.ON_RECLASS;
             const classes: string = this.On_Reclass().join(` `);
@@ -541,7 +541,7 @@ export class Instance implements
     {
         if (
             this.Is_Alive() &&
-            Object.getPrototypeOf(this).hasOwnProperty(`On_Restyle`)
+            Object.getPrototypeOf(this).On_Restyle !== Instance.prototype.On_Restyle
         ) {
             this.life_cycle_listener = Life_Cycle_Listener.ON_RESTYLE;
             const styles: string | { [index: string]: string } = this.On_Restyle();
@@ -565,7 +565,7 @@ export class Instance implements
         void
     {
         if (this.Is_Alive()) {
-            if (Object.getPrototypeOf(this).hasOwnProperty(`Before_Death`)) {
+            if (Object.getPrototypeOf(this).Before_Death !== Instance.prototype.Before_Death) {
                 this.life_cycle_listener = Life_Cycle_Listener.BEFORE_DEATH;
                 this.Before_Death();
                 this.life_cycle_listener = Life_Cycle_Listener._NONE_;

@@ -91,7 +91,7 @@ export class Instance extends Entity.Instance
         return Languages.Singleton().Direction(this.default_language_name);
     }
 
-    Default_Text_Styles():
+    Default_Font_Styles():
         any
     {
         return Languages.Singleton().Default_Global_Font_Styles(this.default_language_name);
