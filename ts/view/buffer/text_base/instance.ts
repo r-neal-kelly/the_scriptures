@@ -1,4 +1,5 @@
 import { Count } from "../../../types.js";
+import { Index } from "../../../types.js";
 import { ID } from "../../../types.js";
 
 import * as Event from "../../../event.js";
@@ -9,9 +10,27 @@ import * as Entity from "../../entity.js";
 
 export interface Model_Instance_i
 {
+    Min_Line_Count(): Count;
+    Line_Count(): Count;
+    Line_At(line_index: Index): any;
+
     Default_Text_Direction(): Model_Language.Direction;
     Default_Font_Styles(): { [css_property: string]: string };
+
     Indent_EM(): Count;
+}
+
+export interface Line_Class_i
+{
+    new(
+        {
+            buffer,
+            model,
+        }: {
+            buffer: any,
+            model: () => any,
+        },
+    ): any;
 }
 
 export class Instance<
@@ -20,16 +39,19 @@ export class Instance<
 {
     private model: () => Model_Instance;
     private event_grid_id: () => ID;
+    private line_class: Line_Class_i;
 
     constructor(
         {
             parent,
             model,
             event_grid_id,
+            line_class,
         }: {
             parent: Entity.Instance,
             model: () => Model_Instance,
             event_grid_id: () => ID,
+            line_class: Line_Class_i,
         },
     )
     {
@@ -43,6 +65,7 @@ export class Instance<
 
         this.model = model;
         this.event_grid_id = event_grid_id;
+        this.line_class = line_class;
     }
 
     override On_Life():
@@ -281,6 +304,23 @@ export class Instance<
         return [];
     }
 
+    override On_Refresh():
+        void
+    {
+        const model: Model_Instance = this.Model();
+        const count: Count = this.Child_Count();
+        const target: Count = Math.max(model.Min_Line_Count(), model.Line_Count());
+
+        for (let idx = count, end = target; idx < end; idx += 1) {
+            new (this.Line_Class())(
+                {
+                    buffer: this,
+                    model: () => this.Model().Line_At(idx),
+                },
+            );
+        }
+    }
+
     override On_Reclass():
         Array<string>
     {
@@ -312,5 +352,11 @@ export class Instance<
         ID
     {
         return this.event_grid_id();
+    }
+
+    Line_Class():
+        Line_Class_i
+    {
+        return this.line_class;
     }
 }

@@ -97,6 +97,12 @@ export class Instance extends Entity.Instance
         return Languages.Singleton().Default_Global_Font_Styles(this.default_language_name);
     }
 
+    Min_Line_Count():
+        Count
+    {
+        return Instance.min_line_count;
+    }
+
     Line_Count():
         Count
     {

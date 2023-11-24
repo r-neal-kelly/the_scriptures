@@ -140,6 +140,12 @@ export class Instance extends Entity.Instance
         return this.text as Text.Line.Instance;
     }
 
+    Min_Column_Count():
+        Count
+    {
+        return Instance.min_column_count;
+    }
+
     Column_Count():
         Count
     {

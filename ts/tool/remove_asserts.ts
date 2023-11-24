@@ -5,7 +5,8 @@ import * as Unicode from "../unicode.js";
 
 import * as File_System from "./file_system.js";
 
-const ASSERT_REGEX = /^Utils\.Assert\(/;
+const ASSERT_REGEX = /^Assert\(/;
+const UTILS_ASSERT_REGEX = /^Utils\.Assert\(/;
 
 function Remove_Asserts_From_Text(
     file_text: string,
@@ -20,7 +21,16 @@ function Remove_Asserts_From_Text(
         },
     );
     for (; !iter.Is_At_End();) {
-        if (ASSERT_REGEX.test(iter.Points() || ``)) {
+        if (
+            UTILS_ASSERT_REGEX.test(iter.Points() || ``) ||
+            (
+                ASSERT_REGEX.test(iter.Points() || ``) &&
+                iter.Text().slice(
+                    Math.max(0, iter.Index() - `function `.length),
+                    iter.Index(),
+                ) !== `function `
+            )
+        ) {
             while (iter.Point() !== `(`) {
                 iter = iter.Next();
             }

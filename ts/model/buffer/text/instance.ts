@@ -146,6 +146,12 @@ export class Instance extends Entity.Instance
         return this.text;
     }
 
+    Min_Line_Count():
+        Count
+    {
+        return Instance.min_line_count;
+    }
+
     Line_Count():
         Count
     {
