@@ -1,16 +1,17 @@
-import { ID } from "../../../types.js";
-
 import * as Utils from "../../../utils.js";
 
 import * as Model from "../../../model/buffer/text/item.js";
 
-import * as Entity from "../../entity.js";
+import * as Text_Base from "../text_base.js";
+import * as Buffer from "./instance.js";
 import * as Segment from "./segment.js";
 
-export class Instance extends Entity.Instance
+export class Instance extends Text_Base.Item.Instance<
+    Model.Instance,
+    Buffer.Instance,
+    Segment.Instance
+>
 {
-    private model: () => Model.Instance;
-
     constructor(
         {
             segment,
@@ -23,13 +24,10 @@ export class Instance extends Entity.Instance
     {
         super(
             {
-                element: `div`,
-                parent: segment,
-                event_grid: segment.Event_Grid(),
+                segment: segment,
+                model: model,
             },
         );
-
-        this.model = model;
 
         this.Live();
     }
@@ -38,69 +36,31 @@ export class Instance extends Entity.Instance
         void
     {
         const model: Model.Instance = this.Model();
-        const element: HTMLElement = this.Element();
 
-        if (element instanceof HTMLDivElement) {
-            if (model.Has_Image_Value()) {
-                this.Replace_Element(`img`);
-                this.Element().setAttribute(`src`, model.Value());
+        if (!model.Is_Blank()) {
+            const element: HTMLElement = this.Element();
+
+            if (element instanceof HTMLDivElement) {
+                if (model.Has_Image_Value()) {
+                    this.Replace_Element(`img`);
+                    this.Element().setAttribute(`src`, model.Value());
+                } else {
+                    this.Element().textContent = model.Value();
+                }
+            } else if (element instanceof HTMLImageElement) {
+                if (model.Has_Image_Value()) {
+                    this.Element().setAttribute(`src`, model.Value());
+                } else {
+                    this.Replace_Element(`div`);
+                    this.Element().textContent = model.Value();
+                }
             } else {
-                this.Element().textContent = model.Value();
-            }
-        } else if (element instanceof HTMLImageElement) {
-            if (model.Has_Image_Value()) {
-                this.Element().setAttribute(`src`, model.Value());
-            } else {
-                this.Replace_Element(`div`);
-                this.Element().textContent = model.Value();
-            }
-        } else {
-            Utils.Assert(
-                false,
-                `invalid element type.`,
-            );
-        }
-    }
-
-    override On_Reclass():
-        Array<string>
-    {
-        const model: Model.Instance = this.Model();
-        const classes: Array<string> = [];
-
-        classes.push(`Item`);
-        if (model.Is_Blank()) {
-            classes.push(`Blank`);
-        } else if (model.Has_Image_Value()) {
-            classes.push(`Image`);
-        } else {
-            if (model.Is_Indented()) {
-                classes.push(`Indented_Item`);
-            }
-            if (model.Has_Italic_Style()) {
-                classes.push(`Italic`);
-            }
-            if (model.Has_Bold_Style()) {
-                classes.push(`Bold`);
-            }
-            if (model.Has_Underline_Style()) {
-                classes.push(`Underline`);
-            }
-            if (model.Has_Small_Caps_Style()) {
-                classes.push(`Small_Caps`);
-            }
-            if (
-                model.Is_Error() ||
-                model.Has_Error_Style()
-            ) {
-                classes.push(`Error`);
-            }
-            if (model.Has_Argument_Style()) {
-                classes.push(`Argument`);
+                Utils.Assert(
+                    false,
+                    `invalid element type.`,
+                );
             }
         }
-
-        return classes;
     }
 
     override On_Restyle():
@@ -111,35 +71,17 @@ export class Instance extends Entity.Instance
         if (model.Is_Blank()) {
             return ``;
         } else if (model.Has_Image_Value()) {
-            if (model.Has_Inline_Image_Styles()) {
-                return model.Some_Inline_Image_Styles();
+            if (this.Has_Inline_Image_Styles()) {
+                return this.Inline_Image_Styles();
             } else {
                 return ``;
             }
         } else {
-            if (model.Has_Override_Font_Styles()) {
-                return model.Some_Override_Font_Styles();
+            if (this.Has_Override_Font_Styles()) {
+                return this.Override_Font_Styles();
             } else {
                 return ``;
             }
         }
-    }
-
-    Model():
-        Model.Instance
-    {
-        return this.model();
-    }
-
-    Segment():
-        Segment.Instance
-    {
-        return this.Parent() as Segment.Instance;
-    }
-
-    Event_Grid_ID():
-        ID
-    {
-        return this.Segment().Event_Grid_ID();
     }
 }

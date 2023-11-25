@@ -5,13 +5,16 @@ import * as Utils from "../../../utils.js";
 import * as Languages from "../../languages.js";
 import * as Entity from "../../entity.js";
 import * as Text from "../../text.js";
+import * as Search from "../../search.js";
+
+import * as Buffer from "./instance.js";
 import * as Item from "./item.js";
 
 export class Instance extends Entity.Instance
 {
     private item: Item.Instance | null;
     private index: Index | null;
-    private value: Text.Value;
+    private value: Text.Value | null;
     private is_highlighted: boolean | null;
 
     constructor(
@@ -32,53 +35,74 @@ export class Instance extends Entity.Instance
 
         this.item = item;
         this.index = index;
-        this.value = ``;
+        this.value = value;
         this.is_highlighted = is_highlighted;
 
-        if (value == null) {
-            Utils.Assert(
-                item == null,
-                `item must be null.`,
-            );
+        if (item == null) {
             Utils.Assert(
                 index == null,
                 `index must be null.`,
             );
             Utils.Assert(
+                value == null,
+                `value must be null.`,
+            );
+            Utils.Assert(
                 is_highlighted == null,
                 `is_highlighted must be null.`,
             );
-
-            this.value = ``;
         } else {
-            Utils.Assert(
-                item != null,
-                `item must not be null.`,
-            );
             Utils.Assert(
                 index != null && index > -1,
                 `index must not be null, and must be greater than -1.`,
+            );
+            Utils.Assert(
+                value != null,
+                `value must not be null.`,
             );
             Utils.Assert(
                 is_highlighted != null,
                 `is_highlighted must not be null.`,
             );
 
-            this.Set_Value(value);
+            this.Set_Value(value as Text.Value);
         }
+    }
 
-        this.Add_Dependencies(
-            [
-            ],
+    Is_Blank():
+        boolean
+    {
+        return this.item == null;
+    }
+
+    Buffer():
+        Buffer.Instance
+    {
+        Utils.Assert(
+            !this.Is_Blank(),
+            `division is blank.`,
         );
+
+        return this.Item().Buffer();
+    }
+
+    Result():
+        Search.Result.Instance
+    {
+        Utils.Assert(
+            !this.Is_Blank(),
+            `division is blank.`,
+        );
+
+        return this.Item().Result();
     }
 
     Item():
         Item.Instance
     {
         Utils.Assert(
-            this.item != null,
-            `Doesn't have item.`,
+            !this.Is_Blank(),
+            `division is blank.`,
         );
 
         return this.item as Item.Instance;
@@ -88,8 +112,8 @@ export class Instance extends Entity.Instance
         Index
     {
         Utils.Assert(
-            this.index != null,
-            `Doesn't have an index.`,
+            !this.Is_Blank(),
+            `division is blank.`,
         );
 
         return this.index as Index;
@@ -98,18 +122,19 @@ export class Instance extends Entity.Instance
     Value():
         Text.Value
     {
-        if (this.Is_Blank()) {
-            return ``;
+        Utils.Assert(
+            !this.Is_Blank(),
+            `division is blank.`,
+        );
+
+        if (this.Buffer().Is_Showing_Commands()) {
+            return this.value as Text.Value;
         } else {
-            if (this.Item().Segment().Row().Column().Line().Buffer().Is_Showing_Commands()) {
-                return this.value;
+            const text: Text.Item.Instance = this.Item().Text();
+            if (text.Has_Meta_Value()) {
+                return ``;
             } else {
-                const text: Text.Item.Instance = this.Item().Text();
-                if (text.Has_Meta_Value()) {
-                    return ``;
-                } else {
-                    return this.value;
-                }
+                return this.value as Text.Value;
             }
         }
     }
@@ -119,31 +144,29 @@ export class Instance extends Entity.Instance
     ):
         void
     {
-        this.value = value
-            .replace(/^ /, ` `)
-            .replace(/ $/, ` `)
-            .replace(/  /g, `  `);
+        Utils.Assert(
+            !this.Is_Blank(),
+            `division is blank.`,
+        );
 
-        this.value = Languages.Singleton().Adapt_Text_To_Default_Global_Font(
+        this.value = Languages.Singleton().Adapt_Text_To_Font(
             {
                 language_name: this.Item().Language_Name(),
-                text: this.value,
+                font_name: this.Item().Font_Name(),
+                text: value
+                    .replace(/^ /, ` `)
+                    .replace(/ $/, ` `)
+                    .replace(/  /g, `  `),
             },
         );
-    }
-
-    Is_Blank():
-        boolean
-    {
-        return this.item == null;
     }
 
     Is_Highlighted():
         boolean
     {
         Utils.Assert(
-            this.is_highlighted != null,
-            `Doesn't know if it's highlighted or not.`,
+            !this.Is_Blank(),
+            `division is blank.`,
         );
 
         return this.is_highlighted as boolean;
@@ -155,8 +178,8 @@ export class Instance extends Entity.Instance
         void
     {
         Utils.Assert(
-            this.is_highlighted != null,
-            `Can't know if it's highlighted or not.`,
+            !this.Is_Blank(),
+            `division is blank.`,
         );
 
         this.is_highlighted = is_highlighted;

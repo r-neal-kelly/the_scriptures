@@ -1,18 +1,15 @@
-import { Count } from "../../../types.js";
-import { Index } from "../../../types.js";
-
-import * as Utils from "../../../utils.js";
-
 import * as Language from "../../language.js";
 import * as Languages from "../../languages.js";
-import * as Entity from "../../entity.js";
+import * as Font from "../../font.js";
 import * as Search from "../../search.js";
+
+import * as Text_Base from "../text_base.js";
 import * as Line from "./line.js";
 
-export class Instance extends Entity.Instance
+export class Instance extends Text_Base.Instance<
+    Line.Instance
+>
 {
-    private static min_line_count: Count = 50;
-
     private static blank_line: Line.Instance = new Line.Instance(
         {
             buffer: null,
@@ -21,49 +18,35 @@ export class Instance extends Entity.Instance
         },
     );
 
-    static Min_Line_Count():
-        Count
-    {
-        return Instance.min_line_count;
-    }
-
-    static Set_Min_Line_Count(
-        min_line_count: Count,
-    ):
-        void
-    {
-        Utils.Assert(
-            min_line_count >= 0,
-            `min_line_count must be greater than or equal to 0.`,
-        );
-
-        Instance.min_line_count = min_line_count;
-    }
-
-    private default_language_name: Language.Name;
-    private lines: Array<Line.Instance>;
     private is_showing_commands: boolean;
 
     constructor(
         {
             default_language_name,
+
             results,
             is_showing_commands,
         }: {
             default_language_name: Language.Name,
+
             results: Array<Search.Result.Instance>,
             is_showing_commands: boolean,
         },
     )
     {
-        super();
+        super(
+            {
+                default_language_name:
+                    default_language_name,
+                default_font_name:
+                    Languages.Singleton().Default_Global_Font_Name(default_language_name),
+            },
+        );
 
-        this.default_language_name = default_language_name;
-        this.lines = [];
         this.is_showing_commands = is_showing_commands;
 
         for (let idx = 0, end = results.length; idx < end; idx += 1) {
-            this.lines.push(
+            this.Push_Line(
                 new Line.Instance(
                     {
                         buffer: this,
@@ -73,57 +56,20 @@ export class Instance extends Entity.Instance
                 ),
             );
         }
-
-        this.Add_Dependencies(
-            this.lines,
-        );
     }
 
-    Default_Language_Name():
-        Language.Name
-    {
-        return this.default_language_name;
-    }
-
-    Default_Language_Direction():
-        Language.Direction
-    {
-        return Languages.Singleton().Direction(this.default_language_name);
-    }
-
-    Default_Font_Styles():
-        any
-    {
-        return Languages.Singleton().Default_Global_Font_Styles(this.default_language_name);
-    }
-
-    Min_Line_Count():
-        Count
-    {
-        return Instance.min_line_count;
-    }
-
-    Line_Count():
-        Count
-    {
-        return this.lines.length;
-    }
-
-    Line_At(
-        line_index: Index,
+    Override_Font_Name(
+        language_name: Language.Name,
     ):
+        Font.Name
+    {
+        return Languages.Singleton().Default_Global_Font_Name(language_name);
+    }
+
+    Blank_Line():
         Line.Instance
     {
-        Utils.Assert(
-            line_index > -1,
-            `line_index (${line_index}) must be greater than -1.`,
-        );
-
-        if (line_index < this.Line_Count()) {
-            return this.lines[line_index];
-        } else {
-            return Instance.blank_line;
-        }
+        return Instance.blank_line;
     }
 
     Is_Showing_Commands():
@@ -136,23 +82,5 @@ export class Instance extends Entity.Instance
         void
     {
         this.is_showing_commands = !this.is_showing_commands;
-    }
-
-    Indent_EM():
-        Count
-    {
-        return 3;
-    }
-
-    Pad_EM(
-        pad_count: Count,
-    ):
-        Count
-    {
-        if (pad_count > 0) {
-            return this.Indent_EM() * pad_count;
-        } else {
-            return 0;
-        }
     }
 }

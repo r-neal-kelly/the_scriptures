@@ -231,6 +231,7 @@ export class Instance extends Entity.Instance
         this.buffer = new Buffer.Instance(
             {
                 default_language_name: Language.Name.ENGLISH,
+
                 results: [],
                 is_showing_commands: is_showing_commands,
             },
@@ -271,6 +272,7 @@ export class Instance extends Entity.Instance
         this.buffer = new Buffer.Instance(
             {
                 default_language_name: default_language_name,
+
                 results: results,
                 is_showing_commands: this.is_showing_commands,
             },

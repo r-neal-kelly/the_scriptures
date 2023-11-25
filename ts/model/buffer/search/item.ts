@@ -3,13 +3,18 @@ import { Index } from "../../../types.js";
 
 import * as Utils from "../../../utils.js";
 
-import * as Language from "../../language.js";
-import * as Entity from "../../entity.js";
 import * as Text from "../../text.js";
+import * as Search from "../../search.js";
+
+import * as Text_Base from "../text_base.js";
+import * as Buffer from "./instance.js";
 import * as Segment from "./segment.js";
 import * as Division from "./division.js";
 
-export class Instance extends Entity.Instance
+export class Instance extends Text_Base.Item.Instance<
+    Buffer.Instance,
+    Segment.Instance
+>
 {
     private static min_division_count: Count = 1;
 
@@ -22,28 +27,6 @@ export class Instance extends Entity.Instance
         },
     );
 
-    static Min_Division_Count():
-        Count
-    {
-        return Instance.min_division_count;
-    }
-
-    static Set_Min_Division_Count(
-        min_division_count: Count,
-    ):
-        void
-    {
-        Utils.Assert(
-            min_division_count >= 0,
-            `min_division_count must be greater than or equal to 0.`,
-        );
-
-        Instance.min_division_count = min_division_count;
-    }
-
-    private segment: Segment.Instance | null;
-    private index: Index | null;
-    private text: Text.Item.Instance | null;
     private divisions: Array<Division.Instance>;
 
     constructor(
@@ -58,97 +41,57 @@ export class Instance extends Entity.Instance
         },
     )
     {
-        super();
+        super(
+            {
+                segment: segment,
+                index: index,
+                text: text,
+            },
+        );
 
-        this.segment = segment;
-        this.index = index;
-        this.text = text;
         this.divisions = [];
 
-        if (text == null) {
-            Utils.Assert(
-                segment == null,
-                `segment must be null.`,
-            );
-            Utils.Assert(
-                index == null,
-                `index must be null.`,
-            );
-        } else {
-            Utils.Assert(
-                segment != null,
-                `segment must not be null.`,
-            );
-            Utils.Assert(
-                index != null && index > -1,
-                `index must not be null, and must be greater than -1.`,
-            );
-
+        if (!this.Is_Blank()) {
             this.divisions.push(
                 new Division.Instance(
                     {
                         item: this,
                         index: 0,
-                        value: this.Value(),
+                        value: this.Text().Value(),
                         is_highlighted: false,
                     },
                 ),
             );
         }
-
-        this.Add_Dependencies(
-            [
-            ],
-        );
     }
 
-    Segment():
-        Segment.Instance
+    Result():
+        Search.Result.Instance
     {
         Utils.Assert(
-            this.segment != null,
-            `Doesn't have segment.`,
+            !this.Is_Blank(),
+            `item is blank.`,
         );
 
-        return this.segment as Segment.Instance;
+        return this.Segment().Result();
     }
 
-    Index():
-        Index
+    Min_Division_Count():
+        Count
     {
-        Utils.Assert(
-            this.index != null,
-            `Doesn't have an index.`,
-        );
-
-        return this.index as Index;
-    }
-
-    Text():
-        Text.Item.Instance
-    {
-        Utils.Assert(
-            this.text != null,
-            `Doesn't have text.`,
-        );
-
-        return this.text as Text.Item.Instance;
-    }
-
-    Value():
-        Text.Value
-    {
-        if (this.Is_Blank()) {
-            return ``;
-        } else {
-            return this.Text().Value();
-        }
+        return Instance.min_division_count;
     }
 
     Division_Count():
         Count
     {
         return this.divisions.length;
+    }
+
+    Blank_Division():
+        Division.Instance
+    {
+        return Instance.blank_division;
     }
 
     Division_At(
@@ -164,7 +107,7 @@ export class Instance extends Entity.Instance
         if (division_index < this.Division_Count()) {
             return this.divisions[division_index];
         } else {
-            return Instance.blank_division;
+            return this.Blank_Division();
         }
     }
 
@@ -179,7 +122,12 @@ export class Instance extends Entity.Instance
     ):
         void
     {
-        const value: Text.Value = this.Value();
+        Utils.Assert(
+            !this.Is_Blank(),
+            `item is blank.`,
+        );
+
+        const value: Text.Value = this.Text().Value();
         if (this.Division_Count() === 1) {
             if (first_unit_index === 0 && end_unit_index === value.length) {
                 this.Division_At(0).Set_Highlight(true);
@@ -263,107 +211,5 @@ export class Instance extends Entity.Instance
                 this.Division_At(idx).Set_Highlight(true);
             }
         }
-    }
-
-    Part():
-        Text.Part.Instance
-    {
-        Utils.Assert(
-            !this.Is_Blank(),
-            `Item is blank and doesn't have a part.`,
-        );
-
-        const text: Text.Item.Instance = this.Text();
-        if (text.Is_Part()) {
-            return (text as Text.Part.Instance);
-        } else {
-            return (text as Text.Split.Instance).Break();
-        }
-    }
-
-    Is_Blank():
-        boolean
-    {
-        return this.text == null;
-    }
-
-    Is_Indented():
-        boolean
-    {
-        Utils.Assert(
-            !this.Is_Blank(),
-            `Item is blank and can't be indented.`,
-        );
-
-        const part: Text.Part.Instance = this.Part();
-        return (
-            part.Is_Command() &&
-            (part as Text.Part.Command.Instance).Is_Indent()
-        );
-    }
-
-    Is_Error():
-        boolean
-    {
-        return this.Part().Is_Error();
-    }
-
-    Has_Italic_Style():
-        boolean
-    {
-        return this.Part().Has_Italic_Style();
-    }
-
-    Has_Bold_Style():
-        boolean
-    {
-        return this.Part().Has_Bold_Style();
-    }
-
-    Has_Underline_Style():
-        boolean
-    {
-        return this.Part().Has_Underline_Style();
-    }
-
-    Has_Small_Caps_Style():
-        boolean
-    {
-        return this.Part().Has_Small_Caps_Style();
-    }
-
-    Has_Error_Style():
-        boolean
-    {
-        return this.Part().Has_Error_Style();
-    }
-
-    Has_Argument_Style():
-        boolean
-    {
-        return this.Part().Has_Argument_Style();
-    }
-
-    Override_Language_Name():
-        Language.Name | null
-    {
-        return this.Part().Language();
-    }
-
-    Language_Name():
-        Language.Name
-    {
-        const override: Language.Name | null = this.Override_Language_Name();
-        if (override != null) {
-            return override;
-        } else {
-            return this.Segment().Row().Column().Line().Buffer().Default_Language_Name();
-        }
-    }
-
-    Is_Greek():
-        boolean
-    {
-        return this.Language_Name() === Language.Name.GREEK;
     }
 }

@@ -3,6 +3,7 @@ import { ID } from "../../../types.js";
 import * as Model from "../../../model/buffer/search/division.js";
 
 import * as Entity from "../../entity.js";
+import * as Buffer from "./instance.js";
 import * as Item from "./item.js";
 
 export class Instance extends Entity.Instance
@@ -35,7 +36,11 @@ export class Instance extends Entity.Instance
     override On_Refresh():
         void
     {
-        this.Element().textContent = this.Model().Value();
+        const model: Model.Instance = this.Model();
+
+        if (!model.Is_Blank()) {
+            this.Element().textContent = this.Model().Value();
+        }
     }
 
     override On_Reclass():
@@ -44,10 +49,10 @@ export class Instance extends Entity.Instance
         const model: Model.Instance = this.Model();
         const classes: Array<string> = [];
 
-        classes.push(`Division`);
         if (model.Is_Blank()) {
-            classes.push(`Blank`);
+            classes.push(`Blank_Division`);
         } else {
+            classes.push(`Division`);
             if (model.Is_Highlighted()) {
                 classes.push(`Highlighted_Division`);
             }
@@ -62,6 +67,12 @@ export class Instance extends Entity.Instance
         return this.model();
     }
 
+    Buffer():
+        Buffer.Instance
+    {
+        return this.Item().Buffer();
+    }
+
     Item():
         Item.Instance
     {
@@ -71,6 +82,6 @@ export class Instance extends Entity.Instance
     Event_Grid_ID():
         ID
     {
-        return this.Item().Event_Grid_ID();
+        return this.Buffer().Event_Grid_ID();
     }
 }

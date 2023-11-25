@@ -1,3 +1,5 @@
+import { Index } from "../../../types.js";
+
 import * as Model from "../../../model/buffer/search/line.js";
 
 import * as Text_Base from "../text_base.js";
@@ -23,7 +25,6 @@ export class Instance extends Text_Base.Line.Instance<
             {
                 buffer: buffer,
                 model: model,
-                column_class: Column.Instance,
             },
         );
 
@@ -38,5 +39,18 @@ export class Instance extends Text_Base.Line.Instance<
         classes.push(`Search_Line`);
 
         return classes;
+    }
+
+    Add_Column(
+        column_index: Index,
+    ):
+        void
+    {
+        new Column.Instance(
+            {
+                line: this,
+                model: () => this.Model().Column_At(column_index),
+            },
+        );
     }
 }

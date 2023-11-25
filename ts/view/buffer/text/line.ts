@@ -1,3 +1,5 @@
+import { Index } from "../../../types.js";
+
 import * as Model from "../../../model/buffer/text/line.js";
 
 import * as Text_Base from "../text_base.js";
@@ -23,10 +25,22 @@ export class Instance extends Text_Base.Line.Instance<
             {
                 buffer: buffer,
                 model: model,
-                column_class: Column.Instance,
             },
         );
 
         this.Live();
+    }
+
+    Add_Column(
+        column_index: Index,
+    ):
+        void
+    {
+        new Column.Instance(
+            {
+                line: this,
+                model: () => this.Model().Column_At(column_index),
+            },
+        );
     }
 }

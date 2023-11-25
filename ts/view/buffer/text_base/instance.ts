@@ -4,33 +4,28 @@ import { ID } from "../../../types.js";
 
 import * as Event from "../../../event.js";
 
-import * as Model_Language from "../../../model/language.js";
+import * as Language from "../../../model/language.js";
+import * as Languages from "../../../model/languages.js";
+import * as Font from "../../../model/font.js";
 
 import * as Entity from "../../entity.js";
 
 export interface Model_Instance_i
 {
-    Min_Line_Count(): Count;
-    Line_Count(): Count;
-    Line_At(line_index: Index): any;
+    Default_Language_Name():
+        Language.Name;
+    Default_Language_Direction():
+        Language.Direction;
+    Default_Font_Name():
+        Font.Name;
+    Override_Font_Name(
+        language_name: Language.Name,
+    ): Font.Name;
 
-    Default_Language_Direction(): Model_Language.Direction;
-    Default_Font_Styles(): { [css_property: string]: string };
-
-    Indent_EM(): Count;
-}
-
-export interface Line_Class_i
-{
-    new(
-        {
-            buffer,
-            model,
-        }: {
-            buffer: any,
-            model: () => any,
-        },
-    ): any;
+    Min_Line_Count():
+        Count;
+    Line_Count():
+        Count;
 }
 
 export abstract class Instance<
@@ -39,19 +34,16 @@ export abstract class Instance<
 {
     private model: () => Model_Instance;
     private event_grid_id: () => ID;
-    private line_class: Line_Class_i;
 
     constructor(
         {
             parent,
             model,
             event_grid_id,
-            line_class,
         }: {
             parent: Entity.Instance,
             model: () => Model_Instance,
             event_grid_id: () => ID,
-            line_class: Line_Class_i,
         },
     )
     {
@@ -65,14 +57,11 @@ export abstract class Instance<
 
         this.model = model;
         this.event_grid_id = event_grid_id;
-        this.line_class = line_class;
     }
 
     override On_Life():
         Array<Event.Listener_Info>
     {
-        const model: Model_Instance = this.Model();
-
         this.Add_CSS(
             `
                 .Left_To_Right {
@@ -214,6 +203,10 @@ export abstract class Instance<
                     padding: 0;
                 }
 
+                .Transparent_Row {
+                    color: transparent;
+                }
+
                 .Centered_Row {
                     display: flex;
                     flex-wrap: wrap;
@@ -253,50 +246,46 @@ export abstract class Instance<
                 }
                 
                 .Indented_Item {
-                    width: ${model.Indent_EM()}em;
+                    width: ${this.Indent_EM()}em;
                 }
 
-                .Blank {
-                    display: none;
-
-                    color: transparent;
-                }
-
-                .Image {
+                .Image_Item {
                     max-width: 100%;
                     max-height: 90vh;
 
                     vertical-align: middle;
                 }
 
-                .Transparent {
-                    color: transparent;
-                }
-
-                .Italic {
+                .Italic_Item {
                     font-style: italic;
                 }
 
-                .Bold {
+                .Bold_Item {
                     font-weight: bold;
                 }
 
-                .Underline {
+                .Underlined_Item {
                     text-decoration: underline;
                 }
 
-                .Small_Caps {
+                .Small_Caps_Item {
                     font-variant: small-caps;
                 }
 
-                .Error {
+                .Error_Item {
                     border-color: #ffcbcb;
 
                     color: #ffcbcb;
                 }
 
-                .Argument {
+                .Argument_Item {
                     
+                }
+
+                .Blank {
+                    display: none;
+
+                    color: transparent;
                 }
             `,
         );
@@ -312,12 +301,7 @@ export abstract class Instance<
         const target: Count = Math.max(model.Min_Line_Count(), model.Line_Count());
 
         for (let idx = count, end = target; idx < end; idx += 1) {
-            new (this.Line_Class())(
-                {
-                    buffer: this,
-                    model: () => this.Model().Line_At(idx),
-                },
-            );
+            this.Add_Line(idx);
         }
     }
 
@@ -327,7 +311,7 @@ export abstract class Instance<
         const classes: Array<string> = [];
 
         classes.push(`Text`);
-        if (this.Model().Default_Language_Direction() === Model_Language.Direction.LEFT_TO_RIGHT) {
+        if (this.Model().Default_Language_Direction() === Language.Direction.LEFT_TO_RIGHT) {
             classes.push(`Left_To_Right`);
         } else {
             classes.push(`Right_To_Left`);
@@ -339,7 +323,7 @@ export abstract class Instance<
     override On_Restyle():
         string | { [index: string]: string; }
     {
-        return this.Model().Default_Font_Styles();
+        return this.Default_Font_Styles();
     }
 
     Model():
@@ -354,9 +338,49 @@ export abstract class Instance<
         return this.event_grid_id();
     }
 
-    Line_Class():
-        Line_Class_i
+    abstract Add_Line(
+        line_index: Index,
+    ): void;
+
+    Indent_EM():
+        Count
     {
-        return this.line_class;
+        return 3;
+    }
+
+    Pad_EM(
+        pad_count: Count,
+    ):
+        Count
+    {
+        if (pad_count > 0) {
+            return this.Indent_EM() * pad_count;
+        } else {
+            return 0;
+        }
+    }
+
+    Default_Font_Styles():
+        { [css_property: string]: string }
+    {
+        const model: Model_Instance = this.Model();
+
+        return Languages.Singleton().Font_Styles(
+            model.Default_Language_Name(),
+            model.Default_Font_Name(),
+        );
+    }
+
+    Override_Font_Styles(
+        language_name: Language.Name,
+    ):
+        { [css_property: string]: string }
+    {
+        const model: Model_Instance = this.Model();
+
+        return Languages.Singleton().Font_Styles(
+            language_name,
+            model.Override_Font_Name(language_name),
+        );
     }
 }

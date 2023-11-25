@@ -1,1 +1,1 @@
-import*as Text_Base from"../text_base.js";import*as Line from"./line.js";export class Instance extends Text_Base.Instance{constructor({parent:e,model:s,event_grid_id:t}){super({parent:e,model:s,event_grid_id:t,line_class:Line.Instance}),this.Live()}}
+import*as Text_Base from"../text_base.js";import*as Line from"./line.js";export class Instance extends Text_Base.Instance{constructor({parent:e,model:t,event_grid_id:n}){super({parent:e,model:t,event_grid_id:n}),this.Live()}Add_Line(e){new Line.Instance({buffer:this,model:()=>this.Model().Line_At(e)})}}

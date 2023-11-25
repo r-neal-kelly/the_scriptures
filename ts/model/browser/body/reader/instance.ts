@@ -20,6 +20,7 @@ export class Instance extends Entity.Instance
             {
                 return Languages.Singleton().Default_Global_Font_Name(language_name);
             },
+
             text: new Text.Instance(
                 {
                     dictionary: new Text.Dictionary.Instance(
@@ -118,6 +119,7 @@ export class Instance extends Entity.Instance
                                 .Font_Selector()
                                 .Some_Selected_Font_Name(language_name);
                         }.bind(this),
+
                         text: await new_data.Text(),
                         allow_errors: allows_errors,
                     },

@@ -1,3 +1,4 @@
+import { Index } from "../../../types.js";
 import { ID } from "../../../types.js";
 
 import * as Event from "../../../event.js";
@@ -29,7 +30,6 @@ export class Instance extends Text_Base.Instance<
                 parent: parent,
                 model: model,
                 event_grid_id: event_grid_id,
-                line_class: Line.Instance,
             },
         );
 
@@ -67,6 +67,12 @@ export class Instance extends Text_Base.Instance<
 
                     color: black;
                 }
+
+                .Blank_Division {
+                    display: none;
+
+                    color: transparent;
+                }
             `,
         );
 
@@ -81,5 +87,18 @@ export class Instance extends Text_Base.Instance<
         classes.push(`Search_Text`);
 
         return classes;
+    }
+
+    Add_Line(
+        line_index: Index,
+    ):
+        void
+    {
+        new Line.Instance(
+            {
+                buffer: this,
+                model: () => this.Model().Line_At(line_index),
+            },
+        );
     }
 }

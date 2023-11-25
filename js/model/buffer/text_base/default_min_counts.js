@@ -1,0 +1,1 @@
+export var Default_Min_Counts;!function(M){M[M.LINE=50]="LINE",M[M.COLUMN=1]="COLUMN",M[M.ROW=1]="ROW",M[M.SEGMENT=70]="SEGMENT",M[M.ITEM=2]="ITEM"}(Default_Min_Counts||(Default_Min_Counts={}));

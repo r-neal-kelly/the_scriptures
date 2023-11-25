@@ -2,42 +2,52 @@ import { Count } from "../../../types.js";
 import { Index } from "../../../types.js";
 import { ID } from "../../../types.js";
 
+import * as Language from "../../../model/language.js";
+import * as Text from "../../../model/text.js";
+
 import * as Entity from "../../entity.js";
 
-export interface Model_Instance_i
+interface Model_Instance_i
 {
-    Min_Column_Count(): Count;
-    Column_Count(): Count;
-    Column_At(line_index: Index): any;
+    Is_Blank():
+        boolean;
 
-    Is_Blank(): boolean;
-    Has_Margin(): boolean;
-    Has_Interlineation(): boolean;
-    Has_Forward_Interlineation(): boolean;
-    Is_Row_Of_Table(): boolean;
-    Is_First_Row_Of_Table(): boolean;
-    Is_Centered(): boolean;
-    Is_Padded(): boolean;
+    Text():
+        Text.Line.Instance;
 
-    Styles(): string | { [css_property: string]: string };
+    Min_Column_Count():
+        Count;
+    Column_Count():
+        Count;
+
+    Has_Margin():
+        boolean;
+    Has_Interlineation():
+        boolean;
+    Has_Forward_Interlineation():
+        boolean;
+    Is_Row_Of_Table():
+        boolean;
+    Is_First_Row_Of_Table():
+        boolean;
+    Is_Centered():
+        boolean;
+    Is_Padded():
+        boolean;
+    Padding_Count():
+        Count;
+    Padding_Direction():
+        Language.Direction;
 }
 
-export interface Buffer_Instance_i extends Entity.Instance
+interface Buffer_Instance_i extends Entity.Instance
 {
-    Event_Grid_ID(): ID;
-}
+    Event_Grid_ID():
+        ID;
 
-export interface Column_Class_i
-{
-    new(
-        {
-            line,
-            model,
-        }: {
-            line: any,
-            model: () => any,
-        },
-    ): any;
+    Pad_EM(
+        pad_count: Count,
+    ): Count;
 }
 
 export abstract class Instance<
@@ -46,17 +56,14 @@ export abstract class Instance<
 > extends Entity.Instance
 {
     private model: () => Model_Instance;
-    private column_class: Column_Class_i;
 
     constructor(
         {
             buffer,
             model,
-            column_class,
         }: {
             buffer: Entity.Instance,
             model: () => Model_Instance,
-            column_class: Column_Class_i,
         },
     )
     {
@@ -69,7 +76,6 @@ export abstract class Instance<
         );
 
         this.model = model;
-        this.column_class = column_class;
     }
 
     override On_Refresh():
@@ -88,12 +94,7 @@ export abstract class Instance<
             const target: Count = Math.max(model.Min_Column_Count(), model.Column_Count());
 
             for (let idx = count, end = target; idx < end; idx += 1) {
-                new (this.Column_Class())(
-                    {
-                        line: this,
-                        model: () => this.Model().Column_At(idx),
-                    },
-                );
+                this.Add_Column(idx);
             }
         }
     }
@@ -138,7 +139,54 @@ export abstract class Instance<
     {
         const model: Model_Instance = this.Model();
 
-        return model.Styles();
+        if (!model.Is_Blank()) {
+            if (model.Has_Interlineation()) {
+                if (model.Is_Padded()) {
+                    const padding_value: string =
+                        `${this.Buffer().Pad_EM(model.Padding_Count())}em`;
+                    const padding_direction: string =
+                        model.Padding_Direction() === Language.Direction.LEFT_TO_RIGHT ?
+                            `left` :
+                            `right`;
+
+                    return `
+                        margin-${padding_direction}: ${padding_value};
+                        border-${padding_direction}-width: 1px;
+                    `;
+                } else {
+                    return ``;
+                }
+            } else {
+                const text: Text.Line.Instance = model.Text();
+                const column_count: Count = text.Column_Count();
+
+                let grid_template_columns: string = ``;
+                let max_width: string = ``;
+                if (model.Is_Row_Of_Table()) {
+                    grid_template_columns = `repeat(${column_count}, 1fr)`;
+                    max_width = `${column_count * 10}em`;
+                } else {
+                    for (let idx = 0, end = column_count; idx < end; idx += 1) {
+                        const column: Text.Column.Instance = text.Column(idx);
+
+                        if (column.Is_Marginal()) {
+                            grid_template_columns += ` 0.5fr`;
+                        } else {
+                            grid_template_columns += ` 1fr`;
+                        }
+                    }
+                    max_width = `100%`;
+                }
+
+                return `
+                    grid-template-columns: ${grid_template_columns};
+    
+                    max-width: ${max_width};
+                `;
+            }
+        } else {
+            return ``;
+        }
     }
 
     Model():
@@ -159,9 +207,7 @@ export abstract class Instance<
         return this.Buffer().Event_Grid_ID();
     }
 
-    Column_Class():
-        Column_Class_i
-    {
-        return this.column_class;
-    }
+    abstract Add_Column(
+        column_index: Index,
+    ): void;
 }

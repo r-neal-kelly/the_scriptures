@@ -1,1 +1,1 @@
-import*as Text_Base from"../text_base.js";import*as Column from"./column.js";export class Instance extends Text_Base.Line.Instance{constructor({buffer:e,model:s}){super({buffer:e,model:s,column_class:Column.Instance}),this.Live()}}
+import*as Text_Base from"../text_base.js";import*as Column from"./column.js";export class Instance extends Text_Base.Line.Instance{constructor({buffer:e,model:s}){super({buffer:e,model:s}),this.Live()}Add_Column(e){new Column.Instance({line:this,model:()=>this.Model().Column_At(e)})}}

@@ -1,3 +1,4 @@
+import { Index } from "../../../types.js";
 import { ID } from "../../../types.js";
 
 import * as Model from "../../../model/buffer/text.js";
@@ -27,10 +28,22 @@ export class Instance extends Text_Base.Instance<
                 parent: parent,
                 model: model,
                 event_grid_id: event_grid_id,
-                line_class: Line.Instance,
             },
         );
 
         this.Live();
+    }
+
+    Add_Line(
+        line_index: Index,
+    ):
+        void
+    {
+        new Line.Instance(
+            {
+                buffer: this,
+                model: () => this.Model().Line_At(line_index),
+            },
+        );
     }
 }

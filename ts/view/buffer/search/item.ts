@@ -1,18 +1,20 @@
 import { Count } from "../../../types.js";
-import { ID } from "../../../types.js";
 
 import * as Model from "../../../model/buffer/search/item.js";
 import * as Model_Language from "../../../model/language.js";
 import * as Model_Languages from "../../../model/languages.js";
 
-import * as Entity from "../../entity.js";
+import * as Text_Base from "../text_base.js";
+import * as Buffer from "./instance.js";
 import * as Segment from "./segment.js";
 import * as Division from "./division.js";
 
-export class Instance extends Entity.Instance
+export class Instance extends Text_Base.Item.Instance<
+    Model.Instance,
+    Buffer.Instance,
+    Segment.Instance
+>
 {
-    private model: () => Model.Instance;
-
     constructor(
         {
             segment,
@@ -25,13 +27,10 @@ export class Instance extends Entity.Instance
     {
         super(
             {
-                element: `div`,
-                parent: segment,
-                event_grid: segment.Event_Grid(),
+                segment: segment,
+                model: model,
             },
         );
-
-        this.model = model;
 
         this.Live();
     }
@@ -40,15 +39,16 @@ export class Instance extends Entity.Instance
         void
     {
         const model: Model.Instance = this.Model();
-        if (model.Is_Blank()) {
+        const count: Count = this.Child_Count();
+
+        if (count > 0 && model.Is_Blank()) {
             this.Skip_Children();
 
             if (this.Element().classList.contains(`Blank`)) {
                 this.Skip_Remaining_Siblings();
             }
         } else {
-            const target: Count = Math.max(Model.Instance.Min_Division_Count(), model.Division_Count());
-            const count: Count = this.Child_Count();
+            const target: Count = Math.max(model.Min_Division_Count(), model.Division_Count());
 
             for (let idx = count, end = target; idx < end; idx += 1) {
                 new Division.Instance(
@@ -59,45 +59,6 @@ export class Instance extends Entity.Instance
                 );
             }
         }
-    }
-
-    override On_Reclass():
-        Array<string>
-    {
-        const model: Model.Instance = this.Model();
-        const classes: Array<string> = [];
-
-        classes.push(`Item`);
-        if (model.Is_Blank()) {
-            classes.push(`Blank`);
-        } else {
-            if (model.Is_Indented()) {
-                classes.push(`Indented_Item`);
-            }
-            if (model.Has_Italic_Style()) {
-                classes.push(`Italic`);
-            }
-            if (model.Has_Bold_Style()) {
-                classes.push(`Bold`);
-            }
-            if (model.Has_Underline_Style()) {
-                classes.push(`Underline`);
-            }
-            if (model.Has_Small_Caps_Style()) {
-                classes.push(`Small_Caps`);
-            }
-            if (
-                model.Is_Error() ||
-                model.Has_Error_Style()
-            ) {
-                classes.push(`Error`);
-            }
-            if (model.Has_Argument_Style()) {
-                classes.push(`Argument`);
-            }
-        }
-
-        return classes;
     }
 
     override On_Restyle():
@@ -115,23 +76,5 @@ export class Instance extends Entity.Instance
         } else {
             return ``;
         }
-    }
-
-    Model():
-        Model.Instance
-    {
-        return this.model();
-    }
-
-    Segment():
-        Segment.Instance
-    {
-        return this.Parent() as Segment.Instance;
-    }
-
-    Event_Grid_ID():
-        ID
-    {
-        return this.Segment().Event_Grid_ID();
     }
 }
