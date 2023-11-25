@@ -6,40 +6,13 @@ import * as Utils from "../../../utils.js";
 import * as Entity from "../../entity.js";
 import * as Language from "../../language.js";
 import * as Text from "../../text.js";
+import * as Buffer from "./instance.js";
 import * as Column from "./column.js";
 import * as Segment from "./segment.js";
 
 export class Instance extends Entity.Instance
 {
-    private static min_segment_count: Count = 70;
-
-    private static blank_segment: Segment.Instance = new Segment.Instance(
-        {
-            row: null,
-            index: null,
-            text: null,
-        },
-    );
-
-    static Min_Segment_Count():
-        Count
-    {
-        return Instance.min_segment_count;
-    }
-
-    static Set_Min_Segment_Count(
-        min_segment_count: Count,
-    ):
-        void
-    {
-        Utils.Assert(
-            min_segment_count >= 0,
-            `min_segment_count must be greater than or equal to 0.`,
-        );
-
-        Instance.min_segment_count = min_segment_count;
-    }
-
+    private buffer: Buffer.Instance;
     private column: Column.Instance | null;
     private index: Index | null;
     private text: Text.Row.Instance | null;
@@ -47,10 +20,12 @@ export class Instance extends Entity.Instance
 
     constructor(
         {
+            buffer,
             column,
             index,
             text,
         }: {
+            buffer: Buffer.Instance,
             column: Column.Instance | null,
             index: Index | null,
             text: Text.Row.Instance | null,
@@ -59,6 +34,7 @@ export class Instance extends Entity.Instance
     {
         super();
 
+        this.buffer = buffer;
         this.column = column;
         this.index = index;
         this.text = text;
@@ -105,6 +81,7 @@ export class Instance extends Entity.Instance
                 this.segments.push(
                     new Segment.Instance(
                         {
+                            buffer: this.buffer,
                             row: this,
                             index: 0,
                             text: segment,
@@ -116,6 +93,7 @@ export class Instance extends Entity.Instance
                     this.segments.push(
                         new Segment.Instance(
                             {
+                                buffer: this.buffer,
                                 row: this,
                                 index: idx,
                                 text: text.Macro_Segment(idx),
@@ -129,6 +107,12 @@ export class Instance extends Entity.Instance
         this.Add_Dependencies(
             this.segments,
         );
+    }
+
+    Buffer():
+        Buffer.Instance
+    {
+        return this.buffer;
     }
 
     Column():
@@ -176,6 +160,12 @@ export class Instance extends Entity.Instance
         return this.Text().Value();
     }
 
+    Min_Segment_Count():
+        Count
+    {
+        return this.Buffer().Min_Segment_Count();
+    }
+
     Segment_Count():
         Count
     {
@@ -195,7 +185,7 @@ export class Instance extends Entity.Instance
         if (segment_index < this.Segment_Count()) {
             return this.segments[segment_index];
         } else {
-            return Instance.blank_segment;
+            return this.Buffer().Blank_Segment();
         }
     }
 
@@ -236,7 +226,7 @@ export class Instance extends Entity.Instance
     Padding_Direction():
         Language.Direction
     {
-        return this.Column().Line().Buffer().Default_Text_Direction();
+        return this.Buffer().Default_Language_Direction();
     }
 
     Has_Styles():
@@ -251,7 +241,7 @@ export class Instance extends Entity.Instance
         if (this.Has_Styles()) {
             if (this.Is_Padded()) {
                 const padding_value: string =
-                    `${this.Column().Line().Buffer().Pad_EM(this.Padding_Count())}em`;
+                    `${this.Buffer().Pad_EM(this.Padding_Count())}em`;
                 const padding_direction: string =
                     this.Padding_Direction() === Language.Direction.LEFT_TO_RIGHT ?
                         `left` :

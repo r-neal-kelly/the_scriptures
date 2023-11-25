@@ -5,40 +5,13 @@ import * as Utils from "../../../utils.js";
 
 import * as Entity from "../../entity.js";
 import * as Text from "../../text.js";
+import * as Buffer from "./instance.js";
 import * as Line from "./line.js";
 import * as Row from "./row.js";
 
 export class Instance extends Entity.Instance
 {
-    private static min_row_count: Count = 1;
-
-    private static blank_row: Row.Instance = new Row.Instance(
-        {
-            column: null,
-            index: null,
-            text: null,
-        },
-    );
-
-    static Min_Row_Count():
-        Count
-    {
-        return Instance.min_row_count;
-    }
-
-    static Set_Min_Row_Count(
-        min_row_count: Count,
-    ):
-        void
-    {
-        Utils.Assert(
-            min_row_count >= 0,
-            `min_row_count must be greater than or equal to 0.`,
-        );
-
-        Instance.min_row_count = min_row_count;
-    }
-
+    private buffer: Buffer.Instance;
     private line: Line.Instance | null;
     private index: Index | null;
     private text: Text.Column.Instance | null;
@@ -46,10 +19,12 @@ export class Instance extends Entity.Instance
 
     constructor(
         {
+            buffer,
             line,
             index,
             text,
         }: {
+            buffer: Buffer.Instance,
             line: Line.Instance | null,
             index: Index | null,
             text: Text.Column.Instance | null,
@@ -58,6 +33,7 @@ export class Instance extends Entity.Instance
     {
         super();
 
+        this.buffer = buffer;
         this.line = line;
         this.index = index;
         this.text = text;
@@ -86,6 +62,7 @@ export class Instance extends Entity.Instance
                 this.rows.push(
                     new Row.Instance(
                         {
+                            buffer: this.buffer,
                             column: this,
                             index: idx,
                             text: text.Row(idx),
@@ -98,6 +75,12 @@ export class Instance extends Entity.Instance
         this.Add_Dependencies(
             this.rows,
         );
+    }
+
+    Buffer():
+        Buffer.Instance
+    {
+        return this.buffer;
     }
 
     Line():
@@ -139,6 +122,12 @@ export class Instance extends Entity.Instance
         return this.text as Text.Column.Instance;
     }
 
+    Min_Row_Count():
+        Count
+    {
+        return this.Buffer().Min_Row_Count();
+    }
+
     Row_Count():
         Count
     {
@@ -158,7 +147,7 @@ export class Instance extends Entity.Instance
         if (row_index < this.Row_Count()) {
             return this.rows[row_index];
         } else {
-            return Instance.blank_row;
+            return this.Buffer().Blank_Row();
         }
     }
 

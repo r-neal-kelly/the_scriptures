@@ -13,7 +13,7 @@ export class Instance extends Entity.Instance
         {
             default_language_name: Language.Name.ENGLISH,
             default_font_name: Languages.Singleton().Default_Global_Font_Name(Language.Name.ENGLISH),
-            language_font_name: function (
+            override_font_name: function (
                 language_name: Language.Name,
             ):
                 Font.Name
@@ -108,7 +108,7 @@ export class Instance extends Entity.Instance
                     {
                         default_language_name: default_language_name,
                         default_font_name: default_font_name,
-                        language_font_name: function (
+                        override_font_name: function (
                             this: Instance,
                             language_name: Language.Name,
                         ):

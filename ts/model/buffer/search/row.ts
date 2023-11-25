@@ -524,7 +524,7 @@ export class Instance extends Entity.Instance
     Padding_Direction():
         Language.Direction
     {
-        return this.Column().Line().Buffer().Default_Text_Direction();
+        return this.Column().Line().Buffer().Default_Language_Direction();
     }
 
     Has_Styles():

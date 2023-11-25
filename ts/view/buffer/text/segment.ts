@@ -45,7 +45,7 @@ export class Instance extends Entity.Instance
                 this.Skip_Remaining_Siblings();
             }
         } else {
-            const target: Count = Math.max(Model.Instance.Min_Item_Count(), model.Item_Count());
+            const target: Count = Math.max(model.Min_Item_Count(), model.Item_Count());
             const count: Count = this.Child_Count();
 
             for (let idx = count, end = target; idx < end; idx += 1) {

@@ -7,10 +7,12 @@ import * as Language from "../../language.js";
 import * as Languages from "../../languages.js";
 import * as Entity from "../../entity.js";
 import * as Text from "../../text.js";
+import * as Buffer from "./instance.js";
 import * as Segment from "./segment.js";
 
 export class Instance extends Entity.Instance
 {
+    private buffer: Buffer.Instance;
     private segment: Segment.Instance | null;
     private index: Index | null;
     private text: Text.Item.Instance | null;
@@ -18,10 +20,12 @@ export class Instance extends Entity.Instance
 
     constructor(
         {
+            buffer,
             segment,
             index,
             text,
         }: {
+            buffer: Buffer.Instance,
             segment: Segment.Instance | null,
             index: Index | null,
             text: Text.Item.Instance | null,
@@ -30,6 +34,7 @@ export class Instance extends Entity.Instance
     {
         super();
 
+        this.buffer = buffer;
         this.segment = segment;
         this.index = index;
         this.text = text;
@@ -74,11 +79,12 @@ export class Instance extends Entity.Instance
                 );
             }
         }
+    }
 
-        this.Add_Dependencies(
-            [
-            ],
-        );
+    Buffer():
+        Buffer.Instance
+    {
+        return this.buffer;
     }
 
     Segment():
@@ -172,7 +178,7 @@ export class Instance extends Entity.Instance
         if (this.Has_Override_Font_Styles()) {
             height = this.Some_Override_Font_Styles()[`font-size`];
         } else {
-            height = this.Segment().Row().Column().Line().Buffer().Default_Font_Styles()[`font-size`];
+            height = this.Buffer().Default_Font_Styles()[`font-size`];
         }
 
         return {
@@ -267,7 +273,7 @@ export class Instance extends Entity.Instance
         if (override != null) {
             return override;
         } else {
-            return this.Segment().Row().Column().Line().Buffer().Default_Language_Name();
+            return this.Buffer().Default_Language_Name();
         }
     }
 
@@ -276,7 +282,7 @@ export class Instance extends Entity.Instance
     {
         const language_name: Language.Name | null = this.Override_Language_Name();
         if (language_name != null) {
-            return this.Segment().Row().Column().Line().Buffer().Language_Font_Name(language_name);
+            return this.Buffer().Override_Font_Name(language_name);
         } else {
             return null;
         }
@@ -289,7 +295,7 @@ export class Instance extends Entity.Instance
         if (override != null) {
             return override;
         } else {
-            return this.Segment().Row().Column().Line().Buffer().Default_Font_Name();
+            return this.Buffer().Default_Font_Name();
         }
     }
 
@@ -307,7 +313,7 @@ export class Instance extends Entity.Instance
             `doesn't have override font styles`,
         );
 
-        return this.Segment().Row().Column().Line().Buffer().Override_Font_Styles(this.Some_Override_Language_Name());
+        return this.Buffer().Override_Font_Styles(this.Some_Override_Language_Name());
     }
 
     Is_Greek():

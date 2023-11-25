@@ -5,40 +5,13 @@ import * as Utils from "../../../utils.js";
 
 import * as Entity from "../../entity.js";
 import * as Text from "../../text.js";
+import * as Buffer from "./instance.js";
 import * as Row from "./row.js";
 import * as Item from "./item.js";
 
 export class Instance extends Entity.Instance
 {
-    private static min_item_count: Count = 2;
-
-    private static blank_item: Item.Instance = new Item.Instance(
-        {
-            segment: null,
-            index: null,
-            text: null,
-        },
-    );
-
-    static Min_Item_Count():
-        Count
-    {
-        return Instance.min_item_count;
-    }
-
-    static Set_Min_Item_Count(
-        min_item_count: Count,
-    ):
-        void
-    {
-        Utils.Assert(
-            min_item_count >= 0,
-            `min_item_count must be greater than or equal to 0.`,
-        );
-
-        Instance.min_item_count = min_item_count;
-    }
-
+    private buffer: Buffer.Instance;
     private row: Row.Instance | null;
     private index: Index | null;
     private text: Text.Segment.Instance | null;
@@ -46,10 +19,12 @@ export class Instance extends Entity.Instance
 
     constructor(
         {
+            buffer,
             row,
             index,
             text,
         }: {
+            buffer: Buffer.Instance,
             row: Row.Instance | null,
             index: Index | null,
             text: Text.Segment.Instance | null,
@@ -58,6 +33,7 @@ export class Instance extends Entity.Instance
     {
         super();
 
+        this.buffer = buffer;
         this.row = row;
         this.index = index;
         this.text = text;
@@ -86,6 +62,7 @@ export class Instance extends Entity.Instance
                 this.items.push(
                     new Item.Instance(
                         {
+                            buffer: this.buffer,
                             segment: this,
                             index: idx,
                             text: text.Item(idx),
@@ -98,6 +75,12 @@ export class Instance extends Entity.Instance
         this.Add_Dependencies(
             this.items,
         );
+    }
+
+    Buffer():
+        Buffer.Instance
+    {
+        return this.buffer;
     }
 
     Row():
@@ -133,6 +116,12 @@ export class Instance extends Entity.Instance
         return this.text as Text.Segment.Instance;
     }
 
+    Min_Item_Count():
+        Count
+    {
+        return this.Buffer().Min_Item_Count();
+    }
+
     Item_Count():
         Count
     {
@@ -152,7 +141,7 @@ export class Instance extends Entity.Instance
         if (item_index < this.Item_Count()) {
             return this.items[item_index];
         } else {
-            return Instance.blank_item;
+            return this.Buffer().Blank_Item();
         }
     }
 

@@ -11,36 +11,7 @@ import * as Column from "./column.js";
 
 export class Instance extends Entity.Instance
 {
-    private static min_column_count: Count = 1;
-
-    private static blank_column: Column.Instance = new Column.Instance(
-        {
-            line: null,
-            index: null,
-            text: null,
-        },
-    );
-
-    static Min_Column_Count():
-        Count
-    {
-        return Instance.min_column_count;
-    }
-
-    static Set_Min_Column_Count(
-        min_column_count: Count,
-    ):
-        void
-    {
-        Utils.Assert(
-            min_column_count >= 0,
-            `min_column_count must be greater than or equal to 0.`,
-        );
-
-        Instance.min_column_count = min_column_count;
-    }
-
-    private buffer: Buffer.Instance | null;
+    private buffer: Buffer.Instance;
     private index: Index | null;
     private text: Text.Line.Instance | null;
     private columns: Array<Column.Instance>;
@@ -51,7 +22,7 @@ export class Instance extends Entity.Instance
             index,
             text,
         }: {
-            buffer: Buffer.Instance | null,
+            buffer: Buffer.Instance,
             index: Index | null,
             text: Text.Line.Instance | null,
         },
@@ -66,18 +37,10 @@ export class Instance extends Entity.Instance
 
         if (text == null) {
             Utils.Assert(
-                buffer == null,
-                `buffer must be null.`,
-            );
-            Utils.Assert(
                 index == null,
                 `index must be null.`,
             );
         } else {
-            Utils.Assert(
-                buffer != null,
-                `buffer must not be null.`,
-            );
             Utils.Assert(
                 index != null && index > -1,
                 `index must not be null, and must be greater than -1.`,
@@ -87,6 +50,7 @@ export class Instance extends Entity.Instance
                 this.columns.push(
                     new Column.Instance(
                         {
+                            buffer: this.buffer,
                             line: this,
                             index: idx,
                             text: text.Column(idx),
@@ -104,12 +68,7 @@ export class Instance extends Entity.Instance
     Buffer():
         Buffer.Instance
     {
-        Utils.Assert(
-            this.buffer != null,
-            `Doesn't have buffer.`,
-        );
-
-        return this.buffer as Buffer.Instance;
+        return this.buffer;
     }
 
     Index():
@@ -143,7 +102,7 @@ export class Instance extends Entity.Instance
     Min_Column_Count():
         Count
     {
-        return Instance.min_column_count;
+        return this.Buffer().Min_Column_Count();
     }
 
     Column_Count():
@@ -165,7 +124,7 @@ export class Instance extends Entity.Instance
         if (column_index < this.Column_Count()) {
             return this.columns[column_index];
         } else {
-            return Instance.blank_column;
+            return this.Buffer().Blank_Column();
         }
     }
 

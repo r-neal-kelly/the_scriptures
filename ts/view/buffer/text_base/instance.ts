@@ -14,7 +14,7 @@ export interface Model_Instance_i
     Line_Count(): Count;
     Line_At(line_index: Index): any;
 
-    Default_Text_Direction(): Model_Language.Direction;
+    Default_Language_Direction(): Model_Language.Direction;
     Default_Font_Styles(): { [css_property: string]: string };
 
     Indent_EM(): Count;
@@ -33,7 +33,7 @@ export interface Line_Class_i
     ): any;
 }
 
-export class Instance<
+export abstract class Instance<
     Model_Instance extends Model_Instance_i,
 > extends Entity.Instance
 {
@@ -327,7 +327,7 @@ export class Instance<
         const classes: Array<string> = [];
 
         classes.push(`Text`);
-        if (this.Model().Default_Text_Direction() === Model_Language.Direction.LEFT_TO_RIGHT) {
+        if (this.Model().Default_Language_Direction() === Model_Language.Direction.LEFT_TO_RIGHT) {
             classes.push(`Left_To_Right`);
         } else {
             classes.push(`Right_To_Left`);

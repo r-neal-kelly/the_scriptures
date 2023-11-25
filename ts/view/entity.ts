@@ -328,7 +328,7 @@ enum Life_Cycle_Skip
     REMAINING_SIBLINGS = 1 << 1,
 }
 
-export class Instance implements
+export abstract class Instance implements
     Info_API,
     Life_Cycle_Sender_API,
     Life_Cycle_Listener_API,

@@ -40,7 +40,7 @@ export interface Column_Class_i
     ): any;
 }
 
-export class Instance<
+export abstract class Instance<
     Model_Instance extends Model_Instance_i,
     Buffer_Instance extends Buffer_Instance_i,
 > extends Entity.Instance

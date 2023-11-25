@@ -4,7 +4,7 @@ import * as Async from "../async.js";
 import * as Unique_ID from "../unique_id.js";
 
 // Maybe we should combine async and this type together.
-export class Instance extends Async.Instance
+export abstract class Instance extends Async.Instance
 {
     private id: ID;
 

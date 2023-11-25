@@ -1,75 +1,105 @@
-import { Count } from "../../../types.js";
-import { Index } from "../../../types.js";
-
-import * as Utils from "../../../utils.js";
-
-import * as Entity from "../../entity.js";
 import * as Font from "../../font.js";
 import * as Language from "../../language.js";
 import * as Languages from "../../languages.js";
 import * as Text from "../../text.js";
+import * as Text_Base from "../text_base.js";
 import * as Line from "./line.js";
+import * as Column from "./column.js";
+import * as Row from "./row.js";
+import * as Segment from "./segment.js";
+import * as Item from "./item.js";
 
-export class Instance extends Entity.Instance
+export class Instance extends Text_Base.Instance<
+    Line.Instance,
+    Column.Instance,
+    Row.Instance,
+    Segment.Instance,
+    Item.Instance
+>
 {
-    private static min_line_count: Count = 50;
-
-    private static blank_line: Line.Instance = new Line.Instance(
-        {
-            buffer: null,
-            index: null,
-            text: null,
-        },
-    );
-
-    static Min_Line_Count():
-        Count
-    {
-        return Instance.min_line_count;
-    }
-
-    static Set_Min_Line_Count(
-        min_line_count: Count,
-    ):
-        void
-    {
-        Utils.Assert(
-            min_line_count >= 0,
-            `min_line_count must be greater than or equal to 0.`,
-        );
-
-        Instance.min_line_count = min_line_count;
-    }
-
-    private default_language_name: Language.Name;
     private default_font_name: Font.Name;
-    private language_font_name: (language_name: Language.Name) => Font.Name;
+    private override_font_name: (language_name: Language.Name) => Font.Name;
+
     private text: Text.Instance;
-    private lines: Array<Line.Instance>;
 
     constructor(
         {
             default_language_name,
             default_font_name,
-            language_font_name,
+            override_font_name,
+
             text,
             allow_errors,
         }: {
             default_language_name: Language.Name,
             default_font_name: Font.Name,
-            language_font_name: (language_name: Language.Name) => Font.Name,
+            override_font_name: (language_name: Language.Name) => Font.Name,
+
             text: Text.Instance,
             allow_errors: boolean,
         },
     )
     {
-        super();
+        super(
+            {
+                min_line_count: 50,
+                min_column_count: 1,
+                min_row_count: 1,
+                min_segment_count: 70,
+                min_item_count: 2,
 
-        this.default_language_name = default_language_name;
+                default_language_name,
+            },
+        );
+
         this.default_font_name = default_font_name;
-        this.language_font_name = language_font_name;
+        this.override_font_name = override_font_name;
+
         this.text = text;
-        this.lines = [];
+
+        this.Set_Blanks(
+            {
+                blank_line: new Line.Instance(
+                    {
+                        buffer: this,
+                        index: null,
+                        text: null,
+                    },
+                ),
+                blank_column: new Column.Instance(
+                    {
+                        buffer: this,
+                        line: null,
+                        index: null,
+                        text: null,
+                    },
+                ),
+                blank_row: new Row.Instance(
+                    {
+                        buffer: this,
+                        column: null,
+                        index: null,
+                        text: null,
+                    },
+                ),
+                blank_segment: new Segment.Instance(
+                    {
+                        buffer: this,
+                        row: null,
+                        index: null,
+                        text: null,
+                    },
+                ),
+                blank_item: new Item.Instance(
+                    {
+                        buffer: this,
+                        segment: null,
+                        index: null,
+                        text: null,
+                    },
+                ),
+            },
+        );
 
         if (allow_errors) {
             this.text.Set_Path_Type(Text.Path.Type.DEFAULT);
@@ -78,7 +108,7 @@ export class Instance extends Entity.Instance
         }
 
         for (let idx = 0, end = text.Line_Count(); idx < end; idx += 1) {
-            this.lines.push(
+            this.Push_Line(
                 new Line.Instance(
                     {
                         buffer: this,
@@ -88,45 +118,29 @@ export class Instance extends Entity.Instance
                 ),
             );
         }
-
-        this.Add_Dependencies(
-            this.lines,
-        );
     }
 
-    Default_Language_Name():
-        Language.Name
-    {
-        return this.default_language_name;
-    }
-
-    Default_Font_Name():
+    override Default_Font_Name():
         Font.Name
     {
         return this.default_font_name;
     }
 
-    Language_Font_Name(
-        language_name: Language.Name,
-    ):
-        Font.Name
-    {
-        return this.language_font_name(language_name);
-    }
-
-    Default_Text_Direction():
-        Language.Direction
-    {
-        return Languages.Singleton().Direction(this.default_language_name);
-    }
-
-    Default_Font_Styles():
+    override Default_Font_Styles():
         { [css_property: string]: string }
     {
         return Languages.Singleton().Font_Styles(
             this.Default_Language_Name(),
             this.Default_Font_Name(),
         );
+    }
+
+    Override_Font_Name(
+        language_name: Language.Name,
+    ):
+        Font.Name
+    {
+        return this.override_font_name(language_name);
     }
 
     Override_Font_Styles(
@@ -136,7 +150,7 @@ export class Instance extends Entity.Instance
     {
         return Languages.Singleton().Font_Styles(
             language_name,
-            this.Language_Font_Name(language_name),
+            this.Override_Font_Name(language_name),
         );
     }
 
@@ -146,56 +160,9 @@ export class Instance extends Entity.Instance
         return this.text;
     }
 
-    Min_Line_Count():
-        Count
-    {
-        return Instance.min_line_count;
-    }
-
-    Line_Count():
-        Count
-    {
-        return this.lines.length;
-    }
-
-    Line_At(
-        line_index: Index,
-    ):
-        Line.Instance
-    {
-        Utils.Assert(
-            line_index > -1,
-            `line_index (${line_index}) must be greater than -1.`,
-        );
-
-        if (line_index < this.Line_Count()) {
-            return this.lines[line_index];
-        } else {
-            return Instance.blank_line;
-        }
-    }
-
     Allows_Errors():
         boolean
     {
         return this.Text().Path_Type() === Text.Path.Type.DEFAULT;
-    }
-
-    Indent_EM():
-        Count
-    {
-        return 3;
-    }
-
-    Pad_EM(
-        pad_count: Count,
-    ):
-        Count
-    {
-        if (pad_count > 0) {
-            return this.Indent_EM() * pad_count;
-        } else {
-            return 0;
-        }
     }
 }

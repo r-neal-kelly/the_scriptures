@@ -85,7 +85,7 @@ export class Instance extends Entity.Instance
         return this.default_language_name;
     }
 
-    Default_Text_Direction():
+    Default_Language_Direction():
         Language.Direction
     {
         return Languages.Singleton().Direction(this.default_language_name);

@@ -38,7 +38,7 @@ export class Instance extends Entity.Instance
         void
     {
         const model: Model.Instance = this.Model();
-        const target: Count = Math.max(Model.Instance.Min_Row_Count(), model.Row_Count());
+        const target: Count = Math.max(model.Min_Row_Count(), model.Row_Count());
         const count: Count = this.Child_Count();
 
         for (let idx = count, end = target; idx < end; idx += 1) {
