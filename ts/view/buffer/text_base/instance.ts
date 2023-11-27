@@ -196,6 +196,11 @@ export abstract class Instance<
                     padding: 0.15em 0;
                 }
 
+                .Fully_Tabular_Column {
+                    align-items: center;
+                    align-content: center;
+                }
+
                 .Row {
                     display: block;
 

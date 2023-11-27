@@ -213,4 +213,15 @@ export abstract class Instance<
 
         return this.Text().Is_Inter_Interlinear();
     }
+
+    Is_Fully_Tabular():
+        boolean
+    {
+        Utils.Assert(
+            !this.Is_Blank(),
+            `column is blank.`,
+        );
+
+        return this.Text().Is_Tabular();
+    }
 }

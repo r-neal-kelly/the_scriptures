@@ -11,6 +11,9 @@ import { Default_Min_Counts } from "./default_min_counts.js";
 
 interface Buffer_Instance_i
 {
+    Line_Column_Percents(
+        line_index: Index,
+    ): Array<Count>;
 }
 
 interface Column_Instance_i
@@ -136,6 +139,21 @@ export abstract class Instance<
         } else {
             return this.Blank_Column();
         }
+    }
+
+    Column_Percents():
+        Array<Count>
+    {
+        Utils.Assert(
+            !this.Is_Blank(),
+            `line is blank.`,
+        );
+        Utils.Assert(
+            this.Is_Row_Of_Table(),
+            `must be a row of table to have column_percents`,
+        );
+
+        return this.Buffer().Line_Column_Percents(this.Index());
     }
 
     protected Push_Column(

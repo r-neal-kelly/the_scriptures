@@ -16,7 +16,7 @@ export class Instance
     private type: Type;
     private index: Index;
     private rows: Array<Row.Instance>;
-    private last_command: Part.Command.Instance | null;
+    private previous_part_is_column_like: boolean;
 
     constructor(
         {
@@ -34,7 +34,7 @@ export class Instance
         this.type = type;
         this.index = index;
         this.rows = [];
-        this.last_command = null;
+        this.previous_part_is_column_like = false;
     }
 
     Update_Empty():
@@ -69,6 +69,8 @@ export class Instance
         }
 
         this.Working_Row().Update_Point(micro_point, macro_point);
+
+        this.previous_part_is_column_like = false;
     }
 
     Update_Letter(
@@ -87,6 +89,8 @@ export class Instance
         }
 
         this.Working_Row().Update_Letter(micro_letter);
+
+        this.previous_part_is_column_like = false;
     }
 
     Update_Marker(
@@ -105,6 +109,8 @@ export class Instance
         }
 
         this.Working_Row().Update_Marker(micro_marker);
+
+        this.previous_part_is_column_like = false;
     }
 
     Update_Word(
@@ -123,6 +129,8 @@ export class Instance
         }
 
         this.Working_Row().Update_Word(macro_word);
+
+        this.previous_part_is_column_like = false;
     }
 
     Update_Break(
@@ -141,6 +149,8 @@ export class Instance
         }
 
         this.Working_Row().Update_Break(macro_break);
+
+        this.previous_part_is_column_like = false;
     }
 
     Update_Command(
@@ -159,14 +169,7 @@ export class Instance
             this.rows.length < 1 ||
             (
                 macro_command.Is_Row() &&
-                (
-                    !this.last_command ||
-                    (
-                        !this.last_command.Is_Column() &&
-                        !this.last_command.Is_Margin() &&
-                        !this.last_command.Is_Interlinear()
-                    )
-                )
+                !this.previous_part_is_column_like
             )
         ) {
             this.Push_Row(row_value);
@@ -174,7 +177,10 @@ export class Instance
 
         this.Working_Row().Update_Command(micro_command, macro_command);
 
-        this.last_command = macro_command;
+        this.previous_part_is_column_like =
+            macro_command.Is_Column() ||
+            macro_command.Is_Margin() ||
+            macro_command.Is_Interlinear();
     }
 
     private Push_Row(
@@ -219,7 +225,7 @@ export class Instance
             row.Finalize();
         }
 
-        this.last_command = null;
+        this.previous_part_is_column_like = false;
     }
 
     Path():
@@ -297,6 +303,21 @@ export class Instance
         );
 
         return this.Is_Tabular() && this.Path().Interlinear_Column_Count() > 0;
+    }
+
+    Is_Fully_Tabular():
+        boolean
+    {
+        Utils.Assert(
+            this.Is_Finalized(),
+            `Must be finalized before being accessed.`,
+        );
+
+        return (
+            this.Is_Tabular() &&
+            this.Path().Marginal_Column_Count() === 0 &&
+            this.Path().Interlinear_Column_Count() === 0
+        );
     }
 
     Index():

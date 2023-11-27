@@ -19,6 +19,8 @@ interface Model_Instance_i
         Count;
     Column_Count():
         Count;
+    Column_Percents():
+        Array<Count>;
 
     Has_Margin():
         boolean;
@@ -163,7 +165,9 @@ export abstract class Instance<
                 let grid_template_columns: string = ``;
                 let max_width: string = ``;
                 if (model.Is_Row_Of_Table()) {
-                    grid_template_columns = `repeat(${column_count}, 1fr)`;
+                    grid_template_columns = model.Column_Percents()
+                        .map(percent => `${percent}fr`)
+                        .join(` `);
                     max_width = `${column_count * 10}em`;
                 } else {
                     for (let idx = 0, end = column_count; idx < end; idx += 1) {

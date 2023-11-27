@@ -1,7 +1,5 @@
 import { Index } from "../../../types.js";
 
-import * as Utils from "../../../utils.js";
-
 import * as Text from "../../text.js";
 
 import * as Text_Base from "../text_base.js";

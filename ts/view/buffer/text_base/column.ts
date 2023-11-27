@@ -27,6 +27,8 @@ interface Model_Instance_i
         boolean;
     Is_Inter_Interlinear():
         boolean;
+    Is_Fully_Tabular():
+        boolean;
 }
 
 interface Buffer_Instance_i
@@ -111,6 +113,8 @@ export abstract class Instance<
                 classes.push(`Interlinear_Column`);
             } else if (model.Is_Inter_Interlinear()) {
                 classes.push(`Inter_Interlinear_Column`);
+            } else if (model.Is_Fully_Tabular()) {
+                classes.push(`Fully_Tabular_Column`);
             }
         }
 
