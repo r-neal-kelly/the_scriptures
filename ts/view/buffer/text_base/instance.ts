@@ -112,7 +112,7 @@ export abstract class Instance<
                     justify-self: center;
                     align-self: center;
 
-                    margin: 0 10%;
+                    margin: 0;
                     padding: 0.35em;
 
                     border-bottom: solid 1px rgba(255, 255, 255, 0.3);
