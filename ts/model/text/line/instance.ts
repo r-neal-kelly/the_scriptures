@@ -540,6 +540,17 @@ export class Instance
         return this.Path().Column(column_index);
     }
 
+    Column_Percents():
+        Array<Count>
+    {
+        Utils.Assert(
+            this.Is_Row_Of_Table(),
+            `must be a row of table to have column_percents`,
+        );
+
+        return this.Text().Line_Column_Percents(this.Index());
+    }
+
     Tabular_Column_Count():
         Count
     {
