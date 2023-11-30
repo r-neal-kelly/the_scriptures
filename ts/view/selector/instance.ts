@@ -5,8 +5,8 @@ import * as Event from "../../event.js";
 
 import * as Model from "../../model/selector/instance.js";
 
-import * as Events from "../events.js";
 import * as Entity from "../entity.js";
+import * as Settings from "./settings.js";
 import * as Slots from "./slots.js";
 
 export class Instance extends Entity.Instance
@@ -164,10 +164,17 @@ export class Instance extends Entity.Instance
         void
     {
         if (
-            !this.Has_Slots()
+            !this.Has_Slots() ||
+            !this.Has_Settings()
         ) {
             this.Abort_All_Children();
 
+            new Settings.Instance(
+                {
+                    selector: this,
+                    model: () => this.Model().Settings(),
+                },
+            );
             new Slots.Instance(
                 {
                     selector: this,
@@ -201,12 +208,32 @@ export class Instance extends Entity.Instance
         return this.is_visible();
     }
 
-    Has_Slots():
+    Has_Settings():
         boolean
     {
         return (
             this.Has_Child(0) &&
-            this.Child(0) instanceof Slots.Instance
+            this.Child(0) instanceof Settings.Instance
+        );
+    }
+
+    Settings():
+        Settings.Instance
+    {
+        Utils.Assert(
+            this.Has_Settings(),
+            `Does not have settings.`,
+        );
+
+        return this.Child(0) as Settings.Instance;
+    }
+
+    Has_Slots():
+        boolean
+    {
+        return (
+            this.Has_Child(1) &&
+            this.Child(1) instanceof Slots.Instance
         );
     }
 
@@ -218,6 +245,6 @@ export class Instance extends Entity.Instance
             `Does not have slots.`,
         );
 
-        return this.Child(0) as Slots.Instance;
+        return this.Child(1) as Slots.Instance;
     }
 }

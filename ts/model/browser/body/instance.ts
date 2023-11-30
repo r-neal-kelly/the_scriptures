@@ -30,8 +30,8 @@ export class Instance extends Entity.Instance
         this.selector = new Selector.Instance(
             {
                 slot_order: selector_slot_order,
-                selection: selection,
                 does_smart_item_selection: true,
+                selection: selection,
             },
         );
         this.font_selector = new Font_Selector.Instance();

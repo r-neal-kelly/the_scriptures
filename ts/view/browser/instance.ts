@@ -128,6 +128,17 @@ export class Instance extends Entity.Instance
                 {
                     event_name: new Event.Name(
                         Event.Prefix.AFTER,
+                        Events.SELECTOR_SLOT_ORDER_SELECT,
+                        this.ID(),
+                    ),
+                    event_handler: this.After_Selector_Slot_Order_Select,
+                    event_priority: 0,
+                },
+            ),
+            new Event.Listener_Info(
+                {
+                    event_name: new Event.Name(
+                        Event.Prefix.AFTER,
                         Events.SELECTOR_SLOT_ITEM_SELECT,
                         this.ID(),
                     ),
@@ -214,6 +225,12 @@ export class Instance extends Entity.Instance
     }
 
     private async After_Selector_Toggle():
+        Promise<void>
+    {
+        this.Refresh();
+    }
+
+    private async After_Selector_Slot_Order_Select():
         Promise<void>
     {
         this.Refresh();

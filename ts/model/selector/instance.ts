@@ -6,6 +6,7 @@ import * as Utils from "../../utils.js";
 
 import * as Entity from "../entity.js";
 import * as Data from "../data.js";
+import * as Settings from "./settings.js";
 import * as Slot from "./slot.js";
 
 export class Instance extends Entity.Instance
@@ -41,29 +42,33 @@ export class Instance extends Entity.Instance
         }
     }
 
-    private slot_order: Slot.Order;
+    private settings: Settings.Instance;
     private first_selection: Data.Selection.Name | Data.Selection.Index | null;
     private slots: Array<Slot.Instance>;
-    private does_smart_item_selection: boolean;
 
     constructor(
         {
             slot_order = Slot.Order.LANGUAGES_VERSIONS_BOOKS,
-            selection = null,
             does_smart_item_selection = true,
+            selection = null,
         }: {
             slot_order?: Slot.Order,
-            selection?: Data.Selection.Name | Data.Selection.Index | null,
             does_smart_item_selection?: boolean,
+            selection?: Data.Selection.Name | Data.Selection.Index | null,
         },
     )
     {
         super();
 
-        this.slot_order = slot_order;
+        this.settings = new Settings.Instance(
+            {
+                selector: this,
+                slot_order: slot_order,
+                does_smart_item_selection: does_smart_item_selection,
+            },
+        );
         this.first_selection = selection;
         this.slots = [];
-        this.does_smart_item_selection = does_smart_item_selection;
 
         this.Add_Dependencies(
             [
@@ -72,20 +77,27 @@ export class Instance extends Entity.Instance
         );
     }
 
-    Slot_Order():
-        Slot.Order
+    Settings():
+        Settings.Instance
     {
-        return this.slot_order;
+        return this.settings;
     }
 
-    Reorder_Slots(
-        slot_order: Slot.Order,
+    __Set_Slot_Order__(
+        slot_order_index: Index,
     ):
         void
     {
-        // we probably should get the previously selected book, language, version, and file
-        // and reset them as the currently selected item of each slot.
-        // else we could have a Select_Slots method to pass in the four, after reorder?
+        if (this.Settings().Current_Slot_Order_Index() !== slot_order_index) {
+            const current_selection: Data.Selection.Name = this.Selection_Name();
+
+            while (this.Slot_Count() > 0) {
+                this.Pop_Slot();
+            }
+
+            this.Settings().__Set_Current_Slot_Order_Index__(slot_order_index);
+            this.Select_Item(current_selection);
+        }
     }
 
     Slot_Count():
@@ -174,7 +186,7 @@ export class Instance extends Entity.Instance
     Slot_Types():
         Array<Slot.Type>
     {
-        const slot_order: Slot.Order = this.Slot_Order();
+        const slot_order: Slot.Order = this.Settings().Current_Slot_Order().Value();
 
         const slot_types: Array<Slot.Type> = [];
         if (slot_order === Slot.Order.BOOKS_LANGUAGES_VERSIONS) {
@@ -306,6 +318,15 @@ export class Instance extends Entity.Instance
         return this.Slot_From_Type(Slot.Type.BOOKS);
     }
 
+    Has_Book():
+        boolean
+    {
+        return (
+            this.Has_Books() &&
+            this.Books().Has_Selected_Item()
+        );
+    }
+
     Has_Languages():
         boolean
     {
@@ -321,6 +342,15 @@ export class Instance extends Entity.Instance
         );
 
         return this.Slot_From_Type(Slot.Type.LANGUAGES);
+    }
+
+    Has_Language():
+        boolean
+    {
+        return (
+            this.Has_Languages() &&
+            this.Languages().Has_Selected_Item()
+        );
     }
 
     Maybe_Selected_Language_Name():
@@ -353,6 +383,15 @@ export class Instance extends Entity.Instance
         );
 
         return this.Slot_From_Type(Slot.Type.VERSIONS);
+    }
+
+    Has_Version():
+        boolean
+    {
+        return (
+            this.Has_Versions() &&
+            this.Versions().Has_Selected_Item()
+        );
     }
 
     Has_Files():
@@ -409,6 +448,48 @@ export class Instance extends Entity.Instance
         }
     }
 
+    Selection_Name():
+        Data.Selection.Name
+    {
+        return new Data.Selection.Name(
+            {
+                book: this.Has_Book() ?
+                    this.Books().Selected_Item().Name() :
+                    null,
+                language: this.Has_Language() ?
+                    this.Languages().Selected_Item().Name() :
+                    null,
+                version: this.Has_Version() ?
+                    this.Versions().Selected_Item().Name() :
+                    null,
+                file: this.Has_Files() ?
+                    this.Files().Selected_Item().Name() :
+                    null,
+            },
+        );
+    }
+
+    Selection_Index():
+        Data.Selection.Index
+    {
+        return new Data.Selection.Index(
+            {
+                book: this.Has_Book() ?
+                    this.Books().Selected_Item().Index() :
+                    null,
+                language: this.Has_Language() ?
+                    this.Languages().Selected_Item().Index() :
+                    null,
+                version: this.Has_Version() ?
+                    this.Versions().Selected_Item().Index() :
+                    null,
+                file: this.Has_Files() ?
+                    this.Files().Selected_Item().Index() :
+                    null,
+            },
+        );
+    }
+
     File_Or_Versions():
         Data.File.Instance | Array<Data.Version.Instance>
     {
@@ -446,12 +527,6 @@ export class Instance extends Entity.Instance
                 },
             );
         }
-    }
-
-    Does_Smart_Item_Selection():
-        boolean
-    {
-        return this.does_smart_item_selection;
     }
 
     As_String():
@@ -524,7 +599,7 @@ export class Instance extends Entity.Instance
         if (slot.Type() !== Slot.Type.FILES) {
             if (this.Slot_At_Index(this.Slot_Count() - 1) === slot) {
                 this.Push_Slot();
-            } else if (this.Does_Smart_Item_Selection()) {
+            } else if (this.Settings().Does_Smart_Item_Selection()) {
                 const book_name: Name | null =
                     this.Has_Books() && this.Books().Has_Selected_Item() ?
                         this.Books().Selected_Item().Name() :
@@ -598,13 +673,29 @@ export class Instance extends Entity.Instance
 
             const type: Slot.Type = types[idx];
             if (type === Slot.Type.BOOKS) {
-                this.Books().Item_From_Name(selection.Book()).Select();
+                if (selection.Has_Book()) {
+                    this.Books().Item_From_Name(selection.Book()).Select();
+                } else {
+                    break;
+                }
             } else if (type === Slot.Type.LANGUAGES) {
-                this.Languages().Item_From_Name(selection.Language()).Select();
+                if (selection.Has_Language()) {
+                    this.Languages().Item_From_Name(selection.Language()).Select();
+                } else {
+                    break;
+                }
             } else if (type === Slot.Type.VERSIONS) {
-                this.Versions().Item_From_Name(selection.Version()).Select();
+                if (selection.Has_Version()) {
+                    this.Versions().Item_From_Name(selection.Version()).Select();
+                } else {
+                    break;
+                }
             } else if (type === Slot.Type.FILES) {
-                this.Files().Item_From_Name(selection.File()).Select();
+                if (selection.Has_File()) {
+                    this.Files().Item_From_Name(selection.File()).Select();
+                } else {
+                    break;
+                }
             }
         }
     }
@@ -622,13 +713,29 @@ export class Instance extends Entity.Instance
 
             const type: Slot.Type = types[idx];
             if (type === Slot.Type.BOOKS) {
-                this.Books().Item_At_Index(selection.Book()).Select();
+                if (selection.Has_Book()) {
+                    this.Books().Item_At_Index(selection.Book()).Select();
+                } else {
+                    break;
+                }
             } else if (type === Slot.Type.LANGUAGES) {
-                this.Languages().Item_At_Index(selection.Language()).Select();
+                if (selection.Has_Language()) {
+                    this.Languages().Item_At_Index(selection.Language()).Select();
+                } else {
+                    break;
+                }
             } else if (type === Slot.Type.VERSIONS) {
-                this.Versions().Item_At_Index(selection.Version()).Select();
+                if (selection.Has_Version()) {
+                    this.Versions().Item_At_Index(selection.Version()).Select();
+                } else {
+                    break;
+                }
             } else if (type === Slot.Type.FILES) {
-                this.Files().Item_At_Index(selection.File()).Select();
+                if (selection.Has_File()) {
+                    this.Files().Item_At_Index(selection.File()).Select();
+                } else {
+                    break;
+                }
             }
         }
     }

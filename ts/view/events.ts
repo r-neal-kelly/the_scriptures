@@ -18,6 +18,8 @@ export const FINDER_BODY_EXPRESSION_CHANGE: ID = Unique_ID.New();
 export const FINDER_BODY_TREE_LEAF_SELECT: ID = Unique_ID.New();
 
 export const SELECTOR_TOGGLE: ID = Unique_ID.New();
+export const SELECTOR_SETTINGS_TOGGLE: ID = Unique_ID.New();
+export const SELECTOR_SLOT_ORDER_SELECT: ID = Unique_ID.New();
 export const SELECTOR_SLOT_ITEM_SELECT: ID = Unique_ID.New();
 
 export const FONT_SELECTOR_TOGGLE: ID = Unique_ID.New();

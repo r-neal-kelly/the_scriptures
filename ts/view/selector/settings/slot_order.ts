@@ -2,11 +2,11 @@ import { ID } from "../../../types.js";
 
 import * as Event from "../../../event.js";
 
-import * as Model from "../../../model/selector/slot/item.js";
+import * as Model from "../../../model/selector/settings/slot_order.js";
 
 import * as Events from "../../events.js";
 import * as Entity from "../../entity.js";
-import * as Items from "./items.js";
+import * as Slot_Orders from "./slot_orders.js";
 
 export class Instance extends Entity.Instance
 {
@@ -14,10 +14,10 @@ export class Instance extends Entity.Instance
 
     constructor(
         {
-            items,
+            slot_orders,
             model,
         }: {
-            items: Items.Instance,
+            slot_orders: Slot_Orders.Instance,
             model: () => Model.Instance,
         },
     )
@@ -25,8 +25,8 @@ export class Instance extends Entity.Instance
         super(
             {
                 element: `div`,
-                parent: items,
-                event_grid: items.Event_Grid(),
+                parent: slot_orders,
+                event_grid: slot_orders.Event_Grid(),
             },
         );
 
@@ -48,10 +48,10 @@ export class Instance extends Entity.Instance
                 {
                     event_name: new Event.Name(
                         Event.Prefix.ON,
-                        Events.SELECTOR_SLOT_ITEM_SELECT,
+                        Events.SELECTOR_SLOT_ORDER_SELECT,
                         this.ID(),
                     ),
-                    event_handler: this.On_Selector_Slot_Item_Select,
+                    event_handler: this.On_Selector_Slot_Order_Select,
                     event_priority: 0,
                 },
             ),
@@ -61,7 +61,9 @@ export class Instance extends Entity.Instance
     override On_Refresh():
         void
     {
-        this.Element().textContent = this.Model().Name();
+        if (this.Is_Visible()) {
+            this.Element().textContent = this.Model().Name();
+        }
     }
 
     override On_Reclass():
@@ -70,9 +72,13 @@ export class Instance extends Entity.Instance
         const model: Model.Instance = this.Model();
         const classes: Array<string> = [];
 
-        classes.push(`Slot_Item`);
-        if (model.Is_Selected()) {
-            classes.push(`Slot_Item_Selected`);
+        classes.push(`Slot_Order`);
+        if (!this.Is_Visible()) {
+            classes.push(`Invisible`);
+        } else {
+            if (model.Is_Selected()) {
+                classes.push(`Selected_Slot_Order`);
+            }
         }
 
         return classes;
@@ -86,7 +92,7 @@ export class Instance extends Entity.Instance
         await this.Send(
             new Event.Info(
                 {
-                    affix: Events.SELECTOR_SLOT_ITEM_SELECT,
+                    affix: Events.SELECTOR_SLOT_ORDER_SELECT,
                     suffixes: [
                         this.ID(),
                         this.Event_Grid_ID(),
@@ -98,7 +104,7 @@ export class Instance extends Entity.Instance
         );
     }
 
-    private async On_Selector_Slot_Item_Select():
+    private async On_Selector_Slot_Order_Select():
         Promise<void>
     {
         this.Model().Select();
@@ -113,18 +119,18 @@ export class Instance extends Entity.Instance
     Event_Grid_ID():
         ID
     {
-        return this.Items().Event_Grid_ID();
+        return this.Slot_Orders().Event_Grid_ID();
     }
 
-    Items():
-        Items.Instance
+    Slot_Orders():
+        Slot_Orders.Instance
     {
-        return this.Parent() as Items.Instance;
+        return this.Parent() as Slot_Orders.Instance;
     }
 
     Is_Visible():
         boolean
     {
-        return this.Items().Is_Visible();
+        return this.Slot_Orders().Is_Visible();
     }
 }

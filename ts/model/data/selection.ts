@@ -1,11 +1,13 @@
 import * as Types from "../../types.js";
 
+import * as Utils from "../../utils.js";
+
 export class Name
 {
-    private book: Types.Name;
-    private language: Types.Name;
-    private version: Types.Name;
-    private file: Types.Name;
+    private book: Types.Name | null;
+    private language: Types.Name | null;
+    private version: Types.Name | null;
+    private file: Types.Name | null;
 
     constructor(
         {
@@ -14,10 +16,10 @@ export class Name
             version,
             file,
         }: {
-            book: Types.Name;
-            language: Types.Name;
-            version: Types.Name;
-            file: Types.Name;
+            book: Types.Name | null;
+            language: Types.Name | null;
+            version: Types.Name | null;
+            file: Types.Name | null;
         },
     )
     {
@@ -29,37 +31,81 @@ export class Name
         Object.freeze(this);
     }
 
+    Has_Book():
+        boolean
+    {
+        return this.book != null;
+    }
+
     Book():
         Types.Name
     {
-        return this.book;
+        Utils.Assert(
+            this.Has_Book(),
+            `doesn't have book`,
+        );
+
+        return this.book as Types.Name;
+    }
+
+    Has_Language():
+        boolean
+    {
+        return this.language != null;
     }
 
     Language():
         Types.Name
     {
-        return this.language;
+        Utils.Assert(
+            this.Has_Language(),
+            `doesn't have language`,
+        );
+
+        return this.language as Types.Name;
+    }
+
+    Has_Version():
+        boolean
+    {
+        return this.version != null;
     }
 
     Version():
         Types.Name
     {
-        return this.version;
+        Utils.Assert(
+            this.Has_Version(),
+            `doesn't have version`,
+        );
+
+        return this.version as Types.Name;
+    }
+
+    Has_File():
+        boolean
+    {
+        return this.file != null;
     }
 
     File():
         Types.Name
     {
-        return this.file;
+        Utils.Assert(
+            this.Has_File(),
+            `doesn't have file`,
+        );
+
+        return this.file as Types.Name;
     }
 }
 
 export class Index
 {
-    private book: Types.Index;
-    private language: Types.Index;
-    private version: Types.Index;
-    private file: Types.Index;
+    private book: Types.Index | null;
+    private language: Types.Index | null;
+    private version: Types.Index | null;
+    private file: Types.Index | null;
 
     constructor(
         {
@@ -68,10 +114,10 @@ export class Index
             version,
             file,
         }: {
-            book: Types.Index;
-            language: Types.Index;
-            version: Types.Index;
-            file: Types.Index;
+            book: Types.Index | null;
+            language: Types.Index | null;
+            version: Types.Index | null;
+            file: Types.Index | null;
         },
     )
     {
@@ -83,27 +129,71 @@ export class Index
         Object.freeze(this);
     }
 
+    Has_Book():
+        boolean
+    {
+        return this.book != null;
+    }
+
     Book():
         Types.Index
     {
-        return this.book;
+        Utils.Assert(
+            this.Has_Book(),
+            `doesn't have book`,
+        );
+
+        return this.book as Types.Index;
+    }
+
+    Has_Language():
+        boolean
+    {
+        return this.language != null;
     }
 
     Language():
         Types.Index
     {
-        return this.language;
+        Utils.Assert(
+            this.Has_Language(),
+            `doesn't have language`,
+        );
+
+        return this.language as Types.Index;
+    }
+
+    Has_Version():
+        boolean
+    {
+        return this.version != null;
     }
 
     Version():
         Types.Index
     {
-        return this.version;
+        Utils.Assert(
+            this.Has_Version(),
+            `doesn't have version`,
+        );
+
+        return this.version as Types.Index;
+    }
+
+    Has_File():
+        boolean
+    {
+        return this.file != null;
     }
 
     File():
         Types.Index
     {
-        return this.file;
+        Utils.Assert(
+            this.Has_File(),
+            `doesn't have file`,
+        );
+
+        return this.file as Types.Index;
     }
 }

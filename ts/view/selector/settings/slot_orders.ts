@@ -1,12 +1,12 @@
-import { Count } from "../../types.js";
-import { Delta } from "../../types.js";
-import { ID } from "../../types.js";
+import { Count } from "../../../types.js";
+import { Delta } from "../../../types.js";
+import { ID } from "../../../types.js";
 
-import * as Model from "../../model/selector.js";
+import * as Model from "../../../model/selector/settings.js";
 
-import * as Entity from "../entity.js";
-import * as Selector from "./instance.js";
-import * as Slot from "./slot.js";
+import * as Entity from "../../entity.js";
+import * as Settings from "./instance.js";
+import * as Slot_Order from "./slot_order.js";
 
 export class Instance extends Entity.Instance
 {
@@ -14,10 +14,10 @@ export class Instance extends Entity.Instance
 
     constructor(
         {
-            selector,
+            settings,
             model,
         }: {
-            selector: Selector.Instance,
+            settings: Settings.Instance,
             model: () => Model.Instance,
         },
     )
@@ -25,8 +25,8 @@ export class Instance extends Entity.Instance
         super(
             {
                 element: `div`,
-                parent: selector,
-                event_grid: selector.Event_Grid(),
+                parent: settings,
+                event_grid: settings.Event_Grid(),
             },
         );
 
@@ -40,7 +40,7 @@ export class Instance extends Entity.Instance
     {
         if (this.Is_Visible()) {
             const model: Model.Instance = this.Model();
-            const target: Count = model.Slot_Count();
+            const target: Count = model.Slot_Order_Count();
             const count: Count = this.Child_Count();
             const delta: Delta = target - count;
 
@@ -52,10 +52,10 @@ export class Instance extends Entity.Instance
                 }
             } else if (delta > 0) {
                 for (let idx = count, end = count + delta; idx < end; idx += 1) {
-                    new Slot.Instance(
+                    new Slot_Order.Instance(
                         {
-                            slots: this,
-                            model: () => this.Model().Slot_At_Index(idx),
+                            slot_orders: this,
+                            model: () => this.Model().Slot_Order(idx),
                         },
                     );
                 }
@@ -70,7 +70,7 @@ export class Instance extends Entity.Instance
     {
         const classes: Array<string> = [];
 
-        classes.push(`Slots`);
+        classes.push(`Slot_Orders`);
         if (!this.Is_Visible()) {
             classes.push(`Invisible`);
         }
@@ -87,18 +87,18 @@ export class Instance extends Entity.Instance
     Event_Grid_ID():
         ID
     {
-        return this.Selector().Event_Grid_ID();
+        return this.Settings().Event_Grid_ID();
     }
 
-    Selector():
-        Selector.Instance
+    Settings():
+        Settings.Instance
     {
-        return this.Parent() as Selector.Instance;
+        return this.Parent() as Settings.Instance;
     }
 
     Is_Visible():
         boolean
     {
-        return this.Selector().Is_Visible();
+        return this.Settings().Is_Visible() && this.Model().Is_Toggled();
     }
 }

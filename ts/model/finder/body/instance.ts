@@ -39,7 +39,7 @@ export class Instance extends Entity.Instance
         this.results = new Results.Instance(
             {
                 body: this,
-                filter_slot_order: this.filter.Slot_Order(),
+                filter_slot_order: this.filter.Settings().Current_Slot_Order().Value(),
                 versions_results: new Map(),
                 is_showing_commands: false,
             },
@@ -143,7 +143,7 @@ export class Instance extends Entity.Instance
             this.results = new Results.Instance(
                 {
                     body: this,
-                    filter_slot_order: this.filter.Slot_Order(),
+                    filter_slot_order: this.filter.Settings().Current_Slot_Order().Value(),
                     versions_results: new Map(),
                     is_showing_commands: false,
                 },
@@ -156,7 +156,7 @@ export class Instance extends Entity.Instance
             this.results = new Results.Instance(
                 {
                     body: this,
-                    filter_slot_order: this.filter.Slot_Order(),
+                    filter_slot_order: this.filter.Settings().Current_Slot_Order().Value(),
                     versions_results: versions_results,
                     is_showing_commands: expression_has_command,
                 },

@@ -2,11 +2,11 @@ import { ID } from "../../../types.js";
 
 import * as Event from "../../../event.js";
 
-import * as Model from "../../../model/selector/slot/item.js";
+import * as Model from "../../../model/selector/settings.js";
 
 import * as Events from "../../events.js";
 import * as Entity from "../../entity.js";
-import * as Items from "./items.js";
+import * as Settings from "./instance.js";
 
 export class Instance extends Entity.Instance
 {
@@ -14,10 +14,10 @@ export class Instance extends Entity.Instance
 
     constructor(
         {
-            items,
+            settings,
             model,
         }: {
-            items: Items.Instance,
+            settings: Settings.Instance,
             model: () => Model.Instance,
         },
     )
@@ -25,8 +25,8 @@ export class Instance extends Entity.Instance
         super(
             {
                 element: `div`,
-                parent: items,
-                event_grid: items.Event_Grid(),
+                parent: settings,
+                event_grid: settings.Event_Grid(),
             },
         );
 
@@ -48,10 +48,10 @@ export class Instance extends Entity.Instance
                 {
                     event_name: new Event.Name(
                         Event.Prefix.ON,
-                        Events.SELECTOR_SLOT_ITEM_SELECT,
+                        Events.SELECTOR_SETTINGS_TOGGLE,
                         this.ID(),
                     ),
-                    event_handler: this.On_Selector_Slot_Item_Select,
+                    event_handler: this.On_Selector_Settings_Toggle,
                     event_priority: 0,
                 },
             ),
@@ -61,7 +61,9 @@ export class Instance extends Entity.Instance
     override On_Refresh():
         void
     {
-        this.Element().textContent = this.Model().Name();
+        if (this.Is_Visible()) {
+            this.Element().textContent = this.Model().Toggle_Symbol();
+        }
     }
 
     override On_Reclass():
@@ -70,9 +72,13 @@ export class Instance extends Entity.Instance
         const model: Model.Instance = this.Model();
         const classes: Array<string> = [];
 
-        classes.push(`Slot_Item`);
-        if (model.Is_Selected()) {
-            classes.push(`Slot_Item_Selected`);
+        classes.push(`Toggle`);
+        if (!this.Is_Visible()) {
+            classes.push(`Invisible`);
+        } else {
+            if (model.Is_Toggled()) {
+                classes.push(`Toggled_Toggle`);
+            }
         }
 
         return classes;
@@ -86,7 +92,7 @@ export class Instance extends Entity.Instance
         await this.Send(
             new Event.Info(
                 {
-                    affix: Events.SELECTOR_SLOT_ITEM_SELECT,
+                    affix: Events.SELECTOR_SETTINGS_TOGGLE,
                     suffixes: [
                         this.ID(),
                         this.Event_Grid_ID(),
@@ -98,10 +104,10 @@ export class Instance extends Entity.Instance
         );
     }
 
-    private async On_Selector_Slot_Item_Select():
+    private async On_Selector_Settings_Toggle():
         Promise<void>
     {
-        this.Model().Select();
+        this.Model().Toggle();
     }
 
     Model():
@@ -113,18 +119,18 @@ export class Instance extends Entity.Instance
     Event_Grid_ID():
         ID
     {
-        return this.Items().Event_Grid_ID();
+        return this.Settings().Event_Grid_ID();
     }
 
-    Items():
-        Items.Instance
+    Settings():
+        Settings.Instance
     {
-        return this.Parent() as Items.Instance;
+        return this.Parent() as Settings.Instance;
     }
 
     Is_Visible():
         boolean
     {
-        return this.Items().Is_Visible();
+        return this.Settings().Is_Visible();
     }
 }

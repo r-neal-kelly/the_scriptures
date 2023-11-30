@@ -58,15 +58,15 @@ export class Instance extends Entity.Instance
         return this.Slot().Event_Grid_ID();
     }
 
-    Is_Visible():
-        boolean
-    {
-        return this.Slot().Is_Visible();
-    }
-
     Slot():
         Slot.Instance
     {
         return this.Parent() as Slot.Instance;
+    }
+
+    Is_Visible():
+        boolean
+    {
+        return this.Slot().Is_Visible();
     }
 }
