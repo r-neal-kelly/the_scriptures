@@ -41,14 +41,6 @@ export class Instance extends Entity.Instance
     override On_Life():
         Array<Event.Listener_Info>
     {
-        this.Add_CSS(
-            `
-                .Invisible {
-                    display: none;
-                }
-            `,
-        );
-
         this.Add_This_CSS(
             `
                 .Settings {
@@ -106,6 +98,14 @@ export class Instance extends Entity.Instance
                 .Selected_Slot_Order {
                     background-color: white;
                     color: black;
+                }
+            `,
+        );
+
+        this.Add_CSS(
+            `
+                .Invisible {
+                    display: none;
                 }
             `,
         );

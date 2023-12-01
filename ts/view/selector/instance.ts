@@ -47,14 +47,24 @@ export class Instance extends Entity.Instance
     override On_Life():
         Array<Event.Listener_Info>
     {
-        this.Add_CSS(
+        this.Add_This_CSS(
             `
                 .Selector {
+                    display: grid;
+                    grid-template-columns: 1fr;
+                    grid-template-rows: auto 1fr;
+
+                    justify-items: stretch;
+                    align-items: stretch;
+                    justify-content: start;
+                    align-content: start;
+
                     position: absolute;
                     left: 0;
                     top: 0;
                     z-index: 1;
 
+                    width: 100%;
                     height: 100%;
 
                     background-color: hsl(0, 0%, 0%, 0.7);
@@ -62,12 +72,20 @@ export class Instance extends Entity.Instance
                     overflow-x: hidden;
                     overflow-y: hidden;
                 }
+            `,
+        );
 
+        this.Add_Children_CSS(
+            `
                 .Slots {
                     display: grid;
-                    grid-template-rows: 1fr;
                     grid-template-columns: repeat(4, 1fr);
+                    grid-template-rows: 1fr;
+                    
+                    justify-items: stretch;
+                    align-items: stretch;
                     justify-content: start;
+                    align-content: start;
 
                     width: 100%;
                     height: 100%;
@@ -150,7 +168,11 @@ export class Instance extends Entity.Instance
                     background-color: white;
                     color: black;
                 }
+            `,
+        );
 
+        this.Add_CSS(
+            `
                 .Invisible {
                     display: none;
                 }
@@ -187,7 +209,15 @@ export class Instance extends Entity.Instance
     override On_Reclass():
         Array<string>
     {
-        return [`Selector`];
+        const model: Model.Instance = this.Model();
+        const classes: Array<string> = [];
+
+        classes.push(`Selector`);
+        if (!this.Is_Visible()) {
+            classes.push(`Invisible`);
+        }
+
+        return classes;
     }
 
     Model():
