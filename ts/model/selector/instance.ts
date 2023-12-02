@@ -462,7 +462,7 @@ export class Instance extends Entity.Instance
                 version: this.Has_Version() ?
                     this.Versions().Selected_Item().Name() :
                     null,
-                file: this.Has_Files() ?
+                file: this.Has_File() ?
                     this.Files().Selected_Item().Name() :
                     null,
             },
@@ -483,7 +483,7 @@ export class Instance extends Entity.Instance
                 version: this.Has_Version() ?
                     this.Versions().Selected_Item().Index() :
                     null,
-                file: this.Has_Files() ?
+                file: this.Has_File() ?
                     this.Files().Selected_Item().Index() :
                     null,
             },
@@ -601,19 +601,19 @@ export class Instance extends Entity.Instance
                 this.Push_Slot();
             } else if (this.Settings().Does_Smart_Item_Selection()) {
                 const book_name: Name | null =
-                    this.Has_Books() && this.Books().Has_Selected_Item() ?
+                    this.Has_Book() ?
                         this.Books().Selected_Item().Name() :
                         null;
                 const language_name: Name | null =
-                    this.Has_Languages() && this.Languages().Has_Selected_Item() ?
+                    this.Has_Language() ?
                         this.Languages().Selected_Item().Name() :
                         null;
                 const version_name: Name | null =
-                    this.Has_Versions() && this.Versions().Has_Selected_Item() ?
+                    this.Has_Version() ?
                         this.Versions().Selected_Item().Name() :
                         null;
                 const file_name: Name | null =
-                    this.Has_Files() && this.Files().Has_Selected_Item() ?
+                    this.Has_File() ?
                         this.Files().Selected_Item().Name() :
                         null;
 
