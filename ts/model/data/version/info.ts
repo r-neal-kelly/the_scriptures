@@ -4,6 +4,38 @@ import { Name } from "../../../types.js";
 import * as Utils from "../../../utils.js";
 
 import * as Name_Sorter from "../../name_sorter.js";
+import * as Text from "../../text.js";
+
+import * as Buffer_Counts from "../buffer_counts.js";
+import
+{
+    FILE_COUNT,
+
+    LINES,
+    MIN_LINE_COUNT,
+    MAX_LINE_COUNT,
+    AVG_LINE_COUNT,
+
+    COLUMNS,
+    MIN_COLUMN_COUNT,
+    MAX_COLUMN_COUNT,
+    AVG_COLUMN_COUNT,
+
+    MACRO_ROWS,
+    MICRO_ROWS,
+    MIN_ROW_COUNT,
+    MAX_ROW_COUNT,
+    AVG_ROW_COUNT,
+
+    SEGMENTS,
+    MIN_SEGMENT_COUNT,
+    MAX_SEGMENT_COUNT,
+    AVG_SEGMENT_COUNT,
+
+    MIN_ITEM_COUNT,
+    MAX_ITEM_COUNT,
+    AVG_ITEM_COUNT,
+} from "../buffer_counts.js";
 
 export class Info
 {
@@ -32,6 +64,8 @@ export class Info
     private language_part_counts: { [language_name: Name]: Count };
     private language_line_counts: { [language_name: Name]: Count };
     private language_file_counts: { [language_name: Name]: Count };
+
+    private buffer_counts: Buffer_Counts.Buffer;
 
     constructor(
         {
@@ -70,6 +104,8 @@ export class Info
             this.language_line_counts = primitive.language_line_counts;
             this.language_file_counts = primitive.language_file_counts;
 
+            this.buffer_counts = primitive.buffer_counts;
+
             this.Freeze();
         } else {
             this.unique_language_names = [];
@@ -97,63 +133,148 @@ export class Info
             this.language_part_counts = {};
             this.language_line_counts = {};
             this.language_file_counts = {};
+
+            this.buffer_counts = {
+                [MIN_LINE_COUNT]: Number.MAX_SAFE_INTEGER,
+                [MAX_LINE_COUNT]: 0,
+                [AVG_LINE_COUNT]: 0,
+                [FILE_COUNT]: 0,
+                [LINES]: [] as any,
+            };
         }
     }
 
-    Is_Frozen():
+    Is_Finalized():
         boolean
     {
-        return Object.isFrozen(this.unique_language_names);
+        return this.Is_Frozen();
     }
 
-    Freeze():
+    Finalize():
         void
     {
-        if (!this.Is_Frozen()) {
-            const name_sorter: Name_Sorter.Instance = Name_Sorter.Singleton();
+        Utils.Assert(
+            !this.Is_Finalized(),
+            `is already finalized`,
+        );
 
-            this.unique_language_names =
-                name_sorter.With_Array(Name_Sorter.Type.LANGUAGES, this.unique_language_names);
-
-            Object.freeze(this.unique_language_names);
-
-            Object.freeze(this.language_unit_counts);
-            Object.freeze(this.language_point_counts);
-            Object.freeze(this.language_letter_counts);
-            Object.freeze(this.language_marker_counts);
-            Object.freeze(this.language_meta_letter_counts);
-            Object.freeze(this.language_word_counts);
-            Object.freeze(this.language_break_counts);
-            Object.freeze(this.language_meta_word_counts);
-            Object.freeze(this.language_part_counts);
-            Object.freeze(this.language_line_counts);
-            Object.freeze(this.language_file_counts);
-
-            Utils.Assert(
-                (
-                    this.Total_Word_Count() +
-                    this.Total_Meta_Word_Count() +
-                    this.Total_Break_Count()
-                ) === this.Total_Part_Count(),
-                `miscount of total_part_count!`,
-            );
-            Utils.Assert(
-                (
-                    this.Total_Letter_Count() +
-                    this.Total_Meta_Letter_Count() +
-                    this.Total_Marker_Count()
-                ) === this.Total_Point_Count(),
-                `miscount of total_point_count!`,
-            );
+        if (this.buffer_counts[FILE_COUNT] > 0) {
+            this.Calculate_Buffer_Averages();
         }
+
+        this.Freeze();
+    }
+
+    private Is_Frozen():
+        boolean
+    {
+        return Object.isFrozen(this);
+    }
+
+    private Freeze():
+        void
+    {
+        Utils.Assert(
+            !this.Is_Frozen(),
+            `is already frozen`,
+        );
+
+        const name_sorter: Name_Sorter.Instance = Name_Sorter.Singleton();
+
+        this.unique_language_names =
+            name_sorter.With_Array(Name_Sorter.Type.LANGUAGES, this.unique_language_names);
+
+        Object.freeze(this.unique_language_names);
+
+        Object.freeze(this.language_unit_counts);
+        Object.freeze(this.language_point_counts);
+        Object.freeze(this.language_letter_counts);
+        Object.freeze(this.language_marker_counts);
+        Object.freeze(this.language_meta_letter_counts);
+        Object.freeze(this.language_word_counts);
+        Object.freeze(this.language_break_counts);
+        Object.freeze(this.language_meta_word_counts);
+        Object.freeze(this.language_part_counts);
+        Object.freeze(this.language_line_counts);
+        Object.freeze(this.language_file_counts);
+
+        Object.freeze(this.buffer_counts);
+        for (
+            let line_idx = 0, line_end = this.buffer_counts[LINES].length;
+            line_idx < line_end;
+            line_idx += 1
+        ) {
+            const line_counts = this.buffer_counts[LINES][line_idx];
+            Object.freeze(line_counts);
+            for (
+                let column_idx = 0, column_end = line_counts[COLUMNS].length;
+                column_idx < column_end;
+                column_idx += 1
+            ) {
+                const column_counts = line_counts[COLUMNS][column_idx];
+                Object.freeze(column_counts);
+                for (
+                    let row_idx = 0, row_end = column_counts[MACRO_ROWS].length;
+                    row_idx < row_end;
+                    row_idx += 1
+                ) {
+                    const row_counts = column_counts[MACRO_ROWS][row_idx];
+                    Object.freeze(row_counts);
+                    for (
+                        let segment_idx = 0, segment_end = row_counts[SEGMENTS].length;
+                        segment_idx < segment_end;
+                        segment_idx += 1
+                    ) {
+                        const segment_counts = row_counts[SEGMENTS][segment_idx];
+                        Object.freeze(segment_counts);
+                    }
+                }
+                for (
+                    let row_idx = 0, row_end = column_counts[MICRO_ROWS].length;
+                    row_idx < row_end;
+                    row_idx += 1
+                ) {
+                    const row_counts = column_counts[MICRO_ROWS][row_idx];
+                    Object.freeze(row_counts);
+                    for (
+                        let segment_idx = 0, segment_end = row_counts[SEGMENTS].length;
+                        segment_idx < segment_end;
+                        segment_idx += 1
+                    ) {
+                        const segment_counts = row_counts[SEGMENTS][segment_idx];
+                        Object.freeze(segment_counts);
+                    }
+                }
+            }
+        }
+
+        Object.freeze(this);
+
+        Utils.Assert(
+            (
+                this.Total_Word_Count() +
+                this.Total_Meta_Word_Count() +
+                this.Total_Break_Count()
+            ) === this.Total_Part_Count(),
+            `miscount of total_part_count!`,
+        );
+        Utils.Assert(
+            (
+                this.Total_Letter_Count() +
+                this.Total_Meta_Letter_Count() +
+                this.Total_Marker_Count()
+            ) === this.Total_Point_Count(),
+            `miscount of total_point_count!`,
+        );
     }
 
     JSON_String():
         string
     {
-        if (!this.Is_Frozen()) {
-            this.Freeze();
-        }
+        Utils.Assert(
+            this.Is_Finalized(),
+            `is not finalized`,
+        );
 
         return JSON.stringify(this as any);
     }
@@ -190,8 +311,8 @@ export class Info
         void
     {
         Utils.Assert(
-            !this.Is_Frozen(),
-            `is frozen!`,
+            !this.Is_Finalized(),
+            `is finalized`,
         );
 
         if (!this.Has_Unique_Language_Name(language_name)) {
@@ -1289,6 +1410,304 @@ export class Info
     {
         for (const [language_name, count] of language_counts) {
             this.Increment_File_Count(language_name, count);
+        }
+    }
+
+    Buffer_Counts():
+        Buffer_Counts.Buffer
+    {
+        Utils.Assert(
+            this.Is_Finalized(),
+            `is not finalized`,
+        );
+
+        return this.buffer_counts;
+    }
+
+    Update_Buffer_Counts(
+        text: Text.Instance,
+    ):
+        void
+    {
+        const buffer_text = text;
+        const buffer_counts = this.buffer_counts;
+        const line_count: Count = buffer_text.Line_Count();
+        if (buffer_counts[MIN_LINE_COUNT] > line_count) {
+            buffer_counts[MIN_LINE_COUNT] = line_count;
+        }
+        if (buffer_counts[MAX_LINE_COUNT] < line_count) {
+            buffer_counts[MAX_LINE_COUNT] = line_count;
+        }
+        Utils.Assert(
+            buffer_counts[AVG_LINE_COUNT] + line_count <=
+            Number.MAX_SAFE_INTEGER,
+        );
+        buffer_counts[AVG_LINE_COUNT] += line_count;
+        buffer_counts[FILE_COUNT] += 1;
+        while (buffer_counts[LINES].length < line_count) {
+            buffer_counts[LINES].push(
+                {
+                    [MIN_COLUMN_COUNT]: Number.MAX_SAFE_INTEGER,
+                    [MAX_COLUMN_COUNT]: 0,
+                    [AVG_COLUMN_COUNT]: 0,
+                    [FILE_COUNT]: 0,
+                    [COLUMNS]: [] as any,
+                },
+            );
+        }
+        for (
+            let line_idx = 0, line_end = line_count;
+            line_idx < line_end;
+            line_idx += 1
+        ) {
+            const line_text: Text.Line.Instance = buffer_text.Line(line_idx);
+            const line_counts = buffer_counts[LINES][line_idx];
+            const column_count: Count = line_text.Column_Count();
+            Utils.Assert(line_counts != null);
+            if (line_counts[MIN_COLUMN_COUNT] > column_count) {
+                line_counts[MIN_COLUMN_COUNT] = column_count;
+            }
+            if (line_counts[MAX_COLUMN_COUNT] < column_count) {
+                line_counts[MAX_COLUMN_COUNT] = column_count;
+            }
+            Utils.Assert(
+                line_counts[AVG_COLUMN_COUNT] + column_count <=
+                Number.MAX_SAFE_INTEGER,
+            );
+            line_counts[AVG_COLUMN_COUNT] += column_count;
+            line_counts[FILE_COUNT] += 1;
+            while (line_counts[COLUMNS].length < column_count) {
+                line_counts[COLUMNS].push(
+                    {
+                        [MIN_ROW_COUNT]: Number.MAX_SAFE_INTEGER,
+                        [MAX_ROW_COUNT]: 0,
+                        [AVG_ROW_COUNT]: 0,
+                        [FILE_COUNT]: 0,
+                        [MACRO_ROWS]: [] as any,
+                        [MICRO_ROWS]: [] as any,
+                    },
+                );
+            }
+            for (
+                let column_idx = 0, column_end = column_count;
+                column_idx < column_end;
+                column_idx += 1
+            ) {
+                const column_text: Text.Column.Instance = line_text.Column(column_idx);
+                const column_counts = line_counts[COLUMNS][column_idx];
+                const row_count: Count = column_text.Row_Count();
+                Utils.Assert(column_counts != null);
+                if (column_counts[MIN_ROW_COUNT] > row_count) {
+                    column_counts[MIN_ROW_COUNT] = row_count;
+                }
+                if (column_counts[MAX_ROW_COUNT] < row_count) {
+                    column_counts[MAX_ROW_COUNT] = row_count;
+                }
+                Utils.Assert(
+                    column_counts[AVG_ROW_COUNT] + row_count <=
+                    Number.MAX_SAFE_INTEGER,
+                );
+                column_counts[AVG_ROW_COUNT] += row_count;
+                column_counts[FILE_COUNT] += 1;
+                while (column_counts[MACRO_ROWS].length < row_count) {
+                    column_counts[MACRO_ROWS].push(
+                        {
+                            [MIN_SEGMENT_COUNT]: Number.MAX_SAFE_INTEGER,
+                            [MAX_SEGMENT_COUNT]: 0,
+                            [AVG_SEGMENT_COUNT]: 0,
+                            [FILE_COUNT]: 0,
+                            [SEGMENTS]: [] as any,
+                        },
+                    );
+                }
+                while (column_counts[MICRO_ROWS].length < row_count) {
+                    column_counts[MICRO_ROWS].push(
+                        {
+                            [MIN_SEGMENT_COUNT]: Number.MAX_SAFE_INTEGER,
+                            [MAX_SEGMENT_COUNT]: 0,
+                            [AVG_SEGMENT_COUNT]: 0,
+                            [FILE_COUNT]: 0,
+                            [SEGMENTS]: [] as any,
+                        },
+                    );
+                }
+                for (
+                    let row_idx = 0, row_end = row_count;
+                    row_idx < row_end;
+                    row_idx += 1
+                ) {
+                    const row_text: Text.Row.Instance = column_text.Row(row_idx);
+                    const macro_row_counts = column_counts[MACRO_ROWS][row_idx];
+                    const macro_segment_count: Count = row_text.Macro_Segment_Count();
+                    Utils.Assert(macro_row_counts != null);
+                    if (macro_row_counts[MIN_SEGMENT_COUNT] > macro_segment_count) {
+                        macro_row_counts[MIN_SEGMENT_COUNT] = macro_segment_count;
+                    }
+                    if (macro_row_counts[MAX_SEGMENT_COUNT] < macro_segment_count) {
+                        macro_row_counts[MAX_SEGMENT_COUNT] = macro_segment_count;
+                    }
+                    Utils.Assert(
+                        macro_row_counts[AVG_SEGMENT_COUNT] + macro_segment_count <=
+                        Number.MAX_SAFE_INTEGER,
+                    );
+                    macro_row_counts[AVG_SEGMENT_COUNT] += macro_segment_count;
+                    macro_row_counts[FILE_COUNT] += 1;
+                    while (macro_row_counts[SEGMENTS].length < macro_segment_count) {
+                        macro_row_counts[SEGMENTS].push(
+                            {
+                                [MIN_ITEM_COUNT]: Number.MAX_SAFE_INTEGER,
+                                [MAX_ITEM_COUNT]: 0,
+                                [AVG_ITEM_COUNT]: 0,
+                                [FILE_COUNT]: 0,
+                            },
+                        );
+                    }
+                    for (
+                        let segment_idx = 0, segment_end = macro_segment_count;
+                        segment_idx < segment_end;
+                        segment_idx += 1
+                    ) {
+                        const segment_text: Text.Segment.Instance = row_text.Macro_Segment(segment_idx);
+                        const segment_counts = macro_row_counts[SEGMENTS][segment_idx];
+                        const item_count: Count = segment_text.Item_Count();
+                        Utils.Assert(segment_counts != null);
+                        if (segment_counts[MIN_ITEM_COUNT] > item_count) {
+                            segment_counts[MIN_ITEM_COUNT] = item_count;
+                        }
+                        if (segment_counts[MAX_ITEM_COUNT] < item_count) {
+                            segment_counts[MAX_ITEM_COUNT] = item_count;
+                        }
+                        Utils.Assert(
+                            segment_counts[AVG_ITEM_COUNT] + item_count <=
+                            Number.MAX_SAFE_INTEGER,
+                        );
+                        segment_counts[AVG_ITEM_COUNT] += item_count;
+                        segment_counts[FILE_COUNT] += 1;
+                    }
+                    const micro_row_counts = column_counts[MICRO_ROWS][row_idx];
+                    const micro_segment_count: Count = row_text.Micro_Segment_Count();
+                    Utils.Assert(micro_row_counts != null);
+                    if (micro_row_counts[MIN_SEGMENT_COUNT] > micro_segment_count) {
+                        micro_row_counts[MIN_SEGMENT_COUNT] = micro_segment_count;
+                    }
+                    if (micro_row_counts[MAX_SEGMENT_COUNT] < micro_segment_count) {
+                        micro_row_counts[MAX_SEGMENT_COUNT] = micro_segment_count;
+                    }
+                    Utils.Assert(
+                        micro_row_counts[AVG_SEGMENT_COUNT] + micro_segment_count <=
+                        Number.MAX_SAFE_INTEGER,
+                    );
+                    micro_row_counts[AVG_SEGMENT_COUNT] += micro_segment_count;
+                    micro_row_counts[FILE_COUNT] += 1;
+                    while (micro_row_counts[SEGMENTS].length < micro_segment_count) {
+                        micro_row_counts[SEGMENTS].push(
+                            {
+                                [MIN_ITEM_COUNT]: Number.MAX_SAFE_INTEGER,
+                                [MAX_ITEM_COUNT]: 0,
+                                [AVG_ITEM_COUNT]: 0,
+                                [FILE_COUNT]: 0,
+                            },
+                        );
+                    }
+                    for (
+                        let segment_idx = 0, segment_end = micro_segment_count;
+                        segment_idx < segment_end;
+                        segment_idx += 1
+                    ) {
+                        const segment_text: Text.Segment.Instance = row_text.Micro_Segment(segment_idx);
+                        const segment_counts = micro_row_counts[SEGMENTS][segment_idx];
+                        const item_count: Count = segment_text.Item_Count();
+                        Utils.Assert(segment_counts != null);
+                        if (segment_counts[MIN_ITEM_COUNT] > item_count) {
+                            segment_counts[MIN_ITEM_COUNT] = item_count;
+                        }
+                        if (segment_counts[MAX_ITEM_COUNT] < item_count) {
+                            segment_counts[MAX_ITEM_COUNT] = item_count;
+                        }
+                        Utils.Assert(
+                            segment_counts[AVG_ITEM_COUNT] + item_count <=
+                            Number.MAX_SAFE_INTEGER,
+                        );
+                        segment_counts[AVG_ITEM_COUNT] += item_count;
+                        segment_counts[FILE_COUNT] += 1;
+                    }
+                }
+            }
+        }
+    }
+
+    private Calculate_Buffer_Averages():
+        void
+    {
+        this.buffer_counts[AVG_LINE_COUNT] = Math.round(
+            this.buffer_counts[AVG_LINE_COUNT] /
+            this.buffer_counts[FILE_COUNT],
+        );
+        for (
+            let line_idx = 0, line_end = this.buffer_counts[LINES].length;
+            line_idx < line_end;
+            line_idx += 1
+        ) {
+            const line_counts = this.buffer_counts[LINES][line_idx];
+            line_counts[AVG_COLUMN_COUNT] = Math.round(
+                line_counts[AVG_COLUMN_COUNT] /
+                line_counts[FILE_COUNT],
+            );
+            for (
+                let column_idx = 0, column_end = line_counts[COLUMNS].length;
+                column_idx < column_end;
+                column_idx += 1
+            ) {
+                const column_counts = line_counts[COLUMNS][column_idx];
+                column_counts[AVG_ROW_COUNT] = Math.round(
+                    column_counts[AVG_ROW_COUNT] /
+                    column_counts[FILE_COUNT],
+                );
+                for (
+                    let row_idx = 0, row_end = column_counts[MACRO_ROWS].length;
+                    row_idx < row_end;
+                    row_idx += 1
+                ) {
+                    const row_counts = column_counts[MACRO_ROWS][row_idx];
+                    row_counts[AVG_SEGMENT_COUNT] = Math.round(
+                        row_counts[AVG_SEGMENT_COUNT] /
+                        row_counts[FILE_COUNT],
+                    );
+                    for (
+                        let segment_idx = 0, segment_end = row_counts[SEGMENTS].length;
+                        segment_idx < segment_end;
+                        segment_idx += 1
+                    ) {
+                        const segment_counts = row_counts[SEGMENTS][segment_idx];
+                        segment_counts[AVG_ITEM_COUNT] = Math.round(
+                            segment_counts[AVG_ITEM_COUNT] /
+                            segment_counts[FILE_COUNT],
+                        );
+                    }
+                }
+                for (
+                    let row_idx = 0, row_end = column_counts[MICRO_ROWS].length;
+                    row_idx < row_end;
+                    row_idx += 1
+                ) {
+                    const row_counts = column_counts[MICRO_ROWS][row_idx];
+                    row_counts[AVG_SEGMENT_COUNT] = Math.round(
+                        row_counts[AVG_SEGMENT_COUNT] /
+                        row_counts[FILE_COUNT],
+                    );
+                    for (
+                        let segment_idx = 0, segment_end = row_counts[SEGMENTS].length;
+                        segment_idx < segment_end;
+                        segment_idx += 1
+                    ) {
+                        const segment_counts = row_counts[SEGMENTS][segment_idx];
+                        segment_counts[AVG_ITEM_COUNT] = Math.round(
+                            segment_counts[AVG_ITEM_COUNT] /
+                            segment_counts[FILE_COUNT],
+                        );
+                    }
+                }
+            }
         }
     }
 }

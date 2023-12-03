@@ -319,6 +319,7 @@ async function Generate(
                                 },
                             );
                             version_info.Increment_Line_Count(language_name, text.Line_Count());
+                            version_info.Update_Buffer_Counts(text);
                             file_texts.push(file_text);
                             for (
                                 let line_idx = 0, line_end = text.Line_Count();
@@ -457,6 +458,7 @@ async function Generate(
                             `   Version Name: ${version_name}\n` +
                             `${Decompression_Line_Mismatches(full_text, decompressed_full_text)}`,
                         );
+                        version_info.Finalize();
                         files_to_write.push(
                             File_System.Write_File(
                                 `${files_path}/${INFO_JSON_NAME}`,
@@ -534,9 +536,11 @@ async function Generate(
                     data_info.Increment_Line_Counts(version_info.Language_Line_Counts());
                     data_info.Increment_File_Counts(version_info.Language_File_Counts());
                     data_info.Increment_Book_Count(language_name, 1);
+                    data_info.Update_Buffer_Counts(version_info);
                 }
             }
         }
+        data_info.Finalize();
         await File_System.Write_File(
             `${DATA_PATH}/${INFO_JSON_NAME}`,
             data_info.JSON_String(),

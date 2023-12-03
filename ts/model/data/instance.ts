@@ -57,7 +57,7 @@ export class Instance extends Async.Instance
         return this.books_path;
     }
 
-    private Info():
+    Info():
         Info
     {
         Utils.Assert(
@@ -1214,7 +1214,7 @@ export class Instance extends Async.Instance
             }
         } else {
             this.info = new Info({});
-            this.info.Freeze();
+            this.info.Finalize();
         }
     }
 }
