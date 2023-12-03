@@ -1,0 +1,438 @@
+⸨col⸩⸨err:⸨b⸩⸨sc⸩Matthew⸨/sc⸩⸨/b⸩⸩Matt⸼⸨/err⸩⸨col⸩⸨err:⸨b⸩⸨sc⸩Clementine Ed⸼ Vulg⸼⸨/sc⸩⸨/b⸩⸩⸨sc⸩Clementine Ed⸼ Vulg⸼⸨/sc⸩⸨/err⸩⸨col⸩⸨err:⸨b⸩⸨sc⸩Tischendorf, Cod⸼ Amiat⸼⸨/sc⸩⸨/b⸩⸩⸨sc⸩Tischendorf, Cod⸼ Amiat⸼⸨/sc⸩⸨/err⸩
+⸨col⸩i⸼ 3⸨col⸩⸨lang:Latin⸩Zaram⸨/lang⸩⸨col⸩⸨lang:Latin⸩Zarad⸨/lang⸩
+⸨col⸩i⸼ 3⸨col⸩⸨lang:Latin⸩Esron⸨/lang⸩⸨col⸩⸨lang:Latin⸩Esrom⸨/lang⸩
+⸨col⸩i⸼ 5⸨col⸩⸨lang:Latin⸩Rahab⸨/lang⸩⸨col⸩⸨lang:Latin⸩Racab⸨/lang⸩
+⸨col⸩i⸼ 5⸨col⸩⸨lang:Latin⸩Obed⸨/lang⸩⸨col⸩⸨lang:Latin⸩Obeth⸨/lang⸩
+⸨col⸩i⸼ 7⸨col⸩⸨lang:Latin⸩Abias⸨/lang⸩⸨col⸩⸨lang:Latin⸩Abia⸨/lang⸩
+⸨col⸩i⸼ 10⸨col⸩⸨lang:Latin⸩Manassen⸨/lang⸩⸨col⸩⸨lang:Latin⸩Manassem⸨/lang⸩
+⸨col⸩i⸼ 11⸨col⸩⸨lang:Latin⸩transmigratione⸨/lang⸩⸨col⸩⸨lang:Latin⸩transmigrationem⸨/lang⸩
+⸨col⸩i⸼ 13⸨col⸩⸨lang:Latin⸩Eliacim⸨/lang⸩⸨col⸩⸨lang:Latin⸩Eliachim⸨/lang⸩
+⸨col⸩i⸼ 14⸨col⸩⸨lang:Latin⸩Sadoc⸨/lang⸩⸨col⸩⸨lang:Latin⸩Saddoc⸨/lang⸩
+⸨col⸩i⸼ 15⸨col⸩⸨lang:Latin⸩Mathan⸨/lang⸩⸨col⸩⸨lang:Latin⸩Matthan⸨/lang⸩
+⸨col⸩i⸼ 20⸨col⸩⸨lang:Latin⸩apparuit in somnis⸨/lang⸩⸨col⸩⸨lang:Latin⸩in somnis apparuit⸨/lang⸩
+⸨col⸩ii⸼ 1⸨col⸩⸨lang:Latin⸩Bethlehem⸨/lang⸩⸨col⸩⸨lang:Latin⸩Bethleem (⸨i⸩freq⸼⸨/i⸩)⸨/lang⸩⸨row⸩⸨lang:Latin⸩Bethlem⸨/lang⸩ (Luke ii⸼ 15)⸨err:⸩.⸨/err⸩
+⸨col⸩ii⸼ 1⸨col⸩⸨lang:Latin⸩Juda⸨/lang⸩⸨col⸩⸨lang:Latin⸩Judeæ⸨/lang⸩
+⸨col⸩ii⸼ 1⸨col⸩⸨lang:Latin⸩Jerosolymam⸨/lang⸩⸨col⸩⸨lang:Latin⸩Hierosolymam (⸨i⸩freq⸼⸨/i⸩)⸨/lang⸩
+⸨col⸩ii⸼ 5⸨col⸩⸨lang:Latin⸩Judæ⸨/lang⸩⸨col⸩⸨lang:Latin⸩Judeæ⸨/lang⸩
+⸨col⸩ii⸼ 6⸨col⸩⸨lang:Latin⸩regat⸨/lang⸩⸨col⸩⸨lang:Latin⸩reget⸨/lang⸩
+⸨col⸩ii⸼ 6⸨col⸩⸨lang:Latin⸩Israël⸨/lang⸩⸨col⸩⸨lang:Latin⸩Israhel (⸨i⸩freq⸼⸨/i⸩)⸨/lang⸩
+⸨col⸩ii⸼ 11⸨col⸩⸨lang:Latin⸩thus⸨/lang⸩⸨col⸩⸨lang:Latin⸩tus⸨/lang⸩
+⸨col⸩ii⸼ 11⸨col⸩⸨lang:Latin⸩myrrham⸨/lang⸩⸨col⸩⸨lang:Latin⸩murram⸨/lang⸩
+⸨col⸩ii⸼ 13⸨col⸩⸨lang:Latin⸩somnis⸨/lang⸩⸨col⸩⸨lang:Latin⸩somnio⸨/lang⸩
+⸨col⸩ii⸼ 17⸨col⸩⸨lang:Latin⸩Jeremiam⸨/lang⸩⸨col⸩⸨lang:Latin⸩Hierimiam⸨/lang⸩
+⸨col⸩ii⸼ 19⸨col⸩⸨lang:Latin⸩angelus Domini apparuit⸨/lang⸩⸨col⸩⸨lang:Latin⸩apparuit angelus Domini⸨/lang⸩
+⸨col⸩ii⸼ 22⸨col⸩⸨lang:Latin⸩quod⸨/lang⸩⸨col⸩⸨lang:Latin⸩quia⸨/lang⸩
+⸨col⸩ii⸼ 22⸨col⸩⸨lang:Latin⸩illo⸨/lang⸩⸨col⸩⸨lang:Latin⸩illuc⸨/lang⸩
+⸨col⸩ii⸼ 22⸨col⸩⸨lang:Latin⸩Nazaræus⸨/lang⸩⸨col⸩⸨lang:Latin⸩Nazareus⸨/lang⸩
+⸨col⸩iii⸼ 1⸨col⸩⸨lang:Latin⸩Joannes⸨/lang⸩⸨col⸩⸨lang:Latin⸩Johannes (⸨i⸩freq⸼⸨/i⸩)⸨/lang⸩
+⸨col⸩iii⸼ 2⸨col⸩⸨lang:Latin⸩pœnitentiam⸨/lang⸩⸨col⸩⸨lang:Latin⸩pænitentiam (⸨i⸩freq⸼⸨/i⸩)⸨/lang⸩
+⸨col⸩iii⸼ 2⸨col⸩⸨lang:Latin⸩appropinquavit⸨/lang⸩⸨col⸩⸨lang:Latin⸩adpropinquavit (adp⸼ ⸨i⸩⸨err:freq⸼⸩freq⸨/err⸩⸨/i⸩)⸨/lang⸩
+⸨col⸩iii⸼ 3⸨col⸩⸨lang:Latin⸩Isaiam⸨/lang⸩⸨col⸩⸨lang:Latin⸩Esaiam (⸨i⸩freq⸼⸨/i⸩)⸨/lang⸩
+⸨col⸩iii⸼ 4⸨col⸩⸨lang:Latin⸩pelliceam⸨/lang⸩⸨col⸩⸨lang:Latin⸩pelliciam⸨/lang⸩
+⸨col⸩iii⸼ 4⸨col⸩⸨lang:Latin⸩locustæ⸨/lang⸩⸨col⸩⸨lang:Latin⸩lucustæ⸨/lang⸩
+⸨col⸩iii⸼ 5⸨col⸩⸨lang:Latin⸩Jordanem⸨/lang⸩⸨col⸩⸨lang:Latin⸩Jordanen (⸨i⸩freq⸼⸨/i⸩)⸨/lang⸩
+⸨col⸩iii⸼ 6⸨col⸩⸨lang:Latin⸩ab eo in Jordane⸨/lang⸩⸨col⸩⸨lang:Latin⸩in Jordane ab eo⸨/lang⸩
+⸨col⸩iii⸼ 9⸨col⸩⸨lang:Latin⸩potens est⸨/lang⸩⸨col⸩⸨lang:Latin⸩potest⸨/lang⸩
+⸨col⸩iii⸼ 11⸨col⸩⸨lang:Latin⸩baptizo vos⸨/lang⸩⸨col⸩⸨lang:Latin⸩vos baptizo⸨/lang⸩
+⸨col⸩iii⸼ 11⸨col⸩⸨lang:Latin⸩calceamenta⸨/lang⸩⸨col⸩⸨lang:Latin⸩calciamenta (⸨i⸩freq⸼⸨/i⸩)⸨/lang⸩
+⸨col⸩iii⸼ 11⸨col⸩⸨lang:Latin⸩baptizabit⸨/lang⸩⸨col⸩⸨lang:Latin⸩baptizavit⸨/lang⸩
+⸨col⸩iii⸼ 12⸨col⸩⸨lang:Latin⸩permundabit⸨/lang⸩⸨col⸩⸨lang:Latin⸩permundavit⸨/lang⸩
+⸨col⸩iii⸼ 16⸨col⸩⸨lang:Latin⸩et⸨/lang⸩⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩
+⸨col⸩iv⸼ 1⸨col⸩⸨lang:Latin⸩a⸨/lang⸩⸨col⸩⸨lang:Latin⸩ab⸨/lang⸩
+⸨col⸩iv⸼ 1⸨col⸩⸨lang:Latin⸩tentaretur⸨/lang⸩⸨col⸩⸨lang:Latin⸩temtaretur (⸨i⸩freq⸼⸨/i⸩)⸨/lang⸩
+⸨col⸩iv⸼ 3⸨col⸩⸨lang:Latin⸩tentator⸨/lang⸩⸨col⸩⸨lang:Latin⸩temtator (⸨i⸩freq⸼⸨/i⸩)⸨/lang⸩
+⸨col⸩iv⸼ 5⸨col⸩⸨lang:Latin⸩assumpsit⸨/lang⸩⸨col⸩⸨lang:Latin⸩assumsit⸨/lang⸩
+⸨col⸩iv⸼ 7⸨col⸩⸨lang:Latin⸩tentabis⸨/lang⸩⸨col⸩⸨lang:Latin⸩temtabis⸨/lang⸩
+⸨col⸩iv⸼ 8⸨col⸩⸨lang:Latin⸩assumpsit⸨/lang⸩⸨col⸩⸨lang:Latin⸩assumit⸨/lang⸩
+⸨col⸩iv⸼ 10⸨col⸩⸨lang:Latin⸩Satana⸨/lang⸩⸨col⸩⸨lang:Latin⸩Satanas⸨/lang⸩
+⸨col⸩iv⸼ 10⸨col⸩⸨lang:Latin⸩enim⸨/lang⸩⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩
+⸨col⸩iv⸼ 12⸨col⸩⸨lang:Latin⸩Jesus⸨/lang⸩⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩
+⸨col⸩iv⸼ 13⸨col⸩⸨lang:Latin⸩maritima⸨/lang⸩⸨col⸩⸨lang:Latin⸩maritimam⸨/lang⸩
+⸨col⸩iv⸼ 13⸨col⸩⸨lang:Latin⸩Nephthalim⸨/lang⸩⸨col⸩⸨lang:Latin⸩Nepthalim (⸨i⸩freq⸼⸨/i⸩)⸨/lang⸩
+⸨col⸩iv⸼ 15⸨col⸩⸨lang:Latin⸩Galilæa⸨/lang⸩⸨col⸩⸨lang:Latin⸩Galilææ⸨/lang⸩
+⸨col⸩iv⸼ 16⸨col⸩⸨lang:Latin⸩vidit lucem magnam⸨/lang⸩⸨col⸩⸨lang:Latin⸩lumen vidit magnum⸨/lang⸩
+⸨col⸩iv⸼ 16⸨col⸩⸨lang:Latin⸩umbræ⸨/lang⸩⸨col⸩⸨lang:Latin⸩et umbra⸨/lang⸩
+⸨col⸩iv⸼ 23⸨row⸩ix⸼ 35⸨col⸩⸨lang:Latin⸩circuibat⸨/lang⸩⸨col⸩⸨lang:Latin⸩circumibat⸨/lang⸩
+⸨col⸩iv⸼ 25⸨col⸩⸨lang:Latin⸩Decapoli⸨/lang⸩⸨col⸩⸨lang:Latin⸩Decapolim⸨/lang⸩
+⸨col⸩v⸼ 1⸨col⸩⸨lang:Latin⸩Jesus⸨/lang⸩⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩
+⸨col⸩v⸼ 12⸨col⸩⸨lang:Latin⸩exsultate⸨/lang⸩⸨col⸩⸨lang:Latin⸩exultate⸨/lang⸩
+⸨col⸩v⸼ 16⸨col⸩⸨lang:Latin⸩opera vestra bona⸨/lang⸩⸨col⸩⸨lang:Latin⸩vestra bona opera⸨/lang⸩
+⸨col⸩v⸼ 18⸨col⸩⸨lang:Latin⸩fiant⸨/lang⸩⸨col⸩⸨lang:Latin⸩fiunt⸨/lang⸩
+⸨col⸩v⸼ 22⸨col⸩⸨lang:Latin⸩Raca⸨/lang⸩⸨col⸩⸨lang:Latin⸩Racha⸨/lang⸩
+⸨col⸩v⸼ 23⸨col⸩⸨lang:Latin⸩offers⸨/lang⸩⸨col⸩⸨lang:Latin⸩offeres⸨/lang⸩
+⸨col⸩v⸼ 24⸨col⸩⸨lang:Latin⸩ante⸨/lang⸩⸨col⸩⸨lang:Latin⸩ad⸨/lang⸩
+⸨col⸩v⸼ 24⸨col⸩⸨lang:Latin⸩reconciliari⸨/lang⸩⸨col⸩⸨lang:Latin⸩reconciliare⸨/lang⸩
+⸨col⸩v⸼ 24⸨col⸩⸨lang:Latin⸩offeres⸨/lang⸩⸨col⸩⸨lang:Latin⸩offers⸨/lang⸩
+⸨col⸩v⸼ 27⸨col⸩⸨lang:Latin⸩quia⸨/lang⸩⸨col⸩⸨lang:Latin⸩quoniam⸨/lang⸩
+⸨col⸩v⸼ 29⸨col⸩⸨lang:Latin⸩projice⸨/lang⸩⸨col⸩⸨lang:Latin⸩proice (⸨i⸩freq⸼⸨/i⸩)⸨/lang⸩
+⸨col⸩v⸼ 29⸨col⸩⸨lang:Latin⸩mittetur⸨/lang⸩⸨col⸩⸨lang:Latin⸩mittatur⸨/lang⸩
+⸨col⸩v⸼ 33⸨col⸩⸨lang:Latin⸩perjurabis⸨/lang⸩⸨col⸩⸨lang:Latin⸩pejerabis⸨/lang⸩
+⸨col⸩v⸼ 39⸨col⸩⸨lang:Latin⸩dexteram maxillam tuam⸨/lang⸩⸨col⸩⸨lang:Latin⸩dextera maxilla tua⸨/lang⸩
+⸨col⸩v⸼ 41⸨col⸩⸨lang:Latin⸩angariaverit⸨/lang⸩⸨col⸩⸨lang:Latin⸩angariaberit⸨/lang⸩
+⸨col⸩v⸼ 41⸨col⸩⸨lang:Latin⸩et⸨/lang⸩⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩
+⸨col⸩v⸼ 46⸨col⸩⸨lang:Latin⸩diligitis⸨/lang⸩⸨col⸩⸨lang:Latin⸩diligatis⸨/lang⸩
+⸨col⸩v⸼ 47⸨col⸩⸨lang:Latin⸩et⸨/lang⸩⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩
+⸨col⸩vi⸼ 2⸨col⸩⸨lang:Latin⸩facis⸨/lang⸩⸨col⸩⸨lang:Latin⸩facies⸨/lang⸩
+⸨col⸩vi⸼ 2⸨col⸩⸨lang:Latin⸩eleemosynam⸨/lang⸩⸨col⸩⸨lang:Latin⸩elemosynam (⸨i⸩freq⸼⸨/i⸩)⸨/lang⸩
+⸨col⸩vi⸼ 4⸨col⸩⸨lang:Latin⸩nesciat⸨/lang⸩⸨col⸩⸨lang:Latin⸩ne sciat⸨/lang⸩
+⸨col⸩vi⸼ 6⸨col⸩⸨lang:Latin⸩oraveris⸨/lang⸩⸨col⸩⸨lang:Latin⸩orabis⸨/lang⸩
+⸨col⸩vi⸼ 7⸨col⸩⸨lang:Latin⸩quod⸨/lang⸩⸨col⸩⸨lang:Latin⸩quia⸨/lang⸩
+⸨col⸩vi⸼ 13⸨col⸩⸨lang:Latin⸩nos inducas⸨/lang⸩⸨col⸩⸨lang:Latin⸩inducas nos⸨/lang⸩
+⸨col⸩vi⸼ 13⸨col⸩⸨lang:Latin⸩tentationem⸨/lang⸩⸨col⸩⸨lang:Latin⸩temtationem (⸨i⸩freq⸼⸨/i⸩)⸨/lang⸩
+⸨col⸩vi⸼ 13⸨col⸩⸨lang:Latin⸩(quia tuum—seculorum)⸨/lang⸩⸨col⸩⸨lang:Latin⸩(desunt hæc verba utrique codici)⸨/lang⸩
+⸨col⸩vi⸼ 13⸨col⸩⸨lang:Latin⸩Amen*⸨/lang⸩⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩
+⸨col⸩vi⸼ 16⸨col⸩⸨lang:Latin⸩appareant⸨/lang⸩⸨col⸩⸨lang:Latin⸩pareant⸨/lang⸩
+⸨col⸩vi⸼ 19⸨col⸩⸨lang:Latin⸩ærugo⸨/lang⸩⸨col⸩⸨lang:Latin⸩erugo (⸨i⸩freq⸼⸨/i⸩)⸨/lang⸩
+⸨col⸩vi⸼ 22⸨col⸩⸨lang:Latin⸩tui⸨/lang⸩⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩
+⸨col⸩vi⸼ 22⸨col⸩⸨lang:Latin⸩tuus⸨/lang⸩⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩
+⸨col⸩vi⸼ 22⸨col⸩⸨lang:Latin⸩oculus tuus fuerit⸨/lang⸩⸨col⸩⸨lang:Latin⸩fuerit oculus tuus⸨/lang⸩
+⸨col⸩vi⸼ 23⸨col⸩⸨lang:Latin⸩fuerit nequam⸨/lang⸩⸨col⸩⸨lang:Latin⸩nequam fuerit⸨/lang⸩
+⸨col⸩vi⸼ 24⸨col⸩⸨lang:Latin⸩mammonæ⸨/lang⸩⸨col⸩⸨lang:Latin⸩mamonæ⸨/lang⸩
+⸨col⸩vi⸼ 25⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩⸨col⸩⸨lang:Latin⸩est⸨/lang⸩
+⸨col⸩vi⸼ 26⸨col⸩⸨lang:Latin⸩pluris⸨/lang⸩⸨col⸩⸨lang:Latin⸩plures⸨/lang⸩
+⸨col⸩vi⸼ 30⸨col⸩⸨lang:Latin⸩fenum⸨/lang⸩⸨col⸩⸨lang:Latin⸩fænum⸨/lang⸩
+⸨col⸩vi⸼ 30⸨col⸩⸨lang:Latin⸩modicæ⸨/lang⸩⸨col⸩⸨lang:Latin⸩minimæ⸨/lang⸩
+⸨col⸩vi⸼ 33⸨col⸩⸨lang:Latin⸩Dei⸨/lang⸩⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩
+⸨col⸩vi⸼ 33⸨col⸩⸨lang:Latin⸩hæc omnia⸨/lang⸩⸨col⸩⸨lang:Latin⸩omnia hæc⸨/lang⸩
+⸨col⸩vi⸼ 34⸨col⸩⸨lang:Latin⸩ipsi⸨/lang⸩⸨col⸩⸨lang:Latin⸩ipse⸨/lang⸩
+⸨col⸩vii⸼ 2⸨col⸩⸨lang:Latin⸩remetietur⸨/lang⸩⸨col⸩⸨lang:Latin⸩metietur⸨/lang⸩
+⸨col⸩vii⸼ 4⸨col⸩⸨lang:Latin⸩ejiciam⸨/lang⸩⸨col⸩⸨lang:Latin⸩eiciam (⸨i⸩freq⸼⸨/i⸩)⸨/lang⸩
+⸨col⸩vii⸼ 4⸨col⸩⸨lang:Latin⸩trabs⸨/lang⸩⸨col⸩⸨lang:Latin⸩trabes⸨/lang⸩
+⸨col⸩vii⸼ 6⸨col⸩⸨lang:Latin⸩dirumpant⸨/lang⸩⸨col⸩⸨lang:Latin⸩disrumpant⸨/lang⸩
+⸨col⸩vii⸼ 12⸨col⸩⸨lang:Latin⸩illis⸨/lang⸩⸨col⸩⸨lang:Latin⸩eis⸨/lang⸩
+⸨col⸩vii⸼ 13⸨col⸩⸨lang:Latin⸩est⸨/lang⸩⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩
+⸨col⸩vii⸼ 14⸨col⸩⸨lang:Latin⸩arcta⸨/lang⸩⸨col⸩⸨lang:Latin⸩arta⸨/lang⸩
+⸨col⸩vii⸼ 14⸨col⸩⸨lang:Latin⸩est⸨/lang⸩⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩
+⸨col⸩vii⸼ 16⸨col⸩⸨lang:Latin⸩tribulis⸨/lang⸩⸨col⸩⸨lang:Latin⸩tribolis⸨/lang⸩
+⸨col⸩vii⸼ 18⸨col⸩⸨lang:Latin⸩malos fructus⸨/lang⸩⸨col⸩⸨lang:Latin⸩fructus malos⸨/lang⸩
+⸨col⸩vii⸼ 18⸨col⸩⸨lang:Latin⸩bonos fructus⸨/lang⸩⸨col⸩⸨lang:Latin⸩fructus bonos⸨/lang⸩
+⸨col⸩vii⸼ 25⸨col⸩⸨lang:Latin⸩irruerunt⸨/lang⸩⸨col⸩⸨lang:Latin⸩inruerunt (inr⸼ ⸨i⸩freq⸼⸨/i⸩)⸨/lang⸩
+⸨col⸩vii⸼ 26⸨col⸩⸨lang:Latin⸩super arenam⸨/lang⸩⸨col⸩⸨lang:Latin⸩supra harenam⸨/lang⸩
+⸨col⸩vii⸼ 27⸨col⸩⸨lang:Latin⸩illius⸨/lang⸩⸨col⸩⸨lang:Latin⸩ejus⸨/lang⸩
+⸨col⸩vii⸼ 28⸨col⸩⸨lang:Latin⸩admirabantur⸨/lang⸩⸨col⸩⸨lang:Latin⸩ammirabantur (amm⸼ ⸨i⸩freq⸼⸨/i⸩)⸨/lang⸩
+⸨col⸩vii⸼ 29⸨col⸩⸨lang:Latin⸩et⸨/lang⸩⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩
+⸨col⸩viii⸼ 3⸨col⸩⸨lang:Latin⸩Jesus⸨/lang⸩⸨col⸩(transposed)
+⸨col⸩viii⸼ 4⸨col⸩⸨lang:Latin⸩Moyses⸨/lang⸩⸨col⸩⸨lang:Latin⸩Moses (⸨i⸩freq⸼⸨/i⸩)⸨/lang⸩
+⸨col⸩viii⸼ 7⸨col⸩⸨lang:Latin⸩et⸨/lang⸩⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩
+⸨col⸩viii⸼ 16⸨col⸩⸨lang:Latin⸩obtulerunt⸨/lang⸩⸨col⸩⸨lang:Latin⸩optulerunt (⸨i⸩freq⸼⸨/i⸩)⸨/lang⸩
+⸨col⸩viii⸼ 17⸨col⸩⸨lang:Latin⸩ægrotationes⸨/lang⸩⸨col⸩⸨lang:Latin⸩egrotationes⸨/lang⸩
+⸨col⸩viii⸼ 17⸨col⸩⸨lang:Latin⸩nostras⸨/lang⸩⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩
+⸨col⸩viii⸼ 25⸨col⸩⸨lang:Latin⸩ad eum discipuli ejus⸨/lang⸩⸨col⸩⸨lang:Latin⸩(desunt)⸨/lang⸩
+⸨col⸩viii⸼ 26⸨col⸩⸨lang:Latin⸩Jesus⸨/lang⸩⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩
+⸨col⸩viii⸼ 26⸨col⸩⸨lang:Latin⸩imperavit⸨/lang⸩⸨col⸩⸨lang:Latin⸩increpavit⸨/lang⸩
+⸨col⸩viii⸼ 26⸨col⸩⸨lang:Latin⸩ventis⸨/lang⸩⸨col⸩⸨lang:Latin⸩vento⸨/lang⸩
+⸨col⸩viii⸼ 27⸨col⸩⸨lang:Latin⸩obediunt⸨/lang⸩⸨col⸩⸨lang:Latin⸩obœdiunt (⸨i⸩freq⸼⸨/i⸩)⸨/lang⸩
+⸨col⸩viii⸼ 29⸨col⸩⸨lang:Latin⸩Jesu⸨/lang⸩⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩
+⸨col⸩viii⸼ 29⸨col⸩⸨lang:Latin⸩fili⸨/lang⸩⸨col⸩⸨lang:Latin⸩filii (⸨i⸩freq⸼⸨/i⸩)⸨/lang⸩
+⸨col⸩viii⸼ 30⸨col⸩⸨lang:Latin⸩multorum porcorum⸨/lang⸩⸨col⸩⸨lang:Latin⸩porcorum multorum⸨/lang⸩
+⸨col⸩viii⸼ 31⸨col⸩⸨lang:Latin⸩hinc⸨/lang⸩⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩
+⸨col⸩viii⸼ 33⸨col⸩⸨lang:Latin⸩eis⸨/lang⸩⸨col⸩⸨lang:Latin⸩his⸨/lang⸩
+⸨col⸩ix⸼ 5⸨col⸩⸨lang:Latin⸩tua⸨/lang⸩⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩
+⸨col⸩ix⸼ 5⸨col⸩⸨lang:Latin⸩an⸨/lang⸩⸨col⸩⸨lang:Latin⸩aut⸨/lang⸩
+⸨col⸩ix⸼ 6⸨col⸩⸨lang:Latin⸩autem sciatis⸨/lang⸩⸨col⸩⸨lang:Latin⸩sciatis autem⸨/lang⸩
+⸨col⸩ix⸼ 6⸨col⸩⸨lang:Latin⸩quia⸨/lang⸩⸨col⸩⸨lang:Latin⸩quoniam⸨/lang⸩
+⸨col⸩ix⸼ 9⸨col⸩⸨lang:Latin⸩Matthæum⸨/lang⸩⸨col⸩⸨lang:Latin⸩Mattheum (⸨i⸩freq⸼⸨/i⸩)⸨/lang⸩
+⸨col⸩ix⸼ 12⸨col⸩⸨lang:Latin⸩medicus⸨/lang⸩⸨col⸩⸨lang:Latin⸩medico⸨/lang⸩
+⸨col⸩ix⸼ 16⸨col⸩⸨lang:Latin⸩immittit⸨/lang⸩⸨col⸩⸨lang:Latin⸩inmittit (inm⸼ ⸨i⸩freq⸼⸨/i⸩)⸨/lang⸩
+⸨col⸩ix⸼ 18⸨col⸩⸨lang:Latin⸩Domine⸨/lang⸩⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩
+⸨col⸩ix⸼ 18⸨col⸩⸨lang:Latin⸩tuam⸨/lang⸩⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩
+⸨col⸩ix⸼ 28⸨col⸩⸨lang:Latin⸩hoc possum⸨/lang⸩⸨col⸩⸨lang:Latin⸩possum hoc⸨/lang⸩
+⸨col⸩ix⸼ 30⸨col⸩⸨lang:Latin⸩eorum⸨/lang⸩⸨col⸩⸨lang:Latin⸩illorum⸨/lang⸩
+⸨col⸩ix⸼ 33⸨col⸩⸨lang:Latin⸩dæmonio⸨/lang⸩⸨col⸩⸨lang:Latin⸩dæmone⸨/lang⸩
+⸨col⸩ix⸼ 33⸨col⸩⸨lang:Latin⸩nunquam⸨/lang⸩⸨col⸩⸨lang:Latin⸩numquam (⸨i⸩freq⸼⸨/i⸩)⸨/lang⸩
+⸨col⸩ix⸼ 35⸨col⸩⸨lang:Latin⸩omnes civitates⸨/lang⸩⸨col⸩⸨lang:Latin⸩civitates omnes⸨/lang⸩
+⸨col⸩ix⸼ 38⸨col⸩⸨lang:Latin⸩mittat⸨/lang⸩⸨col⸩⸨lang:Latin⸩eiciat⸨/lang⸩
+⸨col⸩x⸼ 3⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩⸨col⸩⸨lang:Latin⸩et⸨/lang⸩
+⸨col⸩x⸼ 3⸨col⸩⸨lang:Latin⸩Alphæi⸨/lang⸩⸨col⸩⸨lang:Latin⸩Alphei⸨/lang⸩
+⸨col⸩x⸼ 4⸨col⸩⸨lang:Latin⸩Chananæus⸨/lang⸩⸨col⸩⸨lang:Latin⸩Cananæus⸨/lang⸩
+⸨col⸩x⸼ 4⸨col⸩⸨lang:Latin⸩Iscariotes⸨/lang⸩⸨col⸩⸨lang:Latin⸩Scariotes (⸨i⸩freq⸼⸨/i⸩)⸨/lang⸩
+⸨col⸩x⸼ 5⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩⸨col⸩⸨lang:Latin⸩et⸨/lang⸩
+⸨col⸩x⸼ 11⸨col⸩⸨lang:Latin⸩autem⸨/lang⸩⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩
+⸨col⸩x⸼ 12⸨col⸩⸨lang:Latin⸩dicentes: Pax huic domui⸨/lang⸩⸨col⸩⸨lang:Latin⸩(desunt)⸨/lang⸩
+⸨col⸩x⸼ 13⸨col⸩⸨lang:Latin⸩illa⸨/lang⸩⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩
+⸨col⸩x⸼ 13⸨col⸩⸨lang:Latin⸩revertetur ad vos⸨/lang⸩⸨col⸩⸨lang:Latin⸩ad vos revertatur⸨/lang⸩
+⸨col⸩x⸼ 14⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩⸨col⸩⸨lang:Latin⸩de⸨/lang⸩
+⸨col⸩x⸼ 14⸨col⸩⸨lang:Latin⸩(desunt)⸨/lang⸩⸨col⸩⸨lang:Latin⸩in testimonium eorum⸨/lang⸩
+⸨col⸩x⸼ 15⸨col⸩⸨lang:Latin⸩Gomorrhæorum⸨/lang⸩⸨col⸩⸨lang:Latin⸩Gomorræorum⸨/lang⸩
+⸨col⸩x⸼ 18⸨col⸩⸨lang:Latin⸩ducemini⸨/lang⸩⸨col⸩⸨lang:Latin⸩ducimini⸨/lang⸩
+⸨col⸩x⸼ 22⸨col⸩⸨lang:Latin⸩usque⸨/lang⸩⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩
+⸨col⸩x⸼ 23⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩⸨col⸩⸨lang:Latin⸩enim⸨/lang⸩
+⸨col⸩x⸼ 25⸨col⸩⸨lang:Latin⸩servo⸨/lang⸩⸨col⸩⸨lang:Latin⸩servus⸨/lang⸩
+⸨col⸩x⸼ 26⸨col⸩⸨lang:Latin⸩est⸨/lang⸩⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩
+⸨col⸩x⸼ 26⸨col⸩⸨lang:Latin⸩scietur⸨/lang⸩⸨col⸩⸨lang:Latin⸩sciatur⸨/lang⸩
+⸨col⸩x⸼ 28⸨col⸩⸨lang:Latin⸩timete eum⸨/lang⸩⸨col⸩⸨lang:Latin⸩eum timete⸨/lang⸩
+⸨col⸩x⸼ 29⸨col⸩⸨lang:Latin⸩væneunt⸨/lang⸩⸨col⸩⸨lang:Latin⸩veniunt⸨/lang⸩
+⸨col⸩x⸼ 30⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩⸨col⸩⸨lang:Latin⸩et⸨/lang⸩
+⸨col⸩x⸼ 32⸨col⸩⸨lang:Latin⸩in cælis est⸨/lang⸩⸨col⸩⸨lang:Latin⸩est in cælis⸨/lang⸩
+⸨col⸩x⸼ 34⸨col⸩⸨lang:Latin⸩pacem venerim mittere⸨/lang⸩⸨col⸩⸨lang:Latin⸩venerim mittere pacem⸨/lang⸩
+⸨col⸩x⸼ 37⸨col⸩⸨lang:Latin⸩aut⸨/lang⸩⸨col⸩⸨lang:Latin⸩et⸨/lang⸩
+⸨col⸩xi⸼ 4⸨col⸩⸨lang:Latin⸩Jesus⸨/lang⸩⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩
+⸨col⸩xi⸼ 7⸨col⸩⸨lang:Latin⸩arundinem⸨/lang⸩⸨col⸩⸨lang:Latin⸩harundinem (⸨i⸩freq⸼⸨/i⸩)⸨/lang⸩
+⸨col⸩xi⸼ 14⸨col⸩⸨lang:Latin⸩et⸨/lang⸩⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩
+⸨col⸩xi⸼ 14⸨col⸩⸨lang:Latin⸩Elias⸨/lang⸩⸨col⸩⸨lang:Latin⸩Helias (⸨i⸩freq⸼⸨/i⸩)⸨/lang⸩
+⸨col⸩xi⸼ 21⸨col⸩⸨lang:Latin⸩Corozain⸨/lang⸩⸨col⸩⸨lang:Latin⸩Chorazain⸨/lang⸩
+⸨col⸩xi⸼ 23⸨col⸩⸨lang:Latin⸩hanc⸨/lang⸩⸨col⸩⸨lang:Latin⸩hunc⸨/lang⸩
+⸨col⸩xii⸼ 1⸨col⸩⸨lang:Latin⸩per sata sabato⸨/lang⸩⸨col⸩⸨lang:Latin⸩sabato per sata⸨/lang⸩
+⸨col⸩xii⸼ 14⸨col⸩⸨lang:Latin⸩perderent eum⸨/lang⸩⸨col⸩⸨lang:Latin⸩eum perderent⸨/lang⸩
+⸨col⸩xii⸼ 15⸨col⸩⸨lang:Latin⸩recessit⸨/lang⸩⸨col⸩⸨lang:Latin⸩secessit⸨/lang⸩
+⸨col⸩xii⸼ 24⸨col⸩⸨lang:Latin⸩principe⸨/lang⸩⸨col⸩⸨lang:Latin⸩principem⸨/lang⸩
+⸨col⸩xii⸼ 26⸨col⸩⸨lang:Latin⸩Satanam⸨/lang⸩⸨col⸩⸨lang:Latin⸩Satanan⸨/lang⸩
+⸨col⸩xii⸼ 27⸨col⸩⸨lang:Latin⸩vestri erunt⸨/lang⸩⸨col⸩⸨lang:Latin⸩erunt vestri⸨/lang⸩
+⸨col⸩xii⸼ 29⸨col⸩⸨lang:Latin⸩diripiet⸨/lang⸩⸨col⸩⸨lang:Latin⸩diripiat⸨/lang⸩
+⸨col⸩xii⸼ 41⸨col⸩⸨lang:Latin⸩Jonas⸨/lang⸩⸨col⸩⸨lang:Latin⸩Jona⸨/lang⸩
+⸨col⸩xii⸼ 44⸨col⸩⸨lang:Latin⸩eam⸨/lang⸩⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩
+⸨col⸩xii⸼ 48⸨col⸩⸨lang:Latin⸩ipse⸨/lang⸩⸨col⸩⸨lang:Latin⸩ille⸨/lang⸩
+⸨col⸩xii⸼ 49⸨col⸩⸨lang:Latin⸩suos⸨/lang⸩⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩
+⸨col⸩xii⸼ 50⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩⸨col⸩⸨lang:Latin⸩et⸨/lang⸩
+⸨col⸩xiii⸼ 4⸨col⸩⸨lang:Latin⸩cæli⸨/lang⸩⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩
+⸨col⸩xiii⸼ 8⸨col⸩⸨lang:Latin⸩autem⸨/lang⸩⸨col⸩⸨lang:Latin⸩vero⸨/lang⸩
+⸨col⸩xiii⸼ 8⸨col⸩⸨lang:Latin⸩trigesimum⸨/lang⸩⸨col⸩⸨lang:Latin⸩tricesimum⸨/lang⸩
+⸨col⸩xiii⸼ 10⸨col⸩⸨lang:Latin⸩eis⸨/lang⸩⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩
+⸨col⸩xiii⸼ 13⸨col⸩⸨lang:Latin⸩intelligunt⸨/lang⸩⸨col⸩⸨lang:Latin⸩intellegunt (⸨i⸩freq⸼⸨/i⸩)⸨/lang⸩
+⸨col⸩xiii⸼ 14⸨col⸩⸨lang:Latin⸩et⸨/lang⸩⸨col⸩⸨lang:Latin⸩ut⸨/lang⸩
+⸨col⸩xiii⸼ 14⸨col⸩⸨lang:Latin⸩adimpletur⸨/lang⸩⸨col⸩⸨lang:Latin⸩adimpleatur⸨/lang⸩
+⸨col⸩xiii⸼ 14⸨col⸩⸨lang:Latin⸩in⸨/lang⸩⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩
+⸨col⸩xiii⸼ 15⸨col⸩⸨lang:Latin⸩clauserunt⸨/lang⸩⸨col⸩⸨lang:Latin⸩cluserunt (⸨i⸩freq⸼⸨/i⸩)⸨/lang⸩
+⸨col⸩xiii⸼ 15⸨col⸩⸨lang:Latin⸩videant oculis⸨/lang⸩⸨col⸩⸨lang:Latin⸩oculis videant⸨/lang⸩
+⸨col⸩xiii⸼ 20⸨col⸩⸨lang:Latin⸩super⸨/lang⸩⸨col⸩⸨lang:Latin⸩supra (⸨i⸩freq⸼⸨/i⸩)⸨/lang⸩
+⸨col⸩xiii⸼ 22⸨col⸩⸨lang:Latin⸩seminatus est⸨/lang⸩⸨col⸩⸨lang:Latin⸩est seminatus⸨/lang⸩
+⸨col⸩xiii⸼ 23⸨col⸩⸨lang:Latin⸩terram bonam⸨/lang⸩⸨col⸩⸨lang:Latin⸩terra bona⸨/lang⸩
+⸨col⸩xiii⸼ 23⸨col⸩⸨lang:Latin⸩centesimum⸨/lang⸩⸨col⸩⸨lang:Latin⸩centum⸨/lang⸩
+⸨col⸩xiii⸼ 23⸨col⸩⸨lang:Latin⸩sexagesimum⸨/lang⸩⸨col⸩⸨lang:Latin⸩sexaginta⸨/lang⸩
+⸨col⸩xiii⸼ 23⸨col⸩⸨lang:Latin⸩aliud vero trigesimum⸨/lang⸩⸨col⸩⸨lang:Latin⸩porro aliud triginta⸨/lang⸩
+⸨col⸩xiii⸼ 29⸨col⸩⸨lang:Latin⸩cum eis et triticum⸨/lang⸩⸨col⸩⸨lang:Latin⸩et triticum cum eis⸨/lang⸩
+⸨col⸩xiii⸼ 30⸨col⸩⸨lang:Latin⸩in⸨/lang⸩⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩
+⸨col⸩xiii⸼ 33⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩⸨col⸩⸨lang:Latin⸩dicens⸨/lang⸩
+⸨col⸩xiii⸼ 35⸨col⸩⸨lang:Latin⸩impleretur⸨/lang⸩⸨col⸩⸨lang:Latin⸩adimpleretur⸨/lang⸩
+⸨col⸩xiii⸼ 36⸨col⸩⸨lang:Latin⸩edissere⸨/lang⸩⸨col⸩⸨lang:Latin⸩dissere⸨/lang⸩
+⸨col⸩xiii⸼ 37⸨col⸩⸨lang:Latin⸩illis⸨/lang⸩⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩
+⸨col⸩xiii⸼ 43⸨col⸩⸨lang:Latin⸩eorum⸨/lang⸩⸨col⸩⸨lang:Latin⸩sui⸨/lang⸩
+⸨col⸩xiii⸼ 43⸨col⸩⸨lang:Latin⸩audiendi⸨/lang⸩⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩
+⸨col⸩xiii⸼ 47⸨col⸩⸨lang:Latin⸩et⸨/lang⸩⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩
+⸨col⸩xiii⸼ 54⸨col⸩⸨lang:Latin⸩virtutes⸨/lang⸩⸨col⸩⸨lang:Latin⸩virtus⸨/lang⸩
+⸨col⸩xiii⸼ 55⸨col⸩⸨lang:Latin⸩fratres⸨/lang⸩⸨col⸩⸨lang:Latin⸩frater⸨/lang⸩
+⸨col⸩xiv⸼ 1⸨col⸩⸨lang:Latin⸩audivit⸨/lang⸩⸨col⸩⸨lang:Latin⸩audiit⸨/lang⸩
+⸨col⸩xiv⸼ 11⸨col⸩⸨lang:Latin⸩attulit⸨/lang⸩⸨col⸩⸨lang:Latin⸩tulit⸨/lang⸩
+⸨col⸩xiv⸼ 14⸨col⸩⸨lang:Latin⸩eis⸨/lang⸩⸨col⸩⸨lang:Latin⸩ejus⸨/lang⸩
+⸨col⸩xiv⸼ 18⸨col⸩⸨lang:Latin⸩mihi illos⸨/lang⸩⸨col⸩⸨lang:Latin⸩illos mihi⸨/lang⸩
+⸨col⸩xiv⸼ 19⸨col⸩⸨lang:Latin⸩fœnum⸨/lang⸩⸨col⸩⸨lang:Latin⸩fænum (⸨i⸩freq⸼⸨/i⸩)⸨/lang⸩
+⸨col⸩xiv⸼ 22⸨col⸩⸨lang:Latin⸩compulit Jesus⸨/lang⸩⸨col⸩⸨lang:Latin⸩jussit⸨/lang⸩
+⸨col⸩xiv⸼ 22⸨col⸩⸨lang:Latin⸩naviculam⸨/lang⸩⸨col⸩⸨lang:Latin⸩navicula⸨/lang⸩
+⸨col⸩xiv⸼ 28⸨col⸩⸨lang:Latin⸩ad te venire⸨/lang⸩⸨col⸩⸨lang:Latin⸩venire ad te⸨/lang⸩
+⸨col⸩xiv⸼ 30⸨col⸩⸨lang:Latin⸩mergi⸨/lang⸩⸨col⸩⸨lang:Latin⸩mergeri⸨/lang⸩
+⸨col⸩xv⸼ 4⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩⸨col⸩⸨lang:Latin⸩tuum⸨/lang⸩
+⸨col⸩xv⸼ 6⸨col⸩⸨lang:Latin⸩suam⸨/lang⸩⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩
+⸨col⸩xv⸼ 12⸨col⸩⸨lang:Latin⸩hoc⸨/lang⸩⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩
+⸨col⸩xv⸼ 17⸨col⸩⸨lang:Latin⸩secessum⸨/lang⸩⸨col⸩⸨lang:Latin⸩secessu⸨/lang⸩
+⸨col⸩xv⸼ 22⸨col⸩⸨lang:Latin⸩ei⸨/lang⸩⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩
+⸨col⸩xv⸼ 28⸨col⸩⸨lang:Latin⸩ejus⸨/lang⸩⸨col⸩⸨lang:Latin⸩illius (⸨i⸩freq⸼⸨/i⸩)⸨/lang⸩
+⸨col⸩xv⸼ 30⸨col⸩⸨lang:Latin⸩cæcos, claudos⸨/lang⸩⸨col⸩⸨lang:Latin⸩clodos, cæcos⸨/lang⸩
+⸨col⸩xv⸼ 34⸨col⸩⸨lang:Latin⸩habetis panes⸨/lang⸩⸨col⸩⸨lang:Latin⸩panes habetis⸨/lang⸩
+⸨col⸩xv⸼ 38⸨col⸩⸨lang:Latin⸩quatuor⸨/lang⸩⸨col⸩⸨lang:Latin⸩quattuor (⸨i⸩freq⸼⸨/i⸩)⸨/lang⸩
+⸨col⸩xvi⸼ 2⸨col⸩⸨lang:Latin⸩illis⸨/lang⸩⸨col⸩⸨lang:Latin⸩eis (⸨i⸩freq⸼⸨/i⸩)⸨/lang⸩
+⸨col⸩xvi⸼ 4⸨col⸩⸨lang:Latin⸩scire⸨/lang⸩⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩
+⸨col⸩xvi⸼ 4⸨col⸩⸨lang:Latin⸩prophetæ⸨/lang⸩⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩
+⸨col⸩xvi⸼ 9⸨col⸩⸨lang:Latin⸩in⸨/lang⸩⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩
+⸨col⸩xvi⸼ 9⸨col⸩⸨lang:Latin⸩millia⸨/lang⸩⸨col⸩⸨lang:Latin⸩milia (⸨i⸩freq⸼⸨/i⸩)⸨/lang⸩
+⸨col⸩xvi⸼ 9⸨col⸩⸨lang:Latin⸩sumpsistis⸨/lang⸩⸨col⸩⸨lang:Latin⸩sumsistis⸨/lang⸩
+⸨col⸩xvi⸼ 10⸨col⸩⸨lang:Latin⸩in⸨/lang⸩⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩
+⸨col⸩xvi⸼ 15⸨col⸩⸨lang:Latin⸩Jesus⸨/lang⸩⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩
+⸨col⸩xvi⸼ 17⸨col⸩⸨lang:Latin⸩ei⸨/lang⸩⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩
+⸨col⸩xvi⸼ 18⸨col⸩⸨lang:Latin⸩adversus⸨/lang⸩⸨col⸩⸨lang:Latin⸩adversum⸨/lang⸩
+⸨col⸩xvi⸼ 19⸨col⸩⸨lang:Latin⸩et⸨/lang⸩⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩
+⸨col⸩xvi⸼ 22⸨col⸩⸨lang:Latin⸩assumens⸨/lang⸩⸨col⸩⸨lang:Latin⸩adsumens (ads⸼ ⸨i⸩freq⸼⸨/i⸩)⸨/lang⸩
+⸨col⸩xvi⸼ 27⸨col⸩⸨lang:Latin⸩opera⸨/lang⸩⸨col⸩⸨lang:Latin⸩opus⸨/lang⸩
+⸨col⸩xvii⸼ 1⸨col⸩⸨lang:Latin⸩assumit⸨/lang⸩⸨col⸩⸨lang:Latin⸩adsumsit⸨/lang⸩
+⸨col⸩xvii⸼ 3⸨col⸩⸨lang:Latin⸩apparuerunt⸨/lang⸩⸨col⸩⸨lang:Latin⸩apparuit⸨/lang⸩
+⸨col⸩xvii⸼ 4⸨col⸩⸨lang:Latin⸩Moysi⸨/lang⸩⸨col⸩⸨lang:Latin⸩et Mosi⸨/lang⸩
+⸨col⸩xvii⸼ 5⸨col⸩⸨lang:Latin⸩nubes⸨/lang⸩⸨col⸩⸨lang:Latin⸩nubis⸨/lang⸩
+⸨col⸩xvii⸼ 9⸨col⸩⸨lang:Latin⸩eis⸨/lang⸩⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩
+⸨col⸩xvii⸼ 11⸨col⸩⸨lang:Latin⸩eis⸨/lang⸩⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩
+⸨col⸩xvii⸼ 13⸨col⸩⸨lang:Latin⸩eis⸨/lang⸩⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩
+⸨col⸩xvii⸼ 15 (14)⸨col⸩⸨lang:Latin⸩filio meo⸨/lang⸩⸨col⸩⸨lang:Latin⸩filii mei⸨/lang⸩
+⸨col⸩xvii⸼ 16 (15)⸨col⸩⸨lang:Latin⸩obtuli⸨/lang⸩⸨col⸩⸨lang:Latin⸩optuli⸨/lang⸩
+⸨col⸩xvii⸼ 18 (17)⸨col⸩⸨lang:Latin⸩illum⸨/lang⸩⸨col⸩⸨lang:Latin⸩eum (⸨i⸩freq⸼⸨/i⸩)⸨/lang⸩
+⸨col⸩xvii⸼ 20 (19)⸨col⸩⸨lang:Latin⸩dixit … Jesus⸨/lang⸩⸨col⸩⸨lang:Latin⸩dicit⸨/lang⸩
+⸨col⸩xvii⸼ 20⸨col⸩⸨lang:Latin⸩illuc⸨/lang⸩⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩
+⸨col⸩xviii⸼ 7⸨col⸩⸨lang:Latin⸩a⸨/lang⸩⸨col⸩⸨lang:Latin⸩ab⸨/lang⸩
+⸨col⸩xviii⸼ 7⸨col⸩⸨lang:Latin⸩verumtamen⸨/lang⸩⸨col⸩⸨lang:Latin⸩verum tamen (⸨i⸩freq⸼⸨/i⸩)⸨/lang⸩
+⸨col⸩xviii⸼ 7⸨col⸩⸨lang:Latin⸩illi⸨/lang⸩⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩
+⸨col⸩xviii⸼ 9⸨col⸩⸨lang:Latin⸩cum⸨/lang⸩⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩
+⸨col⸩xviii⸼ 13⸨col⸩⸨lang:Latin⸩gaudet⸨/lang⸩⸨col⸩⸨lang:Latin⸩gaudebit⸨/lang⸩
+⸨col⸩xviii⸼ 13⸨col⸩⸨lang:Latin⸩eam⸨/lang⸩⸨col⸩⸨lang:Latin⸩ea⸨/lang⸩
+⸨col⸩xviii⸼ 16⸨col⸩⸨lang:Latin⸩te non⸨/lang⸩⸨col⸩⸨lang:Latin⸩non te⸨/lang⸩
+⸨col⸩xviii⸼ 16⸨col⸩⸨lang:Latin⸩vel trium testium⸨/lang⸩⸨col⸩⸨lang:Latin⸩testium vel trium⸨/lang⸩
+⸨col⸩xviii⸼ 17⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩⸨col⸩⸨lang:Latin⸩et⸨/lang⸩
+⸨col⸩xviii⸼ 23⸨col⸩⸨lang:Latin⸩assimilatum⸨/lang⸩⸨col⸩⸨lang:Latin⸩adsimilatum⸨/lang⸩
+⸨col⸩xviii⸼ 24⸨col⸩⸨lang:Latin⸩ei⸨/lang⸩⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩
+⸨col⸩xviii⸼ 25⸨col⸩⸨lang:Latin⸩ejus⸨/lang⸩⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩
+⸨col⸩xviii⸼ 25⸨col⸩⸨lang:Latin⸩vænundari⸨/lang⸩⸨col⸩⸨lang:Latin⸩venundari⸨/lang⸩
+⸨col⸩xviii⸼ 25⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩⸨col⸩⸨lang:Latin⸩debitum⸨/lang⸩
+⸨col⸩xviii⸼ 26⸨col⸩⸨lang:Latin⸩procidens⸨/lang⸩⸨col⸩⸨lang:Latin⸩procedens⸨/lang⸩
+⸨col⸩xviii⸼ 31⸨col⸩⸨lang:Latin⸩fuerant⸨/lang⸩⸨col⸩⸨lang:Latin⸩erant⸨/lang⸩
+⸨col⸩xviii⸼ 33⸨col⸩⸨lang:Latin⸩nonne⸨/lang⸩⸨col⸩⸨lang:Latin⸩non⸨/lang⸩
+⸨col⸩xviii⸼ 34⸨col⸩⸨lang:Latin⸩quoadusque⸨/lang⸩⸨col⸩⸨lang:Latin⸩quoad usque⸨/lang⸩
+⸨col⸩xix⸼ 4⸨col⸩⸨lang:Latin⸩hominem⸨/lang⸩⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩
+⸨col⸩xix⸼ 5⸨col⸩⸨lang:Latin⸩dimittet⸨/lang⸩⸨col⸩⸨lang:Latin⸩dimittit⸨/lang⸩
+⸨col⸩xix⸼ 5⸨col⸩⸨lang:Latin⸩adhærebit⸨/lang⸩⸨col⸩⸨lang:Latin⸩adherebit⸨/lang⸩
+⸨col⸩xix⸼ 8⸨col⸩⸨lang:Latin⸩sic fuit⸨/lang⸩⸨col⸩⸨lang:Latin⸩fuit sic⸨/lang⸩
+⸨col⸩xix⸼ 10⸨col⸩⸨lang:Latin⸩hominis⸨/lang⸩⸨col⸩⸨lang:Latin⸩homini⸨/lang⸩
+⸨col⸩xix⸼ 10⸨col⸩⸨lang:Latin⸩uxore⸨/lang⸩⸨col⸩⸨lang:Latin⸩muliere⸨/lang⸩
+⸨col⸩xix⸼ 19⸨col⸩⸨lang:Latin⸩tuum, tuam⸨/lang⸩⸨col⸩⸨lang:Latin⸩(desunt)⸨/lang⸩
+⸨col⸩xix⸼ 20⸨col⸩⸨lang:Latin⸩a juventute mea⸨/lang⸩⸨col⸩⸨lang:Latin⸩(desunt)⸨/lang⸩
+⸨col⸩xix⸼ 23⸨col⸩⸨lang:Latin⸩regnum⸨/lang⸩⸨col⸩⸨lang:Latin⸩regno⸨/lang⸩
+⸨col⸩xix⸼ 25⸨col⸩⸨lang:Latin⸩valde⸨/lang⸩⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩
+⸨col⸩xix⸼ 29⸨col⸩⸨lang:Latin⸩reliquerit⸨/lang⸩⸨col⸩⸨lang:Latin⸩reliquit⸨/lang⸩
+⸨col⸩xx⸼ 1⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩⸨col⸩⸨lang:Latin⸩enim⸨/lang⸩
+⸨col⸩xx⸼ 1⸨col⸩⸨lang:Latin⸩patrifamilias⸨/lang⸩⸨col⸩⸨lang:Latin⸩patri familias (⸨i⸩freq⸼⸨/i⸩)⸨/lang⸩
+⸨col⸩xx⸼ 2⸨col⸩⸨lang:Latin⸩suam⸨/lang⸩⸨col⸩⸨lang:Latin⸩⸨err:(⸩⸨/err⸩deest⸨err:)⸩⸨/err⸩⸨/lang⸩
+⸨col⸩xx⸼ 4⸨col⸩⸨lang:Latin⸩dixit illis⸨/lang⸩⸨col⸩⸨lang:Latin⸩illis dixit⸨/lang⸩
+⸨col⸩xx⸼ 7⸨col⸩⸨lang:Latin⸩meam⸨/lang⸩⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩
+⸨col⸩xx⸼ 16⸨col⸩⸨lang:Latin⸩enim sunt⸨/lang⸩⸨col⸩⸨lang:Latin⸩sunt enim⸨/lang⸩
+⸨col⸩xx⸼ 19⸨col⸩⸨lang:Latin⸩illudendum⸨/lang⸩⸨col⸩⸨lang:Latin⸩deludendum⸨/lang⸩
+⸨col⸩xx⸼ 22⸨col⸩⸨lang:Latin⸩ei⸨/lang⸩⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩
+⸨col⸩xx⸼ 23⸨col⸩⸨lang:Latin⸩vel⸨/lang⸩⸨col⸩⸨lang:Latin⸩et⸨/lang⸩
+⸨col⸩xx⸼ 28⸨col⸩⸨lang:Latin⸩redemptionem⸨/lang⸩⸨col⸩⸨lang:Latin⸩redemtionem⸨/lang⸩
+⸨col⸩xx⸼ 29⸨col⸩⸨lang:Latin⸩Jericho⸨/lang⸩⸨col⸩⸨lang:Latin⸩Hiericho (⸨i⸩freq⸼⸨/i⸩)⸨/lang⸩
+⸨col⸩xxi⸼ 1⸨col⸩⸨lang:Latin⸩Bethphage⸨/lang⸩⸨col⸩⸨lang:Latin⸩Bethfage⸨/lang⸩
+⸨col⸩xxi⸼ 5⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩⸨col⸩⸨lang:Latin⸩et⸨/lang⸩
+⸨col⸩xxi⸼ 7⸨col⸩⸨lang:Latin⸩eos⸨/lang⸩⸨col⸩⸨lang:Latin⸩eis⸨/lang⸩
+⸨col⸩xxi⸼ 9⸨row⸩xxi⸼ 15⸨col⸩⸨lang:Latin⸩Hosanna⸨/lang⸩⸨col⸩⸨lang:Latin⸩Osanna⸨/lang⸩
+⸨col⸩xxi⸼ 11⸨col⸩⸨lang:Latin⸩populi dicebant⸨/lang⸩⸨col⸩⸨lang:Latin⸩populus dicebat⸨/lang⸩
+⸨col⸩xxi⸼ 12⸨col⸩⸨lang:Latin⸩numulariorum⸨/lang⸩⸨col⸩⸨lang:Latin⸩nummulariorum (⸨i⸩freq⸼⸨/i⸩)⸨/lang⸩
+⸨col⸩xxi⸼ 16⸨col⸩⸨lang:Latin⸩dicunt⸨/lang⸩⸨col⸩⸨lang:Latin⸩dicant⸨/lang⸩
+⸨col⸩xxi⸼ 16⸨col⸩⸨lang:Latin⸩dixit⸨/lang⸩⸨col⸩⸨lang:Latin⸩dicit⸨/lang⸩
+⸨col⸩xxi⸼ 25⸨col⸩⸨lang:Latin⸩baptismus⸨/lang⸩⸨col⸩⸨lang:Latin⸩baptismum⸨/lang⸩
+⸨col⸩xxi⸼ 26⸨col⸩⸨lang:Latin⸩habebant⸨/lang⸩⸨col⸩⸨lang:Latin⸩habent⸨/lang⸩
+⸨col⸩xxi⸼ 27⸨col⸩⸨lang:Latin⸩facio⸨/lang⸩⸨col⸩⸨lang:Latin⸩faciam⸨/lang⸩
+⸨col⸩xxi⸼ 28⸨col⸩⸨lang:Latin⸩quidam⸨/lang⸩⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩
+⸨col⸩xxi⸼ 31⸨col⸩⸨lang:Latin⸩ei primus⸨/lang⸩⸨col⸩⸨lang:Latin⸩novissimus⸨/lang⸩
+⸨col⸩xxi⸼ 33⸨col⸩⸨lang:Latin⸩sepem⸨/lang⸩⸨col⸩⸨lang:Latin⸩sæpe⸨/lang⸩
+⸨col⸩xxi⸼ 35⸨col⸩⸨lang:Latin⸩apprehensis⸨/lang⸩⸨col⸩⸨lang:Latin⸩adprehensis⸨/lang⸩
+⸨col⸩xxi⸼ 41⸨col⸩⸨lang:Latin⸩suam⸨/lang⸩⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩
+⸨col⸩xxii⸼ 4⸨col⸩⸨lang:Latin⸩sunt⸨/lang⸩⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩
+⸨col⸩xxii⸼ 6⸨col⸩⸨lang:Latin⸩contumeliis affectos⸨/lang⸩⸨col⸩⸨lang:Latin⸩contumelia adfectos⸨/lang⸩
+⸨col⸩xxii⸼ 13⸨col⸩⸨lang:Latin⸩manibus et pedibus ejus⸨/lang⸩⸨col⸩⸨lang:Latin⸩pedibus ejus et manibus⸨/lang⸩
+⸨col⸩xxii⸼ 14⸨col⸩⸨lang:Latin⸩enim⸨/lang⸩⸨col⸩⸨lang:Latin⸩autem⸨/lang⸩
+⸨col⸩xxii⸼ 20⸨col⸩⸨lang:Latin⸩superscriptio⸨/lang⸩⸨col⸩⸨lang:Latin⸩suprascriptio⸨/lang⸩
+⸨col⸩xxii⸼ 30⸨col⸩⸨lang:Latin⸩erunt⸨/lang⸩⸨col⸩⸨lang:Latin⸩sunt⸨/lang⸩
+⸨col⸩xxii⸼ 37⸨col⸩⸨lang:Latin⸩ex⸨/lang⸩⸨col⸩⸨lang:Latin⸩in⸨/lang⸩
+⸨col⸩xxii⸼ 38⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩⸨col⸩⸨lang:Latin⸩enim⸨/lang⸩
+⸨col⸩xxii⸼ 46⸨col⸩⸨lang:Latin⸩ei respondere⸨/lang⸩⸨col⸩⸨lang:Latin⸩respondere ei⸨/lang⸩
+⸨col⸩xxiii⸼ 4⸨col⸩⸨lang:Latin⸩enim⸨/lang⸩⸨col⸩⸨lang:Latin⸩autem⸨/lang⸩
+⸨col⸩xxiii⸼ 4⸨col⸩⸨lang:Latin⸩importabilia⸨/lang⸩⸨col⸩⸨lang:Latin⸩inportabilia (inp⸼ ⸨i⸩freq⸼⸨/i⸩)⸨/lang⸩
+⸨col⸩xxiii⸼ 4⸨col⸩⸨lang:Latin⸩humeros⸨/lang⸩⸨col⸩⸨lang:Latin⸩umeros⸨/lang⸩
+⸨col⸩xxiii⸼ 5⸨col⸩⸨lang:Latin⸩phylacteria⸨/lang⸩⸨col⸩⸨lang:Latin⸩philacteria⸨/lang⸩
+⸨col⸩xxiii⸼ 6⸨col⸩⸨lang:Latin⸩cœnis⸨/lang⸩⸨col⸩⸨lang:Latin⸩cænis⸨/lang⸩
+⸨col⸩xxiii⸼ 8⸨row⸩xxiii⸼ 9⸨col⸩⸨lang:Latin⸩est enim⸨/lang⸩⸨col⸩⸨lang:Latin⸩enim est⸨/lang⸩
+⸨col⸩xxiii⸼ 14⸨col⸩⸨lang:Latin⸩Væ vobis⸨/lang⸩,* etc⸼⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩
+⸨col⸩xxiii⸼ 16⸨col⸩⸨lang:Latin⸩auro⸨/lang⸩⸨col⸩⸨lang:Latin⸩aurum⸨/lang⸩
+⸨col⸩xxiii⸼ 18⸨row⸩xxiii⸼ 21⸨col⸩⸨lang:Latin⸩quicumque⸨/lang⸩⸨col⸩⸨lang:Latin⸩qui⸨/lang⸩
+⸨col⸩xxiii⸼ 24⸨col⸩⸨lang:Latin⸩glutientes⸨/lang⸩⸨col⸩⸨lang:Latin⸩gluttientes⸨/lang⸩
+⸨col⸩xxiii⸼ 25⸨col⸩⸨lang:Latin⸩estis⸨/lang⸩⸨col⸩⸨lang:Latin⸩sunt⸨/lang⸩
+⸨col⸩xxiii⸼ 25⸨col⸩⸨lang:Latin⸩immunditia⸨/lang⸩⸨col⸩⸨lang:Latin⸩inmunditia (⸨i⸩freq⸼⸨/i⸩)⸨/lang⸩
+⸨col⸩xxiii⸼ 26⸨col⸩⸨lang:Latin⸩Pharisæe⸨/lang⸩⸨col⸩⸨lang:Latin⸩Pharisee (⸨i⸩freq⸼⸨/i⸩)⸨/lang⸩
+⸨col⸩xxiii⸼ 34⸨col⸩⸨lang:Latin⸩persequemini⸨/lang⸩⸨col⸩⸨lang:Latin⸩persequimini⸨/lang⸩
+⸨col⸩xxiii⸼ 38⸨col⸩⸨lang:Latin⸩relinquetur⸨/lang⸩⸨col⸩⸨lang:Latin⸩relinquitur⸨/lang⸩
+⸨col⸩xxiv⸼ 6⸨col⸩⸨lang:Latin⸩prælia⸨/lang⸩⸨col⸩⸨lang:Latin⸩prœlia (⸨i⸩freq⸼⸨/i⸩)⸨/lang⸩
+⸨col⸩xxiv⸼ 9⸨col⸩⸨lang:Latin⸩tribulationem⸨/lang⸩⸨col⸩⸨lang:Latin⸩tribulatione⸨/lang⸩
+⸨col⸩xxiv⸼ 12⸨col⸩⸨lang:Latin⸩charitas⸨/lang⸩⸨col⸩⸨lang:Latin⸩caritas (⸨i⸩freq⸼⸨/i⸩)⸨/lang⸩
+⸨col⸩xxiv⸼ 15⸨col⸩⸨lang:Latin⸩Daniele⸨/lang⸩⸨col⸩⸨lang:Latin⸩Danihele⸨/lang⸩
+⸨col⸩xxiv⸼ 20⸨col⸩⸨lang:Latin⸩in⸨/lang⸩⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩
+⸨col⸩xxiv⸼ 23⸨col⸩⸨lang:Latin⸩est⸨/lang⸩⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩
+⸨col⸩xxiv⸼ 28⸨col⸩⸨lang:Latin⸩illic⸨/lang⸩⸨col⸩⸨lang:Latin⸩illuc⸨/lang⸩
+⸨col⸩xxiv⸼ 35⸨col⸩⸨lang:Latin⸩autem⸨/lang⸩⸨col⸩⸨lang:Latin⸩vero⸨/lang⸩
+⸨col⸩xxiv⸼ 36⸨col⸩⸨lang:Latin⸩solus Pater⸨/lang⸩⸨col⸩⸨lang:Latin⸩Pater solus⸨/lang⸩
+⸨col⸩xxiv⸼ 38⸨col⸩⸨lang:Latin⸩nuptui⸨/lang⸩⸨col⸩⸨lang:Latin⸩nuptum⸨/lang⸩
+⸨col⸩xxiv⸼ 38⸨col⸩⸨lang:Latin⸩Noe in arcam⸨/lang⸩⸨col⸩⸨lang:Latin⸩in arcam Noe⸨/lang⸩
+⸨col⸩xxiv⸼ 40⸨col⸩⸨lang:Latin⸩perfodi⸨/lang⸩⸨col⸩⸨lang:Latin⸩perfodiri⸨/lang⸩
+⸨col⸩xxiv⸼ 46⸨col⸩⸨lang:Latin⸩ejus⸨/lang⸩⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩
+⸨col⸩xxiv⸼ 49⸨col⸩⸨lang:Latin⸩ebriosis⸨/lang⸩⸨col⸩⸨lang:Latin⸩ebriis⸨/lang⸩
+⸨col⸩xxv⸼ 11⸨col⸩⸨lang:Latin⸩vero⸨/lang⸩⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩
+⸨col⸩xxv⸼ 17⸨col⸩⸨lang:Latin⸩et⸨/lang⸩⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩
+⸨col⸩xxv⸼ 18⸨col⸩⸨lang:Latin⸩terram⸨/lang⸩⸨col⸩⸨lang:Latin⸩terra⸨/lang⸩
+⸨col⸩xxv⸼ 20⸨col⸩⸨lang:Latin⸩tradidisti mihi⸨/lang⸩⸨col⸩⸨lang:Latin⸩mihi tradidisti⸨/lang⸩
+⸨col⸩xxv⸼ 20⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩⸨col⸩⸨lang:Latin⸩et⸨/lang⸩
+⸨col⸩xxv⸼ 21⸨row⸩xxv⸼ 23⸨col⸩⸨lang:Latin⸩serve bone⸨/lang⸩⸨col⸩⸨lang:Latin⸩bone serve⸨/lang⸩
+⸨col⸩xxv⸼ 24⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩⸨col⸩⸨lang:Latin⸩et⸨/lang⸩
+⸨col⸩xxv⸼ 27⸨col⸩⸨lang:Latin⸩committere⸨/lang⸩⸨col⸩⸨lang:Latin⸩mittere⸨/lang⸩
+⸨col⸩xxv⸼ 35⸨col⸩⸨lang:Latin⸩collegistis⸨/lang⸩⸨col⸩⸨lang:Latin⸩collexistis⸨/lang⸩
+⸨col⸩xxv⸼ 36⸨row⸩xxv⸼ 43⸨col⸩⸨lang:Latin⸩cooperuistis⸨/lang⸩⸨col⸩⸨lang:Latin⸩operuistis⸨/lang⸩
+⸨col⸩xxv⸼ 36⸨row⸩xxv⸼ 43⸨col⸩⸨lang:Latin⸩eram⸨/lang⸩⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩
+⸨col⸩xxv⸼ 37⸨row⸩xxv⸼ 38⸨col⸩⸨lang:Latin⸩te⸨/lang⸩⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩
+⸨col⸩xxv⸼ 38⸨col⸩⸨lang:Latin⸩collegimus⸨/lang⸩⸨col⸩⸨lang:Latin⸩colleximus⸨/lang⸩
+⸨col⸩xxv⸼ 39⸨col⸩⸨lang:Latin⸩aut⸨/lang⸩⸨col⸩⸨lang:Latin⸩et⸨/lang⸩
+⸨col⸩xxv⸼ 40⸨col⸩⸨lang:Latin⸩ex⸨/lang⸩⸨col⸩⸨lang:Latin⸩de⸨/lang⸩
+⸨col⸩xxv⸼ 44⸨col⸩⸨lang:Latin⸩ei⸨/lang⸩⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩
+⸨col⸩xxv⸼ 44⸨col⸩⸨lang:Latin⸩aut⸨/lang⸩⸨col⸩⸨lang:Latin⸩vel⸨/lang⸩
+⸨col⸩xxvi⸼ 6⸨col⸩⸨lang:Latin⸩Jesus esset⸨/lang⸩⸨col⸩⸨lang:Latin⸩esset Jesus⸨/lang⸩
+⸨col⸩xxvi⸼ 7⸨col⸩⸨lang:Latin⸩unguenti⸨/lang⸩⸨col⸩⸨lang:Latin⸩ungenti (⸨i⸩freq⸼⸨/i⸩)⸨/lang⸩
+⸨col⸩xxvi⸼ 9⸨col⸩⸨lang:Latin⸩vænundari⸨/lang⸩⸨col⸩⸨lang:Latin⸩venundari⸨/lang⸩
+⸨col⸩xxvi⸼ 10⸨col⸩⸨lang:Latin⸩huic⸨/lang⸩⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩
+⸨col⸩xxvi⸼ 10⸨col⸩⸨lang:Latin⸩enim⸨/lang⸩⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩
+⸨col⸩xxvi⸼ 14⸨col⸩⸨lang:Latin⸩Iscariotes⸨/lang⸩⸨col⸩⸨lang:Latin⸩Scariot⸨/lang⸩
+⸨col⸩xxvi⸼ 17⸨col⸩⸨lang:Latin⸩die⸨/lang⸩⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩
+⸨col⸩xxvi⸼ 18⸨col⸩⸨lang:Latin⸩quemdam⸨/lang⸩⸨col⸩⸨lang:Latin⸩quendam (⸨i⸩freq⸼⸨/i⸩)⸨/lang⸩
+⸨col⸩xxvi⸼ 20⸨col⸩⸨lang:Latin⸩suis⸨/lang⸩⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩
+⸨col⸩xxvi⸼ 24⸨col⸩⸨lang:Latin⸩tradetur⸨/lang⸩⸨col⸩⸨lang:Latin⸩traditur⸨/lang⸩
+⸨col⸩xxvi⸼ 26⸨col⸩⸨lang:Latin⸩cœnantibus⸨/lang⸩⸨col⸩⸨lang:Latin⸩cenantibus⸨/lang⸩
+⸨col⸩xxvi⸼ 28⸨col⸩⸨lang:Latin⸩effundetur⸨/lang⸩⸨col⸩⸨lang:Latin⸩effunditur⸨/lang⸩
+⸨col⸩xxvi⸼ 29⸨row⸩xxvi⸼ 64⸨col⸩⸨lang:Latin⸩amodo⸨/lang⸩⸨col⸩⸨lang:Latin⸩a modo⸨/lang⸩
+⸨col⸩xxvi⸼ 29⸨row⸩xxvi⸼ 64⸨col⸩⸨lang:Latin⸩illum cum illud⸨/lang⸩⸨col⸩⸨lang:Latin⸩cum illum⸨/lang⸩
+⸨col⸩xxvi⸼ 34⸨col⸩⸨lang:Latin⸩antequam⸨/lang⸩⸨col⸩⸨lang:Latin⸩ante quam⸨/lang⸩
+⸨col⸩xxvi⸼ 36⸨col⸩⸨lang:Latin⸩Gethsemani⸨/lang⸩⸨col⸩⸨lang:Latin⸩Gesemani (⸨i⸩freq⸼⸨/i⸩)⸨/lang⸩
+⸨col⸩xxvi⸼ 37⸨col⸩⸨lang:Latin⸩mœstus⸨/lang⸩⸨col⸩⸨lang:Latin⸩mestus⸨/lang⸩
+⸨col⸩xxvi⸼ 39⸨col⸩⸨lang:Latin⸩mi⸨/lang⸩⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩
+⸨col⸩xxvi⸼ 39⸨col⸩⸨lang:Latin⸩a me⸨/lang⸩⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩
+⸨col⸩xxvi⸼ 40⸨col⸩⸨lang:Latin⸩suos⸨/lang⸩⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩
+⸨col⸩xxvi⸼ 41⸨col⸩⸨lang:Latin⸩promptus⸨/lang⸩⸨col⸩⸨lang:Latin⸩promtus⸨/lang⸩
+⸨col⸩xxvi⸼ 44⸨col⸩⸨lang:Latin⸩eumdem⸨/lang⸩⸨col⸩⸨lang:Latin⸩eundem (⸨i⸩freq⸼⸨/i⸩)⸨/lang⸩
+⸨col⸩xxvi⸼ 46⸨col⸩⸨lang:Latin⸩tradet⸨/lang⸩⸨col⸩⸨lang:Latin⸩tradit⸨/lang⸩
+⸨col⸩xxvi⸼ 47⸨col⸩⸨lang:Latin⸩eo⸨/lang⸩⸨col⸩⸨lang:Latin⸩ipso⸨/lang⸩
+⸨col⸩xxvi⸼ 49⸨col⸩⸨lang:Latin⸩ave⸨/lang⸩⸨col⸩⸨lang:Latin⸩have⸨/lang⸩
+⸨col⸩xxvi⸼ 50⸨col⸩⸨lang:Latin⸩quid⸨/lang⸩⸨col⸩⸨lang:Latin⸩quod⸨/lang⸩
+⸨col⸩xxvi⸼ 55⸨col⸩⸨lang:Latin⸩quotidie⸨/lang⸩⸨col⸩⸨lang:Latin⸩cotidie (⸨i⸩freq⸼⸨/i⸩)⸨/lang⸩
+⸨col⸩xxvi⸼ 56⸨col⸩⸨lang:Latin⸩adimplerentur⸨/lang⸩⸨col⸩⸨lang:Latin⸩implerentur⸨/lang⸩
+⸨col⸩xxvi⸼ 57⸨col⸩⸨lang:Latin⸩Caiapham⸨/lang⸩⸨col⸩⸨lang:Latin⸩Caiaphan⸨/lang⸩
+⸨col⸩xxvi⸼ 61⸨col⸩⸨lang:Latin⸩reædeficare⸨/lang⸩⸨col⸩⸨lang:Latin⸩ædificare⸨/lang⸩
+⸨col⸩xxvi⸼ 62⸨col⸩⸨lang:Latin⸩respondes⸨/lang⸩⸨col⸩⸨lang:Latin⸩respondis⸨/lang⸩
+⸨col⸩xxvi⸼ 64⸨col⸩⸨lang:Latin⸩Dei⸨/lang⸩⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩
+⸨col⸩xxvi⸼ 67⸨col⸩⸨lang:Latin⸩ejus⸨/lang⸩⸨col⸩⸨lang:Latin⸩ei⸨/lang⸩
+⸨col⸩xxvi⸼ 68⸨col⸩⸨lang:Latin⸩qui⸨/lang⸩⸨col⸩⸨lang:Latin⸩quis⸨/lang⸩
+⸨col⸩xxvi⸼ 69⸨col⸩⸨lang:Latin⸩Jesus⸨/lang⸩⸨col⸩⸨lang:Latin⸩Jesu⸨/lang⸩
+⸨col⸩xxvi⸼ 71⸨col⸩⸨lang:Latin⸩ancilla⸨/lang⸩⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩
+⸨col⸩xxvi⸼ 73⸨col⸩⸨lang:Latin⸩loquela⸨/lang⸩⸨col⸩⸨lang:Latin⸩loquella⸨/lang⸩
+⸨col⸩xxvi⸼ 75⸨col⸩⸨lang:Latin⸩flevit⸨/lang⸩⸨col⸩⸨lang:Latin⸩ploravit⸨/lang⸩
+⸨col⸩xxvii⸼ 3⸨col⸩⸨lang:Latin⸩retulit⸨/lang⸩⸨col⸩⸨lang:Latin⸩rettulit⸨/lang⸩
+⸨col⸩xxvii⸼ 6⸨col⸩⸨lang:Latin⸩eos mittere⸨/lang⸩⸨col⸩⸨lang:Latin⸩mittere eos⸨/lang⸩
+⸨col⸩xxvii⸼ 6⸨col⸩⸨lang:Latin⸩corbonam⸨/lang⸩⸨col⸩⸨lang:Latin⸩corbanan⸨/lang⸩
+⸨col⸩xxvii⸼ 8⸨col⸩⸨lang:Latin⸩Aceldama⸨/lang⸩⸨col⸩⸨lang:Latin⸩Acheldemach⸨/lang⸩
+⸨col⸩xxvii⸼ 8⸨col⸩⸨lang:Latin⸩hoc est⸨/lang⸩⸨col⸩⸨lang:Latin⸩(desunt)⸨/lang⸩
+⸨col⸩xxvii⸼ 9⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩⸨col⸩⸨lang:Latin⸩et⸨/lang⸩
+⸨col⸩xxvii⸼ 15⸨col⸩⸨lang:Latin⸩solemnem⸨/lang⸩⸨col⸩⸨lang:Latin⸩sollemnem⸨/lang⸩
+⸨col⸩xxvii⸼ 17⸨col⸩⸨lang:Latin⸩Barabbam⸨/lang⸩⸨col⸩⸨lang:Latin⸩Barabban (⸨i⸩freq⸼⸨/i⸩)⸨/lang⸩
+⸨col⸩xxvii⸼ 27⸨col⸩⸨lang:Latin⸩prætorium⸨/lang⸩⸨col⸩⸨lang:Latin⸩prætorio⸨/lang⸩
+⸨col⸩xxvii⸼ 29⸨col⸩⸨lang:Latin⸩illudebant ei⸨/lang⸩⸨col⸩⸨lang:Latin⸩inludebant (inl⸼ ⸨i⸩freq⸼⸨/i⸩)⸨/lang⸩
+⸨col⸩xxvii⸼ 30⸨col⸩⸨lang:Latin⸩expuentes⸨/lang⸩⸨col⸩⸨lang:Latin⸩exspuentes⸨/lang⸩
+⸨col⸩xxvii⸼ 34⸨col⸩⸨lang:Latin⸩mistum⸨/lang⸩⸨col⸩⸨lang:Latin⸩mixtum⸨/lang⸩
+⸨col⸩xxvii⸼ 40⸨col⸩⸨lang:Latin⸩Vah⸨/lang⸩⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩
+⸨col⸩xxvii⸼ 40⸨col⸩⸨lang:Latin⸩destruis⸨/lang⸩⸨col⸩⸨lang:Latin⸩destruebat⸨/lang⸩
+⸨col⸩xxvii⸼ 40⸨col⸩⸨lang:Latin⸩reædificas⸨/lang⸩⸨col⸩⸨lang:Latin⸩reædificabat⸨/lang⸩
+⸨col⸩xxvii⸼ 40⸨col⸩⸨lang:Latin⸩temetipsum⸨/lang⸩⸨col⸩⸨lang:Latin⸩temet ipsum (⸨i⸩freq⸼⸨/i⸩)⸨/lang⸩
+⸨col⸩xxvii⸼ 41⸨col⸩⸨lang:Latin⸩dicebant⸨/lang⸩⸨col⸩⸨lang:Latin⸩dicentes⸨/lang⸩
+⸨col⸩xxvii⸼ 43⸨col⸩⸨lang:Latin⸩si vult eum⸨/lang⸩⸨col⸩⸨lang:Latin⸩eum si vult⸨/lang⸩
+⸨col⸩xxvii⸼ 43⸨row⸩xxvii⸼ 54⸨col⸩⸨lang:Latin⸩Filius Dei⸨/lang⸩⸨col⸩⸨lang:Latin⸩Dei Filius⸨/lang⸩
+⸨col⸩xxvii⸼ 46⸨col⸩⸨lang:Latin⸩et⸨/lang⸩⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩
+⸨col⸩xxvii⸼ 46⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩⸨col⸩⸨lang:Latin⸩vero⸨/lang⸩
+⸨col⸩xxvii⸼ 46⸨col⸩⸨lang:Latin⸩Eli⸨/lang⸩⸨col⸩⸨lang:Latin⸩Heli⸨/lang⸩
+⸨col⸩xxvii⸼ 46⸨col⸩⸨lang:Latin⸩lamma⸨/lang⸩⸨col⸩⸨lang:Latin⸩lema⸨/lang⸩
+⸨col⸩xxvii⸼ 57⸨col⸩⸨lang:Latin⸩autem sero⸨/lang⸩⸨col⸩⸨lang:Latin⸩sero autem⸨/lang⸩
+⸨col⸩xxvii⸼ 57⸨col⸩⸨lang:Latin⸩Arimathæa⸨/lang⸩⸨col⸩⸨lang:Latin⸩Arimathia (⸨i⸩freq⸼⸨/i⸩)⸨/lang⸩
+⸨col⸩xxvii⸼ 58⸨col⸩⸨lang:Latin⸩petiit⸨/lang⸩⸨col⸩⸨lang:Latin⸩petit⸨/lang⸩
+⸨col⸩xxviii⸼ 3⸨col⸩⸨lang:Latin⸩autem⸨/lang⸩⸨col⸩⸨lang:Latin⸩enim⸨/lang⸩
+⸨col⸩xxviii⸼ 6⸨col⸩⸨lang:Latin⸩et⸨/lang⸩⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩
+⸨col⸩xxviii⸼ 8⸨col⸩⸨lang:Latin⸩gaudio magno⸨/lang⸩⸨col⸩⸨lang:Latin⸩magno gaudio⸨/lang⸩
+⸨col⸩xxviii⸼ 9⸨col⸩⸨lang:Latin⸩avete⸨/lang⸩⸨col⸩⸨lang:Latin⸩havete⸨/lang⸩
+⸨col⸩xxviii⸼ 11⸨col⸩⸨lang:Latin⸩abiissent⸨/lang⸩⸨col⸩⸨lang:Latin⸩abissent⸨/lang⸩
+⸨col⸩xxviii⸼ 15⸨col⸩⸨lang:Latin⸩edocti⸨/lang⸩⸨col⸩⸨lang:Latin⸩docti⸨/lang⸩
+⸨col⸩xxviii⸼ 20⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩⸨col⸩⸨lang:Latin⸩Amen⸨/lang⸩
