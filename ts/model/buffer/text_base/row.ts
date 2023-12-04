@@ -140,7 +140,7 @@ export abstract class Instance<
     ):
         Count
     {
-        return Data.Singleton().Info().Max_Macro_Segment_Count(
+        return Data.Singleton().Info().Avg_Macro_Segment_Count(
             {
                 line_index: line_index,
                 column_index: column_index,
