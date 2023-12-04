@@ -176,7 +176,6 @@ async function Main():
             `KJV 1872-1888`,
             `Chapter 01`,
         ],
-        /*
         [
             Selector_Model.Slot.Order.VERSIONS_LANGUAGES_BOOKS,
             `Jubilees`,
@@ -184,7 +183,6 @@ async function Main():
             `R. H. Charles 1913`,
             `Chapter 01`,
         ],
-        */
     ];
     for (const [order, book_name, language_name, version_name, file_name] of data) {
         model.Add_Program(
@@ -209,6 +207,7 @@ async function Main():
         );
     }
 
+    /*
     model.Add_Program(
         new Model.Window.Program.Instance(
             {
@@ -218,6 +217,7 @@ async function Main():
             },
         ),
     );
+    */
 
     view.Refresh();
 }

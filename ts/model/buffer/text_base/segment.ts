@@ -4,9 +4,8 @@ import { Index } from "../../../types.js";
 import * as Utils from "../../../utils.js";
 
 import * as Entity from "../../entity.js";
+import * as Data from "../../data.js";
 import * as Text from "../../text.js";
-
-import { Default_Min_Counts } from "./default_min_counts.js";
 
 interface Buffer_Instance_i
 {
@@ -125,10 +124,29 @@ export abstract class Instance<
         return this.text as Text.Segment.Instance;
     }
 
-    Min_Item_Count():
+    Min_Item_Count(
+        {
+            line_index,
+            column_index,
+            row_index,
+            segment_index,
+        }: {
+            line_index: Index,
+            column_index: Index,
+            row_index: Index,
+            segment_index: Index,
+        },
+    ):
         Count
     {
-        return Default_Min_Counts.ITEM;
+        return Data.Singleton().Info().Max_Macro_Item_Count(
+            {
+                line_index: line_index,
+                column_index: column_index,
+                row_index: row_index,
+                segment_index: segment_index,
+            },
+        );
     }
 
     Item_Count():

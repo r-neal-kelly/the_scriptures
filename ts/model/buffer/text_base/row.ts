@@ -5,9 +5,8 @@ import * as Utils from "../../../utils.js";
 
 import * as Entity from "../../entity.js";
 import * as Language from "../../language.js";
+import * as Data from "../../data.js";
 import * as Text from "../../text.js";
-
-import { Default_Min_Counts } from "./default_min_counts.js";
 
 interface Buffer_Instance_i
 {
@@ -128,10 +127,26 @@ export abstract class Instance<
         return this.text as Text.Row.Instance;
     }
 
-    Min_Segment_Count():
+    Min_Segment_Count(
+        {
+            line_index,
+            column_index,
+            row_index,
+        }: {
+            line_index: Index,
+            column_index: Index,
+            row_index: Index,
+        },
+    ):
         Count
     {
-        return Default_Min_Counts.SEGMENT;
+        return Data.Singleton().Info().Max_Macro_Segment_Count(
+            {
+                line_index: line_index,
+                column_index: column_index,
+                row_index: row_index,
+            },
+        );
     }
 
     Segment_Count():

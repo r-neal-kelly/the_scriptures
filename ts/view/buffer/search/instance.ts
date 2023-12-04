@@ -98,6 +98,7 @@ export class Instance extends Text_Base.Instance<
             {
                 buffer: this,
                 model: () => this.Model().Line_At(line_index),
+                index: line_index,
             },
         );
     }

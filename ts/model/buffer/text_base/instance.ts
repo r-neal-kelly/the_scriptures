@@ -7,8 +7,7 @@ import * as Entity from "../../entity.js";
 import * as Language from "../../language.js";
 import * as Languages from "../../languages.js";
 import * as Font from "../../font.js";
-
-import { Default_Min_Counts } from "./default_min_counts.js";
+import * as Data from "../../data.js";
 
 interface Line_Instance_i
 {
@@ -66,7 +65,7 @@ export abstract class Instance<
     Min_Line_Count():
         Count
     {
-        return Default_Min_Counts.LINE;
+        return Data.Singleton().Info().Max_Line_Count();
     }
 
     Line_Count():

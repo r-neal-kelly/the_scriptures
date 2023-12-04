@@ -4,9 +4,8 @@ import { Index } from "../../../types.js";
 import * as Utils from "../../../utils.js";
 
 import * as Entity from "../../entity.js";
+import * as Data from "../../data.js";
 import * as Text from "../../text.js";
-
-import { Default_Min_Counts } from "./default_min_counts.js";
 
 interface Buffer_Instance_i
 {
@@ -125,10 +124,23 @@ export abstract class Instance<
         return this.text as Text.Column.Instance;
     }
 
-    Min_Row_Count():
+    Min_Row_Count(
+        {
+            line_index,
+            column_index,
+        }: {
+            line_index: Index,
+            column_index: Index,
+        },
+    ):
         Count
     {
-        return Default_Min_Counts.ROW;
+        return Data.Singleton().Info().Max_Row_Count(
+            {
+                line_index: line_index,
+                column_index: column_index,
+            },
+        );
     }
 
     Row_Count():

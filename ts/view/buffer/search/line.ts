@@ -15,9 +15,11 @@ export class Instance extends Text_Base.Line.Instance<
         {
             buffer,
             model,
+            index,
         }: {
             buffer: Buffer.Instance,
             model: () => Model.Instance,
+            index: Index,
         },
     )
     {
@@ -25,6 +27,7 @@ export class Instance extends Text_Base.Line.Instance<
             {
                 buffer: buffer,
                 model: model,
+                index: index,
             },
         );
 
@@ -50,6 +53,7 @@ export class Instance extends Text_Base.Line.Instance<
             {
                 line: this,
                 model: () => this.Model().Column_At(column_index),
+                index: column_index,
             },
         );
     }
