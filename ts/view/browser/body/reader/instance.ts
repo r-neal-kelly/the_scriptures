@@ -111,6 +111,9 @@ export class Instance extends Entity.Instance
     private async After_Selector_Slot_Item_Select():
         Promise<void>
     {
+        this.Refresh();
+        this.Element().scrollTo(0, 0);
+
         await this.Send(
             new Event.Info(
                 {
@@ -125,9 +128,6 @@ export class Instance extends Entity.Instance
                 },
             ),
         );
-
-        this.Refresh();
-        this.Element().scrollTo(0, 0);
     }
 
     private async After_Font_Selector_Slot_Item_Select(

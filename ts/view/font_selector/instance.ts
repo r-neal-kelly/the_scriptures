@@ -7,7 +7,7 @@ import * as Model from "../../model/font_selector/instance.js";
 
 import * as Events from "../events.js";
 import * as Entity from "../entity.js";
-import * as CSS from "../selector/css.js";
+import * as CSS from "./css.js";
 import * as Slots from "./slots.js";
 
 export class Instance extends Entity.Instance

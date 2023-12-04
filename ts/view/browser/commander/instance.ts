@@ -54,13 +54,15 @@ export class Instance extends Entity.Instance
         this.Add_This_CSS(
             `
                 .Commander {
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: space-around;
-                    justify-items: center;
-                    align-content: space-around;
-                    align-items: center;
-
+                    display: grid;
+                    grid-template-columns: 1fr;
+                    grid-template-rows: repeat(5, 1fr);
+        
+                    justify-items: stretch;
+                    align-items: stretch;
+                    justify-content: stretch;
+                    align-content: stretch;
+                    
                     padding: 4px;
 
                     border-color: white;
@@ -77,39 +79,20 @@ export class Instance extends Entity.Instance
 
         this.Add_Children_CSS(
             `
-                .Commander_Allow_Errors {
-                    width: 100%;
-
-                    text-align: center;
-
-                    cursor: pointer;
-                }
-                
-                .Commander_Font_Selector {
-                    width: 100%;
-
-                    text-align: center;
-
-                    cursor: pointer;
-                }
-
-                .Commander_Previous {
-                    width: 100%;
-
-                    text-align: center;
-
-                    cursor: pointer;
-                }
-
-                .Commander_Selector {
-                    width: 100%;
-
-                    text-align: center;
-
-                    cursor: pointer;
-                }
-
+                .Commander_Allow_Errors,
+                .Commander_Font_Selector,
+                .Commander_Previous,
+                .Commander_Selector,
                 .Commander_Next {
+                    display: grid;
+                    grid-template-columns: 1fr;
+                    grid-template-rows: 1fr;
+        
+                    justify-items: center;
+                    align-items: center;
+                    justify-content: stretch;
+                    align-content: stretch;
+
                     width: 100%;
 
                     text-align: center;
