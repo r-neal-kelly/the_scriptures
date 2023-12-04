@@ -65,7 +65,7 @@ export abstract class Instance<
     Min_Line_Count():
         Count
     {
-        return Data.Singleton().Info().Avg_Line_Count();
+        return Data.Singleton().Info().Max_Line_Count();
     }
 
     Line_Count():

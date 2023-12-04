@@ -114,7 +114,7 @@ export abstract class Instance<
     ):
         Count
     {
-        return Data.Singleton().Info().Avg_Column_Count(
+        return Data.Singleton().Info().Max_Column_Count(
             {
                 line_index: line_index,
             },
