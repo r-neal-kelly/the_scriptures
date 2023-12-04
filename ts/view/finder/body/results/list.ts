@@ -65,7 +65,7 @@ export class Instance extends Entity.Instance
                 {
                     parent: this,
                     model: () => this.Model().Buffer(),
-                    event_grid_id: () => this.Results().Body().Finder().ID(),
+                    event_grid_hook: () => this.Results().Body().Finder().ID(),
                 },
             );
         }

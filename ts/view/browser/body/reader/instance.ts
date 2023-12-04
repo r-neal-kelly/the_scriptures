@@ -46,8 +46,19 @@ export class Instance extends Entity.Instance
                         Events.SELECTOR_SLOT_ITEM_SELECT,
                         this.Body().Browser().ID(),
                     ),
-                    event_handler: () => this.Element().scrollTo(0, 0),
-                    event_priority: 10,
+                    event_handler: this.After_Selector_Slot_Item_Select,
+                    event_priority: 0,
+                },
+            ),
+            new Event.Listener_Info(
+                {
+                    event_name: new Event.Name(
+                        Event.Prefix.AFTER,
+                        Events.FONT_SELECTOR_SLOT_ITEM_SELECT,
+                        this.Body().Browser().ID(),
+                    ),
+                    event_handler: this.After_Font_Selector_Slot_Item_Select,
+                    event_priority: 0,
                 },
             ),
             new Event.Listener_Info(
@@ -85,7 +96,7 @@ export class Instance extends Entity.Instance
                 {
                     parent: this,
                     model: () => this.Model().File(),
-                    event_grid_id: () => this.Body().Browser().ID(),
+                    event_grid_hook: () => this.Body().Browser().ID(),
                 },
             );
         }
@@ -95,6 +106,40 @@ export class Instance extends Entity.Instance
         Array<string>
     {
         return [`Reader`];
+    }
+
+    private async After_Selector_Slot_Item_Select():
+        Promise<void>
+    {
+        await this.Send(
+            new Event.Info(
+                {
+                    affix: Events.WINDOW_REFRESH_TITLE,
+                    suffixes: [
+                        this.Body().ID(),
+                        this.Body().Browser().ID(),
+                        this.Body().Browser().Event_Grid_Hook(),
+                    ],
+                    type: Event.Type.EXCLUSIVE,
+                    data: {},
+                },
+            ),
+        );
+
+        this.Refresh();
+        this.Element().scrollTo(0, 0);
+    }
+
+    private async After_Font_Selector_Slot_Item_Select(
+        {
+            should_update_text,
+        }: Events.FONT_SELECTOR_SLOT_ITEM_SELECT_DATA,
+    ):
+        Promise<void>
+    {
+        if (should_update_text) {
+            this.Refresh();
+        }
     }
 
     Model():

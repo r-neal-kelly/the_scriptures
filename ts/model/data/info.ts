@@ -12,7 +12,7 @@ import * as Version from "./version.js";
 import * as Buffer_Counts from "./buffer_counts.js";
 import
 {
-    VERSION_COUNT,
+    FILE_COUNT,
 
     LINES,
     MIN_LINE_COUNT,
@@ -165,7 +165,7 @@ export class Info
                 [MIN_LINE_COUNT]: Number.MAX_SAFE_INTEGER,
                 [MAX_LINE_COUNT]: 0,
                 [AVG_LINE_COUNT]: 0,
-                [VERSION_COUNT]: 0,
+                [FILE_COUNT]: 0,
                 [LINES]: [] as any,
             };
         }
@@ -185,7 +185,7 @@ export class Info
             `is already finalized`,
         );
 
-        if (this.buffer_counts[VERSION_COUNT] > 0) {
+        if (this.buffer_counts[FILE_COUNT] > 0) {
             this.Calculate_Buffer_Averages();
         }
 
@@ -1648,6 +1648,12 @@ export class Info
         return this.Buffer_Counts()[MAX_LINE_COUNT];
     }
 
+    Avg_Line_Count():
+        Count
+    {
+        return this.Buffer_Counts()[AVG_LINE_COUNT];
+    }
+
     Line_Counts(
         {
             line_index,
@@ -1674,6 +1680,22 @@ export class Info
                 line_index,
             },
         )[MAX_COLUMN_COUNT];
+    }
+
+    Avg_Column_Count(
+        {
+            line_index,
+        }: {
+            line_index: Index,
+        },
+    ):
+        Count
+    {
+        return this.Line_Counts(
+            {
+                line_index,
+            },
+        )[AVG_COLUMN_COUNT];
     }
 
     Column_Counts(
@@ -1711,6 +1733,25 @@ export class Info
                 column_index,
             },
         )[MAX_ROW_COUNT];
+    }
+
+    Avg_Row_Count(
+        {
+            line_index,
+            column_index,
+        }: {
+            line_index: Index,
+            column_index: Index,
+        },
+    ):
+        Count
+    {
+        return this.Column_Counts(
+            {
+                line_index,
+                column_index,
+            },
+        )[AVG_ROW_COUNT];
     }
 
     Macro_Row_Counts(
@@ -1754,6 +1795,28 @@ export class Info
                 row_index,
             },
         )[MAX_SEGMENT_COUNT];
+    }
+
+    Avg_Macro_Segment_Count(
+        {
+            line_index,
+            column_index,
+            row_index,
+        }: {
+            line_index: Index,
+            column_index: Index,
+            row_index: Index,
+        },
+    ):
+        Count
+    {
+        return this.Macro_Row_Counts(
+            {
+                line_index,
+                column_index,
+                row_index,
+            },
+        )[AVG_SEGMENT_COUNT];
     }
 
     Macro_Segment_Counts(
@@ -1805,6 +1868,31 @@ export class Info
         )[MAX_ITEM_COUNT];
     }
 
+    Avg_Macro_Item_Count(
+        {
+            line_index,
+            column_index,
+            row_index,
+            segment_index,
+        }: {
+            line_index: Index,
+            column_index: Index,
+            row_index: Index,
+            segment_index: Index,
+        },
+    ):
+        Count
+    {
+        return this.Macro_Segment_Counts(
+            {
+                line_index,
+                column_index,
+                row_index,
+                segment_index,
+            },
+        )[AVG_ITEM_COUNT];
+    }
+
     Update_Buffer_Counts(
         version_info: Version.Info,
     ):
@@ -1823,14 +1911,14 @@ export class Info
             Number.MAX_SAFE_INTEGER,
         );
         buffer_counts[AVG_LINE_COUNT] += version_buffer_counts[AVG_LINE_COUNT];
-        buffer_counts[VERSION_COUNT] += 1;
+        buffer_counts[FILE_COUNT] += version_buffer_counts[FILE_COUNT];
         while (buffer_counts[LINES].length < version_buffer_counts[LINES].length) {
             buffer_counts[LINES].push(
                 {
                     [MIN_COLUMN_COUNT]: Number.MAX_SAFE_INTEGER,
                     [MAX_COLUMN_COUNT]: 0,
                     [AVG_COLUMN_COUNT]: 0,
-                    [VERSION_COUNT]: 0,
+                    [FILE_COUNT]: 0,
                     [COLUMNS]: [] as any,
                 },
             );
@@ -1854,14 +1942,14 @@ export class Info
                 Number.MAX_SAFE_INTEGER,
             );
             line_counts[AVG_COLUMN_COUNT] += version_line_counts[AVG_COLUMN_COUNT];
-            line_counts[VERSION_COUNT] += 1;
+            line_counts[FILE_COUNT] += version_line_counts[FILE_COUNT];
             while (line_counts[COLUMNS].length < version_line_counts[COLUMNS].length) {
                 line_counts[COLUMNS].push(
                     {
                         [MIN_ROW_COUNT]: Number.MAX_SAFE_INTEGER,
                         [MAX_ROW_COUNT]: 0,
                         [AVG_ROW_COUNT]: 0,
-                        [VERSION_COUNT]: 0,
+                        [FILE_COUNT]: 0,
                         [MACRO_ROWS]: [] as any,
                         [MICRO_ROWS]: [] as any,
                     },
@@ -1886,14 +1974,14 @@ export class Info
                     Number.MAX_SAFE_INTEGER,
                 );
                 column_counts[AVG_ROW_COUNT] += version_column_counts[AVG_ROW_COUNT];
-                column_counts[VERSION_COUNT] += 1;
+                column_counts[FILE_COUNT] += version_column_counts[FILE_COUNT];
                 while (column_counts[MACRO_ROWS].length < version_column_counts[MACRO_ROWS].length) {
                     column_counts[MACRO_ROWS].push(
                         {
                             [MIN_SEGMENT_COUNT]: Number.MAX_SAFE_INTEGER,
                             [MAX_SEGMENT_COUNT]: 0,
                             [AVG_SEGMENT_COUNT]: 0,
-                            [VERSION_COUNT]: 0,
+                            [FILE_COUNT]: 0,
                             [SEGMENTS]: [] as any,
                         },
                     );
@@ -1904,7 +1992,7 @@ export class Info
                             [MIN_SEGMENT_COUNT]: Number.MAX_SAFE_INTEGER,
                             [MAX_SEGMENT_COUNT]: 0,
                             [AVG_SEGMENT_COUNT]: 0,
-                            [VERSION_COUNT]: 0,
+                            [FILE_COUNT]: 0,
                             [SEGMENTS]: [] as any,
                         },
                     );
@@ -1936,14 +2024,14 @@ export class Info
                             Number.MAX_SAFE_INTEGER,
                         );
                         row_counts[AVG_SEGMENT_COUNT] += version_row_counts[AVG_SEGMENT_COUNT];
-                        row_counts[VERSION_COUNT] += 1;
+                        row_counts[FILE_COUNT] += version_row_counts[FILE_COUNT];
                         while (row_counts[SEGMENTS].length < version_row_counts[SEGMENTS].length) {
                             row_counts[SEGMENTS].push(
                                 {
                                     [MIN_ITEM_COUNT]: Number.MAX_SAFE_INTEGER,
                                     [MAX_ITEM_COUNT]: 0,
                                     [AVG_ITEM_COUNT]: 0,
-                                    [VERSION_COUNT]: 0,
+                                    [FILE_COUNT]: 0,
                                 },
                             );
                         }
@@ -1966,7 +2054,7 @@ export class Info
                                 Number.MAX_SAFE_INTEGER,
                             );
                             segment_counts[AVG_ITEM_COUNT] += version_segment_counts[AVG_ITEM_COUNT];
-                            segment_counts[VERSION_COUNT] += 1;
+                            segment_counts[FILE_COUNT] += version_segment_counts[FILE_COUNT];
                         }
                     }
                 }
@@ -1979,7 +2067,7 @@ export class Info
     {
         this.buffer_counts[AVG_LINE_COUNT] = Math.round(
             this.buffer_counts[AVG_LINE_COUNT] /
-            this.buffer_counts[VERSION_COUNT],
+            this.buffer_counts[FILE_COUNT],
         );
         for (
             let line_idx = 0, line_end = this.buffer_counts[LINES].length;
@@ -1989,7 +2077,7 @@ export class Info
             const line_counts = this.buffer_counts[LINES][line_idx];
             line_counts[AVG_COLUMN_COUNT] = Math.round(
                 line_counts[AVG_COLUMN_COUNT] /
-                line_counts[VERSION_COUNT],
+                line_counts[FILE_COUNT],
             );
             for (
                 let column_idx = 0, column_end = line_counts[COLUMNS].length;
@@ -1999,7 +2087,7 @@ export class Info
                 const column_counts = line_counts[COLUMNS][column_idx];
                 column_counts[AVG_ROW_COUNT] = Math.round(
                     column_counts[AVG_ROW_COUNT] /
-                    column_counts[VERSION_COUNT],
+                    column_counts[FILE_COUNT],
                 );
                 for (
                     let row_idx = 0, row_end = column_counts[MACRO_ROWS].length;
@@ -2009,7 +2097,7 @@ export class Info
                     const row_counts = column_counts[MACRO_ROWS][row_idx];
                     row_counts[AVG_SEGMENT_COUNT] = Math.round(
                         row_counts[AVG_SEGMENT_COUNT] /
-                        row_counts[VERSION_COUNT],
+                        row_counts[FILE_COUNT],
                     );
                     for (
                         let segment_idx = 0, segment_end = row_counts[SEGMENTS].length;
@@ -2019,7 +2107,7 @@ export class Info
                         const segment_counts = row_counts[SEGMENTS][segment_idx];
                         segment_counts[AVG_ITEM_COUNT] = Math.round(
                             segment_counts[AVG_ITEM_COUNT] /
-                            segment_counts[VERSION_COUNT],
+                            segment_counts[FILE_COUNT],
                         );
                     }
                 }
@@ -2031,7 +2119,7 @@ export class Info
                     const row_counts = column_counts[MICRO_ROWS][row_idx];
                     row_counts[AVG_SEGMENT_COUNT] = Math.round(
                         row_counts[AVG_SEGMENT_COUNT] /
-                        row_counts[VERSION_COUNT],
+                        row_counts[FILE_COUNT],
                     );
                     for (
                         let segment_idx = 0, segment_end = row_counts[SEGMENTS].length;
@@ -2041,7 +2129,7 @@ export class Info
                         const segment_counts = row_counts[SEGMENTS][segment_idx];
                         segment_counts[AVG_ITEM_COUNT] = Math.round(
                             segment_counts[AVG_ITEM_COUNT] /
-                            segment_counts[VERSION_COUNT],
+                            segment_counts[FILE_COUNT],
                         );
                     }
                 }

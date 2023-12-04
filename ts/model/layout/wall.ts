@@ -162,6 +162,14 @@ export class Instance extends Entity.Instance
                 program: program,
             },
         );
+
+        if (
+            program.Should_Activate_Window() ||
+            !this.Layout().Has_Active_Window()
+        ) {
+            this.Layout().Set_Active_Window(window);
+        }
+
         await window.Ready();
 
         return window.ID();

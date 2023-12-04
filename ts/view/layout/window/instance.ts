@@ -3,6 +3,7 @@ import * as Event from "../../../event.js";
 
 import * as Model from "../../../model/layout/window.js";
 
+import * as Events from "../../events.js";
 import * as Entity from "../../entity.js";
 import * as Wall from "../wall.js";
 import * as Bar from "./bar.js";
@@ -69,8 +70,9 @@ export class Instance extends Entity.Instance
 
                 new (this.Model().Program().View_Class())(
                     {
+                        parent: this,
                         model: () => this.Model().Program().Model_Instance(),
-                        root: this,
+                        event_grid_hook: () => this.ID(),
                     },
                 );
             }
@@ -88,7 +90,21 @@ export class Instance extends Entity.Instance
     {
         if (this.Is_Alive()) {
             this.Model().Wall().Layout().Set_Active_Window(this.Model());
-            this.Wall().Layout().Refresh();
+
+            await this.Send(
+                new Event.Info(
+                    {
+                        affix: Events.WINDOW_ACTIVATE,
+                        suffixes: [
+                            this.ID(),
+                            this.Wall().ID(),
+                            this.Wall().Layout().ID(),
+                        ],
+                        type: Event.Type.EXCLUSIVE,
+                        data: {},
+                    },
+                ),
+            );
         }
     }
 

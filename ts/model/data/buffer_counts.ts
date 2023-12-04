@@ -1,8 +1,6 @@
 import { Count } from "../../types.js";
 
-export const COUNT = `0`;
-export const VERSION_COUNT = COUNT;
-export const FILE_COUNT = COUNT;
+export const FILE_COUNT = `0`;
 
 export const LINES = `a`;
 export const MIN_LINE_COUNT = `b`;
@@ -33,7 +31,7 @@ export type Buffer = {
     [MIN_LINE_COUNT]: Count,
     [MAX_LINE_COUNT]: Count,
     [AVG_LINE_COUNT]: Count,
-    [COUNT]: Count,
+    [FILE_COUNT]: Count,
     [LINES]: [Line],
 }
 
@@ -41,7 +39,7 @@ export type Line = {
     [MIN_COLUMN_COUNT]: Count,
     [MAX_COLUMN_COUNT]: Count,
     [AVG_COLUMN_COUNT]: Count,
-    [COUNT]: Count,
+    [FILE_COUNT]: Count,
     [COLUMNS]: [Column],
 }
 
@@ -49,7 +47,7 @@ export type Column = {
     [MIN_ROW_COUNT]: Count,
     [MAX_ROW_COUNT]: Count,
     [AVG_ROW_COUNT]: Count,
-    [COUNT]: Count,
+    [FILE_COUNT]: Count,
     [MACRO_ROWS]: [Row],
     [MICRO_ROWS]: [Row],
 }
@@ -58,7 +56,7 @@ export type Row = {
     [MIN_SEGMENT_COUNT]: Count,
     [MAX_SEGMENT_COUNT]: Count,
     [AVG_SEGMENT_COUNT]: Count,
-    [COUNT]: Count,
+    [FILE_COUNT]: Count,
     [SEGMENTS]: [Segment],
 }
 
@@ -66,5 +64,5 @@ export type Segment = {
     [MIN_ITEM_COUNT]: Count,
     [MAX_ITEM_COUNT]: Count,
     [AVG_ITEM_COUNT]: Count,
-    [COUNT]: Count,
+    [FILE_COUNT]: Count,
 }

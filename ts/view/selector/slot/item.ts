@@ -1,5 +1,3 @@
-import { ID } from "../../../types.js";
-
 import * as Event from "../../../event.js";
 
 import * as Model from "../../../model/selector/slot/item.js";
@@ -89,7 +87,11 @@ export class Instance extends Entity.Instance
                     affix: Events.SELECTOR_SLOT_ITEM_SELECT,
                     suffixes: [
                         this.ID(),
-                        this.Event_Grid_ID(),
+                        this.Items().ID(),
+                        this.Items().Slot().ID(),
+                        this.Items().Slot().Slots().ID(),
+                        this.Items().Slot().Slots().Selector().ID(),
+                        this.Items().Slot().Slots().Selector().Event_Grid_Hook(),
                     ],
                     type: Event.Type.EXCLUSIVE,
                     data: {},
@@ -108,12 +110,6 @@ export class Instance extends Entity.Instance
         Model.Instance
     {
         return this.model();
-    }
-
-    Event_Grid_ID():
-        ID
-    {
-        return this.Items().Event_Grid_ID();
     }
 
     Items():

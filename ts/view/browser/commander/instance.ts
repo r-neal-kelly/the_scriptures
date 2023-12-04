@@ -3,6 +3,7 @@ import * as Event from "../../../event.js";
 
 import * as Model from "../../../model/browser/commander.js";
 
+import * as Events from "../../events.js";
 import * as Entity from "../../entity.js";
 import * as Browser from "../instance.js";
 import * as Allow_Errors from "./allow_errors.js";
@@ -118,7 +119,30 @@ export class Instance extends Entity.Instance
             `,
         );
 
-        return [];
+        return [
+            new Event.Listener_Info(
+                {
+                    event_name: new Event.Name(
+                        Event.Prefix.AFTER,
+                        Events.SELECTOR_TOGGLE,
+                        this.ID(),
+                    ),
+                    event_handler: this.After_Selector_Toggle,
+                    event_priority: 0,
+                },
+            ),
+            new Event.Listener_Info(
+                {
+                    event_name: new Event.Name(
+                        Event.Prefix.AFTER,
+                        Events.FONT_SELECTOR_TOGGLE,
+                        this.ID(),
+                    ),
+                    event_handler: this.After_Font_Selector_Toggle,
+                    event_priority: 0,
+                },
+            ),
+        ];
     }
 
     override On_Refresh():
@@ -170,6 +194,18 @@ export class Instance extends Entity.Instance
         Array<string>
     {
         return [`Commander`];
+    }
+
+    private async After_Selector_Toggle():
+        Promise<void>
+    {
+        this.Refresh();
+    }
+
+    private async After_Font_Selector_Toggle():
+        Promise<void>
+    {
+        this.Refresh();
     }
 
     Model():

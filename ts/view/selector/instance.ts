@@ -5,26 +5,28 @@ import * as Event from "../../event.js";
 
 import * as Model from "../../model/selector/instance.js";
 
+import * as Events from "../events.js";
 import * as Entity from "../entity.js";
+import * as CSS from "./css.js";
 import * as Settings from "./settings.js";
 import * as Slots from "./slots.js";
 
 export class Instance extends Entity.Instance
 {
     private model: () => Model.Instance;
-    private event_grid_id: () => ID;
+    private event_grid_hook: () => ID;
     private is_visible: () => boolean;
 
     constructor(
         {
             parent,
             model,
-            event_grid_id,
+            event_grid_hook,
             is_visible,
         }: {
             parent: Entity.Instance,
             model: () => Model.Instance,
-            event_grid_id: () => ID,
+            event_grid_hook: () => ID,
             is_visible: () => boolean,
         },
     )
@@ -38,7 +40,7 @@ export class Instance extends Entity.Instance
         );
 
         this.model = model;
-        this.event_grid_id = event_grid_id;
+        this.event_grid_hook = event_grid_hook;
         this.is_visible = is_visible;
 
         this.Live();
@@ -47,139 +49,34 @@ export class Instance extends Entity.Instance
     override On_Life():
         Array<Event.Listener_Info>
     {
-        this.Add_This_CSS(
-            `
-                .Selector {
-                    display: grid;
-                    grid-template-columns: 1fr;
-                    grid-template-rows: auto 1fr;
+        this.Add_This_CSS(CSS.This_CSS());
+        this.Add_Children_CSS(CSS.Children_CSS());
+        this.Add_CSS(CSS.CSS());
 
-                    justify-items: stretch;
-                    align-items: stretch;
-                    justify-content: start;
-                    align-content: start;
-
-                    position: absolute;
-                    left: 0;
-                    top: 0;
-                    z-index: 1;
-
-                    width: 100%;
-                    height: 100%;
-
-                    background-color: hsl(0, 0%, 0%, 0.7);
-
-                    overflow-x: hidden;
-                    overflow-y: hidden;
-                }
-            `,
-        );
-
-        this.Add_Children_CSS(
-            `
-                .Slots {
-                    display: grid;
-                    grid-template-columns: repeat(4, 1fr);
-                    grid-template-rows: 1fr;
-                    
-                    justify-items: stretch;
-                    align-items: stretch;
-                    justify-content: start;
-                    align-content: start;
-
-                    width: 100%;
-                    height: 100%;
-
-                    overflow-x: hidden;
-                    overflow-y: hidden;
-                }
-
-                .Slot {
-                    display: grid;
-                    grid-template-rows: auto auto;
-                    grid-template-columns: auto;
-                    align-content: start;
-
-                    width: 100%;
-                    height: 100%;
-                    padding: 0 3px;
-
-                    border-color: white;
-                    border-style: solid;
-                    border-width: 0 1px 0 0;
-
-                    overflow-x: hidden;
-                    overflow-y: hidden;
-                }
-
-                .Slot_Title {
-                    width: 100%;
-                
-                    overflow-x: hidden;
-                    overflow-y: hidden;
-
-                    background-color: transparent;
-                    color: white;
-
-                    border-color: white;
-                    border-style: solid;
-                    border-width: 0 0 1px 0;
-
-                    font-variant: small-caps;
-
-                    cursor: default;
-                    -webkit-user-select: none;
-                    -moz-user-select: none;
-                    -ms-user-select: none;
-                    user-select: none;
-                }
-
-                .Slot_Items {
-                    width: 100%;
-
-                    padding: 2px 2px;
-
-                    overflow-x: auto;
-                    overflow-y: auto;
-                }
-
-                .Slot_Item {
-                    width: 100%;
-                    padding: 4px 2px;
-
-                    /*border-bottom: solid 1px rgba(255, 255, 255, 0.3);*/
-                    
-                    overflow-x: hidden;
-                    overflow-y: hidden;
-
-                    background-color: transparent;
-                    color: white;
-                    
-                    text-align: center;
-
-                    cursor: pointer;
-                    -webkit-user-select: none;
-                    -moz-user-select: none;
-                    -ms-user-select: none;
-                    user-select: none;
-                }
-                
-                .Slot_Item_Selected {
-                    background-color: white;
-                    color: black;
-                }
-            `,
-        );
-
-        this.Add_CSS(
-            `
-                .Invisible {
-                    display: none;
-                }
-            `,
-        );
-
-        return [];
+        return [
+            new Event.Listener_Info(
+                {
+                    event_name: new Event.Name(
+                        Event.Prefix.AFTER,
+                        Events.SELECTOR_SLOT_ORDER_SELECT,
+                        this.ID(),
+                    ),
+                    event_handler: this.After_Selector_Slot_Order_Select,
+                    event_priority: 0,
+                },
+            ),
+            new Event.Listener_Info(
+                {
+                    event_name: new Event.Name(
+                        Event.Prefix.AFTER,
+                        Events.SELECTOR_SLOT_ITEM_SELECT,
+                        this.ID(),
+                    ),
+                    event_handler: this.After_Selector_Slot_Item_Select,
+                    event_priority: 0,
+                },
+            ),
+        ];
     }
 
     override On_Refresh():
@@ -209,7 +106,6 @@ export class Instance extends Entity.Instance
     override On_Reclass():
         Array<string>
     {
-        const model: Model.Instance = this.Model();
         const classes: Array<string> = [];
 
         classes.push(`Selector`);
@@ -220,16 +116,28 @@ export class Instance extends Entity.Instance
         return classes;
     }
 
+    private async After_Selector_Slot_Order_Select():
+        Promise<void>
+    {
+        this.Refresh();
+    }
+
+    private async After_Selector_Slot_Item_Select():
+        Promise<void>
+    {
+        this.Refresh();
+    }
+
     Model():
         Model.Instance
     {
         return this.model();
     }
 
-    Event_Grid_ID():
+    Event_Grid_Hook():
         ID
     {
-        return this.event_grid_id();
+        return this.event_grid_hook();
     }
 
     Is_Visible():

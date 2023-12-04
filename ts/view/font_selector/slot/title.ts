@@ -1,5 +1,3 @@
-import { ID } from "../../../types.js";
-
 import * as Model from "../../../model/font_selector/slot.js";
 
 import * as Entity from "../../entity.js";
@@ -50,12 +48,6 @@ export class Instance extends Entity.Instance
         Model.Instance
     {
         return this.model();
-    }
-
-    Event_Grid_ID():
-        ID
-    {
-        return this.Slot().Event_Grid_ID();
     }
 
     Is_Visible():

@@ -174,6 +174,17 @@ export class Instance extends Entity.Instance
             new Event.Listener_Info(
                 {
                     event_name: new Event.Name(
+                        Event.Prefix.AFTER,
+                        Events.SELECTOR_TOGGLE,
+                        this.Finder().ID(),
+                    ),
+                    event_handler: this.After_Selector_Toggle,
+                    event_priority: 0,
+                },
+            ),
+            new Event.Listener_Info(
+                {
+                    event_name: new Event.Name(
                         Event.Prefix.ON,
                         Events.FINDER_BODY_EXPRESSION_ENTER,
                         this.Finder().ID(),
@@ -211,7 +222,7 @@ export class Instance extends Entity.Instance
                 {
                     parent: this,
                     model: () => this.Model().Filter(),
-                    event_grid_id: () => this.Finder().ID(),
+                    event_grid_hook: () => this.Finder().ID(),
                     is_visible: () => this.Model().Finder().Commander().Filter_Visibility().Is_Toggled(),
                 },
             );
@@ -240,6 +251,12 @@ export class Instance extends Entity.Instance
         Array<string>
     {
         return [`Body`];
+    }
+
+    private async After_Selector_Toggle():
+        Promise<void>
+    {
+        this.Filter().Refresh();
     }
 
     private async On_Finder_Body_Expression_Enter():

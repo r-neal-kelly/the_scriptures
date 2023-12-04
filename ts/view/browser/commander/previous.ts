@@ -82,7 +82,7 @@ export class Instance extends Entity.Instance
                             this.ID(),
                             this.Commander().ID(),
                             this.Commander().Browser().ID(),
-                            this.Commander().Browser().Root().ID(),
+                            this.Commander().Browser().Event_Grid_Hook(),
                         ],
                         type: Event.Type.EXCLUSIVE,
                         data: {},

@@ -79,7 +79,9 @@ export class Instance extends Entity.Instance
                     affix: Events.FONT_SELECTOR_TOGGLE,
                     suffixes: [
                         this.ID(),
+                        this.Commander().ID(),
                         this.Commander().Browser().ID(),
+                        this.Commander().Browser().Event_Grid_Hook(),
                     ],
                     type: Event.Type.EXCLUSIVE,
                     data: {},

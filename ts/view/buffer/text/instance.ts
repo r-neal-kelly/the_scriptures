@@ -15,11 +15,11 @@ export class Instance extends Text_Base.Instance<
         {
             parent,
             model,
-            event_grid_id,
+            event_grid_hook,
         }: {
             parent: Entity.Instance,
             model: () => Model.Instance,
-            event_grid_id: () => ID,
+            event_grid_hook: () => ID,
         },
     )
     {
@@ -27,7 +27,7 @@ export class Instance extends Text_Base.Instance<
             {
                 parent: parent,
                 model: model,
-                event_grid_id: event_grid_id,
+                event_grid_hook: event_grid_hook,
             },
         );
 

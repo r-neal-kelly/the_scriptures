@@ -1,8 +1,10 @@
+import { ID } from "../../types.js";
+
 import * as Utils from "../../utils.js";
 import * as Event from "../../event.js";
 
 import * as Model from "../../model/finder.js";
-import * as Layout from "../../model/layout.js";
+import * as Model_Layout from "../../model/layout.js";
 
 import * as Events from "../events.js";
 import * as Entity from "../entity.js";
@@ -12,26 +14,30 @@ import * as Body from "./body.js";
 export class Instance extends Entity.Instance
 {
     private model: () => Model.Instance;
+    private event_grid_hook: () => ID;
 
     constructor(
         {
-            root,
+            parent,
             model,
+            event_grid_hook,
         }: {
-            root: Entity.Instance,
-            model: () => Model.Instance | Layout.Window.Program.Model_Instance,
+            parent: Entity.Instance,
+            model: () => Model.Instance | Model_Layout.Window.Program.Model_Instance,
+            event_grid_hook: () => ID,
         },
     )
     {
         super(
             {
                 element: `div`,
-                parent: root,
-                event_grid: root.Event_Grid(),
+                parent: parent,
+                event_grid: parent.Event_Grid(),
             },
         );
 
         this.model = model as () => Model.Instance;
+        this.event_grid_hook = event_grid_hook;
 
         this.Live();
     }
@@ -78,17 +84,6 @@ export class Instance extends Entity.Instance
                     event_priority: 10,
                 },
             ),
-            new Event.Listener_Info(
-                {
-                    event_name: new Event.Name(
-                        Event.Prefix.AFTER,
-                        Events.SELECTOR_TOGGLE,
-                        this.ID(),
-                    ),
-                    event_handler: this.After_Selector_Toggle,
-                    event_priority: 0,
-                },
-            ),
         ];
     }
 
@@ -130,7 +125,7 @@ export class Instance extends Entity.Instance
                 {
                     affix: Events.WINDOW_REFRESH_TITLE,
                     suffixes: [
-                        this.ID(),
+                        this.Event_Grid_Hook(),
                     ],
                     type: Event.Type.EXCLUSIVE,
                     data: {},
@@ -139,22 +134,16 @@ export class Instance extends Entity.Instance
         );
     }
 
-    private async After_Selector_Toggle():
-        Promise<void>
-    {
-        this.Refresh();
-    }
-
     Model():
         Model.Instance
     {
         return this.model();
     }
 
-    Root():
-        Entity.Instance
+    Event_Grid_Hook():
+        ID
     {
-        return this.Parent();
+        return this.event_grid_hook();
     }
 
     Has_Commander():

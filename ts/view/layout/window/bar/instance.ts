@@ -3,6 +3,7 @@ import * as Event from "../../../../event.js";
 
 import * as Model from "../../../../model/layout/window/bar.js";
 
+import * as Events from "../../../events.js";
 import * as Entity from "../../../entity.js";
 import * as Window from "../instance.js";
 import * as Title from "./title.js";
@@ -110,14 +111,24 @@ export class Instance extends Entity.Instance
             `,
         );
 
-        return [];
+        return [
+            new Event.Listener_Info(
+                {
+                    event_name: new Event.Name(
+                        Event.Prefix.ON,
+                        Events.WINDOW_ACTIVATE,
+                        this.Window().Wall().ID(),
+                    ),
+                    event_handler: this.On_Window_Activate,
+                    event_priority: 0,
+                },
+            ),
+        ];
     }
 
     override On_Refresh():
         void
     {
-        const model: Model.Instance = this.Model();
-
         if (
             !this.Has_Title() ||
             !this.Has_Commands()
@@ -151,6 +162,12 @@ export class Instance extends Entity.Instance
         }
 
         return classes;
+    }
+
+    private async On_Window_Activate():
+        Promise<void>
+    {
+        this.Refresh();
     }
 
     Model():

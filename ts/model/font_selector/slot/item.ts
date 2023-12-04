@@ -3,6 +3,7 @@ import { Name } from "../../../types.js";
 
 import * as Entity from "../../entity.js";
 import * as Slot from "./instance.js";
+import { Type as Slot_Type } from "./type.js";
 
 export class Instance extends Entity.Instance
 {
@@ -60,5 +61,11 @@ export class Instance extends Entity.Instance
         void
     {
         this.Slot().Select_Item(this);
+    }
+
+    Is_In_Fonts_Slot():
+        boolean
+    {
+        return this.Slot().Type() === Slot_Type.FONTS;
     }
 }

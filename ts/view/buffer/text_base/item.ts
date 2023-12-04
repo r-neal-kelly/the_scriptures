@@ -38,7 +38,7 @@ interface Model_Instance_i
 
 interface Buffer_Instance_i
 {
-    Event_Grid_ID():
+    Event_Grid_Hook():
         ID;
 
     Default_Font_Styles():
@@ -148,12 +148,6 @@ export abstract class Instance<
         Segment_Instance
     {
         return this.Parent() as Segment_Instance;
-    }
-
-    Event_Grid_ID():
-        ID
-    {
-        return this.Buffer().Event_Grid_ID();
     }
 
     Has_Override_Font_Styles():

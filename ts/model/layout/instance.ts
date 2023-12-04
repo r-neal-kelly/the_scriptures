@@ -55,6 +55,12 @@ export class Instance extends Entity.Instance
         return await this.Wall().Add_Program(program);
     }
 
+    Has_Active_Window():
+        boolean
+    {
+        return this.active_window != null;
+    }
+
     Maybe_Active_Window():
         Window.Instance | null
     {
@@ -67,5 +73,13 @@ export class Instance extends Entity.Instance
         void
     {
         this.active_window = active_window;
+    }
+
+    Set_Active_Window_From_ID(
+        window_id: ID,
+    ):
+        void
+    {
+        this.Set_Active_Window(this.Wall().From_ID(window_id));
     }
 }

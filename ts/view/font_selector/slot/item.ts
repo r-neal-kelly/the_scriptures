@@ -1,5 +1,3 @@
-import { ID } from "../../../types.js";
-
 import * as Event from "../../../event.js";
 
 import * as Model from "../../../model/font_selector/slot/item.js";
@@ -83,16 +81,24 @@ export class Instance extends Entity.Instance
     ):
         Promise<void>
     {
+        const model: Model.Instance = this.Model();
+
         await this.Send(
             new Event.Info(
                 {
                     affix: Events.FONT_SELECTOR_SLOT_ITEM_SELECT,
                     suffixes: [
                         this.ID(),
-                        this.Event_Grid_ID(),
+                        this.Items().ID(),
+                        this.Items().Slot().ID(),
+                        this.Items().Slot().Slots().ID(),
+                        this.Items().Slot().Slots().Selector().ID(),
+                        this.Items().Slot().Slots().Selector().Event_Grid_Hook(),
                     ],
                     type: Event.Type.EXCLUSIVE,
-                    data: {},
+                    data: {
+                        should_update_text: model.Is_In_Fonts_Slot(),
+                    } as Events.FONT_SELECTOR_SLOT_ITEM_SELECT_DATA,
                 },
             ),
         );
@@ -108,12 +114,6 @@ export class Instance extends Entity.Instance
         Model.Instance
     {
         return this.model();
-    }
-
-    Event_Grid_ID():
-        ID
-    {
-        return this.Items().Event_Grid_ID();
     }
 
     Is_Visible():

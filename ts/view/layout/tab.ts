@@ -47,7 +47,18 @@ export class Instance extends Entity.Instance
                 {
                     event_name: new Event.Name(
                         Event.Prefix.ON,
-                        Events.WINDOW_REFRESH_TAB,
+                        Events.WINDOW_ACTIVATE,
+                        this.Window().Wall().ID(),
+                    ),
+                    event_handler: this.On_Window_Activate,
+                    event_priority: 0,
+                },
+            ),
+            new Event.Listener_Info(
+                {
+                    event_name: new Event.Name(
+                        Event.Prefix.ON,
+                        Events.WINDOW_REFRESH_TITLE,
                         this.Window().ID(),
                     ),
                     event_handler: this.On_Window_Refresh_Title,
@@ -81,7 +92,27 @@ export class Instance extends Entity.Instance
         Promise<void>
     {
         this.Model().Tabs().Bar().Layout().Set_Active_Window(this.Model().Window());
-        this.Tabs().Bar().Layout().Refresh();
+
+        await this.Send(
+            new Event.Info(
+                {
+                    affix: Events.WINDOW_ACTIVATE,
+                    suffixes: [
+                        this.Window().ID(),
+                        this.Window().Wall().ID(),
+                        this.Window().Wall().Layout().ID(),
+                    ],
+                    type: Event.Type.EXCLUSIVE,
+                    data: {},
+                },
+            ),
+        );
+    }
+
+    private async On_Window_Activate():
+        Promise<void>
+    {
+        this.Refresh();
     }
 
     private async On_Window_Refresh_Title():

@@ -79,7 +79,9 @@ export class Instance extends Entity.Instance
                     affix: Events.SELECTOR_TOGGLE,
                     suffixes: [
                         this.ID(),
+                        this.Commander().ID(),
                         this.Commander().Finder().ID(),
+                        this.Commander().Finder().Body().ID(),
                     ],
                     type: Event.Type.EXCLUSIVE,
                     data: {},

@@ -1,6 +1,5 @@
 import { Count } from "../../../types.js";
 import { Delta } from "../../../types.js";
-import { ID } from "../../../types.js";
 
 import * as Model from "../../../model/selector/slot.js";
 
@@ -71,12 +70,6 @@ export class Instance extends Entity.Instance
         Model.Instance
     {
         return this.model();
-    }
-
-    Event_Grid_ID():
-        ID
-    {
-        return this.Slot().Event_Grid_ID();
     }
 
     Slot():

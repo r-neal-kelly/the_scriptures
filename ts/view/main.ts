@@ -184,6 +184,8 @@ async function Main():
             `Chapter 01`,
         ],
     ];
+
+    let should_activate_window: boolean = true;
     for (const [order, book_name, language_name, version_name, file_name] of data) {
         model.Add_Program(
             new Model.Window.Program.Instance(
@@ -202,9 +204,11 @@ async function Main():
                         is_selector_open: false,
                     },
                     view_class: Browser_View.Instance,
+                    should_activate_window: should_activate_window,
                 },
             ),
         );
+        should_activate_window = false;
     }
 
     /*
@@ -214,6 +218,7 @@ async function Main():
                 model_class: Finder_Model.Instance,
                 model_data: undefined,
                 view_class: Finder_View.Instance,
+                should_activate_window: false,
             },
         ),
     );

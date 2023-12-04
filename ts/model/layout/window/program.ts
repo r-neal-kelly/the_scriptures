@@ -1,4 +1,5 @@
 import { Name } from "../../../types.js";
+import { ID } from "../../../types.js";
 
 import * as Utils from "../../../utils.js";
 
@@ -24,11 +25,13 @@ export interface View_Class
 {
     new(
         {
+            parent,
             model,
-            root,
+            event_grid_hook,
         }: {
+            parent: View_Entity.Instance,
             model: () => Model_Instance,
-            root: View_Entity.Instance,
+            event_grid_hook: () => ID,
         },
     ): View_Instance;
 }
@@ -36,6 +39,7 @@ export interface View_Class
 export interface View_Instance extends View_Entity.Instance
 {
     Model(): Model_Instance;
+    Event_Grid_Hook(): ID;
 }
 
 export class Instance extends Model_Entity.Instance
@@ -43,16 +47,19 @@ export class Instance extends Model_Entity.Instance
     private model_class: Model_Class;
     private model_instance: Model_Instance;
     private view_class: View_Class;
+    private should_activate_window: boolean;
 
     constructor(
         {
             model_class,
             model_data = undefined,
             view_class,
+            should_activate_window = true,
         }: {
             model_class: Model_Class,
             model_data?: Model_Data,
             view_class: View_Class,
+            should_activate_window?: boolean,
         },
     )
     {
@@ -61,6 +68,7 @@ export class Instance extends Model_Entity.Instance
         this.model_class = model_class;
         this.model_instance = new model_class(model_data);
         this.view_class = view_class;
+        this.should_activate_window = should_activate_window;
 
         this.Add_Dependencies(
             [
@@ -100,5 +108,11 @@ export class Instance extends Model_Entity.Instance
         );
 
         return this.view_class;
+    }
+
+    Should_Activate_Window():
+        boolean
+    {
+        return this.should_activate_window;
     }
 }

@@ -50,7 +50,7 @@ interface Model_Instance_i
 
 interface Buffer_Instance_i extends Entity.Instance
 {
-    Event_Grid_ID():
+    Event_Grid_Hook():
         ID;
 
     Pad_EM(
@@ -226,12 +226,6 @@ export abstract class Instance<
         Buffer_Instance
     {
         return this.Parent() as Buffer_Instance;
-    }
-
-    Event_Grid_ID():
-        ID
-    {
-        return this.Buffer().Event_Grid_ID();
     }
 
     abstract Add_Column(

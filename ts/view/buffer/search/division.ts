@@ -78,10 +78,4 @@ export class Instance extends Entity.Instance
     {
         return this.Parent() as Item.Instance;
     }
-
-    Event_Grid_ID():
-        ID
-    {
-        return this.Buffer().Event_Grid_ID();
-    }
 }

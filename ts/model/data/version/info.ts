@@ -158,10 +158,6 @@ export class Info
             `is already finalized`,
         );
 
-        if (this.buffer_counts[FILE_COUNT] > 0) {
-            this.Calculate_Buffer_Averages();
-        }
-
         this.Freeze();
     }
 
@@ -1630,81 +1626,6 @@ export class Info
                         );
                         segment_counts[AVG_ITEM_COUNT] += item_count;
                         segment_counts[FILE_COUNT] += 1;
-                    }
-                }
-            }
-        }
-    }
-
-    private Calculate_Buffer_Averages():
-        void
-    {
-        this.buffer_counts[AVG_LINE_COUNT] = Math.round(
-            this.buffer_counts[AVG_LINE_COUNT] /
-            this.buffer_counts[FILE_COUNT],
-        );
-        for (
-            let line_idx = 0, line_end = this.buffer_counts[LINES].length;
-            line_idx < line_end;
-            line_idx += 1
-        ) {
-            const line_counts = this.buffer_counts[LINES][line_idx];
-            line_counts[AVG_COLUMN_COUNT] = Math.round(
-                line_counts[AVG_COLUMN_COUNT] /
-                line_counts[FILE_COUNT],
-            );
-            for (
-                let column_idx = 0, column_end = line_counts[COLUMNS].length;
-                column_idx < column_end;
-                column_idx += 1
-            ) {
-                const column_counts = line_counts[COLUMNS][column_idx];
-                column_counts[AVG_ROW_COUNT] = Math.round(
-                    column_counts[AVG_ROW_COUNT] /
-                    column_counts[FILE_COUNT],
-                );
-                for (
-                    let row_idx = 0, row_end = column_counts[MACRO_ROWS].length;
-                    row_idx < row_end;
-                    row_idx += 1
-                ) {
-                    const row_counts = column_counts[MACRO_ROWS][row_idx];
-                    row_counts[AVG_SEGMENT_COUNT] = Math.round(
-                        row_counts[AVG_SEGMENT_COUNT] /
-                        row_counts[FILE_COUNT],
-                    );
-                    for (
-                        let segment_idx = 0, segment_end = row_counts[SEGMENTS].length;
-                        segment_idx < segment_end;
-                        segment_idx += 1
-                    ) {
-                        const segment_counts = row_counts[SEGMENTS][segment_idx];
-                        segment_counts[AVG_ITEM_COUNT] = Math.round(
-                            segment_counts[AVG_ITEM_COUNT] /
-                            segment_counts[FILE_COUNT],
-                        );
-                    }
-                }
-                for (
-                    let row_idx = 0, row_end = column_counts[MICRO_ROWS].length;
-                    row_idx < row_end;
-                    row_idx += 1
-                ) {
-                    const row_counts = column_counts[MICRO_ROWS][row_idx];
-                    row_counts[AVG_SEGMENT_COUNT] = Math.round(
-                        row_counts[AVG_SEGMENT_COUNT] /
-                        row_counts[FILE_COUNT],
-                    );
-                    for (
-                        let segment_idx = 0, segment_end = row_counts[SEGMENTS].length;
-                        segment_idx < segment_end;
-                        segment_idx += 1
-                    ) {
-                        const segment_counts = row_counts[SEGMENTS][segment_idx];
-                        segment_counts[AVG_ITEM_COUNT] = Math.round(
-                            segment_counts[AVG_ITEM_COUNT] /
-                            segment_counts[FILE_COUNT],
-                        );
                     }
                 }
             }

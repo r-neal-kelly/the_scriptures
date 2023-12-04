@@ -1,5 +1,3 @@
-import { ID } from "../../../types.js";
-
 import * as Utils from "../../../utils.js";
 import * as Event from "../../../event.js";
 
@@ -165,12 +163,6 @@ export class Instance extends Entity.Instance
         Model.Instance
     {
         return this.model();
-    }
-
-    Event_Grid_ID():
-        ID
-    {
-        return this.Selector().Event_Grid_ID();
     }
 
     Selector():

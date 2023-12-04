@@ -34,7 +34,7 @@ interface Model_Instance_i
 
 interface Buffer_Instance_i
 {
-    Event_Grid_ID():
+    Event_Grid_Hook():
         ID;
 }
 
@@ -179,12 +179,6 @@ export abstract class Instance<
         Row_Instance
     {
         return this.Parent() as Row_Instance;
-    }
-
-    Event_Grid_ID():
-        ID
-    {
-        return this.Buffer().Event_Grid_ID();
     }
 
     abstract Add_Item(

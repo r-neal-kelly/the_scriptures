@@ -1,8 +1,10 @@
+import { ID } from "../../types.js";
+
 import * as Utils from "../../utils.js";
 import * as Event from "../../event.js";
 
 import * as Model from "../../model/browser/instance.js";
-import * as Layout from "../../model/layout.js";
+import * as Model_Layout from "../../model/layout.js";
 
 import * as Events from "../events.js";
 import * as Entity from "../entity.js";
@@ -12,26 +14,30 @@ import * as Body from "./body.js";
 export class Instance extends Entity.Instance
 {
     private model: () => Model.Instance;
+    private event_grid_hook: () => ID;
 
     constructor(
         {
+            parent,
             model,
-            root,
+            event_grid_hook,
         }: {
-            model: () => Model.Instance | Layout.Window.Program.Model_Instance,
-            root: Entity.Instance,
+            parent: Entity.Instance,
+            model: () => Model.Instance | Model_Layout.Window.Program.Model_Instance,
+            event_grid_hook: () => ID,
         },
     )
     {
         super(
             {
                 element: `div`,
-                parent: root,
-                event_grid: root.Event_Grid(),
+                parent: parent,
+                event_grid: parent.Event_Grid(),
             },
         );
 
         this.model = model as () => Model.Instance;
+        this.event_grid_hook = event_grid_hook;
 
         this.Live();
     }
@@ -117,61 +123,6 @@ export class Instance extends Entity.Instance
                 {
                     event_name: new Event.Name(
                         Event.Prefix.AFTER,
-                        Events.SELECTOR_TOGGLE,
-                        this.ID(),
-                    ),
-                    event_handler: this.After_Selector_Toggle,
-                    event_priority: 0,
-                },
-            ),
-            new Event.Listener_Info(
-                {
-                    event_name: new Event.Name(
-                        Event.Prefix.AFTER,
-                        Events.SELECTOR_SLOT_ORDER_SELECT,
-                        this.ID(),
-                    ),
-                    event_handler: this.After_Selector_Slot_Order_Select,
-                    event_priority: 0,
-                },
-            ),
-            new Event.Listener_Info(
-                {
-                    event_name: new Event.Name(
-                        Event.Prefix.AFTER,
-                        Events.SELECTOR_SLOT_ITEM_SELECT,
-                        this.ID(),
-                    ),
-                    event_handler: this.After_Selector_Slot_Item_Select,
-                    event_priority: 0,
-                },
-            ),
-            new Event.Listener_Info(
-                {
-                    event_name: new Event.Name(
-                        Event.Prefix.AFTER,
-                        Events.FONT_SELECTOR_TOGGLE,
-                        this.ID(),
-                    ),
-                    event_handler: this.After_Font_Selector_Toggle,
-                    event_priority: 0,
-                },
-            ),
-            new Event.Listener_Info(
-                {
-                    event_name: new Event.Name(
-                        Event.Prefix.AFTER,
-                        Events.FONT_SELECTOR_SLOT_ITEM_SELECT,
-                        this.ID(),
-                    ),
-                    event_handler: this.After_Font_Selector_Slot_Item_Select,
-                    event_priority: 0,
-                },
-            ),
-            new Event.Listener_Info(
-                {
-                    event_name: new Event.Name(
-                        Event.Prefix.AFTER,
                         Events.TOGGLE_ALLOW_ERRORS,
                         this.ID(),
                     ),
@@ -224,36 +175,6 @@ export class Instance extends Entity.Instance
         this.Refresh();
     }
 
-    private async After_Selector_Toggle():
-        Promise<void>
-    {
-        this.Refresh();
-    }
-
-    private async After_Selector_Slot_Order_Select():
-        Promise<void>
-    {
-        this.Refresh();
-    }
-
-    private async After_Selector_Slot_Item_Select():
-        Promise<void>
-    {
-        this.Refresh();
-    }
-
-    private async After_Font_Selector_Toggle():
-        Promise<void>
-    {
-        this.Refresh();
-    }
-
-    private async After_Font_Selector_Slot_Item_Select():
-        Promise<void>
-    {
-        this.Refresh();
-    }
-
     private async After_Toggle_Allow_Errors():
         Promise<void>
     {
@@ -266,10 +187,10 @@ export class Instance extends Entity.Instance
         return this.model();
     }
 
-    Root():
-        Entity.Instance
+    Event_Grid_Hook():
+        ID
     {
-        return this.Parent();
+        return this.event_grid_hook();
     }
 
     Has_Commander():

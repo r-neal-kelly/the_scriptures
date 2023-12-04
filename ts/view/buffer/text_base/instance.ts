@@ -33,17 +33,17 @@ export abstract class Instance<
 > extends Entity.Instance
 {
     private model: () => Model_Instance;
-    private event_grid_id: () => ID;
+    private event_grid_hook: () => ID;
 
     constructor(
         {
             parent,
             model,
-            event_grid_id,
+            event_grid_hook,
         }: {
             parent: Entity.Instance,
             model: () => Model_Instance,
-            event_grid_id: () => ID,
+            event_grid_hook: () => ID,
         },
     )
     {
@@ -56,7 +56,7 @@ export abstract class Instance<
         );
 
         this.model = model;
-        this.event_grid_id = event_grid_id;
+        this.event_grid_hook = event_grid_hook;
     }
 
     override On_Life():
@@ -337,10 +337,10 @@ export abstract class Instance<
         return this.model();
     }
 
-    Event_Grid_ID():
+    Event_Grid_Hook():
         ID
     {
-        return this.event_grid_id();
+        return this.event_grid_hook();
     }
 
     abstract Add_Line(

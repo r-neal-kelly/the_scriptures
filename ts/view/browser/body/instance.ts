@@ -51,23 +51,23 @@ export class Instance extends Entity.Instance
             new Event.Listener_Info(
                 {
                     event_name: new Event.Name(
-                        Event.Prefix.ON,
-                        Events.BROWSER_COMMANDER_PREVIOUS,
+                        Event.Prefix.AFTER,
+                        Events.SELECTOR_TOGGLE,
                         this.Browser().ID(),
                     ),
-                    event_handler: this.On_Browser_Commander_Previous,
-                    event_priority: 10,
+                    event_handler: this.After_Selector_Toggle,
+                    event_priority: 0,
                 },
             ),
             new Event.Listener_Info(
                 {
                     event_name: new Event.Name(
-                        Event.Prefix.ON,
-                        Events.BROWSER_COMMANDER_NEXT,
+                        Event.Prefix.AFTER,
+                        Events.FONT_SELECTOR_TOGGLE,
                         this.Browser().ID(),
                     ),
-                    event_handler: this.On_Browser_Commander_Next,
-                    event_priority: 10,
+                    event_handler: this.After_Font_Selector_Toggle,
+                    event_priority: 0,
                 },
             ),
             new Event.Listener_Info(
@@ -89,6 +89,28 @@ export class Instance extends Entity.Instance
                         this.Browser().ID(),
                     ),
                     event_handler: this.On_Font_Selector_Slot_Item_Select,
+                    event_priority: 10,
+                },
+            ),
+            new Event.Listener_Info(
+                {
+                    event_name: new Event.Name(
+                        Event.Prefix.ON,
+                        Events.BROWSER_COMMANDER_PREVIOUS,
+                        this.Browser().ID(),
+                    ),
+                    event_handler: this.On_Browser_Commander_Previous,
+                    event_priority: 10,
+                },
+            ),
+            new Event.Listener_Info(
+                {
+                    event_name: new Event.Name(
+                        Event.Prefix.ON,
+                        Events.BROWSER_COMMANDER_NEXT,
+                        this.Browser().ID(),
+                    ),
+                    event_handler: this.On_Browser_Commander_Next,
                     event_priority: 10,
                 },
             ),
@@ -120,7 +142,7 @@ export class Instance extends Entity.Instance
                 {
                     parent: this,
                     model: () => this.Model().Font_Selector(),
-                    event_grid_id: () => this.Browser().ID(),
+                    event_grid_hook: () => this.Browser().ID(),
                     is_visible: () => this.Model().Browser().Commander().Font_Selector().Is_Activated(),
                 },
             );
@@ -128,7 +150,7 @@ export class Instance extends Entity.Instance
                 {
                     parent: this,
                     model: () => this.Model().Selector(),
-                    event_grid_id: () => this.Browser().ID(),
+                    event_grid_hook: () => this.Browser().ID(),
                     is_visible: () => this.Model().Browser().Commander().Selector().Is_Activated(),
                 },
             );
@@ -147,6 +169,38 @@ export class Instance extends Entity.Instance
         return [`Body`];
     }
 
+    private async After_Selector_Toggle():
+        Promise<void>
+    {
+        this.Selector().Refresh();
+        this.Font_Selector().Refresh();
+    }
+
+    private async After_Font_Selector_Toggle():
+        Promise<void>
+    {
+        this.Selector().Refresh();
+        this.Font_Selector().Refresh();
+    }
+
+    private async On_Selector_Slot_Item_Select():
+        Promise<void>
+    {
+        await this.Model().Reader().Refresh_File();
+    }
+
+    private async On_Font_Selector_Slot_Item_Select(
+        {
+            should_update_text,
+        }: Events.FONT_SELECTOR_SLOT_ITEM_SELECT_DATA,
+    ):
+        Promise<void>
+    {
+        if (should_update_text) {
+            await this.Model().Reader().Refresh_File(true);
+        }
+    }
+
     private async On_Browser_Commander_Previous():
         Promise<void>
     {
@@ -157,18 +211,6 @@ export class Instance extends Entity.Instance
         Promise<void>
     {
         await this.Model().Reader().Refresh_File();
-    }
-
-    private async On_Selector_Slot_Item_Select():
-        Promise<void>
-    {
-        await this.Model().Reader().Refresh_File();
-    }
-
-    private async On_Font_Selector_Slot_Item_Select():
-        Promise<void>
-    {
-        await this.Model().Reader().Refresh_File(true);
     }
 
     private async On_Toggle_Allow_Errors():
