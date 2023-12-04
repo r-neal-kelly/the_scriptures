@@ -302,4 +302,34 @@ export class Instance extends Entity.Instance
 
         return this.Child(Child_Index.NEXT) as Next.Instance;
     }
+
+    async Animate_Button(
+        button: Entity.Instance,
+    ):
+        Promise<void>
+    {
+        await button.Animate(
+            [
+                {
+                    offset: 0.00,
+                    backgroundColor: `black`,
+                    color: `white`,
+                },
+                {
+                    offset: 0.50,
+                    backgroundColor: `white`,
+                    color: `black`,
+                },
+                {
+                    offset: 1.00,
+                    backgroundColor: `black`,
+                    color: `white`,
+                },
+            ],
+            {
+                duration: 200,
+                easing: `ease`,
+            },
+        );
+    }
 }

@@ -66,9 +66,9 @@ export class Instance extends Entity.Instance
                     event_name: new Event.Name(
                         Event.Prefix.AFTER,
                         Events.BROWSER_COMMANDER_PREVIOUS,
-                        this.Body().Browser().ID(),
+                        this.Body().Browser().Event_Grid_Hook(),
                     ),
-                    event_handler: () => this.Element().scrollTo(0, 0),
+                    event_handler: this.On_Browser_Commander_Previous,
                     event_priority: 10,
                 },
             ),
@@ -77,9 +77,9 @@ export class Instance extends Entity.Instance
                     event_name: new Event.Name(
                         Event.Prefix.AFTER,
                         Events.BROWSER_COMMANDER_NEXT,
-                        this.Body().Browser().ID(),
+                        this.Body().Browser().Event_Grid_Hook(),
                     ),
-                    event_handler: () => this.Element().scrollTo(0, 0),
+                    event_handler: this.On_Browser_Commander_Next,
                     event_priority: 10,
                 },
             ),
@@ -140,6 +140,48 @@ export class Instance extends Entity.Instance
         if (should_update_text) {
             this.Refresh();
         }
+    }
+
+    private async On_Browser_Commander_Previous():
+        Promise<void>
+    {
+        this.Element().scrollTo(0, 0);
+
+        await this.Send(
+            new Event.Info(
+                {
+                    affix: Events.WINDOW_REFRESH_TITLE,
+                    suffixes: [
+                        this.Body().ID(),
+                        this.Body().Browser().ID(),
+                        this.Body().Browser().Event_Grid_Hook(),
+                    ],
+                    type: Event.Type.EXCLUSIVE,
+                    data: {},
+                },
+            ),
+        );
+    }
+
+    private async On_Browser_Commander_Next():
+        Promise<void>
+    {
+        this.Element().scrollTo(0, 0);
+
+        await this.Send(
+            new Event.Info(
+                {
+                    affix: Events.WINDOW_REFRESH_TITLE,
+                    suffixes: [
+                        this.Body().ID(),
+                        this.Body().Browser().ID(),
+                        this.Body().Browser().Event_Grid_Hook(),
+                    ],
+                    type: Event.Type.EXCLUSIVE,
+                    data: {},
+                },
+            ),
+        );
     }
 
     Model():

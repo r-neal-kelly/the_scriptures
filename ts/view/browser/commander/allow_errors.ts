@@ -47,7 +47,7 @@ export class Instance extends Entity.Instance
                     event_name: new Event.Name(
                         Event.Prefix.ON,
                         Events.TOGGLE_ALLOW_ERRORS,
-                        this.ID(),
+                        this.Commander().Browser().ID(),
                     ),
                     event_handler: this.On_Toggle_Allow_Errors,
                     event_priority: 0,
@@ -79,7 +79,9 @@ export class Instance extends Entity.Instance
                     affix: Events.TOGGLE_ALLOW_ERRORS,
                     suffixes: [
                         this.ID(),
+                        this.Commander().ID(),
                         this.Commander().Browser().ID(),
+                        this.Commander().Browser().Event_Grid_Hook(),
                     ],
                     type: Event.Type.EXCLUSIVE,
                     data: {},
@@ -91,7 +93,8 @@ export class Instance extends Entity.Instance
     private async On_Toggle_Allow_Errors():
         Promise<void>
     {
-        await this.Model().Toggle();
+        await this.Commander().Animate_Button(this);
+        this.Model().Toggle();
     }
 
     Model():

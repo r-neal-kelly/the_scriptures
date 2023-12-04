@@ -47,7 +47,7 @@ export class Instance extends Entity.Instance
                     event_name: new Event.Name(
                         Event.Prefix.ON,
                         Events.SELECTOR_TOGGLE,
-                        this.ID(),
+                        this.Commander().Browser().ID(),
                     ),
                     event_handler: this.On_Selector_Toggle,
                     event_priority: 0,
@@ -93,7 +93,8 @@ export class Instance extends Entity.Instance
     private async On_Selector_Toggle():
         Promise<void>
     {
-        await this.Model().Toggle();
+        await this.Commander().Animate_Button(this);
+        this.Model().Toggle();
     }
 
     Model():

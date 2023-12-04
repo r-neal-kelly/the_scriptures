@@ -102,7 +102,7 @@ export class Instance extends Entity.Instance
                     event_name: new Event.Name(
                         Event.Prefix.AFTER,
                         Events.BROWSER_COMMANDER_PREVIOUS,
-                        this.ID(),
+                        this.Event_Grid_Hook(),
                     ),
                     event_handler: this.After_Browser_Commander_Previous,
                     event_priority: 0,
@@ -113,7 +113,7 @@ export class Instance extends Entity.Instance
                     event_name: new Event.Name(
                         Event.Prefix.AFTER,
                         Events.BROWSER_COMMANDER_NEXT,
-                        this.ID(),
+                        this.Event_Grid_Hook(),
                     ),
                     event_handler: this.After_Browser_Commander_Next,
                     event_priority: 0,

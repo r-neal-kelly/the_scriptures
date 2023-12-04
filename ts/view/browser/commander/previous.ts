@@ -47,7 +47,7 @@ export class Instance extends Entity.Instance
                     event_name: new Event.Name(
                         Event.Prefix.ON,
                         Events.BROWSER_COMMANDER_PREVIOUS,
-                        this.ID(),
+                        this.Commander().Browser().Event_Grid_Hook(),
                     ),
                     event_handler: this.On,
                     event_priority: 0,
@@ -79,9 +79,6 @@ export class Instance extends Entity.Instance
                     {
                         affix: Events.BROWSER_COMMANDER_PREVIOUS,
                         suffixes: [
-                            this.ID(),
-                            this.Commander().ID(),
-                            this.Commander().Browser().ID(),
                             this.Commander().Browser().Event_Grid_Hook(),
                         ],
                         type: Event.Type.EXCLUSIVE,
@@ -95,7 +92,12 @@ export class Instance extends Entity.Instance
     private async On():
         Promise<void>
     {
-        await this.Model().Activate();
+        await Promise.all(
+            [
+                this.Commander().Animate_Button(this),
+                this.Model().Activate(),
+            ],
+        );
     }
 
     Model():
