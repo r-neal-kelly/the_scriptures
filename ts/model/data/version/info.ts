@@ -12,27 +12,22 @@ import
     FILE_COUNT,
 
     LINES,
-    MIN_LINE_COUNT,
     MAX_LINE_COUNT,
     AVG_LINE_COUNT,
 
     COLUMNS,
-    MIN_COLUMN_COUNT,
     MAX_COLUMN_COUNT,
     AVG_COLUMN_COUNT,
 
     MACRO_ROWS,
     MICRO_ROWS,
-    MIN_ROW_COUNT,
     MAX_ROW_COUNT,
     AVG_ROW_COUNT,
 
     SEGMENTS,
-    MIN_SEGMENT_COUNT,
     MAX_SEGMENT_COUNT,
     AVG_SEGMENT_COUNT,
 
-    MIN_ITEM_COUNT,
     MAX_ITEM_COUNT,
     AVG_ITEM_COUNT,
 } from "../buffer_counts.js";
@@ -135,7 +130,6 @@ export class Info
             this.language_file_counts = {};
 
             this.buffer_counts = {
-                [MIN_LINE_COUNT]: Number.MAX_SAFE_INTEGER,
                 [MAX_LINE_COUNT]: 0,
                 [AVG_LINE_COUNT]: 0,
                 [FILE_COUNT]: 0,
@@ -1428,9 +1422,6 @@ export class Info
         const buffer_text = text;
         const buffer_counts = this.buffer_counts;
         const line_count: Count = buffer_text.Line_Count();
-        if (buffer_counts[MIN_LINE_COUNT] > line_count) {
-            buffer_counts[MIN_LINE_COUNT] = line_count;
-        }
         if (buffer_counts[MAX_LINE_COUNT] < line_count) {
             buffer_counts[MAX_LINE_COUNT] = line_count;
         }
@@ -1443,7 +1434,6 @@ export class Info
         while (buffer_counts[LINES].length < line_count) {
             buffer_counts[LINES].push(
                 {
-                    [MIN_COLUMN_COUNT]: Number.MAX_SAFE_INTEGER,
                     [MAX_COLUMN_COUNT]: 0,
                     [AVG_COLUMN_COUNT]: 0,
                     [FILE_COUNT]: 0,
@@ -1460,9 +1450,6 @@ export class Info
             const line_counts = buffer_counts[LINES][line_idx];
             const column_count: Count = line_text.Column_Count();
             Utils.Assert(line_counts != null);
-            if (line_counts[MIN_COLUMN_COUNT] > column_count) {
-                line_counts[MIN_COLUMN_COUNT] = column_count;
-            }
             if (line_counts[MAX_COLUMN_COUNT] < column_count) {
                 line_counts[MAX_COLUMN_COUNT] = column_count;
             }
@@ -1475,7 +1462,6 @@ export class Info
             while (line_counts[COLUMNS].length < column_count) {
                 line_counts[COLUMNS].push(
                     {
-                        [MIN_ROW_COUNT]: Number.MAX_SAFE_INTEGER,
                         [MAX_ROW_COUNT]: 0,
                         [AVG_ROW_COUNT]: 0,
                         [FILE_COUNT]: 0,
@@ -1493,9 +1479,6 @@ export class Info
                 const column_counts = line_counts[COLUMNS][column_idx];
                 const row_count: Count = column_text.Row_Count();
                 Utils.Assert(column_counts != null);
-                if (column_counts[MIN_ROW_COUNT] > row_count) {
-                    column_counts[MIN_ROW_COUNT] = row_count;
-                }
                 if (column_counts[MAX_ROW_COUNT] < row_count) {
                     column_counts[MAX_ROW_COUNT] = row_count;
                 }
@@ -1508,7 +1491,6 @@ export class Info
                 while (column_counts[MACRO_ROWS].length < row_count) {
                     column_counts[MACRO_ROWS].push(
                         {
-                            [MIN_SEGMENT_COUNT]: Number.MAX_SAFE_INTEGER,
                             [MAX_SEGMENT_COUNT]: 0,
                             [AVG_SEGMENT_COUNT]: 0,
                             [FILE_COUNT]: 0,
@@ -1519,7 +1501,6 @@ export class Info
                 while (column_counts[MICRO_ROWS].length < row_count) {
                     column_counts[MICRO_ROWS].push(
                         {
-                            [MIN_SEGMENT_COUNT]: Number.MAX_SAFE_INTEGER,
                             [MAX_SEGMENT_COUNT]: 0,
                             [AVG_SEGMENT_COUNT]: 0,
                             [FILE_COUNT]: 0,
@@ -1536,9 +1517,6 @@ export class Info
                     const macro_row_counts = column_counts[MACRO_ROWS][row_idx];
                     const macro_segment_count: Count = row_text.Macro_Segment_Count();
                     Utils.Assert(macro_row_counts != null);
-                    if (macro_row_counts[MIN_SEGMENT_COUNT] > macro_segment_count) {
-                        macro_row_counts[MIN_SEGMENT_COUNT] = macro_segment_count;
-                    }
                     if (macro_row_counts[MAX_SEGMENT_COUNT] < macro_segment_count) {
                         macro_row_counts[MAX_SEGMENT_COUNT] = macro_segment_count;
                     }
@@ -1551,7 +1529,6 @@ export class Info
                     while (macro_row_counts[SEGMENTS].length < macro_segment_count) {
                         macro_row_counts[SEGMENTS].push(
                             {
-                                [MIN_ITEM_COUNT]: Number.MAX_SAFE_INTEGER,
                                 [MAX_ITEM_COUNT]: 0,
                                 [AVG_ITEM_COUNT]: 0,
                                 [FILE_COUNT]: 0,
@@ -1567,9 +1544,6 @@ export class Info
                         const segment_counts = macro_row_counts[SEGMENTS][segment_idx];
                         const item_count: Count = segment_text.Item_Count();
                         Utils.Assert(segment_counts != null);
-                        if (segment_counts[MIN_ITEM_COUNT] > item_count) {
-                            segment_counts[MIN_ITEM_COUNT] = item_count;
-                        }
                         if (segment_counts[MAX_ITEM_COUNT] < item_count) {
                             segment_counts[MAX_ITEM_COUNT] = item_count;
                         }
@@ -1583,9 +1557,6 @@ export class Info
                     const micro_row_counts = column_counts[MICRO_ROWS][row_idx];
                     const micro_segment_count: Count = row_text.Micro_Segment_Count();
                     Utils.Assert(micro_row_counts != null);
-                    if (micro_row_counts[MIN_SEGMENT_COUNT] > micro_segment_count) {
-                        micro_row_counts[MIN_SEGMENT_COUNT] = micro_segment_count;
-                    }
                     if (micro_row_counts[MAX_SEGMENT_COUNT] < micro_segment_count) {
                         micro_row_counts[MAX_SEGMENT_COUNT] = micro_segment_count;
                     }
@@ -1598,7 +1569,6 @@ export class Info
                     while (micro_row_counts[SEGMENTS].length < micro_segment_count) {
                         micro_row_counts[SEGMENTS].push(
                             {
-                                [MIN_ITEM_COUNT]: Number.MAX_SAFE_INTEGER,
                                 [MAX_ITEM_COUNT]: 0,
                                 [AVG_ITEM_COUNT]: 0,
                                 [FILE_COUNT]: 0,
@@ -1614,9 +1584,6 @@ export class Info
                         const segment_counts = micro_row_counts[SEGMENTS][segment_idx];
                         const item_count: Count = segment_text.Item_Count();
                         Utils.Assert(segment_counts != null);
-                        if (segment_counts[MIN_ITEM_COUNT] > item_count) {
-                            segment_counts[MIN_ITEM_COUNT] = item_count;
-                        }
                         if (segment_counts[MAX_ITEM_COUNT] < item_count) {
                             segment_counts[MAX_ITEM_COUNT] = item_count;
                         }

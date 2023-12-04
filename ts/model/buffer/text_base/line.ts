@@ -7,6 +7,7 @@ import * as Entity from "../../entity.js";
 import * as Language from "../../language.js";
 import * as Data from "../../data.js";
 import * as Text from "../../text.js";
+import * as Buffer from "./instance.js";
 
 interface Buffer_Instance_i
 {
@@ -114,11 +115,19 @@ export abstract class Instance<
     ):
         Count
     {
-        return Data.Singleton().Info().Max_Column_Count(
-            {
-                line_index: line_index,
-            },
-        );
+        if (Buffer.Use_Average_Counts()) {
+            return Data.Singleton().Info().Avg_Column_Count(
+                {
+                    line_index: line_index,
+                },
+            );
+        } else {
+            return Data.Singleton().Info().Max_Column_Count(
+                {
+                    line_index: line_index,
+                },
+            );
+        }
     }
 
     Column_Count():

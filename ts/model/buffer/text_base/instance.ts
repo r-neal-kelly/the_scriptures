@@ -9,6 +9,12 @@ import * as Languages from "../../languages.js";
 import * as Font from "../../font.js";
 import * as Data from "../../data.js";
 
+export function Use_Average_Counts():
+    boolean
+{
+    return true;
+}
+
 interface Line_Instance_i
 {
 }
@@ -65,7 +71,11 @@ export abstract class Instance<
     Min_Line_Count():
         Count
     {
-        return Data.Singleton().Info().Max_Line_Count();
+        if (Use_Average_Counts()) {
+            return Data.Singleton().Info().Avg_Line_Count();
+        } else {
+            return Data.Singleton().Info().Max_Line_Count();
+        }
     }
 
     Line_Count():

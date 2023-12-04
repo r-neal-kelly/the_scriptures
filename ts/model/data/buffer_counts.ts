@@ -3,32 +3,26 @@ import { Count } from "../../types.js";
 export const FILE_COUNT = `0`;
 
 export const LINES = `a`;
-export const MIN_LINE_COUNT = `b`;
-export const MAX_LINE_COUNT = `c`;
-export const AVG_LINE_COUNT = `d`;
+export const MAX_LINE_COUNT = `b`;
+export const AVG_LINE_COUNT = `c`;
 
-export const COLUMNS = `e`;
-export const MIN_COLUMN_COUNT = `f`;
-export const MAX_COLUMN_COUNT = `g`;
-export const AVG_COLUMN_COUNT = `h`;
+export const COLUMNS = `d`;
+export const MAX_COLUMN_COUNT = `e`;
+export const AVG_COLUMN_COUNT = `f`;
 
-export const MACRO_ROWS = `i`;
-export const MICRO_ROWS = `j`;
-export const MIN_ROW_COUNT = `k`;
-export const MAX_ROW_COUNT = `l`;
-export const AVG_ROW_COUNT = `m`;
+export const MACRO_ROWS = `f`;
+export const MICRO_ROWS = `g`;
+export const MAX_ROW_COUNT = `h`;
+export const AVG_ROW_COUNT = `i`;
 
-export const SEGMENTS = `n`;
-export const MIN_SEGMENT_COUNT = `o`;
-export const MAX_SEGMENT_COUNT = `p`;
-export const AVG_SEGMENT_COUNT = `q`;
+export const SEGMENTS = `j`;
+export const MAX_SEGMENT_COUNT = `k`;
+export const AVG_SEGMENT_COUNT = `l`;
 
-export const MIN_ITEM_COUNT = `r`;
-export const MAX_ITEM_COUNT = `s`;
-export const AVG_ITEM_COUNT = `t`;
+export const MAX_ITEM_COUNT = `m`;
+export const AVG_ITEM_COUNT = `n`;
 
 export type Buffer = {
-    [MIN_LINE_COUNT]: Count,
     [MAX_LINE_COUNT]: Count,
     [AVG_LINE_COUNT]: Count,
     [FILE_COUNT]: Count,
@@ -36,7 +30,6 @@ export type Buffer = {
 }
 
 export type Line = {
-    [MIN_COLUMN_COUNT]: Count,
     [MAX_COLUMN_COUNT]: Count,
     [AVG_COLUMN_COUNT]: Count,
     [FILE_COUNT]: Count,
@@ -44,7 +37,6 @@ export type Line = {
 }
 
 export type Column = {
-    [MIN_ROW_COUNT]: Count,
     [MAX_ROW_COUNT]: Count,
     [AVG_ROW_COUNT]: Count,
     [FILE_COUNT]: Count,
@@ -53,7 +45,6 @@ export type Column = {
 }
 
 export type Row = {
-    [MIN_SEGMENT_COUNT]: Count,
     [MAX_SEGMENT_COUNT]: Count,
     [AVG_SEGMENT_COUNT]: Count,
     [FILE_COUNT]: Count,
@@ -61,7 +52,6 @@ export type Row = {
 }
 
 export type Segment = {
-    [MIN_ITEM_COUNT]: Count,
     [MAX_ITEM_COUNT]: Count,
     [AVG_ITEM_COUNT]: Count,
     [FILE_COUNT]: Count,
