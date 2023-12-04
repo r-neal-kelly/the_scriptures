@@ -301,6 +301,8 @@ export abstract class Instance<
     override On_Refresh():
         void
     {
+        console.log(`${this.ID()} rendering`);
+
         const model: Model_Instance = this.Model();
         const count: Count = this.Child_Count();
         const target: Count = Math.max(model.Min_Line_Count(), model.Line_Count());
