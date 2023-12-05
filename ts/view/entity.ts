@@ -1153,6 +1153,9 @@ export abstract class Instance implements
             options.fill = `none`;
         }
 
+        const do_fill: boolean = options.fill === `both`;
+        options.fill = `none`;
+
         if (this.Is_Alive()) {
             const element: HTMLElement = this.Element();
 
@@ -1166,7 +1169,7 @@ export abstract class Instance implements
                 last_keyframe = keyframes[0];
             }
 
-            if (options.fill !== `none`) {
+            if (do_fill) {
                 for (const [key, value] of Object.entries(first_keyframe)) {
                     if (key !== `offset` && value != null) {
                         (element.style as any)[key] = value.toString();
@@ -1195,7 +1198,7 @@ export abstract class Instance implements
                 },
             );
 
-            if (options.fill !== `none`) {
+            if (do_fill) {
                 // We skip checking if it's still alive so that we ensure even a dead element
                 // goes back to its former state, e.g. when using the HTMLBodyElement.
                 for (const [key, value] of Object.entries(last_keyframe)) {
