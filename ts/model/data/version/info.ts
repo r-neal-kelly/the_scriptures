@@ -60,7 +60,7 @@ export class Info
     private language_line_counts: { [language_name: Name]: Count };
     private language_file_counts: { [language_name: Name]: Count };
 
-    private buffer_counts: Buffer_Counts.Buffer;
+    private buffer_counts: Buffer_Counts.Full_Buffer;
 
     constructor(
         {
@@ -1404,7 +1404,7 @@ export class Info
     }
 
     Buffer_Counts():
-        Buffer_Counts.Buffer
+        Buffer_Counts.Full_Buffer
     {
         Utils.Assert(
             this.Is_Finalized(),

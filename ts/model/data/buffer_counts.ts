@@ -22,37 +22,95 @@ export const AVG_SEGMENT_COUNT = `l`;
 export const MAX_ITEM_COUNT = `m`;
 export const AVG_ITEM_COUNT = `n`;
 
-export type Buffer = {
+// The Full set is used on version infos which must save the file count.
+export type Full_Buffer = {
     [MAX_LINE_COUNT]: Count,
     [AVG_LINE_COUNT]: Count,
     [FILE_COUNT]: Count,
-    [LINES]: [Line],
+    [LINES]: [Full_Line],
 }
 
-export type Line = {
+export type Full_Line = {
     [MAX_COLUMN_COUNT]: Count,
     [AVG_COLUMN_COUNT]: Count,
     [FILE_COUNT]: Count,
-    [COLUMNS]: [Column],
+    [COLUMNS]: [Full_Column],
 }
 
-export type Column = {
+export type Full_Column = {
     [MAX_ROW_COUNT]: Count,
     [AVG_ROW_COUNT]: Count,
     [FILE_COUNT]: Count,
-    [MACRO_ROWS]: [Row],
-    [MICRO_ROWS]: [Row],
+    [MACRO_ROWS]: [Full_Row],
+    [MICRO_ROWS]: [Full_Row],
 }
 
-export type Row = {
+export type Full_Row = {
     [MAX_SEGMENT_COUNT]: Count,
     [AVG_SEGMENT_COUNT]: Count,
     [FILE_COUNT]: Count,
-    [SEGMENTS]: [Segment],
+    [SEGMENTS]: [Full_Segment],
 }
 
-export type Segment = {
+export type Full_Segment = {
     [MAX_ITEM_COUNT]: Count,
     [AVG_ITEM_COUNT]: Count,
+    [FILE_COUNT]: Count,
+}
+
+// The Compact set is used on the main info which doesn't need the file count.
+export type Compact_Buffer = {
+    [MAX_LINE_COUNT]: Count,
+    [AVG_LINE_COUNT]: Count,
+    [LINES]: [Compact_Line],
+}
+
+export type Compact_Line = {
+    [MAX_COLUMN_COUNT]: Count,
+    [AVG_COLUMN_COUNT]: Count,
+    [COLUMNS]: [Compact_Column],
+}
+
+export type Compact_Column = {
+    [MAX_ROW_COUNT]: Count,
+    [AVG_ROW_COUNT]: Count,
+    [MACRO_ROWS]: [Compact_Row],
+    [MICRO_ROWS]: [Compact_Row],
+}
+
+export type Compact_Row = {
+    [MAX_SEGMENT_COUNT]: Count,
+    [AVG_SEGMENT_COUNT]: Count,
+    [SEGMENTS]: [Compact_Segment],
+}
+
+export type Compact_Segment = {
+    [MAX_ITEM_COUNT]: Count,
+    [AVG_ITEM_COUNT]: Count,
+}
+
+// The Partial set is used on the main info temporarily to calculate average counts.
+export type Partial_Buffer = {
+    [FILE_COUNT]: Count,
+    [LINES]: [Partial_Line],
+}
+
+export type Partial_Line = {
+    [FILE_COUNT]: Count,
+    [COLUMNS]: [Partial_Column],
+}
+
+export type Partial_Column = {
+    [FILE_COUNT]: Count,
+    [MACRO_ROWS]: [Partial_Row],
+    [MICRO_ROWS]: [Partial_Row],
+}
+
+export type Partial_Row = {
+    [FILE_COUNT]: Count,
+    [SEGMENTS]: [Partial_Segment],
+}
+
+export type Partial_Segment = {
     [FILE_COUNT]: Count,
 }
