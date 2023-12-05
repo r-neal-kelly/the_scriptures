@@ -1,3 +1,5 @@
+import { ID } from "../../../types.js";
+
 import * as Event from "../../../event.js";
 
 import * as Model from "../../../model/selector/slot/item.js";
@@ -46,6 +48,28 @@ export class Instance extends Entity.Instance
                 {
                     event_name: new Event.Name(
                         Event.Prefix.ON,
+                        Events.SELECTOR_SLOT_ITEM_HIGHLIGHT,
+                        this.ID(),
+                    ),
+                    event_handler: this.On_Selector_Slot_Item_Highlight,
+                    event_priority: 0,
+                },
+            ),
+            new Event.Listener_Info(
+                {
+                    event_name: new Event.Name(
+                        Event.Prefix.ON,
+                        Events.SELECTOR_SLOT_ITEM_UNHIGHLIGHT,
+                        this.ID(),
+                    ),
+                    event_handler: this.On_Selector_Slot_Item_Unhighlight,
+                    event_priority: 0,
+                },
+            ),
+            new Event.Listener_Info(
+                {
+                    event_name: new Event.Name(
+                        Event.Prefix.ON,
                         Events.SELECTOR_SLOT_ITEM_SELECT,
                         this.ID(),
                     ),
@@ -76,11 +100,57 @@ export class Instance extends Entity.Instance
         return classes;
     }
 
+    override On_Restyle():
+        string | { [index: string]: string; }
+    {
+        return ``;
+    }
+
     private async On_Click(
         event: MouseEvent,
     ):
         Promise<void>
     {
+        const model: Model.Instance = this.Model();
+        const animation_events: Array<Promise<void>> = [];
+
+        if (model.Slot().Has_Selected_Item()) {
+            const selected_item_id: ID =
+                this.Parent().Child(model.Slot().Selected_Item_Index()).ID();
+
+            animation_events.push(
+                this.Send(
+                    new Event.Info(
+                        {
+                            affix: Events.SELECTOR_SLOT_ITEM_UNHIGHLIGHT,
+                            suffixes: [
+                                selected_item_id,
+                            ],
+                            type: Event.Type.EXCLUSIVE,
+                            data: {},
+                        },
+                    ),
+                ),
+            );
+        }
+
+        animation_events.push(
+            this.Send(
+                new Event.Info(
+                    {
+                        affix: Events.SELECTOR_SLOT_ITEM_HIGHLIGHT,
+                        suffixes: [
+                            this.ID(),
+                        ],
+                        type: Event.Type.EXCLUSIVE,
+                        data: {},
+                    },
+                ),
+            ),
+        );
+
+        await Promise.all(animation_events);
+
         await this.Send(
             new Event.Info(
                 {
@@ -97,6 +167,54 @@ export class Instance extends Entity.Instance
                     data: {},
                 },
             ),
+        );
+    }
+
+    private async On_Selector_Slot_Item_Highlight():
+        Promise<void>
+    {
+        await this.Animate(
+            [
+                {
+                    offset: 0.00,
+                    backgroundColor: `black`,
+                    color: `white`,
+                },
+                {
+                    offset: 1.00,
+                    backgroundColor: `white`,
+                    color: `black`,
+                },
+            ],
+            {
+                duration: 200,
+                easing: `ease`,
+                fill: `both`,
+            },
+        );
+    }
+
+    private async On_Selector_Slot_Item_Unhighlight():
+        Promise<void>
+    {
+        await this.Animate(
+            [
+                {
+                    offset: 0.00,
+                    backgroundColor: `white`,
+                    color: `black`,
+                },
+                {
+                    offset: 1.00,
+                    backgroundColor: `black`,
+                    color: `white`,
+                },
+            ],
+            {
+                duration: 200,
+                easing: `ease`,
+                fill: `both`,
+            },
         );
     }
 

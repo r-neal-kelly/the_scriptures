@@ -21,6 +21,8 @@ export const SELECTOR_TOGGLE: ID = Unique_ID.New();
 export const SELECTOR_SETTINGS_TOGGLE: ID = Unique_ID.New();
 export const SELECTOR_SLOT_ORDER_SELECT: ID = Unique_ID.New();
 export const SELECTOR_SLOT_ITEM_SELECT: ID = Unique_ID.New();
+export const SELECTOR_SLOT_ITEM_HIGHLIGHT: ID = Unique_ID.New();
+export const SELECTOR_SLOT_ITEM_UNHIGHLIGHT: ID = Unique_ID.New();
 
 export const FONT_SELECTOR_TOGGLE: ID = Unique_ID.New();
 export const FONT_SELECTOR_SLOT_ITEM_SELECT: ID = Unique_ID.New();

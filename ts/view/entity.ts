@@ -1166,9 +1166,11 @@ export abstract class Instance implements
                 last_keyframe = keyframes[0];
             }
 
-            for (const [key, value] of Object.entries(first_keyframe)) {
-                if (key !== `offset` && value != null) {
-                    (element.style as any)[key] = value.toString();
+            if (options.fill !== `none`) {
+                for (const [key, value] of Object.entries(first_keyframe)) {
+                    if (key !== `offset` && value != null) {
+                        (element.style as any)[key] = value.toString();
+                    }
                 }
             }
 
@@ -1193,11 +1195,13 @@ export abstract class Instance implements
                 },
             );
 
-            // We skip checking if it's still alive so that we ensure even a dead element
-            // goes back to its former state, e.g. when using the HTMLBodyElement.
-            for (const [key, value] of Object.entries(last_keyframe)) {
-                if (key !== `offset` && value != null) {
-                    (element.style as any)[key] = value.toString();
+            if (options.fill !== `none`) {
+                // We skip checking if it's still alive so that we ensure even a dead element
+                // goes back to its former state, e.g. when using the HTMLBodyElement.
+                for (const [key, value] of Object.entries(last_keyframe)) {
+                    if (key !== `offset` && value != null) {
+                        (element.style as any)[key] = value.toString();
+                    }
                 }
             }
         }

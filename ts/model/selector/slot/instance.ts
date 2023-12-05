@@ -176,6 +176,17 @@ export class Instance extends Entity.Instance
         return this.selected_item as Item.Instance;
     }
 
+    Selected_Item_Index():
+        Index
+    {
+        Utils.Assert(
+            this.Has_Selected_Item(),
+            `Has no selected_item.`,
+        );
+
+        return (this.selected_item as Item.Instance).Index();
+    }
+
     __Select_Item__(
         {
             item,
