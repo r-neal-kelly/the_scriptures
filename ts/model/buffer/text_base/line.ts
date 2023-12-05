@@ -84,7 +84,7 @@ export abstract class Instance<
         return this.text as Text.Line.Instance;
     }
 
-    Min_Column_Count():
+    Min_Column_Buffer_Count():
         Count
     {
         if (Buffer.Use_Average_Counts()) {
@@ -100,6 +100,12 @@ export abstract class Instance<
                 },
             );
         }
+    }
+
+    Max_Column_Buffer_Count():
+        Count
+    {
+        return this.Min_Column_Buffer_Count();
     }
 
     Column_Count():

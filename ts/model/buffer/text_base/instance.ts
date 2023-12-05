@@ -68,7 +68,7 @@ export abstract class Instance<
         language_name: Language.Name,
     ): Font.Name;
 
-    Min_Line_Count():
+    Min_Line_Buffer_Count():
         Count
     {
         if (Use_Average_Counts()) {
@@ -76,6 +76,12 @@ export abstract class Instance<
         } else {
             return Data.Singleton().Info().Max_Line_Count();
         }
+    }
+
+    Max_Line_Buffer_Count():
+        Count
+    {
+        return this.Min_Line_Buffer_Count();
     }
 
     Line_Count():

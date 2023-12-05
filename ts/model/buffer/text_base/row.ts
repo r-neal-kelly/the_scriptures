@@ -110,7 +110,7 @@ export abstract class Instance<
         return this.text as Text.Row.Instance;
     }
 
-    Min_Segment_Count():
+    Min_Segment_Buffer_Count():
         Count
     {
         if (Buffer.Use_Average_Counts()) {
@@ -130,6 +130,12 @@ export abstract class Instance<
                 },
             );
         }
+    }
+
+    Max_Segment_Buffer_Count():
+        Count
+    {
+        return this.Min_Segment_Buffer_Count();
     }
 
     Segment_Count():

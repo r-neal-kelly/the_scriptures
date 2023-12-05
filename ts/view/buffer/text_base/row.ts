@@ -11,7 +11,9 @@ interface Model_Instance_i
     Is_Blank():
         boolean;
 
-    Min_Segment_Count():
+    Min_Segment_Buffer_Count():
+        Count;
+    Max_Segment_Buffer_Count():
         Count;
     Segment_Count():
         Count;
@@ -96,10 +98,21 @@ export abstract class Instance<
                 this.Skip_Remaining_Siblings();
             }
         } else {
-            const target: Count = Math.max(model.Min_Segment_Count(), model.Segment_Count());
+            const target_min: Count =
+                Math.max(model.Min_Segment_Buffer_Count(), model.Segment_Count());
+            const target_max: Count =
+                Math.max(model.Max_Segment_Buffer_Count(), model.Segment_Count());
 
-            for (let idx = count, end = target; idx < end; idx += 1) {
-                this.Add_Segment(idx);
+            if (count < target_min) {
+                for (let idx = count, end = target_min; idx < end; idx += 1) {
+                    this.Add_Segment(idx);
+                }
+            } else if (count > target_max) {
+                for (let idx = count, end = target_max; idx > end;) {
+                    idx -= 1;
+
+                    this.Abort_Child(this.Child(idx));
+                }
             }
         }
     }

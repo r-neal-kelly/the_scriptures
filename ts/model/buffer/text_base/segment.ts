@@ -119,7 +119,7 @@ export abstract class Instance<
         return this.text as Text.Segment.Instance;
     }
 
-    Min_Item_Count():
+    Min_Item_Buffer_Count():
         Count
     {
         if (Buffer.Use_Average_Counts()) {
@@ -141,6 +141,12 @@ export abstract class Instance<
                 },
             );
         }
+    }
+
+    Max_Item_Buffer_Count():
+        Count
+    {
+        return this.Min_Item_Buffer_Count();
     }
 
     Item_Count():

@@ -9,7 +9,9 @@ interface Model_Instance_i
     Is_Blank():
         boolean;
 
-    Min_Item_Count():
+    Min_Item_Buffer_Count():
+        Count;
+    Max_Item_Buffer_Count():
         Count;
     Item_Count():
         Count;
@@ -94,10 +96,21 @@ export abstract class Instance<
                 this.Skip_Remaining_Siblings();
             }
         } else {
-            const target: Count = Math.max(model.Min_Item_Count(), model.Item_Count());
+            const target_min: Count =
+                Math.max(model.Min_Item_Buffer_Count(), model.Item_Count());
+            const target_max: Count =
+                Math.max(model.Max_Item_Buffer_Count(), model.Item_Count());
 
-            for (let idx = count, end = target; idx < end; idx += 1) {
-                this.Add_Item(idx);
+            if (count < target_min) {
+                for (let idx = count, end = target_min; idx < end; idx += 1) {
+                    this.Add_Item(idx);
+                }
+            } else if (count > target_max) {
+                for (let idx = count, end = target_max; idx > end;) {
+                    idx -= 1;
+
+                    this.Abort_Child(this.Child(idx));
+                }
             }
         }
     }

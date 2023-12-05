@@ -48,15 +48,26 @@ export class Instance extends Text_Base.Item.Instance<
                 this.Skip_Remaining_Siblings();
             }
         } else {
-            const target: Count = Math.max(model.Min_Division_Count(), model.Division_Count());
+            const target_min: Count =
+                Math.max(model.Min_Division_Buffer_Count(), model.Division_Count());
+            const target_max: Count =
+                Math.max(model.Max_Division_Buffer_Count(), model.Division_Count());
 
-            for (let idx = count, end = target; idx < end; idx += 1) {
-                new Division.Instance(
-                    {
-                        item: this,
-                        model: () => this.Model().Division_At(idx),
-                    },
-                );
+            if (count < target_min) {
+                for (let idx = count, end = target_min; idx < end; idx += 1) {
+                    new Division.Instance(
+                        {
+                            item: this,
+                            model: () => this.Model().Division_At(idx),
+                        },
+                    );
+                }
+            } else if (count > target_max) {
+                for (let idx = count, end = target_max; idx > end;) {
+                    idx -= 1;
+
+                    this.Abort_Child(this.Child(idx));
+                }
             }
         }
     }

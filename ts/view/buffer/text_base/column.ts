@@ -14,7 +14,9 @@ interface Model_Instance_i
     Text():
         Text.Column.Instance;
 
-    Min_Row_Count():
+    Min_Row_Buffer_Count():
+        Count;
+    Max_Row_Buffer_Count():
         Count;
     Row_Count():
         Count;
@@ -87,10 +89,21 @@ export abstract class Instance<
                 this.Skip_Remaining_Siblings();
             }
         } else {
-            const target: Count = Math.max(model.Min_Row_Count(), model.Row_Count());
+            const target_min: Count =
+                Math.max(model.Min_Row_Buffer_Count(), model.Row_Count());
+            const target_max: Count =
+                Math.max(model.Max_Row_Buffer_Count(), model.Row_Count());
 
-            for (let idx = count, end = target; idx < end; idx += 1) {
-                this.Add_Row(idx);
+            if (count < target_min) {
+                for (let idx = count, end = target_min; idx < end; idx += 1) {
+                    this.Add_Row(idx);
+                }
+            } else if (count > target_max) {
+                for (let idx = count, end = target_max; idx > end;) {
+                    idx -= 1;
+
+                    this.Abort_Child(this.Child(idx));
+                }
             }
         }
     }

@@ -16,8 +16,6 @@ export class Instance extends Text_Base.Item.Instance<
     Segment.Instance
 >
 {
-    private static min_division_count: Count = 1;
-
     private divisions: Array<Division.Instance>;
 
     constructor(
@@ -67,10 +65,16 @@ export class Instance extends Text_Base.Item.Instance<
         return this.Segment().Result();
     }
 
-    Min_Division_Count():
+    Min_Division_Buffer_Count():
         Count
     {
-        return Instance.min_division_count;
+        return 1;
+    }
+
+    Max_Division_Buffer_Count():
+        Count
+    {
+        return 1;
     }
 
     Division_Count():
