@@ -556,6 +556,8 @@ export class Instance
             ):
                 Promise<void>
             {
+                const affix: Affix = this.info.Affix();
+                const suffixes: Array<Suffix> = this.info.Suffixes();
                 const publication_info: Messenger.Publication_Info = new Messenger.Publication_Info(
                     {
                         type: Messenger.Publication_Type.IMMEDIATE,
@@ -564,26 +566,21 @@ export class Instance
                 );
 
                 for (const prefix of [Prefix.BEFORE, Prefix.ON, Prefix.AFTER]) {
-                    const promises: Array<Promise<void>> = this.info.Suffixes().map(
-                        async function (
-                            this: Instance,
-                            suffix: Suffix,
-                        ):
-                            Promise<void>
-                        {
-                            await this.messenger.Publish(
-                                new Name(prefix, this.info.Affix(), suffix).String(),
-                                publication_info,
-                            );
-                        }.bind(this),
-                    );
-                    promises.push(
-                        this.messenger.Publish(
-                            new Name(prefix, this.info.Affix()).String(),
+                    // It's intuitive to actually execute the affixes in order.
+                    // We can't use Messenger.Publication_Type.QUEUED because
+                    // each publisher has its own queue, and each affix has its own
+                    // publisher. So we do it manually here. Recall that each affix
+                    // can have prioritized handlers defined by the user.
+                    for (const suffix of suffixes) {
+                        await this.messenger.Publish(
+                            new Name(prefix, affix, suffix).String(),
                             publication_info,
-                        ),
+                        );
+                    }
+                    await this.messenger.Publish(
+                        new Name(prefix, affix).String(),
+                        publication_info,
                     );
-                    await Promise.all(promises);
                 }
             }.bind(this),
         );

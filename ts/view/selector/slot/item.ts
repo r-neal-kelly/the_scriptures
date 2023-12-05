@@ -111,46 +111,6 @@ export class Instance extends Entity.Instance
     ):
         Promise<void>
     {
-        const model: Model.Instance = this.Model();
-        const animation_events: Array<Promise<void>> = [];
-
-        if (model.Slot().Has_Selected_Item()) {
-            const selected_item_id: ID =
-                this.Parent().Child(model.Slot().Selected_Item_Index()).ID();
-
-            animation_events.push(
-                this.Send(
-                    new Event.Info(
-                        {
-                            affix: Events.SELECTOR_SLOT_ITEM_UNHIGHLIGHT,
-                            suffixes: [
-                                selected_item_id,
-                            ],
-                            type: Event.Type.EXCLUSIVE,
-                            data: {},
-                        },
-                    ),
-                ),
-            );
-        }
-
-        animation_events.push(
-            this.Send(
-                new Event.Info(
-                    {
-                        affix: Events.SELECTOR_SLOT_ITEM_HIGHLIGHT,
-                        suffixes: [
-                            this.ID(),
-                        ],
-                        type: Event.Type.EXCLUSIVE,
-                        data: {},
-                    },
-                ),
-            ),
-        );
-
-        await Promise.all(animation_events);
-
         await this.Send(
             new Event.Info(
                 {
@@ -221,6 +181,46 @@ export class Instance extends Entity.Instance
     private async On_Selector_Slot_Item_Select():
         Promise<void>
     {
+        const model: Model.Instance = this.Model();
+        const animation_events: Array<Promise<void>> = [];
+
+        if (model.Slot().Has_Selected_Item()) {
+            const selected_item_id: ID =
+                this.Parent().Child(model.Slot().Selected_Item_Index()).ID();
+
+            animation_events.push(
+                this.Send(
+                    new Event.Info(
+                        {
+                            affix: Events.SELECTOR_SLOT_ITEM_UNHIGHLIGHT,
+                            suffixes: [
+                                selected_item_id,
+                            ],
+                            type: Event.Type.EXCLUSIVE,
+                            data: {},
+                        },
+                    ),
+                ),
+            );
+        }
+
+        animation_events.push(
+            this.Send(
+                new Event.Info(
+                    {
+                        affix: Events.SELECTOR_SLOT_ITEM_HIGHLIGHT,
+                        suffixes: [
+                            this.ID(),
+                        ],
+                        type: Event.Type.EXCLUSIVE,
+                        data: {},
+                    },
+                ),
+            ),
+        );
+
+        await Promise.all(animation_events);
+
         this.Model().Select();
     }
 
