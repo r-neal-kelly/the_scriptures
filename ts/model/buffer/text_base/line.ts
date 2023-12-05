@@ -58,6 +58,9 @@ export abstract class Instance<
         return this.text == null;
     }
 
+    abstract Can_Be_Interior_Blank():
+        boolean;
+
     Buffer():
         Buffer_Instance
     {

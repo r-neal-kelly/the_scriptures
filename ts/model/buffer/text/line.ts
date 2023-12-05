@@ -59,4 +59,10 @@ export class Instance extends Text_Base.Line.Instance<
             },
         );
     }
+
+    Can_Be_Interior_Blank():
+        boolean
+    {
+        return false;
+    }
 }

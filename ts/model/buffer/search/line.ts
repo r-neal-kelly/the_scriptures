@@ -39,18 +39,6 @@ export class Instance extends Text_Base.Line.Instance<
 
         this.result = result;
 
-        if (buffer == null) {
-            Utils.Assert(
-                result == null,
-                `result must be null.`,
-            );
-        } else {
-            Utils.Assert(
-                result != null,
-                `result must not be null.`,
-            );
-        }
-
         if (!this.Is_Blank()) {
             for (let idx = 0, end = this.Text().Column_Count(); idx < end; idx += 1) {
                 this.Push_Column(
@@ -78,6 +66,12 @@ export class Instance extends Text_Base.Line.Instance<
                 text: null,
             },
         );
+    }
+
+    Can_Be_Interior_Blank():
+        boolean
+    {
+        return true;
     }
 
     Result():

@@ -11,6 +11,8 @@ interface Model_Instance_i
 {
     Is_Blank():
         boolean;
+    Can_Be_Interior_Blank():
+        boolean;
 
     Text():
         Text.Line.Instance;
@@ -89,7 +91,10 @@ export abstract class Instance<
         if (count > 0 && model.Is_Blank()) {
             this.Skip_Children();
 
-            if (this.Element().classList.contains(`Blank`)) {
+            if (
+                !model.Can_Be_Interior_Blank() &&
+                this.Element().classList.contains(`Blank`)
+            ) {
                 this.Skip_Remaining_Siblings();
             }
         } else {

@@ -164,7 +164,7 @@ export class Instance extends Entity.Instance
         );
 
         if (
-            program.Should_Activate_Window() ||
+            program.Is_Window_Active() ||
             !this.Layout().Has_Active_Window()
         ) {
             this.Layout().Set_Active_Window(window);

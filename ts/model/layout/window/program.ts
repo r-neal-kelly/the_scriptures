@@ -47,19 +47,19 @@ export class Instance extends Model_Entity.Instance
     private model_class: Model_Class;
     private model_instance: Model_Instance;
     private view_class: View_Class;
-    private should_activate_window: boolean;
+    private is_window_active: boolean;
 
     constructor(
         {
             model_class,
             model_data = undefined,
             view_class,
-            should_activate_window = true,
+            is_window_active = true,
         }: {
             model_class: Model_Class,
             model_data?: Model_Data,
             view_class: View_Class,
-            should_activate_window?: boolean,
+            is_window_active?: boolean,
         },
     )
     {
@@ -68,7 +68,7 @@ export class Instance extends Model_Entity.Instance
         this.model_class = model_class;
         this.model_instance = new model_class(model_data);
         this.view_class = view_class;
-        this.should_activate_window = should_activate_window;
+        this.is_window_active = is_window_active;
 
         this.Add_Dependencies(
             [
@@ -110,9 +110,9 @@ export class Instance extends Model_Entity.Instance
         return this.view_class;
     }
 
-    Should_Activate_Window():
+    Is_Window_Active():
         boolean
     {
-        return this.should_activate_window;
+        return this.is_window_active;
     }
 }

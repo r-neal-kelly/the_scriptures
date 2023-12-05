@@ -39,16 +39,36 @@ export class Instance extends Text_Base.Instance<
 
         this.is_showing_commands = is_showing_commands;
 
-        for (let idx = 0, end = results.length; idx < end; idx += 1) {
+        let line_idx: Index = 0;
+        for (
+            let result_idx = 0, result_end = results.length;
+            result_idx < result_end;
+            result_idx += 1
+        ) {
+            const result: Search.Result.Instance = results[result_idx];
+            const result_line_idx: Index = result.Line().Index();
+            while (line_idx < result_line_idx) {
+                this.Push_Line(
+                    new Line.Instance(
+                        {
+                            buffer: this,
+                            index: line_idx,
+                            result: null,
+                        },
+                    ),
+                );
+                line_idx += 1;
+            }
             this.Push_Line(
                 new Line.Instance(
                     {
                         buffer: this,
-                        index: idx,
-                        result: results[idx],
+                        index: result_line_idx,
+                        result: result,
                     },
                 ),
             );
+            line_idx += 1;
         }
     }
 
