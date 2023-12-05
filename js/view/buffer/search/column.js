@@ -1,1 +1,1 @@
-import*as Text_Base from"../text_base.js";import*as Row from"./row.js";export class Instance extends Text_Base.Column.Instance{constructor({line:e,model:o,index:s}){super({line:e,model:o,index:s}),this.Live()}Add_Row(e){new Row.Instance({column:this,model:()=>this.Model().Row_At(e),index:e})}}
+import*as Text_Base from"../text_base.js";import*as Row from"./row.js";export class Instance extends Text_Base.Column.Instance{constructor({line:e,model:o}){super({line:e,model:o}),this.Live()}Add_Row(e){new Row.Instance({column:this,model:()=>this.Model().Row_At(e)})}}

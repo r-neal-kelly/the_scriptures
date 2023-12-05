@@ -16,22 +16,14 @@ export class Instance extends Text_Base.Column.Instance<
     Row.Instance
 >
 {
-    private static blank_row: Row.Instance = new Row.Instance(
-        {
-            column: null,
-            index: null,
-            text: null,
-        },
-    );
-
     constructor(
         {
             line,
             index,
             text,
         }: {
-            line: Line.Instance | null,
-            index: Index | null,
+            line: Line.Instance,
+            index: Index,
             text: Text.Column.Instance | null,
         },
     )
@@ -59,10 +51,18 @@ export class Instance extends Text_Base.Column.Instance<
         }
     }
 
-    Blank_Row():
+    Blank_Row(
+        row_index: Index,
+    ):
         Row.Instance
     {
-        return Instance.blank_row;
+        return new Row.Instance(
+            {
+                column: this,
+                index: row_index,
+                text: null,
+            },
+        );
     }
 
     Result():

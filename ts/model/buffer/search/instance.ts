@@ -1,3 +1,5 @@
+import { Index } from "../../../types.js";
+
 import * as Language from "../../language.js";
 import * as Languages from "../../languages.js";
 import * as Font from "../../font.js";
@@ -10,14 +12,6 @@ export class Instance extends Text_Base.Instance<
     Line.Instance
 >
 {
-    private static blank_line: Line.Instance = new Line.Instance(
-        {
-            buffer: null,
-            index: null,
-            result: null,
-        },
-    );
-
     private is_showing_commands: boolean;
 
     constructor(
@@ -66,10 +60,18 @@ export class Instance extends Text_Base.Instance<
         return Languages.Singleton().Default_Global_Font_Name(language_name);
     }
 
-    Blank_Line():
+    Blank_Line(
+        line_index: Index,
+    ):
         Line.Instance
     {
-        return Instance.blank_line;
+        return new Line.Instance(
+            {
+                buffer: this,
+                index: line_index,
+                result: null,
+            },
+        );
     }
 
     Is_Showing_Commands():

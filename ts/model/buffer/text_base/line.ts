@@ -22,8 +22,8 @@ export abstract class Instance<
     Column_Instance extends Column_Instance_i,
 > extends Entity.Instance
 {
-    private buffer: Buffer_Instance | null;
-    private index: Index | null;
+    private buffer: Buffer_Instance;
+    private index: Index;
     private text: Text.Line.Instance | null;
     private columns: Array<Column_Instance>;
 
@@ -33,8 +33,8 @@ export abstract class Instance<
             index,
             text,
         }: {
-            buffer: Buffer_Instance | null,
-            index: Index | null,
+            buffer: Buffer_Instance,
+            index: Index,
             text: Text.Line.Instance | null,
         },
     )
@@ -46,25 +46,10 @@ export abstract class Instance<
         this.text = text;
         this.columns = [];
 
-        if (buffer == null) {
-            Utils.Assert(
-                index == null,
-                `index must be null.`,
-            );
-            Utils.Assert(
-                text == null,
-                `text must be null.`,
-            );
-        } else {
-            Utils.Assert(
-                index != null && index > -1,
-                `index must not be null, and must be greater than -1.`,
-            );
-            Utils.Assert(
-                text != null,
-                `text must not be null.`,
-            );
-        }
+        Utils.Assert(
+            index > -1,
+            `index must be greater than -1.`,
+        );
     }
 
     Is_Blank():
@@ -76,23 +61,13 @@ export abstract class Instance<
     Buffer():
         Buffer_Instance
     {
-        Utils.Assert(
-            !this.Is_Blank(),
-            `line is blank.`,
-        );
-
-        return this.buffer as Buffer_Instance;
+        return this.buffer;
     }
 
     Index():
         Index
     {
-        Utils.Assert(
-            !this.Is_Blank(),
-            `line is blank.`,
-        );
-
-        return this.index as Index;
+        return this.index;
     }
 
     Text():
@@ -106,25 +81,19 @@ export abstract class Instance<
         return this.text as Text.Line.Instance;
     }
 
-    Min_Column_Count(
-        {
-            line_index,
-        }: {
-            line_index: Index,
-        },
-    ):
+    Min_Column_Count():
         Count
     {
         if (Buffer.Use_Average_Counts()) {
             return Data.Singleton().Info().Avg_Column_Count(
                 {
-                    line_index: line_index,
+                    line_index: this.Index(),
                 },
             );
         } else {
             return Data.Singleton().Info().Max_Column_Count(
                 {
-                    line_index: line_index,
+                    line_index: this.Index(),
                 },
             );
         }
@@ -136,7 +105,9 @@ export abstract class Instance<
         return this.columns.length;
     }
 
-    abstract Blank_Column():
+    abstract Blank_Column(
+        column_index: Index,
+    ):
         Column_Instance;
 
     Column_At(
@@ -152,7 +123,7 @@ export abstract class Instance<
         if (column_index < this.Column_Count()) {
             return this.columns[column_index];
         } else {
-            return this.Blank_Column();
+            return this.Blank_Column(column_index);
         }
     }
 

@@ -7,31 +7,25 @@ import * as Search from "../../search.js";
 
 import * as Text_Base from "../text_base.js";
 import * as Buffer from "./instance.js";
+import * as Line from "./line.js";
 import * as Column from "./column.js";
 import * as Segment from "./segment.js";
 
 export class Instance extends Text_Base.Row.Instance<
     Buffer.Instance,
+    Line.Instance,
     Column.Instance,
     Segment.Instance
 >
 {
-    private static blank_segment: Segment.Instance = new Segment.Instance(
-        {
-            row: null,
-            index: null,
-            text: null,
-        },
-    );
-
     constructor(
         {
             column,
             index,
             text,
         }: {
-            column: Column.Instance | null,
-            index: Index | null,
+            column: Column.Instance,
+            index: Index,
             text: Text.Row.Instance | null,
         },
     )
@@ -348,10 +342,18 @@ export class Instance extends Text_Base.Row.Instance<
         }
     }
 
-    Blank_Segment():
+    Blank_Segment(
+        segment_index: Index,
+    ):
         Segment.Instance
     {
-        return Instance.blank_segment;
+        return new Segment.Instance(
+            {
+                row: this,
+                index: segment_index,
+                text: null,
+            },
+        );
     }
 
     Result():

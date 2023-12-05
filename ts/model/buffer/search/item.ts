@@ -18,15 +18,6 @@ export class Instance extends Text_Base.Item.Instance<
 {
     private static min_division_count: Count = 1;
 
-    private static blank_division: Division.Instance = new Division.Instance(
-        {
-            item: null,
-            index: null,
-            value: null,
-            is_highlighted: null,
-        },
-    );
-
     private divisions: Array<Division.Instance>;
 
     constructor(
@@ -35,8 +26,8 @@ export class Instance extends Text_Base.Item.Instance<
             index,
             text,
         }: {
-            segment: Segment.Instance | null,
-            index: Index | null,
+            segment: Segment.Instance,
+            index: Index,
             text: Text.Item.Instance | null,
         },
     )
@@ -88,10 +79,19 @@ export class Instance extends Text_Base.Item.Instance<
         return this.divisions.length;
     }
 
-    Blank_Division():
+    Blank_Division(
+        division_index: Index,
+    ):
         Division.Instance
     {
-        return Instance.blank_division;
+        return new Division.Instance(
+            {
+                item: this,
+                index: division_index,
+                value: null,
+                is_highlighted: false,
+            },
+        );
     }
 
     Division_At(
@@ -107,7 +107,7 @@ export class Instance extends Text_Base.Item.Instance<
         if (division_index < this.Division_Count()) {
             return this.divisions[division_index];
         } else {
-            return this.Blank_Division();
+            return this.Blank_Division(division_index);
         }
     }
 

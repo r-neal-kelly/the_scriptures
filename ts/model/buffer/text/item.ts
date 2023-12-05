@@ -22,8 +22,8 @@ export class Instance extends Text_Base.Item.Instance<
             index,
             text,
         }: {
-            segment: Segment.Instance | null,
-            index: Index | null,
+            segment: Segment.Instance,
+            index: Index,
             text: Text.Item.Instance | null,
         },
     )

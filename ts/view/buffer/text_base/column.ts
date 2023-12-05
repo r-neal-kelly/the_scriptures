@@ -14,15 +14,7 @@ interface Model_Instance_i
     Text():
         Text.Column.Instance;
 
-    Min_Row_Count(
-        {
-            line_index,
-            column_index,
-        }: {
-            line_index: Index,
-            column_index: Index,
-        },
-    ):
+    Min_Row_Count():
         Count;
     Row_Count():
         Count;
@@ -51,8 +43,6 @@ interface Line_Instance_i<
 {
     Buffer():
         Buffer_Instance;
-    Index():
-        Index;
 }
 
 export abstract class Instance<
@@ -62,17 +52,14 @@ export abstract class Instance<
 > extends Entity.Instance
 {
     private model: () => Model_Instance;
-    private index: Index;
 
     constructor(
         {
             line,
             model,
-            index,
         }: {
             line: Line_Instance,
             model: () => Model_Instance,
-            index: Index,
         },
     )
     {
@@ -85,7 +72,6 @@ export abstract class Instance<
         );
 
         this.model = model;
-        this.index = index;
     }
 
     override On_Refresh():
@@ -101,16 +87,7 @@ export abstract class Instance<
                 this.Skip_Remaining_Siblings();
             }
         } else {
-            const line = this.Line();
-            const target: Count = Math.max(
-                model.Min_Row_Count(
-                    {
-                        line_index: line.Index(),
-                        column_index: this.Index(),
-                    },
-                ),
-                model.Row_Count(),
-            );
+            const target: Count = Math.max(model.Min_Row_Count(), model.Row_Count());
 
             for (let idx = count, end = target; idx < end; idx += 1) {
                 this.Add_Row(idx);
@@ -172,12 +149,6 @@ export abstract class Instance<
         Model_Instance
     {
         return this.model();
-    }
-
-    Index():
-        Index
-    {
-        return this.index;
     }
 
     Buffer():

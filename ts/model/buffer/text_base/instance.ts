@@ -84,7 +84,9 @@ export abstract class Instance<
         return this.lines.length;
     }
 
-    abstract Blank_Line():
+    abstract Blank_Line(
+        line_index: Index,
+    ):
         Line_Instance;
 
     Line_At(
@@ -100,7 +102,7 @@ export abstract class Instance<
         if (line_index < this.Line_Count()) {
             return this.lines[line_index];
         } else {
-            return this.Blank_Line();
+            return this.Blank_Line(line_index);
         }
     }
 

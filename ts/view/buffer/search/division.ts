@@ -1,5 +1,3 @@
-import { ID } from "../../../types.js";
-
 import * as Model from "../../../model/buffer/search/division.js";
 
 import * as Entity from "../../entity.js";

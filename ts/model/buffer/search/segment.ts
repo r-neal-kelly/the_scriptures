@@ -7,31 +7,27 @@ import * as Search from "../../search.js";
 
 import * as Text_Base from "../text_base.js";
 import * as Buffer from "./instance.js";
+import * as Line from "./line.js";
+import * as Column from "./column.js";
 import * as Row from "./row.js";
 import * as Item from "./item.js";
 
 export class Instance extends Text_Base.Segment.Instance<
     Buffer.Instance,
+    Line.Instance,
+    Column.Instance,
     Row.Instance,
     Item.Instance
 >
 {
-    private static blank_item: Item.Instance = new Item.Instance(
-        {
-            segment: null,
-            index: null,
-            text: null,
-        },
-    );
-
     constructor(
         {
             row,
             index,
             text,
         }: {
-            row: Row.Instance | null,
-            index: Index | null,
+            row: Row.Instance,
+            index: Index,
             text: Text.Segment.Instance | null,
         },
     )
@@ -59,10 +55,18 @@ export class Instance extends Text_Base.Segment.Instance<
         }
     }
 
-    Blank_Item():
+    Blank_Item(
+        item_index: Index,
+    ):
         Item.Instance
     {
-        return Instance.blank_item;
+        return new Item.Instance(
+            {
+                segment: this,
+                index: item_index,
+                text: null,
+            },
+        );
     }
 
     Result():

@@ -31,8 +31,8 @@ export class Instance<
     Segment_Instance extends Segment_Instance_i<Buffer_Instance>,
 > extends Entity.Instance
 {
-    private segment: Segment_Instance | null;
-    private index: Index | null;
+    private segment: Segment_Instance;
+    private index: Index;
     private text: Text.Item.Instance | null;
 
     constructor(
@@ -41,8 +41,8 @@ export class Instance<
             index,
             text,
         }: {
-            segment: Segment_Instance | null,
-            index: Index | null,
+            segment: Segment_Instance,
+            index: Index,
             text: Text.Item.Instance | null,
         },
     )
@@ -53,25 +53,10 @@ export class Instance<
         this.index = index;
         this.text = text;
 
-        if (segment == null) {
-            Utils.Assert(
-                index == null,
-                `index must be null.`,
-            );
-            Utils.Assert(
-                text == null,
-                `text must be null.`,
-            );
-        } else {
-            Utils.Assert(
-                index != null && index > -1,
-                `index must not be null, and must be greater than -1.`,
-            );
-            Utils.Assert(
-                text != null,
-                `text must not be null.`,
-            );
-        }
+        Utils.Assert(
+            index > -1,
+            `index must be greater than -1.`,
+        );
     }
 
     Is_Blank():
@@ -83,34 +68,19 @@ export class Instance<
     Buffer():
         Buffer_Instance
     {
-        Utils.Assert(
-            !this.Is_Blank(),
-            `item is blank.`,
-        );
-
         return this.Segment().Buffer();
     }
 
     Segment():
         Segment_Instance
     {
-        Utils.Assert(
-            !this.Is_Blank(),
-            `item is blank.`,
-        );
-
-        return this.segment as Segment_Instance;
+        return this.segment;
     }
 
     Index():
         Index
     {
-        Utils.Assert(
-            !this.Is_Blank(),
-            `item is blank.`,
-        );
-
-        return this.index as Index;
+        return this.index;
     }
 
     Text():

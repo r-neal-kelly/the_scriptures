@@ -21,11 +21,9 @@ export class Instance extends Text_Base.Segment.Instance<
         {
             row,
             model,
-            index,
         }: {
             row: Row.Instance,
             model: () => Model.Instance,
-            index: Index,
         },
     )
     {
@@ -33,7 +31,6 @@ export class Instance extends Text_Base.Segment.Instance<
             {
                 row: row,
                 model: model,
-                index: index,
             },
         );
 

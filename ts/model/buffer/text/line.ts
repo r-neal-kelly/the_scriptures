@@ -1,7 +1,5 @@
 import { Index } from "../../../types.js";
 
-import * as Utils from "../../../utils.js";
-
 import * as Text from "../../text.js";
 
 import * as Text_Base from "../text_base.js";
@@ -13,22 +11,14 @@ export class Instance extends Text_Base.Line.Instance<
     Column.Instance
 >
 {
-    private static blank_column: Column.Instance = new Column.Instance(
-        {
-            line: null,
-            index: null,
-            text: null,
-        },
-    );
-
     constructor(
         {
             buffer,
             index,
             text,
         }: {
-            buffer: Buffer.Instance | null,
-            index: Index | null,
+            buffer: Buffer.Instance,
+            index: Index,
             text: Text.Line.Instance | null,
         },
     )
@@ -56,9 +46,17 @@ export class Instance extends Text_Base.Line.Instance<
         }
     }
 
-    Blank_Column():
+    Blank_Column(
+        column_index: Index,
+    ):
         Column.Instance
     {
-        return Instance.blank_column;
+        return new Column.Instance(
+            {
+                line: this,
+                index: column_index,
+                text: null,
+            },
+        );
     }
 }

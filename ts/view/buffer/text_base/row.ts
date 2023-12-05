@@ -11,17 +11,7 @@ interface Model_Instance_i
     Is_Blank():
         boolean;
 
-    Min_Segment_Count(
-        {
-            line_index,
-            column_index,
-            row_index,
-        }: {
-            line_index: Index,
-            column_index: Index,
-            row_index: Index,
-        },
-    ):
+    Min_Segment_Count():
         Count;
     Segment_Count():
         Count;
@@ -50,8 +40,6 @@ interface Buffer_Instance_i
 
 interface Line_Instance_i extends Entity.Instance
 {
-    Index():
-        Index;
 }
 
 interface Column_Instance_i<
@@ -63,8 +51,6 @@ interface Column_Instance_i<
         Buffer_Instance;
     Line():
         Line_Instance;
-    Index():
-        Index;
 }
 
 export abstract class Instance<
@@ -75,17 +61,14 @@ export abstract class Instance<
 > extends Entity.Instance
 {
     private model: () => Model_Instance;
-    private index: Index;
 
     constructor(
         {
             column,
             model,
-            index,
         }: {
             column: Column_Instance,
             model: () => Model_Instance,
-            index: Index,
         },
     )
     {
@@ -98,7 +81,6 @@ export abstract class Instance<
         );
 
         this.model = model;
-        this.index = index;
     }
 
     override On_Refresh():
@@ -114,18 +96,7 @@ export abstract class Instance<
                 this.Skip_Remaining_Siblings();
             }
         } else {
-            const column = this.Column();
-            const line = column.Line();
-            const target: Count = Math.max(
-                model.Min_Segment_Count(
-                    {
-                        line_index: line.Index(),
-                        column_index: column.Index(),
-                        row_index: this.Index(),
-                    },
-                ),
-                model.Segment_Count(),
-            );
+            const target: Count = Math.max(model.Min_Segment_Count(), model.Segment_Count());
 
             for (let idx = count, end = target; idx < end; idx += 1) {
                 this.Add_Segment(idx);
@@ -185,12 +156,6 @@ export abstract class Instance<
         Model_Instance
     {
         return this.model();
-    }
-
-    Index():
-        Index
-    {
-        return this.index;
     }
 
     Buffer():

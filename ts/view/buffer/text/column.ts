@@ -17,11 +17,9 @@ export class Instance extends Text_Base.Column.Instance<
         {
             line,
             model,
-            index,
         }: {
             line: Line.Instance,
             model: () => Model.Instance,
-            index: Index,
         },
     )
     {
@@ -29,7 +27,6 @@ export class Instance extends Text_Base.Column.Instance<
             {
                 line: line,
                 model: model,
-                index: index,
             },
         );
 
@@ -45,7 +42,6 @@ export class Instance extends Text_Base.Column.Instance<
             {
                 column: this,
                 model: () => this.Model().Row_At(row_index),
-                index: row_index,
             },
         );
     }

@@ -12,12 +12,34 @@ interface Buffer_Instance_i
 {
 }
 
+interface Line_Instance_i
+{
+    Index():
+        Index;
+}
+
+interface Column_Instance_i<
+    Line_Instance extends Line_Instance_i,
+>
+{
+    Line():
+        Line_Instance;
+    Index():
+        Index;
+}
+
 interface Row_Instance_i<
-    Buffer_Instance,
+    Buffer_Instance extends Buffer_Instance_i,
+    Line_Instance extends Line_Instance_i,
+    Column_Instance extends Column_Instance_i<Line_Instance>,
 >
 {
     Buffer():
         Buffer_Instance;
+    Column():
+        Column_Instance;
+    Index():
+        Index;
 }
 
 interface Item_Instance_i
@@ -26,12 +48,14 @@ interface Item_Instance_i
 
 export abstract class Instance<
     Buffer_Instance extends Buffer_Instance_i,
-    Row_Instance extends Row_Instance_i<Buffer_Instance>,
+    Line_Instance extends Line_Instance_i,
+    Column_Instance extends Column_Instance_i<Line_Instance>,
+    Row_Instance extends Row_Instance_i<Buffer_Instance, Line_Instance, Column_Instance>,
     Item_Instance extends Item_Instance_i,
 > extends Entity.Instance
 {
-    private row: Row_Instance | null;
-    private index: Index | null;
+    private row: Row_Instance;
+    private index: Index;
     private text: Text.Segment.Instance | null;
     private items: Array<Item_Instance>;
 
@@ -41,8 +65,8 @@ export abstract class Instance<
             index,
             text,
         }: {
-            row: Row_Instance | null,
-            index: Index | null,
+            row: Row_Instance,
+            index: Index,
             text: Text.Segment.Instance | null,
         },
     )
@@ -54,25 +78,10 @@ export abstract class Instance<
         this.text = text;
         this.items = [];
 
-        if (row == null) {
-            Utils.Assert(
-                index == null,
-                `index must be null.`,
-            );
-            Utils.Assert(
-                text == null,
-                `text must be null.`,
-            );
-        } else {
-            Utils.Assert(
-                index != null && index > -1,
-                `index must not be null, and must be greater than -1.`,
-            );
-            Utils.Assert(
-                text != null,
-                `text must not be null.`,
-            );
-        }
+        Utils.Assert(
+            index > -1,
+            `index must be greater than -1.`,
+        );
     }
 
     Is_Blank():
@@ -84,34 +93,19 @@ export abstract class Instance<
     Buffer():
         Buffer_Instance
     {
-        Utils.Assert(
-            !this.Is_Blank(),
-            `segment is blank.`,
-        );
-
         return this.Row().Buffer();
     }
 
     Row():
         Row_Instance
     {
-        Utils.Assert(
-            !this.Is_Blank(),
-            `segment is blank.`,
-        );
-
-        return this.row as Row_Instance;
+        return this.row;
     }
 
     Index():
         Index
     {
-        Utils.Assert(
-            !this.Is_Blank(),
-            `segment is blank.`,
-        );
-
-        return this.index as Index;
+        return this.index;
     }
 
     Text():
@@ -125,37 +119,25 @@ export abstract class Instance<
         return this.text as Text.Segment.Instance;
     }
 
-    Min_Item_Count(
-        {
-            line_index,
-            column_index,
-            row_index,
-            segment_index,
-        }: {
-            line_index: Index,
-            column_index: Index,
-            row_index: Index,
-            segment_index: Index,
-        },
-    ):
+    Min_Item_Count():
         Count
     {
         if (Buffer.Use_Average_Counts()) {
             return Data.Singleton().Info().Avg_Macro_Item_Count(
                 {
-                    line_index: line_index,
-                    column_index: column_index,
-                    row_index: row_index,
-                    segment_index: segment_index,
+                    line_index: this.Row().Column().Line().Index(),
+                    column_index: this.Row().Column().Index(),
+                    row_index: this.Row().Index(),
+                    segment_index: this.Index(),
                 },
             );
         } else {
             return Data.Singleton().Info().Max_Macro_Item_Count(
                 {
-                    line_index: line_index,
-                    column_index: column_index,
-                    row_index: row_index,
-                    segment_index: segment_index,
+                    line_index: this.Row().Column().Line().Index(),
+                    column_index: this.Row().Column().Index(),
+                    row_index: this.Row().Index(),
+                    segment_index: this.Index(),
                 },
             );
         }
@@ -167,7 +149,9 @@ export abstract class Instance<
         return this.items.length;
     }
 
-    abstract Blank_Item():
+    abstract Blank_Item(
+        item_index: Index,
+    ):
         Item_Instance;
 
     Item_At(
@@ -183,7 +167,7 @@ export abstract class Instance<
         if (item_index < this.Item_Count()) {
             return this.items[item_index];
         } else {
-            return this.Blank_Item();
+            return this.Blank_Item(item_index);
         }
     }
 

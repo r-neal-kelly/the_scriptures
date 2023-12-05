@@ -12,10 +12,10 @@ import * as Item from "./item.js";
 
 export class Instance extends Entity.Instance
 {
-    private item: Item.Instance | null;
-    private index: Index | null;
+    private item: Item.Instance;
+    private index: Index;
     private value: Text.Value | null;
-    private is_highlighted: boolean | null;
+    private is_highlighted: boolean;
 
     constructor(
         {
@@ -24,10 +24,10 @@ export class Instance extends Entity.Instance
             value,
             is_highlighted,
         }: {
-            item: Item.Instance | null,
-            index: Index | null,
+            item: Item.Instance,
+            index: Index,
             value: Text.Value | null,
-            is_highlighted: boolean | null,
+            is_highlighted: boolean,
         },
     )
     {
@@ -38,33 +38,12 @@ export class Instance extends Entity.Instance
         this.value = value;
         this.is_highlighted = is_highlighted;
 
-        if (item == null) {
-            Utils.Assert(
-                index == null,
-                `index must be null.`,
-            );
-            Utils.Assert(
-                value == null,
-                `value must be null.`,
-            );
-            Utils.Assert(
-                is_highlighted == null,
-                `is_highlighted must be null.`,
-            );
-        } else {
-            Utils.Assert(
-                index != null && index > -1,
-                `index must not be null, and must be greater than -1.`,
-            );
-            Utils.Assert(
-                value != null,
-                `value must not be null.`,
-            );
-            Utils.Assert(
-                is_highlighted != null,
-                `is_highlighted must not be null.`,
-            );
+        Utils.Assert(
+            index > -1,
+            `index must be greater than -1.`,
+        );
 
+        if (value != null) {
             this.Set_Value(value as Text.Value);
         }
     }
@@ -72,17 +51,12 @@ export class Instance extends Entity.Instance
     Is_Blank():
         boolean
     {
-        return this.item == null;
+        return this.value == null;
     }
 
     Buffer():
         Buffer.Instance
     {
-        Utils.Assert(
-            !this.Is_Blank(),
-            `division is blank.`,
-        );
-
         return this.Item().Buffer();
     }
 
@@ -100,23 +74,13 @@ export class Instance extends Entity.Instance
     Item():
         Item.Instance
     {
-        Utils.Assert(
-            !this.Is_Blank(),
-            `division is blank.`,
-        );
-
-        return this.item as Item.Instance;
+        return this.item;
     }
 
     Index():
         Index
     {
-        Utils.Assert(
-            !this.Is_Blank(),
-            `division is blank.`,
-        );
-
-        return this.index as Index;
+        return this.index;
     }
 
     Value():
@@ -164,12 +128,7 @@ export class Instance extends Entity.Instance
     Is_Highlighted():
         boolean
     {
-        Utils.Assert(
-            !this.Is_Blank(),
-            `division is blank.`,
-        );
-
-        return this.is_highlighted as boolean;
+        return this.is_highlighted;
     }
 
     Set_Highlight(
@@ -177,11 +136,6 @@ export class Instance extends Entity.Instance
     ):
         void
     {
-        Utils.Assert(
-            !this.Is_Blank(),
-            `division is blank.`,
-        );
-
         this.is_highlighted = is_highlighted;
     }
 }

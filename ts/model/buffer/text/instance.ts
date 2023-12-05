@@ -1,3 +1,5 @@
+import { Index } from "../../../types.js";
+
 import * as Language from "../../language.js";
 import * as Font from "../../font.js";
 import * as Text from "../../text.js";
@@ -9,14 +11,6 @@ export class Instance extends Text_Base.Instance<
     Line.Instance
 >
 {
-    private static blank_line: Line.Instance = new Line.Instance(
-        {
-            buffer: null,
-            index: null,
-            text: null,
-        },
-    );
-
     private override_font_name: (language_name: Language.Name) => Font.Name;
 
     private text: Text.Instance;
@@ -77,10 +71,18 @@ export class Instance extends Text_Base.Instance<
         return this.override_font_name(language_name);
     }
 
-    Blank_Line():
+    Blank_Line(
+        line_index: Index,
+    ):
         Line.Instance
     {
-        return Instance.blank_line;
+        return new Line.Instance(
+            {
+                buffer: this,
+                index: line_index,
+                text: null,
+            },
+        );
     }
 
     Text():
