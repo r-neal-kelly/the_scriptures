@@ -139,6 +139,19 @@ export class Instance extends Entity.Instance
         return this.windows[index];
     }
 
+    Window_Index(
+        window: Window.Instance,
+    ):
+        Index
+    {
+        Utils.Assert(
+            window.Maybe_Wall() === this,
+            `Window wall mismatch!`,
+        );
+
+        return this.windows.indexOf(window);
+    }
+
     Windows():
         Array<Window.Instance>
     {

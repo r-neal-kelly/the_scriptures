@@ -3,6 +3,7 @@ import * as Event from "../../event.js";
 
 import * as Model from "../../model/layout/bar.js";
 
+import * as Events from "../events.js";
 import * as Entity from "../entity.js";
 import * as Layout from "./instance.js";
 import * as Tabs from "./tabs.js";
@@ -92,7 +93,19 @@ export class Instance extends Entity.Instance
             `,
         );
 
-        return [];
+        return [
+            new Event.Listener_Info(
+                {
+                    event_name: new Event.Name(
+                        Event.Prefix.AFTER,
+                        Events.WINDOW_CLOSE,
+                        this.Layout().ID(),
+                    ),
+                    event_handler: this.After_Window_Close,
+                    event_priority: 0,
+                },
+            ),
+        ];
     }
 
     override On_Refresh():
@@ -114,6 +127,12 @@ export class Instance extends Entity.Instance
         Array<string>
     {
         return [`Bar`];
+    }
+
+    private async After_Window_Close():
+        Promise<void>
+    {
+        this.Refresh();
     }
 
     Model():

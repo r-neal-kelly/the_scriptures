@@ -125,6 +125,17 @@ export class Instance extends Entity.Instance
                     event_priority: 0,
                 },
             ),
+            new Event.Listener_Info(
+                {
+                    event_name: new Event.Name(
+                        Event.Prefix.ON,
+                        Events.WINDOW_CLOSE,
+                        this.ID(),
+                    ),
+                    event_handler: this.On_Window_Close,
+                    event_priority: 0,
+                },
+            ),
         ];
     }
 
@@ -209,20 +220,22 @@ export class Instance extends Entity.Instance
     private async On_Click():
         Promise<void>
     {
-        await this.Send(
-            new Event.Info(
-                {
-                    affix: Events.WINDOW_ACTIVATE,
-                    suffixes: [
-                        this.ID(),
-                        this.Wall().ID(),
-                        this.Wall().Layout().ID(),
-                    ],
-                    type: Event.Type.EXCLUSIVE,
-                    data: {},
-                },
-            ),
-        );
+        if (this.Is_Alive()) {
+            await this.Send(
+                new Event.Info(
+                    {
+                        affix: Events.WINDOW_ACTIVATE,
+                        suffixes: [
+                            this.ID(),
+                            this.Wall().ID(),
+                            this.Wall().Layout().ID(),
+                        ],
+                        type: Event.Type.EXCLUSIVE,
+                        data: {},
+                    },
+                ),
+            );
+        }
     }
 
     private async On_Window_Activate():
@@ -267,6 +280,12 @@ export class Instance extends Entity.Instance
         this.Reclass();
     }
 
+    private async On_Window_Close():
+        Promise<void>
+    {
+        this.Model().Kill();
+    }
+
     private async Refresh_After_Has_Model():
         Promise<void>
     {
@@ -294,6 +313,14 @@ export class Instance extends Entity.Instance
         Model.Instance
     {
         return this.model();
+    }
+
+    __Set_Model__(
+        model: () => Model.Instance,
+    ):
+        void
+    {
+        this.model = model;
     }
 
     Wall():

@@ -1,4 +1,5 @@
 import { Count } from "../../../types.js";
+import { Index } from "../../../types.js";
 
 import * as Utils from "../../../utils.js";
 
@@ -134,6 +135,21 @@ export class Instance extends Entity.Instance
 
         this.Some_Wall().__Remove_Window__(this);
         this.wall = null;
+    }
+
+    Index():
+        Index
+    {
+        Utils.Assert(
+            this.Is_Alive(),
+            `Window must be alive to get its wall.`,
+        );
+        Utils.Assert(
+            this.Is_In_Wall(),
+            `Isn't in a wall.`,
+        );
+
+        return this.Some_Wall().Window_Index(this);
     }
 
     Program():

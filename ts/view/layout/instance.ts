@@ -97,19 +97,7 @@ export class Instance extends Entity.Instance
             `,
         );
 
-        return [
-            new Event.Listener_Info(
-                {
-                    event_name: new Event.Name(
-                        Event.Prefix.AFTER,
-                        Events.WINDOW_CLOSE,
-                        this.ID(),
-                    ),
-                    event_handler: this.After_Window_Close,
-                    event_priority: 0,
-                },
-            ),
-        ];
+        return [];
     }
 
     override On_Refresh():
@@ -140,12 +128,6 @@ export class Instance extends Entity.Instance
         Array<string>
     {
         return [`Layout`];
-    }
-
-    private async After_Window_Close():
-        Promise<void>
-    {
-        this.Refresh();
     }
 
     Model():

@@ -1,4 +1,5 @@
 import { Count } from "../../types.js";
+import { Index } from "../../types.js";
 import { Delta } from "../../types.js";
 
 import * as Utils from "../../utils.js";
@@ -15,6 +16,8 @@ import * as Window from "./window.js";
 export class Instance extends Entity.Instance
 {
     private model: () => Model.Instance;
+
+    private kill_index: Index | null;
 
     constructor(
         {
@@ -36,6 +39,8 @@ export class Instance extends Entity.Instance
 
         this.model = model;
 
+        this.kill_index = null;
+
         this.Live();
     }
 
@@ -54,31 +59,56 @@ export class Instance extends Entity.Instance
                     event_priority: 0,
                 },
             ),
+            new Event.Listener_Info(
+                {
+                    event_name: new Event.Name(
+                        Event.Prefix.AFTER,
+                        Events.WINDOW_CLOSE,
+                        this.Layout().ID(),
+                    ),
+                    event_handler: this.After_Window_Close,
+                    event_priority: 0,
+                },
+            ),
         ];
     }
 
     override On_Refresh():
         void
     {
-        const model: Model.Instance = this.Model();
-        const target: Count = model.Window_Count();
-        const count: Count = this.Child_Count();
-        const delta: Delta = target - count;
+        if (this.kill_index == null) {
+            const model: Model.Instance = this.Model();
+            const target: Count = model.Window_Count();
+            const count: Count = this.Child_Count();
+            const delta: Delta = target - count;
 
-        if (delta < 0) {
-            for (let idx = count, end = count + delta; idx > end;) {
-                idx -= 1;
+            if (delta < 0) {
+                for (let idx = count, end = count + delta; idx > end;) {
+                    idx -= 1;
 
-                this.Abort_Child(this.Child(idx));
+                    this.Abort_Child(this.Child(idx));
+                }
+            } else if (delta > 0) {
+                for (let idx = count, end = count + delta; idx < end; idx += 1) {
+                    new Window.Instance(
+                        {
+                            model: () => this.Model().Window_At(idx),
+                            wall: this,
+                        },
+                    );
+                }
             }
-        } else if (delta > 0) {
-            for (let idx = count, end = count + delta; idx < end; idx += 1) {
-                new Window.Instance(
-                    {
-                        model: () => this.Model().Window_At(idx),
-                        wall: this,
-                    },
-                );
+        } else {
+            this.Abort_Child(this.Child(this.kill_index));
+            this.Skip_Children();
+
+            for (
+                let child_idx = 0, child_end = this.Child_Count();
+                child_idx < child_end;
+                child_idx += 1
+            ) {
+                const child: Window.Instance = this.Child(child_idx) as Window.Instance;
+                child.__Set_Model__(() => this.Model().Window_At(child_idx));
             }
         }
     }
@@ -118,6 +148,18 @@ export class Instance extends Entity.Instance
         Promise<void>
     {
         this.Reclass();
+    }
+
+    private async After_Window_Close(
+        {
+            window_index,
+        }: Events.WINDOW_CLOSE_DATA,
+    ):
+        Promise<void>
+    {
+        this.kill_index = window_index;
+        this.Refresh();
+        this.kill_index = null;
     }
 
     Model():
