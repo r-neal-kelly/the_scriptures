@@ -1,6 +1,5 @@
 import { Count } from "../../types.js";
 import { Index } from "../../types.js";
-import { ID } from "../../types.js";
 
 import * as Utils from "../../utils.js";
 
@@ -12,7 +11,6 @@ import * as Tab from "./tab.js";
 export class Instance extends Entity.Instance
 {
     private bar: Bar.Instance;
-    private window_ids: Array<ID>;
     private tabs: Array<Tab.Instance>;
 
     constructor(
@@ -26,7 +24,6 @@ export class Instance extends Entity.Instance
         super();
 
         this.bar = bar;
-        this.window_ids = [];
         this.tabs = [];
 
         this.Add_Dependencies(
@@ -40,13 +37,13 @@ export class Instance extends Entity.Instance
         return this.bar;
     }
 
-    Count():
+    Tab_Count():
         Count
     {
         return this.tabs.length;
     }
 
-    Has(
+    Has_Tab(
         tab: Tab.Instance,
     ):
         boolean
@@ -54,7 +51,7 @@ export class Instance extends Entity.Instance
         return this.tabs.indexOf(tab) > -1;
     }
 
-    Has_At(
+    Has_Tab_At(
         index: Index,
     ):
         boolean
@@ -65,7 +62,7 @@ export class Instance extends Entity.Instance
         );
     }
 
-    At(
+    Tab_At(
         index: Index,
     ):
         Tab.Instance
@@ -75,7 +72,7 @@ export class Instance extends Entity.Instance
             `index must be greater than -1.`,
         );
         Utils.Assert(
-            index < this.Count(),
+            index < this.Tab_Count(),
             `index must be less than count.`,
         );
 
@@ -88,25 +85,11 @@ export class Instance extends Entity.Instance
         return Array.from(this.tabs);
     }
 
-    Has_Window(
-        window: Window.Instance,
-    ):
-        boolean
-    {
-        return this.window_ids.indexOf(window.ID()) > -1;
-    }
-
-    Add_Window(
+    Add_Tab(
         window: Window.Instance,
     ):
         void
     {
-        Utils.Assert(
-            !this.Has_Window(window),
-            `Already has window with id of ${window.ID()}.`,
-        );
-
-        this.window_ids.push(window.ID());
         this.tabs.push(
             new Tab.Instance(
                 {
@@ -117,29 +100,16 @@ export class Instance extends Entity.Instance
         );
     }
 
-    Remove_Window(
-        window: Window.Instance,
+    Remove_Tab(
+        tab_index: Index,
     ):
         void
     {
-        const index: Index = this.window_ids.indexOf(window.ID());
         Utils.Assert(
-            index > -1,
-            `Does not have window with id of ${window.ID()}.`,
+            this.Has_Tab_At(tab_index),
+            `Does not have tab at ${tab_index}.`,
         );
 
-        this.window_ids.splice(index, 1);
-        this.tabs.splice(index, 1);
-    }
-
-    Windows():
-        Array<Window.Instance>
-    {
-        const windows: Array<Window.Instance> = [];
-        for (const tab of this.tabs) {
-            windows.push(tab.Window());
-        }
-
-        return windows;
+        this.tabs.splice(tab_index, 1);
     }
 }

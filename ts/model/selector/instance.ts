@@ -560,15 +560,42 @@ export class Instance extends Entity.Instance
     As_Short_String():
         string | null
     {
-        const count: Count = this.Slot_Count();
+        const MAX_ABBREVIATION: Count = 4;
+        const slot_count: Count = this.Slot_Count();
 
-        if (count > 0) {
-            const slot: Slot.Instance = this.Slot_At_Index(0);
-            if (slot.Has_Selected_Item()) {
-                return slot.Selected_Item().Name();
-            } else {
-                return slot.Name();
+        if (slot_count > 0) {
+            let result: string = ``;
+
+            for (
+                let slot_idx = 0, slot_end = slot_count;
+                slot_idx < slot_end;
+                slot_idx += 1
+            ) {
+                const slot: Slot.Instance = this.Slot_At_Index(slot_idx);
+                if (slot.Has_Selected_Item()) {
+                    const string: string = slot.Selected_Item().Name();
+                    if (slot.Type() === Slot.Type.FILES) {
+                        result += ` ${string.replace(/chapter /i, ``)}`;
+                    } else {
+                        if (string.length > MAX_ABBREVIATION) {
+                            result += ` ${string.slice(0, MAX_ABBREVIATION).replace(/ +$/, ``)}⸼`;
+                        } else {
+                            result += ` ${string}`;
+                        }
+                    }
+                } else {
+                    const string: string = slot.Name();
+                    if (string.length > MAX_ABBREVIATION) {
+                        result += ` ${string.slice(0, MAX_ABBREVIATION).replace(/ +$/, ``)}⸼`;
+                    } else {
+                        result += ` ${string}`;
+                    }
+
+                    return result;
+                }
             }
+
+            return result;
         } else {
             return null;
         }

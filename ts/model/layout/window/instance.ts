@@ -1,3 +1,5 @@
+import { Count } from "../../../types.js";
+
 import * as Utils from "../../../utils.js";
 
 import * as Entity from "../../entity.js";
@@ -5,6 +7,9 @@ import * as Wall from "../wall.js";
 import { State } from "./state.js";
 import * as Program from "./program.js";
 import * as Bar from "./bar.js";
+
+import { Render_Type } from "../wall/render_type.js";
+export { Render_Type } from "../wall/render_type.js";
 
 export class Instance extends Entity.Instance
 {
@@ -53,7 +58,18 @@ export class Instance extends Entity.Instance
         return this.wall != null;
     }
 
-    Wall():
+    Maybe_Wall():
+        Wall.Instance | null
+    {
+        Utils.Assert(
+            this.Is_Alive(),
+            `Cannot know if a dead window is in a wall.`,
+        );
+
+        return this.wall;
+    }
+
+    Some_Wall():
         Wall.Instance
     {
         Utils.Assert(
@@ -66,40 +82,6 @@ export class Instance extends Entity.Instance
         );
 
         return this.wall as Wall.Instance;
-    }
-
-    Add_To_Wall(
-        wall: Wall.Instance,
-    ):
-        void
-    {
-        Utils.Assert(
-            this.Is_Alive(),
-            `Window must be alive to be added to a wall.`,
-        );
-        Utils.Assert(
-            !this.Is_In_Wall(),
-            `Is already in a wall.`,
-        );
-
-        wall.Add(this);
-        this.wall = wall;
-    }
-
-    Remove_From_Wall():
-        void
-    {
-        Utils.Assert(
-            this.Is_Alive(),
-            `Window must be alive to be removed from a wall.`,
-        );
-        Utils.Assert(
-            this.Is_In_Wall(),
-            `Isn't in a wall.`,
-        );
-
-        this.Wall().Remove(this.ID());
-        this.wall = null;
     }
 
     Move_To_Wall(
@@ -120,10 +102,38 @@ export class Instance extends Entity.Instance
         }
     }
 
-    State():
-        State
+    private Add_To_Wall(
+        wall: Wall.Instance,
+    ):
+        void
     {
-        return this.state;
+        Utils.Assert(
+            this.Is_Alive(),
+            `Window must be alive to be added to a wall.`,
+        );
+        Utils.Assert(
+            !this.Is_In_Wall(),
+            `Is already in a wall.`,
+        );
+
+        wall.__Add_Window__(this);
+        this.wall = wall;
+    }
+
+    private Remove_From_Wall():
+        void
+    {
+        Utils.Assert(
+            this.Is_Alive(),
+            `Window must be alive to be removed from a wall.`,
+        );
+        Utils.Assert(
+            this.Is_In_Wall(),
+            `Isn't in a wall.`,
+        );
+
+        this.Some_Wall().__Remove_Window__(this);
+        this.wall = null;
     }
 
     Program():
@@ -167,6 +177,17 @@ export class Instance extends Entity.Instance
             const wall = this.wall;
             this.wall = null;
             this.Add_To_Wall(wall);
+            if (
+                this.program.Is_Window_Active() ||
+                !wall.Layout().Has_Active_Window()
+            ) {
+                this.Activate();
+            }
+            if (this.program.Is_Window_Maximized()) {
+                this.Maximize();
+            } else if (this.program.Is_Window_Minimized()) {
+                this.Minimize();
+            }
         }
     }
 
@@ -180,6 +201,37 @@ export class Instance extends Entity.Instance
 
         this.Move_To_Wall(null);
         this.state &= ~State.IS_ALIVE;
+    }
+
+    Is_Active():
+        boolean
+    {
+        return (
+            this.Is_In_Wall() &&
+            this.Some_Wall().Layout().Maybe_Active_Window() === this
+        );
+    }
+
+    Activate():
+        void
+    {
+        Utils.Assert(
+            this.Is_In_Wall(),
+            `not in wall, can't activate`,
+        );
+
+        this.Some_Wall().Layout().__Set_Active_Window__(this);
+    }
+
+    Deactivate():
+        void
+    {
+        Utils.Assert(
+            this.Is_In_Wall(),
+            `not in wall, can't deactivate`,
+        );
+
+        this.Some_Wall().Layout().__Set_Active_Window__(null);
     }
 
     Is_Minimized():
@@ -270,10 +322,32 @@ export class Instance extends Entity.Instance
         this.state ^= State.IS_MAXIMIZED;
     }
 
-    Is_Active():
+    Is_Visible():
         boolean
     {
-        return this.Wall().Layout().Maybe_Active_Window() === this;
+        return this.Is_In_Wall() && !this.Is_Minimized();
+    }
+
+    Render_Type():
+        Render_Type
+    {
+        Utils.Assert(
+            this.Is_Visible(),
+            `is not visible.`,
+        );
+
+        return this.Some_Wall().Render_Type();
+    }
+
+    Render_Limit():
+        Count
+    {
+        Utils.Assert(
+            this.Is_Visible(),
+            `is not visible.`,
+        );
+
+        return this.Some_Wall().Render_Limit();
     }
 
     override async Before_Dependencies_Are_Ready():

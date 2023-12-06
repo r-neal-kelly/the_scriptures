@@ -41,19 +41,7 @@ export class Instance extends Entity.Instance
             this.On_Click.bind(this),
         );
 
-        return [
-            new Event.Listener_Info(
-                {
-                    event_name: new Event.Name(
-                        Event.Prefix.ON,
-                        Events.WINDOW_TOGGLE_MAXIMIZATION,
-                        this.ID(),
-                    ),
-                    event_handler: this.On_Window_Toggle_Maximization,
-                    event_priority: 0,
-                },
-            ),
-        ];
+        return [];
     }
 
     override On_Refresh():
@@ -79,6 +67,10 @@ export class Instance extends Entity.Instance
                     affix: Events.WINDOW_TOGGLE_MAXIMIZATION,
                     suffixes: [
                         this.ID(),
+                        this.Commands().ID(),
+                        this.Commands().Bar().ID(),
+                        this.Commands().Bar().Window().ID(),
+                        this.Commands().Bar().Window().Wall().ID(),
                         this.Commands().Bar().Window().Wall().Layout().ID(),
                     ],
                     type: Event.Type.EXCLUSIVE,
@@ -86,12 +78,6 @@ export class Instance extends Entity.Instance
                 },
             ),
         );
-    }
-
-    private async On_Window_Toggle_Maximization():
-        Promise<void>
-    {
-        await this.Model().Click();
     }
 
     Model():

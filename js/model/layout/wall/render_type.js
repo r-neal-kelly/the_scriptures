@@ -1,0 +1,1 @@
+export var Render_Type;!function(e){e[e.LANDSCAPE=0]="LANDSCAPE",e[e.PORTRAIT=1]="PORTRAIT"}(Render_Type||(Render_Type={}));

@@ -1,3 +1,4 @@
+import * as Window from "../../window.js";
 import * as Button from "./button.js";
 
 export class Instance extends Button.Instance
@@ -6,11 +7,5 @@ export class Instance extends Button.Instance
         string
     {
         return `–`;
-    }
-
-    override async Click():
-        Promise<void>
-    {
-        this.Commands().Bar().Window().Toggle_Minimization();
     }
 }

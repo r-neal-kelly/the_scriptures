@@ -11,10 +11,4 @@ export class Instance extends Button.Instance
             return `^`;
         }
     }
-
-    override async Click():
-        Promise<void>
-    {
-        this.Commands().Bar().Window().Toggle_Maximization();
-    }
 }

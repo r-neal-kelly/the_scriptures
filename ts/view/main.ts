@@ -177,11 +177,32 @@ async function Main():
             `Chapter 01`,
         ],
         [
-            Selector_Model.Slot.Order.VERSIONS_LANGUAGES_BOOKS,
+            Selector_Model.Slot.Order.VERSIONS_BOOKS_LANGUAGES,
+            `Genesis`,
+            `Hebrew`,
+            `Hexaglot 1857-1906`,
+            `Chapter 01`,
+        ],
+        [
+            Selector_Model.Slot.Order.VERSIONS_BOOKS_LANGUAGES,
+            `Genesis`,
+            `Greek`,
+            `Hexaglot 1857-1906`,
+            `Chapter 01`,
+        ],
+        [
+            Selector_Model.Slot.Order.VERSIONS_BOOKS_LANGUAGES,
+            `Genesis`,
+            `Latin`,
+            `Hexaglot 1857-1906`,
+            `Chapter 01`,
+        ],
+        [
+            Selector_Model.Slot.Order.BOOKS_LANGUAGES_VERSIONS,
             `Jubilees`,
             `English`,
             `R. H. Charles 1913`,
-            `Chapter 01`,
+            `Chapter 02`,
         ],
     ];
 
@@ -211,7 +232,6 @@ async function Main():
         is_window_active = false;
     }
 
-    /*
     model.Add_Program(
         new Model.Window.Program.Instance(
             {
@@ -222,7 +242,6 @@ async function Main():
             },
         ),
     );
-    */
 
     view.Refresh();
 }

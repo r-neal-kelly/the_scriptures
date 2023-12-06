@@ -41,19 +41,7 @@ export class Instance extends Entity.Instance
             this.On_Click.bind(this),
         );
 
-        return [
-            new Event.Listener_Info(
-                {
-                    event_name: new Event.Name(
-                        Event.Prefix.ON,
-                        Events.WINDOW_TOGGLE_MINIMIZATION,
-                        this.ID(),
-                    ),
-                    event_handler: this.On_Window_Toggle_Minimization,
-                    event_priority: 0,
-                },
-            ),
-        ];
+        return [];
     }
 
     override On_Refresh():
@@ -73,12 +61,18 @@ export class Instance extends Entity.Instance
     ):
         Promise<void>
     {
+        event.stopPropagation();
+
         await this.Send(
             new Event.Info(
                 {
                     affix: Events.WINDOW_TOGGLE_MINIMIZATION,
                     suffixes: [
                         this.ID(),
+                        this.Commands().ID(),
+                        this.Commands().Bar().ID(),
+                        this.Commands().Bar().Window().ID(),
+                        this.Commands().Bar().Window().Wall().ID(),
                         this.Commands().Bar().Window().Wall().Layout().ID(),
                     ],
                     type: Event.Type.EXCLUSIVE,
@@ -86,12 +80,24 @@ export class Instance extends Entity.Instance
                 },
             ),
         );
-    }
 
-    private async On_Window_Toggle_Minimization():
-        Promise<void>
-    {
-        await this.Model().Click();
+        await this.Send(
+            new Event.Info(
+                {
+                    affix: Events.WINDOW_DEACTIVATE,
+                    suffixes: [
+                        this.ID(),
+                        this.Commands().ID(),
+                        this.Commands().Bar().ID(),
+                        this.Commands().Bar().Window().ID(),
+                        this.Commands().Bar().Window().Wall().ID(),
+                        this.Commands().Bar().Window().Wall().Layout().ID(),
+                    ],
+                    type: Event.Type.EXCLUSIVE,
+                    data: {},
+                },
+            ),
+        );
     }
 
     Model():

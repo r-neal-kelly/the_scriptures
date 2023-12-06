@@ -2,10 +2,12 @@ import { Count } from "../../types.js";
 import { Delta } from "../../types.js";
 
 import * as Utils from "../../utils.js";
+import * as Event from "../../event.js";
 
 import * as Model from "../../model/layout/wall.js";
 import * as Window_Model from "../../model/layout/window.js";
 
+import * as Events from "../events.js";
 import * as Entity from "../entity.js";
 import * as Layout from "./instance.js";
 import * as Window from "./window.js";
@@ -37,11 +39,29 @@ export class Instance extends Entity.Instance
         this.Live();
     }
 
+    override On_Life():
+        Array<Event.Listener_Info>
+    {
+        return [
+            new Event.Listener_Info(
+                {
+                    event_name: new Event.Name(
+                        Event.Prefix.AFTER,
+                        Events.WINDOW_TOGGLE_MAXIMIZATION,
+                        this.ID(),
+                    ),
+                    event_handler: this.After_Window_Toggle_Maximization,
+                    event_priority: 0,
+                },
+            ),
+        ];
+    }
+
     override On_Refresh():
         void
     {
         const model: Model.Instance = this.Model();
-        const target: Count = model.Count();
+        const target: Count = model.Window_Count();
         const count: Count = this.Child_Count();
         const delta: Delta = target - count;
 
@@ -55,7 +75,7 @@ export class Instance extends Entity.Instance
             for (let idx = count, end = count + delta; idx < end; idx += 1) {
                 new Window.Instance(
                     {
-                        model: () => this.Model().At(idx),
+                        model: () => this.Model().Window_At(idx),
                         wall: this,
                     },
                 );
@@ -70,50 +90,34 @@ export class Instance extends Entity.Instance
     }
 
     override On_Restyle():
-        string
+        string | { [index: string]: string }
     {
-        // This is just dumb logic, but I want something working
-        // and my brain is having a hard time cooperating. I
-        // can barely get this right.
         const model: Model.Instance = this.Model();
-        const window_count: Count = model.Count();
+        const render_type: Model.Render_Type = model.Render_Type();
+        const render_limit: Count = model.Render_Limit();
+        const window_count: Count = model.Window_Count();
+        const maximized_window_count: Count = model.Maximized_Window_Count();
+        const grid_template_columns: string = `grid-template-columns`;
+        const grid_template_rows: string = `grid-template-rows`;
+        const primary_grid_template: string =
+            render_type === Model.Render_Type.LANDSCAPE ?
+                grid_template_columns :
+                grid_template_rows;
+        const secondary_grid_template: string =
+            primary_grid_template === grid_template_columns ?
+                grid_template_rows :
+                grid_template_columns;
 
-        if (window_count === 1) {
-            return `
-                grid-template-columns: repeat(1, 1fr);
-                grid-template-rows: repeat(1, 1fr);
-            `;
-        } else if (window_count === 2) {
-            return `
-                grid-template-columns: repeat(2, 1fr);
-                grid-template-rows: repeat(1, 1fr);
-            `;
-        } else if (window_count === 3) {
-            return `
-                grid-template-columns: repeat(2, 1fr);
-                grid-template-rows: repeat(2, 1fr);
-            `;
-        } else if (window_count === 4) {
-            return `
-                grid-template-columns: repeat(2, 1fr);
-                grid-template-rows: repeat(2, 1fr);
-            `;
-        } else if (window_count === 5) {
-            return `
-                grid-template-columns: repeat(3, 1fr);
-                grid-template-rows: repeat(2, 1fr);
-            `;
-        } else if (window_count === 6) {
-            return `
-                grid-template-columns: repeat(3, 1fr);
-                grid-template-rows: repeat(2, 1fr);
-            `;
-        } else {
-            return `
-                grid-template-columns: auto;
-                grid-template-rows: auto;
-            `;
-        }
+        return `
+            ${primary_grid_template}: repeat(${render_limit}, ${100 / render_limit}%);
+            ${secondary_grid_template}: repeat(${Math.ceil(window_count / render_limit) + maximized_window_count}, 100%);
+        `;
+    }
+
+    private async After_Window_Toggle_Maximization():
+        Promise<void>
+    {
+        this.Reclass();
     }
 
     Model():

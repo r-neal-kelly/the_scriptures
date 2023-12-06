@@ -86,6 +86,14 @@ export class Instance extends Entity.Instance
                     border-style: solid;
                     border-width: 1px;
                 }
+
+                .Minimized_Window {
+                    display: none;
+                }
+
+                .Maximized_Window {
+                    
+                }
             `,
         );
 

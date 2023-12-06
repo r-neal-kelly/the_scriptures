@@ -115,11 +115,22 @@ export class Instance extends Entity.Instance
             new Event.Listener_Info(
                 {
                     event_name: new Event.Name(
-                        Event.Prefix.ON,
+                        Event.Prefix.AFTER,
                         Events.WINDOW_ACTIVATE,
                         this.Window().Wall().ID(),
                     ),
-                    event_handler: this.On_Window_Activate,
+                    event_handler: this.After_Window_Activate,
+                    event_priority: 0,
+                },
+            ),
+            new Event.Listener_Info(
+                {
+                    event_name: new Event.Name(
+                        Event.Prefix.AFTER,
+                        Events.WINDOW_DEACTIVATE,
+                        this.Window().Wall().ID(),
+                    ),
+                    event_handler: this.After_Window_Deactivate,
                     event_priority: 0,
                 },
             ),
@@ -164,7 +175,13 @@ export class Instance extends Entity.Instance
         return classes;
     }
 
-    private async On_Window_Activate():
+    private async After_Window_Activate():
+        Promise<void>
+    {
+        this.Refresh();
+    }
+
+    private async After_Window_Deactivate():
         Promise<void>
     {
         this.Refresh();

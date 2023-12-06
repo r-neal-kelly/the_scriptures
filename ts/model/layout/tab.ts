@@ -51,10 +51,4 @@ export class Instance extends Entity.Instance
             return `Loading`;
         }
     }
-
-    Is_Active():
-        boolean
-    {
-        return this.Tabs().Bar().Layout().Maybe_Active_Window() === this.Window();
-    }
 }

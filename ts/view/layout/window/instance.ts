@@ -1,3 +1,5 @@
+import { Count } from "../../../types.js";
+
 import * as Utils from "../../../utils.js";
 import * as Event from "../../../event.js";
 
@@ -45,7 +47,85 @@ export class Instance extends Entity.Instance
 
         this.Refresh_After_Has_Model();
 
-        return [];
+        return [
+            new Event.Listener_Info(
+                {
+                    event_name: new Event.Name(
+                        Event.Prefix.ON,
+                        Events.WINDOW_ACTIVATE,
+                        this.ID(),
+                    ),
+                    event_handler: this.On_Window_Activate,
+                    event_priority: 0,
+                },
+            ),
+            new Event.Listener_Info(
+                {
+                    event_name: new Event.Name(
+                        Event.Prefix.AFTER,
+                        Events.WINDOW_ACTIVATE,
+                        this.ID(),
+                    ),
+                    event_handler: this.After_Window_Activate,
+                    event_priority: 0,
+                },
+            ),
+            new Event.Listener_Info(
+                {
+                    event_name: new Event.Name(
+                        Event.Prefix.ON,
+                        Events.WINDOW_DEACTIVATE,
+                        this.ID(),
+                    ),
+                    event_handler: this.On_Window_Deactivate,
+                    event_priority: 0,
+                },
+            ),
+            new Event.Listener_Info(
+                {
+                    event_name: new Event.Name(
+                        Event.Prefix.ON,
+                        Events.WINDOW_TOGGLE_MAXIMIZATION,
+                        this.ID(),
+                    ),
+                    event_handler: this.On_Window_Toggle_Maximization,
+                    event_priority: 0,
+                },
+            ),
+            new Event.Listener_Info(
+                {
+                    event_name: new Event.Name(
+                        Event.Prefix.AFTER,
+                        Events.WINDOW_TOGGLE_MAXIMIZATION,
+                        this.ID(),
+                    ),
+                    event_handler: this.After_Window_Toggle_Maximization,
+                    event_priority: 0,
+                },
+            ),
+            new Event.Listener_Info(
+                {
+                    event_name: new Event.Name(
+                        Event.Prefix.ON,
+                        Events.WINDOW_TOGGLE_MINIMIZATION,
+                        this.ID(),
+                    ),
+                    event_handler: this.On_Window_Toggle_Minimization,
+                    event_priority: 0,
+                },
+            ),
+            new Event.Listener_Info(
+                {
+                    event_name: new Event.Name(
+                        Event.Prefix.AFTER,
+                        Events.WINDOW_TOGGLE_MINIMIZATION,
+                        this.ID(),
+                    ),
+                    event_handler: this.After_Window_Toggle_Minimization,
+                    event_priority: 0,
+                },
+            ),
+        ];
     }
 
     override On_Refresh():
@@ -54,27 +134,31 @@ export class Instance extends Entity.Instance
         const model: Model.Instance = this.Model();
 
         if (model.Is_Ready()) {
-            if (
-                !this.Has_Bar() ||
-                !this.Has_View()
-            ) {
-                this.Abort_All_Children();
-                this.Element().textContent = ``;
+            if (model.Is_Visible()) {
+                if (
+                    !this.Has_Bar() ||
+                    !this.Has_View()
+                ) {
+                    this.Abort_All_Children();
+                    this.Element().textContent = ``;
 
-                new Bar.Instance(
-                    {
-                        model: () => this.Model().Bar(),
-                        window: this,
-                    }
-                );
+                    new Bar.Instance(
+                        {
+                            model: () => this.Model().Bar(),
+                            window: this,
+                        }
+                    );
 
-                new (this.Model().Program().View_Class())(
-                    {
-                        parent: this,
-                        model: () => this.Model().Program().Model_Instance(),
-                        event_grid_hook: () => this.ID(),
-                    },
-                );
+                    new (this.Model().Program().View_Class())(
+                        {
+                            parent: this,
+                            model: () => this.Model().Program().Model_Instance(),
+                            event_grid_hook: () => this.ID(),
+                        },
+                    );
+                }
+            } else {
+                this.Skip_Children();
             }
         }
     }
@@ -82,33 +166,108 @@ export class Instance extends Entity.Instance
     override On_Reclass():
         Array<string>
     {
-        return [`Window`];
+        const model: Model.Instance = this.Model();
+        const classes: Array<string> = [];
+
+        classes.push(`Window`);
+        if (model.Is_Minimized()) {
+            classes.push(`Minimized_Window`);
+        } else if (model.Is_Maximized()) {
+            classes.push(`Maximized_Window`);
+        }
+
+        return classes;
+    }
+
+    override On_Restyle():
+        string | { [index: string]: string }
+    {
+        const model: Model.Instance = this.Model();
+
+        if (model.Is_Visible()) {
+            if (model.Is_Maximized()) {
+                const render_type: Model.Render_Type = model.Render_Type();
+                const render_limit: Count = model.Render_Limit();
+                const grid_column: string = `grid-column`;
+                const grid_row: string = `grid-row`;
+                const grid: string =
+                    render_type === Model.Render_Type.LANDSCAPE ?
+                        grid_column :
+                        grid_row;
+
+                return `
+                    ${grid}: span ${render_limit};
+                `;
+            } else {
+                return ``;
+            }
+        } else {
+            return ``;
+        }
     }
 
     private async On_Click():
         Promise<void>
     {
-        if (this.Is_Alive()) {
-            this.Model().Wall().Layout().Set_Active_Window(this.Model());
-
-            await this.Send(
-                new Event.Info(
-                    {
-                        affix: Events.WINDOW_ACTIVATE,
-                        suffixes: [
-                            this.ID(),
-                            this.Wall().ID(),
-                            this.Wall().Layout().ID(),
-                        ],
-                        type: Event.Type.EXCLUSIVE,
-                        data: {},
-                    },
-                ),
-            );
-        }
+        await this.Send(
+            new Event.Info(
+                {
+                    affix: Events.WINDOW_ACTIVATE,
+                    suffixes: [
+                        this.ID(),
+                        this.Wall().ID(),
+                        this.Wall().Layout().ID(),
+                    ],
+                    type: Event.Type.EXCLUSIVE,
+                    data: {},
+                },
+            ),
+        );
     }
 
-    async Refresh_After_Has_Model():
+    private async On_Window_Activate():
+        Promise<void>
+    {
+        this.Model().Activate();
+    }
+
+    private async After_Window_Activate():
+        Promise<void>
+    {
+        this.Element().scrollIntoView();
+    }
+
+    private async On_Window_Deactivate():
+        Promise<void>
+    {
+        this.Model().Deactivate();
+    }
+
+    private async On_Window_Toggle_Maximization():
+        Promise<void>
+    {
+        this.Model().Toggle_Maximization();
+    }
+
+    private async After_Window_Toggle_Maximization():
+        Promise<void>
+    {
+        this.Reclass();
+    }
+
+    private async On_Window_Toggle_Minimization():
+        Promise<void>
+    {
+        this.Model().Toggle_Minimization();
+    }
+
+    private async After_Window_Toggle_Minimization():
+        Promise<void>
+    {
+        this.Reclass();
+    }
+
+    private async Refresh_After_Has_Model():
         Promise<void>
     {
         // Need to wait to make sure derived type's constructor is done.

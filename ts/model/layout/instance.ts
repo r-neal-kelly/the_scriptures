@@ -50,7 +50,7 @@ export class Instance extends Entity.Instance
     async Add_Program(
         program: Window.Program.Instance
     ):
-        Promise<ID>
+        Promise<Window.Instance>
     {
         return await this.Wall().Add_Program(program);
     }
@@ -67,19 +67,11 @@ export class Instance extends Entity.Instance
         return this.active_window;
     }
 
-    Set_Active_Window(
+    __Set_Active_Window__(
         active_window: Window.Instance | null,
     ):
         void
     {
         this.active_window = active_window;
-    }
-
-    Set_Active_Window_From_ID(
-        window_id: ID,
-    ):
-        void
-    {
-        this.Set_Active_Window(this.Wall().From_ID(window_id));
     }
 }

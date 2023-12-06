@@ -38,7 +38,7 @@ export class Instance extends Entity.Instance
         void
     {
         const model: Model.Instance = this.Model();
-        const target: Count = model.Count();
+        const target: Count = model.Tab_Count();
         const count: Count = this.Child_Count();
         const delta: Delta = target - count;
 
@@ -52,7 +52,7 @@ export class Instance extends Entity.Instance
             for (let idx = count, end = count + delta; idx < end; idx += 1) {
                 new Tab.Instance(
                     {
-                        model: () => this.Model().At(idx),
+                        model: () => this.Model().Tab_At(idx),
                         tabs: this,
                     },
                 );

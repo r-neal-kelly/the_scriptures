@@ -48,6 +48,8 @@ export class Instance extends Model_Entity.Instance
     private model_instance: Model_Instance;
     private view_class: View_Class;
     private is_window_active: boolean;
+    private is_window_minimized: boolean;
+    private is_window_maximized: boolean;
 
     constructor(
         {
@@ -55,11 +57,15 @@ export class Instance extends Model_Entity.Instance
             model_data = undefined,
             view_class,
             is_window_active = true,
+            is_window_minimized = false,
+            is_window_maximized = false,
         }: {
             model_class: Model_Class,
             model_data?: Model_Data,
             view_class: View_Class,
             is_window_active?: boolean,
+            is_window_minimized?: boolean,
+            is_window_maximized?: boolean,
         },
     )
     {
@@ -69,6 +75,8 @@ export class Instance extends Model_Entity.Instance
         this.model_instance = new model_class(model_data);
         this.view_class = view_class;
         this.is_window_active = is_window_active;
+        this.is_window_minimized = is_window_maximized ? false : is_window_minimized;
+        this.is_window_maximized = is_window_maximized;
 
         this.Add_Dependencies(
             [
@@ -114,5 +122,17 @@ export class Instance extends Model_Entity.Instance
         boolean
     {
         return this.is_window_active;
+    }
+
+    Is_Window_Minimized():
+        boolean
+    {
+        return this.is_window_minimized;
+    }
+
+    Is_Window_Maximized():
+        boolean
+    {
+        return this.is_window_maximized;
     }
 }
