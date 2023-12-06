@@ -3,7 +3,6 @@ import * as Event from "../../event.js";
 
 import * as Model from "../../model/layout/instance.js";
 
-import * as Events from "../events.js";
 import * as Entity from "../entity.js";
 import * as Wall from "./wall.js";
 import * as Bar from "./bar.js";
@@ -60,9 +59,7 @@ export class Instance extends Entity.Instance
             `
                 .Wall {
                     display: grid;
-                    grid-row-gap: 2px;
-                    grid-column-gap: 2px;
-
+                    
                     width: 100%;
                     height: 100%;
                     padding: 0 2px;
