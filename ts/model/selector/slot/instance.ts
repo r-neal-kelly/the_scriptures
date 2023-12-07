@@ -5,13 +5,13 @@ import { Name } from "../../../types.js";
 import * as Utils from "../../../utils.js";
 
 import * as Entity from "../../entity.js";
-import * as Filter from "../instance.js";
+import * as Selector from "../instance.js";
 import { Type } from "./type.js";
 import * as Item from "./item.js";
 
 export class Instance extends Entity.Instance
 {
-    private filter: Filter.Instance;
+    private selector: Selector.Instance;
     private index: Index;
     private type: Type;
     private name: string;
@@ -20,12 +20,12 @@ export class Instance extends Entity.Instance
 
     constructor(
         {
-            filter,
+            selector,
             index,
             type,
             item_names,
         }: {
-            filter: Filter.Instance,
+            selector: Selector.Instance,
             index: Index,
             type: Type,
             item_names: Array<Name>,
@@ -34,7 +34,7 @@ export class Instance extends Entity.Instance
     {
         super();
 
-        this.filter = filter;
+        this.selector = selector;
         this.index = index;
         this.type = type;
         if (type === Type.BOOKS) {
@@ -68,10 +68,10 @@ export class Instance extends Entity.Instance
         }
     }
 
-    Filter():
-        Filter.Instance
+    Selector():
+        Selector.Instance
     {
-        return this.filter;
+        return this.selector;
     }
 
     Index():
@@ -209,7 +209,7 @@ export class Instance extends Entity.Instance
     ):
         void
     {
-        this.Filter().__Select_Item__(
+        this.Selector().__Select_Item__(
             {
                 slot: this,
                 slot_item: item,

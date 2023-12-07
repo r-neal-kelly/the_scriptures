@@ -247,17 +247,7 @@ export class Instance extends Entity.Instance
     private async After_Window_Activate():
         Promise<void>
     {
-        const model: Model.Instance = this.Model();
-        const render_type: Model.Render_Type = model.Render_Type();
-        const parent_element: HTMLElement = this.Parent().Element();
-        const child_element: HTMLElement = this.Element();
-        const parent_rect = parent_element.getBoundingClientRect();
-        const child_rect = child_element.getBoundingClientRect();
-        if (render_type === Model.Render_Type.LANDSCAPE) {
-            parent_element.scrollTop += child_rect.y - parent_rect.y;
-        } else {
-            parent_element.scrollLeft += child_rect.x - parent_rect.x;
-        }
+        this.Move_Into_View();
     }
 
     private async On_Window_Deactivate():
@@ -377,5 +367,30 @@ export class Instance extends Entity.Instance
         );
 
         return this.Child(1) as Model.Program.View_Instance;
+    }
+
+    Move_Into_View():
+        void
+    {
+        Utils.Assert(
+            this.Is_Alive(),
+            `is not alive`,
+        );
+        Utils.Assert(
+            this.Has_Parent(),
+            `doesn't have a parent`,
+        );
+
+        const model: Model.Instance = this.Model();
+        const render_type: Model.Render_Type = model.Render_Type();
+        const parent_element: HTMLElement = this.Parent().Element();
+        const child_element: HTMLElement = this.Element();
+        const parent_rect = parent_element.getBoundingClientRect();
+        const child_rect = child_element.getBoundingClientRect();
+        if (render_type === Model.Render_Type.LANDSCAPE) {
+            parent_element.scrollTop += child_rect.y - parent_rect.y;
+        } else {
+            parent_element.scrollLeft += child_rect.x - parent_rect.x;
+        }
     }
 }

@@ -194,7 +194,7 @@ export class Instance extends Entity.Instance
         );
 
         this.windows.push(window);
-        this.Layout().Taskbar().Tabs().Add_Tab(window);
+        this.Layout().Taskbar().Tabs().Add_Tab();
     }
 
     __Remove_Window__(

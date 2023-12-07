@@ -286,7 +286,7 @@ export class Instance extends Entity.Instance
         this.slots.push(
             new Slot.Instance(
                 {
-                    filter: this,
+                    selector: this,
                     index: slot_index,
                     type: slot_type,
                     item_names: Data.Singleton().Names(slot_query),
@@ -575,27 +575,27 @@ export class Instance extends Entity.Instance
                 if (slot.Has_Selected_Item()) {
                     const string: string = slot.Selected_Item().Name();
                     if (slot.Type() === Slot.Type.FILES) {
-                        result += ` ${string.replace(/chapter /i, ``)}`;
+                        result += `${string.replace(/chapter /i, ``)} `;
                     } else {
                         if (string.length > MAX_ABBREVIATION) {
-                            result += ` ${string.slice(0, MAX_ABBREVIATION).replace(/ +$/, ``)}⸼`;
+                            result += `${string.slice(0, MAX_ABBREVIATION).replace(/ +$/, ``)}⸼ `;
                         } else {
-                            result += ` ${string}`;
+                            result += `${string} `;
                         }
                     }
                 } else {
                     const string: string = slot.Name();
                     if (string.length > MAX_ABBREVIATION) {
-                        result += ` ${string.slice(0, MAX_ABBREVIATION).replace(/ +$/, ``)}⸼`;
+                        result += `${string.slice(0, MAX_ABBREVIATION).replace(/ +$/, ``)}⸼`;
                     } else {
-                        result += ` ${string}`;
+                        result += `${string}`;
                     }
 
                     return result;
                 }
             }
 
-            return result;
+            return result.slice(0, result.length - 1);
         } else {
             return null;
         }

@@ -4,7 +4,6 @@ import { Index } from "../../types.js";
 import * as Utils from "../../utils.js";
 
 import * as Entity from "../entity.js";
-import * as Window from "./window.js";
 import * as Taskbar from "./taskbar.js";
 import * as Tab from "./tab.js";
 
@@ -85,16 +84,14 @@ export class Instance extends Entity.Instance
         return Array.from(this.tabs);
     }
 
-    Add_Tab(
-        window: Window.Instance,
-    ):
+    Add_Tab():
         void
     {
         this.tabs.push(
             new Tab.Instance(
                 {
                     tabs: this,
-                    window: window,
+                    index: this.tabs.length,
                 },
             ),
         );
@@ -111,5 +108,13 @@ export class Instance extends Entity.Instance
         );
 
         this.tabs.splice(tab_index, 1);
+
+        for (
+            let tab_idx = tab_index, tab_end = this.tabs.length;
+            tab_idx < tab_end;
+            tab_idx += 1
+        ) {
+            this.Tab_At(tab_idx).__Set_Index__(tab_idx);
+        }
     }
 }

@@ -161,6 +161,14 @@ export class Instance extends Entity.Instance
         return this.model();
     }
 
+    __Set_Model__(
+        model: () => Model.Instance,
+    ):
+        void
+    {
+        this.model = model;
+    }
+
     Tabs():
         Tabs.Instance
     {
@@ -170,6 +178,6 @@ export class Instance extends Entity.Instance
     Window():
         Window.Instance
     {
-        return this.Tabs().Taskbar().Layout().Wall().Window_With_Model(this.Model().Window());
+        return this.Tabs().Taskbar().Layout().Wall().Window(this.Model().Index());
     }
 }

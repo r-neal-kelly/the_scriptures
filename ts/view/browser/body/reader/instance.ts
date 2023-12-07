@@ -68,7 +68,7 @@ export class Instance extends Entity.Instance
                         Events.BROWSER_COMMANDER_PREVIOUS,
                         this.Body().Browser().Event_Grid_Hook(),
                     ),
-                    event_handler: this.On_Browser_Commander_Previous,
+                    event_handler: this.After_Browser_Commander_Previous,
                     event_priority: 10,
                 },
             ),
@@ -79,7 +79,7 @@ export class Instance extends Entity.Instance
                         Events.BROWSER_COMMANDER_NEXT,
                         this.Body().Browser().Event_Grid_Hook(),
                     ),
-                    event_handler: this.On_Browser_Commander_Next,
+                    event_handler: this.After_Browser_Commander_Next,
                     event_priority: 10,
                 },
             ),
@@ -142,7 +142,7 @@ export class Instance extends Entity.Instance
         }
     }
 
-    private async On_Browser_Commander_Previous():
+    private async After_Browser_Commander_Previous():
         Promise<void>
     {
         this.Element().scrollTo(0, 0);
@@ -163,7 +163,7 @@ export class Instance extends Entity.Instance
         );
     }
 
-    private async On_Browser_Commander_Next():
+    private async After_Browser_Commander_Next():
         Promise<void>
     {
         this.Element().scrollTo(0, 0);

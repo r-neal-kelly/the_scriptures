@@ -16,7 +16,6 @@ import * as Window from "./window.js";
 export class Instance extends Entity.Instance
 {
     private model: () => Model.Instance;
-
     private kill_index: Index | null;
 
     constructor(
@@ -38,7 +37,6 @@ export class Instance extends Entity.Instance
         );
 
         this.model = model;
-
         this.kill_index = null;
 
         this.Live();
@@ -67,7 +65,7 @@ export class Instance extends Entity.Instance
                         this.Layout().ID(),
                     ),
                     event_handler: this.After_Window_Close,
-                    event_priority: 0,
+                    event_priority: 10,
                 },
             ),
         ];
@@ -103,7 +101,7 @@ export class Instance extends Entity.Instance
             this.Skip_Children();
 
             for (
-                let child_idx = 0, child_end = this.Child_Count();
+                let child_idx = this.kill_index, child_end = this.Child_Count();
                 child_idx < child_end;
                 child_idx += 1
             ) {
@@ -139,16 +137,13 @@ export class Instance extends Entity.Instance
             primary_grid_template === grid_template_columns ?
                 grid_template_rows :
                 grid_template_columns;
-        const grid_gap: string =
-            render_type === Model.Render_Type.LANDSCAPE ?
-                grid_column_gap :
-                grid_row_gap;
         const grid_gap_px: Count = 2;
 
         return `
             ${primary_grid_template}: repeat(${render_limit}, calc(${100 / render_limit}% - ${Math.round((grid_gap_px * (render_limit - 1)) / render_limit)}px));
             ${secondary_grid_template}: repeat(${Math.ceil(window_count / render_limit) + maximized_window_count}, 100%);
-            ${grid_gap}: ${grid_gap_px}px;
+            ${grid_column_gap}: ${grid_gap_px}px;
+            ${grid_row_gap}: ${grid_gap_px}px;
         `;
     }
 
@@ -168,6 +163,15 @@ export class Instance extends Entity.Instance
         this.kill_index = window_index;
         this.Refresh();
         this.kill_index = null;
+
+        if (
+            window_index === 0 ||
+            window_index % this.Model().Render_Limit() === 0
+        ) {
+            this.Move_Window_Into_View(window_index);
+        } else {
+            this.Move_Window_Into_View(window_index - 1);
+        }
     }
 
     Model():
@@ -182,23 +186,46 @@ export class Instance extends Entity.Instance
         return this.Parent() as Layout.Instance;
     }
 
-    Window_With_Model(
-        window_model: Window_Model.Instance,
+    Window(
+        window_index: Index,
     ):
         Window.Instance
     {
-        for (let idx = 0, end = this.Child_Count(); idx < end; idx += 1) {
-            const window: Window.Instance = this.Child(idx) as Window.Instance;
-            if (window.Model() === window_model) {
-                return window;
+        Utils.Assert(
+            window_index > -1 &&
+            window_index < this.Child_Count(),
+            `does not have window at index ${window_index}`,
+        );
+
+        return this.Child(window_index) as Window.Instance;
+    }
+
+    Move_Window_Into_View(
+        window_index: Index,
+    ):
+        void
+    {
+        Utils.Assert(
+            this.Is_Alive(),
+            `is not alive`,
+        );
+
+        const model: Model.Instance = this.Model();
+
+        window_index = Math.min(window_index + 1, model.Window_Count());
+        while (window_index > 0) {
+            window_index -= 1;
+            if (model.Window_At(window_index).Is_Visible()) {
+                this.Window(window_index).Move_Into_View();
+                return;
             }
         }
 
-        Utils.Assert(
-            false,
-            `Does not have window with that model.`,
-        );
-
-        return this.Child(0) as Window.Instance;
+        const render_type: Model.Render_Type = model.Render_Type();
+        if (render_type === Model.Render_Type.LANDSCAPE) {
+            this.Element().scrollTop = 0;
+        } else {
+            this.Element().scrollLeft = 0;
+        }
     }
 }

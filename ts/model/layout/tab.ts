@@ -1,3 +1,4 @@
+import { Index } from "../../types.js";
 import { Name } from "../../types.js";
 
 import * as Entity from "../entity.js";
@@ -7,22 +8,22 @@ import * as Tabs from "./tabs.js";
 export class Instance extends Entity.Instance
 {
     private tabs: Tabs.Instance;
-    private window: Window.Instance;
+    private index: Index;
 
     constructor(
         {
             tabs,
-            window
+            index
         }: {
             tabs: Tabs.Instance,
-            window: Window.Instance,
+            index: Index,
         },
     )
     {
         super();
 
         this.tabs = tabs;
-        this.window = window;
+        this.index = index;
 
         this.Add_Dependencies(
             [
@@ -36,10 +37,24 @@ export class Instance extends Entity.Instance
         return this.tabs;
     }
 
+    Index():
+        Index
+    {
+        return this.index;
+    }
+
+    __Set_Index__(
+        index: Index,
+    ):
+        void
+    {
+        this.index = index;
+    }
+
     Window():
         Window.Instance
     {
-        return this.window;
+        return this.Tabs().Taskbar().Layout().Wall().Window_At(this.Index());
     }
 
     Title():

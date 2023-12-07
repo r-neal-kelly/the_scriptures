@@ -3,7 +3,6 @@ import * as Event from "../../event.js";
 
 import * as Model from "../../model/layout/taskbar.js";
 
-import * as Events from "../events.js";
 import * as Entity from "../entity.js";
 import * as Layout from "./instance.js";
 import * as Tabs from "./tabs.js";
@@ -43,6 +42,7 @@ export class Instance extends Entity.Instance
                 .Taskbar {
                     width: 100%;
                     height: 100%;
+                    padding: 0 2px;
 
                     overflow-x: hidden;
                     overflow-y: hidden;
@@ -59,7 +59,7 @@ export class Instance extends Entity.Instance
                 .Tabs {
                     display: flex;
                     flex-direction: row;
-                    justify-content: center;
+                    justify-content: space-around;
 
                     width: 100%;
                     height: 100%;
@@ -69,7 +69,6 @@ export class Instance extends Entity.Instance
                 }
 
                 .Tab {
-                    margin: 0 7px 0 0;
                     padding: 2px;
 
                     border-color: white;
@@ -77,6 +76,7 @@ export class Instance extends Entity.Instance
                     border-width: 0 1px;
 
                     font-size: 0.8em;
+                    text-align: center;
 
                     cursor: pointer;
                     -webkit-user-select: none;
@@ -93,19 +93,7 @@ export class Instance extends Entity.Instance
             `,
         );
 
-        return [
-            new Event.Listener_Info(
-                {
-                    event_name: new Event.Name(
-                        Event.Prefix.AFTER,
-                        Events.WINDOW_CLOSE,
-                        this.Layout().ID(),
-                    ),
-                    event_handler: this.After_Window_Close,
-                    event_priority: 0,
-                },
-            ),
-        ];
+        return [];
     }
 
     override On_Refresh():
@@ -127,12 +115,6 @@ export class Instance extends Entity.Instance
         Array<string>
     {
         return [`Taskbar`];
-    }
-
-    private async After_Window_Close():
-        Promise<void>
-    {
-        this.Refresh();
     }
 
     Model():
