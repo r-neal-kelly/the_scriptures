@@ -60,6 +60,7 @@ export class Instance extends Entity.Instance
                     display: flex;
                     flex-direction: row;
                     justify-content: space-around;
+                    align-items: center;
 
                     width: 100%;
                     height: 100%;
@@ -70,6 +71,8 @@ export class Instance extends Entity.Instance
 
                 .Tab {
                     padding: 2px;
+
+                    height: 100%;
 
                     border-color: white;
                     border-style: solid;
@@ -89,6 +92,21 @@ export class Instance extends Entity.Instance
                     color: black;
                     background-color: white;
                     border-color: black;
+                }
+
+                .Maximized_Tab {
+                    border-width: 0 2px;
+                    border-color: white;
+                }
+
+                .Minimized_Tab {
+                    align-self: self-end;
+
+                    height: 80%;
+
+                    border-width: 1px;
+
+                    font-size: 0.7em;
                 }
             `,
         );

@@ -92,8 +92,14 @@ export class Instance extends Entity.Instance
         const classes: Array<string> = [];
 
         classes.push(`Tab`);
-        if (model.Window().Is_Active()) {
-            classes.push(`Active_Tab`)
+        if (model.Is_Active()) {
+            classes.push(`Active_Tab`);
+        }
+        if (model.Is_Maximized()) {
+            classes.push(`Maximized_Tab`);
+        }
+        if (model.Is_Minimized()) {
+            classes.push(`Minimized_Tab`);
         }
 
         return classes;

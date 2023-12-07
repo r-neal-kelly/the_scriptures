@@ -66,4 +66,22 @@ export class Instance extends Entity.Instance
             return `Loading`;
         }
     }
+
+    Is_Active():
+        boolean
+    {
+        return this.Window().Is_Active();
+    }
+
+    Is_Maximized():
+        boolean
+    {
+        return this.Window().Is_Maximized();
+    }
+
+    Is_Minimized():
+        boolean
+    {
+        return this.Window().Is_Minimized();
+    }
 }
