@@ -170,6 +170,6 @@ export class Instance extends Entity.Instance
     Window():
         Window.Instance
     {
-        return this.Tabs().Bar().Layout().Wall().Window_With_Model(this.Model().Window());
+        return this.Tabs().Taskbar().Layout().Wall().Window_With_Model(this.Model().Window());
     }
 }

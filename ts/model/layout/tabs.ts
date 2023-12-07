@@ -5,25 +5,25 @@ import * as Utils from "../../utils.js";
 
 import * as Entity from "../entity.js";
 import * as Window from "./window.js";
-import * as Bar from "./bar.js";
+import * as Taskbar from "./taskbar.js";
 import * as Tab from "./tab.js";
 
 export class Instance extends Entity.Instance
 {
-    private bar: Bar.Instance;
+    private taskbar: Taskbar.Instance;
     private tabs: Array<Tab.Instance>;
 
     constructor(
         {
-            bar,
+            taskbar,
         }: {
-            bar: Bar.Instance,
+            taskbar: Taskbar.Instance,
         },
     )
     {
         super();
 
-        this.bar = bar;
+        this.taskbar = taskbar;
         this.tabs = [];
 
         this.Add_Dependencies(
@@ -31,10 +31,10 @@ export class Instance extends Entity.Instance
         );
     }
 
-    Bar():
-        Bar.Instance
+    Taskbar():
+        Taskbar.Instance
     {
-        return this.bar;
+        return this.taskbar;
     }
 
     Tab_Count():

@@ -7,7 +7,7 @@ import * as Entity from "../../entity.js";
 import * as Wall from "../wall.js";
 import { State } from "./state.js";
 import * as Program from "./program.js";
-import * as Bar from "./bar.js";
+import * as Banner from "./banner.js";
 
 import { Render_Type } from "../wall/render_type.js";
 export { Render_Type } from "../wall/render_type.js";
@@ -17,7 +17,7 @@ export class Instance extends Entity.Instance
     private wall: Wall.Instance | null;
     private state: State;
     private program: Program.Instance;
-    private bar: Bar.Instance;
+    private banner: Banner.Instance;
 
     constructor(
         {
@@ -34,7 +34,7 @@ export class Instance extends Entity.Instance
         this.wall = wall;
         this.state = State._NONE_;
         this.program = program;
-        this.bar = new Bar.Instance(
+        this.banner = new Banner.Instance(
             {
                 window: this,
             },
@@ -43,7 +43,7 @@ export class Instance extends Entity.Instance
         this.Add_Dependencies(
             [
                 this.program,
-                this.bar,
+                this.banner,
             ],
         );
     }
@@ -167,10 +167,10 @@ export class Instance extends Entity.Instance
         return this.program;
     }
 
-    Bar():
-        Bar.Instance
+    Banner():
+        Banner.Instance
     {
-        return this.bar;
+        return this.banner;
     }
 
     Is_Alive():

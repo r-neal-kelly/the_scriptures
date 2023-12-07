@@ -5,7 +5,7 @@ import * as Model from "../../model/layout/instance.js";
 
 import * as Entity from "../entity.js";
 import * as Wall from "./wall.js";
-import * as Bar from "./bar.js";
+import * as Taskbar from "./taskbar.js";
 
 export class Instance extends Entity.Instance
 {
@@ -102,7 +102,7 @@ export class Instance extends Entity.Instance
     {
         if (
             !this.Has_Wall() ||
-            !this.Has_Bar()
+            !this.Has_Taskbar()
         ) {
             this.Abort_All_Children();
 
@@ -112,9 +112,9 @@ export class Instance extends Entity.Instance
                     layout: this,
                 },
             );
-            new Bar.Instance(
+            new Taskbar.Instance(
                 {
-                    model: () => this.Model().Bar(),
+                    model: () => this.Model().Taskbar(),
                     layout: this,
                 },
             );
@@ -159,23 +159,23 @@ export class Instance extends Entity.Instance
         return this.Child(0) as Wall.Instance;
     }
 
-    Has_Bar():
+    Has_Taskbar():
         boolean
     {
         return (
             this.Has_Child(1) &&
-            this.Child(1) instanceof Bar.Instance
+            this.Child(1) instanceof Taskbar.Instance
         );
     }
 
-    Bar():
-        Bar.Instance
+    Taskbar():
+        Taskbar.Instance
     {
         Utils.Assert(
-            this.Has_Bar(),
-            `Does not have a bar.`,
+            this.Has_Taskbar(),
+            `Does not have a taskbar.`,
         );
 
-        return this.Child(1) as Bar.Instance;
+        return this.Child(1) as Taskbar.Instance;
     }
 }

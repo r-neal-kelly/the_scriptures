@@ -8,7 +8,7 @@ import * as Model from "../../../model/layout/window.js";
 import * as Events from "../../events.js";
 import * as Entity from "../../entity.js";
 import * as Wall from "../wall.js";
-import * as Bar from "./bar.js";
+import * as Banner from "./banner.js";
 
 export class Instance extends Entity.Instance
 {
@@ -147,15 +147,15 @@ export class Instance extends Entity.Instance
         if (model.Is_Ready()) {
             if (model.Is_Visible()) {
                 if (
-                    !this.Has_Bar() ||
+                    !this.Has_Banner() ||
                     !this.Has_View()
                 ) {
                     this.Abort_All_Children();
                     this.Element().textContent = ``;
 
-                    new Bar.Instance(
+                    new Banner.Instance(
                         {
-                            model: () => this.Model().Bar(),
+                            model: () => this.Model().Banner(),
                             window: this,
                         }
                     );
@@ -339,24 +339,24 @@ export class Instance extends Entity.Instance
         return this.Parent() as Wall.Instance;
     }
 
-    Has_Bar():
+    Has_Banner():
         boolean
     {
         return (
             this.Has_Child(0) &&
-            this.Child(0) instanceof Bar.Instance
+            this.Child(0) instanceof Banner.Instance
         );
     }
 
-    Bar():
-        Bar.Instance
+    Banner():
+        Banner.Instance
     {
         Utils.Assert(
-            this.Has_Bar(),
-            `Does not have a bar.`,
+            this.Has_Banner(),
+            `Does not have a banner.`,
         );
 
-        return this.Child(0) as Bar.Instance;
+        return this.Child(0) as Banner.Instance;
     }
 
     Has_View():

@@ -4,7 +4,7 @@ import { Delta } from "../../types.js";
 import * as Model from "../../model/layout/tabs.js";
 
 import * as Entity from "../entity.js";
-import * as Bar from "./bar.js";
+import * as Taskbar from "./taskbar.js";
 import * as Tab from "./tab.js";
 
 export class Instance extends Entity.Instance
@@ -14,18 +14,18 @@ export class Instance extends Entity.Instance
     constructor(
         {
             model,
-            bar,
+            taskbar,
         }: {
             model: () => Model.Instance;
-            bar: Bar.Instance,
+            taskbar: Taskbar.Instance,
         },
     )
     {
         super(
             {
                 element: `div`,
-                parent: bar,
-                event_grid: bar.Event_Grid(),
+                parent: taskbar,
+                event_grid: taskbar.Event_Grid(),
             },
         );
 
@@ -72,9 +72,9 @@ export class Instance extends Entity.Instance
         return this.model();
     }
 
-    Bar():
-        Bar.Instance
+    Taskbar():
+        Taskbar.Instance
     {
-        return this.Parent() as Bar.Instance;
+        return this.Parent() as Taskbar.Instance;
     }
 }

@@ -1,0 +1,1 @@
+import*as Entity from"../../../entity.js";export class Instance extends Entity.Instance{constructor({banner:n}){super(),this.banner=n,this.Add_Dependencies([])}Banner(){return this.banner}Value(){return this.Banner().Window().Is_Ready()?this.Banner().Window().Program().Model_Instance().Title():""}}

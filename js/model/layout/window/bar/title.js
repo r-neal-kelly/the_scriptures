@@ -1,1 +1,0 @@
-import*as Entity from"../../../entity.js";export class Instance extends Entity.Instance{constructor({bar:t}){super(),this.bar=t,this.Add_Dependencies([])}Bar(){return this.bar}Value(){return this.Bar().Window().Is_Ready()?this.Bar().Window().Program().Model_Instance().Title():""}}

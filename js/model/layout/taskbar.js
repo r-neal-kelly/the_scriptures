@@ -1,0 +1,1 @@
+import*as Entity from"../entity.js";import*as Tabs from"./tabs.js";export class Instance extends Entity.Instance{constructor({layout:t}){super(),this.layout=t,this.tabs=new Tabs.Instance({taskbar:this}),this.Add_Dependencies([this.tabs])}Layout(){return this.layout}Tabs(){return this.tabs}}

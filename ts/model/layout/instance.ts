@@ -3,12 +3,12 @@ import { ID } from "../../types.js";
 import * as Entity from "../entity.js";
 import * as Wall from "./wall.js";
 import * as Window from "./window.js";
-import * as Bar from "./bar.js";
+import * as Taskbar from "./taskbar.js";
 
 export class Instance extends Entity.Instance
 {
     private wall: Wall.Instance;
-    private bar: Bar.Instance;
+    private taskbar: Taskbar.Instance;
     private active_window: Window.Instance | null;
 
     constructor()
@@ -20,7 +20,7 @@ export class Instance extends Entity.Instance
                 layout: this,
             },
         );
-        this.bar = new Bar.Instance(
+        this.taskbar = new Taskbar.Instance(
             {
                 layout: this,
             },
@@ -30,7 +30,7 @@ export class Instance extends Entity.Instance
         this.Add_Dependencies(
             [
                 this.wall,
-                this.bar,
+                this.taskbar,
             ],
         );
     }
@@ -41,10 +41,10 @@ export class Instance extends Entity.Instance
         return this.wall;
     }
 
-    Bar():
-        Bar.Instance
+    Taskbar():
+        Taskbar.Instance
     {
-        return this.bar;
+        return this.taskbar;
     }
 
     async Add_Program(

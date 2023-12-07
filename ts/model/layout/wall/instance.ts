@@ -194,7 +194,7 @@ export class Instance extends Entity.Instance
         );
 
         this.windows.push(window);
-        this.Layout().Bar().Tabs().Add_Tab(window);
+        this.Layout().Taskbar().Tabs().Add_Tab(window);
     }
 
     __Remove_Window__(
@@ -218,7 +218,7 @@ export class Instance extends Entity.Instance
             `Doesn't have window with id of ${window.ID()}.`,
         );
 
-        this.Layout().Bar().Tabs().Remove_Tab(window_index);
+        this.Layout().Taskbar().Tabs().Remove_Tab(window_index);
         this.windows.splice(window_index, 1);
     }
 }

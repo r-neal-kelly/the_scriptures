@@ -1,1 +1,1 @@
-export{Instance}from"./window/instance.js";export*as Bar from"./window/bar.js";
+export{Instance}from"./window/instance.js";export*as Banner from"./window/banner.js";

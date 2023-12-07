@@ -1,0 +1,1 @@
+import*as Button from"./button.js";export class Instance extends Button.Instance{Symbol(){return this.Commands().Banner().Window().Is_Maximized()?"v":"^"}}
