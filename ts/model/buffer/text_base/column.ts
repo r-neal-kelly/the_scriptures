@@ -97,30 +97,15 @@ export abstract class Instance<
         return this.text as Text.Column.Instance;
     }
 
-    Min_Row_Buffer_Count():
+    Row_Buffer_Count():
         Count
     {
-        if (Buffer.Use_Average_Counts()) {
-            return Data.Singleton().Info().Avg_Row_Count(
-                {
-                    line_index: this.Line().Index(),
-                    column_index: this.Index(),
-                },
-            );
-        } else {
-            return Data.Singleton().Info().Max_Row_Count(
-                {
-                    line_index: this.Line().Index(),
-                    column_index: this.Index(),
-                },
-            );
-        }
-    }
-
-    Max_Row_Buffer_Count():
-        Count
-    {
-        return this.Min_Row_Buffer_Count();
+        return Data.Singleton().Info().Avg_Row_Count(
+            {
+                line_index: this.Line().Index(),
+                column_index: this.Index(),
+            },
+        );
     }
 
     Row_Count():

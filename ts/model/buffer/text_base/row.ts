@@ -110,32 +110,16 @@ export abstract class Instance<
         return this.text as Text.Row.Instance;
     }
 
-    Min_Segment_Buffer_Count():
+    Segment_Buffer_Count():
         Count
     {
-        if (Buffer.Use_Average_Counts()) {
-            return Data.Singleton().Info().Avg_Macro_Segment_Count(
-                {
-                    line_index: this.Column().Line().Index(),
-                    column_index: this.Column().Index(),
-                    row_index: this.Index(),
-                },
-            );
-        } else {
-            return Data.Singleton().Info().Max_Macro_Segment_Count(
-                {
-                    line_index: this.Column().Line().Index(),
-                    column_index: this.Column().Index(),
-                    row_index: this.Index(),
-                },
-            );
-        }
-    }
-
-    Max_Segment_Buffer_Count():
-        Count
-    {
-        return this.Min_Segment_Buffer_Count();
+        return Data.Singleton().Info().Avg_Macro_Segment_Count(
+            {
+                line_index: this.Column().Line().Index(),
+                column_index: this.Column().Index(),
+                row_index: this.Index(),
+            },
+        );
     }
 
     Segment_Count():

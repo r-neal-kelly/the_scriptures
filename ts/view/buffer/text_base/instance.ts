@@ -22,9 +22,7 @@ export interface Model_Instance_i
         language_name: Language.Name,
     ): Font.Name;
 
-    Min_Line_Buffer_Count():
-        Count;
-    Max_Line_Buffer_Count():
+    Line_Buffer_Count():
         Count;
     Line_Count():
         Count;
@@ -305,17 +303,14 @@ export abstract class Instance<
     {
         const model: Model_Instance = this.Model();
         const count: Count = this.Child_Count();
-        const target_min: Count =
-            Math.max(model.Min_Line_Buffer_Count(), model.Line_Count());
-        const target_max: Count =
-            Math.max(model.Max_Line_Buffer_Count(), model.Line_Count());
+        const target: Count = Math.max(model.Line_Buffer_Count(), model.Line_Count());
 
-        if (count < target_min) {
-            for (let idx = count, end = target_min; idx < end; idx += 1) {
+        if (count < target) {
+            for (let idx = count, end = target; idx < end; idx += 1) {
                 this.Add_Line(idx);
             }
-        } else if (count > target_max) {
-            for (let idx = count, end = target_max; idx > end;) {
+        } else if (count > target) {
+            for (let idx = count, end = target; idx > end;) {
                 idx -= 1;
 
                 this.Abort_Child(this.Child(idx));

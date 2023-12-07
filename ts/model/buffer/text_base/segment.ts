@@ -119,34 +119,17 @@ export abstract class Instance<
         return this.text as Text.Segment.Instance;
     }
 
-    Min_Item_Buffer_Count():
+    Item_Buffer_Count():
         Count
     {
-        if (Buffer.Use_Average_Counts()) {
-            return Data.Singleton().Info().Avg_Macro_Item_Count(
-                {
-                    line_index: this.Row().Column().Line().Index(),
-                    column_index: this.Row().Column().Index(),
-                    row_index: this.Row().Index(),
-                    segment_index: this.Index(),
-                },
-            );
-        } else {
-            return Data.Singleton().Info().Max_Macro_Item_Count(
-                {
-                    line_index: this.Row().Column().Line().Index(),
-                    column_index: this.Row().Column().Index(),
-                    row_index: this.Row().Index(),
-                    segment_index: this.Index(),
-                },
-            );
-        }
-    }
-
-    Max_Item_Buffer_Count():
-        Count
-    {
-        return this.Min_Item_Buffer_Count();
+        return Data.Singleton().Info().Avg_Macro_Item_Count(
+            {
+                line_index: this.Row().Column().Line().Index(),
+                column_index: this.Row().Column().Index(),
+                row_index: this.Row().Index(),
+                segment_index: this.Index(),
+            },
+        );
     }
 
     Item_Count():

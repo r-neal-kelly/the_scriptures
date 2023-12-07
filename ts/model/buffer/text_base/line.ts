@@ -84,28 +84,14 @@ export abstract class Instance<
         return this.text as Text.Line.Instance;
     }
 
-    Min_Column_Buffer_Count():
+    Column_Buffer_Count():
         Count
     {
-        if (Buffer.Use_Average_Counts()) {
-            return Data.Singleton().Info().Avg_Column_Count(
-                {
-                    line_index: this.Index(),
-                },
-            );
-        } else {
-            return Data.Singleton().Info().Max_Column_Count(
-                {
-                    line_index: this.Index(),
-                },
-            );
-        }
-    }
-
-    Max_Column_Buffer_Count():
-        Count
-    {
-        return this.Min_Column_Buffer_Count();
+        return Data.Singleton().Info().Avg_Column_Count(
+            {
+                line_index: this.Index(),
+            },
+        );
     }
 
     Column_Count():

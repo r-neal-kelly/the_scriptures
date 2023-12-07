@@ -12,27 +12,37 @@ import * as Version from "./version.js";
 import * as Buffer_Counts from "./buffer_counts.js";
 import
 {
-    FILE_COUNT,
+    FULL_FILE_COUNT,
+    FULL_AVG_LINE_COUNT,
+    FULL_AVG_COLUMN_COUNT,
+    FULL_AVG_ROW_COUNT,
+    FULL_AVG_SEGMENT_COUNT,
+    FULL_AVG_ITEM_COUNT,
 
-    LINES,
-    MAX_LINE_COUNT,
-    AVG_LINE_COUNT,
+    FULL_LINES,
+    FULL_COLUMNS,
+    FULL_MACRO_ROWS,
+    FULL_MICRO_ROWS,
+    FULL_SEGMENTS,
 
-    COLUMNS,
-    MAX_COLUMN_COUNT,
-    AVG_COLUMN_COUNT,
+    COMPACT_AVG_LINE_COUNT,
+    COMPACT_AVG_COLUMN_COUNT,
+    COMPACT_AVG_ROW_COUNT,
+    COMPACT_AVG_SEGMENT_COUNT,
 
-    MACRO_ROWS,
-    MICRO_ROWS,
-    MAX_ROW_COUNT,
-    AVG_ROW_COUNT,
+    COMPACT_LINES,
+    COMPACT_COLUMNS,
+    COMPACT_MACRO_ROWS,
+    COMPACT_MICRO_ROWS,
+    COMPACT_SEGMENTS,
 
-    SEGMENTS,
-    MAX_SEGMENT_COUNT,
-    AVG_SEGMENT_COUNT,
+    PARTIAL_FILE_COUNT,
 
-    MAX_ITEM_COUNT,
-    AVG_ITEM_COUNT,
+    PARTIAL_LINES,
+    PARTIAL_COLUMNS,
+    PARTIAL_MACRO_ROWS,
+    PARTIAL_MICRO_ROWS,
+    PARTIAL_SEGMENTS,
 } from "./buffer_counts.js";
 
 export type Tree = {
@@ -158,15 +168,14 @@ export class Info
             this.language_file_counts = {};
             this.language_book_counts = {};
 
-            this.buffer_counts = {
-                [MAX_LINE_COUNT]: 0,
-                [AVG_LINE_COUNT]: 0,
-                [LINES]: [] as any,
-            };
-            this.partial_buffer_counts = {
-                [FILE_COUNT]: 0,
-                [LINES]: [] as any,
-            };
+            this.buffer_counts = [
+                0,
+                [] as any,
+            ];
+            this.partial_buffer_counts = [
+                0,
+                [] as any,
+            ];
         }
     }
 
@@ -186,7 +195,7 @@ export class Info
 
         if (
             this.partial_buffer_counts != null &&
-            this.partial_buffer_counts[FILE_COUNT] > 0
+            this.partial_buffer_counts[PARTIAL_FILE_COUNT] > 0
         ) {
             this.Calculate_Buffer_Averages();
         }
@@ -236,51 +245,41 @@ export class Info
         Object.freeze(this.language_book_counts);
 
         Object.freeze(this.buffer_counts);
+        Object.freeze(this.buffer_counts[COMPACT_LINES]);
         for (
-            let line_idx = 0, line_end = this.buffer_counts[LINES].length;
+            let line_idx = 0, line_end = this.buffer_counts[COMPACT_LINES].length;
             line_idx < line_end;
             line_idx += 1
         ) {
-            const line_counts = this.buffer_counts[LINES][line_idx];
+            const line_counts = this.buffer_counts[COMPACT_LINES][line_idx];
             Object.freeze(line_counts);
+            Object.freeze(line_counts[COMPACT_COLUMNS]);
             for (
-                let column_idx = 0, column_end = line_counts[COLUMNS].length;
+                let column_idx = 0, column_end = line_counts[COMPACT_COLUMNS].length;
                 column_idx < column_end;
                 column_idx += 1
             ) {
-                const column_counts = line_counts[COLUMNS][column_idx];
+                const column_counts = line_counts[COMPACT_COLUMNS][column_idx];
                 Object.freeze(column_counts);
+                Object.freeze(column_counts[COMPACT_MACRO_ROWS]);
+                Object.freeze(column_counts[COMPACT_MICRO_ROWS]);
                 for (
-                    let row_idx = 0, row_end = column_counts[MACRO_ROWS].length;
+                    let row_idx = 0, row_end = column_counts[COMPACT_MACRO_ROWS].length;
                     row_idx < row_end;
                     row_idx += 1
                 ) {
-                    const row_counts = column_counts[MACRO_ROWS][row_idx];
+                    const row_counts = column_counts[COMPACT_MACRO_ROWS][row_idx];
                     Object.freeze(row_counts);
-                    for (
-                        let segment_idx = 0, segment_end = row_counts[SEGMENTS].length;
-                        segment_idx < segment_end;
-                        segment_idx += 1
-                    ) {
-                        const segment_counts = row_counts[SEGMENTS][segment_idx];
-                        Object.freeze(segment_counts);
-                    }
+                    Object.freeze(row_counts[COMPACT_SEGMENTS]);
                 }
                 for (
-                    let row_idx = 0, row_end = column_counts[MICRO_ROWS].length;
+                    let row_idx = 0, row_end = column_counts[COMPACT_MICRO_ROWS].length;
                     row_idx < row_end;
                     row_idx += 1
                 ) {
-                    const row_counts = column_counts[MICRO_ROWS][row_idx];
+                    const row_counts = column_counts[COMPACT_MICRO_ROWS][row_idx];
                     Object.freeze(row_counts);
-                    for (
-                        let segment_idx = 0, segment_end = row_counts[SEGMENTS].length;
-                        segment_idx < segment_end;
-                        segment_idx += 1
-                    ) {
-                        const segment_counts = row_counts[SEGMENTS][segment_idx];
-                        Object.freeze(segment_counts);
-                    }
+                    Object.freeze(row_counts[COMPACT_SEGMENTS]);
                 }
             }
         }
@@ -1645,19 +1644,13 @@ export class Info
         return this.buffer_counts;
     }
 
-    Max_Line_Count():
-        Count
-    {
-        return this.Buffer_Counts()[MAX_LINE_COUNT];
-    }
-
     Avg_Line_Count():
         Count
     {
-        return this.Buffer_Counts()[AVG_LINE_COUNT];
+        return this.Buffer_Counts()[COMPACT_AVG_LINE_COUNT];
     }
 
-    Line_Counts(
+    Line_Buffer_Counts(
         {
             line_index,
         }: {
@@ -1666,23 +1659,7 @@ export class Info
     ):
         Buffer_Counts.Compact_Line
     {
-        return this.Buffer_Counts()[LINES][line_index];
-    }
-
-    Max_Column_Count(
-        {
-            line_index,
-        }: {
-            line_index: Index,
-        },
-    ):
-        Count
-    {
-        return this.Line_Counts(
-            {
-                line_index,
-            },
-        )[MAX_COLUMN_COUNT];
+        return this.Buffer_Counts()[COMPACT_LINES][line_index];
     }
 
     Avg_Column_Count(
@@ -1694,14 +1671,14 @@ export class Info
     ):
         Count
     {
-        return this.Line_Counts(
+        return this.Line_Buffer_Counts(
             {
                 line_index,
             },
-        )[AVG_COLUMN_COUNT];
+        )[COMPACT_AVG_COLUMN_COUNT];
     }
 
-    Column_Counts(
+    Column_Buffer_Counts(
         {
             line_index,
             column_index,
@@ -1712,30 +1689,11 @@ export class Info
     ):
         Buffer_Counts.Compact_Column
     {
-        return this.Line_Counts(
+        return this.Line_Buffer_Counts(
             {
                 line_index,
             },
-        )[COLUMNS][column_index];
-    }
-
-    Max_Row_Count(
-        {
-            line_index,
-            column_index,
-        }: {
-            line_index: Index,
-            column_index: Index,
-        },
-    ):
-        Count
-    {
-        return this.Column_Counts(
-            {
-                line_index,
-                column_index,
-            },
-        )[MAX_ROW_COUNT];
+        )[COMPACT_COLUMNS][column_index];
     }
 
     Avg_Row_Count(
@@ -1749,15 +1707,15 @@ export class Info
     ):
         Count
     {
-        return this.Column_Counts(
+        return this.Column_Buffer_Counts(
             {
                 line_index,
                 column_index,
             },
-        )[AVG_ROW_COUNT];
+        )[COMPACT_AVG_ROW_COUNT];
     }
 
-    Macro_Row_Counts(
+    Macro_Row_Buffer_Counts(
         {
             line_index,
             column_index,
@@ -1770,34 +1728,12 @@ export class Info
     ):
         Buffer_Counts.Compact_Row
     {
-        return this.Column_Counts(
+        return this.Column_Buffer_Counts(
             {
                 line_index,
                 column_index,
             },
-        )[MACRO_ROWS][row_index];
-    }
-
-    Max_Macro_Segment_Count(
-        {
-            line_index,
-            column_index,
-            row_index,
-        }: {
-            line_index: Index,
-            column_index: Index,
-            row_index: Index,
-        },
-    ):
-        Count
-    {
-        return this.Macro_Row_Counts(
-            {
-                line_index,
-                column_index,
-                row_index,
-            },
-        )[MAX_SEGMENT_COUNT];
+        )[COMPACT_MACRO_ROWS][row_index];
     }
 
     Avg_Macro_Segment_Count(
@@ -1813,16 +1749,16 @@ export class Info
     ):
         Count
     {
-        return this.Macro_Row_Counts(
+        return this.Macro_Row_Buffer_Counts(
             {
                 line_index,
                 column_index,
                 row_index,
             },
-        )[AVG_SEGMENT_COUNT];
+        )[COMPACT_AVG_SEGMENT_COUNT];
     }
 
-    Macro_Segment_Counts(
+    Macro_Segment_Buffer_Counts(
         {
             line_index,
             column_index,
@@ -1837,38 +1773,13 @@ export class Info
     ):
         Buffer_Counts.Compact_Segment
     {
-        return this.Macro_Row_Counts(
+        return this.Macro_Row_Buffer_Counts(
             {
                 line_index,
                 column_index,
                 row_index,
             },
-        )[SEGMENTS][segment_index];
-    }
-
-    Max_Macro_Item_Count(
-        {
-            line_index,
-            column_index,
-            row_index,
-            segment_index,
-        }: {
-            line_index: Index,
-            column_index: Index,
-            row_index: Index,
-            segment_index: Index,
-        },
-    ):
-        Count
-    {
-        return this.Macro_Segment_Counts(
-            {
-                line_index,
-                column_index,
-                row_index,
-                segment_index,
-            },
-        )[MAX_ITEM_COUNT];
+        )[COMPACT_SEGMENTS][segment_index];
     }
 
     Avg_Macro_Item_Count(
@@ -1886,14 +1797,14 @@ export class Info
     ):
         Count
     {
-        return this.Macro_Segment_Counts(
+        return this.Macro_Segment_Buffer_Counts(
             {
                 line_index,
                 column_index,
                 row_index,
                 segment_index,
             },
-        )[AVG_ITEM_COUNT];
+        );
     }
 
     Update_Buffer_Counts(
@@ -1909,128 +1820,131 @@ export class Info
         const buffer_counts = this.buffer_counts;
         const partial_buffer_counts = this.partial_buffer_counts as Buffer_Counts.Partial_Buffer;
         const version_buffer_counts = version_info.Buffer_Counts();
-        if (buffer_counts[MAX_LINE_COUNT] < version_buffer_counts[MAX_LINE_COUNT]) {
-            buffer_counts[MAX_LINE_COUNT] = version_buffer_counts[MAX_LINE_COUNT];
-        }
         Utils.Assert(
-            buffer_counts[AVG_LINE_COUNT] + version_buffer_counts[AVG_LINE_COUNT] <=
-            Number.MAX_SAFE_INTEGER,
+            Number.MAX_SAFE_INTEGER - buffer_counts[COMPACT_AVG_LINE_COUNT] >=
+            version_buffer_counts[FULL_AVG_LINE_COUNT],
         );
-        buffer_counts[AVG_LINE_COUNT] += version_buffer_counts[AVG_LINE_COUNT];
-        partial_buffer_counts[FILE_COUNT] += version_buffer_counts[FILE_COUNT];
-        while (buffer_counts[LINES].length < version_buffer_counts[LINES].length) {
-            buffer_counts[LINES].push(
-                {
-                    [MAX_COLUMN_COUNT]: 0,
-                    [AVG_COLUMN_COUNT]: 0,
-                    [COLUMNS]: [] as any,
-                },
+        Utils.Assert(
+            Number.MAX_SAFE_INTEGER - partial_buffer_counts[PARTIAL_FILE_COUNT] >=
+            version_buffer_counts[FULL_FILE_COUNT],
+        );
+        buffer_counts[COMPACT_AVG_LINE_COUNT] += version_buffer_counts[FULL_AVG_LINE_COUNT];
+        partial_buffer_counts[PARTIAL_FILE_COUNT] += version_buffer_counts[FULL_FILE_COUNT];
+        while (buffer_counts[COMPACT_LINES].length < version_buffer_counts[FULL_LINES].length) {
+            buffer_counts[COMPACT_LINES].push(
+                [
+                    0,
+                    [] as any,
+                ],
             );
-            partial_buffer_counts[LINES].push(
-                {
-                    [FILE_COUNT]: 0,
-                    [COLUMNS]: [] as any,
-                },
+            partial_buffer_counts[PARTIAL_LINES].push(
+                [
+                    0,
+                    [] as any,
+                ],
             );
         }
         for (
-            let line_idx = 0, line_end = version_buffer_counts[LINES].length;
+            let line_idx = 0, line_end = version_buffer_counts[FULL_LINES].length;
             line_idx < line_end;
             line_idx += 1
         ) {
-            const line_counts = buffer_counts[LINES][line_idx];
-            const partial_line_counts = partial_buffer_counts[LINES][line_idx];
-            const version_line_counts = version_buffer_counts[LINES][line_idx];
-            Utils.Assert(line_counts != null);
-            if (line_counts[MAX_COLUMN_COUNT] < version_line_counts[MAX_COLUMN_COUNT]) {
-                line_counts[MAX_COLUMN_COUNT] = version_line_counts[MAX_COLUMN_COUNT];
-            }
+            const line_counts = buffer_counts[COMPACT_LINES][line_idx];
+            const partial_line_counts = partial_buffer_counts[PARTIAL_LINES][line_idx];
+            const version_line_counts = version_buffer_counts[FULL_LINES][line_idx];
             Utils.Assert(
-                line_counts[AVG_COLUMN_COUNT] + version_line_counts[AVG_COLUMN_COUNT] <=
-                Number.MAX_SAFE_INTEGER,
+                line_counts != null,
             );
-            line_counts[AVG_COLUMN_COUNT] += version_line_counts[AVG_COLUMN_COUNT];
-            partial_line_counts[FILE_COUNT] += version_line_counts[FILE_COUNT];
-            while (line_counts[COLUMNS].length < version_line_counts[COLUMNS].length) {
-                line_counts[COLUMNS].push(
-                    {
-                        [MAX_ROW_COUNT]: 0,
-                        [AVG_ROW_COUNT]: 0,
-                        [MACRO_ROWS]: [] as any,
-                        [MICRO_ROWS]: [] as any,
-                    },
+            Utils.Assert(
+                Number.MAX_SAFE_INTEGER - line_counts[COMPACT_AVG_COLUMN_COUNT] >=
+                version_line_counts[FULL_AVG_COLUMN_COUNT],
+            );
+            Utils.Assert(
+                Number.MAX_SAFE_INTEGER - partial_line_counts[PARTIAL_FILE_COUNT] >=
+                version_line_counts[FULL_FILE_COUNT],
+            );
+            line_counts[COMPACT_AVG_COLUMN_COUNT] += version_line_counts[FULL_AVG_COLUMN_COUNT];
+            partial_line_counts[PARTIAL_FILE_COUNT] += version_line_counts[FULL_FILE_COUNT];
+            while (line_counts[COMPACT_COLUMNS].length < version_line_counts[FULL_COLUMNS].length) {
+                line_counts[COMPACT_COLUMNS].push(
+                    [
+                        0,
+                        [] as any,
+                        [] as any,
+                    ],
                 );
-                partial_line_counts[COLUMNS].push(
-                    {
-                        [FILE_COUNT]: 0,
-                        [MACRO_ROWS]: [] as any,
-                        [MICRO_ROWS]: [] as any,
-                    },
+                partial_line_counts[PARTIAL_COLUMNS].push(
+                    [
+                        0,
+                        [] as any,
+                        [] as any,
+                    ],
                 );
             }
             for (
-                let column_idx = 0, column_end = version_line_counts[COLUMNS].length;
+                let column_idx = 0, column_end = version_line_counts[FULL_COLUMNS].length;
                 column_idx < column_end;
                 column_idx += 1
             ) {
-                const column_counts = line_counts[COLUMNS][column_idx];
-                const partial_column_counts = partial_line_counts[COLUMNS][column_idx];
-                const version_column_counts = version_line_counts[COLUMNS][column_idx];
-                Utils.Assert(column_counts != null);
-                if (column_counts[MAX_ROW_COUNT] < version_column_counts[MAX_ROW_COUNT]) {
-                    column_counts[MAX_ROW_COUNT] = version_column_counts[MAX_ROW_COUNT];
-                }
+                const column_counts = line_counts[COMPACT_COLUMNS][column_idx];
+                const partial_column_counts = partial_line_counts[PARTIAL_COLUMNS][column_idx];
+                const version_column_counts = version_line_counts[FULL_COLUMNS][column_idx];
                 Utils.Assert(
-                    column_counts[AVG_ROW_COUNT] + version_column_counts[AVG_ROW_COUNT] <=
-                    Number.MAX_SAFE_INTEGER,
+                    column_counts != null,
                 );
-                column_counts[AVG_ROW_COUNT] += version_column_counts[AVG_ROW_COUNT];
-                partial_column_counts[FILE_COUNT] += version_column_counts[FILE_COUNT];
-                while (column_counts[MACRO_ROWS].length < version_column_counts[MACRO_ROWS].length) {
-                    column_counts[MACRO_ROWS].push(
-                        {
-                            [MAX_SEGMENT_COUNT]: 0,
-                            [AVG_SEGMENT_COUNT]: 0,
-                            [SEGMENTS]: [] as any,
-                        },
+                Utils.Assert(
+                    Number.MAX_SAFE_INTEGER - column_counts[COMPACT_AVG_ROW_COUNT] >=
+                    version_column_counts[FULL_AVG_ROW_COUNT],
+                );
+                Utils.Assert(
+                    Number.MAX_SAFE_INTEGER - partial_column_counts[PARTIAL_FILE_COUNT] >=
+                    version_column_counts[FULL_FILE_COUNT],
+                );
+                column_counts[COMPACT_AVG_ROW_COUNT] += version_column_counts[FULL_AVG_ROW_COUNT];
+                partial_column_counts[PARTIAL_FILE_COUNT] += version_column_counts[FULL_FILE_COUNT];
+                while (column_counts[COMPACT_MACRO_ROWS].length < version_column_counts[FULL_MACRO_ROWS].length) {
+                    column_counts[COMPACT_MACRO_ROWS].push(
+                        [
+                            0,
+                            [] as any,
+                        ],
                     );
-                    partial_column_counts[MACRO_ROWS].push(
-                        {
-                            [FILE_COUNT]: 0,
-                            [SEGMENTS]: [] as any,
-                        },
+                    partial_column_counts[PARTIAL_MACRO_ROWS].push(
+                        [
+                            0,
+                            [] as any,
+                        ],
                     );
                 }
-                while (column_counts[MICRO_ROWS].length < version_column_counts[MICRO_ROWS].length) {
-                    column_counts[MICRO_ROWS].push(
-                        {
-                            [MAX_SEGMENT_COUNT]: 0,
-                            [AVG_SEGMENT_COUNT]: 0,
-                            [SEGMENTS]: [] as any,
-                        },
+                while (column_counts[COMPACT_MICRO_ROWS].length < version_column_counts[FULL_MICRO_ROWS].length) {
+                    column_counts[COMPACT_MICRO_ROWS].push(
+                        [
+                            0,
+                            [] as any,
+                        ],
                     );
-                    partial_column_counts[MICRO_ROWS].push(
-                        {
-                            [FILE_COUNT]: 0,
-                            [SEGMENTS]: [] as any,
-                        },
+                    partial_column_counts[PARTIAL_MICRO_ROWS].push(
+                        [
+                            0,
+                            [] as any,
+                        ],
                     );
                 }
                 Utils.Assert(
-                    version_column_counts[MACRO_ROWS].length ===
-                    version_column_counts[MICRO_ROWS].length
+                    version_column_counts[FULL_MACRO_ROWS].length ===
+                    version_column_counts[FULL_MICRO_ROWS].length
                 );
                 for (const [rows, partial_rows, version_rows] of
                     [
                         [
-                            column_counts[MACRO_ROWS],
-                            partial_column_counts[MACRO_ROWS],
-                            version_column_counts[MACRO_ROWS],
+                            column_counts[COMPACT_MACRO_ROWS],
+                            partial_column_counts[PARTIAL_MACRO_ROWS],
+                            version_column_counts[FULL_MACRO_ROWS],
                         ],
                         [
-                            column_counts[MICRO_ROWS],
-                            partial_column_counts[MICRO_ROWS],
-                            version_column_counts[MICRO_ROWS],
+                            column_counts[COMPACT_MICRO_ROWS],
+                            partial_column_counts[PARTIAL_MICRO_ROWS],
+                            version_column_counts[FULL_MICRO_ROWS],
                         ],
                     ] as [
                         [
@@ -2053,47 +1967,43 @@ export class Info
                         const row_counts = rows[row_idx];
                         const partial_row_counts = partial_rows[row_idx];
                         const version_row_counts = version_rows[row_idx];
-                        Utils.Assert(row_counts != null);
-                        if (row_counts[MAX_SEGMENT_COUNT] < version_row_counts[MAX_SEGMENT_COUNT]) {
-                            row_counts[MAX_SEGMENT_COUNT] = version_row_counts[MAX_SEGMENT_COUNT];
-                        }
                         Utils.Assert(
-                            row_counts[AVG_SEGMENT_COUNT] + version_row_counts[AVG_SEGMENT_COUNT] <=
-                            Number.MAX_SAFE_INTEGER,
+                            row_counts != null,
                         );
-                        row_counts[AVG_SEGMENT_COUNT] += version_row_counts[AVG_SEGMENT_COUNT];
-                        partial_row_counts[FILE_COUNT] += version_row_counts[FILE_COUNT];
-                        while (row_counts[SEGMENTS].length < version_row_counts[SEGMENTS].length) {
-                            row_counts[SEGMENTS].push(
-                                {
-                                    [MAX_ITEM_COUNT]: 0,
-                                    [AVG_ITEM_COUNT]: 0,
-                                },
+                        Utils.Assert(
+                            Number.MAX_SAFE_INTEGER - row_counts[COMPACT_AVG_SEGMENT_COUNT] >=
+                            version_row_counts[FULL_AVG_SEGMENT_COUNT],
+                        );
+                        Utils.Assert(
+                            Number.MAX_SAFE_INTEGER - partial_row_counts[PARTIAL_FILE_COUNT] >=
+                            version_row_counts[FULL_FILE_COUNT],
+                        );
+                        row_counts[COMPACT_AVG_SEGMENT_COUNT] += version_row_counts[FULL_AVG_SEGMENT_COUNT];
+                        partial_row_counts[PARTIAL_FILE_COUNT] += version_row_counts[FULL_FILE_COUNT];
+                        while (row_counts[COMPACT_SEGMENTS].length < version_row_counts[FULL_SEGMENTS].length) {
+                            row_counts[COMPACT_SEGMENTS].push(
+                                0,
                             );
-                            partial_row_counts[SEGMENTS].push(
-                                {
-                                    [FILE_COUNT]: 0,
-                                },
+                            partial_row_counts[PARTIAL_SEGMENTS].push(
+                                0,
                             );
                         }
                         for (
-                            let segment_idx = 0, segment_end = version_row_counts[SEGMENTS].length;
+                            let segment_idx = 0, segment_end = version_row_counts[FULL_SEGMENTS].length;
                             segment_idx < segment_end;
                             segment_idx += 1
                         ) {
-                            const segment_counts = row_counts[SEGMENTS][segment_idx];
-                            const partial_segment_counts = partial_row_counts[SEGMENTS][segment_idx];
-                            const version_segment_counts = version_row_counts[SEGMENTS][segment_idx];
-                            Utils.Assert(segment_counts != null);
-                            if (segment_counts[MAX_ITEM_COUNT] < version_segment_counts[MAX_ITEM_COUNT]) {
-                                segment_counts[MAX_ITEM_COUNT] = version_segment_counts[MAX_ITEM_COUNT];
-                            }
+                            const version_segment_counts = version_row_counts[FULL_SEGMENTS][segment_idx];
                             Utils.Assert(
-                                segment_counts[AVG_ITEM_COUNT] + version_segment_counts[AVG_ITEM_COUNT] <=
-                                Number.MAX_SAFE_INTEGER,
+                                Number.MAX_SAFE_INTEGER - row_counts[COMPACT_SEGMENTS][segment_idx] >=
+                                version_segment_counts[FULL_AVG_ITEM_COUNT],
                             );
-                            segment_counts[AVG_ITEM_COUNT] += version_segment_counts[AVG_ITEM_COUNT];
-                            partial_segment_counts[FILE_COUNT] += version_segment_counts[FILE_COUNT];
+                            Utils.Assert(
+                                Number.MAX_SAFE_INTEGER - partial_row_counts[PARTIAL_SEGMENTS][segment_idx] >=
+                                version_segment_counts[FULL_FILE_COUNT],
+                            );
+                            row_counts[COMPACT_SEGMENTS][segment_idx] += version_segment_counts[FULL_AVG_ITEM_COUNT];
+                            partial_row_counts[PARTIAL_SEGMENTS][segment_idx] += version_segment_counts[FULL_FILE_COUNT];
                         }
                     }
                 }
@@ -2111,77 +2021,73 @@ export class Info
 
         const buffer_counts = this.buffer_counts;
         const partial_buffer_counts = this.partial_buffer_counts as Buffer_Counts.Partial_Buffer;
-        buffer_counts[AVG_LINE_COUNT] = Math.round(
-            buffer_counts[AVG_LINE_COUNT] /
-            partial_buffer_counts[FILE_COUNT],
+        buffer_counts[COMPACT_AVG_LINE_COUNT] = Math.round(
+            buffer_counts[COMPACT_AVG_LINE_COUNT] /
+            partial_buffer_counts[PARTIAL_FILE_COUNT],
         );
         for (
-            let line_idx = 0, line_end = buffer_counts[LINES].length;
+            let line_idx = 0, line_end = buffer_counts[COMPACT_LINES].length;
             line_idx < line_end;
             line_idx += 1
         ) {
-            const line_counts = buffer_counts[LINES][line_idx];
-            const partial_line_counts = partial_buffer_counts[LINES][line_idx];
-            line_counts[AVG_COLUMN_COUNT] = Math.round(
-                line_counts[AVG_COLUMN_COUNT] /
-                partial_line_counts[FILE_COUNT],
+            const line_counts = buffer_counts[COMPACT_LINES][line_idx];
+            const partial_line_counts = partial_buffer_counts[PARTIAL_LINES][line_idx];
+            line_counts[COMPACT_AVG_COLUMN_COUNT] = Math.round(
+                line_counts[COMPACT_AVG_COLUMN_COUNT] /
+                partial_line_counts[PARTIAL_FILE_COUNT],
             );
             for (
-                let column_idx = 0, column_end = line_counts[COLUMNS].length;
+                let column_idx = 0, column_end = line_counts[COMPACT_COLUMNS].length;
                 column_idx < column_end;
                 column_idx += 1
             ) {
-                const column_counts = line_counts[COLUMNS][column_idx];
-                const partial_column_counts = partial_line_counts[COLUMNS][column_idx];
-                column_counts[AVG_ROW_COUNT] = Math.round(
-                    column_counts[AVG_ROW_COUNT] /
-                    partial_column_counts[FILE_COUNT],
+                const column_counts = line_counts[COMPACT_COLUMNS][column_idx];
+                const partial_column_counts = partial_line_counts[PARTIAL_COLUMNS][column_idx];
+                column_counts[COMPACT_AVG_ROW_COUNT] = Math.round(
+                    column_counts[COMPACT_AVG_ROW_COUNT] /
+                    partial_column_counts[PARTIAL_FILE_COUNT],
                 );
                 for (
-                    let row_idx = 0, row_end = column_counts[MACRO_ROWS].length;
+                    let row_idx = 0, row_end = column_counts[COMPACT_MACRO_ROWS].length;
                     row_idx < row_end;
                     row_idx += 1
                 ) {
-                    const row_counts = column_counts[MACRO_ROWS][row_idx];
-                    const partial_row_counts = partial_column_counts[MACRO_ROWS][row_idx];
-                    row_counts[AVG_SEGMENT_COUNT] = Math.round(
-                        row_counts[AVG_SEGMENT_COUNT] /
-                        partial_row_counts[FILE_COUNT],
+                    const row_counts = column_counts[COMPACT_MACRO_ROWS][row_idx];
+                    const partial_row_counts = partial_column_counts[PARTIAL_MACRO_ROWS][row_idx];
+                    row_counts[COMPACT_AVG_SEGMENT_COUNT] = Math.round(
+                        row_counts[COMPACT_AVG_SEGMENT_COUNT] /
+                        partial_row_counts[PARTIAL_FILE_COUNT],
                     );
                     for (
-                        let segment_idx = 0, segment_end = row_counts[SEGMENTS].length;
+                        let segment_idx = 0, segment_end = row_counts[COMPACT_SEGMENTS].length;
                         segment_idx < segment_end;
                         segment_idx += 1
                     ) {
-                        const segment_counts = row_counts[SEGMENTS][segment_idx];
-                        const partial_segment_counts = partial_row_counts[SEGMENTS][segment_idx];
-                        segment_counts[AVG_ITEM_COUNT] = Math.round(
-                            segment_counts[AVG_ITEM_COUNT] /
-                            partial_segment_counts[FILE_COUNT],
+                        row_counts[COMPACT_SEGMENTS][segment_idx] = Math.round(
+                            row_counts[COMPACT_SEGMENTS][segment_idx] /
+                            partial_row_counts[PARTIAL_SEGMENTS][segment_idx],
                         );
                     }
                 }
                 for (
-                    let row_idx = 0, row_end = column_counts[MICRO_ROWS].length;
+                    let row_idx = 0, row_end = column_counts[COMPACT_MICRO_ROWS].length;
                     row_idx < row_end;
                     row_idx += 1
                 ) {
-                    const row_counts = column_counts[MICRO_ROWS][row_idx];
-                    const partial_row_counts = partial_column_counts[MICRO_ROWS][row_idx];
-                    row_counts[AVG_SEGMENT_COUNT] = Math.round(
-                        row_counts[AVG_SEGMENT_COUNT] /
-                        partial_row_counts[FILE_COUNT],
+                    const row_counts = column_counts[COMPACT_MICRO_ROWS][row_idx];
+                    const partial_row_counts = partial_column_counts[PARTIAL_MICRO_ROWS][row_idx];
+                    row_counts[COMPACT_AVG_SEGMENT_COUNT] = Math.round(
+                        row_counts[COMPACT_AVG_SEGMENT_COUNT] /
+                        partial_row_counts[PARTIAL_FILE_COUNT],
                     );
                     for (
-                        let segment_idx = 0, segment_end = row_counts[SEGMENTS].length;
+                        let segment_idx = 0, segment_end = row_counts[COMPACT_SEGMENTS].length;
                         segment_idx < segment_end;
                         segment_idx += 1
                     ) {
-                        const segment_counts = row_counts[SEGMENTS][segment_idx];
-                        const partial_segment_counts = partial_row_counts[SEGMENTS][segment_idx];
-                        segment_counts[AVG_ITEM_COUNT] = Math.round(
-                            segment_counts[AVG_ITEM_COUNT] /
-                            partial_segment_counts[FILE_COUNT],
+                        row_counts[COMPACT_SEGMENTS][segment_idx] = Math.round(
+                            row_counts[COMPACT_SEGMENTS][segment_idx] /
+                            partial_row_counts[PARTIAL_SEGMENTS][segment_idx],
                         );
                     }
                 }
