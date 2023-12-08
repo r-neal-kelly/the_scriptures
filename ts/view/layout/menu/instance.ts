@@ -225,7 +225,7 @@ export class Instance extends Entity.Instance
             [
                 {
                     offset: 0.00,
-                    backgroundColor: `black`,
+                    backgroundColor: `transparent`,
                     color: `white`,
                 },
                 {
@@ -235,7 +235,7 @@ export class Instance extends Entity.Instance
                 },
                 {
                     offset: 1.00,
-                    backgroundColor: `black`,
+                    backgroundColor: `transparent`,
                     color: `white`,
                 },
             ],

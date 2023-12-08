@@ -45,9 +45,20 @@ export class Instance extends Entity.Instance
             this.On_Click.bind(this),
         );
 
-        this.Refresh_After_Has_Model();
+        this.Load();
 
         return [
+            new Event.Listener_Info(
+                {
+                    event_name: new Event.Name(
+                        Event.Prefix.AFTER,
+                        Events.WINDOW_READY,
+                        this.ID(),
+                    ),
+                    event_handler: this.After_Window_Ready,
+                    event_priority: 0,
+                },
+            ),
             new Event.Listener_Info(
                 {
                     event_name: new Event.Name(
@@ -239,6 +250,52 @@ export class Instance extends Entity.Instance
         }
     }
 
+    private async Load():
+        Promise<void>
+    {
+        // Need to wait to make sure derived type's constructor is done.
+        await Utils.Wait_Milliseconds(1);
+
+        while (
+            this.Is_Alive() &&
+            !this.Model().Is_Ready()
+        ) {
+            const element: HTMLElement = this.Element();
+
+            if (element.textContent === `Loading...`) {
+                element.textContent = `Loading.`;
+            } else if (element.textContent === `Loading.`) {
+                element.textContent = `Loading..`;
+            } else {
+                element.textContent = `Loading...`;
+            }
+
+            await Utils.Wait_Milliseconds(200);
+        }
+
+        await this.Send(
+            new Event.Info(
+                {
+                    affix: Events.WINDOW_READY,
+                    suffixes: [
+                        this.ID(),
+                        this.Wall().ID(),
+                        this.Wall().Desktop().ID(),
+                        this.Wall().Desktop().Layout().ID(),
+                    ],
+                    type: Event.Type.EXCLUSIVE,
+                    data: {},
+                },
+            ),
+        );
+    }
+
+    private async After_Window_Ready():
+        Promise<void>
+    {
+        this.Refresh();
+    }
+
     private async On_Window_Activate():
         Promise<void>
     {
@@ -285,29 +342,6 @@ export class Instance extends Entity.Instance
         Promise<void>
     {
         this.Model().Kill();
-    }
-
-    private async Refresh_After_Has_Model():
-        Promise<void>
-    {
-        // Need to wait to make sure derived type's constructor is done.
-        await Utils.Wait_Milliseconds(1);
-
-        while (this.Is_Alive() && !this.Model().Is_Ready()) {
-            const element: HTMLElement = this.Element();
-
-            if (element.textContent === `Loading...`) {
-                element.textContent = `Loading.`;
-            } else if (element.textContent === `Loading.`) {
-                element.textContent = `Loading..`;
-            } else {
-                element.textContent = `Loading...`;
-            }
-
-            await Utils.Wait_Milliseconds(200);
-        }
-
-        this.Wall().Desktop().Layout().Refresh();
     }
 
     Model():

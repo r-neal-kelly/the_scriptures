@@ -69,6 +69,8 @@ export class Instance extends Entity.Instance
                     border-style: solid;
                     border-width: 0 1px 0 0;
 
+                    background-color: hsl(0, 0%, 0%, 0.7);
+
                     -webkit-user-select: none;
                     -moz-user-select: none;
                     -ms-user-select: none;
@@ -312,7 +314,7 @@ export class Instance extends Entity.Instance
             [
                 {
                     offset: 0.00,
-                    backgroundColor: `black`,
+                    backgroundColor: `transparent`,
                     color: `white`,
                 },
                 {
@@ -322,7 +324,7 @@ export class Instance extends Entity.Instance
                 },
                 {
                     offset: 1.00,
-                    backgroundColor: `black`,
+                    backgroundColor: `transparent`,
                     color: `white`,
                 },
             ],

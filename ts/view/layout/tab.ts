@@ -47,6 +47,17 @@ export class Instance extends Entity.Instance
                 {
                     event_name: new Event.Name(
                         Event.Prefix.AFTER,
+                        Events.WINDOW_READY,
+                        this.Window().ID(),
+                    ),
+                    event_handler: this.After_Window_Ready,
+                    event_priority: 0,
+                },
+            ),
+            new Event.Listener_Info(
+                {
+                    event_name: new Event.Name(
+                        Event.Prefix.AFTER,
                         Events.WINDOW_ACTIVATE,
                         this.Window().Wall().ID(),
                     ),
@@ -105,6 +116,20 @@ export class Instance extends Entity.Instance
         return classes;
     }
 
+    override On_Restyle():
+        string | { [index: string]: string; }
+    {
+        const model: Model.Instance = this.Model();
+
+        if (model.Index() === 0) {
+            return `
+                margin-left: 0;
+            `;
+        } else {
+            return ``;
+        }
+    }
+
     private async On_Click():
         Promise<void>
     {
@@ -143,6 +168,12 @@ export class Instance extends Entity.Instance
                 },
             ),
         );
+    }
+
+    private async After_Window_Ready():
+        Promise<void>
+    {
+        this.Refresh();
     }
 
     private async After_Window_Activate():

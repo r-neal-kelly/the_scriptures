@@ -54,6 +54,8 @@ export class Instance extends Entity.Instance
                     border-style: solid;
                     border-width: 0 0 1px 0;
 
+                    background-color: hsl(0, 0%, 0%, 0.7);
+
                     font-size: 0.8em;
 
                     -webkit-user-select: none;

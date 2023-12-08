@@ -3,6 +3,7 @@ import { ID } from "../types.js";
 
 import * as Unique_ID from "../unique_id.js";
 
+export const WINDOW_READY: ID = Unique_ID.New();
 export const WINDOW_ACTIVATE: ID = Unique_ID.New();
 export const WINDOW_DEACTIVATE: ID = Unique_ID.New();
 export const WINDOW_TOGGLE_MAXIMIZATION: ID = Unique_ID.New();

@@ -48,6 +48,22 @@ export class Instance extends Entity.Instance
 
                     overflow-x: hidden;
                     overflow-y: hidden;
+                    
+                    background-position: center;
+                    background-origin: border-box;
+                    background-repeat: no-repeat;
+                }
+
+                @media (orientation: landscape) {
+                    .Desktop {
+                        background-size: 100% auto;
+                    }
+                }
+
+                @media (orientation: portrait) {
+                    .Desktop {
+                        background-size: auto 100%;
+                    }
                 }
             `,
         );
@@ -79,6 +95,8 @@ export class Instance extends Entity.Instance
                     border-color: white;
                     border-style: solid;
                     border-width: 1px;
+
+                    background-color: hsl(0, 0%, 0%, 0.93);
                 }
 
                 .Minimized_Window {
@@ -90,20 +108,25 @@ export class Instance extends Entity.Instance
                 }
 
                 .Menu {
-                    display: flex;
-                    flex-direction: column;
-
                     position: absolute;
                     top: 0;
                     left: 0;
+                    z-index: 100;
 
                     height: 100%;
+                    padding: 0.5em 0;
 
-                    background-color: rgba(0, 0, 0, 0.7);
+                    background-color: hsl(0, 0%, 0%, 0.7);
+
+                    border-color: white;
+                    border-style: solid;
+                    border-width: 1px;
+
+                    overflow-y: auto;
                 }
 
                 .Open_Menu {
-                    display: flex;
+
                 }
 
                 .Closed_Menu {
@@ -115,11 +138,13 @@ export class Instance extends Entity.Instance
                     width: 100%;
 
                     margin-bottom: 7px;
-                    padding: 3px;
+                    padding: 5px;
+
+                    background-color: hsl(0, 0%, 0%, 0.7);
 
                     border-color: white;
                     border-style: solid;
-                    border-width: 1px;
+                    border-width: 1px 0;
 
                     cursor: pointer;
                     -webkit-user-select: none;
@@ -161,6 +186,15 @@ export class Instance extends Entity.Instance
         Array<string>
     {
         return [`Desktop`];
+    }
+
+    override On_Restyle():
+        string | { [index: string]: string; }
+    {
+        return `
+            background-image: url(img/background/pexels-ksenia-chernaya-3952071.jpg);
+            background-image: url(img/background/pexels-juan-pablo-serrano-arenas-877971.jpg);
+        `;
     }
 
     Model():

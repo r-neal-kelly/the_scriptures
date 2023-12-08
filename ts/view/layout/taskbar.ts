@@ -61,9 +61,14 @@ export class Instance extends Entity.Instance
         this.Add_Children_CSS(
             `
                 .Starter {
-                    width: 1em;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+
+                    width: 1.5em;
                     height: 100%;
 
+                    font-size: 1.2em;
                     text-align: center;
 
                     cursor: pointer;
@@ -74,19 +79,28 @@ export class Instance extends Entity.Instance
                 }
 
                 .Tabs {
+                    /*
                     display: flex;
                     flex-direction: row;
                     justify-content: center;
                     align-items: center;
+                    */
 
                     width: 100%;
                     height: 100%;
 
                     overflow-x: auto;
                     overflow-y: hidden;
+
+                    text-align: center;
+                    text-wrap: nowrap;
                 }
 
                 .Tab {
+                    display: inline-flex;
+                    justify-content: center;
+                    align-items: center;
+
                     height: 100%;
 
                     margin-left: 7px;
@@ -116,11 +130,9 @@ export class Instance extends Entity.Instance
                 }
 
                 .Minimized_Tab {
-                    align-self: self-end;
+                    height: 75%;
 
-                    height: 80%;
-
-                    border-width: 1px;
+                    border-width: 1px 1px 0 1px;
 
                     font-size: 0.7em;
                 }

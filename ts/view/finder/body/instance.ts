@@ -69,9 +69,7 @@ export class Instance extends Entity.Instance
                     z-index: 1;
 
                     height: 100%;
-
-                    background-color: hsl(0, 0%, 0%, 0.7);
-
+                    
                     overflow-x: hidden;
                     overflow-y: hidden;
                 }
