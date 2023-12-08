@@ -175,8 +175,6 @@ export class Instance extends Entity.Instance
         const maximized_window_count: Count = model.Maximized_Window_Count();
         const grid_template_columns: string = `grid-template-columns`;
         const grid_template_rows: string = `grid-template-rows`;
-        const grid_column_gap: string = `grid-column-gap`;
-        const grid_row_gap: string = `grid-row-gap`;
         const primary_grid_template: string =
             render_type === Model.Render_Type.LANDSCAPE ?
                 grid_template_columns :
@@ -185,13 +183,10 @@ export class Instance extends Entity.Instance
             primary_grid_template === grid_template_columns ?
                 grid_template_rows :
                 grid_template_columns;
-        const grid_gap_px: Count = 2;
 
         return `
-            ${primary_grid_template}: repeat(${render_limit}, calc(${100 / render_limit}% - ${Math.round((grid_gap_px * (render_limit - 1)) / render_limit)}px));
+            ${primary_grid_template}: repeat(${render_limit}, ${100 / render_limit}%);
             ${secondary_grid_template}: repeat(${Math.ceil(window_count / render_limit) + maximized_window_count}, 100%);
-            ${grid_column_gap}: ${grid_gap_px}px;
-            ${grid_row_gap}: ${grid_gap_px}px;
         `;
     }
 

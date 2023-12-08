@@ -420,12 +420,15 @@ export class Instance extends Entity.Instance
         const render_type: Model.Render_Type = model.Render_Type();
         const parent_element: HTMLElement = this.Parent().Element();
         const child_element: HTMLElement = this.Element();
-        const parent_rect = parent_element.getBoundingClientRect();
+
+        parent_element.scrollTop = 0;
+        parent_element.scrollLeft = 0;
+
         const child_rect = child_element.getBoundingClientRect();
         if (render_type === Model.Render_Type.LANDSCAPE) {
-            parent_element.scrollTop += child_rect.y - parent_rect.y;
+            parent_element.scrollTop = child_rect.y;
         } else {
-            parent_element.scrollLeft += child_rect.x - parent_rect.x;
+            parent_element.scrollLeft += child_rect.x;
         }
     }
 }

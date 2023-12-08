@@ -75,7 +75,6 @@ export class Instance extends Entity.Instance
                     
                     width: 100%;
                     height: 100%;
-                    padding: 0 2px;
 
                     overflow-x: hidden;
                     overflow-y: hidden;
@@ -120,7 +119,7 @@ export class Instance extends Entity.Instance
 
                     border-color: white;
                     border-style: solid;
-                    border-width: 1px;
+                    border-width: 1px 1px 0 1px;
 
                     overflow-y: auto;
                 }

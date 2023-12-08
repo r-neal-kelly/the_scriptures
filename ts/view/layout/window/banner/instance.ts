@@ -96,7 +96,7 @@ export class Instance extends Entity.Instance
                 }
 
                 .Button {
-                    margin: 4px;
+                    padding: 4px;
 
                     border-color: white;
                     border-style: solid;
