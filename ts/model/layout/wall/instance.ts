@@ -5,7 +5,7 @@ import * as Utils from "../../../utils.js";
 
 import * as Entity from "../../entity.js";
 
-import * as Layout from "../instance.js";
+import * as Desktop from "../desktop.js";
 import * as Window from "../window.js";
 
 import { Render_Type } from "./render_type.js";
@@ -14,18 +14,19 @@ export class Instance extends Entity.Instance
 {
     static DEFAULT_RENDER_LIMIT: Count = 2;
 
-    private layout: Layout.Instance;
+    private desktop: Desktop.Instance;
     private render_type: Render_Type;
     private render_limit: Count;
     private windows: Array<Window.Instance>;
+    private active_window: Window.Instance | null;
 
     constructor(
         {
-            layout,
+            desktop,
             render_type = Render_Type.LANDSCAPE,
             render_limit = Instance.DEFAULT_RENDER_LIMIT,
         }: {
-            layout: Layout.Instance,
+            desktop: Desktop.Instance,
             render_type?: Render_Type,
             render_limit?: Count,
         },
@@ -33,10 +34,11 @@ export class Instance extends Entity.Instance
     {
         super();
 
-        this.layout = layout;
+        this.desktop = desktop;
         this.render_type = render_type;
         this.render_limit = Instance.DEFAULT_RENDER_LIMIT;
         this.windows = [];
+        this.active_window = null;
 
         this.Set_Render_Limit(render_limit);
 
@@ -46,10 +48,10 @@ export class Instance extends Entity.Instance
         );
     }
 
-    Layout():
-        Layout.Instance
+    Desktop():
+        Desktop.Instance
     {
-        return this.layout;
+        return this.desktop;
     }
 
     Render_Type():
@@ -158,23 +160,6 @@ export class Instance extends Entity.Instance
         return Array.from(this.windows);
     }
 
-    async Add_Program(
-        program: Window.Program.Instance,
-    ):
-        Promise<Window.Instance>
-    {
-        const window: Window.Instance = new Window.Instance(
-            {
-                wall: this,
-                program: program,
-            },
-        );
-
-        await window.Ready();
-
-        return window;
-    }
-
     __Add_Window__(
         window: Window.Instance,
     ):
@@ -194,7 +179,7 @@ export class Instance extends Entity.Instance
         );
 
         this.windows.push(window);
-        this.Layout().Taskbar().Tabs().Add_Tab();
+        this.Desktop().Layout().Taskbar().Tabs().Add_Tab();
     }
 
     __Remove_Window__(
@@ -218,7 +203,44 @@ export class Instance extends Entity.Instance
             `Doesn't have window with id of ${window.ID()}.`,
         );
 
-        this.Layout().Taskbar().Tabs().Remove_Tab(window_index);
+        this.Desktop().Layout().Taskbar().Tabs().Remove_Tab(window_index);
         this.windows.splice(window_index, 1);
+    }
+
+    Has_Active_Window():
+        boolean
+    {
+        return this.active_window != null;
+    }
+
+    Maybe_Active_Window():
+        Window.Instance | null
+    {
+        return this.active_window;
+    }
+
+    __Set_Active_Window__(
+        active_window: Window.Instance | null,
+    ):
+        void
+    {
+        this.active_window = active_window;
+    }
+
+    async Add_Program(
+        program: Window.Program.Instance,
+    ):
+        Promise<Window.Instance>
+    {
+        const window: Window.Instance = new Window.Instance(
+            {
+                wall: this,
+                program: program,
+            },
+        );
+
+        await window.Ready();
+
+        return window;
     }
 }

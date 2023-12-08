@@ -195,7 +195,7 @@ export class Instance extends Entity.Instance
             this.Add_To_Wall(wall);
             if (
                 this.program.Is_Window_Active() ||
-                !wall.Layout().Has_Active_Window()
+                !wall.Has_Active_Window()
             ) {
                 this.Activate();
             }
@@ -224,7 +224,7 @@ export class Instance extends Entity.Instance
     {
         return (
             this.Is_In_Wall() &&
-            this.Some_Wall().Layout().Maybe_Active_Window() === this
+            this.Some_Wall().Maybe_Active_Window() === this
         );
     }
 
@@ -236,7 +236,7 @@ export class Instance extends Entity.Instance
             `not in wall, can't activate`,
         );
 
-        this.Some_Wall().Layout().__Set_Active_Window__(this);
+        this.Some_Wall().__Set_Active_Window__(this);
     }
 
     Deactivate():
@@ -247,7 +247,7 @@ export class Instance extends Entity.Instance
             `not in wall, can't deactivate`,
         );
 
-        this.Some_Wall().Layout().__Set_Active_Window__(null);
+        this.Some_Wall().__Set_Active_Window__(null);
     }
 
     Is_Minimized():

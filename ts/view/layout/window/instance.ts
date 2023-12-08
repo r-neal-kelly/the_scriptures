@@ -228,7 +228,8 @@ export class Instance extends Entity.Instance
                         suffixes: [
                             this.ID(),
                             this.Wall().ID(),
-                            this.Wall().Layout().ID(),
+                            this.Wall().Desktop().ID(),
+                            this.Wall().Desktop().Layout().ID(),
                         ],
                         type: Event.Type.EXCLUSIVE,
                         data: {},
@@ -306,7 +307,7 @@ export class Instance extends Entity.Instance
             await Utils.Wait_Milliseconds(200);
         }
 
-        this.Wall().Layout().Refresh();
+        this.Wall().Desktop().Layout().Refresh();
     }
 
     Model():

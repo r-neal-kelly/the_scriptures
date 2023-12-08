@@ -118,7 +118,8 @@ export class Instance extends Entity.Instance
                         suffixes: [
                             this.Window().ID(),
                             this.Window().Wall().ID(),
-                            this.Window().Wall().Layout().ID(),
+                            this.Window().Wall().Desktop().ID(),
+                            this.Window().Wall().Desktop().Layout().ID(),
                         ],
                         type: Event.Type.EXCLUSIVE,
                         data: {},
@@ -134,7 +135,8 @@ export class Instance extends Entity.Instance
                     suffixes: [
                         this.Window().ID(),
                         this.Window().Wall().ID(),
-                        this.Window().Wall().Layout().ID(),
+                        this.Window().Wall().Desktop().ID(),
+                        this.Window().Wall().Desktop().Layout().ID(),
                     ],
                     type: Event.Type.EXCLUSIVE,
                     data: {},
@@ -184,6 +186,6 @@ export class Instance extends Entity.Instance
     Window():
         Window.Instance
     {
-        return this.Tabs().Taskbar().Layout().Wall().Window(this.Model().Index());
+        return this.Tabs().Taskbar().Layout().Desktop().Wall().Window(this.Model().Index());
     }
 }

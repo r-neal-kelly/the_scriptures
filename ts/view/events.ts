@@ -13,6 +13,12 @@ export type WINDOW_CLOSE_DATA = {
     window_index: Index,
 };
 
+export const MENU_OPEN: ID = Unique_ID.New();
+export const MENU_CLOSE: ID = Unique_ID.New();
+
+export const OPEN_BROWSER: ID = Unique_ID.New();
+export const OPEN_FINDER: ID = Unique_ID.New();
+
 export const BROWSER_COMMANDER_PREVIOUS: ID = Unique_ID.New();
 export const BROWSER_COMMANDER_NEXT: ID = Unique_ID.New();
 

@@ -3,8 +3,9 @@ import * as Event from "../../event.js";
 
 import * as Model from "../../model/layout/instance.js";
 
+import * as Events from "../events.js";
 import * as Entity from "../entity.js";
-import * as Wall from "./wall.js";
+import * as Desktop from "./desktop.js";
 import * as Taskbar from "./taskbar.js";
 
 export class Instance extends Entity.Instance
@@ -37,6 +38,11 @@ export class Instance extends Entity.Instance
     override On_Life():
         Array<Event.Listener_Info>
     {
+        this.Element().addEventListener(
+            `click`,
+            this.On_Click.bind(this),
+        );
+
         this.Add_This_CSS(
             `
                 .Layout {
@@ -55,45 +61,6 @@ export class Instance extends Entity.Instance
             `,
         );
 
-        this.Add_Children_CSS(
-            `
-                .Wall {
-                    display: grid;
-                    
-                    width: 100%;
-                    height: 100%;
-                    padding: 0 2px;
-
-                    overflow-x: hidden;
-                    overflow-y: hidden;
-                }
-
-                .Window {
-                    display: grid;
-                    grid-template-rows: auto 1fr;
-                    grid-template-columns: auto;
-
-                    width: 100%;
-                    height: 100%;
-
-                    overflow-x: auto;
-                    overflow-y: auto;
-
-                    border-color: white;
-                    border-style: solid;
-                    border-width: 1px;
-                }
-
-                .Minimized_Window {
-                    display: none;
-                }
-
-                .Maximized_Window {
-                    
-                }
-            `,
-        );
-
         return [];
     }
 
@@ -101,14 +68,14 @@ export class Instance extends Entity.Instance
         void
     {
         if (
-            !this.Has_Wall() ||
+            !this.Has_Desktop() ||
             !this.Has_Taskbar()
         ) {
             this.Abort_All_Children();
 
-            new Wall.Instance(
+            new Desktop.Instance(
                 {
-                    model: () => this.Model().Wall(),
+                    model: () => this.Model().Desktop(),
                     layout: this,
                 },
             );
@@ -127,6 +94,29 @@ export class Instance extends Entity.Instance
         return [`Layout`];
     }
 
+    private async On_Click(
+        event: MouseEvent,
+    ):
+        Promise<void>
+    {
+        const model: Model.Instance = this.Model();
+
+        if (model.Desktop().Menu().Is_Open()) {
+            await this.Send(
+                new Event.Info(
+                    {
+                        affix: Events.MENU_CLOSE,
+                        suffixes: [
+                            this.ID(),
+                        ],
+                        type: Event.Type.EXCLUSIVE,
+                        data: {},
+                    },
+                ),
+            );
+        }
+    }
+
     Model():
         Model.Instance
     {
@@ -139,24 +129,24 @@ export class Instance extends Entity.Instance
         return this.Parent();
     }
 
-    Has_Wall():
+    Has_Desktop():
         boolean
     {
         return (
             this.Has_Child(0) &&
-            this.Child(0) instanceof Wall.Instance
+            this.Child(0) instanceof Desktop.Instance
         );
     }
 
-    Wall():
-        Wall.Instance
+    Desktop():
+        Desktop.Instance
     {
         Utils.Assert(
-            this.Has_Wall(),
-            `Does not have a wall.`,
+            this.Has_Desktop(),
+            `Does not have a desktop.`,
         );
 
-        return this.Child(0) as Wall.Instance;
+        return this.Child(0) as Desktop.Instance;
     }
 
     Has_Taskbar():

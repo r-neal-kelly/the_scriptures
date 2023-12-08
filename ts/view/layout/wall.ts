@@ -6,11 +6,15 @@ import * as Utils from "../../utils.js";
 import * as Event from "../../event.js";
 
 import * as Model from "../../model/layout/wall.js";
-import * as Window_Model from "../../model/layout/window.js";
+import * as Model_Window from "../../model/layout/window.js";
+import * as Browser_Model from "../../model/browser.js";
+import * as Browser_View from "./../browser.js";
+import * as Finder_Model from "../../model/finder.js";
+import * as Finder_View from "./../finder.js";
 
 import * as Events from "../events.js";
 import * as Entity from "../entity.js";
-import * as Layout from "./instance.js";
+import * as Desktop from "./desktop.js";
 import * as Window from "./window.js";
 
 export class Instance extends Entity.Instance
@@ -21,18 +25,18 @@ export class Instance extends Entity.Instance
     constructor(
         {
             model,
-            layout,
+            desktop,
         }: {
             model: () => Model.Instance;
-            layout: Layout.Instance,
+            desktop: Desktop.Instance,
         },
     )
     {
         super(
             {
                 element: `div`,
-                parent: layout,
-                event_grid: layout.Event_Grid(),
+                parent: desktop,
+                event_grid: desktop.Event_Grid(),
             },
         );
 
@@ -62,10 +66,54 @@ export class Instance extends Entity.Instance
                     event_name: new Event.Name(
                         Event.Prefix.AFTER,
                         Events.WINDOW_CLOSE,
-                        this.Layout().ID(),
+                        this.Desktop().Layout().ID(),
                     ),
                     event_handler: this.After_Window_Close,
                     event_priority: 10,
+                },
+            ),
+            new Event.Listener_Info(
+                {
+                    event_name: new Event.Name(
+                        Event.Prefix.ON,
+                        Events.OPEN_BROWSER,
+                        this.Desktop().Layout().ID(),
+                    ),
+                    event_handler: this.On_Open_Browser,
+                    event_priority: 0,
+                },
+            ),
+            new Event.Listener_Info(
+                {
+                    event_name: new Event.Name(
+                        Event.Prefix.AFTER,
+                        Events.OPEN_BROWSER,
+                        this.Desktop().Layout().ID(),
+                    ),
+                    event_handler: this.After_Open_Browser,
+                    event_priority: 0,
+                },
+            ),
+            new Event.Listener_Info(
+                {
+                    event_name: new Event.Name(
+                        Event.Prefix.ON,
+                        Events.OPEN_FINDER,
+                        this.Desktop().Layout().ID(),
+                    ),
+                    event_handler: this.On_Open_Finder,
+                    event_priority: 0,
+                },
+            ),
+            new Event.Listener_Info(
+                {
+                    event_name: new Event.Name(
+                        Event.Prefix.AFTER,
+                        Events.OPEN_FINDER,
+                        this.Desktop().Layout().ID(),
+                    ),
+                    event_handler: this.After_Open_Finder,
+                    event_priority: 0,
                 },
             ),
         ];
@@ -174,16 +222,60 @@ export class Instance extends Entity.Instance
         }
     }
 
+    private async On_Open_Browser():
+        Promise<void>
+    {
+        this.Model().Add_Program(
+            new Model_Window.Program.Instance(
+                {
+                    model_class: Browser_Model.Instance,
+                    model_data: {},
+                    view_class: Browser_View.Instance,
+                    is_window_active: true,
+                },
+            ),
+        );
+    }
+
+    private async After_Open_Browser():
+        Promise<void>
+    {
+        this.Desktop().Layout().Refresh();
+        this.Move_Window_Into_View(this.Model().Window_Count() - 1);
+    }
+
+    private async On_Open_Finder():
+        Promise<void>
+    {
+        this.Model().Add_Program(
+            new Model_Window.Program.Instance(
+                {
+                    model_class: Finder_Model.Instance,
+                    model_data: undefined,
+                    view_class: Finder_View.Instance,
+                    is_window_active: true,
+                },
+            ),
+        );
+    }
+
+    private async After_Open_Finder():
+        Promise<void>
+    {
+        this.Desktop().Layout().Refresh();
+        this.Move_Window_Into_View(this.Model().Window_Count() - 1);
+    }
+
     Model():
         Model.Instance
     {
         return this.model();
     }
 
-    Layout():
-        Layout.Instance
+    Desktop():
+        Desktop.Instance
     {
-        return this.Parent() as Layout.Instance;
+        return this.Parent() as Desktop.Instance;
     }
 
     Window(

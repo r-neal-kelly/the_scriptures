@@ -5,6 +5,7 @@ import * as Model from "../../model/layout/taskbar.js";
 
 import * as Entity from "../entity.js";
 import * as Layout from "./instance.js";
+import * as Starter from "./starter.js";
 import * as Tabs from "./tabs.js";
 
 export class Instance extends Entity.Instance
@@ -40,6 +41,9 @@ export class Instance extends Entity.Instance
         this.Add_This_CSS(
             `
                 .Taskbar {
+                    display: grid;
+                    grid-template-columns: auto 1fr;
+                    
                     width: 100%;
                     height: 100%;
                     padding: 0 2px;
@@ -56,10 +60,23 @@ export class Instance extends Entity.Instance
 
         this.Add_Children_CSS(
             `
+                .Starter {
+                    width: 1em;
+                    height: 100%;
+
+                    text-align: center;
+
+                    cursor: pointer;
+                    -webkit-user-select: none;
+                    -moz-user-select: none;
+                    -ms-user-select: none;
+                    user-select: none;
+                }
+
                 .Tabs {
                     display: flex;
                     flex-direction: row;
-                    justify-content: space-around;
+                    justify-content: center;
                     align-items: center;
 
                     width: 100%;
@@ -70,9 +87,10 @@ export class Instance extends Entity.Instance
                 }
 
                 .Tab {
-                    padding: 2px;
-
                     height: 100%;
+
+                    margin-left: 7px;
+                    padding: 2px;
 
                     border-color: white;
                     border-style: solid;
@@ -91,12 +109,10 @@ export class Instance extends Entity.Instance
                 .Active_Tab {
                     color: black;
                     background-color: white;
-                    border-color: black;
                 }
 
                 .Maximized_Tab {
-                    border-width: 0 2px;
-                    border-color: white;
+                    text-decoration: underline;
                 }
 
                 .Minimized_Tab {
@@ -117,9 +133,18 @@ export class Instance extends Entity.Instance
     override On_Refresh():
         void
     {
-        if (!this.Has_Tabs()) {
+        if (
+            !this.Has_Starter() ||
+            !this.Has_Tabs()
+        ) {
             this.Abort_All_Children();
 
+            new Starter.Instance(
+                {
+                    model: () => this.Model().Starter(),
+                    taskbar: this,
+                },
+            );
             new Tabs.Instance(
                 {
                     model: () => this.Model().Tabs(),
@@ -147,12 +172,32 @@ export class Instance extends Entity.Instance
         return this.Parent() as Layout.Instance;
     }
 
-    Has_Tabs():
+    Has_Starter():
         boolean
     {
         return (
             this.Has_Child(0) &&
-            this.Child(0) instanceof Tabs.Instance
+            this.Child(0) instanceof Starter.Instance
+        );
+    }
+
+    Starter():
+        Starter.Instance
+    {
+        Utils.Assert(
+            this.Has_Starter(),
+            `Does not have starter.`,
+        );
+
+        return this.Child(0) as Starter.Instance;
+    }
+
+    Has_Tabs():
+        boolean
+    {
+        return (
+            this.Has_Child(1) &&
+            this.Child(1) instanceof Tabs.Instance
         );
     }
 
@@ -164,6 +209,6 @@ export class Instance extends Entity.Instance
             `Does not have tabs.`,
         );
 
-        return this.Child(0) as Tabs.Instance;
+        return this.Child(1) as Tabs.Instance;
     }
 }

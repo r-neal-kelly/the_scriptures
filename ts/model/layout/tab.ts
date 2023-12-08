@@ -54,7 +54,7 @@ export class Instance extends Entity.Instance
     Window():
         Window.Instance
     {
-        return this.Tabs().Taskbar().Layout().Wall().Window_At(this.Index());
+        return this.Tabs().Taskbar().Layout().Desktop().Wall().Window_At(this.Index());
     }
 
     Title():

@@ -1,21 +1,18 @@
-import { ID } from "../../types.js";
-
 import * as Entity from "../entity.js";
-import * as Wall from "./wall.js";
-import * as Window from "./window.js";
+import * as Desktop from "./desktop.js";
 import * as Taskbar from "./taskbar.js";
+import * as Window from "./window.js";
 
 export class Instance extends Entity.Instance
 {
-    private wall: Wall.Instance;
+    private desktop: Desktop.Instance;
     private taskbar: Taskbar.Instance;
-    private active_window: Window.Instance | null;
 
     constructor()
     {
         super();
 
-        this.wall = new Wall.Instance(
+        this.desktop = new Desktop.Instance(
             {
                 layout: this,
             },
@@ -25,20 +22,19 @@ export class Instance extends Entity.Instance
                 layout: this,
             },
         );
-        this.active_window = null;
 
         this.Add_Dependencies(
             [
-                this.wall,
+                this.desktop,
                 this.taskbar,
             ],
         );
     }
 
-    Wall():
-        Wall.Instance
+    Desktop():
+        Desktop.Instance
     {
-        return this.wall;
+        return this.desktop;
     }
 
     Taskbar():
@@ -52,26 +48,6 @@ export class Instance extends Entity.Instance
     ):
         Promise<Window.Instance>
     {
-        return await this.Wall().Add_Program(program);
-    }
-
-    Has_Active_Window():
-        boolean
-    {
-        return this.active_window != null;
-    }
-
-    Maybe_Active_Window():
-        Window.Instance | null
-    {
-        return this.active_window;
-    }
-
-    __Set_Active_Window__(
-        active_window: Window.Instance | null,
-    ):
-        void
-    {
-        this.active_window = active_window;
+        return await this.Desktop().Wall().Add_Program(program);
     }
 }

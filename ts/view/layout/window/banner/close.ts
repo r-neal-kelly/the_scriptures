@@ -71,7 +71,8 @@ export class Instance extends Entity.Instance
                         this.Commands().Banner().ID(),
                         this.Commands().Banner().Window().ID(),
                         this.Commands().Banner().Window().Wall().ID(),
-                        this.Commands().Banner().Window().Wall().Layout().ID(),
+                        this.Commands().Banner().Window().Wall().Desktop().ID(),
+                        this.Commands().Banner().Window().Wall().Desktop().Layout().ID(),
                     ],
                     type: Event.Type.EXCLUSIVE,
                     data: {
