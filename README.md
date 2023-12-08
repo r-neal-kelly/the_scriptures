@@ -4,21 +4,9 @@ A Scriptural Study Suite containing numerous versions of the Bible in multiple l
 
 Currently comes with a **browser** to read various texts in the program and a **finder** to search those texts.
 
-<center>
+## **[View Online](https://r-neal-kelly.github.io/the_scriptures/)**
 
-<style>
-    Big {
-        font-size: 2em;
-    }
-</style>
-
-<Big>
-
-**[View Online](https://r-neal-kelly.github.io/the_scriptures/)**
-
-</Big>
-
-</center>
+The Scriptures are available to read online [here](https://r-neal-kelly.github.io/the_scriptures/).
 
 ## Status
 
