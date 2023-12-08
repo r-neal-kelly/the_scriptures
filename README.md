@@ -1,14 +1,32 @@
 # The Scriptures
 
-**[Read Online](https://r-neal-kelly.github.io/the_scriptures/)**
+A Scriptural Study Suite containing numerous versions of the Bible in multiple languages. Includes both canonical and uncanonical texts, as well as other texts that assist with the study of the Scriptures.
 
-Currently adding the Prolegomenon from the same Hexaglot we've copied the Pentateuch from.
+Currently comes with a **browser** to read various texts in the program and a **finder** to search those texts.
 
-After that, we will start on Joshua in Hebrew, Greek, Latin, and English, sourced from the same Hexaglot.
+<center>
 
-Also still working on Wellhausen's Prolegomena in English, but on the side.
+<style>
+    Big {
+        font-size: 2em;
+    }
+</style>
 
-Additionally, we've begun adding the World English Bible with Apocrypha.
+<Big>
+
+**[View Online](https://r-neal-kelly.github.io/the_scriptures/)**
+
+</Big>
+
+</center>
+
+## Status
+
+Adding the *Prolegomenon* from *The Hexaglot Bible* we've already copied the Pentateuch in Hebrew, Greek, Latin, and English from. After that, we will start working on *Joshua*, sourced from the same Hexaglot.
+
+Additionally, we're adding an 1800's copy of the *King James Version* that faithfully keeps all the original marginal notes intact, and the *World English Bible with Apocrypha* alongside it.
+
+Also, periodically working on Wellhausen's *Prolegomena to the History of Israel*.
 
 ## Stats
 
