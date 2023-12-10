@@ -60,8 +60,8 @@ Also, periodically working on Wellhausen's *Prolegomena to the History of Israel
     - Italian: 0 (~0%)
     - Dutch: 0 (~0%)
     - English: 12 (~43%)
-- Total Files: 989
-    - Hebrew: 193 (~20%)
+- Total Files: 990
+    - Hebrew: 193 (~19%)
     - Greek: 187 (~19%)
     - Latin: 187 (~19%)
     - Aramaic: 0 (~0%)
@@ -70,8 +70,8 @@ Also, periodically working on Wellhausen's *Prolegomena to the History of Israel
     - French: 0 (~0%)
     - Italian: 0 (~0%)
     - Dutch: 0 (~0%)
-    - English: 422 (~43%)
-- Total Lines: 34,112
+    - English: 423 (~43%)
+- Total Lines: 34,118
     - Hebrew: 9,013 (~26%)
     - Greek: 6,195 (~18%)
     - Latin: 6,224 (~18%)
@@ -81,8 +81,8 @@ Also, periodically working on Wellhausen's *Prolegomena to the History of Israel
     - French: 0 (~0%)
     - Italian: 0 (~0%)
     - Dutch: 0 (~0%)
-    - English: 12,680 (~37%)
-- Total Parts: 1,457,230
+    - English: 12,686 (~37%)
+- Total Parts: 1,458,548
     - <i>By Language</i>
         - Hebrew: 184,075 (~13%)
         - Greek: 271,082 (~19%)
@@ -93,9 +93,9 @@ Also, periodically working on Wellhausen's *Prolegomena to the History of Israel
         - French: 998 (~0%)
         - Italian: 17 (~0%)
         - Dutch: 49 (~0%)
-        - English: 788,072 (~54%)
+        - English: 789,390 (~54%)
     - <i>By Components</i>
-        - Words: 711,429 (~49%)
+        - Words: 712,085 (~49%)
             - Hebrew: 91,668 (~13%)
             - Greek: 135,407 (~19%)
             - Latin: 106,281 (~15%)
@@ -105,8 +105,8 @@ Also, periodically working on Wellhausen's *Prolegomena to the History of Israel
             - French: 502 (~0%)
             - Italian: 9 (~0%)
             - Dutch: 21 (~0%)
-            - English: 377,276 (~53%)
-        - Meta-Words: 39,104 (~3%)
+            - English: 377,932 (~53%)
+        - Meta-Words: 39,111 (~3%)
             - Hebrew: 3,500 (~9%)
             - Greek: 1,271 (~3%)
             - Latin: 857 (~2%)
@@ -116,8 +116,8 @@ Also, periodically working on Wellhausen's *Prolegomena to the History of Israel
             - French: 22 (~0%)
             - Italian: 0 (~0%)
             - Dutch: 16 (~0%)
-            - English: 33,388 (~85%)
-        - Non-Words: 706,697 (~48%)
+            - English: 33,395 (~85%)
+        - Non-Words: 707,352 (~48%)
             - Hebrew: 88,907 (~13%)
             - Greek: 134,404 (~19%)
             - Latin: 105,274 (~15%)
@@ -127,8 +127,8 @@ Also, periodically working on Wellhausen's *Prolegomena to the History of Israel
             - French: 474 (~0%)
             - Italian: 8 (~0%)
             - Dutch: 12 (~0%)
-            - English: 377,408 (~53%)
-- Total Unicode Points: 4,558,906
+            - English: 378,063 (~53%)
+- Total Unicode Points: 4,562,255
     - <i>By Language</i>
         - Hebrew: 791,425 (~17%)
         - Greek: 959,127 (~21%)
@@ -139,9 +139,9 @@ Also, periodically working on Wellhausen's *Prolegomena to the History of Israel
         - French: 3,239 (~0%)
         - Italian: 63 (~0%)
         - Dutch: 223 (~0%)
-        - English: 2,122,571 (~47%)
+        - English: 2,125,920 (~47%)
     - <i>By Components</i>
-        - Letters: 3,572,171 (~78%)
+        - Letters: 3,574,738 (~78%)
             - Hebrew: 680,913 (~19%)
             - Greek: 806,224 (~23%)
             - Latin: 554,992 (~16%)
@@ -151,8 +151,8 @@ Also, periodically working on Wellhausen's *Prolegomena to the History of Israel
             - French: 2,647 (~0%)
             - Italian: 53 (~0%)
             - Dutch: 150 (~0%)
-            - English: 1,525,616 (~43%)
-        - Meta-Letters: 199,813 (~4%)
+            - English: 1,528,183 (~43%)
+        - Meta-Letters: 199,841 (~4%)
             - Hebrew: 20,562 (~10%)
             - Greek: 7,167 (~4%)
             - Latin: 3,880 (~2%)
@@ -162,8 +162,8 @@ Also, periodically working on Wellhausen's *Prolegomena to the History of Israel
             - French: 77 (~0%)
             - Italian: 0 (~0%)
             - Dutch: 61 (~0%)
-            - English: 167,886 (~84%)
-        - Non-Letters: 786,922 (~17%)
+            - English: 167,914 (~84%)
+        - Non-Letters: 787,676 (~17%)
             - Hebrew: 89,950 (~11%)
             - Greek: 145,736 (~19%)
             - Latin: 121,411 (~15%)
@@ -173,4 +173,4 @@ Also, periodically working on Wellhausen's *Prolegomena to the History of Israel
             - French: 515 (~0%)
             - Italian: 10 (~0%)
             - Dutch: 12 (~0%)
-            - English: 429,069 (~55%)
+            - English: 429,823 (~55%)
