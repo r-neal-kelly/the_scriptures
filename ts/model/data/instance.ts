@@ -140,7 +140,13 @@ export class Instance extends Async.Instance
     }
 
     Names(
-        of: Array<Query.Type_And_Name>,
+        {
+            of,
+            language_names_must_have_files,
+        }: {
+            of: Array<Query.Type_And_Name>,
+            language_names_must_have_files: boolean,
+        },
     ):
         Array<Name>
     {
@@ -165,7 +171,11 @@ export class Instance extends Async.Instance
                 of[0].Type() === Type.LANGUAGES ||
                 of[0].Type() === Type.LANGUAGE
             ) {
-                return this.Language_Names();
+                if (language_names_must_have_files) {
+                    return this.Language_Names_Having_Files();
+                } else {
+                    return this.Language_Names();
+                }
             } else if (
                 of[0].Type() === Type.VERSIONS ||
                 of[0].Type() === Type.VERSION
@@ -763,6 +773,17 @@ export class Instance extends Async.Instance
         );
 
         return this.Info().Unique_Language_Names();
+    }
+
+    Language_Names_Having_Files():
+        Array<Name>
+    {
+        Utils.Assert(
+            this.Is_Ready(),
+            `Not ready.`,
+        );
+
+        return this.Info().Unique_Language_Names_Having_Files();
     }
 
     Language_Book_Names(

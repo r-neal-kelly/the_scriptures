@@ -416,6 +416,14 @@ export class Info
         }
     }
 
+    Unique_Language_Names_Having_Files():
+        Array<Name>
+    {
+        return this.Unique_Language_Names().filter(
+            language_name => this.language_file_counts[language_name] > 0,
+        );
+    }
+
     Unique_Version_Names():
         Array<Name>
     {

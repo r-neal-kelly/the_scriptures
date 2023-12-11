@@ -289,7 +289,12 @@ export class Instance extends Entity.Instance
                     selector: this,
                     index: slot_index,
                     type: slot_type,
-                    item_names: Data.Singleton().Names(slot_query),
+                    item_names: Data.Singleton().Names(
+                        {
+                            of: slot_query,
+                            language_names_must_have_files: true,
+                        },
+                    ),
                 },
             ),
         );
