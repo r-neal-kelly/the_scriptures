@@ -43,8 +43,8 @@ Also, periodically working on Wellhausen's *Prolegomena to the History of Israel
     - Leviticus
     - Numbers
     - Deuteronomy
-    - Jubilees
     - Masoretic Notes
+    - Jubilees
     - Prolegomena to the History of Israel
 
 <br>
