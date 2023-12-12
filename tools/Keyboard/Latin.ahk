@@ -60,6 +60,8 @@ Latin.Symbols_s :=  { "p": "¶" ; Pilcrow Sign
                     , "t": "†" ; U+2020 DAGGER
                     , ".": "⸼" ; U+2E3C STENOGRAPHIC FULL STOP
                     , "d": "·" ; U+00B7 MIDDLE DOT
+                    , "x": "×" ; U+00D7 MULTIPLICATION SIGN
+                    , "z": "÷" ; U+00F7 DIVISION SIGN
                     , "\": "…" ; U+2026 HORIZONTAL ELLIPSIS
                     ,   9: "⟦" ; U+27E6 MATHEMATICAL LEFT WHITE SQUARE BRACKET
                     ,   0: "⟧" ; U+27E7 MATHEMATICAL RIGHT WHITE SQUARE BRACKET
@@ -106,6 +108,9 @@ Latin.Ligs_s  := { "aa": "ꜳ" ; Aa
                  , "ue": "ᵫ" ; Ue
                  , "uo": "ꭣ" ; Uo
                  , "vy": "ꝡ" ; Vy
+                 ,   12: "½" ; U+00BD VULGAR FRACTION ONE HALF
+                 ,   14: "¼" ; U+00BC VULGAR FRACTION ONE QUARTER
+                 ,   34: "¾" ; U+00BE VULGAR FRACTION THREE QUARTERS
                  , "": "" }
 
 Latin.Ligs_c  := { "aa": "Ꜳ" ; Aa
