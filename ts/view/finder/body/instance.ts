@@ -97,7 +97,6 @@ export class Instance extends Entity.Instance
                     position: absolute;
                     top: 0;
                     left: 0;
-                    z-index: -1;
 
                     width: 100%;
                     height: 100%;
@@ -107,6 +106,8 @@ export class Instance extends Entity.Instance
                 }
 
                 .Expression_Input {
+                    z-index: 1;
+
                     width: 100%;
                     height: 100%;
 
