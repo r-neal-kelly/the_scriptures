@@ -8,6 +8,7 @@ import * as Language from "../../language.js";
 import * as Languages from "../../languages.js";
 import * as Font from "../../font.js";
 import * as Data from "../../data.js";
+import * as Text from "../../text.js";
 
 interface Line_Instance_i
 {
@@ -20,15 +21,20 @@ export abstract class Instance<
     private default_language_name: Language.Name;
     private default_font_name: Font.Name;
 
+    private text: Text.Instance;
     private lines: Array<Line_Instance>;
 
     constructor(
         {
             default_language_name,
             default_font_name,
+
+            text,
         }: {
             default_language_name: Language.Name,
             default_font_name: Font.Name,
+
+            text: Text.Instance,
         },
     )
     {
@@ -37,6 +43,7 @@ export abstract class Instance<
         this.default_language_name = default_language_name;
         this.default_font_name = default_font_name;
 
+        this.text = text;
         this.lines = [];
     }
 
@@ -61,6 +68,12 @@ export abstract class Instance<
     abstract Override_Font_Name(
         language_name: Language.Name,
     ): Font.Name;
+
+    Text():
+        Text.Instance
+    {
+        return this.text;
+    }
 
     Line_Buffer_Count():
         Count

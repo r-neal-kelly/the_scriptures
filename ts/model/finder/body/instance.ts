@@ -1,6 +1,5 @@
 import * as Entity from "../../entity.js";
 import * as Data from "../../data.js";
-import * as Text from "../../text.js";
 import * as Search from "../../search.js";
 import * as Selector from "../../selector.js";
 import * as Finder from "../instance.js";

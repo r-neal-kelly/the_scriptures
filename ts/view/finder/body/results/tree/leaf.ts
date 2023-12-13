@@ -98,7 +98,7 @@ export class Instance extends Entity.Instance
     private async On_Finder_Body_Tree_Leaf_Select():
         Promise<void>
     {
-        this.Model().Select();
+        await this.Model().Select();
     }
 
     Model():

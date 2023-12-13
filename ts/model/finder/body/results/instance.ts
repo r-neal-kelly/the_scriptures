@@ -5,6 +5,7 @@ import * as Utils from "../../../../utils.js";
 
 import * as Language from "../../../language.js";
 import * as Entity from "../../../entity.js";
+import * as Text from "../../../text.js";
 import * as Search from "../../../search.js";
 import * as Filter from "../../../selector.js";
 import * as Body from "../instance.js";
@@ -232,6 +233,16 @@ export class Instance extends Entity.Instance
             {
                 default_language_name: Language.Name.ENGLISH,
 
+                text: new Text.Instance(
+                    {
+                        dictionary: new Text.Dictionary.Instance(
+                            {
+                                json: null,
+                            },
+                        ),
+                        value: ``,
+                    },
+                ),
                 results: [],
                 is_showing_commands: is_showing_commands,
             },
@@ -265,6 +276,7 @@ export class Instance extends Entity.Instance
 
     Set_Buffer(
         default_language_name: Language.Name,
+        text: Text.Instance,
         results: Array<Search.Result.Instance>,
     ):
         void
@@ -273,6 +285,7 @@ export class Instance extends Entity.Instance
             {
                 default_language_name: default_language_name,
 
+                text: text,
                 results: results,
                 is_showing_commands: this.is_showing_commands,
             },

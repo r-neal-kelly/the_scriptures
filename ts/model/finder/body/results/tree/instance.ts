@@ -52,10 +52,10 @@ export class Instance extends Entity.Instance
         return this.selected.includes(branch_or_leaf);
     }
 
-    Select(
+    async Select(
         leaf: Leaf.Instance,
     ):
-        void
+        Promise<void>
     {
         this.selected = [leaf];
 
@@ -65,6 +65,6 @@ export class Instance extends Entity.Instance
             parent = parent.Parent();
         }
 
-        this.Results().Set_Buffer(leaf.Default_Language(), leaf.Results());
+        this.Results().Set_Buffer(leaf.Default_Language(), await leaf.File().Text(), leaf.Results());
     }
 }

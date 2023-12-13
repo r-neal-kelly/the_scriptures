@@ -75,9 +75,9 @@ export class Instance extends Entity.Instance
         return this.Tree().Is_Selected(this);
     }
 
-    Select():
-        void
+    async Select():
+        Promise<void>
     {
-        this.Tree().Select(this);
+        await this.Tree().Select(this);
     }
 }

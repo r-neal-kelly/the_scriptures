@@ -3,6 +3,7 @@ import { Index } from "../../../types.js";
 import * as Language from "../../language.js";
 import * as Languages from "../../languages.js";
 import * as Font from "../../font.js";
+import * as Text from "../../text.js";
 import * as Search from "../../search.js";
 
 import * as Text_Base from "../text_base.js";
@@ -18,11 +19,13 @@ export class Instance extends Text_Base.Instance<
         {
             default_language_name,
 
+            text,
             results,
             is_showing_commands,
         }: {
             default_language_name: Language.Name,
 
+            text: Text.Instance,
             results: Array<Search.Result.Instance>,
             is_showing_commands: boolean,
         },
@@ -34,6 +37,8 @@ export class Instance extends Text_Base.Instance<
                     default_language_name,
                 default_font_name:
                     Languages.Singleton().Default_Global_Font_Name(default_language_name),
+
+                text: text,
             },
         );
 

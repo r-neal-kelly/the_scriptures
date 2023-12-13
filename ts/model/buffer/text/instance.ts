@@ -13,8 +13,6 @@ export class Instance extends Text_Base.Instance<
 {
     private override_font_name: (language_name: Language.Name) => Font.Name;
 
-    private text: Text.Instance;
-
     constructor(
         {
             default_language_name,
@@ -37,17 +35,17 @@ export class Instance extends Text_Base.Instance<
             {
                 default_language_name: default_language_name,
                 default_font_name: default_font_name,
+
+                text: text,
             },
         );
 
         this.override_font_name = override_font_name;
 
-        this.text = text;
-
         if (allow_errors) {
-            this.text.Set_Path_Type(Text.Path.Type.DEFAULT);
+            this.Text().Set_Path_Type(Text.Path.Type.DEFAULT);
         } else {
-            this.text.Set_Path_Type(Text.Path.Type.ERRORLESS);
+            this.Text().Set_Path_Type(Text.Path.Type.ERRORLESS);
         }
 
         for (let idx = 0, end = text.Line_Count(); idx < end; idx += 1) {
@@ -83,12 +81,6 @@ export class Instance extends Text_Base.Instance<
                 text: null,
             },
         );
-    }
-
-    Text():
-        Text.Instance
-    {
-        return this.text;
     }
 
     Allows_Errors():
