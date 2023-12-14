@@ -5,6 +5,8 @@ import * as Unicode from "../../unicode.js";
 
 import * as Text from "../text.js";
 
+// Are we handling surrogates being used as indices messing up the unicode string?
+
 export enum Symbol
 {
     NEWLINE,
@@ -12,7 +14,7 @@ export enum Symbol
     VERBATIM_OPEN,
     VERBATIM_CLOSE,
 
-    _COUNT_,
+    _COUNT_, // we could make room for other compressors to use control points by setting this to 0x20.
 }
 
 export class Instance
@@ -29,7 +31,7 @@ export class Instance
     )
     {
         Utils.Assert(
-            unique_parts.length <= Number.MAX_SAFE_INTEGER - Symbol._COUNT_,
+            unique_parts.length <= 0x110000 - Symbol._COUNT_,
             `There are too may unique parts in the index to compress.`,
         );
 

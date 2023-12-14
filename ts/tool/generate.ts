@@ -8,6 +8,7 @@ import { Path } from "../types.js";
 
 import * as Utils from "../utils.js";
 import * as Unicode from "../unicode.js";
+import * as Compressor from "../compressor.js";
 
 import * as Language from "../model/language.js";
 import * as Data from "../model/data.js";
@@ -541,9 +542,16 @@ async function Generate(
             }
         }
         data_info.Finalize();
+        const data_info_json: string = data_info.JSON_String();
+        const compressed_data_info_json: string = Compressor.LZSS_Compress(data_info_json);
+        const decompressed_data_info_json: string = Compressor.LZSS_Decompress(compressed_data_info_json);
+        Utils.Assert(
+            decompressed_data_info_json === data_info_json,
+            `LZSS failed to decompress data_info_json`,
+        );
         await File_System.Write_File(
             `${DATA_PATH}/${INFO_JSON_NAME}`,
-            data_info.JSON_String(),
+            compressed_data_info_json,
         );
     }
 

@@ -5,6 +5,7 @@ import { Path } from "../../types.js";
 
 import * as Utils from "../../utils.js";
 import * as Async from "../../async.js";
+import * as Compressor from "../../compressor.js";
 
 import * as Name_Sorter from "../name_sorter.js";
 
@@ -1219,7 +1220,7 @@ export class Instance extends Async.Instance
         if (response.ok) {
             this.info = new Info(
                 {
-                    json: await response.text(),
+                    json: Compressor.LZSS_Decompress(await response.text()),
                 },
             );
 
