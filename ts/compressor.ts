@@ -475,3 +475,19 @@ export function LZSS_Decompress(
 
     return result;
 }
+
+export function JSON_String_Array_Compress(
+    value: string,
+):
+    string
+{
+    return value.replace(/","/g, `\x00`);
+}
+
+export function JSON_String_Array_Decompress(
+    value: string,
+):
+    string
+{
+    return value.replace(/\x00/g, `","`);
+}

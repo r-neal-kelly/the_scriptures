@@ -79,6 +79,8 @@ export class Instance extends Entity.Instance
                     grid-template-rows: 1fr auto;
                     grid-template-columns: 1fr;
 
+                    z-index: 0;
+
                     width: 100%;
                     height: 100%;
                     padding: 2px;

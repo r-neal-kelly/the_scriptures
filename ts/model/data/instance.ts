@@ -16,6 +16,11 @@ import * as Book from "./book.js";
 import * as Version from "./version.js";
 import * as File from "./file.js";
 
+export enum Consts
+{
+    INFO_FILE_NAME = `Info.comp`,
+}
+
 export class Instance extends Async.Instance
 {
     private name: Name;
@@ -1216,7 +1221,7 @@ export class Instance extends Async.Instance
         Promise<void>
     {
         const response: Response =
-            await fetch(Utils.Resolve_Path(`${this.Path()}/Info.json`));
+            await fetch(Utils.Resolve_Path(`${this.Path()}/${Consts.INFO_FILE_NAME}`));
         if (response.ok) {
             this.info = new Info(
                 {

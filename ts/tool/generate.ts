@@ -29,8 +29,8 @@ const ORDER_JSON_NAME: Name =
     `Order.json`;
 const DICTIONARY_JSON_NAME: Name =
     `Dictionary.json`;
-const UNIQUE_PARTS_JSON_NAME: Name =
-    `Unique_Parts.json`;
+const UNIQUE_PARTS_FILE_NAME: Name =
+    Data.Version.Consts.UNIQUE_PARTS_FILE_NAME;
 
 const DEFAULT_LAST_TIMESTAMP: Count =
     0;
@@ -167,7 +167,7 @@ async function Should_Version_Be_Updated(
         [
             `${files_path}/${INFO_JSON_NAME}`,
             `${files_path}/${DICTIONARY_JSON_NAME}`,
-            `${files_path}/${UNIQUE_PARTS_JSON_NAME}`,
+            `${files_path}/${UNIQUE_PARTS_FILE_NAME}`,
         ]
     ) {
         if (
@@ -416,6 +416,9 @@ async function Generate(
                         const files_to_write: Array<Promise<void>> = [];
                         const full_text = file_texts.join(Data.Version.Symbol.FILE_BREAK);
                         const unique_part_values: Array<string> = unique_parts.Values();
+                        const unique_part_values_json: string = JSON.stringify(unique_part_values);
+                        const compressed_unique_part_values_json: string = Compressor.JSON_String_Array_Compress(unique_part_values_json);
+                        const decompressed_unique_part_values_json: string = Compressor.JSON_String_Array_Decompress(compressed_unique_part_values_json);
                         const compressor: Data.Compressor.Instance = new Data.Compressor.Instance(
                             {
                                 unique_parts: unique_part_values,
@@ -448,6 +451,10 @@ async function Generate(
                                 },
                             );
                         Utils.Assert(
+                            decompressed_unique_part_values_json === unique_part_values_json,
+                            `Invalid unique_part_values_json decompression!`,
+                        );
+                        Utils.Assert(
                             decompressed_dictionary_json === dictionary_json,
                             `Invalid dictionary decompression!`,
                         );
@@ -468,8 +475,8 @@ async function Generate(
                         );
                         files_to_write.push(
                             File_System.Write_File(
-                                `${files_path}/${UNIQUE_PARTS_JSON_NAME}`,
-                                JSON.stringify(unique_part_values),
+                                `${files_path}/${UNIQUE_PARTS_FILE_NAME}`,
+                                compressed_unique_part_values_json,
                             ),
                         );
                         files_to_write.push(
@@ -550,7 +557,7 @@ async function Generate(
             `LZSS failed to decompress data_info_json`,
         );
         await File_System.Write_File(
-            `${DATA_PATH}/${INFO_JSON_NAME}`,
+            `${DATA_PATH}/${Data.Consts.INFO_FILE_NAME}`,
             compressed_data_info_json,
         );
     }

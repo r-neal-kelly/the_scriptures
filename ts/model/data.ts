@@ -1,4 +1,5 @@
 export { Instance } from "./data/instance.js";
+export { Consts } from "./data/instance.js";
 export { Info } from "./data/info.js";
 export { Tree } from "./data/info.js";
 export { Type } from "./data/type.js";

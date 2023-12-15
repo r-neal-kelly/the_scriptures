@@ -4,6 +4,7 @@ import { Name } from "../../../types.js";
 import { Path } from "../../../types.js";
 
 import * as Utils from "../../../utils.js";
+import * as Main_Compressors from "../../../compressor.js";
 
 import * as Entity from "../../entity.js";
 import * as Compressor from "../compressor.js";
@@ -16,6 +17,11 @@ export type Branch = {
     name: Name,
     files: Array<File.Leaf>,
 };
+
+export enum Consts
+{
+    UNIQUE_PARTS_FILE_NAME = `Unique_Parts.comp`,
+}
 
 export enum Symbol
 {
@@ -114,11 +120,13 @@ export class Instance extends Entity.Instance
         } else {
             if (fetch_attempt_count < fetch_attempt_limit) {
                 const response: Response =
-                    await fetch(Utils.Resolve_Path(`${this.Path()}/Unique_Parts.json`));
+                    await fetch(Utils.Resolve_Path(`${this.Path()}/${Consts.UNIQUE_PARTS_FILE_NAME}`));
                 if (response.ok) {
                     this.compressor = new Compressor.Instance(
                         {
-                            unique_parts: JSON.parse(await response.text()) as Array<string>,
+                            unique_parts: JSON.parse(
+                                Main_Compressors.JSON_String_Array_Decompress(await response.text()),
+                            ) as Array<string>,
                         },
                     );
 
