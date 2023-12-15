@@ -23,7 +23,7 @@ import
     FULL_SEGMENTS as SEGMENTS,
 } from "../buffer_counts.js";
 
-export class Info
+export class Instance
 {
     private unique_language_names: Array<Name>;
 
@@ -62,7 +62,7 @@ export class Info
     )
     {
         if (json) {
-            const primitive: Info = JSON.parse(json) as Info;
+            const primitive: Instance = JSON.parse(json) as Instance;
 
             this.unique_language_names = primitive.unique_language_names;
 

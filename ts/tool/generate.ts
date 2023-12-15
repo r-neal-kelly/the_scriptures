@@ -266,7 +266,7 @@ async function Generate(
         File_System.Has_File(TIMESTAMP_PATH) ?
             await File_System.Read_Entity_Last_Modified_Time(TIMESTAMP_PATH) :
             DEFAULT_LAST_TIMESTAMP;
-    const data_info: Data.Info = new Data.Info({});
+    const data_info: Data.Info.Instance = new Data.Info.Instance({});
 
     async function Update_Data():
         Promise<void>
@@ -298,7 +298,7 @@ async function Generate(
                     language_branch.versions.push(version_branch);
                     data_info.Add_Unique_Version_Name(version_name);
                     if (await Should_Version_Be_Updated(last_timestamp, files_path, file_names)) {
-                        const version_info: Data.Version.Info = new Data.Version.Info({});
+                        const version_info: Data.Version.Info.Instance = new Data.Version.Info.Instance({});
                         const dictionary_json: string = await File_System.Read_File(`${files_path}/${DICTIONARY_JSON_NAME}`);
                         const dictionary: Text.Dictionary.Instance = new Text.Dictionary.Instance(
                             {
@@ -527,7 +527,7 @@ async function Generate(
                         await Promise.all(files_to_write);
                         console.log(`        Generated ${book_name}/${language_name}/${version_name}...`);
                     }
-                    const version_info: Data.Version.Info = new Data.Version.Info(
+                    const version_info: Data.Version.Info.Instance = new Data.Version.Info.Instance(
                         {
                             json: await File_System.Read_File(`${files_path}/${INFO_JSON_NAME}`),
                         },
@@ -557,7 +557,7 @@ async function Generate(
             `LZSS failed to decompress data_info_json`,
         );
         await File_System.Write_File(
-            `${DATA_PATH}/${Data.Consts.INFO_FILE_NAME}`,
+            Data.Consts.INFO_PATH,
             compressed_data_info_json,
         );
     }

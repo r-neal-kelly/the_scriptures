@@ -1,0 +1,1 @@
+export const PATH="data";export const COMP_EXTENSION="comp";export const BOOKS_PATH=`${PATH}/Books`;export const INFO_TITLE="Info";export const INFO_EXTENSION="comp";export const INFO_NAME="Info.comp";export const INFO_PATH=`${PATH}/${INFO_NAME}`;

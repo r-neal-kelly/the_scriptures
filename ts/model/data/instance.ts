@@ -5,77 +5,97 @@ import { Path } from "../../types.js";
 
 import * as Utils from "../../utils.js";
 import * as Async from "../../async.js";
-import * as Compressor from "../../compressor.js";
 
 import * as Name_Sorter from "../name_sorter.js";
 
 import { Type } from "./type.js";
-import { Info } from "./info.js";
+import * as Consts from "./consts.js";
+import * as Info from "./info.js";
+import * as Cache from "./cache.js";
 import * as Query from "./query.js";
 import * as Book from "./book.js";
 import * as Version from "./version.js";
 import * as File from "./file.js";
 
-export enum Consts
-{
-    INFO_FILE_NAME = `Info.comp`,
-}
-
 export class Instance extends Async.Instance
 {
-    private name: Name;
-    private path: Path;
-    private books_path: Path;
-    private info: Info | null;
+    private cache: Cache.Instance;
+    private info: Info.Instance | null;
+    private default_info: Info.Instance;
     private books: Array<Book.Instance>;
 
     constructor()
     {
         super();
 
-        this.name = `data`;
-        this.path = this.name;
-        this.books_path = `${this.path}/Books`;
+        this.cache = new Cache.Instance();
         this.info = null;
+        this.default_info = new Info.Instance({});
         this.books = [];
+
+        this.default_info.Finalize();
 
         this.Add_Dependencies(
             [
+                this.cache,
             ],
         );
+    }
+
+    Cache():
+        Cache.Instance
+    {
+        return this.cache;
+    }
+
+    Info():
+        Info.Instance
+    {
+        if (this.info != null) {
+            return this.info;
+        } else {
+            this.Update_Info();
+
+            return this.default_info;
+        }
+    }
+
+    private async Update_Info():
+        Promise<void>
+    {
+        this.info = (await this.Cache().Info(true)) || this.info;
+        this.books = [];
+
+        if (this.info != null) {
+            for (const book_branch of this.info.Tree().books) {
+                this.books.push(
+                    new Book.Instance(
+                        {
+                            data: this,
+                            branch: book_branch,
+                        },
+                    ),
+                );
+            }
+        }
     }
 
     Name():
         Name
     {
-        return this.name;
+        return this.Path();
     }
 
     Path():
         Path
     {
-        return this.path;
+        return Consts.PATH;
     }
 
     Books_Path():
         Path
     {
-        return this.books_path;
-    }
-
-    Info():
-        Info
-    {
-        Utils.Assert(
-            this.Is_Ready(),
-            `Not ready.`,
-        );
-        Utils.Assert(
-            this.info != null,
-            `info is null!`,
-        );
-
-        return this.info as Info;
+        return Consts.BOOKS_PATH;
     }
 
     Book(
@@ -1220,29 +1240,7 @@ export class Instance extends Async.Instance
     override async After_Dependencies_Are_Ready():
         Promise<void>
     {
-        const response: Response =
-            await fetch(Utils.Resolve_Path(`${this.Path()}/${Consts.INFO_FILE_NAME}`));
-        if (response.ok) {
-            this.info = new Info(
-                {
-                    json: Compressor.LZSS_Decompress(await response.text()),
-                },
-            );
-
-            for (const book_branch of this.info.Tree().books) {
-                this.books.push(
-                    new Book.Instance(
-                        {
-                            data: this,
-                            branch: book_branch,
-                        },
-                    ),
-                );
-            }
-        } else {
-            this.info = new Info({});
-            this.info.Finalize();
-        }
+        await this.Update_Info();
     }
 }
 

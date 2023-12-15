@@ -49,7 +49,7 @@ export type Tree = {
     books: Array<Book.Branch>,
 };
 
-export class Info
+export class Instance
 {
     private tree: Tree;
 
@@ -95,7 +95,7 @@ export class Info
     )
     {
         if (json) {
-            const primitive: Info = JSON.parse(json) as Info;
+            const primitive: Instance = JSON.parse(json) as Instance;
 
             this.tree = primitive.tree;
 
@@ -1816,7 +1816,7 @@ export class Info
     }
 
     Update_Buffer_Counts(
-        version_info: Version.Info,
+        version_info: Version.Info.Instance,
     ):
         void
     {

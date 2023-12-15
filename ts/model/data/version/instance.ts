@@ -4,7 +4,7 @@ import { Name } from "../../../types.js";
 import { Path } from "../../../types.js";
 
 import * as Utils from "../../../utils.js";
-import * as Main_Compressors from "../../../compressor.js";
+import * as Main_Compressor from "../../../compressor.js";
 
 import * as Entity from "../../entity.js";
 import * as Compressor from "../compressor.js";
@@ -125,7 +125,7 @@ export class Instance extends Entity.Instance
                     this.compressor = new Compressor.Instance(
                         {
                             unique_parts: JSON.parse(
-                                Main_Compressors.LZSS_Decompress(await response.text()),
+                                Main_Compressor.LZSS_Decompress(await response.text()),
                             ) as Array<string>,
                         },
                     );
