@@ -266,41 +266,41 @@ export function LZSS_Compress(
             of the compressed string.
         */
         private Create_Token(
-            from: Index,
-            to_exclusive: Index,
+            offset: Count,
+            length: Count,
         ):
             string
         {
             const has_bad_a: boolean =
-                from >= LZSS_FIRST_BAD_INDEX &&
-                from <= LZSS_LAST_BAD_INDEX;
+                offset >= LZSS_FIRST_BAD_INDEX &&
+                offset <= LZSS_LAST_BAD_INDEX;
             const has_bad_b: boolean =
-                to_exclusive >= LZSS_FIRST_BAD_INDEX &&
-                to_exclusive <= LZSS_LAST_BAD_INDEX;
+                length >= LZSS_FIRST_BAD_INDEX &&
+                length <= LZSS_LAST_BAD_INDEX;
 
             if (has_bad_a && has_bad_b) {
                 return (
                     control_tokens.BAD_AB() +
-                    String.fromCodePoint(from - LZSS_FIRST_BAD_INDEX) +
-                    String.fromCodePoint(to_exclusive - LZSS_FIRST_BAD_INDEX)
+                    String.fromCodePoint(offset - LZSS_FIRST_BAD_INDEX) +
+                    String.fromCodePoint(length - LZSS_FIRST_BAD_INDEX)
                 );
             } else if (has_bad_a) {
                 return (
                     control_tokens.BAD_A() +
-                    String.fromCodePoint(from - LZSS_FIRST_BAD_INDEX) +
-                    String.fromCodePoint(to_exclusive)
+                    String.fromCodePoint(offset - LZSS_FIRST_BAD_INDEX) +
+                    String.fromCodePoint(length)
                 );
             } else if (has_bad_b) {
                 return (
                     control_tokens.BAD_B() +
-                    String.fromCodePoint(from) +
-                    String.fromCodePoint(to_exclusive - LZSS_FIRST_BAD_INDEX)
+                    String.fromCodePoint(offset) +
+                    String.fromCodePoint(length - LZSS_FIRST_BAD_INDEX)
                 );
             } else {
                 return (
                     control_tokens.GOOD() +
-                    String.fromCodePoint(from) +
-                    String.fromCodePoint(to_exclusive)
+                    String.fromCodePoint(offset) +
+                    String.fromCodePoint(length)
                 );
             }
         }
@@ -351,14 +351,12 @@ export function LZSS_Compress(
 
                 const match: [Index, Index] =
                     previous_matches[previous_matches.length - 1];
+                const offset: Count =
+                    this.memory.length - match[0];
                 const length: Count =
                     match[1] - match[0];
-                const from: Index =
-                    this.text_index + match[0];
-                const to_exclusive: Index =
-                    this.text_index + match[1];
                 const token: string =
-                    this.Create_Token(from, to_exclusive);
+                    this.Create_Token(offset, length);
 
                 if (this.Can_Use_Token(token, points.slice(0, length))) {
                     this.Move_Memory(length);
@@ -443,44 +441,56 @@ export function LZSS_Decompress(
         if (iter.Point() === control_tokens.GOOD()) {
             iter = iter.Next();
 
-            const from = iter.Point().codePointAt(0) as Index;
+            const offset = iter.Point().codePointAt(0) as Count;
 
             iter = iter.Next();
 
-            const to_exclusive = iter.Point().codePointAt(0) as Index;
+            const length = iter.Point().codePointAt(0) as Count;
+
+            const from: Index = result.length - offset;
+            const to_exclusive: Index = from + length;
 
             result += result.slice(from, to_exclusive);
             iter = iter.Next();
         } else if (iter.Point() === control_tokens.BAD_A()) {
             iter = iter.Next();
 
-            const from = (iter.Point().codePointAt(0) as Index) + LZSS_FIRST_BAD_INDEX;
+            const offset = (iter.Point().codePointAt(0) as Count) + LZSS_FIRST_BAD_INDEX;
 
             iter = iter.Next();
 
-            const to_exclusive = iter.Point().codePointAt(0) as Index;
+            const length = iter.Point().codePointAt(0) as Count;
+
+            const from: Index = result.length - offset;
+            const to_exclusive: Index = from + length;
 
             result += result.slice(from, to_exclusive);
             iter = iter.Next();
         } else if (iter.Point() === control_tokens.BAD_B()) {
             iter = iter.Next();
 
-            const from = iter.Point().codePointAt(0) as Index;
+            const offset = iter.Point().codePointAt(0) as Count;
 
             iter = iter.Next();
 
-            const to_exclusive = (iter.Point().codePointAt(0) as Index) + LZSS_FIRST_BAD_INDEX;
+            const length = (iter.Point().codePointAt(0) as Count) + LZSS_FIRST_BAD_INDEX;
+
+            const from: Index = result.length - offset;
+            const to_exclusive: Index = from + length;
 
             result += result.slice(from, to_exclusive);
             iter = iter.Next();
         } else if (iter.Point() === control_tokens.BAD_AB()) {
             iter = iter.Next();
 
-            const from = (iter.Point().codePointAt(0) as Index) + LZSS_FIRST_BAD_INDEX;
+            const offset = (iter.Point().codePointAt(0) as Count) + LZSS_FIRST_BAD_INDEX;
 
             iter = iter.Next();
 
-            const to_exclusive = (iter.Point().codePointAt(0) as Index) + LZSS_FIRST_BAD_INDEX;
+            const length = (iter.Point().codePointAt(0) as Count) + LZSS_FIRST_BAD_INDEX;
+
+            const from: Index = result.length - offset;
+            const to_exclusive: Index = from + length;
 
             result += result.slice(from, to_exclusive);
             iter = iter.Next();
