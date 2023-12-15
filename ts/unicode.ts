@@ -78,6 +78,35 @@ export function Point_Count(
     return count;
 }
 
+export function Expected_UTF_8_Unit_Count(
+    text: string,
+):
+    Count
+{
+    let unit_count: Count = 0;
+    let iter: Iterator = new Iterator(
+        {
+            text: text,
+        },
+    );
+
+    for (; !iter.Is_At_End(); iter = iter.Next()) {
+        const point: Index = iter.Point().codePointAt(0) as Index;
+
+        if (point <= 0x7F) {
+            unit_count += 1;
+        } else if (point <= 0x7FF) {
+            unit_count += 2;
+        } else if (point <= 0xFFFF) {
+            unit_count += 3;
+        } else {
+            unit_count += 4;
+        }
+    }
+
+    return unit_count;
+}
+
 export class Iterator
 {
     private text: string;

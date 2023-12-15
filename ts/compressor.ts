@@ -127,6 +127,7 @@ export class LZSS_Control_Tokens
 export function LZSS_Compress(
     value: string,
     max_memory_length: Count = 1 * 1024, // approx. 2 kilobytes
+    will_be_utf_8_encoded: boolean = true,
     control_tokens: LZSS_Control_Tokens = new LZSS_Control_Tokens(),
 ):
     string
@@ -304,6 +305,22 @@ export function LZSS_Compress(
             }
         }
 
+        private Can_Use_Token(
+            token: string,
+            text: string,
+        ):
+            boolean
+        {
+            if (will_be_utf_8_encoded) {
+                return (
+                    Unicode.Expected_UTF_8_Unit_Count(token) <
+                    Unicode.Expected_UTF_8_Unit_Count(text)
+                );
+            } else {
+                return token.length < text.length;
+            }
+        }
+
         Token(
             iter: Unicode.Iterator,
         ):
@@ -343,7 +360,7 @@ export function LZSS_Compress(
                 const token: string =
                     this.Create_Token(from, to_exclusive);
 
-                if (token.length < length) {
+                if (this.Can_Use_Token(token, points.slice(0, length))) {
                     this.Move_Memory(length);
 
                     return [
@@ -481,6 +498,11 @@ export function JSON_String_Array_Compress(
 ):
     string
 {
+    Utils.Assert(
+        !/\x00/.test(value),
+        `value cannot have U+0000`,
+    );
+
     return value.replace(/","/g, `\x00`);
 }
 
