@@ -4,138 +4,45 @@ import { Index } from "./types.js";
 import * as Utils from "./utils.js";
 import * as Unicode from "./unicode.js";
 
-export const LZSS_FIRST_BAD_INDEX: Index = Unicode.LEADING_SURROGATE.FIRST;
-export const LZSS_LAST_BAD_INDEX: Index = Unicode.TRAILING_SURROGATE.LAST;
 export const LZSS_MAX_MEMORY_LENGTH: Count = 0x110000;
+export const LZSS_ESCAPE_INDEX: Index = 0x10;
+export const LZSS_ESCAPE_STRING: string = String.fromCodePoint(LZSS_ESCAPE_INDEX);
+export const LZSS_FIRST_SURROGATE_INDEX: Index = Unicode.LEADING_SURROGATE.FIRST;
+export const LZSS_LAST_SURROGATE_INDEX: Index = Unicode.TRAILING_SURROGATE.LAST;
 
-export class LZSS_Control_Tokens
+/*
+    There is a max of 4 flags. We may use the
+    unused 2 for big_offset and big_length
+    which would further lower the number into
+    a more efficient utf-8 or utf-16 space.
+    That would probably mean putting an indicator
+    at the beginning of the compressed string
+    to tell us which encoding was optimized for.
+*/
+export enum LZSS_Flags
 {
-    private good: string;
-    private bad_a: string;
-    private bad_b: string;
-    private bad_ab: string;
-
-    private has_token_regex: RegExp;
-
-    constructor(
-        {
-            GOOD = 0x00,
-            BAD_A = 0x01,
-            BAD_B = 0x02,
-            BAD_AB = 0x03,
-        }: {
-            GOOD?: Index,
-            BAD_A?: Index,
-            BAD_B?: Index,
-            BAD_AB?: Index,
-        } = {},
-    )
-    {
-        Utils.Assert(
-            GOOD < LZSS_FIRST_BAD_INDEX ||
-            GOOD > LZSS_LAST_BAD_INDEX,
-            `Cannot use a unicode surrogate as a token.`,
-        );
-        Utils.Assert(
-            BAD_A < LZSS_FIRST_BAD_INDEX ||
-            BAD_A > LZSS_LAST_BAD_INDEX,
-            `Cannot use a unicode surrogate as a token.`,
-        );
-        Utils.Assert(
-            BAD_B < LZSS_FIRST_BAD_INDEX ||
-            BAD_B > LZSS_LAST_BAD_INDEX,
-            `Cannot use a unicode surrogate as a token.`,
-        );
-        Utils.Assert(
-            BAD_AB < LZSS_FIRST_BAD_INDEX ||
-            BAD_AB > LZSS_LAST_BAD_INDEX,
-            `Cannot use a unicode surrogate as a token.`,
-        );
-        Utils.Assert(
-            GOOD !== BAD_A &&
-            GOOD !== BAD_B &&
-            GOOD !== BAD_AB,
-            `Each control token must be unique.`,
-        );
-        Utils.Assert(
-            BAD_A !== GOOD &&
-            BAD_A !== BAD_B &&
-            BAD_A !== BAD_AB,
-            `Each control token must be unique.`,
-        );
-        Utils.Assert(
-            BAD_B !== GOOD &&
-            BAD_B !== BAD_A &&
-            BAD_B !== BAD_AB,
-            `Each control token must be unique.`,
-        );
-        Utils.Assert(
-            BAD_AB !== GOOD &&
-            BAD_AB !== BAD_A &&
-            BAD_AB !== BAD_B,
-            `Each control token must be unique.`,
-        );
-
-        this.good = String.fromCodePoint(GOOD);
-        this.bad_a = String.fromCodePoint(BAD_A);
-        this.bad_b = String.fromCodePoint(BAD_B);
-        this.bad_ab = String.fromCodePoint(BAD_AB);
-
-        const token_string: string =
-            this.GOOD() +
-            this.BAD_A() +
-            this.BAD_B() +
-            this.BAD_AB();
-        this.has_token_regex = new RegExp(`[${token_string}]`);
-
-        Object.freeze(this);
-    }
-
-    GOOD():
-        string
-    {
-        return this.good;
-    }
-
-    BAD_A():
-        string
-    {
-        return this.bad_a;
-    }
-
-    BAD_B():
-        string
-    {
-        return this.bad_b;
-    }
-
-    BAD_AB():
-        string
-    {
-        return this.bad_ab;
-    }
-
-    Has_Token(
-        text: string,
-    ):
-        boolean
-    {
-        return this.has_token_regex.test(text);
-    }
+    SURROGATE_OFFSET = 1 << 0,
+    SURROGATE_LENGTH = 1 << 1,
+    UNUSED_1 = 1 << 2,
+    UNUSED_2 = 1 << 3,
 }
 
 export function LZSS_Compress(
     value: string,
-    max_memory_length: Count = 1 * 1024, // approx. 2 kilobytes
-    will_be_utf_8_encoded: boolean = true,
-    control_tokens: LZSS_Control_Tokens = new LZSS_Control_Tokens(),
+    {
+        max_memory_length,
+        optimize_for_utf_8_encoding,
+    }: {
+        max_memory_length: Count,
+        optimize_for_utf_8_encoding: boolean,
+    } =
+        {
+            max_memory_length: 1024,
+            optimize_for_utf_8_encoding: true,
+        },
 ):
     string
 {
-    Utils.Assert(
-        !control_tokens.Has_Token(value),
-        `value cannot have a control token.`,
-    );
     Utils.Assert(
         max_memory_length > 0,
         `max_memory_length must be greater than 0`,
@@ -284,38 +191,28 @@ export function LZSS_Compress(
             offset -= 1;
             length -= 1;
 
-            const has_bad_a: boolean =
-                offset >= LZSS_FIRST_BAD_INDEX &&
-                offset <= LZSS_LAST_BAD_INDEX;
-            const has_bad_b: boolean =
-                length >= LZSS_FIRST_BAD_INDEX &&
-                length <= LZSS_LAST_BAD_INDEX;
+            const has_surrogate_offset: boolean =
+                offset >= LZSS_FIRST_SURROGATE_INDEX &&
+                offset <= LZSS_LAST_SURROGATE_INDEX;
+            const has_surrogate_length: boolean =
+                length >= LZSS_FIRST_SURROGATE_INDEX &&
+                length <= LZSS_LAST_SURROGATE_INDEX;
 
-            if (has_bad_a && has_bad_b) {
-                return (
-                    control_tokens.BAD_AB() +
-                    String.fromCodePoint(offset - LZSS_FIRST_BAD_INDEX) +
-                    String.fromCodePoint(length - LZSS_FIRST_BAD_INDEX)
-                );
-            } else if (has_bad_a) {
-                return (
-                    control_tokens.BAD_A() +
-                    String.fromCodePoint(offset - LZSS_FIRST_BAD_INDEX) +
-                    String.fromCodePoint(length)
-                );
-            } else if (has_bad_b) {
-                return (
-                    control_tokens.BAD_B() +
-                    String.fromCodePoint(offset) +
-                    String.fromCodePoint(length - LZSS_FIRST_BAD_INDEX)
-                );
-            } else {
-                return (
-                    control_tokens.GOOD() +
-                    String.fromCodePoint(offset) +
-                    String.fromCodePoint(length)
-                );
+            let control_index: Index = 0;
+            if (has_surrogate_offset) {
+                control_index |= LZSS_Flags.SURROGATE_OFFSET;
+                offset -= LZSS_FIRST_SURROGATE_INDEX;
             }
+            if (has_surrogate_length) {
+                control_index |= LZSS_Flags.SURROGATE_LENGTH;
+                length -= LZSS_FIRST_SURROGATE_INDEX;
+            }
+
+            return (
+                String.fromCodePoint(control_index) +
+                String.fromCodePoint(offset) +
+                String.fromCodePoint(length)
+            );
         }
 
         private Can_Use_Token(
@@ -324,13 +221,33 @@ export function LZSS_Compress(
         ):
             boolean
         {
-            if (will_be_utf_8_encoded) {
+            if (optimize_for_utf_8_encoding) {
                 return (
                     Unicode.Expected_UTF_8_Unit_Count(token) <
                     Unicode.Expected_UTF_8_Unit_Count(text)
                 );
             } else {
                 return token.length < text.length;
+            }
+        }
+
+        private Create_Non_Token(
+            point: string,
+        ):
+            string
+        {
+            Utils.Assert(
+                point !== ``,
+                `point cannot be empty`,
+            );
+
+            if (point.codePointAt(0) as Index > LZSS_ESCAPE_INDEX) {
+                return point;
+            } else {
+                return (
+                    LZSS_ESCAPE_STRING +
+                    point
+                );
             }
         }
 
@@ -387,7 +304,7 @@ export function LZSS_Compress(
                     this.Move_Memory(first_point.length);
 
                     return [
-                        first_point,
+                        this.Create_Non_Token(first_point),
                         new Unicode.Iterator(
                             {
                                 text: iter.Text(),
@@ -400,7 +317,7 @@ export function LZSS_Compress(
                 this.Move_Memory(first_point.length);
 
                 return [
-                    first_point,
+                    this.Create_Non_Token(first_point),
                     new Unicode.Iterator(
                         {
                             text: iter.Text(),
@@ -439,7 +356,6 @@ export function LZSS_Compress(
 
 export function LZSS_Decompress(
     value: string,
-    control_tokens: LZSS_Control_Tokens = new LZSS_Control_Tokens(),
 ):
     string
 {
@@ -451,65 +367,49 @@ export function LZSS_Decompress(
     );
 
     for (; !iter.Is_At_End();) {
-        if (iter.Point() === control_tokens.GOOD()) {
+        const maybe_control_point: string = iter.Point();
+
+        if (maybe_control_point === LZSS_ESCAPE_STRING) {
             iter = iter.Next();
 
-            const offset = iter.Point().codePointAt(0) as Count + 1;
+            const point: string = iter.Point();
 
-            iter = iter.Next();
-
-            const length = iter.Point().codePointAt(0) as Count + 1;
-
-            const from: Index = result.length - offset;
-            const to_exclusive: Index = from + length;
-
-            result += result.slice(from, to_exclusive);
-            iter = iter.Next();
-        } else if (iter.Point() === control_tokens.BAD_A()) {
-            iter = iter.Next();
-
-            const offset = (iter.Point().codePointAt(0) as Count) + LZSS_FIRST_BAD_INDEX + 1;
-
-            iter = iter.Next();
-
-            const length = iter.Point().codePointAt(0) as Count + 1;
-
-            const from: Index = result.length - offset;
-            const to_exclusive: Index = from + length;
-
-            result += result.slice(from, to_exclusive);
-            iter = iter.Next();
-        } else if (iter.Point() === control_tokens.BAD_B()) {
-            iter = iter.Next();
-
-            const offset = iter.Point().codePointAt(0) as Count + 1;
-
-            iter = iter.Next();
-
-            const length = (iter.Point().codePointAt(0) as Count) + LZSS_FIRST_BAD_INDEX + 1;
-
-            const from: Index = result.length - offset;
-            const to_exclusive: Index = from + length;
-
-            result += result.slice(from, to_exclusive);
-            iter = iter.Next();
-        } else if (iter.Point() === control_tokens.BAD_AB()) {
-            iter = iter.Next();
-
-            const offset = (iter.Point().codePointAt(0) as Count) + LZSS_FIRST_BAD_INDEX + 1;
-
-            iter = iter.Next();
-
-            const length = (iter.Point().codePointAt(0) as Count) + LZSS_FIRST_BAD_INDEX + 1;
-
-            const from: Index = result.length - offset;
-            const to_exclusive: Index = from + length;
-
-            result += result.slice(from, to_exclusive);
+            result += point;
             iter = iter.Next();
         } else {
-            result += iter.Point();
-            iter = iter.Next();
+            const maybe_control_index: Index = maybe_control_point.codePointAt(0) as Index;
+
+            if (maybe_control_index < LZSS_ESCAPE_INDEX) {
+                const control_index: Index = maybe_control_index;
+
+                let offset: Count;
+                let length: Count;
+
+                iter = iter.Next();
+
+                offset = iter.Point().codePointAt(0) as Count + 1;
+                if ((control_index & LZSS_Flags.SURROGATE_OFFSET) !== 0) {
+                    offset += LZSS_FIRST_SURROGATE_INDEX;
+                }
+
+                iter = iter.Next();
+
+                length = iter.Point().codePointAt(0) as Count + 1;
+                if ((control_index & LZSS_Flags.SURROGATE_LENGTH) !== 0) {
+                    length += LZSS_FIRST_SURROGATE_INDEX;
+                }
+
+                const from: Index = result.length - offset;
+                const to_exclusive: Index = from + length;
+
+                result += result.slice(from, to_exclusive);
+                iter = iter.Next();
+            } else {
+                const point: string = maybe_control_point;
+
+                result += point;
+                iter = iter.Next();
+            }
         }
     }
 
