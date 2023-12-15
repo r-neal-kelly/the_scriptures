@@ -6,7 +6,7 @@ import * as Unicode from "./unicode.js";
 
 export const LZSS_FIRST_BAD_INDEX: Index = Unicode.LEADING_SURROGATE.FIRST;
 export const LZSS_LAST_BAD_INDEX: Index = Unicode.TRAILING_SURROGATE.LAST;
-export const LZSS_MAX_LENGTH: Count = 0x110000;
+export const LZSS_MAX_MEMORY_LENGTH: Count = 0x110000;
 
 export class LZSS_Control_Tokens
 {
@@ -133,18 +133,16 @@ export function LZSS_Compress(
     string
 {
     Utils.Assert(
-        value.length <= LZSS_MAX_LENGTH,
-        `Too many units in string for this implementation. ` +
-        `The max is ${LZSS_MAX_LENGTH} or ${Utils.Add_Commas_To_Number(LZSS_MAX_LENGTH)} units. ` +
-        `This implementation uses unicode points to index into the string.`,
-    );
-    Utils.Assert(
         !control_tokens.Has_Token(value),
         `value cannot have a control token.`,
     );
     Utils.Assert(
         max_memory_length > 0,
         `max_memory_length must be greater than 0`,
+    );
+    Utils.Assert(
+        max_memory_length <= LZSS_MAX_MEMORY_LENGTH,
+        `max_memory_length must be less than or equal to ${LZSS_MAX_MEMORY_LENGTH}`,
     );
 
     class Window
@@ -271,6 +269,21 @@ export function LZSS_Compress(
         ):
             string
         {
+            Utils.Assert(
+                offset > 0,
+                `offset must be greater than 0`,
+            );
+            Utils.Assert(
+                length > 0,
+                `length must be greater than 0`,
+            );
+
+            // subtract one for 0x110000 - 1 unicode limit
+            // but we add one in decompressor so we can use
+            // the full limit of the max_memory_length.
+            offset -= 1;
+            length -= 1;
+
             const has_bad_a: boolean =
                 offset >= LZSS_FIRST_BAD_INDEX &&
                 offset <= LZSS_LAST_BAD_INDEX;
@@ -441,11 +454,11 @@ export function LZSS_Decompress(
         if (iter.Point() === control_tokens.GOOD()) {
             iter = iter.Next();
 
-            const offset = iter.Point().codePointAt(0) as Count;
+            const offset = iter.Point().codePointAt(0) as Count + 1;
 
             iter = iter.Next();
 
-            const length = iter.Point().codePointAt(0) as Count;
+            const length = iter.Point().codePointAt(0) as Count + 1;
 
             const from: Index = result.length - offset;
             const to_exclusive: Index = from + length;
@@ -455,11 +468,11 @@ export function LZSS_Decompress(
         } else if (iter.Point() === control_tokens.BAD_A()) {
             iter = iter.Next();
 
-            const offset = (iter.Point().codePointAt(0) as Count) + LZSS_FIRST_BAD_INDEX;
+            const offset = (iter.Point().codePointAt(0) as Count) + LZSS_FIRST_BAD_INDEX + 1;
 
             iter = iter.Next();
 
-            const length = iter.Point().codePointAt(0) as Count;
+            const length = iter.Point().codePointAt(0) as Count + 1;
 
             const from: Index = result.length - offset;
             const to_exclusive: Index = from + length;
@@ -469,11 +482,11 @@ export function LZSS_Decompress(
         } else if (iter.Point() === control_tokens.BAD_B()) {
             iter = iter.Next();
 
-            const offset = iter.Point().codePointAt(0) as Count;
+            const offset = iter.Point().codePointAt(0) as Count + 1;
 
             iter = iter.Next();
 
-            const length = (iter.Point().codePointAt(0) as Count) + LZSS_FIRST_BAD_INDEX;
+            const length = (iter.Point().codePointAt(0) as Count) + LZSS_FIRST_BAD_INDEX + 1;
 
             const from: Index = result.length - offset;
             const to_exclusive: Index = from + length;
@@ -483,11 +496,11 @@ export function LZSS_Decompress(
         } else if (iter.Point() === control_tokens.BAD_AB()) {
             iter = iter.Next();
 
-            const offset = (iter.Point().codePointAt(0) as Count) + LZSS_FIRST_BAD_INDEX;
+            const offset = (iter.Point().codePointAt(0) as Count) + LZSS_FIRST_BAD_INDEX + 1;
 
             iter = iter.Next();
 
-            const length = (iter.Point().codePointAt(0) as Count) + LZSS_FIRST_BAD_INDEX;
+            const length = (iter.Point().codePointAt(0) as Count) + LZSS_FIRST_BAD_INDEX + 1;
 
             const from: Index = result.length - offset;
             const to_exclusive: Index = from + length;
