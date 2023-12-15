@@ -125,7 +125,7 @@ export class Instance extends Entity.Instance
                     this.compressor = new Compressor.Instance(
                         {
                             unique_parts: JSON.parse(
-                                Main_Compressors.JSON_String_Array_Decompress(await response.text()),
+                                Main_Compressors.LZSS_Decompress(await response.text()),
                             ) as Array<string>,
                         },
                     );

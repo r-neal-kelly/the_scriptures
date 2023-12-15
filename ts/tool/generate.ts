@@ -417,8 +417,8 @@ async function Generate(
                         const full_text = file_texts.join(Data.Version.Symbol.FILE_BREAK);
                         const unique_part_values: Array<string> = unique_parts.Values();
                         const unique_part_values_json: string = JSON.stringify(unique_part_values);
-                        const compressed_unique_part_values_json: string = Compressor.JSON_String_Array_Compress(unique_part_values_json);
-                        const decompressed_unique_part_values_json: string = Compressor.JSON_String_Array_Decompress(compressed_unique_part_values_json);
+                        const compressed_unique_part_values_json: string = Compressor.LZSS_Compress(unique_part_values_json);
+                        const decompressed_unique_part_values_json: string = Compressor.LZSS_Decompress(compressed_unique_part_values_json);
                         const compressor: Data.Compressor.Instance = new Data.Compressor.Instance(
                             {
                                 unique_parts: unique_part_values,
