@@ -58,6 +58,8 @@ export function LZSS_Compress(
         private text_index: Index;
         private memory: string;
         private max_memory_length: Count;
+        private matches_buffer_a: Array<[Index, Index]>;
+        private matches_buffer_b: Array<[Index, Index]>;
 
         constructor(
             {
@@ -73,23 +75,26 @@ export function LZSS_Compress(
             this.text_index = 0;
             this.memory = ``;
             this.max_memory_length = max_memory_length;
+            this.matches_buffer_a = [];
+            this.matches_buffer_b = [];
         }
 
         /*
-            Returns an array of slice indices into the current memory.
+            Outputs into array slice indices into the current memory.
             Indices must be used before memory is updated with new tokens.
         */
         private Initial_Matches(
+            results: Array<[Index, Index]>,
             point: string,
         ):
-            Array<[Index, Index]>
+            void
         {
             Utils.Assert(
                 Unicode.Is_Point(point),
                 `point is not a point`,
             );
 
-            const results: Array<[Index, Index]> = [];
+            results.splice(0, results.length);
 
             let iter: Unicode.Iterator = new Unicode.Iterator(
                 {
@@ -103,8 +108,6 @@ export function LZSS_Compress(
                     results.push([index, index + point.length]);
                 }
             }
-
-            return results;
         }
 
         /*
@@ -122,10 +125,7 @@ export function LZSS_Compress(
         ):
             void
         {
-            Utils.Assert(
-                new_matches.length === 0,
-                `new_matches should be empty`,
-            );
+            new_matches.splice(0, new_matches.length);
 
             for (const [from, previous_to_exclusive] of previous_matches) {
                 const previous_length: Count =
@@ -251,7 +251,7 @@ export function LZSS_Compress(
             }
         }
 
-        Token(
+        Token_Or_Non_Token(
             iter: Unicode.Iterator,
         ):
             [string, Unicode.Iterator]
@@ -262,21 +262,21 @@ export function LZSS_Compress(
             );
 
             const first_point: string = iter.Point();
-            const initial_matches: Array<[Index, Index]> = this.Initial_Matches(first_point);
 
-            if (initial_matches.length > 0) {
+            this.Initial_Matches(this.matches_buffer_a, first_point);
+
+            if (this.matches_buffer_a.length > 0) {
                 const points: string = iter.Points();
 
-                let previous_matches: Array<[Index, Index]> = [];
-                let matches: Array<[Index, Index]> = initial_matches;
+                let previous_matches: Array<[Index, Index]> = this.matches_buffer_b;
+                let new_matches: Array<[Index, Index]> = this.matches_buffer_a;
                 let matches_swap: Array<[Index, Index]> = previous_matches;
 
-                while (matches.length > 0) {
+                while (new_matches.length > 0) {
                     matches_swap = previous_matches;
-                    previous_matches = matches;
-                    matches = matches_swap;
-                    matches.splice(0, matches.length);
-                    this.Matches(previous_matches, matches, points);
+                    previous_matches = new_matches;
+                    new_matches = matches_swap;
+                    this.Matches(previous_matches, new_matches, points);
                 }
 
                 const match: [Index, Index] =
@@ -344,10 +344,10 @@ export function LZSS_Compress(
     );
 
     for (; !iter.Is_At_End();) {
-        const [token, new_iter]: [string, Unicode.Iterator] =
-            window.Token(iter);
+        const [token_or_non_token, new_iter]: [string, Unicode.Iterator] =
+            window.Token_Or_Non_Token(iter);
 
-        result += token;
+        result += token_or_non_token;
         iter = new_iter;
     }
 
