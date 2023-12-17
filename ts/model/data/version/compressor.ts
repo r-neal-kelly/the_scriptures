@@ -1,9 +1,9 @@
-import { Index } from "../../types.js";
+import { Index } from "../../../types.js";
 
-import * as Utils from "../../utils.js";
-import * as Unicode from "../../unicode.js";
+import * as Utils from "../../../utils.js";
+import * as Unicode from "../../../unicode.js";
 
-import * as Text from "../text.js";
+import * as Text from "../../text.js";
 
 // Are we handling surrogates being used as indices messing up the unicode string?
 

@@ -21,16 +21,7 @@ export class Instance extends Entity.Instance
                 return Languages.Singleton().Default_Global_Font_Name(language_name);
             },
 
-            text: new Text.Instance(
-                {
-                    dictionary: new Text.Dictionary.Instance(
-                        {
-                            json: null,
-                        },
-                    ),
-                    value: ``,
-                },
-            ),
+            text: new Text.Instance(),
             allow_errors: false,
         },
     );

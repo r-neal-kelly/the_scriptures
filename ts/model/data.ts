@@ -4,7 +4,6 @@ export { Type } from "./data/type.js";
 export * as Consts from "./data/consts.js";
 export * as Info from "./data/info.js";
 export * as Cache from "./data/cache.js";
-export * as Compressor from "./data/compressor.js";
 export * as Query from "./data/query.js";
 export * as Book from "./data/book.js";
 export * as Language from "./data/language.js";

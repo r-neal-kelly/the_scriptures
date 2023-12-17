@@ -74,11 +74,11 @@ export class Instance extends Entity.Instance
     {
         const version_result: Result.Version = new Map();
 
-        const version_text: Data.Version.Text.Instance =
-            await data_version.Text();
-        for (let idx = 0, end = version_text.File_Text_Count(); idx < end; idx += 1) {
+        await data_version.Cache_Files();
+
+        for (let idx = 0, end = data_version.File_Count(); idx < end; idx += 1) {
             const file_result: Array<Result.Instance> | Parser.Help =
-                this.Text(version_text.File_Text_At(idx), expression);
+                this.Text(await data_version.File_At(idx).Text(), expression);
             if (file_result instanceof Parser.Help) {
                 return file_result as Parser.Help;
             } else if (file_result.length > 0) {
@@ -97,24 +97,13 @@ export class Instance extends Entity.Instance
     {
         const versions_result: Result.Versions = new Map();
 
-        const version_texts: Array<Data.Version.Text.Instance> = await Promise.all(
-            data_versions.map(data_version => data_version.Text()),
-        );
-        for (let idx = 0, end = version_texts.length; idx < end; idx += 1) {
-            const version_result: Result.Version = new Map();
-            const version_data: Data.Version.Instance = data_versions[idx];
-            const version_text: Data.Version.Text.Instance = version_texts[idx];
-            for (let idx = 0, end = version_text.File_Text_Count(); idx < end; idx += 1) {
-                const file_result: Array<Result.Instance> | Parser.Help =
-                    this.Text(version_text.File_Text_At(idx), expression);
-                if (file_result instanceof Parser.Help) {
-                    return file_result as Parser.Help;
-                } else if (file_result.length > 0) {
-                    version_result.set(version_data.File_At(idx), file_result);
-                }
-            }
-            if (version_result.size > 0) {
-                versions_result.set(version_data, version_result);
+        for (const data_version of data_versions) {
+            const version_result: Result.Version | Parser.Help =
+                await this.Data_Version(data_version, expression);
+            if (version_result instanceof Parser.Help) {
+                return version_result as Parser.Help;
+            } else if (version_result.size > 0) {
+                versions_result.set(data_version, version_result);
             }
         }
 

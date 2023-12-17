@@ -4,8 +4,8 @@ import { Name } from "../../types.js";
 import { Path } from "../../types.js";
 
 import * as Utils from "../../utils.js";
-import * as Async from "../../async.js";
 
+import * as Entity from "../entity.js";
 import * as Name_Sorter from "../name_sorter.js";
 
 import { Type } from "./type.js";
@@ -17,7 +17,7 @@ import * as Book from "./book.js";
 import * as Version from "./version.js";
 import * as File from "./file.js";
 
-export class Instance extends Async.Instance
+export class Instance extends Entity.Instance
 {
     private cache: Cache.Instance;
     private info: Info.Instance | null;
@@ -1232,7 +1232,7 @@ export class Instance extends Async.Instance
             ):
                 Name
             {
-                return file.Name();
+                return file.Title();
             },
         );
     }

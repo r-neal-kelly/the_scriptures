@@ -41,7 +41,15 @@ export class Instance
             dictionary: Dictionary.Instance,
             value: Value,
             path_type?: Path.Type,
-        },
+        } =
+            {
+                dictionary: new Dictionary.Instance(
+                    {
+                        json: null,
+                    },
+                ),
+                value: ``,
+            },
     )
     {
         this.dictionary = dictionary;

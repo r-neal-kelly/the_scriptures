@@ -20,23 +20,10 @@ const TIMESTAMP_PATH: Path =
     `./.timestamp`;
 const README_PATH: Path =
     `./README.md`;
-const DATA_PATH: Path =
-    `./data`;
-
-const INFO_JSON_NAME: Name =
-    `Info.json`;
-const ORDER_JSON_NAME: Name =
-    `Order.json`;
-const DICTIONARY_JSON_NAME: Name =
-    `Dictionary.json`;
-const UNIQUE_PARTS_FILE_NAME: Name =
-    Data.Version.Consts.UNIQUE_PARTS_FILE_NAME;
-
 const DEFAULT_LAST_TIMESTAMP: Count =
     0;
-
 const IS_COMPRESSED_FILE_REGEX: RegExp =
-    new RegExp(`\\.${Data.File.Symbol.EXTENSION}$`);
+    new RegExp(`\\.${Data.Consts.FILE_EXTENSION}$`);
 
 class Unique_Parts
 {
@@ -113,9 +100,9 @@ async function Read_And_Sort_File_Names(
             },
         );
 
-    if (File_System.Has_File(`${folder_path}/${ORDER_JSON_NAME}`)) {
+    if (File_System.Has_File(`${folder_path}/${Data.Consts.ORDER_JSON_NAME}`)) {
         const ordered_file_names: Array<Name> =
-            JSON.parse(await File_System.Read_File(`${folder_path}/${ORDER_JSON_NAME}`));
+            JSON.parse(await File_System.Read_File(`${folder_path}/${Data.Consts.ORDER_JSON_NAME}`));
 
         const missing_file_names: Array<Name> = [];
         for (const file_name of file_names) {
@@ -126,7 +113,7 @@ async function Read_And_Sort_File_Names(
 
         Utils.Assert(
             missing_file_names.length === 0,
-            `${folder_path}/${ORDER_JSON_NAME} is missing various files:\n${JSON.stringify(missing_file_names)}`,
+            `${folder_path}/${Data.Consts.ORDER_JSON_NAME} is missing various files:\n${JSON.stringify(missing_file_names)}`,
         );
 
         return ordered_file_names;
@@ -165,9 +152,9 @@ async function Should_Version_Be_Updated(
 {
     for (const meta_file_path of
         [
-            `${files_path}/${INFO_JSON_NAME}`,
-            `${files_path}/${DICTIONARY_JSON_NAME}`,
-            `${files_path}/${UNIQUE_PARTS_FILE_NAME}`,
+            `${files_path}/${Data.Consts.INFO_JSON_NAME}`,
+            `${files_path}/${Data.Consts.DICTIONARY_JSON_NAME}`,
+            `${files_path}/${Data.Consts.UNIQUE_PARTS_NAME}`,
         ]
     ) {
         if (
@@ -181,9 +168,9 @@ async function Should_Version_Be_Updated(
     }
 
     if (
-        File_System.Has_File(`${files_path}/${ORDER_JSON_NAME}`) &&
+        File_System.Has_File(`${files_path}/${Data.Consts.ORDER_JSON_NAME}`) &&
         (
-            await File_System.Read_Entity_Last_Modified_Time(`${files_path}/${ORDER_JSON_NAME}`) > last_timestamp
+            await File_System.Read_Entity_Last_Modified_Time(`${files_path}/${Data.Consts.ORDER_JSON_NAME}`) > last_timestamp
         )
     ) {
         return true;
@@ -191,7 +178,7 @@ async function Should_Version_Be_Updated(
 
     for (const file_name of file_names) {
         const compressed_file_path: Path =
-            `${files_path}/${file_name.replace(/\.[^.]*$/, `.${Data.File.Symbol.EXTENSION}`)}`;
+            `${files_path}/${file_name.replace(/\.[^.]*$/, `.${Data.Consts.FILE_EXTENSION}`)}`;
         if (
             !File_System.Has_File(compressed_file_path) ||
             (
@@ -271,7 +258,7 @@ async function Generate(
     async function Update_Data():
         Promise<void>
     {
-        const books_path: Path = `${DATA_PATH}/Books`;
+        const books_path: Path = Data.Consts.BOOKS_PATH;
         for (const book_name of (await File_System.Folder_Names(books_path)).sort()) {
             const languages_path: Path = `${books_path}/${book_name}`;
             const book_branch: Data.Book.Branch = {
@@ -299,7 +286,7 @@ async function Generate(
                     data_info.Add_Unique_Version_Name(version_name);
                     if (await Should_Version_Be_Updated(last_timestamp, files_path, file_names)) {
                         const version_info: Data.Version.Info.Instance = new Data.Version.Info.Instance({});
-                        const dictionary_json: string = await File_System.Read_File(`${files_path}/${DICTIONARY_JSON_NAME}`);
+                        const dictionary_json: string = await File_System.Read_File(`${files_path}/${Data.Consts.DICTIONARY_JSON_NAME}`);
                         const dictionary: Text.Dictionary.Instance = new Text.Dictionary.Instance(
                             {
                                 json: dictionary_json,
@@ -414,12 +401,11 @@ async function Generate(
                             }
                         }
                         const files_to_write: Array<Promise<void>> = [];
-                        const full_text = file_texts.join(Data.Version.Symbol.FILE_BREAK);
                         const unique_part_values: Array<string> = unique_parts.Values();
                         const unique_part_values_json: string = JSON.stringify(unique_part_values);
                         const compressed_unique_part_values_json: string = Compressor.LZSS_Compress(unique_part_values_json);
                         const decompressed_unique_part_values_json: string = Compressor.LZSS_Decompress(compressed_unique_part_values_json);
-                        const compressor: Data.Compressor.Instance = new Data.Compressor.Instance(
+                        const compressor: Data.Version.Compressor.Instance = new Data.Version.Compressor.Instance(
                             {
                                 unique_parts: unique_part_values,
                             },
@@ -436,20 +422,7 @@ async function Generate(
                                     dictionary_value: compressed_dictionary_json,
                                 },
                             );
-                        const compressed_full_text: string =
-                            compressor.Compress_File(
-                                {
-                                    dictionary: dictionary,
-                                    file_value: full_text,
-                                },
-                            );
-                        const decompressed_full_text: string =
-                            compressor.Decompress_File(
-                                {
-                                    dictionary: dictionary,
-                                    file_value: compressed_full_text,
-                                },
-                            );
+                        const compressed_file_texts: Array<string> = [];
                         Utils.Assert(
                             decompressed_unique_part_values_json === unique_part_values_json,
                             `Invalid unique_part_values_json decompression!`,
@@ -458,37 +431,23 @@ async function Generate(
                             decompressed_dictionary_json === dictionary_json,
                             `Invalid dictionary decompression!`,
                         );
-                        Utils.Assert(
-                            decompressed_full_text === full_text,
-                            `Invalid decompression!\n` +
-                            `   Book Name: ${book_name}\n` +
-                            `   Language Name: ${language_name}\n` +
-                            `   Version Name: ${version_name}\n` +
-                            `${Decompression_Line_Mismatches(full_text, decompressed_full_text)}`,
-                        );
                         version_info.Finalize();
                         files_to_write.push(
                             File_System.Write_File(
-                                `${files_path}/${INFO_JSON_NAME}`,
+                                `${files_path}/${Data.Consts.INFO_JSON_NAME}`,
                                 version_info.JSON_String(),
                             ),
                         );
                         files_to_write.push(
                             File_System.Write_File(
-                                `${files_path}/${UNIQUE_PARTS_FILE_NAME}`,
+                                `${files_path}/${Data.Consts.UNIQUE_PARTS_NAME}`,
                                 compressed_unique_part_values_json,
                             ),
                         );
                         files_to_write.push(
                             File_System.Write_File(
-                                `${files_path}/${Data.Version.Dictionary.Symbol.NAME}.${Data.Version.Dictionary.Symbol.EXTENSION}`,
+                                `${files_path}/${Data.Consts.DICTIONARY_NAME}`,
                                 compressed_dictionary_json,
-                            ),
-                        );
-                        files_to_write.push(
-                            File_System.Write_File(
-                                `${files_path}/${Data.Version.Text.Symbol.NAME}.${Data.Version.Text.Symbol.EXTENSION}`,
-                                compressed_full_text,
                             ),
                         );
                         for (let idx = 0, end = file_names.length; idx < end; idx += 1) {
@@ -517,19 +476,27 @@ async function Generate(
                                 `   File Name: ${file_name}\n` +
                                 `${Decompression_Line_Mismatches(file_text, decompressed_file_text)}`,
                             );
+                            compressed_file_texts.push(compressed_file_text);
                             files_to_write.push(
                                 File_System.Write_File(
-                                    `${files_path}/${file_name.replace(/\.[^.]*$/, `.${Data.File.Symbol.EXTENSION}`)}`,
+                                    `${files_path}/${file_name.replace(/\.[^.]*$/, `.${Data.Consts.FILE_EXTENSION}`)}`,
                                     compressed_file_text,
                                 ),
                             );
                         }
+                        const compressed_full_text: string = compressed_file_texts.join(Data.Consts.VERSION_TEXT_FILE_BREAK);
+                        files_to_write.push(
+                            File_System.Write_File(
+                                `${files_path}/${Data.Consts.VERSION_TEXT_NAME}`,
+                                compressed_full_text,
+                            ),
+                        );
                         await Promise.all(files_to_write);
                         console.log(`        Generated ${book_name}/${language_name}/${version_name}...`);
                     }
                     const version_info: Data.Version.Info.Instance = new Data.Version.Info.Instance(
                         {
-                            json: await File_System.Read_File(`${files_path}/${INFO_JSON_NAME}`),
+                            json: await File_System.Read_File(`${files_path}/${Data.Consts.INFO_JSON_NAME}`),
                         },
                     );
                     data_info.Increment_Unit_Counts(version_info.Language_Unit_Counts());

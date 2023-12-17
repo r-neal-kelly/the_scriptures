@@ -54,7 +54,7 @@ export class Instance extends Entity.Instance
     Name():
         Name
     {
-        return this.data.file.Name();
+        return this.data.file.Title();
     }
 
     Default_Language():

@@ -2,37 +2,31 @@ import { Index } from "../../types.js";
 import { Name } from "../../types.js";
 import { Path } from "../../types.js";
 
-import * as Utils from "../../utils.js";
-
 import * as Language from "../language.js";
 import * as Entity from "../entity.js";
 import * as Text from "../text.js";
-import * as Compressor from "./compressor.js";
+
+import * as Consts from "./consts.js";
 import * as Version from "./version.js";
 
 export type Leaf = Name;
 
-export enum Symbol
-{
-    EXTENSION = `comp`,
-}
-
 export class Instance extends Entity.Instance
 {
     private version: Version.Instance;
+    private title: Name;
     private name: Name;
     private index: Index;
     private path: Path;
-    private text: Text.Instance | null;
 
     constructor(
         {
             version,
-            name,
+            title,
             index,
         }: {
             version: Version.Instance,
-            name: Name,
+            title: Name,
             index: Index,
         },
     )
@@ -40,10 +34,10 @@ export class Instance extends Entity.Instance
         super();
 
         this.version = version;
-        this.name = name;
+        this.title = title;
+        this.name = `${title}.${Consts.FILE_EXTENSION}`;
         this.index = index;
-        this.path = `${version.Path()}/${name}.${Symbol.EXTENSION}`;
-        this.text = null;
+        this.path = `${version.Path()}/${this.name}`;
 
         this.Add_Dependencies(
             [
@@ -55,6 +49,12 @@ export class Instance extends Entity.Instance
         Version.Instance
     {
         return this.version;
+    }
+
+    Title():
+        Name
+    {
+        return this.title;
     }
 
     Name():
@@ -84,38 +84,12 @@ export class Instance extends Entity.Instance
     async Text():
         Promise<Text.Instance>
     {
-        await this.Ready();
-
-        return this.text as Text.Instance;
-    }
-
-    override async After_Dependencies_Are_Ready():
-        Promise<void>
-    {
-        let text_value: Text.Value | null;
-
-        const response: Response =
-            await fetch(Utils.Resolve_Path(this.Path()));
-        if (response.ok) {
-            text_value = await response.text();
-        } else {
-            text_value = null;
-        }
-
-        const dictionary: Text.Dictionary.Instance =
-            (await this.Version().Dictionary()).Text_Dictionary();
-        const compressor: Compressor.Instance =
-            await this.Version().Compressor();
-        this.text = new Text.Instance(
-            {
-                dictionary: dictionary,
-                value: compressor.Decompress_File(
-                    {
-                        dictionary: dictionary,
-                        file_value: text_value || ``,
-                    },
-                ),
-            },
+        return (
+            await this.Version().Language().Book().Data().Cache().File_Text(
+                this.Version().Path(),
+                this.Name(),
+            ) ||
+            new Text.Instance()
         );
     }
 }

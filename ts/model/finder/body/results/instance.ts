@@ -233,16 +233,7 @@ export class Instance extends Entity.Instance
             {
                 default_language_name: Language.Name.ENGLISH,
 
-                text: new Text.Instance(
-                    {
-                        dictionary: new Text.Dictionary.Instance(
-                            {
-                                json: null,
-                            },
-                        ),
-                        value: ``,
-                    },
-                ),
+                text: new Text.Instance(),
                 results: [],
                 is_showing_commands: is_showing_commands,
             },
