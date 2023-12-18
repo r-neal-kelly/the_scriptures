@@ -8,8 +8,8 @@ export const COMP_EXTENSION: Name = `comp`;
 export const JSON_EXTENSION: Name = `json`;
 
 export const DEFAULT_FETCH_ATTEMPT_LIMIT: Count = 10;
-export const DEFAULT_VERSION_CACHE_LIMIT: Count = 5;
-export const DEFAULT_FILE_CACHE_LIMIT: Count = 300;
+export const DEFAULT_VERSION_CACHE_LIMIT: Count = 10;
+export const DEFAULT_FILE_CACHE_LIMIT: Count = DEFAULT_VERSION_CACHE_LIMIT * 50;
 export const DEFAULT_VERSION_CACHE_ATTEMPT_LIMIT: Count = 3;
 
 export const INFO_TITLE: Name = `Info`;

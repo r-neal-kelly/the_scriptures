@@ -13,6 +13,14 @@ export function Assert(
     }
 }
 
+export function Print(
+    ...data: any
+):
+    void
+{
+    console.log(...data);
+}
+
 export async function Wait_Milliseconds(
     milliseconds: Integer,
 ):

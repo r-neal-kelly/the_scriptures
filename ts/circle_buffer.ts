@@ -171,7 +171,7 @@ export class Instance<Unit>
             `index is less than zero`,
         );
         Utils.Assert(
-            index < this.Count(),
+            index <= this.Count(),
             `index is greater than or equal to count`,
         );
         Utils.Assert(
@@ -179,27 +179,55 @@ export class Instance<Unit>
             `buffer has no space`,
         );
 
-        let real_index: Index = this.first_index + this.count;
-        if (real_index >= this.buffer.length) {
-            real_index -= this.buffer.length;
-        }
+        const median_index: Index = Math.floor(this.count / 2);
 
-        let remaining_count: Count = this.count - index;
-        while (remaining_count > 0) {
-            let next_real_index: Index = real_index;
+        let real_index: Index;
 
-            real_index -= 1;
-            if (real_index < 0) {
-                real_index += this.buffer.length;
+        if (index < median_index) {
+            this.first_index -= 1;
+            if (this.first_index < 0) {
+                this.first_index += this.buffer.length;
             }
 
-            this.buffer[next_real_index] = this.buffer[real_index];
+            real_index = this.first_index;
 
-            remaining_count -= 1;
+            for (
+                let remaining_count = index;
+                remaining_count > 0;
+                remaining_count -= 1
+            ) {
+                let previous_real_index: Index = real_index;
+
+                real_index += 1;
+                if (real_index >= this.buffer.length) {
+                    real_index -= this.buffer.length;
+                }
+
+                this.buffer[previous_real_index] = this.buffer[real_index];
+            }
+        } else {
+            real_index = this.first_index + this.count;
+            if (real_index >= this.buffer.length) {
+                real_index -= this.buffer.length;
+            }
+
+            for (
+                let remaining_count = this.count - index;
+                remaining_count > 0;
+                remaining_count -= 1
+            ) {
+                let next_real_index: Index = real_index;
+
+                real_index -= 1;
+                if (real_index < 0) {
+                    real_index += this.buffer.length;
+                }
+
+                this.buffer[next_real_index] = this.buffer[real_index];
+            }
         }
 
         this.buffer[real_index] = unit;
-
         this.count += 1;
     }
 
@@ -221,6 +249,8 @@ export class Instance<Unit>
             `buffer has no units`,
         );
 
+        const median_index: Index = Math.floor(this.count / 2);
+
         let real_index: Index = this.first_index + index;
         if (real_index >= this.buffer.length) {
             real_index -= this.buffer.length;
@@ -228,22 +258,44 @@ export class Instance<Unit>
 
         const unit: Unit = this.buffer[real_index] as Unit;
 
-        let remaining_count: Count = this.count - 1 - index;
-        while (remaining_count > 0) {
-            let previous_real_index: Index = real_index;
+        if (index < median_index) {
+            for (
+                let remaining_count = index;
+                remaining_count > 0;
+                remaining_count -= 1
+            ) {
+                let next_real_index: Index = real_index;
 
-            real_index += 1;
-            if (real_index >= this.buffer.length) {
-                real_index -= this.buffer.length;
+                real_index -= 1;
+                if (real_index < 0) {
+                    real_index += this.buffer.length;
+                }
+
+                this.buffer[next_real_index] = this.buffer[real_index];
             }
 
-            this.buffer[previous_real_index] = this.buffer[real_index];
+            this.first_index += 1;
+            if (this.first_index >= this.buffer.length) {
+                this.first_index -= this.buffer.length;
+            }
+        } else {
+            for (
+                let remaining_count = this.count - 1 - index;
+                remaining_count > 0;
+                remaining_count -= 1
+            ) {
+                let previous_real_index: Index = real_index;
 
-            remaining_count -= 1;
+                real_index += 1;
+                if (real_index >= this.buffer.length) {
+                    real_index -= this.buffer.length;
+                }
+
+                this.buffer[previous_real_index] = this.buffer[real_index];
+            }
         }
 
         this.buffer[real_index] = this.initial_unit;
-
         this.count -= 1;
 
         return unit;
@@ -285,11 +337,94 @@ export class Instance<Unit>
         return null;
     }
 
-    Has_Unit(
+    Has(
         unit: Unit,
     ):
         boolean
     {
         return this.Index_Of(unit) != null;
     }
+}
+
+function Test():
+    void
+{
+    {
+        const instance: Instance<number> = new Instance(
+            {
+                capacity: 6,
+                initial_unit: -1,
+            },
+        );
+
+        Utils.Assert(instance.Count() === 0);
+
+        instance.Add_At(0, 3);
+        instance.Add_At(0, 2);
+        instance.Add_At(0, 1);
+        Utils.Assert(instance.Count() === 3);
+        Utils.Assert(instance.At(0) === 1);
+        Utils.Assert(instance.At(1) === 2);
+        Utils.Assert(instance.At(2) === 3);
+
+        instance.Add_At(2, -1);
+        Utils.Assert(instance.Count() === 4);
+        Utils.Assert(instance.At(0) === 1);
+        Utils.Assert(instance.At(1) === 2);
+        Utils.Assert(instance.At(2) === -1);
+        Utils.Assert(instance.At(3) === 3);
+
+        instance.Add_At(instance.Count(), -1);
+        Utils.Assert(instance.Count() === 5);
+        Utils.Assert(instance.At(0) === 1);
+        Utils.Assert(instance.At(1) === 2);
+        Utils.Assert(instance.At(2) === -1);
+        Utils.Assert(instance.At(3) === 3);
+        Utils.Assert(instance.At(4) === -1);
+
+        instance.Add_At(1, -1);
+        Utils.Assert(instance.Count() === 6);
+        Utils.Assert(instance.Count() === instance.Capacity());
+        Utils.Assert(instance.At(0) === 1);
+        Utils.Assert(instance.At(1) === -1);
+        Utils.Assert(instance.At(2) === 2);
+        Utils.Assert(instance.At(3) === -1);
+        Utils.Assert(instance.At(4) === 3);
+        Utils.Assert(instance.At(5) === -1);
+
+        Utils.Assert(instance.Remove_At(1) === -1);
+        Utils.Assert(instance.Count() === 5);
+        Utils.Assert(instance.At(0) === 1);
+        Utils.Assert(instance.At(1) === 2);
+        Utils.Assert(instance.At(2) === -1);
+        Utils.Assert(instance.At(3) === 3);
+        Utils.Assert(instance.At(4) === -1);
+
+        Utils.Assert(instance.Remove_At(3) === 3);
+        Utils.Assert(instance.Count() === 4);
+        Utils.Assert(instance.At(0) === 1);
+        Utils.Assert(instance.At(1) === 2);
+        Utils.Assert(instance.At(2) === -1);
+        Utils.Assert(instance.At(3) === -1);
+
+        Utils.Assert(instance.Remove_At(1) === 2);
+        Utils.Assert(instance.Count() === 3);
+        Utils.Assert(instance.At(0) === 1);
+        Utils.Assert(instance.At(1) === -1);
+        Utils.Assert(instance.At(2) === -1);
+
+        Utils.Assert(instance.Remove_At(2) === -1);
+        Utils.Assert(instance.Count() === 2);
+        Utils.Assert(instance.At(0) === 1);
+        Utils.Assert(instance.At(1) === -1);
+
+        Utils.Assert(instance.Remove_At(0) === 1);
+        Utils.Assert(instance.Count() === 1);
+        Utils.Assert(instance.At(0) === -1);
+
+        Utils.Assert(instance.Remove_At(0) === -1);
+        Utils.Assert(instance.Count() === 0);
+    }
+
+    Utils.Print(`Circle_Buffer passed all tests`);
 }
