@@ -1,3 +1,8 @@
+import { Count } from "../../../types.js";
+import { Index } from "../../../types.js";
+
+import * as Utils from "../../../utils.js";
+
 import * as Entity from "../../entity.js";
 import * as Data from "../../data.js";
 import * as Search from "../../search.js";
@@ -12,7 +17,12 @@ export class Instance extends Entity.Instance
     private filter: Selector.Instance;
     private expression: Expression.Instance;
     private results: Results.Instance;
-    private is_info_waiting: boolean;
+
+    private is_waiting: boolean;
+    private waiting_milliseconds_interval: Count;
+    private waiting_percent_done: Search.Percent_Done.Instance | null;
+    private waiting_message_index: Index | null;
+    private waiting_message_count: Count | null;
 
     constructor(
         {
@@ -43,7 +53,11 @@ export class Instance extends Entity.Instance
                 is_showing_commands: false,
             },
         );
-        this.is_info_waiting = false;
+        this.is_waiting = false;
+        this.waiting_milliseconds_interval = 200;
+        this.waiting_percent_done = null;
+        this.waiting_message_index = null;
+        this.waiting_message_count = null;
 
         this.Add_Dependencies(
             [
@@ -86,23 +100,85 @@ export class Instance extends Entity.Instance
         return this.Results().Tree().Root().Is_Empty()
     }
 
-    Is_Info_Waiting():
+    Is_Waiting():
         boolean
     {
-        return this.is_info_waiting;
+        return this.is_waiting;
     }
 
-    Set_Is_Info_Waiting(
-        is_info_waiting: boolean,
+    private Set_Is_Waiting(
+        is_waiting: boolean,
     ):
         void
     {
-        this.is_info_waiting = is_info_waiting;
+        this.is_waiting = is_waiting;
+
+        if (this.is_waiting) {
+            this.waiting_percent_done = new Search.Percent_Done.Instance();
+            this.waiting_message_index = 0;
+            this.waiting_message_count = 8;
+        } else {
+            this.waiting_percent_done = null;
+            this.waiting_message_index = null;
+            this.waiting_message_count = null;
+        }
+    }
+
+    Waiting_Milliseconds_Interval():
+        Count
+    {
+        return this.waiting_milliseconds_interval;
+    }
+
+    Waiting_Percent_Done():
+        Search.Percent_Done.Instance
+    {
+        Utils.Assert(
+            this.Is_Waiting(),
+            `does not have percent_done when not waiting`,
+        );
+        Utils.Assert(
+            this.waiting_percent_done != null,
+            `waiting_percent_done should not be null`,
+        );
+
+        return this.waiting_percent_done as Search.Percent_Done.Instance;
+    }
+
+    Waiting_Message():
+        string
+    {
+        Utils.Assert(
+            this.Is_Waiting(),
+            `does not have message when not waiting`,
+        );
+        Utils.Assert(
+            this.waiting_message_index != null,
+            `waiting_message_index should not be null`,
+        );
+        Utils.Assert(
+            this.waiting_message_count != null,
+            `waiting_message_count should not be null`,
+        );
+
+        const animation: Array<string> =
+            new Array(this.waiting_message_count as Count);
+
+        animation.fill(`.`, 0, animation.length);
+        animation[this.waiting_message_index as Index] = `📝`; // 📝, ✎
+        (this.waiting_message_index as Index) += 1;
+        if ((this.waiting_message_index as Index) >= (this.waiting_message_count as Count)) {
+            this.waiting_message_index = 0;
+        }
+
+        return `Searching ${animation.join(``)} ${this.Waiting_Percent_Done().Value()}%`;
     }
 
     async Search():
         Promise<void>
     {
+        this.Set_Is_Waiting(true);
+
         const filter_file_or_versions: Data.File.Instance | Array<Data.Version.Instance> =
             this.Filter().File_Or_Versions();
         const expression_value: string =
@@ -128,12 +204,11 @@ export class Instance extends Entity.Instance
                 }
             }
         } else {
-            // It might be good to async iterate and wait a bit, that way
-            // the view can actually render what it has after each iteration.
-            // If we hit a parser error, we simply stop the iteration.
             versions_results = await Search.Singleton().Data_Versions(
                 filter_file_or_versions as Array<Data.Version.Instance>,
                 expression_value,
+                this.Waiting_Milliseconds_Interval(),
+                this.Waiting_Percent_Done(),
             );
         }
 
@@ -161,5 +236,7 @@ export class Instance extends Entity.Instance
                 },
             );
         }
+
+        this.Set_Is_Waiting(false);
     }
 }

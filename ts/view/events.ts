@@ -24,6 +24,7 @@ export const BROWSER_COMMANDER_PREVIOUS: ID = Unique_ID.New();
 export const BROWSER_COMMANDER_NEXT: ID = Unique_ID.New();
 
 export const FINDER_BODY_BEFORE_SEARCH: ID = Unique_ID.New();
+export const FINDER_BODY_DURING_SEARCH: ID = Unique_ID.New();
 export const FINDER_BODY_AFTER_SEARCH: ID = Unique_ID.New();
 export const FINDER_BODY_EXPRESSION_ENTER: ID = Unique_ID.New();
 export const FINDER_BODY_EXPRESSION_CHANGE: ID = Unique_ID.New();

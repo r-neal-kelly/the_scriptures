@@ -35,16 +35,17 @@ export async function Wait_Milliseconds(
         `Can't wait for infinite milliseconds.`,
     );
 
-    return new Promise(
-        function (
-            resolve,
-            reject,
-        ):
-            void
-        {
-            setTimeout(resolve, milliseconds);
-        },
-    );
+    if (milliseconds > 0) {
+        return new Promise(
+            function (
+                resolve,
+            ):
+                void
+            {
+                setTimeout(resolve, milliseconds);
+            },
+        );
+    }
 }
 
 export async function Wait_Seconds(
@@ -65,7 +66,9 @@ export async function Wait_Seconds(
         `Can't convert seconds to milliseconds, it's too big.`,
     );
 
-    return Wait_Milliseconds(seconds * 1000);
+    if (seconds > 0) {
+        return Wait_Milliseconds(seconds * 1000);
+    }
 }
 
 function Is_Type(

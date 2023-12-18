@@ -138,6 +138,11 @@ export class Instance extends Entity.Instance
                     color: white;
                     text-align: center;
                     font-size: 0.8em;
+
+                    -webkit-user-select: none;
+                    -moz-user-select: none;
+                    -ms-user-select: none;
+                    user-select: none;
                 }
 
                 .Results {
@@ -263,7 +268,7 @@ export class Instance extends Entity.Instance
     private async On_Finder_Body_Expression_Enter():
         Promise<void>
     {
-        this.Model().Set_Is_Info_Waiting(true);
+        const model: Model.Instance = this.Model();
 
         await this.Send(
             new Event.Info(
@@ -278,9 +283,24 @@ export class Instance extends Entity.Instance
             ),
         );
 
-        await this.Model().Search();
+        model.Search();
 
-        this.Model().Set_Is_Info_Waiting(false);
+        while (model.Is_Waiting()) {
+            await this.Send(
+                new Event.Info(
+                    {
+                        affix: Events.FINDER_BODY_DURING_SEARCH,
+                        suffixes: [
+                            this.Finder().ID(),
+                        ],
+                        type: Event.Type.EXCLUSIVE,
+                        data: {},
+                    },
+                ),
+            );
+
+            await Utils.Wait_Milliseconds(model.Waiting_Milliseconds_Interval());
+        }
 
         await this.Send(
             new Event.Info(

@@ -1,4 +1,3 @@
-import * as Utils from "../../../utils.js";
 import * as Event from "../../../event.js";
 
 import * as Model from "../../../model/finder/body.js";
@@ -42,10 +41,10 @@ export class Instance extends Entity.Instance
                 {
                     event_name: new Event.Name(
                         Event.Prefix.ON,
-                        Events.FINDER_BODY_BEFORE_SEARCH,
+                        Events.FINDER_BODY_DURING_SEARCH,
                         this.Body().Finder().ID(),
                     ),
-                    event_handler: this.On_Finder_Body_Before_Search,
+                    event_handler: this.On_Finder_Body_During_Search,
                     event_priority: 0,
                 },
             ),
@@ -66,14 +65,20 @@ export class Instance extends Entity.Instance
     override On_Refresh():
         void
     {
-        if (this.Model().Has_Empty_Results()) {
-            if (this.Model().Expression().Value() === ``) {
-                this.Element().textContent = null;
-            } else {
-                this.Element().textContent = this.Model().Results().Counts_As_String();
-            }
+        const model: Model.Instance = this.Model();
+
+        if (model.Is_Waiting()) {
+            this.Element().textContent = model.Waiting_Message();
         } else {
-            this.Element().textContent = this.Model().Results().Counts_As_String();
+            if (model.Has_Empty_Results()) {
+                if (model.Expression().Value() === ``) {
+                    this.Element().textContent = null;
+                } else {
+                    this.Element().textContent = model.Results().Counts_As_String();
+                }
+            } else {
+                this.Element().textContent = model.Results().Counts_As_String();
+            }
         }
     }
 
@@ -85,9 +90,9 @@ export class Instance extends Entity.Instance
 
         classes.push(`Info`);
         if (
-            !this.Model().Is_Info_Waiting() &&
-            this.Model().Has_Empty_Results() &&
-            this.Model().Expression().Value() === ``
+            !model.Is_Waiting() &&
+            model.Has_Empty_Results() &&
+            model.Expression().Value() === ``
         ) {
             classes.push(`Invisible`);
         }
@@ -95,30 +100,10 @@ export class Instance extends Entity.Instance
         return classes;
     }
 
-    private async On_Finder_Body_Before_Search():
+    private async On_Finder_Body_During_Search():
         Promise<void>
     {
         this.Refresh();
-        (
-            async function (
-                this: Instance,
-            ):
-                Promise<void>
-            {
-                while (this.Is_Alive() && this.Model().Is_Info_Waiting()) {
-                    const element: HTMLElement = this.Element();
-                    if (element.textContent === `Searching...`) {
-                        element.textContent = `Searching.`;
-                    } else if (element.textContent === `Searching.`) {
-                        element.textContent = `Searching..`;
-                    } else {
-                        element.textContent = `Searching...`;
-                    }
-
-                    await Utils.Wait_Milliseconds(200);
-                }
-            }.bind(this)
-        )();
     }
 
     private async On_Finder_Body_After_Search():
