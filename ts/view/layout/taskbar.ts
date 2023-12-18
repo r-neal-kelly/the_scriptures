@@ -79,13 +79,6 @@ export class Instance extends Entity.Instance
                 }
 
                 .Tabs {
-                    /*
-                    display: flex;
-                    flex-direction: row;
-                    justify-content: center;
-                    align-items: center;
-                    */
-
                     width: 100%;
                     height: 100%;
 
@@ -94,6 +87,7 @@ export class Instance extends Entity.Instance
 
                     text-align: center;
                     text-wrap: nowrap;
+                    white-space: nowrap;
                 }
 
                 .Tab {
