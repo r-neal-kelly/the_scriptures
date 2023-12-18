@@ -54,7 +54,7 @@ export class Instance extends Entity.Instance
             },
         );
         this.is_waiting = false;
-        this.waiting_milliseconds_interval = 200;
+        this.waiting_milliseconds_interval = 100;
         this.waiting_percent_done = null;
         this.waiting_message_index = null;
         this.waiting_message_count = null;
