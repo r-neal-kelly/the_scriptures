@@ -448,7 +448,7 @@ export class Match
 
 export class Instance
 {
-    private line: Text.Line.Instance;
+    private line_index: Index;
     private total_match_count: Count;
     private matches: {
         [column_index: Index]: {
@@ -460,7 +460,7 @@ export class Instance
         runner: Runner,
     )
     {
-        this.line = runner.Line();
+        this.line_index = runner.Line().Index();
         this.total_match_count = runner.Match_Count();
         this.matches = {};
 
@@ -491,27 +491,10 @@ export class Instance
         }
     }
 
-    Line():
-        Text.Line.Instance
+    Line_Index():
+        Index
     {
-        return this.line;
-    }
-
-    Column(
-        column_index: Index,
-    ):
-        Text.Column.Instance
-    {
-        return this.Line().Column(column_index);
-    }
-
-    Row(
-        column_index: Index,
-        row_index: Index,
-    ):
-        Text.Row.Instance
-    {
-        return this.Line().Column(column_index).Row(row_index);
+        return this.line_index;
     }
 
     Total_Match_Count():

@@ -78,7 +78,7 @@ export class Instance extends Entity.Instance
 
         for (let idx = 0, end = data_version.File_Count(); idx < end; idx += 1) {
             const file_result: Array<Result.Instance> | Parser.Help =
-                this.Text(await data_version.File_At(idx).Text(), expression);
+                await this.Data_File(data_version.File_At(idx), expression);
             if (file_result instanceof Parser.Help) {
                 return file_result as Parser.Help;
             } else if (file_result.length > 0) {

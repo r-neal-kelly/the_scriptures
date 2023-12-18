@@ -2,6 +2,7 @@ import { Index } from "../../../types.js";
 
 import * as Utils from "../../../utils.js";
 
+import * as Text from "../../text.js";
 import * as Search from "../../search.js";
 
 import * as Text_Base from "../text_base.js";
@@ -19,10 +20,12 @@ export class Instance extends Text_Base.Line.Instance<
         {
             buffer,
             index,
+            text,
             result,
         }: {
             buffer: Buffer.Instance,
             index: Index,
+            text: Text.Line.Instance | null,
             result: Search.Result.Instance | null,
         },
     )
@@ -31,9 +34,7 @@ export class Instance extends Text_Base.Line.Instance<
             {
                 buffer: buffer,
                 index: index,
-                text: result ?
-                    result.Line() :
-                    null,
+                text: text,
             },
         );
 

@@ -51,13 +51,14 @@ export class Instance extends Text_Base.Instance<
             result_idx += 1
         ) {
             const result: Search.Result.Instance = results[result_idx];
-            const result_line_idx: Index = result.Line().Index();
+            const result_line_idx: Index = result.Line_Index();
             while (line_idx < result_line_idx) {
                 this.Push_Line(
                     new Line.Instance(
                         {
                             buffer: this,
                             index: line_idx,
+                            text: null,
                             result: null,
                         },
                     ),
@@ -69,6 +70,7 @@ export class Instance extends Text_Base.Instance<
                     {
                         buffer: this,
                         index: result_line_idx,
+                        text: text.Line(result_line_idx),
                         result: result,
                     },
                 ),
@@ -94,6 +96,7 @@ export class Instance extends Text_Base.Instance<
             {
                 buffer: this,
                 index: line_index,
+                text: null,
                 result: null,
             },
         );
