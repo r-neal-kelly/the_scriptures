@@ -9,7 +9,7 @@ export const PATH: Path = `data`;
 export const COMP_EXTENSION: Name = `comp`;
 export const JSON_EXTENSION: Name = `json`;
 
-export const DEFAULT_FETCH_ATTEMPT_LIMIT: Count = 10;
+export const DEFAULT_FETCH_ATTEMPT_LIMIT: Count = 2;
 export const DEFAULT_VERSION_CACHE_LIMIT: Count = 10;
 export const DEFAULT_FILE_CACHE_LIMIT: Count = NUMBER_TO_BE_REPLACED;
 export const DEFAULT_VERSION_CACHE_ATTEMPT_LIMIT: Count = 3;

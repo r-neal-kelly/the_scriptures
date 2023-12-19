@@ -242,11 +242,21 @@ export class Instance extends Entity.Instance implements Public_i
         Promise<string | null>
     {
         if (fetch_attempt_count < fetch_attempt_limit) {
-            const response: Response =
-                await fetch(Utils.Resolve_Path(path));
-            if (response.ok) {
-                return await response.text();
-            } else {
+            try {
+                const response: Response =
+                    await fetch(Utils.Resolve_Path(path));
+                if (response.ok) {
+                    return await response.text();
+                } else {
+                    return this.String(
+                        path,
+                        {
+                            fetch_attempt_count: fetch_attempt_count + 1,
+                            fetch_attempt_limit: fetch_attempt_limit,
+                        },
+                    );
+                }
+            } catch {
                 return this.String(
                     path,
                     {
