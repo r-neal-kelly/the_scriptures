@@ -87,7 +87,7 @@ export abstract class Instance<
     Column_Buffer_Count():
         Count
     {
-        return Data.Singleton().Info().Avg_Column_Count(
+        return Data.Singleton().Info().Average_Column_Count(
             {
                 line_index: this.Index(),
             },

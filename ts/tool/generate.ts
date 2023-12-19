@@ -511,6 +511,7 @@ async function Generate(
                     data_info.Increment_Line_Counts(version_info.Language_Line_Counts());
                     data_info.Increment_File_Counts(version_info.Language_File_Counts());
                     data_info.Increment_Book_Count(language_name, 1);
+                    data_info.Update_Max_File_Count(version_info.Total_File_Count());
                     data_info.Update_Buffer_Counts(version_info);
                 }
             }

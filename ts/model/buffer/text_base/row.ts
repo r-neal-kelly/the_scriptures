@@ -113,7 +113,7 @@ export abstract class Instance<
     Segment_Buffer_Count():
         Count
     {
-        return Data.Singleton().Info().Avg_Macro_Segment_Count(
+        return Data.Singleton().Info().Average_Macro_Segment_Count(
             {
                 line_index: this.Column().Line().Index(),
                 column_index: this.Column().Index(),

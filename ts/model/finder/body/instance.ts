@@ -4,6 +4,7 @@ import { Index } from "../../../types.js";
 import * as Utils from "../../../utils.js";
 
 import * as Entity from "../../entity.js";
+import * as Language from "../../language.js";
 import * as Data from "../../data.js";
 import * as Search from "../../search.js";
 import * as Selector from "../../selector.js";
@@ -38,6 +39,11 @@ export class Instance extends Entity.Instance
         this.filter = new Selector.Instance(
             {
                 does_smart_item_selection: false,
+                selection: new Data.Selection.Name(
+                    {
+                        language: Language.Name.ENGLISH,
+                    },
+                ),
             },
         );
         this.expression = new Expression.Instance(
@@ -58,6 +64,12 @@ export class Instance extends Entity.Instance
         this.waiting_percent_done = null;
         this.waiting_message_index = null;
         this.waiting_message_count = null;
+
+        // I presume because of the view code, but can't check that right now.
+        Utils.Assert(
+            this.waiting_milliseconds_interval > 0,
+            `need a waiting_milliseconds_interval of at least 1 to avoid infinite loops`,
+        );
 
         this.Add_Dependencies(
             [

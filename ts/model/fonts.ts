@@ -1031,9 +1031,14 @@ export class Instance
     }
 }
 
-const SINGLETON: Instance = new Instance();
+let singleton: Instance | null = null;
+
 export function Singleton():
     Instance
 {
-    return SINGLETON;
+    if (singleton == null) {
+        singleton = new Instance();
+    }
+
+    return singleton;
 }

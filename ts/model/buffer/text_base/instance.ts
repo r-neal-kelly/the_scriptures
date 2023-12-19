@@ -78,7 +78,7 @@ export abstract class Instance<
     Line_Buffer_Count():
         Count
     {
-        return Data.Singleton().Info().Avg_Line_Count();
+        return Data.Singleton().Info().Average_Line_Count();
     }
 
     Line_Count():

@@ -11,15 +11,15 @@ export class Name
 
     constructor(
         {
-            book,
-            language,
-            version,
-            file,
+            book = null,
+            language = null,
+            version = null,
+            file = null,
         }: {
-            book: Types.Name | null;
-            language: Types.Name | null;
-            version: Types.Name | null;
-            file: Types.Name | null;
+            book?: Types.Name | null;
+            language?: Types.Name | null;
+            version?: Types.Name | null;
+            file?: Types.Name | null;
         },
     )
     {
@@ -109,15 +109,15 @@ export class Index
 
     constructor(
         {
-            book,
-            language,
-            version,
-            file,
+            book = null,
+            language = null,
+            version = null,
+            file = null,
         }: {
-            book: Types.Index | null;
-            language: Types.Index | null;
-            version: Types.Index | null;
-            file: Types.Index | null;
+            book?: Types.Index | null;
+            language?: Types.Index | null;
+            version?: Types.Index | null;
+            file?: Types.Index | null;
         },
     )
     {

@@ -22,7 +22,8 @@ export class Instance<Unit>
     {
         Utils.Assert(
             capacity > 0,
-            `capacity must be greater than 0`,
+            `capacity must be greater than 0\n` +
+            `given capacity: ${capacity}`,
         );
 
         this.buffer = new Array(capacity);

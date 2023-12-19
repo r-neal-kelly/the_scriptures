@@ -50,6 +50,7 @@ else {
             Write-Host "    Minifying all JavaScript files..."
             node ./js/tool/minify.js
         }
+
         if ($release.IsPresent) {
             Write-Host "    Removing Asserts from JavaScript files..."
             node ./js/tool/remove_asserts.js
@@ -61,6 +62,9 @@ else {
         elseif ($generate.IsPresent) {
             node ./js/tool/generate.js
         }
+
+        Write-Host "    Updating Data Consts..."
+        node ./js/tool/update_data_consts.js
 
         Write-Host "    Done building."
     }

@@ -41,14 +41,13 @@ export class Instance extends Entity.Instance
             `
                 .Tree {
                     border-style: solid;
-                    border-width: 0 1px 1px 0;
+                    border-width: 0 1px 0 0;
                     border-color: hsl(255, 100%, 100%, 0.7);
                 }
 
                 .Branches, .Leaves {
-                    margin-bottom: 3px;
                     padding-top: 3px;
-                    padding-bottom: 3px;
+                    padding-bottom: 6px;
                     padding-left: 6px;
 
                     border-style: solid;

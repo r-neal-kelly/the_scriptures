@@ -100,7 +100,7 @@ export abstract class Instance<
     Row_Buffer_Count():
         Count
     {
-        return Data.Singleton().Info().Avg_Row_Count(
+        return Data.Singleton().Info().Average_Row_Count(
             {
                 line_index: this.Line().Index(),
                 column_index: this.Index(),

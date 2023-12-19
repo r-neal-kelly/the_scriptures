@@ -70,6 +70,8 @@ export class Instance
     private total_file_count: Count;
     private total_book_count: Count;
 
+    private max_file_count: Count;
+
     private language_unit_counts: { [language_name: Name]: Count };
     private language_point_counts: { [language_name: Name]: Count };
     private language_letter_counts: { [language_name: Name]: Count };
@@ -116,6 +118,8 @@ export class Instance
             this.total_file_count = primitive.total_file_count;
             this.total_book_count = primitive.total_book_count;
 
+            this.max_file_count = primitive.max_file_count;
+
             this.language_unit_counts = primitive.language_unit_counts;
             this.language_point_counts = primitive.language_point_counts;
             this.language_letter_counts = primitive.language_letter_counts;
@@ -154,6 +158,8 @@ export class Instance
             this.total_line_count = 0;
             this.total_file_count = 0;
             this.total_book_count = 0;
+
+            this.max_file_count = 0;
 
             this.language_unit_counts = {};
             this.language_point_counts = {};
@@ -1463,6 +1469,22 @@ export class Instance
         return Utils.Add_Commas_To_Number(this.Total_File_Count());
     }
 
+    Max_File_Count():
+        Count
+    {
+        return this.max_file_count;
+    }
+
+    Update_Max_File_Count(
+        file_count: Count,
+    ):
+        void
+    {
+        if (file_count > this.max_file_count) {
+            this.max_file_count = file_count;
+        }
+    }
+
     Language_File_Count(
         language_name: Name,
     ):
@@ -1652,7 +1674,7 @@ export class Instance
         return this.buffer_counts;
     }
 
-    Avg_Line_Count():
+    Average_Line_Count():
         Count
     {
         return this.Buffer_Counts()[COMPACT_AVG_LINE_COUNT];
@@ -1670,7 +1692,7 @@ export class Instance
         return this.Buffer_Counts()[COMPACT_LINES][line_index];
     }
 
-    Avg_Column_Count(
+    Average_Column_Count(
         {
             line_index,
         }: {
@@ -1704,7 +1726,7 @@ export class Instance
         )[COMPACT_COLUMNS][column_index];
     }
 
-    Avg_Row_Count(
+    Average_Row_Count(
         {
             line_index,
             column_index,
@@ -1744,7 +1766,7 @@ export class Instance
         )[COMPACT_MACRO_ROWS][row_index];
     }
 
-    Avg_Macro_Segment_Count(
+    Average_Macro_Segment_Count(
         {
             line_index,
             column_index,
@@ -1790,7 +1812,7 @@ export class Instance
         )[COMPACT_SEGMENTS][segment_index];
     }
 
-    Avg_Macro_Item_Count(
+    Average_Macro_Item_Count(
         {
             line_index,
             column_index,

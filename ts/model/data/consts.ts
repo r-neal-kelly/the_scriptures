@@ -2,6 +2,8 @@ import { Count } from "../../types.js";
 import { Name } from "../../types.js";
 import { Path } from "../../types.js";
 
+const NUMBER_TO_BE_REPLACED: number = -1;
+
 export const PATH: Path = `data`;
 
 export const COMP_EXTENSION: Name = `comp`;
@@ -9,7 +11,7 @@ export const JSON_EXTENSION: Name = `json`;
 
 export const DEFAULT_FETCH_ATTEMPT_LIMIT: Count = 10;
 export const DEFAULT_VERSION_CACHE_LIMIT: Count = 10;
-export const DEFAULT_FILE_CACHE_LIMIT: Count = DEFAULT_VERSION_CACHE_LIMIT * 50;
+export const DEFAULT_FILE_CACHE_LIMIT: Count = NUMBER_TO_BE_REPLACED;
 export const DEFAULT_VERSION_CACHE_ATTEMPT_LIMIT: Count = 3;
 
 export const INFO_TITLE: Name = `Info`;

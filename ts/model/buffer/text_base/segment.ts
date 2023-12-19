@@ -122,7 +122,7 @@ export abstract class Instance<
     Item_Buffer_Count():
         Count
     {
-        return Data.Singleton().Info().Avg_Macro_Item_Count(
+        return Data.Singleton().Info().Average_Macro_Item_Count(
             {
                 line_index: this.Row().Column().Line().Index(),
                 column_index: this.Row().Column().Index(),
