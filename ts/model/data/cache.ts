@@ -60,7 +60,7 @@ type Version_ID =
 class Version_Cache
 {
     private id: Version_ID;
-    private compressor: Version.Compressor.Instance;
+    private decompressor: Version.Decompressor.Instance;
     private dictionary: Text.Dictionary.Instance;
     private reference_count: Count;
 
@@ -77,7 +77,7 @@ class Version_Cache
     )
     {
         this.id = id;
-        this.compressor = new Version.Compressor.Instance(
+        this.decompressor = new Version.Decompressor.Instance(
             {
                 unique_parts: JSON.parse(
                     Compressor.LZSS_Decompress(compressed_unique_parts_json),
@@ -86,7 +86,7 @@ class Version_Cache
         );
         this.dictionary = new Text.Dictionary.Instance(
             {
-                json: this.compressor.Decompress_Dictionary(
+                json: this.decompressor.Decompress_Dictionary(
                     {
                         dictionary_value: compressed_dictionary_json,
                     },
@@ -102,10 +102,10 @@ class Version_Cache
         return this.id;
     }
 
-    Compressor():
-        Version.Compressor.Instance
+    Decompressor():
+        Version.Decompressor.Instance
     {
-        return this.compressor;
+        return this.decompressor;
     }
 
     Dictionary():
@@ -1027,7 +1027,7 @@ export class Instance extends Entity.Instance implements Public_i
             return new Text.Instance(
                 {
                     dictionary: version_cache.Dictionary(),
-                    value: version_cache.Compressor().Decompress_File(
+                    value: version_cache.Decompressor().Decompress_File(
                         {
                             dictionary: version_cache.Dictionary(),
                             file_value: file_cache.Compressed_File_Text(),
@@ -1041,7 +1041,7 @@ export class Instance extends Entity.Instance implements Public_i
         }
     }
 
-    async Transfer_File(
+    async File_Transfer(
         version_path: Path,
         file_name: Name,
     ):
@@ -1061,7 +1061,7 @@ export class Instance extends Entity.Instance implements Public_i
 
             return new File.Transfer.Instance(
                 {
-                    compressor: version_cache.Compressor(),
+                    decompressor: version_cache.Decompressor(),
                     dictionary: version_cache.Dictionary(),
                     value: file_cache.Compressed_File_Text(),
                 },

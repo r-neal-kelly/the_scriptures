@@ -1,0 +1,1 @@
+export var Compressed_Symbol;!function(E){E[E.NEWLINE=0]="NEWLINE",E[E.VERBATIM_OPEN=1]="VERBATIM_OPEN",E[E.VERBATIM_CLOSE=2]="VERBATIM_CLOSE",E[E._COUNT_=3]="_COUNT_"}(Compressed_Symbol||(Compressed_Symbol={}));

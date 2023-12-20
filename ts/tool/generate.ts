@@ -410,6 +410,11 @@ async function Generate(
                                 unique_parts: unique_part_values,
                             },
                         );
+                        const decompressor: Data.Version.Decompressor.Instance = new Data.Version.Decompressor.Instance(
+                            {
+                                unique_parts: unique_part_values,
+                            },
+                        );
                         const compressed_dictionary_json: Text.Value =
                             compressor.Compress_Dictionary(
                                 {
@@ -417,7 +422,7 @@ async function Generate(
                                 },
                             );
                         const decompressed_dictionary_json: Text.Value =
-                            compressor.Decompress_Dictionary(
+                            decompressor.Decompress_Dictionary(
                                 {
                                     dictionary_value: compressed_dictionary_json,
                                 },
@@ -461,7 +466,7 @@ async function Generate(
                                     },
                                 );
                             const decompressed_file_text: string =
-                                compressor.Decompress_File(
+                                decompressor.Decompress_File(
                                     {
                                         dictionary: dictionary,
                                         file_value: compressed_file_text,

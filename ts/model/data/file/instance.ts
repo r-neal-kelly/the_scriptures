@@ -99,7 +99,7 @@ export class Instance extends Entity.Instance
         Promise<Transfer.Instance>
     {
         return (
-            await this.Version().Language().Book().Data().Cache().Transfer_File(
+            await this.Version().Language().Book().Data().Cache().File_Transfer(
                 this.Version().Path(),
                 this.Name(),
             ) ||
