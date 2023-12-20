@@ -47,7 +47,7 @@ export class Instance
             json = null,
         }: {
             json?: string | null,
-        },
+        } = {},
     )
     {
         this.info = json != null ?

@@ -13,12 +13,17 @@ import * as Text from "../text.js";
 import * as Consts from "./consts.js";
 import * as Info from "./info.js";
 import * as Version from "./version.js";
+import * as File from "./file.js";
 
 export interface Public_i
 {
     Info(
         force_download: boolean,
     ): Promise<Info.Instance | null>;
+
+    Dictionary(
+        version_path: Path,
+    ): Promise<Text.Dictionary.Instance | null>;
 
     /*
         This is intended to be called before requesting
@@ -518,167 +523,47 @@ export class Instance extends Entity.Instance implements Public_i
         this.Remove_File_Cache_By_ID(file_cache.ID());
     }
 
-    /*
-        It's important to keep in mind that other async
-        contexts can actually alter the underlying buffers
-        and caches. So we have to do a lot of extra checking
-        after each fetch request to make sure that we don't
-        destroy our model and therefore keep its integrity.
-    */
-    private async Version_And_File_Cache(
+    async Dictionary(
         version_path: Path,
-        file_path: Path,
     ):
-        Promise<[Version_Cache, File_Cache] | null>
+        Promise<Text.Dictionary.Instance | null>
     {
-        // the version cache is guaranteed to be there if
-        // any of its file caches are present.
-        if (!this.Has_File_Cache(file_path)) {
-            if (this.Has_Version_Cache(version_path)) {
-                const compressed_file_text: string | null =
-                    await this.String(file_path);
+        if (this.Has_Version_Cache(version_path)) {
+            return this.Version_Cache(version_path).Dictionary();
+        } else {
+            const [
+                compressed_unique_parts_json,
+                compressed_dictionary_json,
+            ]: Array<string | null> = await Promise.all(
+                [
+                    this.String(`${version_path}/${Consts.UNIQUE_PARTS_NAME}`),
+                    this.String(`${version_path}/${Consts.DICTIONARY_NAME}`),
+                ],
+            );
 
-                if (this.Has_Version_Cache(version_path)) {
-                    if (!this.Has_File_Cache(file_path)) {
-                        if (compressed_file_text != null) {
-                            this.Add_File_Cache(
-                                new File_Cache(
-                                    {
-                                        id: file_path,
-                                        version_id: version_path,
-                                        compressed_file_text: compressed_file_text,
-                                    },
-                                ),
-                            );
-                        } else {
-                            return null;
-                        }
-                    }
-                } else if (compressed_file_text != null) {
-                    const [
-                        compressed_unique_parts_json,
-                        compressed_dictionary_json,
-                    ]: Array<string | null> = await Promise.all(
-                        [
-                            this.String(`${version_path}/${Consts.UNIQUE_PARTS_NAME}`),
-                            this.String(`${version_path}/${Consts.DICTIONARY_NAME}`),
-                        ],
+            if (this.Has_Version_Cache(version_path)) {
+                return this.Version_Cache(version_path).Dictionary();
+            } else {
+                if (
+                    compressed_unique_parts_json != null &&
+                    compressed_dictionary_json != null
+                ) {
+                    this.Add_Version_Cache(
+                        new Version_Cache(
+                            {
+                                id: version_path,
+                                compressed_unique_parts_json: compressed_unique_parts_json,
+                                compressed_dictionary_json: compressed_dictionary_json,
+                            },
+                        ),
                     );
 
-                    if (this.Has_Version_Cache(version_path)) {
-                        if (!this.Has_File_Cache(file_path)) {
-                            this.Add_File_Cache(
-                                new File_Cache(
-                                    {
-                                        id: file_path,
-                                        version_id: version_path,
-                                        compressed_file_text: compressed_file_text,
-                                    },
-                                ),
-                            );
-                        }
-                    } else {
-                        if (
-                            compressed_unique_parts_json != null &&
-                            compressed_dictionary_json != null
-                        ) {
-                            this.Add_Version_Cache(
-                                new Version_Cache(
-                                    {
-                                        id: version_path,
-                                        compressed_unique_parts_json: compressed_unique_parts_json,
-                                        compressed_dictionary_json: compressed_dictionary_json,
-                                    },
-                                ),
-                            );
-                            Utils.Assert(
-                                !this.Has_File_Cache(file_path),
-                                `should not have file cache at this point!`,
-                            );
-                            this.Add_File_Cache(
-                                new File_Cache(
-                                    {
-                                        id: file_path,
-                                        version_id: version_path,
-                                        compressed_file_text: compressed_file_text,
-                                    },
-                                ),
-                            );
-                        } else {
-                            return null;
-                        }
-                    }
+                    return this.Version_Cache(version_path).Dictionary();
                 } else {
                     return null;
                 }
-            } else {
-                const [
-                    compressed_unique_parts_json,
-                    compressed_dictionary_json,
-                    compressed_file_text,
-                ]: Array<string | null> = await Promise.all(
-                    [
-                        this.String(`${version_path}/${Consts.UNIQUE_PARTS_NAME}`),
-                        this.String(`${version_path}/${Consts.DICTIONARY_NAME}`),
-                        this.String(file_path),
-                    ],
-                );
-
-                if (this.Has_Version_Cache(version_path)) {
-                    if (!this.Has_File_Cache(file_path)) {
-                        if (compressed_file_text != null) {
-                            this.Add_File_Cache(
-                                new File_Cache(
-                                    {
-                                        id: file_path,
-                                        version_id: version_path,
-                                        compressed_file_text: compressed_file_text,
-                                    },
-                                ),
-                            );
-                        } else {
-                            return null;
-                        }
-                    }
-                } else {
-                    if (
-                        compressed_unique_parts_json != null &&
-                        compressed_dictionary_json != null &&
-                        compressed_file_text != null
-                    ) {
-                        this.Add_Version_Cache(
-                            new Version_Cache(
-                                {
-                                    id: version_path,
-                                    compressed_unique_parts_json: compressed_unique_parts_json,
-                                    compressed_dictionary_json: compressed_dictionary_json,
-                                },
-                            ),
-                        );
-                        Utils.Assert(
-                            !this.Has_File_Cache(file_path),
-                            `should not have file cache at this point!`,
-                        );
-                        this.Add_File_Cache(
-                            new File_Cache(
-                                {
-                                    id: file_path,
-                                    version_id: version_path,
-                                    compressed_file_text: compressed_file_text,
-                                },
-                            ),
-                        );
-                    } else {
-                        return null;
-                    }
-                }
             }
         }
-
-        return [
-            this.Version_Cache(version_path),
-            this.File_Cache(file_path),
-        ];
     }
 
     private Add_Missing_File_Caches(
@@ -957,6 +842,169 @@ export class Instance extends Entity.Instance implements Public_i
         }
     }
 
+    /*
+        It's important to keep in mind that other async
+        contexts can actually alter the underlying buffers
+        and caches. So we have to do a lot of extra checking
+        after each fetch request to make sure that we don't
+        destroy our model and therefore keep its integrity.
+    */
+    private async Version_And_File_Cache(
+        version_path: Path,
+        file_path: Path,
+    ):
+        Promise<[Version_Cache, File_Cache] | null>
+    {
+        // the version cache is guaranteed to be there if
+        // any of its file caches are present.
+        if (!this.Has_File_Cache(file_path)) {
+            if (this.Has_Version_Cache(version_path)) {
+                const compressed_file_text: string | null =
+                    await this.String(file_path);
+
+                if (this.Has_Version_Cache(version_path)) {
+                    if (!this.Has_File_Cache(file_path)) {
+                        if (compressed_file_text != null) {
+                            this.Add_File_Cache(
+                                new File_Cache(
+                                    {
+                                        id: file_path,
+                                        version_id: version_path,
+                                        compressed_file_text: compressed_file_text,
+                                    },
+                                ),
+                            );
+                        } else {
+                            return null;
+                        }
+                    }
+                } else if (compressed_file_text != null) {
+                    const [
+                        compressed_unique_parts_json,
+                        compressed_dictionary_json,
+                    ]: Array<string | null> = await Promise.all(
+                        [
+                            this.String(`${version_path}/${Consts.UNIQUE_PARTS_NAME}`),
+                            this.String(`${version_path}/${Consts.DICTIONARY_NAME}`),
+                        ],
+                    );
+
+                    if (this.Has_Version_Cache(version_path)) {
+                        if (!this.Has_File_Cache(file_path)) {
+                            this.Add_File_Cache(
+                                new File_Cache(
+                                    {
+                                        id: file_path,
+                                        version_id: version_path,
+                                        compressed_file_text: compressed_file_text,
+                                    },
+                                ),
+                            );
+                        }
+                    } else {
+                        if (
+                            compressed_unique_parts_json != null &&
+                            compressed_dictionary_json != null
+                        ) {
+                            this.Add_Version_Cache(
+                                new Version_Cache(
+                                    {
+                                        id: version_path,
+                                        compressed_unique_parts_json: compressed_unique_parts_json,
+                                        compressed_dictionary_json: compressed_dictionary_json,
+                                    },
+                                ),
+                            );
+                            Utils.Assert(
+                                !this.Has_File_Cache(file_path),
+                                `should not have file cache at this point!`,
+                            );
+                            this.Add_File_Cache(
+                                new File_Cache(
+                                    {
+                                        id: file_path,
+                                        version_id: version_path,
+                                        compressed_file_text: compressed_file_text,
+                                    },
+                                ),
+                            );
+                        } else {
+                            return null;
+                        }
+                    }
+                } else {
+                    return null;
+                }
+            } else {
+                const [
+                    compressed_unique_parts_json,
+                    compressed_dictionary_json,
+                    compressed_file_text,
+                ]: Array<string | null> = await Promise.all(
+                    [
+                        this.String(`${version_path}/${Consts.UNIQUE_PARTS_NAME}`),
+                        this.String(`${version_path}/${Consts.DICTIONARY_NAME}`),
+                        this.String(file_path),
+                    ],
+                );
+
+                if (this.Has_Version_Cache(version_path)) {
+                    if (!this.Has_File_Cache(file_path)) {
+                        if (compressed_file_text != null) {
+                            this.Add_File_Cache(
+                                new File_Cache(
+                                    {
+                                        id: file_path,
+                                        version_id: version_path,
+                                        compressed_file_text: compressed_file_text,
+                                    },
+                                ),
+                            );
+                        } else {
+                            return null;
+                        }
+                    }
+                } else {
+                    if (
+                        compressed_unique_parts_json != null &&
+                        compressed_dictionary_json != null &&
+                        compressed_file_text != null
+                    ) {
+                        this.Add_Version_Cache(
+                            new Version_Cache(
+                                {
+                                    id: version_path,
+                                    compressed_unique_parts_json: compressed_unique_parts_json,
+                                    compressed_dictionary_json: compressed_dictionary_json,
+                                },
+                            ),
+                        );
+                        Utils.Assert(
+                            !this.Has_File_Cache(file_path),
+                            `should not have file cache at this point!`,
+                        );
+                        this.Add_File_Cache(
+                            new File_Cache(
+                                {
+                                    id: file_path,
+                                    version_id: version_path,
+                                    compressed_file_text: compressed_file_text,
+                                },
+                            ),
+                        );
+                    } else {
+                        return null;
+                    }
+                }
+            }
+        }
+
+        return [
+            this.Version_Cache(version_path),
+            this.File_Cache(file_path),
+        ];
+    }
+
     async File_Text(
         version_path: Path,
         file_name: Name,
@@ -986,6 +1034,36 @@ export class Instance extends Entity.Instance implements Public_i
                         },
                     ),
                     path_type: path_type,
+                },
+            );
+        } else {
+            return null;
+        }
+    }
+
+    async Transfer_File(
+        version_path: Path,
+        file_name: Name,
+    ):
+        Promise<File.Transfer.Instance | null>
+    {
+        const version_and_file_cache = await this.Version_And_File_Cache(
+            version_path,
+            `${version_path}/${file_name}`,
+        );
+
+        if (version_and_file_cache != null) {
+            const [
+                version_cache,
+                file_cache,
+            ]: [Version_Cache, File_Cache] =
+                version_and_file_cache;
+
+            return new File.Transfer.Instance(
+                {
+                    compressor: version_cache.Compressor(),
+                    dictionary: version_cache.Dictionary(),
+                    value: file_cache.Compressed_File_Text(),
                 },
             );
         } else {

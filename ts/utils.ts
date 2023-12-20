@@ -182,6 +182,12 @@ export function Resolve_Path(
     }
 }
 
+export function Can_Use_Workers():
+    boolean
+{
+    return window.Worker != null;
+}
+
 export function Create_Style_Element(
     inner_css: string,
 ):

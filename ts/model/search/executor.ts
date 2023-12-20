@@ -33,40 +33,111 @@ export class Instance
         this.compiler = new Compiler.Instance();
     }
 
-    Execute(
+    private Parser():
+        Parser.Instance
+    {
+        return this.parser;
+    }
+
+    private Compiler():
+        Compiler.Instance
+    {
+        return this.compiler;
+    }
+
+    Tokens_Or_Help(
+        dictionary: Text.Dictionary.Instance,
         expression: string,
-        text: Text.Instance,
     ):
-        Array<Result.Instance> | Parser.Help
+        Array<Token.Instance> | Parser.Help
+    {
+        return this.Parser().Parse(
+            expression,
+            dictionary,
+        );
+    }
+
+    Node_Or_Help(
+        dictionary: Text.Dictionary.Instance,
+        expression: string,
+    ):
+        Node.Instance | Parser.Help
     {
         const tokens_or_help: Array<Token.Instance> | Parser.Help =
             this.parser.Parse(
                 expression,
-                text.Dictionary(),
+                dictionary,
             );
+
+        if (tokens_or_help instanceof Parser.Help) {
+            return tokens_or_help;
+        } else {
+            return this.Compiler().Compile(
+                tokens_or_help as Array<Token.Instance>,
+            );
+        }
+    }
+
+    Execute(
+        text: Text.Instance,
+        expression: string,
+    ):
+        Array<Result.Instance> | Parser.Help
+    {
+        const tokens_or_help: Array<Token.Instance> | Parser.Help =
+            this.Tokens_Or_Help(
+                text.Dictionary(),
+                expression,
+            );
+
         if (tokens_or_help instanceof Parser.Help) {
             return tokens_or_help as Parser.Help;
         } else {
-            const node: Node.Instance =
-                this.compiler.Compile(
-                    tokens_or_help as Array<Token.Instance>,
-                );
-            const results: Array<Result.Instance> = [];
-
-            for (let idx = 0, end = text.Line_Count(); idx < end; idx += 1) {
-                const line: Text.Line.Instance = text.Line(idx);
-                const maybe_result: Result.Runner | null = this.Step(
-                    node,
-                    Mode.INITIAL,
-                    new Result.Runner(line),
-                );
-                if (maybe_result != null) {
-                    results.push(new Result.Instance(maybe_result as Result.Runner));
-                }
-            }
-
-            return results;
+            return this.Execute_With_Tokens(
+                text,
+                tokens_or_help as Array<Token.Instance>,
+            );
         }
+    }
+
+    Execute_With_Tokens(
+        text: Text.Instance,
+        tokens: Array<Token.Instance>,
+    ):
+        Array<Result.Instance>
+    {
+        const node: Node.Instance =
+            this.Compiler().Compile(
+                tokens as Array<Token.Instance>,
+            );
+
+        return this.Execute_With_Node(
+            text,
+            node,
+        );
+    }
+
+    Execute_With_Node(
+        text: Text.Instance,
+        node: Node.Instance,
+    ):
+        Array<Result.Instance>
+    {
+        const results: Array<Result.Instance> = [];
+
+        for (let idx = 0, end = text.Line_Count(); idx < end; idx += 1) {
+            const line: Text.Line.Instance = text.Line(idx);
+            const maybe_result: Result.Runner | null = this.Step(
+                node,
+                Mode.INITIAL,
+                new Result.Runner(line),
+            );
+            if (maybe_result != null) {
+                results.push(new Result.Instance(maybe_result as Result.Runner));
+            }
+        }
+
+        return results;
     }
 
     private Step(

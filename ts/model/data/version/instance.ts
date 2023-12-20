@@ -6,6 +6,8 @@ import { Path } from "../../../types.js";
 import * as Utils from "../../../utils.js";
 
 import * as Entity from "../../entity.js";
+import * as Text from "../../text.js";
+
 import * as Language from "../language.js";
 import * as File from "../file.js";
 
@@ -71,6 +73,17 @@ export class Instance extends Entity.Instance
         Path
     {
         return this.path;
+    }
+
+    async Dictionary():
+        Promise<Text.Dictionary.Instance>
+    {
+        return (
+            await this.Language().Book().Data().Cache().Dictionary(
+                this.Path(),
+            ) ||
+            new Text.Dictionary.Instance()
+        );
     }
 
     File(

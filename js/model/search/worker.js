@@ -1,0 +1,1 @@
+import*as Data from"../data.js";import*as Executor from"./executor.js";const executor=new Executor.Instance;onmessage=function(e){const{file_transfer:t,expression:o}=e.data;Object.setPrototypeOf(t,Data.File.Transfer.Instance.prototype),postMessage(executor.Execute(t.Text(),o))};

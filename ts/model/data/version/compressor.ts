@@ -24,10 +24,10 @@ export class Instance
 
     constructor(
         {
-            unique_parts,
+            unique_parts = [],
         }: {
-            unique_parts: Array<string>,
-        },
+            unique_parts?: Array<string>,
+        } = {},
     )
     {
         Utils.Assert(

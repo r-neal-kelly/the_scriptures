@@ -373,10 +373,10 @@ export class Runner
 
 export class Match
 {
-    private first_part_index: Index;
-    private end_part_index: Index;
-    private first_part_first_unit_index: Index;
-    private last_part_end_unit_index: Index;
+    public first_part_index: Index;
+    public end_part_index: Index;
+    public first_part_first_unit_index: Index;
+    public last_part_end_unit_index: Index;
 
     constructor(
         {
@@ -413,36 +413,6 @@ export class Match
         this.end_part_index = end_part_index;
         this.first_part_first_unit_index = first_part_first_unit_index;
         this.last_part_end_unit_index = last_part_end_unit_index;
-    }
-
-    First_Part_Index():
-        Index
-    {
-        return this.first_part_index;
-    }
-
-    Last_Part_Index():
-        Index
-    {
-        return this.end_part_index - 1;
-    }
-
-    End_Part_Index():
-        Index
-    {
-        return this.end_part_index;
-    }
-
-    First_Part_First_Unit_Index():
-        Index
-    {
-        return this.first_part_first_unit_index;
-    }
-
-    Last_Part_End_Unit_Index():
-        Index
-    {
-        return this.last_part_end_unit_index;
     }
 }
 

@@ -26,12 +26,17 @@ export class Instance<Unit>
             `given capacity: ${capacity}`,
         );
 
-        this.buffer = new Array(capacity);
+        this.buffer = [];
         this.first_index = 0;
         this.count = 0;
         this.initial_unit = initial_unit;
 
-        this.buffer.fill(initial_unit, 0, capacity);
+        // Just in case new Array(capacity) creates a freaking
+        // sparse array instead of a dense one like what we want.
+        // And .fill() does not work on any indices less than length.
+        for (let idx = 0, end = capacity; idx < end; idx += 1) {
+            this.buffer.push(initial_unit);
+        }
     }
 
     Count():

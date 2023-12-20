@@ -92,15 +92,15 @@ export class Instance extends Text_Base.Row.Instance<
                     const match: Search.Result.Match =
                         result.Match(column_index, row_index, match_idx);
                     const first_part_index: Index =
-                        match.First_Part_Index();
+                        match.first_part_index;
                     const first_part_first_unit_index: Index =
-                        match.First_Part_First_Unit_Index();
+                        match.first_part_first_unit_index;
                     const last_part_end_unit_index: Index =
-                        match.Last_Part_End_Unit_Index();
+                        match.last_part_end_unit_index;
                     const last_part_index: Index =
-                        match.Last_Part_Index();
+                        match.end_part_index - 1;
                     const end_part_index: Index =
-                        match.End_Part_Index();
+                        match.end_part_index;
 
                     for (
                         let part_idx = first_part_index, part_end = end_part_index;
