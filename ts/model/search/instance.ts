@@ -147,7 +147,7 @@ export class Instance extends Entity.Instance
             while (workers.length < 4) {
                 workers.push(
                     new Worker(
-                        Utils.Resolve_Path(`js/model/search/worker.js`),
+                        `js/model/search/worker.js`,
                         {
                             type: `module`,
                         },
