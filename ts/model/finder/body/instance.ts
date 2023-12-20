@@ -38,6 +38,7 @@ export class Instance extends Entity.Instance
         this.finder = finder;
         this.filter = new Selector.Instance(
             {
+                slot_order: Selector.Slot.Order.LANGUAGES_VERSIONS_BOOKS,
                 does_smart_item_selection: false,
                 selection: new Data.Selection.Name(
                     {
