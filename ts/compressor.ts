@@ -354,6 +354,16 @@ export function LZSS_Compress(
     return result;
 }
 
+// we want to use String.fromCharCode is we feed it utf16 units
+// we just expand the typed array ...type_array.
+// to get the total length of the typed_array, we could have a
+// point at the start of the string that indicates the number of
+// points after that, when decoded into points and added together
+// equate to the total number of 16bit units in the remainder of the
+// string. then we can use that number to create the typed_array and
+// from the point that proceeds after that to the end of the string
+// we can decompress based on the utf16 units in the typed_array.
+// then we just call the fromCharCode with the expand syntax as a return.
 export function LZSS_Decompress(
     value: string,
 ):

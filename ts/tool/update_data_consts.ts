@@ -25,7 +25,7 @@ async function Update_Data_Consts():
 
     info_consts_source = info_consts_source.replace(
         /DEFAULT_FILE_CACHE_LIMIT(\s*)=(\s*)[^;]+/,
-        `DEFAULT_FILE_CACHE_LIMIT$1=$2${info.Max_File_Count()}`,
+        `DEFAULT_FILE_CACHE_LIMIT$1=$2${info.Max_File_Count() * 2}`,
     );
 
     await File_System.Write_File(
