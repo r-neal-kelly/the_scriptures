@@ -21,6 +21,23 @@ export function Print(
     console.log(...data);
 }
 
+const is_big_endian: boolean =
+    new TextDecoder(`utf-16be`).decode(
+        new Uint16Array([0x0041]),
+    ) === String.fromCharCode(0x0041);
+
+export function Is_Big_Endian():
+    boolean
+{
+    return is_big_endian;
+}
+
+export function Is_Little_Endian():
+    boolean
+{
+    return !is_big_endian;
+}
+
 export async function Wait_Milliseconds(
     milliseconds: Integer,
 ):
