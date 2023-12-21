@@ -27,7 +27,7 @@ enum LZSS_Flags
     UNUSED_2 = 1 << 3,
 }
 
-class Window
+class LZSS_Window
 {
     private text: string;
     private text_index: Index;
@@ -370,7 +370,7 @@ export function LZSS_Compress(
         `max_memory_length must be less than or equal to ${LZSS_MAX_MEMORY_LENGTH}`,
     );
 
-    const window: Window = new Window(
+    const window: LZSS_Window = new LZSS_Window(
         {
             text: value,
             max_memory_length: max_memory_length,
