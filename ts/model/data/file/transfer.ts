@@ -25,13 +25,27 @@ export class Instance
         this.value = value;
     }
 
+    private Enforce_Prototypes():
+        void
+    {
+        Object.setPrototypeOf(this.decompressor, Version.Decompressor.Instance.prototype);
+        Object.setPrototypeOf(this.dictionary, Text.Dictionary.Instance.prototype);
+    }
+
+    Dictionary():
+        Text.Dictionary.Instance
+    {
+        this.Enforce_Prototypes();
+
+        return this.dictionary;
+    }
+
     Text(
         path_type?: Text.Path.Type,
     ):
         Text.Instance
     {
-        Object.setPrototypeOf(this.decompressor, Version.Decompressor.Instance.prototype);
-        Object.setPrototypeOf(this.dictionary, Text.Dictionary.Instance.prototype);
+        this.Enforce_Prototypes();
 
         return new Text.Instance(
             {

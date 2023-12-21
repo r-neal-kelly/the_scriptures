@@ -24,6 +24,7 @@ export class Instance extends Entity.Instance
     private waiting_percent_done: Search.Percent_Done.Instance | null;
     private waiting_message_index: Index | null;
     private waiting_message_count: Count | null;
+    private waiting_message_is_moving_forward: boolean | null;
 
     constructor(
         {
@@ -65,6 +66,7 @@ export class Instance extends Entity.Instance
         this.waiting_percent_done = null;
         this.waiting_message_index = null;
         this.waiting_message_count = null;
+        this.waiting_message_is_moving_forward = null;
 
         // I presume because of the view code, but can't check that right now.
         Utils.Assert(
@@ -130,10 +132,12 @@ export class Instance extends Entity.Instance
             this.waiting_percent_done = new Search.Percent_Done.Instance();
             this.waiting_message_index = 0;
             this.waiting_message_count = 8;
+            this.waiting_message_is_moving_forward = true;
         } else {
             this.waiting_percent_done = null;
             this.waiting_message_index = null;
             this.waiting_message_count = null;
+            this.waiting_message_is_moving_forward = null;
         }
     }
 
@@ -173,15 +177,28 @@ export class Instance extends Entity.Instance
             this.waiting_message_count != null,
             `waiting_message_count should not be null`,
         );
+        Utils.Assert(
+            this.waiting_message_is_moving_forward != null,
+            `waiting_message_is_moving_forward should not be null`,
+        );
 
         const animation: Array<string> =
             new Array(this.waiting_message_count as Count);
 
         animation.fill(`.`, 0, animation.length);
         animation[this.waiting_message_index as Index] = `📝`; // 📝, ✎
-        (this.waiting_message_index as Index) += 1;
-        if ((this.waiting_message_index as Index) >= (this.waiting_message_count as Count)) {
-            this.waiting_message_index = 0;
+        if (this.waiting_message_is_moving_forward) {
+            (this.waiting_message_index as Index) += 1;
+            if ((this.waiting_message_index as Index) >= (this.waiting_message_count as Count)) {
+                this.waiting_message_index = (this.waiting_message_count as Count) - 2;
+                this.waiting_message_is_moving_forward = false;
+            }
+        } else {
+            (this.waiting_message_index as Index) -= 1;
+            if ((this.waiting_message_index as Index) < 0) {
+                this.waiting_message_index = 1;
+                this.waiting_message_is_moving_forward = true;
+            }
         }
 
         return `Searching ${animation.join(``)} ${this.Waiting_Percent_Done().Value()}%`;

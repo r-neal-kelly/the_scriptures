@@ -11,8 +11,8 @@ import * as Entity from "../entity.js";
 import * as Data from "../data.js";
 import * as Text from "../text.js";
 
-import * as Node from "./node.js";
 import * as Parser from "./parser.js";
+import * as Node from "./node.js";
 import * as Executor from "./executor.js";
 import * as Result from "./result.js";
 import * as Percent_Done from "./percent_done.js";
@@ -136,74 +136,75 @@ export class Instance extends Entity.Instance
         // for workers we could use terminate and for non-workers
         // we could just check after each file is done and return if canceled.
 
-        const version_result: Result.Version = new Map();
+        const node_or_help: Node.Instance | Parser.Help = this.Executor().Node_Or_Help(
+            await data_version.Dictionary(),
+            expression,
+        );
 
-        if (!percent_done.Has_Total_Count()) {
-            percent_done.Set_Total_Count(data_version.File_Count());
-        }
-        await data_version.Cache_Files();
+        if (node_or_help instanceof Parser.Help) {
+            return node_or_help as Parser.Help;
+        } else {
+            const version_result: Result.Version = new Map();
 
-        if (Utils.Can_Use_Workers()) {
-            while (workers.length < 4) {
-                workers.push(
-                    new Worker(
-                        `js/model/search/worker.js`,
-                        {
-                            type: `module`,
-                        },
-                    ),
-                );
+            if (!percent_done.Has_Total_Count()) {
+                percent_done.Set_Total_Count(data_version.File_Count());
             }
-            for (
-                let file_idx = 0, file_end = data_version.File_Count();
-                file_idx < file_end;
-                file_idx += workers.length
-            ) {
-                const usable_worker_count: Count =
-                    Math.min(file_end - file_idx, workers.length);
-                const worker_promises: Array<Promise<Array<Result.Instance>>> =
-                    [];
-                for (
-                    let worker_idx = 0, worker_end = usable_worker_count;
-                    worker_idx < worker_end;
-                    worker_idx += 1
-                ) {
-                    worker_promises.push(
-                        this.Data_File_Concurrently(
-                            data_version.File_At(file_idx + worker_idx),
-                            expression,
-                            workers[worker_idx],
+            await data_version.Cache_Files();
+
+            if (Utils.Can_Use_Workers()) {
+                while (workers.length < 4) {
+                    workers.push(
+                        new Worker(
+                            `js/model/search/worker.js`,
+                            {
+                                type: `module`,
+                            },
                         ),
                     );
                 }
-                const file_results: Array<Array<Result.Instance>> =
-                    await Promise.all(worker_promises);
                 for (
-                    let file_results_idx = 0, file_results_end = file_results.length;
-                    file_results_idx < file_results_end;
-                    file_results_idx += 1
+                    let file_idx = 0, file_end = data_version.File_Count();
+                    file_idx < file_end;
+                    file_idx += workers.length
                 ) {
-                    const file_result: Array<Result.Instance> =
-                        file_results[file_results_idx];
-                    if (file_result.length > 0) {
-                        for (const result of file_result) {
-                            Object.setPrototypeOf(result, Result.Instance.prototype);
-                        }
-                        version_result.set(
-                            data_version.File_At(file_idx + file_results_idx),
-                            file_result,
+                    const usable_worker_count: Count =
+                        Math.min(file_end - file_idx, workers.length);
+                    const worker_promises: Array<Promise<Array<Result.Instance>>> =
+                        [];
+                    for (
+                        let worker_idx = 0, worker_end = usable_worker_count;
+                        worker_idx < worker_end;
+                        worker_idx += 1
+                    ) {
+                        worker_promises.push(
+                            this.Data_File_Concurrently(
+                                data_version.File_At(file_idx + worker_idx),
+                                expression,
+                                workers[worker_idx],
+                            ),
                         );
                     }
-                    percent_done.Increment_Done_Count();
+                    const file_results: Array<Array<Result.Instance>> =
+                        await Promise.all(worker_promises);
+                    for (
+                        let file_results_idx = 0, file_results_end = file_results.length;
+                        file_results_idx < file_results_end;
+                        file_results_idx += 1
+                    ) {
+                        const file_result: Array<Result.Instance> =
+                            file_results[file_results_idx];
+                        if (file_result.length > 0) {
+                            for (const result of file_result) {
+                                Object.setPrototypeOf(result, Result.Instance.prototype);
+                            }
+                            version_result.set(
+                                data_version.File_At(file_idx + file_results_idx),
+                                file_result,
+                            );
+                        }
+                        percent_done.Increment_Done_Count();
+                    }
                 }
-            }
-        } else {
-            const node_or_help: Node.Instance | Parser.Help = this.Executor().Node_Or_Help(
-                await data_version.Dictionary(),
-                expression,
-            );
-            if (node_or_help instanceof Parser.Help) {
-                return node_or_help as Parser.Help;
             } else {
                 const node: Node.Instance = node_or_help as Node.Instance;
                 for (let idx = 0, end = data_version.File_Count(); idx < end; idx += 1) {
@@ -219,9 +220,9 @@ export class Instance extends Entity.Instance
                     await Utils.Wait_Milliseconds(wait_per_file_millisecond_interval);
                 }
             }
-        }
 
-        return version_result;
+            return version_result;
+        }
     }
 
     async Data_Versions(
