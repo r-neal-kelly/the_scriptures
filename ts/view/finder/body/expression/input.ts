@@ -1,4 +1,5 @@
 import * as Event from "../../../../event.js";
+import * as Keyboard from "../../../../keyboard.js";
 
 import * as Model from "../../../../model/finder/body/expression.js";
 
@@ -52,6 +53,8 @@ export class Instance extends Entity.Instance
         this.Element().setAttribute(`contentEditable`, `true`);
         this.Element().setAttribute(`spellcheck`, `false`);
 
+        Keyboard.Singleton().Add_Div(this.Element() as HTMLDivElement);
+
         return [
             new Event.Listener_Info(
                 {
@@ -77,6 +80,12 @@ export class Instance extends Entity.Instance
         Array<string>
     {
         return [`Expression_Input`];
+    }
+
+    override Before_Death():
+        void
+    {
+        Keyboard.Singleton().Remove_Div(this.Element() as HTMLDivElement);
     }
 
     private async On_Key_Down(
