@@ -7,9 +7,44 @@ import * as Events from "../../../events.js";
 import * as Entity from "../../../entity.js";
 import * as Expression from "./instance.js";
 
+class Keyboard_Hook extends Keyboard.Hook.Instance
+{
+    private instance: Instance;
+
+    constructor(
+        instance: Instance,
+    )
+    {
+        super();
+
+        this.instance = instance;
+    }
+
+    override async After_Insert_Or_Paste_Or_Delete(
+        event: InputEvent,
+    ):
+        Promise<void>
+    {
+        await this.instance.Send(
+            new Event.Info(
+                {
+                    affix: Events.FINDER_BODY_EXPRESSION_CHANGE,
+                    suffixes: [
+                        this.instance.ID(),
+                        this.instance.Expression().Body().Finder().ID(),
+                    ],
+                    type: Event.Type.EXCLUSIVE,
+                    data: {},
+                },
+            ),
+        );
+    }
+}
+
 export class Instance extends Entity.Instance
 {
     private model: () => Model.Instance;
+    private keyboard_hook: Keyboard_Hook;
 
     constructor(
         {
@@ -30,6 +65,7 @@ export class Instance extends Entity.Instance
         );
 
         this.model = model;
+        this.keyboard_hook = new Keyboard_Hook(this);
 
         this.Live();
     }
@@ -37,6 +73,15 @@ export class Instance extends Entity.Instance
     override On_Life():
         Array<Event.Listener_Info>
     {
+        this.Element().setAttribute(`contentEditable`, `true`);
+        this.Element().setAttribute(`spellcheck`, `false`);
+
+        Keyboard.Singleton().Add_Div(
+            this.Element() as HTMLDivElement,
+            this.keyboard_hook,
+        );
+
+        // these should eventually go on the keyboard hook I think
         this.Element().addEventListener(
             `keydown`,
             this.On_Key_Down.bind(this),
@@ -45,15 +90,6 @@ export class Instance extends Entity.Instance
             `keyup`,
             this.On_Key_Up.bind(this),
         );
-        this.Element().addEventListener(
-            `input`,
-            this.On_Input.bind(this),
-        );
-
-        this.Element().setAttribute(`contentEditable`, `true`);
-        this.Element().setAttribute(`spellcheck`, `false`);
-
-        Keyboard.Singleton().Add_Div(this.Element() as HTMLDivElement);
 
         return [
             new Event.Listener_Info(
@@ -142,33 +178,6 @@ export class Instance extends Entity.Instance
         );
 
         await Promise.all(events);
-    }
-
-    private async On_Input(
-        event: Event,
-    ):
-        Promise<void>
-    {
-        const input_event: InputEvent = event as InputEvent;
-        if (
-            input_event.inputType === `insertText` ||
-            input_event.inputType === `deleteContentBackward` ||
-            input_event.inputType === `insertFromPaste`
-        ) {
-            await this.Send(
-                new Event.Info(
-                    {
-                        affix: Events.FINDER_BODY_EXPRESSION_CHANGE,
-                        suffixes: [
-                            this.ID(),
-                            this.Expression().Body().Finder().ID(),
-                        ],
-                        type: Event.Type.EXCLUSIVE,
-                        data: {},
-                    },
-                ),
-            );
-        }
     }
 
     private async On_Finder_Body_Expression_Change():
