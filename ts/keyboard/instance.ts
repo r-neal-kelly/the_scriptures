@@ -1,14 +1,20 @@
 import * as Utils from "../utils.js";
 
+import { Key } from "./key.js";
+import * as Held_Keys from "./held_keys.js";
 import * as Hook from "./hook.js";
 
 export class Instance
 {
     private divs_to_hooks: Map<HTMLDivElement, Hook.Instance>;
 
+    private held_keys: Held_Keys.Instance;
+
     constructor()
     {
         this.divs_to_hooks = new Map();
+
+        this.held_keys = new Held_Keys.Instance();
     }
 
     Has_Div(
@@ -64,7 +70,17 @@ export class Instance
     ):
         Promise<void>
     {
+        event.stopPropagation();
 
+        //event.preventDefault(); we can call this when the layout actually has output.
+        // it will stop things like ctrl+f for finding on the webpage.
+        // I almost think we can get away with always preventing the default...
+        // but then ctrl+v and ctrl+p would fail to post inserts.
+        // so we do need a return from layout to determine if we should prevent default.
+
+        if (!event.repeat) {
+            this.held_keys.Add(event.code as Key);
+        }
     }
 
     private async On_Keyup(
@@ -73,7 +89,9 @@ export class Instance
     ):
         Promise<void>
     {
+        event.stopPropagation();
 
+        this.held_keys.Remove(event.code as Key);
     }
 
     private async Before_Input(
@@ -99,6 +117,8 @@ export class Instance
             hook != null,
             `hook should not be null`,
         );
+
+        event.stopPropagation();
 
         if (event.inputType === `insertText`) {
             const data: string =
