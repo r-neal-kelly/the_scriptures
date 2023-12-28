@@ -20,9 +20,63 @@ class Keyboard_Hook extends Keyboard.Hook.Instance
         this.instance = instance;
     }
 
-    override async After_Insert_Or_Paste_Or_Delete(
-        event: InputEvent,
+    override async On_Key_Down(
+        event: KeyboardEvent,
     ):
+        Promise<void>
+    {
+        if (event.key === `Enter`) {
+            event.preventDefault();
+        }
+    }
+
+    override async On_Key_Up(
+        event: KeyboardEvent,
+    ):
+        Promise<void>
+    {
+        const events: Array<Promise<void>> = [];
+
+        if (event.key === `Enter`) {
+            event.preventDefault();
+
+            events.push(
+                this.instance.Send(
+                    new Event.Info(
+                        {
+                            affix: Events.FINDER_BODY_EXPRESSION_ENTER,
+                            suffixes: [
+                                this.instance.ID(),
+                                this.instance.Expression().Body().Finder().ID(),
+                            ],
+                            type: Event.Type.EXCLUSIVE,
+                            data: {},
+                        },
+                    ),
+                ),
+            );
+        }
+
+        events.push(
+            this.instance.Send(
+                new Event.Info(
+                    {
+                        affix: Events.FINDER_BODY_EXPRESSION_CHANGE,
+                        suffixes: [
+                            this.instance.ID(),
+                            this.instance.Expression().Body().Finder().ID(),
+                        ],
+                        type: Event.Type.EXCLUSIVE,
+                        data: {},
+                    },
+                ),
+            ),
+        );
+
+        await Promise.all(events);
+    }
+
+    override async After_Insert_Or_Paste_Or_Delete():
         Promise<void>
     {
         await this.instance.Send(
@@ -81,16 +135,6 @@ export class Instance extends Entity.Instance
             this.keyboard_hook,
         );
 
-        // these should eventually go on the keyboard hook I think
-        this.Element().addEventListener(
-            `keydown`,
-            this.On_Key_Down.bind(this),
-        );
-        this.Element().addEventListener(
-            `keyup`,
-            this.On_Key_Up.bind(this),
-        );
-
         return [
             new Event.Listener_Info(
                 {
@@ -122,62 +166,6 @@ export class Instance extends Entity.Instance
         void
     {
         Keyboard.Singleton().Remove_Div(this.Element() as HTMLDivElement);
-    }
-
-    private async On_Key_Down(
-        event: KeyboardEvent,
-    ):
-        Promise<void>
-    {
-        if (event.key === `Enter`) {
-            event.preventDefault();
-        }
-    }
-
-    private async On_Key_Up(
-        event: KeyboardEvent,
-    ):
-        Promise<void>
-    {
-        const events: Array<Promise<void>> = [];
-
-        if (event.key === `Enter`) {
-            event.preventDefault();
-
-            events.push(
-                this.Send(
-                    new Event.Info(
-                        {
-                            affix: Events.FINDER_BODY_EXPRESSION_ENTER,
-                            suffixes: [
-                                this.ID(),
-                                this.Expression().Body().Finder().ID(),
-                            ],
-                            type: Event.Type.EXCLUSIVE,
-                            data: {},
-                        },
-                    ),
-                ),
-            );
-        }
-
-        events.push(
-            this.Send(
-                new Event.Info(
-                    {
-                        affix: Events.FINDER_BODY_EXPRESSION_CHANGE,
-                        suffixes: [
-                            this.ID(),
-                            this.Expression().Body().Finder().ID(),
-                        ],
-                        type: Event.Type.EXCLUSIVE,
-                        data: {},
-                    },
-                ),
-            ),
-        );
-
-        await Promise.all(events);
     }
 
     private async On_Finder_Body_Expression_Change():

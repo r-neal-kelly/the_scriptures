@@ -1,20 +1,31 @@
+import { Name } from "../types.js";
+
 import * as Utils from "../utils.js";
 
 import { Key } from "./key.js";
 import * as Held_Keys from "./held_keys.js";
+import * as Layout from "./layout.js";
 import * as Hook from "./hook.js";
 
 export class Instance
 {
     private divs_to_hooks: Map<HTMLDivElement, Hook.Instance>;
-
     private held_keys: Held_Keys.Instance;
+    private layouts: { [layout_name: Name]: Layout.Instance };
+    private current_layout: Layout.Instance;
+    private has_spaced: boolean;
 
     constructor()
     {
-        this.divs_to_hooks = new Map();
+        const latin_layout: Layout.Latin.Instance = new Layout.Latin.Instance();
 
+        this.divs_to_hooks = new Map();
         this.held_keys = new Held_Keys.Instance();
+        this.layouts = Object.create(null);
+        this.current_layout = latin_layout;
+        this.has_spaced = false;
+
+        this.layouts[latin_layout.Name()] = latin_layout;
     }
 
     Has_Div(
@@ -64,6 +75,67 @@ export class Instance
         this.divs_to_hooks.delete(div);
     }
 
+    Held_Keys():
+        Held_Keys.Instance
+    {
+        return this.held_keys;
+    }
+
+    Layout(
+        name: Name,
+    ):
+        Layout.Instance
+    {
+        Utils.Assert(
+            this.layouts[name] != null,
+            `does not have layout with name ${name}`,
+        );
+
+        return this.layouts[name] as Layout.Instance;
+    }
+
+    Current_Layout():
+        Layout.Instance
+    {
+        return this.current_layout;
+    }
+
+    Has_Spaced():
+        boolean
+    {
+        return this.has_spaced;
+    }
+
+    private async Send_Input_To_Selection(
+        div: HTMLDivElement,
+        hook: Hook.Instance,
+        data: string,
+    ):
+        Promise<void>
+    {
+        const selection: Selection = document.getSelection() as Selection;
+
+        Utils.Assert(
+            selection != null,
+            `how in the world is there not a selection here?`,
+        );
+        Utils.Assert(
+            selection.rangeCount > 0,
+            `how in the world is there not a range here?`,
+        );
+
+        const range: Range = selection.getRangeAt(0);
+
+        await hook.On_Insert(
+            {
+                div: div,
+                data: data.replace(/ /g, ` `),
+                range: range,
+            },
+        );
+        await hook.After_Insert_Or_Paste_Or_Delete();
+    }
+
     private async On_Keydown(
         this: Instance,
         event: KeyboardEvent,
@@ -72,14 +144,79 @@ export class Instance
     {
         event.stopPropagation();
 
-        //event.preventDefault(); we can call this when the layout actually has output.
-        // it will stop things like ctrl+f for finding on the webpage.
-        // I almost think we can get away with always preventing the default...
-        // but then ctrl+v and ctrl+p would fail to post inserts.
-        // so we do need a return from layout to determine if we should prevent default.
+        const div: HTMLDivElement =
+            event.target as HTMLDivElement;
+        const hook: Hook.Instance =
+            this.divs_to_hooks.get(div) as Hook.Instance;
 
         if (!event.repeat) {
-            this.held_keys.Add(event.code as Key);
+            const key: Key = event.code as Key;
+            if (
+                key != Key.SHIFT_LEFT &&
+                key != Key.SHIFT_RIGHT &&
+                key != Key.CONTROL_LEFT &&
+                key != Key.CONTROL_RIGHT &&
+                key != Key.ALT_LEFT &&
+                key != Key.ALT_RIGHT
+            ) {
+                this.held_keys.Add(event.code as Key);
+            }
+        }
+
+        await hook.On_Key_Down(event);
+
+        if (!event.repeat) {
+            if (this.has_spaced) {
+                event.preventDefault();
+            } else {
+                const maybe_space: Layout.Space.Instance | boolean =
+                    this.Current_Layout().Maybe_Space(this.held_keys);
+
+                if (maybe_space instanceof Layout.Space.Instance) {
+                    event.preventDefault();
+                    this.has_spaced = true;
+                } else {
+                    if (maybe_space as boolean) {
+                        event.preventDefault();
+                    } else {
+                        const maybe_output: string | boolean =
+                            this.Current_Layout().Maybe_Output(
+                                this.held_keys,
+                                event.shiftKey,
+                                event.getModifierState(Key.CAPS_LOCK),
+                            );
+
+                        if (Utils.Is.String(maybe_output)) {
+                            event.preventDefault();
+                            await this.Send_Input_To_Selection(div, hook, maybe_output as string);
+                        } else {
+                            if (maybe_output as boolean) {
+                                event.preventDefault();
+                            }
+                        }
+                    }
+                }
+            }
+        } else {
+            if (this.has_spaced) {
+                event.preventDefault();
+            } else {
+                const maybe_output: string | boolean =
+                    this.Current_Layout().Maybe_Output(
+                        this.held_keys,
+                        event.shiftKey,
+                        event.getModifierState(Key.CAPS_LOCK),
+                    );
+
+                if (Utils.Is.String(maybe_output)) {
+                    event.preventDefault();
+                    await this.Send_Input_To_Selection(div, hook, maybe_output as string);
+                } else {
+                    if (maybe_output as boolean) {
+                        event.preventDefault();
+                    }
+                }
+            }
         }
     }
 
@@ -91,7 +228,18 @@ export class Instance
     {
         event.stopPropagation();
 
+        const div: HTMLDivElement =
+            event.target as HTMLDivElement;
+        const hook: Hook.Instance =
+            this.divs_to_hooks.get(div) as Hook.Instance;
+
+        await hook.On_Key_Up(event);
+
         this.held_keys.Remove(event.code as Key);
+
+        if (this.held_keys.Count() === 0) {
+            this.has_spaced = false;
+        }
     }
 
     private async Before_Input(
@@ -100,6 +248,8 @@ export class Instance
     ):
         Promise<void>
     {
+        event.stopPropagation();
+
         const div: HTMLDivElement =
             event.target as HTMLDivElement;
         const hook: Hook.Instance =
@@ -118,11 +268,13 @@ export class Instance
             `hook should not be null`,
         );
 
-        event.stopPropagation();
-
         if (event.inputType === `insertText`) {
+            event.preventDefault();
+
+            // We replace spaces with the non-breaking space
+            // to ensure that they are all rendered properly.
             const data: string =
-                event.data || ``;
+                (event.data || ``).replace(/ /g, ` `);
             const target_ranges: Array<StaticRange> =
                 event.getTargetRanges();
 
@@ -131,32 +283,29 @@ export class Instance
                 `don't know why target_ranges has 0 or more than 1 range in it`,
             );
 
-            event.preventDefault();
+            const range: Range = document.createRange();
+
+            range.setStart(target_ranges[0].startContainer, target_ranges[0].startOffset);
+            range.setEnd(target_ranges[0].endContainer, target_ranges[0].endOffset);
 
             await hook.On_Insert(
                 {
                     div: div,
-                    data: event.data || ``,
-                    target_range: target_ranges[0],
+                    data: data,
+                    range: range,
                 },
             );
-            await hook.After_Insert_Or_Paste_Or_Delete(
-                event,
-            );
+            await hook.After_Insert_Or_Paste_Or_Delete();
         } else if (event.inputType === `insertFromPaste`) {
             await hook.On_Paste(
                 event,
             );
-            await hook.After_Insert_Or_Paste_Or_Delete(
-                event,
-            );
+            await hook.After_Insert_Or_Paste_Or_Delete();
         } else if (event.inputType === `deleteContentBackward`) {
             await hook.On_Delete(
                 event,
             );
-            await hook.After_Insert_Or_Paste_Or_Delete(
-                event,
-            );
+            await hook.After_Insert_Or_Paste_Or_Delete();
         }
     }
 }

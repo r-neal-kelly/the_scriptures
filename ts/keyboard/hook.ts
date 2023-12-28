@@ -2,30 +2,34 @@
 
 export class Instance
 {
+    async On_Key_Down(
+        event: KeyboardEvent,
+    ):
+        Promise<void>
+    {
+    }
+
+    async On_Key_Up(
+        event: KeyboardEvent,
+    ):
+        Promise<void>
+    {
+    }
+
     async On_Insert(
         {
             div,
             data,
-            target_range,
+            range,
         }: {
             div: HTMLDivElement,
             data: string,
-            target_range: StaticRange,
+            range: Range,
         },
     ):
         Promise<void>
     {
-        const range: Range = document.createRange();
-        const node: Text = document.createTextNode(``);
-
-        // This must be done to ensure we have spaces,
-        // and the appropriate number of them.
-        // It does not work when passing through ctor,
-        // at least in some/all chromium based browsers.
-        node.nodeValue = data.replace(/ /g, ` `);
-
-        range.setStart(target_range.startContainer, target_range.startOffset);
-        range.setEnd(target_range.endContainer, target_range.endOffset);
+        const node: Text = document.createTextNode(data);
 
         range.deleteContents();
         range.insertNode(node);
@@ -45,7 +49,6 @@ export class Instance
     ):
         Promise<void>
     {
-        // we currently don't cancel so we don't need to fill
     }
 
     async On_Delete(
@@ -53,12 +56,9 @@ export class Instance
     ):
         Promise<void>
     {
-        // we currently don't cancel so we don't need to fill
     }
 
-    async After_Insert_Or_Paste_Or_Delete(
-        event: InputEvent,
-    ):
+    async After_Insert_Or_Paste_Or_Delete():
         Promise<void>
     {
     }

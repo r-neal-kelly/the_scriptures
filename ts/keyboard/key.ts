@@ -94,6 +94,7 @@ export enum Key
     NUMPAD_7 = `Numpad7`,
     NUMPAD_8 = `Numpad8`,
     NUMPAD_9 = `Numpad9`,
+
     NUMPAD_COMMA = `NumpadComma`,
     NUMPAD_DECIMAL = `NumpadDecimal`,
     NUMPAD_ADD = `NumpadAdd`,

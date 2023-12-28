@@ -1,3 +1,4 @@
+import { Count } from "../types.js";
 import { Index } from "../types.js";
 
 import * as Utils from "../utils.js";
@@ -11,6 +12,25 @@ export class Instance
     constructor()
     {
         this.buffer = [];
+    }
+
+    Count():
+        Count
+    {
+        return this.buffer.length;
+    }
+
+    At(
+        index: Index,
+    ):
+        Key
+    {
+        Utils.Assert(
+            index >= 0 && index < this.Count(),
+            `invalid index: ${index}`,
+        );
+
+        return this.buffer[index];
     }
 
     Maybe_Index_Of(
@@ -33,77 +53,6 @@ export class Instance
         boolean
     {
         return this.Maybe_Index_Of(key) != null;
-    }
-
-    Has_Sequence(
-        keys: Array<Key>,
-    ):
-        boolean
-    {
-        Utils.Assert(
-            keys.length > 0,
-            `keys cannot be empty`,
-        );
-
-        const first_index: Index | null = this.Maybe_Index_Of(keys[0]);
-
-        if (first_index != null) {
-            const indices: Array<Index> = [first_index];
-
-            for (let idx = 1, end = keys.length; idx < end; idx += 1) {
-                const index: Index | null = this.Maybe_Index_Of(keys[idx]);
-
-                if (index != null) {
-                    if (indices[indices.length - 1] < index) {
-                        indices.push(index);
-                    } else {
-                        return false;
-                    }
-                } else {
-                    return false;
-                }
-            }
-
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    Has_Shift_Left():
-        boolean
-    {
-        return this.Has(Key.SHIFT_LEFT);
-    }
-
-    Has_Shift_Right():
-        boolean
-    {
-        return this.Has(Key.SHIFT_RIGHT);
-    }
-
-    Has_Control_Left():
-        boolean
-    {
-        return this.Has(Key.CONTROL_LEFT);
-    }
-
-    Has_Control_Right():
-        boolean
-    {
-        return this.Has(Key.CONTROL_RIGHT);
-    }
-
-    Has_Alt_Left():
-        boolean
-    {
-        return this.Has(Key.ALT_LEFT);
-    }
-
-    Has_Alt_Right():
-        boolean
-    {
-        return this.Has(Key.ALT_RIGHT);
     }
 
     Add(
