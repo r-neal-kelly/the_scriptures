@@ -78,6 +78,12 @@ export class Instance
         }
     }
 
+    Clear():
+        void
+    {
+        this.buffer.splice(0, this.buffer.length);
+    }
+
     Keys():
         Array<Key>
     {
