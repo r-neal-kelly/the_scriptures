@@ -9,12 +9,8 @@
     set := "Subs"
   else if (key1 = "/")
     set := "Combo"
-  else if (key1 = ";")
-    set := "Symbols"
   else if (key1 = ",")
     set := "Commas"
-  else if (key1 = "'")
-    set := "Letters"
   else
     set := "Ligs"
 
@@ -39,60 +35,7 @@
 }
 
 global Latin := {}
-
-; Letters
-Latin.Letters_s :=  { "s": "ſ" ; U+017F LATIN SMALL LETTER LONG S
-                    , "": "" }
-
-Latin.Letters_c :=  { "": "" }
-
-; Symbols
-Latin.Symbols_s :=  { "p": "¶" ; Pilcrow Sign
-                    , "s": "§" ; Section Sign
-                    , "c": "⸿" ; U+2E3F CAPITULUM
-                    , "n": "№" ; U+2116 NUMERO SIGN
-                    ,   3: "£" ; U+00A3 POUND SIGN
-                    , "-": "‑" ; U+2011 NON-BREAKING HYPHEN
-                    , "=": "–" ; U+2013 EN DASH
-                    , "'": "ʼ" ; U+02BC MODIFIER LETTER APOSTROPHE
-                    , "[": "‘" ; U+2018 LEFT SINGLE QUOTATION MARK
-                    , "]": "’" ; U+2019 RIGHT SINGLE QUOTATION MARK
-                    , "t": "†" ; U+2020 DAGGER
-                    , ".": "⸼" ; U+2E3C STENOGRAPHIC FULL STOP
-                    , "d": "·" ; U+00B7 MIDDLE DOT
-                    , "x": "×" ; U+00D7 MULTIPLICATION SIGN
-                    , "z": "÷" ; U+00F7 DIVISION SIGN
-                    , "\": "…" ; U+2026 HORIZONTAL ELLIPSIS
-                    ,   9: "⟦" ; U+27E6 MATHEMATICAL LEFT WHITE SQUARE BRACKET
-                    ,   0: "⟧" ; U+27E7 MATHEMATICAL RIGHT WHITE SQUARE BRACKET
-                    , "": "" }
-
-Latin.Symbols_c :=  { "+": "—" ; U+2014 EM DASH
-                    , "{": "“" ; U+201C LEFT DOUBLE QUOTATION MARK
-                    , "}": "”" ; U+201D RIGHT DOUBLE QUOTATION MARK
-                    , "(": "⸨" ; U+2E28 LEFT DOUBLE PARENTHESIS
-                    , ")": "⸩" ; U+2E29 RIGHT DOUBLE PARENTHESIS
-                    , "<": "⟨" ; U+27E8 MATHEMATICAL LEFT ANGLE BRACKET
-                    , ">": "⟩" ; U+27E9 MATHEMATICAL RIGHT ANGLE BRACKET
-                    , "T": "‡" ; U+2021 DOUBLE DAGGER
-                    , "S": "᾿" ; U+1FBF GREEK PSILI
-                    , "R": "῾" ; U+1FFE GREEK DASIA
-                    , "M": "⏞" ; U+23DE TOP CURLY BRACKET
-                    , "N": "⏟" ; U+23DF BOTTOM CURLY BRACKET
-                    , "": "" }
-
-Latin.Commas_s := {   0: "🄁" ; U+1F101 DIGIT ZERO COMMA
-                  ,   1: "🄂" ; U+1F102 DIGIT ONE COMMA
-                  ,   2: "🄃" ; U+1F103 DIGIT TWO COMMA
-                  ,   3: "🄄" ; U+1F104 DIGIT THREE COMMA
-                  ,   4: "🄅" ; U+1F105 DIGIT FOUR COMMA
-                  ,   5: "🄆" ; U+1F106 DIGIT FIVE COMMA
-                  ,   6: "🄇" ; U+1F107 DIGIT SIX COMMA
-                  ,   7: "🄈" ; U+1F108 DIGIT SEVEN COMMA
-                  ,   8: "🄉" ; U+1F109 DIGIT EIGHT COMMA
-                  ,   9: "🄊" ; U+1F10A DIGIT NINE COMMA
-                  , "": "" }
-
+                    
 ; Ligatures and Digraphs
 Latin.Ligs_s  := { "aa": "ꜳ" ; Aa
                  , "ae": "æ" ; Ae

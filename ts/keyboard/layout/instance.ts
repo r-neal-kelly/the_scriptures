@@ -81,7 +81,7 @@ export class Instance
     ):
         string | boolean
     {
-        const maybe_output: [Space.Lower_Case, Space.Upper_Case | null] | boolean =
+        const maybe_output: [Space.Lower_Case | null, Space.Upper_Case | null] | boolean =
             this.Current_Space().Maybe_Output(held_keys);
 
         if (Utils.Is.Boolean(maybe_output)) {
@@ -91,28 +91,33 @@ export class Instance
 
             return maybe_output as boolean;
         } else {
-            const output: [Space.Lower_Case, Space.Upper_Case | null] =
-                maybe_output as [Space.Lower_Case, Space.Upper_Case | null];
-            const lower_case: Space.Lower_Case =
+            const output: [Space.Lower_Case | null, Space.Upper_Case | null] =
+                maybe_output as [Space.Lower_Case | null, Space.Upper_Case | null];
+            const lower_case_or_null: Space.Lower_Case | null =
                 output[0];
             const upper_case_or_null: Space.Upper_Case | null =
                 output[1];
 
             this.Reset_Current_Space();
 
-            if (upper_case_or_null != null) {
-                const upper_case: Space.Upper_Case =
-                    upper_case_or_null as Space.Upper_Case;
-
-                if (is_shifted && is_caps_locked) {
-                    return lower_case;
-                } else if (is_shifted || is_caps_locked) {
-                    return upper_case;
+            if (is_shifted && is_caps_locked) {
+                if (lower_case_or_null != null) {
+                    return lower_case_or_null as Space.Lower_Case;
                 } else {
-                    return lower_case;
+                    return false;
+                }
+            } else if (is_shifted || is_caps_locked) {
+                if (upper_case_or_null != null) {
+                    return upper_case_or_null as Space.Lower_Case;
+                } else {
+                    return false;
                 }
             } else {
-                return lower_case;
+                if (lower_case_or_null != null) {
+                    return lower_case_or_null as Space.Lower_Case;
+                } else {
+                    return false;
+                }
             }
         }
     }

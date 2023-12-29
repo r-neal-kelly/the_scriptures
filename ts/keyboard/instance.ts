@@ -13,7 +13,6 @@ export class Instance
     private held_keys: Held_Keys.Instance;
     private layouts: { [layout_name: Name]: Layout.Instance };
     private current_layout: Layout.Instance;
-    private has_spaced: boolean;
 
     constructor()
     {
@@ -23,7 +22,6 @@ export class Instance
         this.held_keys = new Held_Keys.Instance();
         this.layouts = Object.create(null);
         this.current_layout = latin_layout;
-        this.has_spaced = false;
 
         this.layouts[latin_layout.Name()] = latin_layout;
     }
@@ -100,12 +98,6 @@ export class Instance
         return this.current_layout;
     }
 
-    Has_Spaced():
-        boolean
-    {
-        return this.has_spaced;
-    }
-
     private async Send_Input_To_Selection(
         div: HTMLDivElement,
         hook: Hook.Instance,
@@ -166,39 +158,13 @@ export class Instance
         await hook.On_Key_Down(event);
 
         if (!event.repeat) {
-            if (this.has_spaced) {
+            const maybe_space: Layout.Space.Instance | boolean =
+                this.Current_Layout().Maybe_Space(this.held_keys);
+
+            if (maybe_space instanceof Layout.Space.Instance) {
                 event.preventDefault();
-            } else {
-                const maybe_space: Layout.Space.Instance | boolean =
-                    this.Current_Layout().Maybe_Space(this.held_keys);
-
-                if (maybe_space instanceof Layout.Space.Instance) {
-                    event.preventDefault();
-                    this.has_spaced = true;
-                } else {
-                    if (maybe_space as boolean) {
-                        event.preventDefault();
-                    } else {
-                        const maybe_output: string | boolean =
-                            this.Current_Layout().Maybe_Output(
-                                this.held_keys,
-                                event.shiftKey,
-                                event.getModifierState(Key.CAPS_LOCK),
-                            );
-
-                        if (Utils.Is.String(maybe_output)) {
-                            event.preventDefault();
-                            await this.Send_Input_To_Selection(div, hook, maybe_output as string);
-                        } else {
-                            if (maybe_output as boolean) {
-                                event.preventDefault();
-                            }
-                        }
-                    }
-                }
-            }
-        } else {
-            if (this.has_spaced) {
+                this.held_keys.Clear();
+            } else if (maybe_space as boolean) {
                 event.preventDefault();
             } else {
                 const maybe_output: string | boolean =
@@ -215,6 +181,22 @@ export class Instance
                     if (maybe_output as boolean) {
                         event.preventDefault();
                     }
+                }
+            }
+        } else {
+            const maybe_output: string | boolean =
+                this.Current_Layout().Maybe_Output(
+                    this.held_keys,
+                    event.shiftKey,
+                    event.getModifierState(Key.CAPS_LOCK),
+                );
+
+            if (Utils.Is.String(maybe_output)) {
+                event.preventDefault();
+                await this.Send_Input_To_Selection(div, hook, maybe_output as string);
+            } else {
+                if (maybe_output as boolean) {
+                    event.preventDefault();
                 }
             }
         }
@@ -236,10 +218,6 @@ export class Instance
         await hook.On_Key_Up(event);
 
         this.held_keys.Remove(event.code as Key);
-
-        if (this.held_keys.Count() === 0) {
-            this.has_spaced = false;
-        }
     }
 
     private async Before_Input(
