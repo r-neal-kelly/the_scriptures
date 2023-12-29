@@ -1,10 +1,8 @@
 ﻿#NoEnv
 #SingleInstance force
 #Include Commons.ahk
-;#Include English.ahk
 #Include Hebrew.ahk
 #Include Greek.ahk
-#Include Latin.ahk
 #Include Geez.ahk
 #Include Aramaic.ahk
 
@@ -19,10 +17,6 @@
 ^F6::changeLangTo("Aramaic")
 ^F7::changeLangTo("Arabic")
 ^Esc::reloadKeyboard()
-
-#If (lang = "English")
-  LAlt:: ædeadkey() ; need both, or bug!
-  RAlt:: ædeadkey() ; need both, or bug!
 
 #If (lang = "Hebrew") && (subset = "Phonetic")
   f:: Send א ; Aleph
@@ -345,19 +339,7 @@
   ![:: Send ̈́  ; Combining Greek Dialytika Tonos
 
   ?:: αdeadkey("Separate")
-
-#If (lang = "Latin")
-  LAlt:: ædeadkey()
-  RAlt:: ædeadkey()
-     w:: Send ̄ ; Macron
-    +w:: Send ̆ ; Breve
-   <!s:: Send ſ ; Long S
-   <!r:: Send ꝛ ; R Rotunda
-  +<!r:: Send Ꝛ ; Capital R Rotunda
-   <!|:: Send ¦ ; Broken Bar
-  +<!s:: Send § ; Section Sign
-  +<!p:: Send ¶ ; Pilcrow Sign
-
+  
 #If (lang = "Ge'ez")
   1:: Send ፩ ; One
   2:: Send ፪ ; Two
