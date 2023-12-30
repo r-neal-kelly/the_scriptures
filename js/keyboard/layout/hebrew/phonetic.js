@@ -1,0 +1,1 @@
+import*as Language from"../../../model/language.js";import{Key}from"../../key.js";import*as Layout from"../instance.js";export class Instance extends Layout.Instance{constructor(){super({language_name:Language.Name.HEBREW,subset_name:"Phonetic",is_language_default:!0,combos_or_space:[[[Key.KEY_F],"א","ע"]]})}}

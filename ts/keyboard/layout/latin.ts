@@ -5,7 +5,7 @@ import { Key } from "../key.js";
 import * as Layout from "./instance.js";
 import * as Space from "./space.js";
 
-const _1_LIGATURES_AND_DIGRAPHS: [Array<Key>, Space.Combos] = [
+const _1_LIGATURES_AND_DIGRAPHS: [Array<Key>, Space.Combos | boolean, Space.Combos | boolean] = [
     [Key.DIGIT_1],
     [
         // U+00BD VULGAR FRACTION ONE HALF
@@ -13,17 +13,19 @@ const _1_LIGATURES_AND_DIGRAPHS: [Array<Key>, Space.Combos] = [
         // U+00BC VULGAR FRACTION ONE QUARTER
         [[Key.DIGIT_4], `¼`, null],
     ],
+    true,
 ];
 
-const _3_LIGATURES_AND_DIGRAPHS: [Array<Key>, Space.Combos] = [
+const _3_LIGATURES_AND_DIGRAPHS: [Array<Key>, Space.Combos | boolean, Space.Combos | boolean] = [
     [Key.DIGIT_3],
     [
         // U+00BE VULGAR FRACTION THREE QUARTERS
         [[Key.DIGIT_4], `¾`, null],
     ],
+    true,
 ];
 
-const A_LIGATURES_AND_DIGRAPHS: [Array<Key>, Space.Combos] = [
+const A_LIGATURES_AND_DIGRAPHS: [Array<Key>, Space.Combos | boolean, Space.Combos | boolean] = [
     [Key.KEY_A],
     [
         // U+A733 LATIN SMALL LETTER AA, U+A732 LATIN CAPITAL LETTER AA
@@ -39,9 +41,10 @@ const A_LIGATURES_AND_DIGRAPHS: [Array<Key>, Space.Combos] = [
         // U+A73D LATIN SMALL LETTER AY, U+A73C LATIN CAPITAL LETTER AY
         [[Key.KEY_Y], `ꜽ`, `Ꜽ`],
     ],
+    true,
 ];
 
-const O_LIGATURES_AND_DIGRAPHS: [Array<Key>, Space.Combos] = [
+const O_LIGATURES_AND_DIGRAPHS: [Array<Key>, Space.Combos | boolean, Space.Combos | boolean] = [
     [Key.KEY_O],
     [
         // U+0153 LATIN SMALL LIGATURE OE, U+0152 LATIN CAPITAL LIGATURE OE
@@ -51,25 +54,28 @@ const O_LIGATURES_AND_DIGRAPHS: [Array<Key>, Space.Combos] = [
         // U+0223 LATIN SMALL LETTER OU, U+0222 LATIN CAPITAL LETTER OU
         [[Key.KEY_U], `ȣ`, `Ȣ`],
     ],
+    true,
 ];
 
-const S_LIGATURES_AND_DIGRAPHS: [Array<Key>, Space.Combos] = [
+const S_LIGATURES_AND_DIGRAPHS: [Array<Key>, Space.Combos | boolean, Space.Combos | boolean] = [
     [Key.KEY_S],
     [
         // U+00DF LATIN SMALL LETTER SHARP S, U+1E9E LATIN CAPITAL LETTER SHARP S
         [[Key.KEY_Z], `ß`, `ẞ`],
     ],
+    true,
 ];
 
-const T_LIGATURES_AND_DIGRAPHS: [Array<Key>, Space.Combos] = [
+const T_LIGATURES_AND_DIGRAPHS: [Array<Key>, Space.Combos | boolean, Space.Combos | boolean] = [
     [Key.KEY_T],
     [
         // U+A729 LATIN SMALL LETTER TZ, U+A728 LATIN CAPITAL LETTER TZ
         [[Key.KEY_Z], `ꜩ`, `Ꜩ`],
     ],
+    true,
 ];
 
-const U_LIGATURES_AND_DIGRAPHS: [Array<Key>, Space.Combos] = [
+const U_LIGATURES_AND_DIGRAPHS: [Array<Key>, Space.Combos | boolean, Space.Combos | boolean] = [
     [Key.KEY_U],
     [
         // U+1D6B LATIN SMALL LETTER UE
@@ -77,17 +83,19 @@ const U_LIGATURES_AND_DIGRAPHS: [Array<Key>, Space.Combos] = [
         // U+AB63 LATIN SMALL LETTER UO
         [[Key.KEY_O], `ꭣ`, null],
     ],
+    true,
 ];
 
-const V_LIGATURES_AND_DIGRAPHS: [Array<Key>, Space.Combos] = [
+const V_LIGATURES_AND_DIGRAPHS: [Array<Key>, Space.Combos | boolean, Space.Combos | boolean] = [
     [Key.KEY_V],
     [
         // U+A761 LATIN SMALL LETTER VY, U+A760 LATIN CAPITAL LETTER VY
         [[Key.KEY_Y], `ꝡ`, `Ꝡ`],
     ],
+    true,
 ];
 
-const LIGATURES_AND_DIGRAPHS: [Array<Key>, Space.Combos] = [
+const LIGATURES_AND_DIGRAPHS: [Array<Key>, Space.Combos | boolean, Space.Combos | boolean] = [
     [Key.BACKSLASH],
     [
         _1_LIGATURES_AND_DIGRAPHS,
@@ -99,9 +107,10 @@ const LIGATURES_AND_DIGRAPHS: [Array<Key>, Space.Combos] = [
         U_LIGATURES_AND_DIGRAPHS,
         V_LIGATURES_AND_DIGRAPHS,
     ],
+    false,
 ];
 
-const LETTERS: [Array<Key>, Space.Combos] = [
+const LETTERS: [Array<Key>, Space.Combos | boolean, Space.Combos | boolean] = [
     [Key.QUOTE],
     [
         // U+017F LATIN SMALL LETTER LONG S
@@ -109,9 +118,10 @@ const LETTERS: [Array<Key>, Space.Combos] = [
         // U+A75B LATIN SMALL LETTER R ROTUNDA, U+A75A LATIN CAPITAL LETTER R ROTUNDA
         [[Key.KEY_R], `ꝛ`, `Ꝛ`],
     ],
+    false,
 ];
 
-const SYMBOLS: [Array<Key>, Space.Combos] = [
+const SYMBOLS: [Array<Key>, Space.Combos | boolean, Space.Combos | boolean] = [
     [Key.SEMICOLON],
     [
         // U+00B6 PILCROW SIGN
@@ -155,9 +165,10 @@ const SYMBOLS: [Array<Key>, Space.Combos] = [
         // U+23DE TOP CURLY BRACKET, U+23DF BOTTOM CURLY BRACKET
         [[Key.KEY_M], `⏞`, `⏟`],
     ],
+    false,
 ];
 
-const COMMAS: [Array<Key>, Space.Combos] = [
+const COMMAS: [Array<Key>, Space.Combos | boolean, Space.Combos | boolean] = [
     [Key.COMMA],
     [
         // U+1F101 DIGIT ZERO COMMA
@@ -181,9 +192,10 @@ const COMMAS: [Array<Key>, Space.Combos] = [
         // U+1F10A DIGIT NINE COMMA
         [[Key.DIGIT_9], `🄊`, null],
     ],
+    false,
 ];
 
-const SUPERSCRIPTS: [Array<Key>, Space.Combos] = [
+const SUPERSCRIPTS: [Array<Key>, Space.Combos | boolean, Space.Combos | boolean] = [
     [Key.EQUAL],
     [
         // U+1D43 MODIFIER LETTER SMALL A, U+1D2C MODIFIER LETTER CAPITAL A
@@ -269,9 +281,10 @@ const SUPERSCRIPTS: [Array<Key>, Space.Combos] = [
         // U+02C8 MODIFIER LETTER VERTICAL LINE
         [[Key.BACKSLASH], null, `ˈ`],
     ],
+    false,
 ];
 
-const SUBSCRIPTS: [Array<Key>, Space.Combos] = [
+const SUBSCRIPTS: [Array<Key>, Space.Combos | boolean, Space.Combos | boolean] = [
     [Key.MINUS],
     [
         // U+2090 LATIN SUBSCRIPT SMALL LETTER A
@@ -329,9 +342,10 @@ const SUBSCRIPTS: [Array<Key>, Space.Combos] = [
         // U+2080 SUBSCRIPT ZERO
         [[Key.DIGIT_0], `₀`, null],
     ],
+    false,
 ];
 
-const COMBINING_DIACRITICS: [Array<Key>, Space.Combos] = [
+const COMBINING_DIACRITICS: [Array<Key>, Space.Combos | boolean, Space.Combos | boolean] = [
     [Key.SLASH],
     [
         // U+0300 COMBINING GRAVE ACCENT, U+030F COMBINING DOUBLE GRAVE ACCENT
@@ -357,9 +371,10 @@ const COMBINING_DIACRITICS: [Array<Key>, Space.Combos] = [
         // U+0315 COMBINING COMMA ABOVE RIGHT
         [[Key.QUOTE], `̕`, null],
     ],
+    false,
 ];
 
-const SPECIALS: [Array<Key>, Space.Combos] = [
+const SPECIALS: [Array<Key>, Space.Combos | boolean, Space.Combos | boolean] = [
     [Key.BACKQUOTE],
     [
         LETTERS,
@@ -369,6 +384,7 @@ const SPECIALS: [Array<Key>, Space.Combos] = [
         SUBSCRIPTS,
         COMBINING_DIACRITICS,
     ],
+    false,
 ];
 
 export class Instance extends Layout.Instance

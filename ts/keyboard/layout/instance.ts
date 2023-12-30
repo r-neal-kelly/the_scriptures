@@ -95,17 +95,47 @@ export class Instance
 
     Maybe_Space(
         held_keys: Held_Keys.Instance,
+        is_shifted: boolean,
+        is_caps_locked: boolean,
     ):
         Space.Instance | boolean
     {
-        const maybe_output: Space.Instance | boolean =
+        const maybe_output: [Space.Instance | null, Space.Instance | null] | boolean =
             this.Current_Space().Maybe_Space(held_keys);
 
-        if (maybe_output instanceof Space.Instance) {
-            this.Set_Current_Space(maybe_output as Space.Instance);
-        }
+        if (Utils.Is.Boolean(maybe_output)) {
+            return maybe_output as boolean;
+        } else {
+            const output: [Space.Instance | null, Space.Instance | null] =
+                maybe_output as [Space.Instance | null, Space.Instance | null];
+            const lower_space_or_null: Space.Instance | null =
+                output[0];
+            const upper_space_or_null: Space.Instance | null =
+                output[1];
 
-        return maybe_output;
+            if (is_shifted && is_caps_locked) {
+                if (lower_space_or_null != null) {
+                    this.Set_Current_Space(lower_space_or_null as Space.Instance);
+                    return lower_space_or_null as Space.Instance;
+                } else {
+                    return false;
+                }
+            } else if (is_shifted || is_caps_locked) {
+                if (upper_space_or_null != null) {
+                    this.Set_Current_Space(upper_space_or_null as Space.Instance);
+                    return upper_space_or_null as Space.Instance;
+                } else {
+                    return false;
+                }
+            } else {
+                if (lower_space_or_null != null) {
+                    this.Set_Current_Space(lower_space_or_null as Space.Instance);
+                    return lower_space_or_null as Space.Instance;
+                } else {
+                    return false;
+                }
+            }
+        }
     }
 
     Maybe_Output(
@@ -142,7 +172,7 @@ export class Instance
                 }
             } else if (is_shifted || is_caps_locked) {
                 if (upper_case_or_null != null) {
-                    return upper_case_or_null as Space.Lower_Case;
+                    return upper_case_or_null as Space.Upper_Case;
                 } else {
                     return false;
                 }

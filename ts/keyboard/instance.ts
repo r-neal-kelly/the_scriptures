@@ -479,7 +479,11 @@ export class Instance
         if (this.Has_Current_Layout()) {
             if (!event.repeat) {
                 const maybe_space: Layout.Space.Instance | boolean =
-                    this.Current_Layout().Maybe_Space(this.held_keys);
+                    this.Current_Layout().Maybe_Space(
+                        this.held_keys,
+                        event.shiftKey,
+                        event.getModifierState(Key.CAPS_LOCK),
+                    );
 
                 if (maybe_space instanceof Layout.Space.Instance) {
                     event.preventDefault();
@@ -555,6 +559,7 @@ export function Singleton():
         singleton = new Instance(
             {
                 layouts: [
+                    new Layout.Hebrew.Phonetic.Instance(),
                     new Layout.Latin.Instance(),
                 ],
                 default_layout_language_name: Language.Name.LATIN,
