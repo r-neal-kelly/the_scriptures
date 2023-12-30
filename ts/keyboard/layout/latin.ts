@@ -343,9 +343,9 @@ const COMBINING_DIACRITICS: [Array<Key>, Space.Combos] = [
         // U+0308 COMBINING DIAERESIS
         [[Key.KEY_F], `̈`, null],
         // U+0304 COMBINING MACRON
-        [[Key.KEY_Q], `̄`, null],
+        [[Key.PERIOD], `̄`, null],
         // U+0306 COMBINING BREVE, U+0311 COMBINING INVERTED BREVE
-        [[Key.KEY_W], `̆`, `̑`],
+        [[Key.COMMA], `̆`, `̑`],
         // U+030A COMBINING RING ABOVE
         [[Key.KEY_R], `̊`, null],
         // U+0303 COMBINING TILDE
@@ -377,8 +377,10 @@ export class Instance extends Layout.Instance
     {
         super(
             {
-                name: Language.Name.LATIN,
-                combos: [
+                language_name: Language.Name.LATIN,
+                subset_name: null,
+                is_language_default: true,
+                combos_or_space: [
                     LIGATURES_AND_DIGRAPHS,
                     SPECIALS,
                 ],

@@ -61,6 +61,8 @@ class Body extends Entity.Instance
         this.Add_This_CSS(
             `
                 .Body {
+                    position: relative;
+                    
                     width: 100vw;
                     height: 100vh;
 

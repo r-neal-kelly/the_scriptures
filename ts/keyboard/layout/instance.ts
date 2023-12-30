@@ -2,35 +2,69 @@ import { Name } from "../../types.js";
 
 import * as Utils from "../../utils.js";
 
+import * as Language from "../../model/language.js";
+
 import * as Held_Keys from "../held_keys.js";
 
 import * as Space from "./space.js";
 
 export class Instance
 {
-    private name: Name;
+    private language_name: Language.Name;
+    private subset_name: Name | null;
+    private is_language_default: boolean;
     private top_space: Space.Instance;
     private current_space: Space.Instance;
 
     constructor(
         {
-            name,
-            combos,
+            language_name,
+            subset_name,
+            is_language_default,
+            combos_or_space,
         }: {
-            name: Name,
-            combos: Space.Combos,
+            language_name: Language.Name,
+            subset_name: Name | null,
+            is_language_default: boolean,
+            combos_or_space: Space.Combos | Space.Instance,
         },
     )
     {
-        this.name = name;
-        this.top_space = new Space.Instance(combos);
+        this.language_name = language_name;
+        this.subset_name = subset_name;
+        this.is_language_default = is_language_default;
+        this.top_space = combos_or_space instanceof Space.Instance ?
+            combos_or_space as Space.Instance :
+            new Space.Instance(combos_or_space as Space.Combos);
         this.current_space = this.top_space;
     }
 
-    Name():
+    Language_Name():
+        Language.Name
+    {
+        return this.language_name;
+    }
+
+    Subset_Name():
+        Name | null
+    {
+        return this.subset_name;
+    }
+
+    Full_Name():
         Name
     {
-        return this.name;
+        if (this.subset_name != null) {
+            return `${this.Language_Name()} - ${this.Subset_Name()}`;
+        } else {
+            return this.Language_Name();
+        }
+    }
+
+    Is_Language_Default():
+        boolean
+    {
+        return this.is_language_default;
     }
 
     Top_Space():

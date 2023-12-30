@@ -21,6 +21,7 @@ Object.freeze(KNOWN_BOOK_NAMES);
 
 const KNOWN_LANGUAGE_NAMES: Set<Name> = new Set(
     [
+        Language.Name.ENGLISH,
         Language.Name.HEBREW,
         Language.Name.GREEK,
         Language.Name.LATIN,
@@ -30,10 +31,21 @@ const KNOWN_LANGUAGE_NAMES: Set<Name> = new Set(
         Language.Name.FRENCH,
         Language.Name.ITALIAN,
         Language.Name.DUTCH,
-        Language.Name.ENGLISH,
     ],
 );
 Object.freeze(KNOWN_LANGUAGE_NAMES);
+
+export function Known_Book_Names():
+    Array<Name>
+{
+    return Array.from(KNOWN_BOOK_NAMES);
+}
+
+export function Known_Language_Names():
+    Array<Name>
+{
+    return Array.from(KNOWN_LANGUAGE_NAMES);
+}
 
 export class Instance
 {

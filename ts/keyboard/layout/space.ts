@@ -1,6 +1,7 @@
 import * as Utils from "../../utils.js";
 
 import { Key } from "../key.js";
+import * as Reserved_Keys from "../reserved_keys.js";
 import * as Held_Keys from "../held_keys.js";
 
 export type Lower_Case =
@@ -39,13 +40,8 @@ export class Instance
             let lookup: Lookup = this.lookup;
             for (const key of keys.slice(0, keys.length - 1)) {
                 Utils.Assert(
-                    key != Key.SHIFT_LEFT &&
-                    key != Key.SHIFT_RIGHT &&
-                    key != Key.CONTROL_LEFT &&
-                    key != Key.CONTROL_RIGHT &&
-                    key != Key.ALT_LEFT &&
-                    key != Key.ALT_RIGHT,
-                    `We currently disallow combos with the shift, control, or alt keys.`,
+                    !Reserved_Keys.Has(key),
+                    `You cannot use a reserved key: ${key}`,
                 );
                 if (lookup[key] != null) {
                     Utils.Assert(
@@ -63,13 +59,8 @@ export class Instance
 
             const last_key: Key = keys[keys.length - 1];
             Utils.Assert(
-                last_key != Key.SHIFT_LEFT &&
-                last_key != Key.SHIFT_RIGHT &&
-                last_key != Key.CONTROL_LEFT &&
-                last_key != Key.CONTROL_RIGHT &&
-                last_key != Key.ALT_LEFT &&
-                last_key != Key.ALT_RIGHT,
-                `We currently disallow combos with the shift, control, or alt keys.`,
+                !Reserved_Keys.Has(last_key),
+                `You cannot use a reserved key: ${last_key}`,
             );
             Utils.Assert(
                 lookup[last_key] == null,

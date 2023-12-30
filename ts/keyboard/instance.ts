@@ -1,29 +1,219 @@
+import { Count } from "../types.js";
+import { Index } from "../types.js";
 import { Name } from "../types.js";
 
 import * as Utils from "../utils.js";
 
+import * as Language from "../model/language.js";
+
 import { Key } from "./key.js";
+import * as Reserved_Keys from "./reserved_keys.js";
 import * as Held_Keys from "./held_keys.js";
 import * as Layout from "./layout.js";
 import * as Hook from "./hook.js";
 
 export class Instance
 {
+    private layouts: { [language_name: Name]: Array<Layout.Instance> };
+    private default_layout: Layout.Instance | null;
+    private current_layout: Layout.Instance | null;
     private divs_to_hooks: Map<HTMLDivElement, Hook.Instance>;
     private held_keys: Held_Keys.Instance;
-    private layouts: { [layout_name: Name]: Layout.Instance };
-    private current_layout: Layout.Instance;
+    private message_div: HTMLDivElement;
+    private message_reference_count: Count;
 
-    constructor()
+    constructor(
+        {
+            layouts,
+            default_layout_language_name,
+            default_layout_subset_name,
+        }: {
+            layouts: Array<Layout.Instance>,
+            default_layout_language_name: Language.Name | null,
+            default_layout_subset_name: Name | null,
+        },
+    )
     {
-        const latin_layout: Layout.Latin.Instance = new Layout.Latin.Instance();
+        this.layouts = Object.create(null);
+
+        for (const layout of layouts) {
+            const language_name: Language.Name =
+                layout.Language_Name();
+
+            if (this.layouts[language_name] == null) {
+                this.layouts[language_name] = [];
+            }
+
+            Utils.Assert(
+                this.Maybe_Index_Of_Layout(
+                    language_name,
+                    layout.Subset_Name(),
+                ) == null,
+                `cannot have layouts with duplicate names`,
+            );
+
+            this.layouts[language_name].push(layout);
+        }
+
+        for (const language_name of Object.keys(this.layouts)) {
+            this.layouts[language_name].sort(
+                function (
+                    a: Layout.Instance,
+                    b: Layout.Instance,
+                ):
+                    number
+                {
+                    const a_subset_name: Name | null = a.Subset_Name();
+                    const b_subset_name: Name | null = b.Subset_Name();
+
+                    if (a_subset_name == null) {
+                        return -1;
+                    } else if (b_subset_name == null) {
+                        return 1;
+                    } else {
+                        if (a_subset_name < b_subset_name) {
+                            return -1;
+                        } else if (a_subset_name > b_subset_name) {
+                            return 1;
+                        } else {
+                            return 0;
+                        }
+                    }
+                },
+            );
+        }
+
+        if (default_layout_language_name != null) {
+            this.default_layout = this.Layout(
+                default_layout_language_name,
+                default_layout_subset_name,
+            );
+            this.current_layout = this.default_layout;
+        } else {
+            this.default_layout = null;
+            this.current_layout = null;
+        }
 
         this.divs_to_hooks = new Map();
         this.held_keys = new Held_Keys.Instance();
-        this.layouts = Object.create(null);
-        this.current_layout = latin_layout;
 
-        this.layouts[latin_layout.Name()] = latin_layout;
+        this.message_div = document.createElement(`div`);
+        this.message_div.style.position = `fixed`;
+        this.message_div.style.left = `0`;
+        this.message_div.style.top = `0`;
+        this.message_div.style.zIndex = `100000`;
+        this.message_div.style.padding = `3px`;
+        this.message_div.style.backgroundColor = `black`;
+        this.message_div.style.color = `white`;
+        this.message_div.style.borderStyle = `solid`;
+        this.message_div.style.borderWidth = `1px`;
+        this.message_div.style.borderColor = `white`;
+
+        this.message_reference_count = 0;
+    }
+
+    private Maybe_Index_Of_Layout(
+        language_name: Language.Name,
+        subset_name: Name | null,
+    ):
+        Index | null
+    {
+        if (this.layouts[language_name] != null) {
+            let index: Index | null = null;
+
+            for (let idx = 0, end = this.layouts[language_name].length; idx < end; idx += 1) {
+                const layout: Layout.Instance = this.layouts[language_name][idx];
+                if (layout.Subset_Name() === subset_name) {
+                    index = idx;
+                    break;
+                }
+            }
+
+            return index;
+        } else {
+            return null;
+        }
+    }
+
+    Has_Layout(
+        language_name: Language.Name,
+        subset_name: Name | null,
+    ):
+        boolean
+    {
+        const maybe_index: Index | null =
+            this.Maybe_Index_Of_Layout(language_name, subset_name);
+
+        return maybe_index != null;
+    }
+
+    Layout(
+        language_name: Language.Name,
+        subset_name: Name | null,
+    ):
+        Layout.Instance
+    {
+        const maybe_index: Index | null =
+            this.Maybe_Index_Of_Layout(language_name, subset_name);
+
+        Utils.Assert(
+            maybe_index != null,
+            `does not have layout:\n` +
+            `language_name: ${language_name}\n` +
+            `subset_name: ${subset_name}`,
+        );
+
+        return this.layouts[language_name][maybe_index as Index];
+    }
+
+    Has_Default_Layout():
+        boolean
+    {
+        return this.default_layout != null;
+    }
+
+    Default_Layout():
+        Layout.Instance
+    {
+        Utils.Assert(
+            this.Has_Default_Layout(),
+            `does not have a default_layout`,
+        );
+
+        return this.default_layout as Layout.Instance;
+    }
+
+    Has_Current_Layout():
+        boolean
+    {
+        return this.current_layout != null;
+    }
+
+    Current_Layout():
+        Layout.Instance
+    {
+        Utils.Assert(
+            this.Has_Current_Layout(),
+            `does not have a current_layout`,
+        );
+
+        return this.current_layout as Layout.Instance;
+    }
+
+    private Set_Current_Layout(
+        language_name: Language.Name | null,
+        subset_name: Name | null,
+    ):
+        void
+    {
+        if (language_name != null) {
+            this.current_layout = this.Layout(
+                language_name as Language.Name,
+                subset_name,
+            );
+        } else {
+            this.current_layout = null;
+        }
     }
 
     Has_Div(
@@ -79,26 +269,96 @@ export class Instance
         return this.held_keys;
     }
 
-    Layout(
-        name: Name,
+    private async On_Keydown(
+        this: Instance,
+        event: KeyboardEvent,
     ):
-        Layout.Instance
+        Promise<void>
     {
+        event.stopPropagation();
+
+        if (!event.repeat) {
+            const key: Key = event.code as Key;
+            if (
+                !Reserved_Keys.Has(key) ||
+                key === Reserved_Keys.META_KEY
+            ) {
+                this.held_keys.Add(event.code as Key);
+            }
+        }
+
+        if (this.held_keys.Has(Reserved_Keys.META_KEY)) {
+            await this.On_Meta_Keydown(event);
+        } else {
+            await this.On_Layout_Keydown(event);
+        }
+    }
+
+    private async On_Keyup(
+        this: Instance,
+        event: KeyboardEvent,
+    ):
+        Promise<void>
+    {
+        event.stopPropagation();
+
+        if (this.held_keys.Has(Reserved_Keys.META_KEY)) {
+            await this.On_Meta_Keyup(event);
+        } else {
+            await this.On_Layout_Keyup(event);
+        }
+
+        this.held_keys.Remove(event.code as Key);
+    }
+
+    private async Before_Input(
+        this: Instance,
+        event: InputEvent,
+    ):
+        Promise<void>
+    {
+        event.stopPropagation();
+
+        const div: HTMLDivElement =
+            event.target as HTMLDivElement;
         Utils.Assert(
-            this.layouts[name] != null,
-            `does not have layout with name ${name}`,
+            div != null,
+            `div should not be null`,
+        );
+        Utils.Assert(
+            this.Has_Div(div),
+            `unknown div`,
         );
 
-        return this.layouts[name] as Layout.Instance;
+        const hook: Hook.Instance =
+            this.divs_to_hooks.get(div) as Hook.Instance;
+        Utils.Assert(
+            hook != null,
+            `hook should not be null`,
+        );
+
+        if (event.inputType === `insertText`) {
+            event.preventDefault();
+
+            await this.Send_Output_To_Selection(
+                div,
+                hook,
+                event.data || ``,
+            );
+        } else if (event.inputType === `insertFromPaste`) {
+            await hook.On_Paste(
+                event,
+            );
+            await hook.After_Insert_Or_Paste_Or_Delete();
+        } else if (event.inputType === `deleteContentBackward`) {
+            await hook.On_Delete(
+                event,
+            );
+            await hook.After_Insert_Or_Paste_Or_Delete();
+        }
     }
 
-    Current_Layout():
-        Layout.Instance
-    {
-        return this.current_layout;
-    }
-
-    private async Send_Input_To_Selection(
+    private async Send_Output_To_Selection(
         div: HTMLDivElement,
         hook: Hook.Instance,
         data: string,
@@ -128,44 +388,119 @@ export class Instance
         await hook.After_Insert_Or_Paste_Or_Delete();
     }
 
-    private async On_Keydown(
-        this: Instance,
+    private async Send_Message(
+        message: string,
+    ):
+        Promise<void>
+    {
+        this.message_div.textContent = message;
+
+        document.body.style.position = `relative`;
+        document.body.appendChild(this.message_div);
+
+        this.message_reference_count += 1;
+        await Utils.Wait_Seconds(2);
+        this.message_reference_count -= 1;
+
+        if (this.message_reference_count < 1) {
+            document.body.removeChild(this.message_div);
+        }
+    }
+
+    private async On_Meta_Keydown(
         event: KeyboardEvent,
     ):
         Promise<void>
     {
-        event.stopPropagation();
-
-        const div: HTMLDivElement =
-            event.target as HTMLDivElement;
-        const hook: Hook.Instance =
-            this.divs_to_hooks.get(div) as Hook.Instance;
+        event.preventDefault();
 
         if (!event.repeat) {
-            const key: Key = event.code as Key;
-            if (
-                key != Key.SHIFT_LEFT &&
-                key != Key.SHIFT_RIGHT &&
-                key != Key.CONTROL_LEFT &&
-                key != Key.CONTROL_RIGHT &&
-                key != Key.ALT_LEFT &&
-                key != Key.ALT_RIGHT
-            ) {
-                this.held_keys.Add(event.code as Key);
+            // I think we should have a key to goto next language
+            // and a key to go to next subset, maybe = and -.
+            // And then we should have specific keys for each lang
+            // and if shift is held then change subset, else just
+            // change to the last subset.
+
+            if (this.held_keys.Is([Reserved_Keys.META_KEY, Key.DIGIT_0])) {
+                this.Set_Current_Layout(null, null);
+                this.Send_Message(`Global Layout: None`);
+            } else if (this.held_keys.Is([Reserved_Keys.META_KEY, Key.DIGIT_9])) {
+                if (this.Has_Layout(Language.Name.HEBREW, `Phonetic`)) {
+                    this.Set_Current_Layout(Language.Name.HEBREW, `Phonetic`);
+                    this.Send_Message(`Global Layout: ${this.Current_Layout().Full_Name()}`);
+                }
+            } else if (this.held_keys.Is([Reserved_Keys.META_KEY, Key.DIGIT_8])) {
+                if (this.Has_Layout(Language.Name.GREEK, `Combining`)) {
+                    this.Set_Current_Layout(Language.Name.GREEK, `Combining`);
+                    this.Send_Message(`Global Layout: ${this.Current_Layout().Full_Name()}`);
+                }
+            } else if (this.held_keys.Is([Reserved_Keys.META_KEY, Key.DIGIT_7])) {
+                if (this.Has_Layout(Language.Name.LATIN, null)) {
+                    this.Set_Current_Layout(Language.Name.LATIN, null);
+                    this.Send_Message(`Global Layout: ${this.Current_Layout().Full_Name()}`);
+                }
             }
         }
+    }
+
+    private async On_Meta_Keyup(
+        event: KeyboardEvent,
+    ):
+        Promise<void>
+    {
+        event.preventDefault();
+    }
+
+    private async On_Layout_Keydown(
+        event: KeyboardEvent,
+    ):
+        Promise<void>
+    {
+        const div: HTMLDivElement =
+            event.target as HTMLDivElement;
+        Utils.Assert(
+            div != null,
+            `div should not be null`,
+        );
+        Utils.Assert(
+            this.Has_Div(div),
+            `unknown div`,
+        );
+
+        const hook: Hook.Instance =
+            this.divs_to_hooks.get(div) as Hook.Instance;
+        Utils.Assert(
+            hook != null,
+            `hook should not be null`,
+        );
 
         await hook.On_Key_Down(event);
 
-        if (!event.repeat) {
-            const maybe_space: Layout.Space.Instance | boolean =
-                this.Current_Layout().Maybe_Space(this.held_keys);
+        if (this.Has_Current_Layout()) {
+            if (!event.repeat) {
+                const maybe_space: Layout.Space.Instance | boolean =
+                    this.Current_Layout().Maybe_Space(this.held_keys);
 
-            if (maybe_space instanceof Layout.Space.Instance) {
-                event.preventDefault();
-                this.held_keys.Clear();
-            } else if (maybe_space as boolean) {
-                event.preventDefault();
+                if (maybe_space instanceof Layout.Space.Instance) {
+                    event.preventDefault();
+                    this.held_keys.Clear();
+                } else if (maybe_space as boolean) {
+                    event.preventDefault();
+                } else {
+                    const maybe_output: string | boolean =
+                        this.Current_Layout().Maybe_Output(
+                            this.held_keys,
+                            event.shiftKey,
+                            event.getModifierState(Key.CAPS_LOCK),
+                        );
+
+                    if (Utils.Is.String(maybe_output)) {
+                        event.preventDefault();
+                        await this.Send_Output_To_Selection(div, hook, maybe_output as string);
+                    } else if (maybe_output as boolean) {
+                        event.preventDefault();
+                    }
+                }
             } else {
                 const maybe_output: string | boolean =
                     this.Current_Layout().Maybe_Output(
@@ -176,63 +511,21 @@ export class Instance
 
                 if (Utils.Is.String(maybe_output)) {
                     event.preventDefault();
-                    await this.Send_Input_To_Selection(div, hook, maybe_output as string);
-                } else {
-                    if (maybe_output as boolean) {
-                        event.preventDefault();
-                    }
-                }
-            }
-        } else {
-            const maybe_output: string | boolean =
-                this.Current_Layout().Maybe_Output(
-                    this.held_keys,
-                    event.shiftKey,
-                    event.getModifierState(Key.CAPS_LOCK),
-                );
-
-            if (Utils.Is.String(maybe_output)) {
-                event.preventDefault();
-                await this.Send_Input_To_Selection(div, hook, maybe_output as string);
-            } else {
-                if (maybe_output as boolean) {
+                    await this.Send_Output_To_Selection(div, hook, maybe_output as string);
+                } else if (maybe_output as boolean) {
                     event.preventDefault();
                 }
             }
         }
     }
 
-    private async On_Keyup(
-        this: Instance,
+    private async On_Layout_Keyup(
         event: KeyboardEvent,
     ):
         Promise<void>
     {
-        event.stopPropagation();
-
         const div: HTMLDivElement =
             event.target as HTMLDivElement;
-        const hook: Hook.Instance =
-            this.divs_to_hooks.get(div) as Hook.Instance;
-
-        await hook.On_Key_Up(event);
-
-        this.held_keys.Remove(event.code as Key);
-    }
-
-    private async Before_Input(
-        this: Instance,
-        event: InputEvent,
-    ):
-        Promise<void>
-    {
-        event.stopPropagation();
-
-        const div: HTMLDivElement =
-            event.target as HTMLDivElement;
-        const hook: Hook.Instance =
-            this.divs_to_hooks.get(div) as Hook.Instance;
-
         Utils.Assert(
             div != null,
             `div should not be null`,
@@ -241,50 +534,15 @@ export class Instance
             this.Has_Div(div),
             `unknown div`,
         );
+
+        const hook: Hook.Instance =
+            this.divs_to_hooks.get(div) as Hook.Instance;
         Utils.Assert(
             hook != null,
             `hook should not be null`,
         );
 
-        if (event.inputType === `insertText`) {
-            event.preventDefault();
-
-            // We replace spaces with the non-breaking space
-            // to ensure that they are all rendered properly.
-            const data: string =
-                (event.data || ``).replace(/ /g, ` `);
-            const target_ranges: Array<StaticRange> =
-                event.getTargetRanges();
-
-            Utils.Assert(
-                target_ranges.length === 1,
-                `don't know why target_ranges has 0 or more than 1 range in it`,
-            );
-
-            const range: Range = document.createRange();
-
-            range.setStart(target_ranges[0].startContainer, target_ranges[0].startOffset);
-            range.setEnd(target_ranges[0].endContainer, target_ranges[0].endOffset);
-
-            await hook.On_Insert(
-                {
-                    div: div,
-                    data: data,
-                    range: range,
-                },
-            );
-            await hook.After_Insert_Or_Paste_Or_Delete();
-        } else if (event.inputType === `insertFromPaste`) {
-            await hook.On_Paste(
-                event,
-            );
-            await hook.After_Insert_Or_Paste_Or_Delete();
-        } else if (event.inputType === `deleteContentBackward`) {
-            await hook.On_Delete(
-                event,
-            );
-            await hook.After_Insert_Or_Paste_Or_Delete();
-        }
+        await hook.On_Key_Up(event);
     }
 }
 
@@ -294,7 +552,15 @@ export function Singleton():
     Instance
 {
     if (singleton == null) {
-        singleton = new Instance();
+        singleton = new Instance(
+            {
+                layouts: [
+                    new Layout.Latin.Instance(),
+                ],
+                default_layout_language_name: Language.Name.LATIN,
+                default_layout_subset_name: null,
+            },
+        );
     }
 
     return singleton;

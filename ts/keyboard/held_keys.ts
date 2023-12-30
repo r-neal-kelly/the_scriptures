@@ -84,6 +84,24 @@ export class Instance
         this.buffer.splice(0, this.buffer.length);
     }
 
+    Is(
+        keys: Array<Key>,
+    ):
+        boolean
+    {
+        if (keys.length === this.buffer.length) {
+            for (let idx = 0, end = keys.length; idx < end; idx += 1) {
+                if (keys[idx] !== this.buffer[idx]) {
+                    return false;
+                }
+            }
+
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     Keys():
         Array<Key>
     {
