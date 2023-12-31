@@ -63,20 +63,26 @@ export class Instance
                 ):
                     number
                 {
-                    const a_subset_name: Name | null = a.Subset_Name();
-                    const b_subset_name: Name | null = b.Subset_Name();
-
-                    if (a_subset_name == null) {
+                    if (a.Is_Language_Default()) {
                         return -1;
-                    } else if (b_subset_name == null) {
+                    } else if (b.Is_Language_Default()) {
                         return 1;
                     } else {
-                        if (a_subset_name < b_subset_name) {
+                        const a_subset_name: Name | null = a.Subset_Name();
+                        const b_subset_name: Name | null = b.Subset_Name();
+
+                        if (a_subset_name == null) {
                             return -1;
-                        } else if (a_subset_name > b_subset_name) {
+                        } else if (b_subset_name == null) {
                             return 1;
                         } else {
-                            return 0;
+                            if (a_subset_name < b_subset_name) {
+                                return -1;
+                            } else if (a_subset_name > b_subset_name) {
+                                return 1;
+                            } else {
+                                return 0;
+                            }
                         }
                     }
                 },
@@ -560,6 +566,7 @@ export function Singleton():
             {
                 layouts: [
                     new Layout.Hebrew.Phonetic.Instance(),
+                    new Layout.Hebrew.International.Instance(),
                     new Layout.Latin.Instance(),
                 ],
                 default_layout_language_name: Language.Name.LATIN,
