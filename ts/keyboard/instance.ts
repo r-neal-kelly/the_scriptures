@@ -220,6 +220,13 @@ export class Instance
         } else {
             this.current_layout = null;
         }
+
+        for (const [div, hook] of this.divs_to_hooks.entries()) {
+            hook.On_Change_Layout(
+                div,
+                this.current_layout,
+            );
+        }
     }
 
     Has_Div(
@@ -250,6 +257,11 @@ export class Instance
         div.addEventListener(`beforeinput`, this.Before_Input.bind(this));
 
         this.divs_to_hooks.set(div, hook);
+
+        hook.On_Change_Layout(
+            div,
+            this.current_layout,
+        );
     }
 
     Remove_Div(

@@ -96,6 +96,10 @@ export class Instance extends Entity.Instance
                 }
 
                 .Expression_Placeholder {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    
                     position: absolute;
                     top: 0;
                     left: 0;

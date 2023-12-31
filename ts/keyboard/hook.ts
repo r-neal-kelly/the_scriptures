@@ -1,7 +1,28 @@
+import * as Language from "../model/language.js";
+import * as Languages from "../model/languages.js";
+
+import * as Layout from "./layout.js";
+
 // We're still working on the signatures of some of these event handlers.
+// For example we may require a View.Entity.Instance instead of a HTMLDivElement.
 
 export class Instance
 {
+    async On_Change_Layout(
+        div: HTMLDivElement,
+        layout: Layout.Instance | null,
+    ):
+        Promise<void>
+    {
+        const default_global_font_styles: { [css_property: string]: string } = layout != null ?
+            Languages.Singleton().Default_Global_Font_Styles(layout.Language_Name()) :
+            Languages.Singleton().Default_Global_Font_Styles(Language.Name.ENGLISH);
+
+        for (const style of Object.entries(default_global_font_styles)) {
+            (div.style as any)[style[0]] = style[1];
+        }
+    }
+
     async On_Key_Down(
         event: KeyboardEvent,
     ):
