@@ -107,4 +107,17 @@ export class Instance
     {
         return Array.from(this.buffer);
     }
+
+    Slice(
+        from: Index | undefined = undefined,
+        to_exclusive: Index | undefined = undefined,
+    ):
+        Instance
+    {
+        const result: Instance = new Instance();
+
+        result.buffer = this.buffer.slice(from, to_exclusive);
+
+        return result;
+    }
 }

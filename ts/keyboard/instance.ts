@@ -482,7 +482,11 @@ export class Instance
 
         await hook.On_Key_Down(event);
 
-        if (this.Has_Current_Layout()) {
+        if (
+            this.Has_Current_Layout() &&
+            !event.ctrlKey &&
+            !event.altKey
+        ) {
             if (!event.repeat) {
                 const maybe_space: Layout.Space.Instance | boolean =
                     this.Current_Layout().Maybe_Space(
@@ -497,9 +501,33 @@ export class Instance
                 } else if (maybe_space as boolean) {
                     event.preventDefault();
                 } else {
+                    let held_keys: Held_Keys.Instance = this.held_keys;
+                    while (held_keys.Count() > 0) {
+                        const maybe_output: string | boolean =
+                            this.Current_Layout().Maybe_Output(
+                                held_keys,
+                                event.shiftKey,
+                                event.getModifierState(Key.CAPS_LOCK),
+                            );
+
+                        if (Utils.Is.String(maybe_output)) {
+                            event.preventDefault();
+                            await this.Send_Output_To_Selection(div, hook, maybe_output as string);
+                            break;
+                        } else if (maybe_output as boolean) {
+                            event.preventDefault();
+                            break;
+                        } else {
+                            held_keys = held_keys.Slice(1);
+                        }
+                    }
+                }
+            } else {
+                let held_keys: Held_Keys.Instance = this.held_keys;
+                while (held_keys.Count() > 0) {
                     const maybe_output: string | boolean =
                         this.Current_Layout().Maybe_Output(
-                            this.held_keys,
+                            held_keys,
                             event.shiftKey,
                             event.getModifierState(Key.CAPS_LOCK),
                         );
@@ -507,23 +535,13 @@ export class Instance
                     if (Utils.Is.String(maybe_output)) {
                         event.preventDefault();
                         await this.Send_Output_To_Selection(div, hook, maybe_output as string);
+                        break;
                     } else if (maybe_output as boolean) {
                         event.preventDefault();
+                        break;
+                    } else {
+                        held_keys = held_keys.Slice(1);
                     }
-                }
-            } else {
-                const maybe_output: string | boolean =
-                    this.Current_Layout().Maybe_Output(
-                        this.held_keys,
-                        event.shiftKey,
-                        event.getModifierState(Key.CAPS_LOCK),
-                    );
-
-                if (Utils.Is.String(maybe_output)) {
-                    event.preventDefault();
-                    await this.Send_Output_To_Selection(div, hook, maybe_output as string);
-                } else if (maybe_output as boolean) {
-                    event.preventDefault();
                 }
             }
         }
