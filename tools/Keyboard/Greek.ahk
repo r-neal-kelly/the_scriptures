@@ -6,40 +6,7 @@
     Send % Greek[set]["0"] . key
 }
 
-αCaps(char) {
-  if (isCaplocked())
-    char := Greek.L[char]
-  Send % char
-}
-
 global Greek := {}
-
-Greek.L   := { "α": "Α" ; Alpha
-             , "β": "Β" ; Beta
-             , "γ": "Γ" ; Gamma
-             , "δ": "Δ" ; Delta
-             , "ε": "Ε" ; Epsilon
-             , "ζ": "Ζ" ; Zeta
-             , "η": "Η" ; Eta
-             , "θ": "Θ" ; Theta
-             , "ι": "Ι" ; Iota
-             , "κ": "Κ" ; Kappa
-             , "λ": "Λ" ; Lambda
-             , "μ": "Μ" ; Mu
-             , "ν": "Ν" ; Nu
-             , "ξ": "Ξ" ; Xi
-             , "ο": "Ο" ; Omicron
-             , "π": "Π" ; Pi
-             , "ρ": "Ρ" ; Rho
-             , "σ": "Σ" ; Sigma
-             , "ς": "Σ" ; Final Sigma
-             , "τ": "Τ" ; Tau
-             , "υ": "Υ" ; Upsilon
-             , "φ": "Φ" ; Phi
-             , "χ": "Χ" ; Chi
-             , "ψ": "Ψ" ; Psi
-             , "ω": "Ω" ; Omega
-             , "": "" }
 
 Greek.T   := { "α": "ά" ; Small Alpha with Tonos
              , "ε": "έ" ; Small Epsilon with Tonos

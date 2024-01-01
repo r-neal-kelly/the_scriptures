@@ -2,73 +2,10 @@
 #SingleInstance force
 #Include Greek.ahk
 #Include Geez.ahk
- 
-#If (lang = "Greek")
-  a:: αCaps("α") ; Alpha
-  b:: αCaps("β") ; Beta
-  g:: αCaps("γ") ; Gamma
-  d:: αCaps("δ") ; Delta
-  e:: αCaps("ε") ; Epsilon
-  z:: αCaps("ζ") ; Zeta
-  h:: αCaps("η") ; Eta
-  y:: αCaps("θ") ; Theta
-  i:: αCaps("ι") ; Iota
-  k:: αCaps("κ") ; Kappa
-  l:: αCaps("λ") ; Lambda
-  m:: αCaps("μ") ; Mu
-  n:: αCaps("ν") ; Nu
-  x:: αCaps("ξ") ; Xi
-  o:: αCaps("ο") ; Omicron
-  p:: αCaps("π") ; Pi
-  r:: αCaps("ρ") ; Rho
-  s:: αCaps("σ") ; Sigma
-  w:: αCaps("ς") ; Final Sigma
-  t:: αCaps("τ") ; Tau
-  u:: αCaps("υ") ; Upsilon
-  f:: αCaps("φ") ; Phi
-  j:: αCaps("χ") ; Chi
-  c:: αCaps("ψ") ; Psi
-  v:: αCaps("ω") ; Omega
-
- +a:: Send Α     ; Capital Alpha
- +b:: Send Β     ; Capital Beta
- +g:: Send Γ     ; Capital Gamma
- +d:: Send Δ     ; Capital Delta
- +e:: Send Ε     ; Capital Epsilon
- +z:: Send Ζ     ; Capital Zeta
- +h:: Send Η     ; Capital Eta
- +y:: Send Θ     ; Capital Theta
- +i:: Send Ι     ; Capital Iota
- +k:: Send Κ     ; Capital Kappa
- +l:: Send Λ     ; Capital Lambda
- +m:: Send Μ     ; Capital Mu
- +n:: Send Ν     ; Capital Nu
- +x:: Send Ξ     ; Capital Xi
- +o:: Send Ο     ; Capital Omicron
- +p:: Send Π     ; Capital Pi
- +r:: Send Ρ     ; Capital Rho
- +s:: Send Σ     ; Capital Sigma
- +w:: Send Σ     ; Capital Final Sigma
- +t:: Send Τ     ; Capital Tau
- +u:: Send Υ     ; Capital Upsilon
- +f:: Send Φ     ; Capital Phi
- +j:: Send Χ     ; Capital Chi
- +c:: Send Ψ     ; Capital Psi
- +v:: Send Ω     ; Capital Omega
-
- !1:: Send ʹ ; Greek Numeral Sign
- !2:: Send ͵ ; Greek Lower Numeral Sign
- !-:: Send — ; Em Dash
- !k:: Send ϗ ; Greek Kai Symbol
- !p:: Send ¶ ; Pilcrow Sign
- >!s:: Send ϛ ; U+03DB GREEK SMALL LETTER STIGMA
- >+!s:: Send Ϛ ; U+03DA GREEK LETTER STIGMA
 
 #If (lang = "Greek") && (subset = "Polytonic")
    `;:: αdeadkey("A")   ; Acute
-    q:: αdeadkey("A")   ; Acute
     ::: αdeadkey("G")   ; Grave
-   +q:: αdeadkey("G")   ; Grave
     [:: αdeadkey("C")   ; Circumflex
     ':: αdeadkey("S")   ; Smooth Breath
     /:: αdeadkey("SA")  ; Smooth Breath + Acute
@@ -85,9 +22,7 @@
     -:: αdeadkey("M")   ; Macron
     _:: αdeadkey("B")   ; Breve
   >!;:: αdeadkey("AI")  ; Acute + Iota
-  >!q:: αdeadkey("AI")  ; Acute + Iota
  >!+;:: αdeadkey("GI")  ; Grave + Iota
- >!+q:: αdeadkey("GI")  ; Grave + Iota
   >![:: αdeadkey("CI")  ; Circumflex + Iota
   >!':: αdeadkey("SI")  ; Smooth Breath + Iota
   >!/:: αdeadkey("SAI") ; Smooth Breath + Acute + Iota
@@ -100,14 +35,12 @@
   >!`:: αdeadkey("DC")  ; Diaeresis + Circumflex
 
 #If (lang = "Greek") && (subset = "Monotonic")
-    q:: Send `;        ; Question Mark
-   +q:: Send :         ; Colon
    `;:: αdeadkey("T")  ; Tonos
     ::: αdeadkey("D")  ; Diaeresis
    +w:: αdeadkey("DT") ; Diaeresis + Tonos
   >!;:: αdeadkey("DT") ; Diaeresis + Tonos
 
-#If (lang = "Greek") && (subset = "Combining")
+#If (lang = "Greek") && (subset = "Combining Polytonic")
    ':: Send ̓  ; Psili (Combining Comma Above)
   +':: Send ̔  ; Dasia (Combining Reversed Comma Above)
   `;:: Send ́  ; Oxia (Combining Acute Accent)
@@ -118,14 +51,16 @@
    -:: Send ̄  ; Macron (Combining Macron)
    =:: Send ̆  ; Vrachy (Combining Breve)
 
-   q:: Send ; ; Greek Question Mark
-   >:: Send · ; Greek Ano Teleia
-   \:: Send ᾽ ; Greek Koronis
-
- !+;:: Send ̀  ; Combining Grave Tone Mark
-  !;:: Send ́  ; Combining Acute Tone Mark
   !':: Send ̓  ; Combining Greek Koronis
+
+  ?:: αdeadkey("Separate")
+
+#If (lang = "Greek") && (subset = "Combining Monotonic")
+  `;:: Send ́  ; Tonos (Combining Acute Accent)
+   [:: Send ̈  ; Dialytika (Combining Diaeresis)
   ![:: Send ̈́  ; Combining Greek Dialytika Tonos
+
+  !':: Send ̓  ; Combining Greek Koronis
 
   ?:: αdeadkey("Separate")
   

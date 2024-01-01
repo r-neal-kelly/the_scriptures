@@ -1,0 +1,1 @@
+import*as Language from"../../../model/language.js";import*as Layout from"../instance.js";import*as Common from"./common.js";export class Instance extends Layout.Instance{constructor(){super({language_name:Language.Name.GREEK,subset_name:"Combining Monotonic",is_language_default:!1,combos_or_space:[...Common.LETTERS_AND_PUNCTUATION]})}}

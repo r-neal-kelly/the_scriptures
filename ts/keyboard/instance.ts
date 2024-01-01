@@ -448,8 +448,8 @@ export class Instance
                     this.Send_Message(`Global Layout: ${this.Current_Layout().Full_Name()}`);
                 }
             } else if (this.held_keys.Is([Reserved_Keys.META_KEY, Key.DIGIT_8])) {
-                if (this.Has_Layout(Language.Name.GREEK, `Combining`)) {
-                    this.Set_Current_Layout(Language.Name.GREEK, `Combining`);
+                if (this.Has_Layout(Language.Name.GREEK, `Combining Polytonic`)) {
+                    this.Set_Current_Layout(Language.Name.GREEK, `Combining Polytonic`);
                     this.Send_Message(`Global Layout: ${this.Current_Layout().Full_Name()}`);
                 }
             } else if (this.held_keys.Is([Reserved_Keys.META_KEY, Key.DIGIT_7])) {
@@ -597,6 +597,10 @@ export function Singleton():
                 layouts: [
                     new Layout.Hebrew.Phonetic.Instance(),
                     new Layout.Hebrew.International.Instance(),
+                    new Layout.Greek.Combining_Polytonic.Instance(),
+                    new Layout.Greek.Combining_Monotonic.Instance(),
+                    new Layout.Greek.Polytonic.Instance(),
+                    new Layout.Greek.Monotonic.Instance(),
                     new Layout.Latin.Instance(),
                 ],
                 default_layout_language_name: Language.Name.LATIN,
