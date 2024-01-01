@@ -2,6 +2,13 @@ import { Key } from "../../key.js";
 
 import * as Space from "../space.js";
 
+export const ARCHAIC_OR_VARIANT_LETTERS: Space.Combos = [
+    // U+03DB GREEK SMALL LETTER STIGMA, U+03DA GREEK LETTER STIGMA
+    [[Key.KEY_S], `ϛ`, `Ϛ`],
+    // U+03D7 GREEK KAI SYMBOL, U+03CF GREEK CAPITAL KAI SYMBOL
+    [[Key.DIGIT_7], `ϗ`, `Ϗ`],
+];
+
 export const LETTERS_AND_PUNCTUATION: Space.Combos = [
     // U+03B1 GREEK SMALL LETTER ALPHA, U+0391 GREEK CAPITAL LETTER ALPHA
     [[Key.KEY_A], `α`, `Α`],
@@ -54,24 +61,14 @@ export const LETTERS_AND_PUNCTUATION: Space.Combos = [
     // U+03C9 GREEK SMALL LETTER OMEGA, U+03A9 GREEK CAPITAL LETTER OMEGA
     [[Key.KEY_V], `ω`, `Ω`],
 
+    // U+1FBD GREEK KORONIS
+    [[Key.COMMA], false, `᾽`],
     // U+0387 GREEK ANO TELEIA
-    [[Key.PERIOD], null, `·`],
-    // U+037E GREEK QUESTION MARK, U+1FBD GREEK KORONIS
-    [[Key.KEY_Q], `;`, `᾽`],
+    [[Key.PERIOD], false, `·`],
+    // U+037E GREEK QUESTION MARK, ARCHAIC_OR_VARIANT_LETTERS
+    [[Key.KEY_Q], `;`, ARCHAIC_OR_VARIANT_LETTERS],
     // U+0374 GREEK NUMERAL SIGN
-    [[Key.DIGIT_1], null, `ʹ`],
+    [[Key.DIGIT_1], false, `ʹ`],
     // U+0375 GREEK LOWER NUMERAL SIGN
-    [[Key.DIGIT_2], null, `͵`],
-
-    // Archaic or Variant Letters
-    [
-        [Key.COMMA],
-        false,
-        [
-            // U+03DB GREEK SMALL LETTER STIGMA, U+03DA GREEK LETTER STIGMA
-            [[Key.KEY_S], `ϛ`, `Ϛ`],
-            // U+03D7 GREEK KAI SYMBOL, U+03CF GREEK CAPITAL KAI SYMBOL
-            [[Key.DIGIT_7], `ϗ`, `Ϗ`],
-        ],
-    ],
+    [[Key.DIGIT_2], false, `͵`],
 ];

@@ -412,9 +412,11 @@ export class Instance
         Promise<void>
     {
         this.message_div.textContent = message;
-
         document.body.style.position = `relative`;
-        document.body.appendChild(this.message_div);
+
+        if (this.message_reference_count < 1) {
+            document.body.appendChild(this.message_div);
+        }
 
         this.message_reference_count += 1;
         await Utils.Wait_Seconds(2);
@@ -495,9 +497,10 @@ export class Instance
         await hook.On_Key_Down(event);
 
         if (
-            this.Has_Current_Layout() &&
+            !event.defaultPrevented &&
             !event.ctrlKey &&
-            !event.altKey
+            !event.altKey &&
+            this.Has_Current_Layout()
         ) {
             if (!event.repeat) {
                 const maybe_space: Layout.Space.Instance | boolean =

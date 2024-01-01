@@ -9,9 +9,9 @@ const _1_LIGATURES_AND_DIGRAPHS: [Array<Key>, Space.Combos | boolean, Space.Comb
     [Key.DIGIT_1],
     [
         // U+00BD VULGAR FRACTION ONE HALF
-        [[Key.DIGIT_2], `½`, null],
+        [[Key.DIGIT_2], `½`, false],
         // U+00BC VULGAR FRACTION ONE QUARTER
-        [[Key.DIGIT_4], `¼`, null],
+        [[Key.DIGIT_4], `¼`, false],
     ],
     true,
 ];
@@ -20,7 +20,7 @@ const _3_LIGATURES_AND_DIGRAPHS: [Array<Key>, Space.Combos | boolean, Space.Comb
     [Key.DIGIT_3],
     [
         // U+00BE VULGAR FRACTION THREE QUARTERS
-        [[Key.DIGIT_4], `¾`, null],
+        [[Key.DIGIT_4], `¾`, false],
     ],
     true,
 ];
@@ -79,9 +79,9 @@ const U_LIGATURES_AND_DIGRAPHS: [Array<Key>, Space.Combos | boolean, Space.Combo
     [Key.KEY_U],
     [
         // U+1D6B LATIN SMALL LETTER UE
-        [[Key.KEY_E], `ᵫ`, null],
+        [[Key.KEY_E], `ᵫ`, false],
         // U+AB63 LATIN SMALL LETTER UO
-        [[Key.KEY_O], `ꭣ`, null],
+        [[Key.KEY_O], `ꭣ`, false],
     ],
     true,
 ];
@@ -107,14 +107,14 @@ const LIGATURES_AND_DIGRAPHS: [Array<Key>, Space.Combos | boolean, Space.Combos 
         U_LIGATURES_AND_DIGRAPHS,
         V_LIGATURES_AND_DIGRAPHS,
     ],
-    false,
+    true,
 ];
 
 const LETTERS: [Array<Key>, Space.Combos | boolean, Space.Combos | boolean] = [
     [Key.QUOTE],
     [
         // U+017F LATIN SMALL LETTER LONG S
-        [[Key.KEY_S], `ſ`, null],
+        [[Key.KEY_S], `ſ`, false],
         // U+A75B LATIN SMALL LETTER R ROTUNDA, U+A75A LATIN CAPITAL LETTER R ROTUNDA
         [[Key.KEY_R], `ꝛ`, `Ꝛ`],
     ],
@@ -125,25 +125,25 @@ const SYMBOLS: [Array<Key>, Space.Combos | boolean, Space.Combos | boolean] = [
     [Key.SEMICOLON],
     [
         // U+00B6 PILCROW SIGN
-        [[Key.KEY_P], `¶`, null],
+        [[Key.KEY_P], `¶`, false],
         // U+00A7 SECTION SIGN
-        [[Key.KEY_S], `§`, null],
+        [[Key.KEY_S], `§`, false],
         // U+2E3F CAPITULUM
-        [[Key.KEY_C], `⸿`, null],
+        [[Key.KEY_C], `⸿`, false],
         // U+2116 NUMERO SIGN
-        [[Key.KEY_N], `№`, null],
+        [[Key.KEY_N], `№`, false],
         // U+00A3 POUND SIGN
-        [[Key.DIGIT_3], `£`, null],
+        [[Key.DIGIT_3], `£`, false],
         // U+00D7 MULTIPLICATION SIGN
-        [[Key.KEY_X], `×`, null],
+        [[Key.KEY_X], `×`, false],
         // U+00F7 DIVISION SIGN
-        [[Key.KEY_D], `÷`, null],
+        [[Key.KEY_D], `÷`, false],
         // U+2011 NON-BREAKING HYPHEN
-        [[Key.MINUS], `‑`, null],
+        [[Key.MINUS], `‑`, false],
         // U+2013 EN DASH, U+2014 EM DASH
         [[Key.EQUAL], `–`, `—`],
         // U+02BC MODIFIER LETTER APOSTROPHE
-        [[Key.QUOTE], `ʼ`, null],
+        [[Key.QUOTE], `ʼ`, false],
         // U+2018 LEFT SINGLE QUOTATION MARK, U+201C LEFT DOUBLE QUOTATION MARK
         [[Key.BRACKET_LEFT], `‘`, `“`],
         // U+2019 RIGHT SINGLE QUOTATION MARK, U+201D RIGHT DOUBLE QUOTATION MARK
@@ -172,25 +172,25 @@ const COMMAS: [Array<Key>, Space.Combos | boolean, Space.Combos | boolean] = [
     [Key.COMMA],
     [
         // U+1F101 DIGIT ZERO COMMA
-        [[Key.DIGIT_0], `🄁`, null],
+        [[Key.DIGIT_0], `🄁`, false],
         // U+1F102 DIGIT ONE COMMA
-        [[Key.DIGIT_1], `🄂`, null],
+        [[Key.DIGIT_1], `🄂`, false],
         // U+1F103 DIGIT TWO COMMA
-        [[Key.DIGIT_2], `🄃`, null],
+        [[Key.DIGIT_2], `🄃`, false],
         // U+1F104 DIGIT THREE COMMA
-        [[Key.DIGIT_3], `🄄`, null],
+        [[Key.DIGIT_3], `🄄`, false],
         // U+1F105 DIGIT FOUR COMMA
-        [[Key.DIGIT_4], `🄅`, null],
+        [[Key.DIGIT_4], `🄅`, false],
         // U+1F106 DIGIT FIVE COMMA
-        [[Key.DIGIT_5], `🄆`, null],
+        [[Key.DIGIT_5], `🄆`, false],
         // U+1F107 DIGIT SIX COMMA
-        [[Key.DIGIT_6], `🄇`, null],
+        [[Key.DIGIT_6], `🄇`, false],
         // U+1F108 DIGIT SEVEN COMMA
-        [[Key.DIGIT_7], `🄈`, null],
+        [[Key.DIGIT_7], `🄈`, false],
         // U+1F109 DIGIT EIGHT COMMA
-        [[Key.DIGIT_8], `🄉`, null],
+        [[Key.DIGIT_8], `🄉`, false],
         // U+1F10A DIGIT NINE COMMA
-        [[Key.DIGIT_9], `🄊`, null],
+        [[Key.DIGIT_9], `🄊`, false],
     ],
     false,
 ];
@@ -231,11 +231,11 @@ const SUPERSCRIPTS: [Array<Key>, Space.Combos | boolean, Space.Combos | boolean]
         // U+1D56 MODIFIER LETTER SMALL P, U+1D3E MODIFIER LETTER CAPITAL P
         [[Key.KEY_P], `ᵖ`, `ᴾ`],
         // U+A7F4 MODIFIER LETTER CAPITAL Q
-        [[Key.KEY_Q], null, `ꟴ`],
+        [[Key.KEY_Q], false, `ꟴ`],
         // U+02B3 MODIFIER LETTER SMALL R, U+1D3F MODIFIER LETTER CAPITAL R
         [[Key.KEY_R], `ʳ`, `ᴿ`],
         // U+02E2 MODIFIER LETTER SMALL S
-        [[Key.KEY_S], `ˢ`, null],
+        [[Key.KEY_S], `ˢ`, false],
         // U+1D57 MODIFIER LETTER SMALL T, U+1D40 MODIFIER LETTER CAPITAL T
         [[Key.KEY_T], `ᵗ`, `ᵀ`],
         // U+1D58 MODIFIER LETTER SMALL U, U+1D41 MODIFIER LETTER CAPITAL U
@@ -245,41 +245,41 @@ const SUPERSCRIPTS: [Array<Key>, Space.Combos | boolean, Space.Combos | boolean]
         // U+02B7 MODIFIER LETTER SMALL W, U+1D42 MODIFIER LETTER CAPITAL W
         [[Key.KEY_W], `ʷ`, `ᵂ`],
         // U+02E3 MODIFIER LETTER SMALL X
-        [[Key.KEY_X], `ˣ`, null],
+        [[Key.KEY_X], `ˣ`, false],
         // U+02B8 MODIFIER LETTER SMALL Y
-        [[Key.KEY_Y], `ʸ`, null],
+        [[Key.KEY_Y], `ʸ`, false],
         // U+1DBB MODIFIER LETTER SMALL Z
-        [[Key.KEY_Z], `ᶻ`, null],
+        [[Key.KEY_Z], `ᶻ`, false],
         // U+10783 MODIFIER LETTER SMALL AE, U+1D2D MODIFIER LETTER CAPITAL AE
         [[Key.BRACKET_LEFT], `𐞃`, `ᴭ`],
         // U+1D3D MODIFIER LETTER CAPITAL OU
-        [[Key.BRACKET_RIGHT], null, `ᴽ`],
+        [[Key.BRACKET_RIGHT], false, `ᴽ`],
         // U+00B9 SUPERSCRIPT ONE
-        [[Key.DIGIT_1], `¹`, null],
+        [[Key.DIGIT_1], `¹`, false],
         // U+00B2 SUPERSCRIPT TWO
-        [[Key.DIGIT_2], `²`, null],
+        [[Key.DIGIT_2], `²`, false],
         // U+00B3 SUPERSCRIPT THREE
-        [[Key.DIGIT_3], `³`, null],
+        [[Key.DIGIT_3], `³`, false],
         // U+2074 SUPERSCRIPT FOUR
-        [[Key.DIGIT_4], `⁴`, null],
+        [[Key.DIGIT_4], `⁴`, false],
         // U+2075 SUPERSCRIPT FIVE
-        [[Key.DIGIT_5], `⁵`, null],
+        [[Key.DIGIT_5], `⁵`, false],
         // U+2076 SUPERSCRIPT SIX
-        [[Key.DIGIT_6], `⁶`, null],
+        [[Key.DIGIT_6], `⁶`, false],
         // U+2077 SUPERSCRIPT SEVEN
-        [[Key.DIGIT_7], `⁷`, null],
+        [[Key.DIGIT_7], `⁷`, false],
         // U+2078 SUPERSCRIPT EIGHT
-        [[Key.DIGIT_8], `⁸`, null],
+        [[Key.DIGIT_8], `⁸`, false],
         // U+2079 SUPERSCRIPT NINE, U+207D SUPERSCRIPT LEFT PARENTHESIS
         [[Key.DIGIT_9], `⁹`, `⁽`],
         // U+2070 SUPERSCRIPT ZERO, U+207E SUPERSCRIPT RIGHT PARENTHESIS
         [[Key.DIGIT_0], `⁰`, `⁾`],
         // U+207B SUPERSCRIPT MINUS
-        [[Key.MINUS], `⁻`, null],
+        [[Key.MINUS], `⁻`, false],
         // U+207C SUPERSCRIPT EQUALS SIGN, U+207A SUPERSCRIPT PLUS SIGN
         [[Key.EQUAL], `⁼`, `⁺`],
         // U+02C8 MODIFIER LETTER VERTICAL LINE
-        [[Key.BACKSLASH], null, `ˈ`],
+        [[Key.BACKSLASH], false, `ˈ`],
     ],
     false,
 ];
@@ -288,59 +288,59 @@ const SUBSCRIPTS: [Array<Key>, Space.Combos | boolean, Space.Combos | boolean] =
     [Key.MINUS],
     [
         // U+2090 LATIN SUBSCRIPT SMALL LETTER A
-        [[Key.KEY_A], `ₐ`, null],
+        [[Key.KEY_A], `ₐ`, false],
         // U+2091 LATIN SUBSCRIPT SMALL LETTER E
-        [[Key.KEY_E], `ₑ`, null],
+        [[Key.KEY_E], `ₑ`, false],
         // U+2095 LATIN SUBSCRIPT SMALL LETTER H
-        [[Key.KEY_H], `ₕ`, null],
+        [[Key.KEY_H], `ₕ`, false],
         // U+1D62 LATIN SUBSCRIPT SMALL LETTER I
-        [[Key.KEY_I], `ᵢ`, null],
+        [[Key.KEY_I], `ᵢ`, false],
         // U+2C7C LATIN SUBSCRIPT SMALL LETTER J
-        [[Key.KEY_J], `ⱼ`, null],
+        [[Key.KEY_J], `ⱼ`, false],
         // U+2096 LATIN SUBSCRIPT SMALL LETTER K
-        [[Key.KEY_K], `ₖ`, null],
+        [[Key.KEY_K], `ₖ`, false],
         // U+2097 LATIN SUBSCRIPT SMALL LETTER L
-        [[Key.KEY_L], `ₗ`, null],
+        [[Key.KEY_L], `ₗ`, false],
         // U+2098 LATIN SUBSCRIPT SMALL LETTER M
-        [[Key.KEY_M], `ₘ`, null],
+        [[Key.KEY_M], `ₘ`, false],
         // U+2099 LATIN SUBSCRIPT SMALL LETTER N
-        [[Key.KEY_N], `ₙ`, null],
+        [[Key.KEY_N], `ₙ`, false],
         // U+2092 LATIN SUBSCRIPT SMALL LETTER O
-        [[Key.KEY_O], `ₒ`, null],
+        [[Key.KEY_O], `ₒ`, false],
         // U+209A LATIN SUBSCRIPT SMALL LETTER P
-        [[Key.KEY_P], `ₚ`, null],
+        [[Key.KEY_P], `ₚ`, false],
         // U+1D63 LATIN SUBSCRIPT SMALL LETTER R
-        [[Key.KEY_R], `ᵣ`, null],
+        [[Key.KEY_R], `ᵣ`, false],
         // U+209B LATIN SUBSCRIPT SMALL LETTER S
-        [[Key.KEY_S], `ₛ`, null],
+        [[Key.KEY_S], `ₛ`, false],
         // U+209C LATIN SUBSCRIPT SMALL LETTER T
-        [[Key.KEY_T], `ₜ`, null],
+        [[Key.KEY_T], `ₜ`, false],
         // U+1D64 LATIN SUBSCRIPT SMALL LETTER U
-        [[Key.KEY_U], `ᵤ`, null],
+        [[Key.KEY_U], `ᵤ`, false],
         // U+1D65 LATIN SUBSCRIPT SMALL LETTER V
-        [[Key.KEY_V], `ᵥ`, null],
+        [[Key.KEY_V], `ᵥ`, false],
         // U+2093 LATIN SUBSCRIPT SMALL LETTER X
-        [[Key.KEY_X], `ₓ`, null],
+        [[Key.KEY_X], `ₓ`, false],
         // U+2081 SUBSCRIPT ONE
-        [[Key.DIGIT_1], `₁`, null],
+        [[Key.DIGIT_1], `₁`, false],
         // U+2082 SUBSCRIPT TWO
-        [[Key.DIGIT_2], `₂`, null],
+        [[Key.DIGIT_2], `₂`, false],
         // U+2083 SUBSCRIPT THREE
-        [[Key.DIGIT_3], `₃`, null],
+        [[Key.DIGIT_3], `₃`, false],
         // U+2084 SUBSCRIPT FOUR
-        [[Key.DIGIT_4], `₄`, null],
+        [[Key.DIGIT_4], `₄`, false],
         // U+2085 SUBSCRIPT FIVE
-        [[Key.DIGIT_5], `₅`, null],
+        [[Key.DIGIT_5], `₅`, false],
         // U+2086 SUBSCRIPT SIX
-        [[Key.DIGIT_6], `₆`, null],
+        [[Key.DIGIT_6], `₆`, false],
         // U+2087 SUBSCRIPT SEVEN
-        [[Key.DIGIT_7], `₇`, null],
+        [[Key.DIGIT_7], `₇`, false],
         // U+2088 SUBSCRIPT EIGHT
-        [[Key.DIGIT_8], `₈`, null],
+        [[Key.DIGIT_8], `₈`, false],
         // U+2089 SUBSCRIPT NINE
-        [[Key.DIGIT_9], `₉`, null],
+        [[Key.DIGIT_9], `₉`, false],
         // U+2080 SUBSCRIPT ZERO
-        [[Key.DIGIT_0], `₀`, null],
+        [[Key.DIGIT_0], `₀`, false],
     ],
     false,
 ];
@@ -355,21 +355,21 @@ const COMBINING_DIACRITICS: [Array<Key>, Space.Combos | boolean, Space.Combos | 
         // U+0302 COMBINING CIRCUMFLEX ACCENT, U+030C COMBINING CARON
         [[Key.KEY_D], `̂`, `̌`],
         // U+0308 COMBINING DIAERESIS
-        [[Key.KEY_F], `̈`, null],
+        [[Key.KEY_F], `̈`, false],
         // U+0304 COMBINING MACRON
-        [[Key.PERIOD], `̄`, null],
+        [[Key.PERIOD], `̄`, false],
         // U+0306 COMBINING BREVE, U+0311 COMBINING INVERTED BREVE
         [[Key.COMMA], `̆`, `̑`],
         // U+030A COMBINING RING ABOVE
-        [[Key.KEY_R], `̊`, null],
+        [[Key.KEY_R], `̊`, false],
         // U+0303 COMBINING TILDE
-        [[Key.KEY_T], `̃`, null],
+        [[Key.KEY_T], `̃`, false],
         // U+0327 COMBINING CEDILLA, U+0328 COMBINING OGONEK
         [[Key.KEY_C], `̧`, `̨`],
         // U+0307 COMBINING DOT ABOVE, U+0323 COMBINING DOT BELOW
         [[Key.KEY_O], `̇`, `̣`],
         // U+0315 COMBINING COMMA ABOVE RIGHT
-        [[Key.QUOTE], `̕`, null],
+        [[Key.QUOTE], `̕`, false],
     ],
     false,
 ];

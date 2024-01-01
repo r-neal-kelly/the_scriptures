@@ -11,13 +11,12 @@ export type Upper_Case =
     string;
 
 export type Combos = Array<
-    [Array<Key>, Lower_Case | null, Upper_Case | null] |
-    [Array<Key>, Combos | boolean, Combos | boolean]
+    [Array<Key>, Lower_Case | Combos | boolean, Upper_Case | Combos | boolean]
 >;
 
 export type Lookup = {
     [key: string]:
-    Lookup | [Lower_Case | null, Upper_Case | null] | [Instance | null, Instance | null],
+    Lookup | [Lower_Case | Instance | null, Upper_Case | Instance | null],
 };
 
 export class Instance
@@ -68,84 +67,61 @@ export class Instance
                 `Check your combos to make sure that one doesn't override another.`,
             );
 
-            const lower_case_or_null_or_combos_or_boolean:
-                Lower_Case | null | Combos | boolean = combo[1];
-            const upper_case_or_null_or_combos_or_boolean:
-                Upper_Case | null | Combos | boolean = combo[2];
+            const lower: Lower_Case | Combos | boolean = combo[1];
+            const upper: Upper_Case | Combos | boolean = combo[2];
 
-            if (
-                Utils.Is.Array(lower_case_or_null_or_combos_or_boolean) ||
-                Utils.Is.Boolean(lower_case_or_null_or_combos_or_boolean) ||
-                Utils.Is.Array(upper_case_or_null_or_combos_or_boolean) ||
-                Utils.Is.Boolean(upper_case_or_null_or_combos_or_boolean)
-            ) {
-                const lower_combos_or_boolean: Combos | boolean =
-                    lower_case_or_null_or_combos_or_boolean as Combos | boolean;
-                const upper_combos_or_boolean: Combos | boolean =
-                    upper_case_or_null_or_combos_or_boolean as Combos | boolean;
+            lookup[last_key] = [
+                null,
+                null,
+            ];
 
-                let lower_space: Instance | null;
-                let upper_space: Instance | null;
-
-                if (Utils.Is.Array(lower_combos_or_boolean)) {
-                    lower_space = new Instance(lower_combos_or_boolean as Combos);
-                    if (Utils.Is.Array(upper_combos_or_boolean)) {
-                        upper_space = new Instance(upper_combos_or_boolean as Combos);
-                    } else if (upper_combos_or_boolean as boolean) {
-                        upper_space = lower_space;
-                    } else {
-                        upper_space = null;
-                    }
-                } else if (Utils.Is.Array(upper_combos_or_boolean)) {
-                    upper_space = new Instance(upper_combos_or_boolean as Combos);
-                    if (lower_combos_or_boolean as boolean) {
-                        lower_space = upper_space;
-                    } else {
-                        lower_space = null;
-                    }
-                } else {
-                    Utils.Assert(
-                        false,
-                        `At least one slot in the combo must be combos.`,
-                    );
-
-                    lower_space = null;
-                    upper_space = null;
+            if (Utils.Is.String(lower)) {
+                lookup[last_key][0] = lower as string;
+                if (Utils.Is.String(upper)) {
+                    lookup[last_key][1] = upper as string;
+                } else if (Utils.Is.Array(upper)) {
+                    lookup[last_key][1] = new Instance(upper as Combos);
+                } else if (upper as boolean) {
+                    lookup[last_key][1] = lookup[last_key][0];
                 }
-
-                lookup[last_key] = [
-                    lower_space,
-                    upper_space,
-                ];
-                Object.freeze(lookup[last_key]);
-            } else if (
-                Utils.Is.String(lower_case_or_null_or_combos_or_boolean) ||
-                Utils.Is.String(upper_case_or_null_or_combos_or_boolean)
-            ) {
-                const lower_case_or_null: Lower_Case | null =
-                    lower_case_or_null_or_combos_or_boolean as Lower_Case | null;
-                const upper_case_or_null: Upper_Case | null =
-                    upper_case_or_null_or_combos_or_boolean as Upper_Case | null;
-
-                lookup[last_key] = [
-                    lower_case_or_null,
-                    upper_case_or_null,
-                ];
-                Object.freeze(lookup[last_key]);
-            } else {
-                Utils.Assert(
-                    false,
-                    `Cannot have a combo of with only null.\n` +
-                    `It must have at least one string or combos.`,
-                );
+            } else if (Utils.Is.Array(lower)) {
+                lookup[last_key][0] = new Instance(lower as Combos);
+                if (Utils.Is.String(upper)) {
+                    lookup[last_key][1] = upper as string;
+                } else if (Utils.Is.Array(upper)) {
+                    lookup[last_key][1] = new Instance(upper as Combos);
+                } else if (upper as boolean) {
+                    lookup[last_key][1] = lookup[last_key][0];
+                }
+            } else if (Utils.Is.String(upper)) {
+                lookup[last_key][1] = upper as string;
+                if (lower as boolean) {
+                    lookup[last_key][0] = lookup[last_key][1];
+                }
+            } else if (Utils.Is.Array(upper)) {
+                lookup[last_key][1] = new Instance(upper as Combos);
+                if (lower as boolean) {
+                    lookup[last_key][0] = lookup[last_key][1];
+                }
             }
+
+            Object.freeze(lookup[last_key]);
+
+            Utils.Assert(
+                lookup[last_key][0] != null ||
+                lookup[last_key][1] != null,
+                `Cannot have a combo with only booleans.\n` +
+                `It must have at least one string or combos.`,
+            );
         }
     }
 
     Maybe_Space(
         held_keys: Held_Keys.Instance,
+        is_shifted: boolean,
+        is_caps_locked: boolean,
     ):
-        [Instance | null, Instance | null] | boolean
+        Instance | boolean
     {
         let lookup: Lookup = this.lookup;
         for (
@@ -155,14 +131,25 @@ export class Instance
         ) {
             const key = held_keys.At(key_idx);
             if (Utils.Is.Array(lookup[key])) {
-                if (
-                    lookup[key][0] instanceof Instance ||
-                    lookup[key][1] instanceof Instance
-                ) {
-                    if (key_idx === key_end - 1) {
-                        return lookup[key] as [Instance | null, Instance | null];
+                if (key_idx === key_end - 1) {
+                    if (is_shifted && is_caps_locked) {
+                        if (lookup[key][0] instanceof Instance) {
+                            return lookup[key][0] as Instance;
+                        } else {
+                            return false;
+                        }
+                    } else if (is_shifted || is_caps_locked) {
+                        if (lookup[key][1] instanceof Instance) {
+                            return lookup[key][1] as Instance;
+                        } else {
+                            return false;
+                        }
                     } else {
-                        return false;
+                        if (lookup[key][0] instanceof Instance) {
+                            return lookup[key][0] as Instance;
+                        } else {
+                            return false;
+                        }
                     }
                 } else {
                     return false;
@@ -181,8 +168,10 @@ export class Instance
 
     Maybe_Output(
         held_keys: Held_Keys.Instance,
+        is_shifted: boolean,
+        is_caps_locked: boolean,
     ):
-        [Lower_Case | null, Upper_Case | null] | boolean
+        Lower_Case | Upper_Case | boolean
     {
         let lookup: Lookup = this.lookup;
         for (
@@ -192,17 +181,28 @@ export class Instance
         ) {
             const key = held_keys.At(key_idx);
             if (Utils.Is.Array(lookup[key])) {
-                if (
-                    lookup[key][0] instanceof Instance ||
-                    lookup[key][1] instanceof Instance
-                ) {
-                    return false;
-                } else {
-                    if (key_idx === key_end - 1) {
-                        return lookup[key] as [Lower_Case | null, Upper_Case | null];
+                if (key_idx === key_end - 1) {
+                    if (is_shifted && is_caps_locked) {
+                        if (Utils.Is.String(lookup[key][0])) {
+                            return lookup[key][0] as Lower_Case;
+                        } else {
+                            return false;
+                        }
+                    } else if (is_shifted || is_caps_locked) {
+                        if (Utils.Is.String(lookup[key][1])) {
+                            return lookup[key][1] as Upper_Case;
+                        } else {
+                            return false;
+                        }
                     } else {
-                        return false;
+                        if (Utils.Is.String(lookup[key][0])) {
+                            return lookup[key][0] as Lower_Case;
+                        } else {
+                            return false;
+                        }
                     }
+                } else {
+                    return false;
                 }
             } else {
                 if (lookup[key] != null) {
