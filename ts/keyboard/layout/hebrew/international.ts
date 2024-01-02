@@ -7,7 +7,7 @@ import * as Space from "../space.js";
 
 import * as Common from "./common.js";
 
-const VOWEL_POINTS_AND_ACCENTS: [Array<Key>, Space.Combos | boolean, Space.Combos | boolean] = [
+const VOWEL_POINTS_AND_ACCENTS: Space.Combo = [
     [Key.SLASH],
     [
         // U+05C1 HEBREW POINT SHIN DOT
@@ -40,7 +40,7 @@ const VOWEL_POINTS_AND_ACCENTS: [Array<Key>, Space.Combos | boolean, Space.Combo
     Common.ACCENTS,
 ];
 
-const ALTERNATES_AND_WIDES: [Array<Key>, Space.Combos | boolean, Space.Combos | boolean] = [
+const ALTERNATES_AND_WIDES: Space.Combo = [
     [Key.BACKSLASH],
     [
         // U+05C6 HEBREW PUNCTUATION NUN HAFUKHA

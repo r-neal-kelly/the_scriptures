@@ -6,64 +6,43 @@
 #If (lang = "Greek") && (subset = "Polytonic")
    `;:: αdeadkey("A")   ; Acute
     ::: αdeadkey("G")   ; Grave
-    [:: αdeadkey("C")   ; Circumflex
+    -:: αdeadkey("C")   ; Circumflex
+    _:: αdeadkey("D")   ; Diaeresis
+
     ':: αdeadkey("S")   ; Smooth Breath
-    /:: αdeadkey("SA")  ; Smooth Breath + Acute
-    \:: αdeadkey("SG")  ; Smooth Breath + Grave
-    =:: αdeadkey("SC")  ; Smooth Breath + Circumflex
    +':: αdeadkey("R")   ; Rough Breath
+    /:: αdeadkey("SA")  ; Smooth Breath + Acute
     ?:: αdeadkey("RA")  ; Rough Breath + Acute
+    \:: αdeadkey("SG")  ; Smooth Breath + Grave
     |:: αdeadkey("RG")  ; Rough Breath + Grave
+    =:: αdeadkey("SC")  ; Smooth Breath + Circumflex
     +:: αdeadkey("RC")  ; Rough Breath + Circumflex
+
+    [:: αdeadkey("DA")  ; Diaeresis + Acute
+    {:: αdeadkey("DG")  ; Diaeresis + Grave
+    ]:: αdeadkey("DC")  ; Diaeresis + Circumflex
+
+; These will be put in under backquote, but keep all the same keys.
+; Iota itself with be the backquote again.
+; Macron and Breve will be period and comma respectively.
     {:: αdeadkey("I")   ; Iota
-    ]:: αdeadkey("D")   ; Diaeresis
-    `:: αdeadkey("DA")  ; Diaeresis + Acute
-    ~:: αdeadkey("DG")  ; Diaeresis + Grave
-    -:: αdeadkey("M")   ; Macron
-    _:: αdeadkey("B")   ; Breve
+
   >!;:: αdeadkey("AI")  ; Acute + Iota
  >!+;:: αdeadkey("GI")  ; Grave + Iota
   >![:: αdeadkey("CI")  ; Circumflex + Iota
+
   >!':: αdeadkey("SI")  ; Smooth Breath + Iota
-  >!/:: αdeadkey("SAI") ; Smooth Breath + Acute + Iota
-  >!\:: αdeadkey("SGI") ; Smooth Breath + Grave + Iota
-  >!=:: αdeadkey("SCI") ; Smooth Breath + Circumflex + Iota
  >!+':: αdeadkey("RI")  ; Rough Breath + Iota
+  >!/:: αdeadkey("SAI") ; Smooth Breath + Acute + Iota
   >!?:: αdeadkey("RAI") ; Rough Breath + Acute + Iota
+  >!\:: αdeadkey("SGI") ; Smooth Breath + Grave + Iota
   >!|:: αdeadkey("RGI") ; Rough Breath + Grave + Iota
+  >!=:: αdeadkey("SCI") ; Smooth Breath + Circumflex + Iota
   >!+:: αdeadkey("RCI") ; Rough Breath + Circumflex + Iota
-  >!`:: αdeadkey("DC")  ; Diaeresis + Circumflex
 
-#If (lang = "Greek") && (subset = "Monotonic")
-   `;:: αdeadkey("T")  ; Tonos
-    ::: αdeadkey("D")  ; Diaeresis
-   +w:: αdeadkey("DT") ; Diaeresis + Tonos
-  >!;:: αdeadkey("DT") ; Diaeresis + Tonos
+    -:: αdeadkey("M")   ; Macron
+    _:: αdeadkey("B")   ; Breve
 
-#If (lang = "Greek") && (subset = "Combining Polytonic")
-   ':: Send ̓  ; Psili (Combining Comma Above)
-  +':: Send ̔  ; Dasia (Combining Reversed Comma Above)
-  `;:: Send ́  ; Oxia (Combining Acute Accent)
-  +;:: Send ̀  ; Varia (Combining Grave Accent)
-   /:: Send ͂  ; Perispomeni (Combining Greek Perispomeni)
-   ]:: Send ͅ  ; Ypogegrammeni (Combining Greek Ypogegrammeni)
-   [:: Send ̈  ; Dialytika (Combining Diaeresis)
-   -:: Send ̄  ; Macron (Combining Macron)
-   =:: Send ̆  ; Vrachy (Combining Breve)
-
-  !':: Send ̓  ; Combining Greek Koronis
-
-  ?:: αdeadkey("Separate")
-
-#If (lang = "Greek") && (subset = "Combining Monotonic")
-  `;:: Send ́  ; Tonos (Combining Acute Accent)
-   [:: Send ̈  ; Dialytika (Combining Diaeresis)
-  ![:: Send ̈́  ; Combining Greek Dialytika Tonos
-
-  !':: Send ̓  ; Combining Greek Koronis
-
-  ?:: αdeadkey("Separate")
-  
 #If (lang = "Ge'ez")
   1:: Send ፩ ; One
   2:: Send ፪ ; Two

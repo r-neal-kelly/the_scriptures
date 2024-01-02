@@ -8,30 +8,6 @@
 
 global Greek := {}
 
-Greek.T   := { "α": "ά" ; Small Alpha with Tonos
-             , "ε": "έ" ; Small Epsilon with Tonos
-             , "η": "ή" ; Small Eta with Tonos
-             , "ι": "ί" ; Small Iota with Tonos
-             , "ο": "ό" ; Small Omicron with Tonos
-             , "υ": "ύ" ; Small Upsilon with Tonos
-             , "ω": "ώ" ; Small Omega with Tonos
-             , "Α": "Ά" ; Capital Alpha with Tonos
-             , "Ε": "Έ" ; Capital Epsilon with Tonos
-             , "Η": "Ή" ; Capital Eta with Tonos
-             , "Ι": "Ί" ; Capital Iota with Tonos
-             , "Ο": "Ό" ; Capital Omicron with Tonos
-             , "Υ": "Ύ" ; Capital Upsilon with Tonos
-             , "Ω": "Ώ" ; Capital Omega with Tonos
-             , "0": "΄" ; Tonos
-             , " ": ";" ; Question Mark
-             , ".": "·" ; Ano Teleia
-             , "": "" }
-
-Greek.DT  := { "ι": "ΐ" ; Small Iota with Dialytika and Tonos
-             , "υ": "ΰ" ; Small Upsilon with Dialytika and Tonos
-             , "0": "΅" ; Dialytika Tonos
-             , "": "" }
-
 Greek.A   := { "α": "ά" ; Small Alpha with Oxia
              , "ε": "έ" ; Small Epsilon with Oxia
              , "η": "ή" ; Small Eta with Oxia
@@ -221,6 +197,7 @@ Greek.I   := { "α": "ᾳ" ; Small Alpha with Ypogegrammeni
              , "Ω": "ῼ" ; Capital Omega with Prosgegrammeni
              , "0": "ͺ" ; Ypogegrammeni
              , "": "" }
+             ; do both subscript and adscript for separate
 
 Greek.AI  := { "α": "ᾴ" ; Small Alpha with Oxia and Ypogegrammeni
              , "η": "ῄ" ; Small Eta with Oxia and Ypogegrammeni
@@ -340,34 +317,3 @@ Greek.B   := { "α": "ᾰ" ; Small Alpha with Vrachy
              , "Υ": "Ῠ" ; Capital Upsilon with Vrachy
              , "0": "˘" ; Breve
              , "": "" }
-
-Greek.Com := { "ε": "̓" ; Combining Comma Above (Smooth Breath)
-             , "η": "̔" ; Combining Reversed Comma Above (Rough Breath)
-             , "α": "́" ; Combining Acute Accent
-             , "ο": "̀" ; Combining Grave Accent
-             , "ω": "͂" ; Combining Greek Perispomeni (Circumflex)
-             , "ι": "ͅ" ; Combining Greek Ypogegrammeni (Iota Subscript)
-             , "υ": "̈" ; Combining Diaeresis
-             , "μ": "̄" ; Combining Macron
-             , "β": "̆" ; Combining Breve
-             , "": "" }
-
-Greek.Separate := { "̓": "᾿" ; Psili
-                  ;, "0": "῎" ; Psili and Oxia
-                  ;, "0": "῍" ; Psili and Varia
-                  ;, "0": "῏" ; Psili and Perispomeni
-                  , "̔": "῾" ; Dasia
-                  ;, "0": "῞" ; Dasia and Oxia
-                  ;, "0": "῝" ; Dasia and Varia
-                  ;, "0": "῟" ; Dasia and Perispomeni
-                  ;, "0": "´" ; Oxia
-                  ;, "0": "`" ; Varia
-                  ;, "0": "῀" ; Perispomeni
-                  ;, "0": "ͺ" ; Ypogegrammeni
-                  ;, "0": "¨" ; Diaeresis
-                  ;, "0": "΅" ; Dialytika and Oxia
-                  ;, "0": "῭" ; Dialytika and Varia
-                  ;, "0": "῁" ; Dialytika and Perispomeni
-                  ;, "0": "¯" ; Macron
-                  ;, "0": "˘" ; Breve
-                  , "": "" }

@@ -10,9 +10,11 @@ export type Lower_Case =
 export type Upper_Case =
     string;
 
-export type Combos = Array<
-    [Array<Key>, Lower_Case | Combos | boolean, Upper_Case | Combos | boolean]
->;
+export type Combo =
+    [Array<Key>, Lower_Case | Combos | boolean, Upper_Case | Combos | boolean];
+
+export type Combos =
+    Array<Combo>;
 
 export type Lookup = {
     [key: string]:
