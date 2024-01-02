@@ -11,7 +11,7 @@ const TONOS: Space.Combo = [
     [Key.SEMICOLON],
     [
         // U+0384 GREEK TONOS
-        [[Key.SEMICOLON], `΄`, false],
+        [[Key.SEMICOLON], `΄`, Space.DEFAULT, Space.IGNORE_CAPS_LOCK],
 
         // U+03AC GREEK SMALL LETTER ALPHA WITH TONOS,
         // U+0386 GREEK CAPITAL LETTER ALPHA WITH TONOS
@@ -35,14 +35,15 @@ const TONOS: Space.Combo = [
         // U+038F GREEK CAPITAL LETTER OMEGA WITH TONOS
         [[Key.KEY_V], `ώ`, `Ώ`],
     ],
-    true,
+    Space.MIRROR,
+    Space.IGNORE_CAPS_LOCK,
 ];
 
 const DIALYTIKA: Space.Combo = [
     [Key.BRACKET_LEFT],
     [
         // U+00A8 DIAERESIS
-        [[Key.BRACKET_LEFT], `¨`, false],
+        [[Key.BRACKET_LEFT], `¨`, Space.DEFAULT, Space.IGNORE_CAPS_LOCK],
 
         // U+03CA GREEK SMALL LETTER IOTA WITH DIALYTIKA,
         // U+03AA GREEK CAPITAL LETTER IOTA WITH DIALYTIKA
@@ -51,21 +52,23 @@ const DIALYTIKA: Space.Combo = [
         // U+03AB GREEK CAPITAL LETTER UPSILON WITH DIALYTIKA
         [[Key.KEY_U], `ϋ`, `Ϋ`],
     ],
-    true,
+    Space.MIRROR,
+    Space.IGNORE_CAPS_LOCK,
 ];
 
 const DIALYTIKA_TONOS: Space.Combo = [
     [Key.BRACKET_RIGHT],
     [
         // U+0385 GREEK DIALYTIKA TONOS
-        [[Key.BRACKET_RIGHT], `΅`, false],
+        [[Key.BRACKET_RIGHT], `΅`, Space.DEFAULT, Space.IGNORE_CAPS_LOCK],
 
         // U+0390 GREEK SMALL LETTER IOTA WITH DIALYTIKA AND TONOS
         [[Key.KEY_I], `ΐ`, false],
         // U+03B0 GREEK SMALL LETTER UPSILON WITH DIALYTIKA AND TONOS
         [[Key.KEY_U], `ΰ`, false],
     ],
-    true,
+    Space.MIRROR,
+    Space.IGNORE_CAPS_LOCK,
 ];
 
 export class Instance extends Layout.Instance

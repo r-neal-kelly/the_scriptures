@@ -62,15 +62,15 @@ export const LETTERS_AND_PUNCTUATION: Space.Combos = [
     [[Key.KEY_V], `ω`, `Ω`],
 
     // U+1FBD GREEK KORONIS
-    [[Key.COMMA], false, `᾽`],
+    [[Key.COMMA], false, `᾽`, Space.IGNORE_CAPS_LOCK],
     // U+0387 GREEK ANO TELEIA
-    [[Key.PERIOD], false, `·`],
+    [[Key.PERIOD], false, `·`, Space.IGNORE_CAPS_LOCK],
     // U+037E GREEK QUESTION MARK, ARCHAIC_OR_VARIANT_LETTERS
-    [[Key.KEY_Q], `;`, ARCHAIC_OR_VARIANT_LETTERS],
+    [[Key.KEY_Q], `;`, ARCHAIC_OR_VARIANT_LETTERS, Space.IGNORE_CAPS_LOCK],
     // U+0374 GREEK NUMERAL SIGN
-    [[Key.DIGIT_1], false, `ʹ`],
+    [[Key.DIGIT_1], false, `ʹ`, Space.IGNORE_CAPS_LOCK],
     // U+0375 GREEK LOWER NUMERAL SIGN
-    [[Key.DIGIT_2], false, `͵`],
+    [[Key.DIGIT_2], false, `͵`, Space.IGNORE_CAPS_LOCK],
 ];
 
 export const OXIA_AND_VARIA_KEY: Key =

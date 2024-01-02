@@ -11,7 +11,7 @@ const OXIA_AND_VARIA: Space.Combo = [
     [Common.OXIA_AND_VARIA_KEY],
     [
         // U+1FFD GREEK OXIA
-        [[Common.OXIA_AND_VARIA_KEY], `´`, false],
+        [[Common.OXIA_AND_VARIA_KEY], `´`, Space.DEFAULT, Space.IGNORE_CAPS_LOCK],
 
         // U+1F71 GREEK SMALL LETTER ALPHA WITH OXIA,
         // U+1FBB GREEK CAPITAL LETTER ALPHA WITH OXIA
@@ -37,7 +37,7 @@ const OXIA_AND_VARIA: Space.Combo = [
     ],
     [
         // U+1FEF GREEK VARIA
-        [[Common.OXIA_AND_VARIA_KEY], ```, false],
+        [[Common.OXIA_AND_VARIA_KEY], ```, Space.DEFAULT, Space.IGNORE_CAPS_LOCK],
 
         // U+1F70 GREEK SMALL LETTER ALPHA WITH VARIA,
         // U+1FBA GREEK CAPITAL LETTER ALPHA WITH VARIA
@@ -61,13 +61,14 @@ const OXIA_AND_VARIA: Space.Combo = [
         // U+1FFA GREEK CAPITAL LETTER OMEGA WITH VARIA
         [[Key.KEY_V], `ὼ`, `Ὼ`],
     ],
+    Space.IGNORE_CAPS_LOCK,
 ];
 
 const PERISPOMENI_AND_DIALYTIKA: Space.Combo = [
     [Common.PERISPOMENI_AND_DIALYTIKA_KEY],
     [
         // U+1FC0 GREEK PERISPOMENI
-        [[Common.PERISPOMENI_AND_DIALYTIKA_KEY], `῀`, false],
+        [[Common.PERISPOMENI_AND_DIALYTIKA_KEY], `῀`, Space.DEFAULT, Space.IGNORE_CAPS_LOCK],
 
         // U+1FB6 GREEK SMALL LETTER ALPHA WITH PERISPOMENI
         [[Key.KEY_A], `ᾶ`, false],
@@ -82,7 +83,7 @@ const PERISPOMENI_AND_DIALYTIKA: Space.Combo = [
     ],
     [
         // U+00A8 DIAERESIS
-        [[Common.PERISPOMENI_AND_DIALYTIKA_KEY], `¨`, false],
+        [[Common.PERISPOMENI_AND_DIALYTIKA_KEY], `¨`, Space.DEFAULT, Space.IGNORE_CAPS_LOCK],
 
         // U+03CA GREEK SMALL LETTER IOTA WITH DIALYTIKA,
         // U+03AA GREEK CAPITAL LETTER IOTA WITH DIALYTIKA
@@ -91,13 +92,14 @@ const PERISPOMENI_AND_DIALYTIKA: Space.Combo = [
         // U+03AB GREEK CAPITAL LETTER UPSILON WITH DIALYTIKA
         [[Key.KEY_U], `ϋ`, `Ϋ`],
     ],
+    Space.IGNORE_CAPS_LOCK,
 ];
 
 const PSILI_AND_DASIA: Space.Combo = [
     [Common.PSILI_AND_DASIA_KEY],
     [
         // U+1FBF GREEK PSILI 
-        [[Common.PSILI_AND_DASIA_KEY], `᾿`, false],
+        [[Common.PSILI_AND_DASIA_KEY], `᾿`, Space.DEFAULT, Space.IGNORE_CAPS_LOCK],
 
         // U+1F00 GREEK SMALL LETTER ALPHA WITH PSILI,
         // U+1F08 GREEK CAPITAL LETTER ALPHA WITH PSILI
@@ -124,7 +126,7 @@ const PSILI_AND_DASIA: Space.Combo = [
     ],
     [
         // U+1FFE GREEK DASIA
-        [[Common.PSILI_AND_DASIA_KEY], `῾`, false],
+        [[Common.PSILI_AND_DASIA_KEY], `῾`, Space.DEFAULT, Space.IGNORE_CAPS_LOCK],
 
         // U+1F01 GREEK SMALL LETTER ALPHA WITH DASIA,
         // U+1F09 GREEK CAPITAL LETTER ALPHA WITH DASIA
@@ -151,13 +153,14 @@ const PSILI_AND_DASIA: Space.Combo = [
         // U+1FEC GREEK CAPITAL LETTER RHO WITH DASIA
         [[Key.KEY_R], `ῥ`, `Ῥ`],
     ],
+    Space.IGNORE_CAPS_LOCK,
 ];
 
 const PSILI_OXIA_AND_DASIA_OXIA: Space.Combo = [
     [Common.PSILI_OXIA_AND_DASIA_OXIA_KEY],
     [
         // U+1FCE GREEK PSILI AND OXIA
-        [[Common.PSILI_OXIA_AND_DASIA_OXIA_KEY], `῎`, false],
+        [[Common.PSILI_OXIA_AND_DASIA_OXIA_KEY], `῎`, Space.DEFAULT, Space.IGNORE_CAPS_LOCK],
 
         // U+1F04 GREEK SMALL LETTER ALPHA WITH PSILI AND OXIA,
         // U+1F0C GREEK CAPITAL LETTER ALPHA WITH PSILI AND OXIA
@@ -182,7 +185,7 @@ const PSILI_OXIA_AND_DASIA_OXIA: Space.Combo = [
     ],
     [
         // U+1FDE GREEK DASIA AND OXIA
-        [[Common.PSILI_OXIA_AND_DASIA_OXIA_KEY], `῞`, false],
+        [[Common.PSILI_OXIA_AND_DASIA_OXIA_KEY], `῞`, Space.DEFAULT, Space.IGNORE_CAPS_LOCK],
 
         // U+1F05 GREEK SMALL LETTER ALPHA WITH DASIA AND OXIA,
         // U+1F0D GREEK CAPITAL LETTER ALPHA WITH DASIA AND OXIA
@@ -206,13 +209,14 @@ const PSILI_OXIA_AND_DASIA_OXIA: Space.Combo = [
         // U+1F6D GREEK CAPITAL LETTER OMEGA WITH DASIA AND OXIA
         [[Key.KEY_V], `ὥ`, `Ὥ`],
     ],
+    Space.IGNORE_CAPS_LOCK,
 ];
 
 const PSILI_VARIA_AND_DASIA_VARIA: Space.Combo = [
     [Common.PSILI_VARIA_AND_DASIA_VARIA_KEY],
     [
         // U+1FCD GREEK PSILI AND VARIA
-        [[Common.PSILI_VARIA_AND_DASIA_VARIA_KEY], `῍`, false],
+        [[Common.PSILI_VARIA_AND_DASIA_VARIA_KEY], `῍`, Space.DEFAULT, Space.IGNORE_CAPS_LOCK],
 
         // U+1F02 GREEK SMALL LETTER ALPHA WITH PSILI AND VARIA,
         // U+1F0A GREEK CAPITAL LETTER ALPHA WITH PSILI AND VARIA
@@ -237,7 +241,7 @@ const PSILI_VARIA_AND_DASIA_VARIA: Space.Combo = [
     ],
     [
         // U+1FDD GREEK DASIA AND VARIA
-        [[Common.PSILI_VARIA_AND_DASIA_VARIA_KEY], `῝`, false],
+        [[Common.PSILI_VARIA_AND_DASIA_VARIA_KEY], `῝`, Space.DEFAULT, Space.IGNORE_CAPS_LOCK],
 
         // U+1F03 GREEK SMALL LETTER ALPHA WITH DASIA AND VARIA,
         // U+1F0B GREEK CAPITAL LETTER ALPHA WITH DASIA AND VARIA
@@ -261,13 +265,14 @@ const PSILI_VARIA_AND_DASIA_VARIA: Space.Combo = [
         // U+1F6B GREEK CAPITAL LETTER OMEGA WITH DASIA AND VARIA
         [[Key.KEY_V], `ὣ`, `Ὣ`],
     ],
+    Space.IGNORE_CAPS_LOCK,
 ];
 
 const PSILI_PERISPOMENI_AND_DASIA_PERISPOMENI: Space.Combo = [
     [Common.PSILI_PERISPOMENI_AND_DASIA_PERISPOMENI_KEY],
     [
         // U+1FCF GREEK PSILI AND PERISPOMENI
-        [[Common.PSILI_PERISPOMENI_AND_DASIA_PERISPOMENI_KEY], `῏`, false],
+        [[Common.PSILI_PERISPOMENI_AND_DASIA_PERISPOMENI_KEY], `῏`, Space.DEFAULT, Space.IGNORE_CAPS_LOCK],
 
         // U+1F06 GREEK SMALL LETTER ALPHA WITH PSILI AND PERISPOMENI,
         // U+1F0E GREEK CAPITAL LETTER ALPHA WITH PSILI AND PERISPOMENI
@@ -286,7 +291,7 @@ const PSILI_PERISPOMENI_AND_DASIA_PERISPOMENI: Space.Combo = [
     ],
     [
         // U+1FDF GREEK DASIA AND PERISPOMENI
-        [[Common.PSILI_PERISPOMENI_AND_DASIA_PERISPOMENI_KEY], `῟`, false],
+        [[Common.PSILI_PERISPOMENI_AND_DASIA_PERISPOMENI_KEY], `῟`, Space.DEFAULT, Space.IGNORE_CAPS_LOCK],
 
         // U+1F07 GREEK SMALL LETTER ALPHA WITH DASIA AND PERISPOMENI,
         // U+1F0F GREEK CAPITAL LETTER ALPHA WITH DASIA AND PERISPOMENI
@@ -304,13 +309,14 @@ const PSILI_PERISPOMENI_AND_DASIA_PERISPOMENI: Space.Combo = [
         // U+1F6F GREEK CAPITAL LETTER OMEGA WITH DASIA AND PERISPOMENI
         [[Key.KEY_V], `ὧ`, `Ὧ`],
     ],
+    Space.IGNORE_CAPS_LOCK,
 ];
 
 const DIALYTIKA_OXIA_AND_DIALYTIKA_VARIA: Space.Combo = [
     [Common.DIALYTIKA_OXIA_AND_DIALYTIKA_VARIA_KEY],
     [
         // U+1FEE GREEK DIALYTIKA AND OXIA
-        [[Common.DIALYTIKA_OXIA_AND_DIALYTIKA_VARIA_KEY], `΅`, false],
+        [[Common.DIALYTIKA_OXIA_AND_DIALYTIKA_VARIA_KEY], `΅`, Space.DEFAULT, Space.IGNORE_CAPS_LOCK],
 
         // U+1FD3 GREEK SMALL LETTER IOTA WITH DIALYTIKA AND OXIA
         [[Key.KEY_I], `ΐ`, false],
@@ -319,27 +325,29 @@ const DIALYTIKA_OXIA_AND_DIALYTIKA_VARIA: Space.Combo = [
     ],
     [
         // U+1FED GREEK DIALYTIKA AND VARIA
-        [[Common.DIALYTIKA_OXIA_AND_DIALYTIKA_VARIA_KEY], `῭`, false],
+        [[Common.DIALYTIKA_OXIA_AND_DIALYTIKA_VARIA_KEY], `῭`, Space.DEFAULT, Space.IGNORE_CAPS_LOCK],
 
         // U+1FD2 GREEK SMALL LETTER IOTA WITH DIALYTIKA AND VARIA
         [[Key.KEY_I], `ῒ`, false],
         // U+1FE2 GREEK SMALL LETTER UPSILON WITH DIALYTIKA AND VARIA
         [[Key.KEY_U], `ῢ`, false],
     ],
+    Space.IGNORE_CAPS_LOCK,
 ];
 
 const DIALYTIKA_PERISPOMENI: Space.Combo = [
     [Common.DIALYTIKA_PERISPOMENI_KEY],
     [
         // U+1FC1 GREEK DIALYTIKA AND PERISPOMENI
-        [[Common.DIALYTIKA_PERISPOMENI_KEY], `῁`, false],
+        [[Common.DIALYTIKA_PERISPOMENI_KEY], `῁`, Space.DEFAULT, Space.IGNORE_CAPS_LOCK],
 
         // U+1FD7 GREEK SMALL LETTER IOTA WITH DIALYTIKA AND PERISPOMENI
         [[Key.KEY_I], `ῗ`, false],
         // U+1FE7 GREEK SMALL LETTER UPSILON WITH DIALYTIKA AND PERISPOMENI
         [[Key.KEY_U], `ῧ`, false],
     ],
-    true,
+    Space.MIRROR,
+    Space.IGNORE_CAPS_LOCK,
 ];
 
 const IOTA: Space.Combo = [
@@ -347,7 +355,7 @@ const IOTA: Space.Combo = [
     [
         // U+037A GREEK YPOGEGRAMMENI,
         // U+1FBE GREEK PROSGEGRAMMENI
-        [[Common.IOTA_KEY], `ͺ`, `ι`],
+        [[Common.IOTA_KEY], `ͺ`, `ι`, Space.IGNORE_CAPS_LOCK],
 
         // U+1FB3 GREEK SMALL LETTER ALPHA WITH YPOGEGRAMMENI,
         // U+1FBC GREEK CAPITAL LETTER ALPHA WITH PROSGEGRAMMENI
@@ -359,7 +367,8 @@ const IOTA: Space.Combo = [
         // U+1FFC GREEK CAPITAL LETTER OMEGA WITH PROSGEGRAMMENI
         [[Key.KEY_V], `ῳ`, `ῼ`],
     ],
-    true,
+    Space.MIRROR,
+    Space.IGNORE_CAPS_LOCK,
 ];
 
 const OXIA_IOTA_AND_VARIA_IOTA: Space.Combo = [
@@ -380,6 +389,7 @@ const OXIA_IOTA_AND_VARIA_IOTA: Space.Combo = [
         // U+1FF2 GREEK SMALL LETTER OMEGA WITH VARIA AND YPOGEGRAMMENI
         [[Key.KEY_V], `ῲ`, false],
     ],
+    Space.IGNORE_CAPS_LOCK,
 ];
 
 const PERISPOMENI_IOTA: Space.Combo = [
@@ -392,7 +402,8 @@ const PERISPOMENI_IOTA: Space.Combo = [
         // U+1FF7 GREEK SMALL LETTER OMEGA WITH PERISPOMENI AND YPOGEGRAMMENI
         [[Key.KEY_V], `ῷ`, false],
     ],
-    false,
+    Space.DEFAULT,
+    Space.IGNORE_CAPS_LOCK,
 ];
 
 const PSILI_IOTA_AND_DASIA_IOTA: Space.Combo = [
@@ -419,6 +430,7 @@ const PSILI_IOTA_AND_DASIA_IOTA: Space.Combo = [
         // U+1FA9 GREEK CAPITAL LETTER OMEGA WITH DASIA AND PROSGEGRAMMENI
         [[Key.KEY_V], `ᾡ`, `ᾩ`],
     ],
+    Space.IGNORE_CAPS_LOCK,
 ];
 
 const PSILI_OXIA_IOTA_AND_DASIA_OXIA_IOTA: Space.Combo = [
@@ -445,6 +457,7 @@ const PSILI_OXIA_IOTA_AND_DASIA_OXIA_IOTA: Space.Combo = [
         // U+1FAD GREEK CAPITAL LETTER OMEGA WITH DASIA AND OXIA AND PROSGEGRAMMENI
         [[Key.KEY_V], `ᾥ`, `ᾭ`],
     ],
+    Space.IGNORE_CAPS_LOCK,
 ];
 
 const PSILI_VARIA_IOTA_AND_DASIA_VARIA_IOTA: Space.Combo = [
@@ -471,6 +484,7 @@ const PSILI_VARIA_IOTA_AND_DASIA_VARIA_IOTA: Space.Combo = [
         // U+1FAB GREEK CAPITAL LETTER OMEGA WITH DASIA AND VARIA AND PROSGEGRAMMENI
         [[Key.KEY_V], `ᾣ`, `ᾫ`],
     ],
+    Space.IGNORE_CAPS_LOCK,
 ];
 
 const PSILI_PERISPOMENI_IOTA_AND_DASIA_PERISPOMENI_IOTA: Space.Combo = [
@@ -497,13 +511,14 @@ const PSILI_PERISPOMENI_IOTA_AND_DASIA_PERISPOMENI_IOTA: Space.Combo = [
         // U+1FAF GREEK CAPITAL LETTER OMEGA WITH DASIA AND PERISPOMENI AND PROSGEGRAMMENI
         [[Key.KEY_V], `ᾧ`, `ᾯ`],
     ],
+    Space.IGNORE_CAPS_LOCK,
 ];
 
 const MACRON: Space.Combo = [
     [Common.MACRON_KEY],
     [
         // U+00AF MACRON
-        [[Common.MACRON_KEY], `¯`, false],
+        [[Common.MACRON_KEY], `¯`, Space.DEFAULT, Space.IGNORE_CAPS_LOCK],
 
         // U+1FB1 GREEK SMALL LETTER ALPHA WITH MACRON,
         // U+1FB9 GREEK CAPITAL LETTER ALPHA WITH MACRON
@@ -515,14 +530,15 @@ const MACRON: Space.Combo = [
         // U+1FE9 GREEK CAPITAL LETTER UPSILON WITH MACRON
         [[Key.KEY_U], `ῡ`, `Ῡ`],
     ],
-    true,
+    Space.MIRROR,
+    Space.IGNORE_CAPS_LOCK,
 ];
 
 const BREVE: Space.Combo = [
     [Common.BREVE_KEY],
     [
         // U+02D8 BREVE
-        [[Common.BREVE_KEY], `˘`, false],
+        [[Common.BREVE_KEY], `˘`, Space.DEFAULT, Space.IGNORE_CAPS_LOCK],
 
         // U+1FB0 GREEK SMALL LETTER ALPHA WITH VRACHY,
         // U+1FB8 GREEK CAPITAL LETTER ALPHA WITH VRACHY
@@ -534,7 +550,8 @@ const BREVE: Space.Combo = [
         // U+1FE8 GREEK CAPITAL LETTER UPSILON WITH VRACHY
         [[Key.KEY_U], `ῠ`, `Ῠ`],
     ],
-    true,
+    Space.MIRROR,
+    Space.IGNORE_CAPS_LOCK,
 ];
 
 export class Instance extends Layout.Instance
@@ -570,7 +587,8 @@ export class Instance extends Layout.Instance
                             MACRON,
                             BREVE,
                         ],
-                        true,
+                        Space.MIRROR,
+                        Space.IGNORE_CAPS_LOCK,
                     ],
                 ],
             },

@@ -9,16 +9,16 @@ import * as Common from "./common.js";
 
 const SEPARATES: Space.Combos = [
     // U+0384 GREEK TONOS
-    [[Key.SEMICOLON], `΄`, false],
+    [[Key.SEMICOLON], `΄`, Space.DEFAULT, Space.IGNORE_CAPS_LOCK],
     // U+00A8 DIAERESIS
-    [[Key.BRACKET_LEFT], `¨`, false],
+    [[Key.BRACKET_LEFT], `¨`, Space.DEFAULT, Space.IGNORE_CAPS_LOCK],
     // U+0385 GREEK DIALYTIKA TONOS
-    [[Key.BRACKET_RIGHT], `΅`, false],
+    [[Key.BRACKET_RIGHT], `΅`, Space.DEFAULT, Space.IGNORE_CAPS_LOCK],
 
     // U+00AF MACRON
-    [[Key.EQUAL], `¯`, false],
+    [[Key.EQUAL], `¯`, Space.DEFAULT, Space.IGNORE_CAPS_LOCK],
     // U+02D8 BREVE
-    [[Key.MINUS], `˘`, false],
+    [[Key.MINUS], `˘`, Space.DEFAULT, Space.IGNORE_CAPS_LOCK],
 ];
 
 export class Instance extends Layout.Instance
@@ -34,19 +34,19 @@ export class Instance extends Layout.Instance
                     ...Common.LETTERS_AND_PUNCTUATION,
 
                     // U+0301 COMBINING ACUTE ACCENT
-                    [[Key.SEMICOLON], `́`, false],
+                    [[Key.SEMICOLON], `́`, Space.DEFAULT, Space.IGNORE_CAPS_LOCK],
                     // U+0308 COMBINING DIAERESIS
-                    [[Key.BRACKET_LEFT], `̈`, false],
+                    [[Key.BRACKET_LEFT], `̈`, Space.DEFAULT, Space.IGNORE_CAPS_LOCK],
                     // U+0344 COMBINING GREEK DIALYTIKA TONOS
-                    [[Key.BRACKET_RIGHT], `̈́`, false],
+                    [[Key.BRACKET_RIGHT], `̈́`, Space.DEFAULT, Space.IGNORE_CAPS_LOCK],
 
                     // U+0304 COMBINING MACRON
-                    [[Key.EQUAL], `̄`, false],
+                    [[Key.EQUAL], `̄`, Space.DEFAULT, Space.IGNORE_CAPS_LOCK],
                     // U+0306 COMBINING BREVE
-                    [[Key.MINUS], `̆`, false],
+                    [[Key.MINUS], `̆`, Space.DEFAULT, Space.IGNORE_CAPS_LOCK],
 
                     // Separates
-                    [[Key.BACKQUOTE], SEPARATES, false],
+                    [[Key.BACKQUOTE], SEPARATES, Space.DEFAULT, Space.IGNORE_CAPS_LOCK],
                 ],
             },
         );

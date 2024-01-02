@@ -10,16 +10,32 @@ export type Lower_Case =
 export type Upper_Case =
     string;
 
+export type Mirror =
+    boolean;
+
+export type Ignore_Caps_Lock =
+    boolean;
+
 export type Combo =
-    [Array<Key>, Lower_Case | Combos | boolean, Upper_Case | Combos | boolean];
+    [Array<Key>, Lower_Case | Combos | Mirror, Upper_Case | Combos | Mirror] |
+    [Array<Key>, Lower_Case | Combos | Mirror, Upper_Case | Combos | Mirror, Ignore_Caps_Lock];
 
 export type Combos =
     Array<Combo>;
 
 export type Lookup = {
     [key: string]:
-    Lookup | [Lower_Case | Instance | null, Upper_Case | Instance | null],
+    Lookup | [Lower_Case | Instance | null, Upper_Case | Instance | null, Ignore_Caps_Lock],
 };
+
+export const MIRROR: Mirror =
+    true;
+export const DEFAULT: Mirror =
+    false;
+export const IGNORE_CAPS_LOCK: Ignore_Caps_Lock =
+    true;
+export const RESPECT_CAPS_LOCK: Ignore_Caps_Lock =
+    false;
 
 export class Instance
 {
@@ -69,12 +85,16 @@ export class Instance
                 `Check your combos to make sure that one doesn't override another.`,
             );
 
-            const lower: Lower_Case | Combos | boolean = combo[1];
-            const upper: Upper_Case | Combos | boolean = combo[2];
+            const lower: Lower_Case | Combos | Mirror = combo[1];
+            const upper: Upper_Case | Combos | Mirror = combo[2];
+            const ignore_caps_lock: Ignore_Caps_Lock = combo.length >= 4 ?
+                combo[3] as Ignore_Caps_Lock :
+                false;
 
             lookup[last_key] = [
                 null,
                 null,
+                ignore_caps_lock,
             ];
 
             if (Utils.Is.String(lower)) {
@@ -83,7 +103,7 @@ export class Instance
                     lookup[last_key][1] = upper as string;
                 } else if (Utils.Is.Array(upper)) {
                     lookup[last_key][1] = new Instance(upper as Combos);
-                } else if (upper as boolean) {
+                } else if (upper as Mirror) {
                     lookup[last_key][1] = lookup[last_key][0];
                 }
             } else if (Utils.Is.Array(lower)) {
@@ -92,17 +112,17 @@ export class Instance
                     lookup[last_key][1] = upper as string;
                 } else if (Utils.Is.Array(upper)) {
                     lookup[last_key][1] = new Instance(upper as Combos);
-                } else if (upper as boolean) {
+                } else if (upper as Mirror) {
                     lookup[last_key][1] = lookup[last_key][0];
                 }
             } else if (Utils.Is.String(upper)) {
                 lookup[last_key][1] = upper as string;
-                if (lower as boolean) {
+                if (lower as Mirror) {
                     lookup[last_key][0] = lookup[last_key][1];
                 }
             } else if (Utils.Is.Array(upper)) {
                 lookup[last_key][1] = new Instance(upper as Combos);
-                if (lower as boolean) {
+                if (lower as Mirror) {
                     lookup[last_key][0] = lookup[last_key][1];
                 }
             }
@@ -134,23 +154,39 @@ export class Instance
             const key = held_keys.At(key_idx);
             if (Utils.Is.Array(lookup[key])) {
                 if (key_idx === key_end - 1) {
-                    if (is_shifted && is_caps_locked) {
-                        if (lookup[key][0] instanceof Instance) {
-                            return lookup[key][0] as Instance;
+                    if (lookup[key][2]) {
+                        if (is_shifted) {
+                            if (lookup[key][1] instanceof Instance) {
+                                return lookup[key][1] as Instance;
+                            } else {
+                                return false;
+                            }
                         } else {
-                            return false;
-                        }
-                    } else if (is_shifted || is_caps_locked) {
-                        if (lookup[key][1] instanceof Instance) {
-                            return lookup[key][1] as Instance;
-                        } else {
-                            return false;
+                            if (lookup[key][0] instanceof Instance) {
+                                return lookup[key][0] as Instance;
+                            } else {
+                                return false;
+                            }
                         }
                     } else {
-                        if (lookup[key][0] instanceof Instance) {
-                            return lookup[key][0] as Instance;
+                        if (is_shifted && is_caps_locked) {
+                            if (lookup[key][0] instanceof Instance) {
+                                return lookup[key][0] as Instance;
+                            } else {
+                                return false;
+                            }
+                        } else if (is_shifted || is_caps_locked) {
+                            if (lookup[key][1] instanceof Instance) {
+                                return lookup[key][1] as Instance;
+                            } else {
+                                return false;
+                            }
                         } else {
-                            return false;
+                            if (lookup[key][0] instanceof Instance) {
+                                return lookup[key][0] as Instance;
+                            } else {
+                                return false;
+                            }
                         }
                     }
                 } else {
@@ -184,23 +220,39 @@ export class Instance
             const key = held_keys.At(key_idx);
             if (Utils.Is.Array(lookup[key])) {
                 if (key_idx === key_end - 1) {
-                    if (is_shifted && is_caps_locked) {
-                        if (Utils.Is.String(lookup[key][0])) {
-                            return lookup[key][0] as Lower_Case;
+                    if (lookup[key][2]) {
+                        if (is_shifted) {
+                            if (Utils.Is.String(lookup[key][1])) {
+                                return lookup[key][1] as Upper_Case;
+                            } else {
+                                return false;
+                            }
                         } else {
-                            return false;
-                        }
-                    } else if (is_shifted || is_caps_locked) {
-                        if (Utils.Is.String(lookup[key][1])) {
-                            return lookup[key][1] as Upper_Case;
-                        } else {
-                            return false;
+                            if (Utils.Is.String(lookup[key][0])) {
+                                return lookup[key][0] as Lower_Case;
+                            } else {
+                                return false;
+                            }
                         }
                     } else {
-                        if (Utils.Is.String(lookup[key][0])) {
-                            return lookup[key][0] as Lower_Case;
+                        if (is_shifted && is_caps_locked) {
+                            if (Utils.Is.String(lookup[key][0])) {
+                                return lookup[key][0] as Lower_Case;
+                            } else {
+                                return false;
+                            }
+                        } else if (is_shifted || is_caps_locked) {
+                            if (Utils.Is.String(lookup[key][1])) {
+                                return lookup[key][1] as Upper_Case;
+                            } else {
+                                return false;
+                            }
                         } else {
-                            return false;
+                            if (Utils.Is.String(lookup[key][0])) {
+                                return lookup[key][0] as Lower_Case;
+                            } else {
+                                return false;
+                            }
                         }
                     }
                 } else {

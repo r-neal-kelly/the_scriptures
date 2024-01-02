@@ -13,7 +13,7 @@ const _1_LIGATURES_AND_DIGRAPHS: Space.Combo = [
         // U+00BC VULGAR FRACTION ONE QUARTER
         [[Key.DIGIT_4], `¼`, false],
     ],
-    true,
+    Space.MIRROR,
 ];
 
 const _3_LIGATURES_AND_DIGRAPHS: Space.Combo = [
@@ -22,7 +22,7 @@ const _3_LIGATURES_AND_DIGRAPHS: Space.Combo = [
         // U+00BE VULGAR FRACTION THREE QUARTERS
         [[Key.DIGIT_4], `¾`, false],
     ],
-    true,
+    Space.MIRROR,
 ];
 
 const A_LIGATURES_AND_DIGRAPHS: Space.Combo = [
@@ -41,7 +41,7 @@ const A_LIGATURES_AND_DIGRAPHS: Space.Combo = [
         // U+A73D LATIN SMALL LETTER AY, U+A73C LATIN CAPITAL LETTER AY
         [[Key.KEY_Y], `ꜽ`, `Ꜽ`],
     ],
-    true,
+    Space.MIRROR,
 ];
 
 const O_LIGATURES_AND_DIGRAPHS: Space.Combo = [
@@ -54,7 +54,7 @@ const O_LIGATURES_AND_DIGRAPHS: Space.Combo = [
         // U+0223 LATIN SMALL LETTER OU, U+0222 LATIN CAPITAL LETTER OU
         [[Key.KEY_U], `ȣ`, `Ȣ`],
     ],
-    true,
+    Space.MIRROR,
 ];
 
 const S_LIGATURES_AND_DIGRAPHS: Space.Combo = [
@@ -63,7 +63,7 @@ const S_LIGATURES_AND_DIGRAPHS: Space.Combo = [
         // U+00DF LATIN SMALL LETTER SHARP S, U+1E9E LATIN CAPITAL LETTER SHARP S
         [[Key.KEY_Z], `ß`, `ẞ`],
     ],
-    true,
+    Space.MIRROR,
 ];
 
 const T_LIGATURES_AND_DIGRAPHS: Space.Combo = [
@@ -72,7 +72,7 @@ const T_LIGATURES_AND_DIGRAPHS: Space.Combo = [
         // U+A729 LATIN SMALL LETTER TZ, U+A728 LATIN CAPITAL LETTER TZ
         [[Key.KEY_Z], `ꜩ`, `Ꜩ`],
     ],
-    true,
+    Space.MIRROR,
 ];
 
 const U_LIGATURES_AND_DIGRAPHS: Space.Combo = [
@@ -83,7 +83,7 @@ const U_LIGATURES_AND_DIGRAPHS: Space.Combo = [
         // U+AB63 LATIN SMALL LETTER UO
         [[Key.KEY_O], `ꭣ`, false],
     ],
-    true,
+    Space.MIRROR,
 ];
 
 const V_LIGATURES_AND_DIGRAPHS: Space.Combo = [
@@ -92,7 +92,7 @@ const V_LIGATURES_AND_DIGRAPHS: Space.Combo = [
         // U+A761 LATIN SMALL LETTER VY, U+A760 LATIN CAPITAL LETTER VY
         [[Key.KEY_Y], `ꝡ`, `Ꝡ`],
     ],
-    true,
+    Space.MIRROR,
 ];
 
 const LIGATURES_AND_DIGRAPHS: Space.Combo = [
@@ -107,7 +107,7 @@ const LIGATURES_AND_DIGRAPHS: Space.Combo = [
         U_LIGATURES_AND_DIGRAPHS,
         V_LIGATURES_AND_DIGRAPHS,
     ],
-    true,
+    Space.MIRROR,
 ];
 
 const LETTERS: Space.Combo = [
@@ -118,81 +118,84 @@ const LETTERS: Space.Combo = [
         // U+A75B LATIN SMALL LETTER R ROTUNDA, U+A75A LATIN CAPITAL LETTER R ROTUNDA
         [[Key.KEY_R], `ꝛ`, `Ꝛ`],
     ],
-    false,
+    Space.DEFAULT,
+    Space.IGNORE_CAPS_LOCK,
 ];
 
 const SYMBOLS: Space.Combo = [
     [Key.SEMICOLON],
     [
         // U+00B6 PILCROW SIGN
-        [[Key.KEY_P], `¶`, false],
+        [[Key.KEY_P], `¶`, false, Space.IGNORE_CAPS_LOCK],
         // U+00A7 SECTION SIGN
-        [[Key.KEY_S], `§`, false],
+        [[Key.KEY_S], `§`, false, Space.IGNORE_CAPS_LOCK],
         // U+2E3F CAPITULUM
-        [[Key.KEY_C], `⸿`, false],
+        [[Key.KEY_C], `⸿`, false, Space.IGNORE_CAPS_LOCK],
         // U+2116 NUMERO SIGN
-        [[Key.KEY_N], `№`, false],
+        [[Key.KEY_N], `№`, false, Space.IGNORE_CAPS_LOCK],
         // U+00A3 POUND SIGN
-        [[Key.DIGIT_3], `£`, false],
+        [[Key.DIGIT_3], `£`, false, Space.IGNORE_CAPS_LOCK],
         // U+00D7 MULTIPLICATION SIGN
-        [[Key.KEY_X], `×`, false],
+        [[Key.KEY_X], `×`, false, Space.IGNORE_CAPS_LOCK],
         // U+00F7 DIVISION SIGN
-        [[Key.KEY_D], `÷`, false],
+        [[Key.KEY_D], `÷`, false, Space.IGNORE_CAPS_LOCK],
         // U+2011 NON-BREAKING HYPHEN
-        [[Key.MINUS], `‑`, false],
+        [[Key.MINUS], `‑`, false, Space.IGNORE_CAPS_LOCK],
         // U+2013 EN DASH, U+2014 EM DASH
-        [[Key.EQUAL], `–`, `—`],
+        [[Key.EQUAL], `–`, `—`, Space.IGNORE_CAPS_LOCK],
         // U+02BC MODIFIER LETTER APOSTROPHE
-        [[Key.QUOTE], `ʼ`, false],
+        [[Key.QUOTE], `ʼ`, false, Space.IGNORE_CAPS_LOCK],
         // U+2018 LEFT SINGLE QUOTATION MARK, U+201C LEFT DOUBLE QUOTATION MARK
-        [[Key.BRACKET_LEFT], `‘`, `“`],
+        [[Key.BRACKET_LEFT], `‘`, `“`, Space.IGNORE_CAPS_LOCK],
         // U+2019 RIGHT SINGLE QUOTATION MARK, U+201D RIGHT DOUBLE QUOTATION MARK
-        [[Key.BRACKET_RIGHT], `’`, `”`],
+        [[Key.BRACKET_RIGHT], `’`, `”`, Space.IGNORE_CAPS_LOCK],
         // U+2020 DAGGER, U+2021 DOUBLE DAGGER
-        [[Key.KEY_T], `†`, `‡`],
+        [[Key.KEY_T], `†`, `‡`, Space.IGNORE_CAPS_LOCK],
         // U+00B7 MIDDLE DOT, U+27E8 MATHEMATICAL LEFT ANGLE BRACKET
-        [[Key.COMMA], `·`, `⟨`],
+        [[Key.COMMA], `·`, `⟨`, Space.IGNORE_CAPS_LOCK],
         // U+2E3C STENOGRAPHIC FULL STOP, U+27E9 MATHEMATICAL RIGHT ANGLE BRACKET
-        [[Key.PERIOD], `⸼`, `⟩`],
+        [[Key.PERIOD], `⸼`, `⟩`, Space.IGNORE_CAPS_LOCK],
         // U+2026 HORIZONTAL ELLIPSIS, U+00A6 BROKEN BAR
-        [[Key.BACKSLASH], `…`, `¦`],
+        [[Key.BACKSLASH], `…`, `¦`, Space.IGNORE_CAPS_LOCK],
         // U+27E6 MATHEMATICAL LEFT WHITE SQUARE BRACKET, U+2E28 LEFT DOUBLE PARENTHESIS
-        [[Key.DIGIT_9], `⟦`, `⸨`],
+        [[Key.DIGIT_9], `⟦`, `⸨`, Space.IGNORE_CAPS_LOCK],
         // U+27E7 MATHEMATICAL RIGHT WHITE SQUARE BRACKET, U+2E29 RIGHT DOUBLE PARENTHESIS
-        [[Key.DIGIT_0], `⟧`, `⸩`],
+        [[Key.DIGIT_0], `⟧`, `⸩`, Space.IGNORE_CAPS_LOCK],
         // U+1FBF GREEK PSILI, U+1FFE GREEK DASIA
-        [[Key.SEMICOLON], `᾿`, `῾`],
+        [[Key.SEMICOLON], `᾿`, `῾`, Space.IGNORE_CAPS_LOCK],
         // U+23DE TOP CURLY BRACKET, U+23DF BOTTOM CURLY BRACKET
-        [[Key.KEY_M], `⏞`, `⏟`],
+        [[Key.KEY_M], `⏞`, `⏟`, Space.IGNORE_CAPS_LOCK],
     ],
-    false,
+    Space.DEFAULT,
+    Space.IGNORE_CAPS_LOCK,
 ];
 
 const COMMAS: Space.Combo = [
     [Key.COMMA],
     [
         // U+1F101 DIGIT ZERO COMMA
-        [[Key.DIGIT_0], `🄁`, false],
+        [[Key.DIGIT_0], `🄁`, false, Space.IGNORE_CAPS_LOCK],
         // U+1F102 DIGIT ONE COMMA
-        [[Key.DIGIT_1], `🄂`, false],
+        [[Key.DIGIT_1], `🄂`, false, Space.IGNORE_CAPS_LOCK],
         // U+1F103 DIGIT TWO COMMA
-        [[Key.DIGIT_2], `🄃`, false],
+        [[Key.DIGIT_2], `🄃`, false, Space.IGNORE_CAPS_LOCK],
         // U+1F104 DIGIT THREE COMMA
-        [[Key.DIGIT_3], `🄄`, false],
+        [[Key.DIGIT_3], `🄄`, false, Space.IGNORE_CAPS_LOCK],
         // U+1F105 DIGIT FOUR COMMA
-        [[Key.DIGIT_4], `🄅`, false],
+        [[Key.DIGIT_4], `🄅`, false, Space.IGNORE_CAPS_LOCK],
         // U+1F106 DIGIT FIVE COMMA
-        [[Key.DIGIT_5], `🄆`, false],
+        [[Key.DIGIT_5], `🄆`, false, Space.IGNORE_CAPS_LOCK],
         // U+1F107 DIGIT SIX COMMA
-        [[Key.DIGIT_6], `🄇`, false],
+        [[Key.DIGIT_6], `🄇`, false, Space.IGNORE_CAPS_LOCK],
         // U+1F108 DIGIT SEVEN COMMA
-        [[Key.DIGIT_7], `🄈`, false],
+        [[Key.DIGIT_7], `🄈`, false, Space.IGNORE_CAPS_LOCK],
         // U+1F109 DIGIT EIGHT COMMA
-        [[Key.DIGIT_8], `🄉`, false],
+        [[Key.DIGIT_8], `🄉`, false, Space.IGNORE_CAPS_LOCK],
         // U+1F10A DIGIT NINE COMMA
-        [[Key.DIGIT_9], `🄊`, false],
+        [[Key.DIGIT_9], `🄊`, false, Space.IGNORE_CAPS_LOCK],
     ],
-    false,
+    Space.DEFAULT,
+    Space.IGNORE_CAPS_LOCK,
 ];
 
 const SUPERSCRIPTS: Space.Combo = [
@@ -255,33 +258,34 @@ const SUPERSCRIPTS: Space.Combo = [
         // U+1D3D MODIFIER LETTER CAPITAL OU
         [[Key.BRACKET_RIGHT], false, `ᴽ`],
         // U+00B9 SUPERSCRIPT ONE
-        [[Key.DIGIT_1], `¹`, false],
+        [[Key.DIGIT_1], `¹`, false, Space.IGNORE_CAPS_LOCK],
         // U+00B2 SUPERSCRIPT TWO
-        [[Key.DIGIT_2], `²`, false],
+        [[Key.DIGIT_2], `²`, false, Space.IGNORE_CAPS_LOCK],
         // U+00B3 SUPERSCRIPT THREE
-        [[Key.DIGIT_3], `³`, false],
+        [[Key.DIGIT_3], `³`, false, Space.IGNORE_CAPS_LOCK],
         // U+2074 SUPERSCRIPT FOUR
-        [[Key.DIGIT_4], `⁴`, false],
+        [[Key.DIGIT_4], `⁴`, false, Space.IGNORE_CAPS_LOCK],
         // U+2075 SUPERSCRIPT FIVE
-        [[Key.DIGIT_5], `⁵`, false],
+        [[Key.DIGIT_5], `⁵`, false, Space.IGNORE_CAPS_LOCK],
         // U+2076 SUPERSCRIPT SIX
-        [[Key.DIGIT_6], `⁶`, false],
+        [[Key.DIGIT_6], `⁶`, false, Space.IGNORE_CAPS_LOCK],
         // U+2077 SUPERSCRIPT SEVEN
-        [[Key.DIGIT_7], `⁷`, false],
+        [[Key.DIGIT_7], `⁷`, false, Space.IGNORE_CAPS_LOCK],
         // U+2078 SUPERSCRIPT EIGHT
-        [[Key.DIGIT_8], `⁸`, false],
+        [[Key.DIGIT_8], `⁸`, false, Space.IGNORE_CAPS_LOCK],
         // U+2079 SUPERSCRIPT NINE, U+207D SUPERSCRIPT LEFT PARENTHESIS
-        [[Key.DIGIT_9], `⁹`, `⁽`],
+        [[Key.DIGIT_9], `⁹`, `⁽`, Space.IGNORE_CAPS_LOCK],
         // U+2070 SUPERSCRIPT ZERO, U+207E SUPERSCRIPT RIGHT PARENTHESIS
-        [[Key.DIGIT_0], `⁰`, `⁾`],
+        [[Key.DIGIT_0], `⁰`, `⁾`, Space.IGNORE_CAPS_LOCK],
         // U+207B SUPERSCRIPT MINUS
-        [[Key.MINUS], `⁻`, false],
+        [[Key.MINUS], `⁻`, false, Space.IGNORE_CAPS_LOCK],
         // U+207C SUPERSCRIPT EQUALS SIGN, U+207A SUPERSCRIPT PLUS SIGN
-        [[Key.EQUAL], `⁼`, `⁺`],
+        [[Key.EQUAL], `⁼`, `⁺`, Space.IGNORE_CAPS_LOCK],
         // U+02C8 MODIFIER LETTER VERTICAL LINE
-        [[Key.BACKSLASH], false, `ˈ`],
+        [[Key.BACKSLASH], false, `ˈ`, Space.IGNORE_CAPS_LOCK],
     ],
-    false,
+    Space.DEFAULT,
+    Space.IGNORE_CAPS_LOCK,
 ];
 
 const SUBSCRIPTS: Space.Combo = [
@@ -322,56 +326,58 @@ const SUBSCRIPTS: Space.Combo = [
         // U+2093 LATIN SUBSCRIPT SMALL LETTER X
         [[Key.KEY_X], `ₓ`, false],
         // U+2081 SUBSCRIPT ONE
-        [[Key.DIGIT_1], `₁`, false],
+        [[Key.DIGIT_1], `₁`, false, Space.IGNORE_CAPS_LOCK],
         // U+2082 SUBSCRIPT TWO
-        [[Key.DIGIT_2], `₂`, false],
+        [[Key.DIGIT_2], `₂`, false, Space.IGNORE_CAPS_LOCK],
         // U+2083 SUBSCRIPT THREE
-        [[Key.DIGIT_3], `₃`, false],
+        [[Key.DIGIT_3], `₃`, false, Space.IGNORE_CAPS_LOCK],
         // U+2084 SUBSCRIPT FOUR
-        [[Key.DIGIT_4], `₄`, false],
+        [[Key.DIGIT_4], `₄`, false, Space.IGNORE_CAPS_LOCK],
         // U+2085 SUBSCRIPT FIVE
-        [[Key.DIGIT_5], `₅`, false],
+        [[Key.DIGIT_5], `₅`, false, Space.IGNORE_CAPS_LOCK],
         // U+2086 SUBSCRIPT SIX
-        [[Key.DIGIT_6], `₆`, false],
+        [[Key.DIGIT_6], `₆`, false, Space.IGNORE_CAPS_LOCK],
         // U+2087 SUBSCRIPT SEVEN
-        [[Key.DIGIT_7], `₇`, false],
+        [[Key.DIGIT_7], `₇`, false, Space.IGNORE_CAPS_LOCK],
         // U+2088 SUBSCRIPT EIGHT
-        [[Key.DIGIT_8], `₈`, false],
+        [[Key.DIGIT_8], `₈`, false, Space.IGNORE_CAPS_LOCK],
         // U+2089 SUBSCRIPT NINE
-        [[Key.DIGIT_9], `₉`, false],
+        [[Key.DIGIT_9], `₉`, false, Space.IGNORE_CAPS_LOCK],
         // U+2080 SUBSCRIPT ZERO
-        [[Key.DIGIT_0], `₀`, false],
+        [[Key.DIGIT_0], `₀`, false, Space.IGNORE_CAPS_LOCK],
     ],
-    false,
+    Space.DEFAULT,
+    Space.IGNORE_CAPS_LOCK,
 ];
 
 const COMBINING_DIACRITICS: Space.Combo = [
     [Key.SLASH],
     [
         // U+0300 COMBINING GRAVE ACCENT, U+030F COMBINING DOUBLE GRAVE ACCENT
-        [[Key.KEY_A], `̀`, `̏`],
+        [[Key.KEY_A], `̀`, `̏`, Space.IGNORE_CAPS_LOCK],
         // U+0301 COMBINING ACUTE ACCENT, U+030B COMBINING DOUBLE ACUTE ACCENT
-        [[Key.KEY_S], `́`, `̋`],
+        [[Key.KEY_S], `́`, `̋`, Space.IGNORE_CAPS_LOCK],
         // U+0302 COMBINING CIRCUMFLEX ACCENT, U+030C COMBINING CARON
-        [[Key.KEY_D], `̂`, `̌`],
+        [[Key.KEY_D], `̂`, `̌`, Space.IGNORE_CAPS_LOCK],
         // U+0308 COMBINING DIAERESIS
-        [[Key.KEY_F], `̈`, false],
+        [[Key.KEY_F], `̈`, false, Space.IGNORE_CAPS_LOCK],
         // U+0304 COMBINING MACRON
-        [[Key.PERIOD], `̄`, false],
+        [[Key.PERIOD], `̄`, false, Space.IGNORE_CAPS_LOCK],
         // U+0306 COMBINING BREVE, U+0311 COMBINING INVERTED BREVE
-        [[Key.COMMA], `̆`, `̑`],
+        [[Key.COMMA], `̆`, `̑`, Space.IGNORE_CAPS_LOCK],
         // U+030A COMBINING RING ABOVE
-        [[Key.KEY_R], `̊`, false],
+        [[Key.KEY_R], `̊`, false, Space.IGNORE_CAPS_LOCK],
         // U+0303 COMBINING TILDE
-        [[Key.KEY_T], `̃`, false],
+        [[Key.KEY_T], `̃`, false, Space.IGNORE_CAPS_LOCK],
         // U+0327 COMBINING CEDILLA, U+0328 COMBINING OGONEK
-        [[Key.KEY_C], `̧`, `̨`],
+        [[Key.KEY_C], `̧`, `̨`, Space.IGNORE_CAPS_LOCK],
         // U+0307 COMBINING DOT ABOVE, U+0323 COMBINING DOT BELOW
-        [[Key.KEY_O], `̇`, `̣`],
+        [[Key.KEY_O], `̇`, `̣`, Space.IGNORE_CAPS_LOCK],
         // U+0315 COMBINING COMMA ABOVE RIGHT
-        [[Key.QUOTE], `̕`, false],
+        [[Key.QUOTE], `̕`, false, Space.IGNORE_CAPS_LOCK],
     ],
-    false,
+    Space.DEFAULT,
+    Space.IGNORE_CAPS_LOCK,
 ];
 
 const SPECIALS: Space.Combo = [
@@ -384,7 +390,8 @@ const SPECIALS: Space.Combo = [
         SUBSCRIPTS,
         COMBINING_DIACRITICS,
     ],
-    false,
+    Space.DEFAULT,
+    Space.IGNORE_CAPS_LOCK,
 ];
 
 export class Instance extends Layout.Instance

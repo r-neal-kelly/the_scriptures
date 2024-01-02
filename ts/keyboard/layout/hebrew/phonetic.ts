@@ -10,7 +10,8 @@ import * as Common from "./common.js";
 const ACCENTS: Space.Combo = [
     [Key.SLASH],
     Common.ACCENTS,
-    true,
+    Space.MIRROR,
+    Space.IGNORE_CAPS_LOCK,
 ];
 
 const ALTERNATES_AND_WIDES: Space.Combo = [
@@ -41,6 +42,7 @@ const ALTERNATES_AND_WIDES: Space.Combo = [
         // U+FB28 HEBREW LETTER WIDE TAV
         [[Key.KEY_T], `ﬨ`, false],
     ],
+    Space.IGNORE_CAPS_LOCK,
 ];
 
 export class Instance extends Layout.Instance
