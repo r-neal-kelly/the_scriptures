@@ -9,31 +9,31 @@ import * as Common from "./common.js";
 
 const SEPARATES: Space.Combos = [
     // U+1FFD GREEK OXIA, U+1FEF GREEK VARIA
-    [[Key.SEMICOLON], `´`, ```],
+    [[Common.OXIA_AND_VARIA_KEY], `´`, ```],
     // U+1FC0 GREEK PERISPOMENI, U+00A8 DIAERESIS
-    [[Key.MINUS], `῀`, `¨`],
+    [[Common.PERISPOMENI_AND_DIALYTIKA_KEY], `῀`, `¨`],
 
     // U+1FBF GREEK PSILI, U+1FFE GREEK DASIA
-    [[Key.QUOTE], `᾿`, `῾`],
+    [[Common.PSILI_AND_DASIA_KEY], `᾿`, `῾`],
     // U+1FCE GREEK PSILI AND OXIA, U+1FDE GREEK DASIA AND OXIA
-    [[Key.SLASH], `῎`, `῞`],
+    [[Common.PSILI_OXIA_AND_DASIA_OXIA_KEY], `῎`, `῞`],
     // U+1FCD GREEK PSILI AND VARIA, U+1FDD GREEK DASIA AND VARIA
-    [[Key.BACKSLASH], `῍`, `῝`],
+    [[Common.PSILI_VARIA_AND_DASIA_VARIA_KEY], `῍`, `῝`],
     // U+1FCF GREEK PSILI AND PERISPOMENI, U+1FDF GREEK DASIA AND PERISPOMENI
-    [[Key.EQUAL], `῏`, `῟`],
+    [[Common.PSILI_PERISPOMENI_AND_DASIA_PERISPOMENI_KEY], `῏`, `῟`],
 
     // U+1FEE GREEK DIALYTIKA AND OXIA, U+1FED GREEK DIALYTIKA AND VARIA
-    [[Key.BRACKET_LEFT], `΅`, `῭`],
+    [[Common.DIALYTIKA_OXIA_AND_DIALYTIKA_VARIA_KEY], `΅`, `῭`],
     // U+1FC1 GREEK DIALYTIKA AND PERISPOMENI
-    [[Key.BRACKET_RIGHT], `῁`, false],
+    [[Common.DIALYTIKA_PERISPOMENI_KEY], `῁`, false],
 
     // U+037A GREEK YPOGEGRAMMENI, U+1FBE GREEK PROSGEGRAMMENI
-    [[Key.BACKQUOTE], `ͺ`, `ι`],
+    [[Common.IOTA_KEY], `ͺ`, `ι`],
 
     // U+00AF MACRON
-    [[Key.PERIOD], `¯`, false],
+    [[Common.MACRON_KEY], `¯`, false],
     // U+02D8 BREVE
-    [[Key.COMMA], `˘`, false],
+    [[Common.BREVE_KEY], `˘`, false],
 ];
 
 export class Instance extends Layout.Instance
@@ -50,21 +50,17 @@ export class Instance extends Layout.Instance
 
                     // U+0301 COMBINING ACUTE ACCENT, U+0300 COMBINING GRAVE ACCENT
                     [[Key.SEMICOLON], `́`, `̀`],
-                    // U+0342 COMBINING GREEK PERISPOMENI
-                    [[Key.SLASH], `͂`, false],
+                    // U+0342 COMBINING GREEK PERISPOMENI, U+0308 COMBINING DIAERESIS
+                    [[Key.SLASH], `͂`, `̈`],
                     // U+0313 COMBINING COMMA ABOVE, U+0314 COMBINING REVERSED COMMA ABOVE
                     [[Key.QUOTE], `̓`, `̔`],
-                    // U+0308 COMBINING DIAERESIS
-                    [[Key.BRACKET_LEFT], `̈`, false],
-                    // U+0345 COMBINING GREEK YPOGEGRAMMENI
-                    [[Key.BRACKET_RIGHT], `ͅ`, false],
-                    // U+0343 COMBINING GREEK KORONIS
-                    [[Key.BACKSLASH], `̓`, false],
+                    // U+0345 COMBINING GREEK YPOGEGRAMMENI, U+0343 COMBINING GREEK KORONIS
+                    [[Key.BACKSLASH], `ͅ`, `̓`],
 
                     // U+0304 COMBINING MACRON
-                    [[Key.EQUAL], `̄`, false],
+                    [[Key.BRACKET_RIGHT], `̄`, false],
                     // U+0306 COMBINING BREVE
-                    [[Key.MINUS], `̆`, false],
+                    [[Key.BRACKET_LEFT], `̆`, false],
 
                     // Separates
                     [[Key.BACKQUOTE], SEPARATES, false],

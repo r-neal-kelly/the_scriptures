@@ -72,3 +72,26 @@ export const LETTERS_AND_PUNCTUATION: Space.Combos = [
     // U+0375 GREEK LOWER NUMERAL SIGN
     [[Key.DIGIT_2], false, `͵`],
 ];
+
+export const OXIA_AND_VARIA_KEY: Key =
+    Key.SEMICOLON;
+export const PERISPOMENI_AND_DIALYTIKA_KEY: Key =
+    Key.SLASH;
+export const PSILI_AND_DASIA_KEY: Key =
+    Key.QUOTE;
+export const PSILI_OXIA_AND_DASIA_OXIA_KEY: Key =
+    Key.BRACKET_LEFT;
+export const PSILI_VARIA_AND_DASIA_VARIA_KEY: Key =
+    Key.BRACKET_RIGHT;
+export const PSILI_PERISPOMENI_AND_DASIA_PERISPOMENI_KEY: Key =
+    Key.BACKSLASH;
+export const DIALYTIKA_OXIA_AND_DIALYTIKA_VARIA_KEY: Key =
+    Key.MINUS;
+export const DIALYTIKA_PERISPOMENI_KEY: Key =
+    Key.EQUAL;
+export const IOTA_KEY: Key =
+    Key.BACKQUOTE;
+export const MACRON_KEY: Key =
+    Key.PERIOD;
+export const BREVE_KEY: Key =
+    Key.COMMA;

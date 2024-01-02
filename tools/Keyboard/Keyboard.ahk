@@ -1,47 +1,6 @@
 ﻿#NoEnv
 #SingleInstance force
-#Include Greek.ahk
 #Include Geez.ahk
-
-#If (lang = "Greek") && (subset = "Polytonic")
-   `;:: αdeadkey("A")   ; Acute
-    ::: αdeadkey("G")   ; Grave
-    -:: αdeadkey("C")   ; Circumflex
-    _:: αdeadkey("D")   ; Diaeresis
-
-    ':: αdeadkey("S")   ; Smooth Breath
-   +':: αdeadkey("R")   ; Rough Breath
-    /:: αdeadkey("SA")  ; Smooth Breath + Acute
-    ?:: αdeadkey("RA")  ; Rough Breath + Acute
-    \:: αdeadkey("SG")  ; Smooth Breath + Grave
-    |:: αdeadkey("RG")  ; Rough Breath + Grave
-    =:: αdeadkey("SC")  ; Smooth Breath + Circumflex
-    +:: αdeadkey("RC")  ; Rough Breath + Circumflex
-
-    [:: αdeadkey("DA")  ; Diaeresis + Acute
-    {:: αdeadkey("DG")  ; Diaeresis + Grave
-    ]:: αdeadkey("DC")  ; Diaeresis + Circumflex
-
-; These will be put in under backquote, but keep all the same keys.
-; Iota itself with be the backquote again.
-; Macron and Breve will be period and comma respectively.
-    {:: αdeadkey("I")   ; Iota
-
-  >!;:: αdeadkey("AI")  ; Acute + Iota
- >!+;:: αdeadkey("GI")  ; Grave + Iota
-  >![:: αdeadkey("CI")  ; Circumflex + Iota
-
-  >!':: αdeadkey("SI")  ; Smooth Breath + Iota
- >!+':: αdeadkey("RI")  ; Rough Breath + Iota
-  >!/:: αdeadkey("SAI") ; Smooth Breath + Acute + Iota
-  >!?:: αdeadkey("RAI") ; Rough Breath + Acute + Iota
-  >!\:: αdeadkey("SGI") ; Smooth Breath + Grave + Iota
-  >!|:: αdeadkey("RGI") ; Rough Breath + Grave + Iota
-  >!=:: αdeadkey("SCI") ; Smooth Breath + Circumflex + Iota
-  >!+:: αdeadkey("RCI") ; Rough Breath + Circumflex + Iota
-
-    -:: αdeadkey("M")   ; Macron
-    _:: αdeadkey("B")   ; Breve
 
 #If (lang = "Ge'ez")
   1:: Send ፩ ; One
