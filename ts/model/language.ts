@@ -5,6 +5,7 @@ export * as Hebrew from "./language/hebrew.js";
 export * as Greek from "./language/greek.js";
 export * as Latin from "./language/latin.js";
 export * as Aramaic from "./language/aramaic.js";
+export * as Geez from "./language/geez.js";
 export * as Arabic from "./language/arabic.js";
 export * as German from "./language/german.js";
 export * as French from "./language/french.js";

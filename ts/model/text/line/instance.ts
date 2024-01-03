@@ -333,6 +333,8 @@ export class Instance
                             language_stack.push(Language.Name.LATIN);
                         } else if (command.Is_Open_Aramaic()) {
                             language_stack.push(Language.Name.ARAMAIC);
+                        } else if (command.Is_Open_Geez()) {
+                            language_stack.push(Language.Name.GEEZ);
                         } else if (command.Is_Open_Arabic()) {
                             language_stack.push(Language.Name.ARABIC);
                         } else if (command.Is_Open_German()) {

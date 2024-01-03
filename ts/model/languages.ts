@@ -19,6 +19,7 @@ export class Instance
             new Language.Greek.Instance(),
             new Language.Latin.Instance(),
             new Language.Aramaic.Instance(),
+            new Language.Geez.Instance(),
             new Language.Arabic.Instance(),
             new Language.German.Instance(),
             new Language.French.Instance(),
@@ -89,6 +90,12 @@ export class Instance
         Language.Aramaic.Instance
     {
         return this.Language(Language.Name.ARAMAIC) as Language.Aramaic.Instance;
+    }
+
+    Geez():
+        Language.Geez.Instance
+    {
+        return this.Language(Language.Name.GEEZ) as Language.Geez.Instance;
     }
 
     Arabic():

@@ -26,6 +26,7 @@ const KNOWN_LANGUAGE_NAMES: Set<Name> = new Set(
         Language.Name.GREEK,
         Language.Name.LATIN,
         Language.Name.ARAMAIC,
+        Language.Name.GEEZ,
         Language.Name.ARABIC,
         Language.Name.GERMAN,
         Language.Name.FRENCH,

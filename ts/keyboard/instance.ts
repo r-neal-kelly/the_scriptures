@@ -459,6 +459,21 @@ export class Instance
                     this.Set_Current_Layout(Language.Name.LATIN, null);
                     this.Send_Message(`Global Layout: ${this.Current_Layout().Full_Name()}`);
                 }
+            } else if (this.held_keys.Is([Reserved_Keys.META_KEY, Key.DIGIT_6])) {
+                if (this.Has_Layout(Language.Name.ARAMAIC, `Abjad`)) {
+                    this.Set_Current_Layout(Language.Name.ARAMAIC, `Abjad`);
+                    this.Send_Message(`Global Layout: ${this.Current_Layout().Full_Name()}`);
+                }
+            } else if (this.held_keys.Is([Reserved_Keys.META_KEY, Key.DIGIT_5])) {
+                if (this.Has_Layout(Language.Name.GEEZ, `Abugida`)) {
+                    this.Set_Current_Layout(Language.Name.GEEZ, `Abugida`);
+                    this.Send_Message(`Global Layout: ${this.Current_Layout().Full_Name()}`);
+                }
+            } else if (this.held_keys.Is([Reserved_Keys.META_KEY, Key.DIGIT_4])) {
+                if (this.Has_Layout(Language.Name.ARABIC, `Abjad`)) {
+                    this.Set_Current_Layout(Language.Name.ARABIC, `Abjad`);
+                    this.Send_Message(`Global Layout: ${this.Current_Layout().Full_Name()}`);
+                }
             }
         }
     }
@@ -605,6 +620,10 @@ export function Singleton():
                     new Layout.Greek.Polytonic.Instance(),
                     new Layout.Greek.Monotonic.Instance(),
                     new Layout.Latin.Instance(),
+                    new Layout.Aramaic.Abjad.Instance(),
+                    new Layout.Geez.Abugida.Instance(),
+                    new Layout.Geez.Abjad.Instance(),
+                    new Layout.Arabic.Abjad.Instance(),
                 ],
                 default_layout_language_name: Language.Name.LATIN,
                 default_layout_subset_name: null,
