@@ -62,7 +62,13 @@ export class Instance
         }
 
         if (node.parentElement != null) {
-            node.parentElement.scrollIntoView();
+            node.parentElement.scrollIntoView(
+                {
+                    behavior: `instant` as ScrollBehavior,
+                    block: `nearest`,
+                    inline: `nearest`,
+                } as ScrollIntoViewOptions,
+            );
         }
 
         // range.surroundContents() may be helpful too,
@@ -82,19 +88,13 @@ export class Instance
     ):
         Promise<void>
     {
-        const node: Text = document.createTextNode(data);
-
-        range.deleteContents();
-        range.insertNode(node);
-
-        const selection: Selection | null = document.getSelection();
-
-        if (selection) {
-            selection.collapse(node, (node.nodeValue as string).length);
-        }
-
-        // range.surroundContents() may be helpful too,
-        // by selecting the nodes before and after?
+        await this.On_Insert(
+            {
+                div: div,
+                data: data,
+                range: range,
+            },
+        );
     }
 
     async On_Delete(
