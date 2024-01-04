@@ -118,7 +118,7 @@ const LETTERS: Space.Combo = [
         // U+A75B LATIN SMALL LETTER R ROTUNDA, U+A75A LATIN CAPITAL LETTER R ROTUNDA
         [[Key.KEY_R], `ꝛ`, `Ꝛ`],
     ],
-    Space.DEFAULT,
+    Space.MIRROR,
     Space.IGNORE_CAPS_LOCK,
 ];
 
@@ -166,7 +166,7 @@ const SYMBOLS: Space.Combo = [
         // U+23DE TOP CURLY BRACKET, U+23DF BOTTOM CURLY BRACKET
         [[Key.KEY_M], `⏞`, `⏟`, Space.IGNORE_CAPS_LOCK],
     ],
-    Space.DEFAULT,
+    Space.MIRROR,
     Space.IGNORE_CAPS_LOCK,
 ];
 
@@ -194,7 +194,7 @@ const COMMAS: Space.Combo = [
         // U+1F10A DIGIT NINE COMMA
         [[Key.DIGIT_9], `🄊`, false, Space.IGNORE_CAPS_LOCK],
     ],
-    Space.DEFAULT,
+    Space.MIRROR,
     Space.IGNORE_CAPS_LOCK,
 ];
 
@@ -284,7 +284,7 @@ const SUPERSCRIPTS: Space.Combo = [
         // U+02C8 MODIFIER LETTER VERTICAL LINE
         [[Key.BACKSLASH], false, `ˈ`, Space.IGNORE_CAPS_LOCK],
     ],
-    Space.DEFAULT,
+    Space.MIRROR,
     Space.IGNORE_CAPS_LOCK,
 ];
 
@@ -346,7 +346,7 @@ const SUBSCRIPTS: Space.Combo = [
         // U+2080 SUBSCRIPT ZERO
         [[Key.DIGIT_0], `₀`, false, Space.IGNORE_CAPS_LOCK],
     ],
-    Space.DEFAULT,
+    Space.MIRROR,
     Space.IGNORE_CAPS_LOCK,
 ];
 
@@ -376,22 +376,17 @@ const COMBINING_DIACRITICS: Space.Combo = [
         // U+0315 COMBINING COMMA ABOVE RIGHT
         [[Key.QUOTE], `̕`, false, Space.IGNORE_CAPS_LOCK],
     ],
-    Space.DEFAULT,
+    Space.MIRROR,
     Space.IGNORE_CAPS_LOCK,
 ];
 
-const SPECIALS: Space.Combo = [
-    [Key.BACKQUOTE],
-    [
-        LETTERS,
-        SYMBOLS,
-        COMMAS,
-        SUPERSCRIPTS,
-        SUBSCRIPTS,
-        COMBINING_DIACRITICS,
-    ],
-    Space.DEFAULT,
-    Space.IGNORE_CAPS_LOCK,
+const SPECIALS: Space.Combos = [
+    LETTERS,
+    SYMBOLS,
+    COMMAS,
+    SUPERSCRIPTS,
+    SUBSCRIPTS,
+    COMBINING_DIACRITICS,
 ];
 
 export class Instance extends Layout.Instance
@@ -405,7 +400,18 @@ export class Instance extends Layout.Instance
                 is_language_default: true,
                 combos_or_space: [
                     LIGATURES_AND_DIGRAPHS,
-                    SPECIALS,
+                    [
+                        [Key.BACKQUOTE],
+                        SPECIALS,
+                        Space.DEFAULT,
+                        Space.IGNORE_CAPS_LOCK,
+                    ],
+                    [
+                        [Key.SPACE],
+                        Space.DEFAULT,
+                        SPECIALS,
+                        Space.IGNORE_CAPS_LOCK,
+                    ],
                 ],
             },
         );
