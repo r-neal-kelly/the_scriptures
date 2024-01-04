@@ -55,9 +55,6 @@ export class Instance
         range.deleteContents();
         range.insertNode(node);
 
-        // range.surroundContents() may be helpful too,
-        // by selecting the nodes before and after?
-
         const selection: Selection | null = document.getSelection();
 
         if (selection) {
@@ -67,20 +64,51 @@ export class Instance
         if (node.parentElement != null) {
             node.parentElement.scrollIntoView();
         }
+
+        // range.surroundContents() may be helpful too,
+        // by selecting the nodes before and after?
     }
 
     async On_Paste(
-        event: InputEvent,
+        {
+            div,
+            data,
+            range,
+        }: {
+            div: HTMLDivElement,
+            data: string,
+            range: Range,
+        },
     ):
         Promise<void>
     {
+        const node: Text = document.createTextNode(data);
+
+        range.deleteContents();
+        range.insertNode(node);
+
+        const selection: Selection | null = document.getSelection();
+
+        if (selection) {
+            selection.collapse(node, (node.nodeValue as string).length);
+        }
+
+        // range.surroundContents() may be helpful too,
+        // by selecting the nodes before and after?
     }
 
     async On_Delete(
-        event: InputEvent,
+        {
+            div,
+            range,
+        }: {
+            div: HTMLDivElement,
+            range: Range,
+        },
     ):
         Promise<void>
     {
+        range.deleteContents();
     }
 
     async After_Insert_Or_Paste_Or_Delete():

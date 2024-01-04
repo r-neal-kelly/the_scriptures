@@ -287,6 +287,30 @@ export class Instance
         return this.held_keys;
     }
 
+    private Div_From_Event(
+        event: Event,
+    ):
+        HTMLDivElement
+    {
+        let element: HTMLElement | null =
+            event.target as HTMLElement | null;
+
+        while (element != null) {
+            if (this.Has_Div(element as HTMLDivElement)) {
+                return element as HTMLDivElement;
+            } else {
+                element = element.parentElement;
+            }
+        }
+
+        Utils.Assert(
+            false,
+            `unknown target element`,
+        );
+
+        return event.target as HTMLDivElement;
+    }
+
     private async On_Keydown(
         this: Instance,
         event: KeyboardEvent,
@@ -332,16 +356,7 @@ export class Instance
         Promise<void>
     {
         const div: HTMLDivElement =
-            event.target as HTMLDivElement;
-        Utils.Assert(
-            div != null,
-            `div should not be null`,
-        );
-        Utils.Assert(
-            this.Has_Div(div),
-            `unknown div`,
-        );
-
+            this.Div_From_Event(event);
         const hook: Hook.Instance =
             this.divs_to_hooks.get(div) as Hook.Instance;
         Utils.Assert(
@@ -352,25 +367,31 @@ export class Instance
         if (event.inputType === `insertText`) {
             event.preventDefault();
 
-            await this.Send_Output_To_Selection(
+            await this.Send_Insert_To_Selection(
                 div,
                 hook,
                 event.data || ``,
             );
         } else if (event.inputType === `insertFromPaste`) {
-            await hook.On_Paste(
-                event,
+            event.preventDefault();
+
+            await this.Send_Paste_To_Selection(
+                div,
+                hook,
+                event.data || event.dataTransfer?.getData(`text/plain`) || ``,
             );
-            await hook.After_Insert_Or_Paste_Or_Delete();
         } else if (event.inputType === `deleteContentBackward`) {
-            await hook.On_Delete(
-                event,
+            event.preventDefault();
+
+            await this.Send_Delete(
+                div,
+                hook,
+                event.getTargetRanges()[0],
             );
-            await hook.After_Insert_Or_Paste_Or_Delete();
         }
     }
 
-    private async Send_Output_To_Selection(
+    private async Send_Insert_To_Selection(
         div: HTMLDivElement,
         hook: Hook.Instance,
         data: string,
@@ -394,6 +415,57 @@ export class Instance
             {
                 div: div,
                 data: data.replace(/ /g, ` `),
+                range: range,
+            },
+        );
+        await hook.After_Insert_Or_Paste_Or_Delete();
+    }
+
+    private async Send_Paste_To_Selection(
+        div: HTMLDivElement,
+        hook: Hook.Instance,
+        data: string,
+    ):
+        Promise<void>
+    {
+        const selection: Selection = document.getSelection() as Selection;
+
+        Utils.Assert(
+            selection != null,
+            `how in the world is there not a selection here?`,
+        );
+        Utils.Assert(
+            selection.rangeCount > 0,
+            `how in the world is there not a range here?`,
+        );
+
+        const range: Range = selection.getRangeAt(0);
+
+        await hook.On_Paste(
+            {
+                div: div,
+                data: data.replace(/ /g, ` `),
+                range: range,
+            },
+        );
+        await hook.After_Insert_Or_Paste_Or_Delete();
+    }
+
+    private async Send_Delete(
+        div: HTMLDivElement,
+        hook: Hook.Instance,
+        static_range: StaticRange,
+    ):
+        Promise<void>
+    {
+        const range: Range = document.createRange();
+
+        range.setStart(static_range.startContainer, static_range.startOffset);
+        range.setEnd(static_range.endContainer, static_range.endOffset);
+
+        await hook.On_Delete(
+            {
+                div: div,
                 range: range,
             },
         );
@@ -486,16 +558,7 @@ export class Instance
         Promise<void>
     {
         const div: HTMLDivElement =
-            event.target as HTMLDivElement;
-        Utils.Assert(
-            div != null,
-            `div should not be null`,
-        );
-        Utils.Assert(
-            this.Has_Div(div),
-            `unknown div`,
-        );
-
+            this.Div_From_Event(event);
         const hook: Hook.Instance =
             this.divs_to_hooks.get(div) as Hook.Instance;
         Utils.Assert(
@@ -536,7 +599,7 @@ export class Instance
 
                         if (Utils.Is.String(maybe_output)) {
                             event.preventDefault();
-                            await this.Send_Output_To_Selection(div, hook, maybe_output as string);
+                            await this.Send_Insert_To_Selection(div, hook, maybe_output as string);
                             break;
                         } else if (maybe_output as boolean) {
                             event.preventDefault();
@@ -558,7 +621,7 @@ export class Instance
 
                     if (Utils.Is.String(maybe_output)) {
                         event.preventDefault();
-                        await this.Send_Output_To_Selection(div, hook, maybe_output as string);
+                        await this.Send_Insert_To_Selection(div, hook, maybe_output as string);
                         break;
                     } else if (maybe_output as boolean) {
                         event.preventDefault();
@@ -577,16 +640,7 @@ export class Instance
         Promise<void>
     {
         const div: HTMLDivElement =
-            event.target as HTMLDivElement;
-        Utils.Assert(
-            div != null,
-            `div should not be null`,
-        );
-        Utils.Assert(
-            this.Has_Div(div),
-            `unknown div`,
-        );
-
+            this.Div_From_Event(event);
         const hook: Hook.Instance =
             this.divs_to_hooks.get(div) as Hook.Instance;
         Utils.Assert(
