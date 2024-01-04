@@ -2,7 +2,9 @@ import { Count } from "./types.js";
 
 import * as Utils from "./utils.js";
 import * as Unicode from "./unicode.js";
+import * as Keyboard from "./keyboard.js";
 
+import * as Language from "./model/language.js";
 import * as Font from "./model/font.js";
 import * as Fonts from "./model/fonts.js";
 import * as Model from "./model/text.js";
@@ -219,7 +221,7 @@ function Set_Text_Offset(
     }
 }
 
-function Put_Child_At_Top_Y(
+function Put_Child_At_Parent_Top_Y(
     parent_element: Element,
     child_element: Element,
 ):
@@ -340,17 +342,419 @@ function Selected_Part():
     }
 }
 
-enum Line_Event_Key
-{
-    LETTER = `Home`,
-    MARKER = `PageUp`,
-    WORD = `PageDown`,
-    BREAK = `End`,
+const LETTER_KEY: Keyboard.Key = Keyboard.Key.HOME;
+const MARKER_KEY: Keyboard.Key = Keyboard.Key.PAGE_UP;
+const WORD_KEY: Keyboard.Key = Keyboard.Key.PAGE_DOWN;
+const BREAK_KEY: Keyboard.Key = Keyboard.Key.END;
+const ERROR_KEY: Keyboard.Key = Keyboard.Key.DELETE;
+const WORD_ERROR_KEY: Keyboard.Key = Keyboard.Key.PAUSE;
+const BREAK_ERROR_KEY: Keyboard.Key = Keyboard.Key.INSERT;
 
-    ERROR = `Delete`,
-    WORD_ERROR = `Pause`,
-    BREAK_ERROR = `Insert`,
-};
+class Line_Keyboard_Hook extends Keyboard.Hook.Instance
+{
+    private line: Line;
+
+    constructor(
+        line: Line,
+    )
+    {
+        super();
+
+        this.line = line;
+    }
+
+    override async On_Key_Down(
+        event: KeyboardEvent,
+    ):
+        Promise<void>
+    {
+        await this.On_Key_Down_Impl.bind(this.line)(event);
+    }
+
+    override async After_Insert_Or_Paste_Or_Delete():
+        Promise<void>
+    {
+        await this.After_Insert_Or_Paste_Or_Delete_Impl.bind(this.line)();
+    }
+
+    private async On_Key_Down_Impl(
+        this: Line,
+        event: KeyboardEvent,
+    ):
+        Promise<void>
+    {
+        if (event.key === Keyboard.Key.ENTER) {
+            event.preventDefault();
+
+            const selection: Selection | null = document.getSelection();
+            if (selection) {
+                const line_text: string = this.Text();
+                let line_text_a: string;
+                let line_text_b: string;
+                if (selection.isCollapsed) {
+                    Utils.Assert(selection.anchorNode !== null);
+
+                    const at: number =
+                        Text_Offset_To_Node(
+                            this.Element(),
+                            selection.anchorNode as Node,
+                        ) +
+                        selection.anchorOffset;
+
+                    line_text_a = line_text.slice(0, at);
+                    line_text_b = line_text.slice(at, line_text.length);
+                } else {
+                    Utils.Assert(selection.anchorNode !== null);
+                    Utils.Assert(selection.focusNode !== null);
+
+                    let start_node: Node;
+                    let start_offset: number;
+                    let stop_node: Node;
+                    let stop_offset: number;
+                    if (selection.anchorOffset < selection.focusOffset) {
+                        start_node = selection.anchorNode as Node;
+                        start_offset = selection.anchorOffset;
+                        stop_node = selection.focusNode as Node;
+                        stop_offset = selection.focusOffset;
+                    } else {
+                        start_node = selection.focusNode as Node;
+                        start_offset = selection.focusOffset;
+                        stop_node = selection.anchorNode as Node;
+                        stop_offset = selection.anchorOffset;
+                    }
+
+                    const top_node: Node = this.Element();
+                    const from: number =
+                        Text_Offset_To_Node(
+                            top_node,
+                            start_node
+                        ) +
+                        start_offset;
+                    const to: number =
+                        Text_Offset_To_Node(
+                            top_node,
+                            stop_node
+                        ) +
+                        stop_offset;
+
+                    line_text_a = line_text.slice(0, from);
+                    line_text_b = line_text.slice(to, line_text.length);
+                }
+
+                const line_index: number = this.Index();
+                this.Set_Text(line_text_a);
+                this.Editor().Insert_Line(line_index + 1, line_text_b);
+                this.Editor().Line(line_index + 1).Element().focus();
+            }
+        } else if (event.key === Keyboard.Key.BACKSPACE) {
+            const selection: Selection | null = document.getSelection();
+            if (selection) {
+                const line_index: number = this.Index();
+                const text_offset: number = Text_Offset(this.Element()) as number;
+                if (line_index > 0 && selection.isCollapsed && text_offset === 0) {
+                    event.preventDefault();
+
+                    // we destroy this line and combine its text with the previous line.
+                    const previous: Line = this.Editor().Line(line_index - 1);
+                    const previous_text: string = previous.Text();
+
+                    previous.Set_Text(`${previous_text}${this.Text()}`);
+                    this.Editor().Remove_Line(line_index);
+                    Set_Text_Offset(previous.Element(), previous_text.length);
+                }
+            }
+        } else if (event.key === Keyboard.Key.ARROW_UP) {
+            event.preventDefault();
+
+            if (!this.Editor().Is_Meta_Key_Active()) {
+                const selection: Selection | null = document.getSelection();
+                if (selection) {
+                    const line_index: number = this.Index();
+                    if (line_index > 0) {
+                        const text_offset: number = Text_Offset(this.Element()) as number;
+                        const above_line: Line = this.Editor().Line(line_index - 1);
+                        const above_line_text: string = above_line.Text();
+
+                        Set_Text_Offset(
+                            above_line.Element(),
+                            above_line_text.length < text_offset ?
+                                above_line_text.length :
+                                text_offset,
+                        );
+                    }
+                }
+            }
+        } else if (event.key === Keyboard.Key.ARROW_DOWN) {
+            event.preventDefault();
+
+            if (!this.Editor().Is_Meta_Key_Active()) {
+                const selection: Selection | null = document.getSelection();
+                if (selection) {
+                    const line_index: number = this.Index();
+                    const line_count: number = this.Editor().Line_Count();
+                    if (line_index < line_count - 1) {
+                        const text_offset: number = Text_Offset(this.Element()) as number;
+                        const below_line: Line = this.Editor().Line(line_index + 1);
+                        const below_line_text: string = below_line.Text();
+
+                        Set_Text_Offset(
+                            below_line.Element(),
+                            below_line_text.length < text_offset ?
+                                below_line_text.length :
+                                text_offset,
+                        );
+                    }
+                }
+            }
+        } else if (event.key === Keyboard.Key.ARROW_LEFT) {
+            const selection: Selection | null = document.getSelection();
+            if (
+                selection &&
+                !selection.isCollapsed &&
+                selection.anchorNode &&
+                selection.focusNode &&
+                selection.anchorNode === selection.focusNode
+            ) {
+                event.preventDefault();
+
+                const parent: Element = this.Element();
+                const child_index: number = Array.from(parent.children)
+                    .indexOf(selection.anchorNode as Element);
+                if (child_index > 0) {
+                    selection.getRangeAt(0).setStart(parent.children[child_index - 1], 0);
+                    selection.getRangeAt(0).setEnd(parent.children[child_index - 1], 1);
+                }
+            } else {
+                const text_offset: number | null = Text_Offset(this.Element());
+                if (text_offset != null) {
+                    event.preventDefault();
+
+                    if (text_offset > 0) {
+                        const previous_code: number = this.Text()[text_offset - 1].charCodeAt(0);
+                        if (
+                            previous_code >= 0xDC00 &&
+                            previous_code <= 0xDFFF
+                        ) {
+                            Set_Text_Offset(this.Element(), Math.max(0, text_offset - 2));
+                        } else {
+                            Set_Text_Offset(this.Element(), text_offset - 1);
+                        }
+                    }
+                }
+            }
+        } else if (event.key === Keyboard.Key.ARROW_RIGHT) {
+            const selection: Selection | null = document.getSelection();
+            if (
+                selection &&
+                !selection.isCollapsed &&
+                selection.anchorNode &&
+                selection.focusNode &&
+                selection.anchorNode === selection.focusNode
+            ) {
+                event.preventDefault();
+
+                const parent: Element = this.Element();
+                const child_index: number = Array.from(parent.children)
+                    .indexOf(selection.anchorNode as Element);
+                if (
+                    child_index >= 0 &&
+                    child_index < parent.children.length - 1
+                ) {
+                    selection.getRangeAt(0).setStart(parent.children[child_index + 1], 0);
+                    selection.getRangeAt(0).setEnd(parent.children[child_index + 1], 1);
+                }
+            } else {
+                const text_offset: number | null = Text_Offset(this.Element());
+                if (text_offset != null) {
+                    event.preventDefault();
+
+                    const text: string = this.Text();
+                    if (text_offset + 2 <= text.length) {
+                        const next_code: number = text[text_offset + 1].charCodeAt(0);
+                        if (
+                            next_code >= 0xDC00 &&
+                            next_code <= 0xDFFF
+                        ) {
+                            Set_Text_Offset(this.Element(), text_offset + 2);
+                        } else {
+                            Set_Text_Offset(this.Element(), text_offset + 1);
+                        }
+                    } else if (text_offset < text.length) {
+                        Set_Text_Offset(this.Element(), text_offset + 1);
+                    }
+                }
+            }
+        } else if (event.key === LETTER_KEY) {
+            event.preventDefault();
+
+            if (this.Editor().Is_Meta_Key_Active()) {
+                const selected: Dictionary_Entry | null = Selected_Part();
+                if (selected) {
+                    if (selected.class === Part_Class.UNKNOWN_POINT) {
+                        this.Editor().Dictionary().Add_Letter(selected.text);
+                        this.Editor().Touch();
+                    } else if (selected.class === Part_Class.KNOWN_LETTER) {
+                        this.Editor().Dictionary().Remove_Letter(selected.text);
+                        this.Editor().Touch();
+                    } else if (
+                        selected.class === Part_Class.UNKNOWN_WORD ||
+                        selected.class === Part_Class.KNOWN_WORD
+                    ) {
+                        if (Unicode.Is_Point(selected.text)) {
+                            this.Editor().Dictionary().Remove_Letter(selected.text);
+                            this.Editor().Touch();
+                        }
+                    }
+                }
+            }
+        } else if (event.key === MARKER_KEY) {
+            event.preventDefault();
+
+            if (this.Editor().Is_Meta_Key_Active()) {
+                const selected: Dictionary_Entry | null = Selected_Part();
+                if (selected) {
+                    if (selected.class === Part_Class.UNKNOWN_POINT) {
+                        this.Editor().Dictionary().Add_Marker(selected.text);
+                        this.Editor().Touch();
+                    } else if (selected.class === Part_Class.KNOWN_MARKER) {
+                        this.Editor().Dictionary().Remove_Marker(selected.text);
+                        this.Editor().Touch();
+                    } else if (
+                        selected.class === Part_Class.UNKNOWN_BREAK ||
+                        selected.class === Part_Class.KNOWN_BREAK
+                    ) {
+                        if (Unicode.Is_Point(selected.text)) {
+                            this.Editor().Dictionary().Remove_Marker(selected.text);
+                            this.Editor().Touch();
+                        }
+                    }
+                }
+            }
+        } else if (event.key === WORD_KEY) {
+            event.preventDefault();
+
+            if (this.Editor().Is_Meta_Key_Active()) {
+                const selected: Dictionary_Entry | null = Selected_Part();
+                if (selected) {
+                    if (selected.class === Part_Class.UNKNOWN_WORD) {
+                        this.Editor().Dictionary().Add_Word(selected.text);
+                        this.Editor().Touch();
+                    } else if (selected.class === Part_Class.KNOWN_WORD) {
+                        this.Editor().Dictionary().Remove_Word(selected.text);
+                        this.Editor().Touch();
+                    } else if (selected.class === Part_Class.KNOWN_WORD_ERROR) {
+                        this.Editor().Dictionary().Remove_Word_Error(selected.text);
+                        this.Editor().Dictionary().Add_Word(selected.text);
+                        this.Editor().Touch();
+                    }
+                }
+            }
+        } else if (event.key === BREAK_KEY) {
+            event.preventDefault();
+
+            if (this.Editor().Is_Meta_Key_Active()) {
+                const selected: Dictionary_Entry | null = Selected_Part();
+                if (selected) {
+                    if (selected.class === Part_Class.UNKNOWN_BREAK) {
+                        this.Editor().Dictionary().Add_Break(selected.text, selected.boundary);
+                        this.Editor().Touch();
+                    } else if (selected.class === Part_Class.KNOWN_BREAK) {
+                        this.Editor().Dictionary().Remove_Break(selected.text, selected.boundary);
+                        this.Editor().Touch();
+                    } else if (selected.class === Part_Class.KNOWN_BREAK_ERROR) {
+                        this.Editor().Dictionary().Remove_Break_Error(selected.text, selected.boundary);
+                        this.Editor().Dictionary().Add_Break(selected.text, selected.boundary);
+                        this.Editor().Touch();
+                    }
+                }
+            }
+        } else if (event.key === ERROR_KEY) {
+            if (this.Editor().Is_Meta_Key_Active()) {
+                event.preventDefault();
+
+                const selected: Dictionary_Entry | null = Selected_Part();
+                if (selected) {
+                    if (selected.class === Part_Class.UNKNOWN_WORD) {
+                        this.Editor().Dictionary().Add_Word_Error(selected.text);
+                        this.Editor().Touch();
+                    } else if (selected.class === Part_Class.KNOWN_WORD) {
+                        this.Editor().Dictionary().Remove_Word(selected.text);
+                        this.Editor().Dictionary().Add_Word_Error(selected.text);
+                        this.Editor().Touch();
+                    } else if (selected.class === Part_Class.UNKNOWN_BREAK) {
+                        this.Editor().Dictionary().Add_Break_Error(selected.text, selected.boundary);
+                        this.Editor().Touch();
+                    } else if (selected.class === Part_Class.KNOWN_BREAK) {
+                        this.Editor().Dictionary().Remove_Break(selected.text, selected.boundary);
+                        this.Editor().Dictionary().Add_Break_Error(selected.text, selected.boundary);
+                        this.Editor().Touch();
+                    } else if (selected.class === Part_Class.KNOWN_WORD_ERROR) {
+                        this.Editor().Dictionary().Remove_Word_Error(selected.text);
+                        this.Editor().Touch();
+                    } else if (selected.class === Part_Class.KNOWN_BREAK_ERROR) {
+                        this.Editor().Dictionary().Remove_Break_Error(selected.text, selected.boundary);
+                        this.Editor().Touch();
+                    }
+                }
+            }
+        } else if (event.key === WORD_ERROR_KEY) {
+            if (this.Editor().Is_Meta_Key_Active()) {
+                event.preventDefault();
+
+                const selected: Dictionary_Entry | null = Selected_Part();
+                if (selected) {
+                    if (selected.class === Part_Class.UNKNOWN_POINT) {
+                        this.Editor().Dictionary().Add_Word_Error(selected.text);
+                        this.Editor().Touch();
+                    } else if (selected.class === Part_Class.UNKNOWN_WORD) {
+                        this.Editor().Dictionary().Add_Word_Error(selected.text);
+                        this.Editor().Touch();
+                    } else if (selected.class === Part_Class.KNOWN_WORD) {
+                        this.Editor().Dictionary().Remove_Word(selected.text);
+                        this.Editor().Dictionary().Add_Word_Error(selected.text);
+                        this.Editor().Touch();
+                    } else if (selected.class === Part_Class.KNOWN_WORD_ERROR) {
+                        this.Editor().Dictionary().Remove_Word_Error(selected.text);
+                        this.Editor().Touch();
+                    }
+                }
+            }
+        } else if (event.key === BREAK_ERROR_KEY) {
+            if (this.Editor().Is_Meta_Key_Active()) {
+                event.preventDefault();
+
+                const selected: Dictionary_Entry | null = Selected_Part();
+                if (selected) {
+                    if (selected.class === Part_Class.UNKNOWN_POINT) {
+                        this.Editor().Dictionary().Add_Break_Error(selected.text, selected.boundary);
+                        this.Editor().Touch();
+                    } else if (selected.class === Part_Class.UNKNOWN_BREAK) {
+                        this.Editor().Dictionary().Add_Break_Error(selected.text, selected.boundary);
+                        this.Editor().Touch();
+                    } else if (selected.class === Part_Class.KNOWN_BREAK) {
+                        this.Editor().Dictionary().Remove_Break(selected.text, selected.boundary);
+                        this.Editor().Dictionary().Add_Break_Error(selected.text, selected.boundary);
+                        this.Editor().Touch();
+                    } else if (selected.class === Part_Class.KNOWN_BREAK_ERROR) {
+                        this.Editor().Dictionary().Remove_Break_Error(selected.text, selected.boundary);
+                        this.Editor().Touch();
+                    }
+                }
+            }
+        }
+    }
+
+    private async After_Insert_Or_Paste_Or_Delete_Impl(
+        this: Line,
+    ):
+        Promise<void>
+    {
+        const text_offset: number = Text_Offset(this.Element()) as number;
+
+        this.Touch();
+        Set_Text_Offset(this.Element(), text_offset);
+    }
+}
 
 class Line
 {
@@ -360,6 +764,8 @@ class Line
     private element: HTMLDivElement;
     private children: {
     };
+
+    private keyboard_hook: Line_Keyboard_Hook;
 
     constructor(
         {
@@ -400,405 +806,20 @@ class Line
                 border-style: solid;
                 border-color: #3B3A32;
 
-                direction: ${editor.Direction() === Direction.LEFT_TO_RIGHT ? `ltr` : `rtl`};
+                direction: ${editor.Direction() === Language.Direction.LEFT_TO_RIGHT ? `ltr` : `rtl`};
             `,
         );
 
-        this.element.addEventListener(
-            `keydown`,
-            function (
-                this: Line,
-                event: KeyboardEvent,
-            ):
-                void
-            {
-                if (event.key === `Enter`) {
-                    event.preventDefault();
+        this.parent.appendChild(this.element);
 
-                    const selection: Selection | null = document.getSelection();
-                    if (selection) {
-                        const line_text: string = this.Text();
-                        let line_text_a: string;
-                        let line_text_b: string;
-                        if (selection.isCollapsed) {
-                            Utils.Assert(selection.anchorNode !== null);
+        this.keyboard_hook = new Line_Keyboard_Hook(this);
+        Keyboard.Singleton().Add_Div(this.element, this.keyboard_hook);
 
-                            const at: number =
-                                Text_Offset_To_Node(
-                                    this.Element(),
-                                    selection.anchorNode as Node,
-                                ) +
-                                selection.anchorOffset;
-
-                            line_text_a = line_text.slice(0, at);
-                            line_text_b = line_text.slice(at, line_text.length);
-                        } else {
-                            Utils.Assert(selection.anchorNode !== null);
-                            Utils.Assert(selection.focusNode !== null);
-
-                            let start_node: Node;
-                            let start_offset: number;
-                            let stop_node: Node;
-                            let stop_offset: number;
-                            if (selection.anchorOffset < selection.focusOffset) {
-                                start_node = selection.anchorNode as Node;
-                                start_offset = selection.anchorOffset;
-                                stop_node = selection.focusNode as Node;
-                                stop_offset = selection.focusOffset;
-                            } else {
-                                start_node = selection.focusNode as Node;
-                                start_offset = selection.focusOffset;
-                                stop_node = selection.anchorNode as Node;
-                                stop_offset = selection.anchorOffset;
-                            }
-
-                            const top_node: Node = this.Element();
-                            const from: number =
-                                Text_Offset_To_Node(
-                                    top_node,
-                                    start_node
-                                ) +
-                                start_offset;
-                            const to: number =
-                                Text_Offset_To_Node(
-                                    top_node,
-                                    stop_node
-                                ) +
-                                stop_offset;
-
-                            line_text_a = line_text.slice(0, from);
-                            line_text_b = line_text.slice(to, line_text.length);
-                        }
-
-                        const line_index: number = this.Index();
-                        this.Set_Text(line_text_a);
-                        this.Editor().Insert_Line(line_index + 1, line_text_b);
-                        this.Editor().Line(line_index + 1).Element().focus();
-                    }
-                } else if (event.key === `Backspace`) {
-                    const selection: Selection | null = document.getSelection();
-                    if (selection) {
-                        const line_index: number = this.Index();
-                        const text_offset: number = Text_Offset(this.element) as number;
-                        if (line_index > 0 && selection.isCollapsed && text_offset === 0) {
-                            event.preventDefault();
-
-                            // we destroy this line and combine its text with the previous line.
-                            const previous: Line = this.Editor().Line(line_index - 1);
-                            const previous_text: string = previous.Text();
-
-                            previous.Set_Text(`${previous_text}${this.Text()}`);
-                            this.Editor().Remove_Line(line_index);
-                            Set_Text_Offset(previous.Element(), previous_text.length);
-                        }
-                    }
-                } else if (event.key === `ArrowUp`) {
-                    event.preventDefault();
-
-                    if (!this.Editor().Is_Meta_Key_Active()) {
-                        const selection: Selection | null = document.getSelection();
-                        if (selection) {
-                            const line_index: number = this.Index();
-                            if (line_index > 0) {
-                                const text_offset: number = Text_Offset(this.element) as number;
-                                const above_line: Line = this.Editor().Line(line_index - 1);
-                                const above_line_text: string = above_line.Text();
-
-                                Set_Text_Offset(
-                                    above_line.Element(),
-                                    above_line_text.length < text_offset ?
-                                        above_line_text.length :
-                                        text_offset,
-                                );
-                            }
-                        }
-                    }
-                } else if (event.key === `ArrowDown`) {
-                    event.preventDefault();
-
-                    if (!this.Editor().Is_Meta_Key_Active()) {
-                        const selection: Selection | null = document.getSelection();
-                        if (selection) {
-                            const line_index: number = this.Index();
-                            const line_count: number = this.Editor().Line_Count();
-                            if (line_index < line_count - 1) {
-                                const text_offset: number = Text_Offset(this.element) as number;
-                                const below_line: Line = this.Editor().Line(line_index + 1);
-                                const below_line_text: string = below_line.Text();
-
-                                Set_Text_Offset(
-                                    below_line.Element(),
-                                    below_line_text.length < text_offset ?
-                                        below_line_text.length :
-                                        text_offset,
-                                );
-                            }
-                        }
-                    }
-                } else if (event.key === `ArrowLeft`) {
-                    const selection: Selection | null = document.getSelection();
-                    if (
-                        selection &&
-                        !selection.isCollapsed &&
-                        selection.anchorNode &&
-                        selection.focusNode &&
-                        selection.anchorNode === selection.focusNode
-                    ) {
-                        event.preventDefault();
-
-                        const parent: Element = this.Element();
-                        const child_index: number = Array.from(parent.children)
-                            .indexOf(selection.anchorNode as Element);
-                        if (child_index > 0) {
-                            selection.getRangeAt(0).setStart(parent.children[child_index - 1], 0);
-                            selection.getRangeAt(0).setEnd(parent.children[child_index - 1], 1);
-                        }
-                    } else {
-                        const text_offset: number | null = Text_Offset(this.Element());
-                        if (text_offset != null) {
-                            event.preventDefault();
-
-                            if (text_offset > 0) {
-                                const previous_code: number = this.Text()[text_offset - 1].charCodeAt(0);
-                                if (
-                                    previous_code >= 0xDC00 &&
-                                    previous_code <= 0xDFFF
-                                ) {
-                                    Set_Text_Offset(this.Element(), Math.max(0, text_offset - 2));
-                                } else {
-                                    Set_Text_Offset(this.Element(), text_offset - 1);
-                                }
-                            }
-                        }
-                    }
-                } else if (event.key === `ArrowRight`) {
-                    const selection: Selection | null = document.getSelection();
-                    if (
-                        selection &&
-                        !selection.isCollapsed &&
-                        selection.anchorNode &&
-                        selection.focusNode &&
-                        selection.anchorNode === selection.focusNode
-                    ) {
-                        event.preventDefault();
-
-                        const parent: Element = this.Element();
-                        const child_index: number = Array.from(parent.children)
-                            .indexOf(selection.anchorNode as Element);
-                        if (
-                            child_index >= 0 &&
-                            child_index < parent.children.length - 1
-                        ) {
-                            selection.getRangeAt(0).setStart(parent.children[child_index + 1], 0);
-                            selection.getRangeAt(0).setEnd(parent.children[child_index + 1], 1);
-                        }
-                    } else {
-                        const text_offset: number | null = Text_Offset(this.Element());
-                        if (text_offset != null) {
-                            event.preventDefault();
-
-                            const text: string = this.Text();
-                            if (text_offset + 2 <= text.length) {
-                                const next_code: number = text[text_offset + 1].charCodeAt(0);
-                                if (
-                                    next_code >= 0xDC00 &&
-                                    next_code <= 0xDFFF
-                                ) {
-                                    Set_Text_Offset(this.Element(), text_offset + 2);
-                                } else {
-                                    Set_Text_Offset(this.Element(), text_offset + 1);
-                                }
-                            } else if (text_offset < text.length) {
-                                Set_Text_Offset(this.Element(), text_offset + 1);
-                            }
-                        }
-                    }
-                } else if (event.key === Line_Event_Key.LETTER) {
-                    event.preventDefault();
-
-                    if (this.Editor().Is_Meta_Key_Active()) {
-                        const selected: Dictionary_Entry | null = Selected_Part();
-                        if (selected) {
-                            if (selected.class === Part_Class.UNKNOWN_POINT) {
-                                this.Editor().Dictionary().Add_Letter(selected.text);
-                                this.Editor().Touch();
-                            } else if (selected.class === Part_Class.KNOWN_LETTER) {
-                                this.Editor().Dictionary().Remove_Letter(selected.text);
-                                this.Editor().Touch();
-                            } else if (
-                                selected.class === Part_Class.UNKNOWN_WORD ||
-                                selected.class === Part_Class.KNOWN_WORD
-                            ) {
-                                if (Unicode.Is_Point(selected.text)) {
-                                    this.Editor().Dictionary().Remove_Letter(selected.text);
-                                    this.Editor().Touch();
-                                }
-                            }
-                        }
-                    }
-                } else if (event.key === Line_Event_Key.MARKER) {
-                    event.preventDefault();
-
-                    if (this.Editor().Is_Meta_Key_Active()) {
-                        const selected: Dictionary_Entry | null = Selected_Part();
-                        if (selected) {
-                            if (selected.class === Part_Class.UNKNOWN_POINT) {
-                                this.Editor().Dictionary().Add_Marker(selected.text);
-                                this.Editor().Touch();
-                            } else if (selected.class === Part_Class.KNOWN_MARKER) {
-                                this.Editor().Dictionary().Remove_Marker(selected.text);
-                                this.Editor().Touch();
-                            } else if (
-                                selected.class === Part_Class.UNKNOWN_BREAK ||
-                                selected.class === Part_Class.KNOWN_BREAK
-                            ) {
-                                if (Unicode.Is_Point(selected.text)) {
-                                    this.Editor().Dictionary().Remove_Marker(selected.text);
-                                    this.Editor().Touch();
-                                }
-                            }
-                        }
-                    }
-                } else if (event.key === Line_Event_Key.WORD) {
-                    event.preventDefault();
-
-                    if (this.Editor().Is_Meta_Key_Active()) {
-                        const selected: Dictionary_Entry | null = Selected_Part();
-                        if (selected) {
-                            if (selected.class === Part_Class.UNKNOWN_WORD) {
-                                this.Editor().Dictionary().Add_Word(selected.text);
-                                this.Editor().Touch();
-                            } else if (selected.class === Part_Class.KNOWN_WORD) {
-                                this.Editor().Dictionary().Remove_Word(selected.text);
-                                this.Editor().Touch();
-                            } else if (selected.class === Part_Class.KNOWN_WORD_ERROR) {
-                                this.Editor().Dictionary().Remove_Word_Error(selected.text);
-                                this.Editor().Dictionary().Add_Word(selected.text);
-                                this.Editor().Touch();
-                            }
-                        }
-                    }
-                } else if (event.key === Line_Event_Key.BREAK) {
-                    event.preventDefault();
-
-                    if (this.Editor().Is_Meta_Key_Active()) {
-                        const selected: Dictionary_Entry | null = Selected_Part();
-                        if (selected) {
-                            if (selected.class === Part_Class.UNKNOWN_BREAK) {
-                                this.Editor().Dictionary().Add_Break(selected.text, selected.boundary);
-                                this.Editor().Touch();
-                            } else if (selected.class === Part_Class.KNOWN_BREAK) {
-                                this.Editor().Dictionary().Remove_Break(selected.text, selected.boundary);
-                                this.Editor().Touch();
-                            } else if (selected.class === Part_Class.KNOWN_BREAK_ERROR) {
-                                this.Editor().Dictionary().Remove_Break_Error(selected.text, selected.boundary);
-                                this.Editor().Dictionary().Add_Break(selected.text, selected.boundary);
-                                this.Editor().Touch();
-                            }
-                        }
-                    }
-                } else if (event.key === Line_Event_Key.ERROR) {
-                    if (this.Editor().Is_Meta_Key_Active()) {
-                        event.preventDefault();
-
-                        const selected: Dictionary_Entry | null = Selected_Part();
-                        if (selected) {
-                            if (selected.class === Part_Class.UNKNOWN_WORD) {
-                                this.Editor().Dictionary().Add_Word_Error(selected.text);
-                                this.Editor().Touch();
-                            } else if (selected.class === Part_Class.KNOWN_WORD) {
-                                this.Editor().Dictionary().Remove_Word(selected.text);
-                                this.Editor().Dictionary().Add_Word_Error(selected.text);
-                                this.Editor().Touch();
-                            } else if (selected.class === Part_Class.UNKNOWN_BREAK) {
-                                this.Editor().Dictionary().Add_Break_Error(selected.text, selected.boundary);
-                                this.Editor().Touch();
-                            } else if (selected.class === Part_Class.KNOWN_BREAK) {
-                                this.Editor().Dictionary().Remove_Break(selected.text, selected.boundary);
-                                this.Editor().Dictionary().Add_Break_Error(selected.text, selected.boundary);
-                                this.Editor().Touch();
-                            } else if (selected.class === Part_Class.KNOWN_WORD_ERROR) {
-                                this.Editor().Dictionary().Remove_Word_Error(selected.text);
-                                this.Editor().Touch();
-                            } else if (selected.class === Part_Class.KNOWN_BREAK_ERROR) {
-                                this.Editor().Dictionary().Remove_Break_Error(selected.text, selected.boundary);
-                                this.Editor().Touch();
-                            }
-                        }
-                    }
-                } else if (event.key === Line_Event_Key.WORD_ERROR) {
-                    if (this.Editor().Is_Meta_Key_Active()) {
-                        event.preventDefault();
-
-                        const selected: Dictionary_Entry | null = Selected_Part();
-                        if (selected) {
-                            if (selected.class === Part_Class.UNKNOWN_POINT) {
-                                this.Editor().Dictionary().Add_Word_Error(selected.text);
-                                this.Editor().Touch();
-                            } else if (selected.class === Part_Class.UNKNOWN_WORD) {
-                                this.Editor().Dictionary().Add_Word_Error(selected.text);
-                                this.Editor().Touch();
-                            } else if (selected.class === Part_Class.KNOWN_WORD) {
-                                this.Editor().Dictionary().Remove_Word(selected.text);
-                                this.Editor().Dictionary().Add_Word_Error(selected.text);
-                                this.Editor().Touch();
-                            } else if (selected.class === Part_Class.KNOWN_WORD_ERROR) {
-                                this.Editor().Dictionary().Remove_Word_Error(selected.text);
-                                this.Editor().Touch();
-                            }
-                        }
-                    }
-                } else if (event.key === Line_Event_Key.BREAK_ERROR) {
-                    if (this.Editor().Is_Meta_Key_Active()) {
-                        event.preventDefault();
-
-                        const selected: Dictionary_Entry | null = Selected_Part();
-                        if (selected) {
-                            if (selected.class === Part_Class.UNKNOWN_POINT) {
-                                this.Editor().Dictionary().Add_Break_Error(selected.text, selected.boundary);
-                                this.Editor().Touch();
-                            } else if (selected.class === Part_Class.UNKNOWN_BREAK) {
-                                this.Editor().Dictionary().Add_Break_Error(selected.text, selected.boundary);
-                                this.Editor().Touch();
-                            } else if (selected.class === Part_Class.KNOWN_BREAK) {
-                                this.Editor().Dictionary().Remove_Break(selected.text, selected.boundary);
-                                this.Editor().Dictionary().Add_Break_Error(selected.text, selected.boundary);
-                                this.Editor().Touch();
-                            } else if (selected.class === Part_Class.KNOWN_BREAK_ERROR) {
-                                this.Editor().Dictionary().Remove_Break_Error(selected.text, selected.boundary);
-                                this.Editor().Touch();
-                            }
-                        }
-                    }
-                }
-            }.bind(this),
-        );
-        this.element.addEventListener(
-            `input`,
-            function (
-                this: Line,
-                event: Event,
-            ):
-                void
-            {
-                const input_event: InputEvent = event as InputEvent;
-                if (
-                    input_event.inputType === `insertText` ||
-                    input_event.inputType === `deleteContentBackward` ||
-                    input_event.inputType === `insertFromPaste`
-                ) {
-                    const text_offset: number = Text_Offset(this.element) as number;
-
-                    this.Touch();
-                    Set_Text_Offset(this.element, text_offset);
-                }
-            }.bind(this),
-        );
         this.element.addEventListener(
             `dblclick`,
             function (
                 this: Line,
-                mouse_event: MouseEvent,
+                event: MouseEvent,
             ):
                 void
             {
@@ -812,10 +833,10 @@ class Line
                     for (const child of this.Element().children) {
                         const rect: DOMRect = child.getBoundingClientRect();
                         if (
-                            mouse_event.clientX >= rect.left &&
-                            mouse_event.clientX <= rect.right &&
-                            mouse_event.clientY >= rect.top &&
-                            mouse_event.clientY <= rect.bottom
+                            event.clientX >= rect.left &&
+                            event.clientX <= rect.right &&
+                            event.clientY >= rect.top &&
+                            event.clientY <= rect.bottom
                         ) {
                             node = child;
                             break;
@@ -831,13 +852,13 @@ class Line
                 }
             }.bind(this),
         );
-
-        this.parent.appendChild(this.element);
     }
 
     Destruct():
         void
     {
+        Keyboard.Singleton().Remove_Div(this.element);
+
         this.parent.removeChild(this.element);
     }
 
@@ -915,8 +936,8 @@ class Line
                 this.element.style.display = `block`;
             }
             if (treatment.padding_count > 0) {
-                const direction: Direction = this.Editor().Direction();
-                if (direction === Direction.RIGHT_TO_LEFT) {
+                const direction: Language.Direction = this.Editor().Direction();
+                if (direction === Language.Direction.RIGHT_TO_LEFT) {
                     this.element.style.paddingRight = `${treatment.padding_count * INDENT_AMOUNT}em`;
                 } else {
                     this.element.style.paddingLeft = `${treatment.padding_count * INDENT_AMOUNT}em`;
@@ -931,7 +952,7 @@ class Line
         const text_offset: number | null = Text_Offset(this.Element());
 
         this.Set_Text(this.Text());
-        if (this.Editor().Direction() === Direction.LEFT_TO_RIGHT) {
+        if (this.Editor().Direction() === Language.Direction.LEFT_TO_RIGHT) {
             this.Element().style.direction = `ltr`;
         } else {
             this.Element().style.direction = `rtl`;
@@ -1161,12 +1182,6 @@ class Line
     }
 }
 
-enum Direction
-{
-    LEFT_TO_RIGHT,
-    RIGHT_TO_LEFT,
-}
-
 class Editor
 {
     private dictionary: Model.Dictionary.Instance;
@@ -1178,7 +1193,7 @@ class Editor
     private is_meta_key_active: boolean;
     private is_in_point_mode: boolean;
     private are_rows_expanded: boolean;
-    private direction: Direction;
+    private direction: Language.Direction;
 
     private parent: HTMLElement;
     private element: HTMLDivElement;
@@ -1230,7 +1245,7 @@ class Editor
         this.is_meta_key_active = false;
         this.is_in_point_mode = false;
         this.are_rows_expanded = true;
-        this.direction = Direction.LEFT_TO_RIGHT;
+        this.direction = Language.Direction.LEFT_TO_RIGHT;
 
         this.parent = parent;
         this.element = document.createElement(`div`);
@@ -1291,11 +1306,11 @@ class Editor
                     this.is_meta_key_active = true;
                 } else if (keyboard_event.key === `ArrowLeft`) {
                     if (this.Is_Meta_Key_Active()) {
-                        this.Set_Direction(Direction.RIGHT_TO_LEFT);
+                        this.Set_Direction(Language.Direction.RIGHT_TO_LEFT);
                     }
                 } else if (keyboard_event.key === `ArrowRight`) {
                     if (this.Is_Meta_Key_Active()) {
-                        this.Set_Direction(Direction.LEFT_TO_RIGHT);
+                        this.Set_Direction(Language.Direction.LEFT_TO_RIGHT);
                     }
                 } else if (keyboard_event.key === `ArrowDown`) {
                     if (this.Is_Meta_Key_Active()) {
@@ -1367,7 +1382,7 @@ class Editor
                         // English
                         document.body.style.fontFamily = `sans-serif`;
                         document.body.style.fontSize = `24px`;
-                        this.Set_Direction(Direction.LEFT_TO_RIGHT);
+                        this.Set_Direction(Language.Direction.LEFT_TO_RIGHT);
                     }
                 } else if (keyboard_event.key === `(`) {
                     if (this.Is_Meta_Key_Active()) {
@@ -1376,7 +1391,7 @@ class Editor
                         // Hebrew
                         document.body.style.fontFamily = `"${Font.Family.EZRA_SR}"`;
                         document.body.style.fontSize = `30px`;
-                        this.Set_Direction(Direction.RIGHT_TO_LEFT);
+                        this.Set_Direction(Language.Direction.RIGHT_TO_LEFT);
                     }
                 } else if (keyboard_event.key === `*`) {
                     if (this.Is_Meta_Key_Active()) {
@@ -1385,7 +1400,7 @@ class Editor
                         // Greek
                         document.body.style.fontFamily = `"${Font.Family.GENTIUM}"`;
                         document.body.style.fontSize = `32px`;
-                        this.Set_Direction(Direction.LEFT_TO_RIGHT);
+                        this.Set_Direction(Language.Direction.LEFT_TO_RIGHT);
                     }
                 } else if (keyboard_event.key === `&`) {
                     if (this.Is_Meta_Key_Active()) {
@@ -1394,7 +1409,7 @@ class Editor
                         // Latin
                         document.body.style.fontFamily = `"${Font.Family.GENTIUM}"`;
                         document.body.style.fontSize = `26px`;
-                        this.Set_Direction(Direction.LEFT_TO_RIGHT);
+                        this.Set_Direction(Language.Direction.LEFT_TO_RIGHT);
                     }
                 } else if (keyboard_event.key === `^`) {
                     if (this.Is_Meta_Key_Active()) {
@@ -1403,7 +1418,7 @@ class Editor
                         // German
                         document.body.style.fontFamily = `"${Font.Family.GENTIUM}"`;
                         document.body.style.fontSize = `26px`;
-                        this.Set_Direction(Direction.LEFT_TO_RIGHT);
+                        this.Set_Direction(Language.Direction.LEFT_TO_RIGHT);
                     }
                 } else if (keyboard_event.key === `%`) {
                     if (this.Is_Meta_Key_Active()) {
@@ -1412,7 +1427,7 @@ class Editor
                         // French
                         document.body.style.fontFamily = `"${Font.Family.GENTIUM}"`;
                         document.body.style.fontSize = `26px`;
-                        this.Set_Direction(Direction.LEFT_TO_RIGHT);
+                        this.Set_Direction(Language.Direction.LEFT_TO_RIGHT);
                     }
                 }
             }.bind(this),
@@ -2363,7 +2378,7 @@ class Editor
         this.Set_Dictionary_Name(this.Dictionary_Name());
         this.Set_File_Name(this.File_Name());
 
-        if (this.Direction() === Direction.LEFT_TO_RIGHT) {
+        if (this.Direction() === Language.Direction.LEFT_TO_RIGHT) {
             this.children.dictionary_name.style.direction = `ltr`;
             this.children.file_name.style.direction = `ltr`;
         } else {
@@ -2395,13 +2410,13 @@ class Editor
     }
 
     Direction():
-        Direction
+        Language.Direction
     {
         return this.direction;
     }
 
     Set_Direction(
-        direction: Direction,
+        direction: Language.Direction,
     ):
         void
     {
@@ -2466,7 +2481,7 @@ class Editor
                 }.bind(this))();
 
             if (next_error_element) {
-                Put_Child_At_Top_Y(this.children.lines, next_error_element);
+                Put_Child_At_Parent_Top_Y(this.children.lines, next_error_element);
                 selection.getRangeAt(0).setStart(next_error_element, 0);
                 selection.getRangeAt(0).setEnd(next_error_element, 1);
             } else {
@@ -2482,7 +2497,7 @@ class Editor
                         line.Element().focus();
 
                         const selection: Selection = document.getSelection() as Selection;
-                        Put_Child_At_Top_Y(this.children.lines, child);
+                        Put_Child_At_Parent_Top_Y(this.children.lines, child);
                         selection.getRangeAt(0).setStart(child, 0);
                         selection.getRangeAt(0).setEnd(child, 1);
                         return;
@@ -2554,7 +2569,7 @@ class Editor
                 }.bind(this))();
 
             if (next_error_element) {
-                Put_Child_At_Top_Y(this.children.lines, next_error_element);
+                Put_Child_At_Parent_Top_Y(this.children.lines, next_error_element);
                 selection.getRangeAt(0).setStart(next_error_element, 0);
                 selection.getRangeAt(0).setEnd(next_error_element, 1);
             } else {
@@ -2571,7 +2586,7 @@ class Editor
                             line.Element().focus();
 
                             const selection: Selection = document.getSelection() as Selection;
-                            Put_Child_At_Top_Y(this.children.lines, child);
+                            Put_Child_At_Parent_Top_Y(this.children.lines, child);
                             selection.getRangeAt(0).setStart(child, 0);
                             selection.getRangeAt(0).setEnd(child, 1);
                             return;
@@ -2607,82 +2622,6 @@ class Editor
         } else {
             return null;
         }
-    }
-
-    Display_Stats():
-        void
-    {
-        const modal: HTMLDivElement = document.createElement(`div`);
-        modal.setAttribute(
-            `style`,
-            `
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-
-                position: absolute;
-                left: 0;
-                top: 0;
-                z-index: 1;
-
-                width: 100%;
-                height: 100%;
-
-                background-color: rgba(0, 0, 0, 0.7);
-
-                font-size: 18px;
-                color: #E0ECFF;
-            `,
-        );
-
-        const wrapper: HTMLDivElement = document.createElement(`div`);
-        wrapper.setAttribute(
-            `style`,
-            `
-                width: 67%;
-                margin: 2px;
-                padding: 7px;
-
-                background-color: #0f1318;
-
-                text-align: center;
-            `,
-        );
-
-        const okay_button: HTMLDivElement = document.createElement(`div`);
-        okay_button.setAttribute(
-            `style`,
-            `
-            display: flex;
-            justify-content: center;
-            align-items: center;
-
-            border-width: 2px;
-            border-style: solid;
-            border-color: #3B3A32;
-
-            cursor: pointer;
-            user-select: none;
-        `);
-        okay_button.innerHTML = `<div>Okay</div>`;
-        okay_button.addEventListener(
-            `click`,
-            function (
-                this: Editor,
-                event: MouseEvent,
-            ):
-                void
-            {
-                document.body.removeChild(modal);
-
-                this.Line(0).Element().focus();
-            }.bind(this),
-        );
-
-        wrapper.appendChild(okay_button);
-        modal.appendChild(wrapper);
-        document.body.appendChild(modal);
     }
 }
 

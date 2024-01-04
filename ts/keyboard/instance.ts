@@ -293,8 +293,6 @@ export class Instance
     ):
         Promise<void>
     {
-        event.stopPropagation();
-
         if (!event.repeat) {
             const key: Key = event.code as Key;
             if (
@@ -318,8 +316,6 @@ export class Instance
     ):
         Promise<void>
     {
-        event.stopPropagation();
-
         if (this.held_keys.Has(Reserved_Keys.META_KEY)) {
             await this.On_Meta_Keyup(event);
         } else {
@@ -335,8 +331,6 @@ export class Instance
     ):
         Promise<void>
     {
-        event.stopPropagation();
-
         const div: HTMLDivElement =
             event.target as HTMLDivElement;
         Utils.Assert(
