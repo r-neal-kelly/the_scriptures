@@ -63,6 +63,10 @@ export class Instance
         if (selection) {
             selection.collapse(node, (node.nodeValue as string).length);
         }
+
+        if (node.parentElement != null) {
+            node.parentElement.scrollIntoView();
+        }
     }
 
     async On_Paste(
