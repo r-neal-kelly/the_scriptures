@@ -12,9 +12,18 @@ import * as Held_Keys from "./held_keys.js";
 import * as Layout from "./layout.js";
 import * as Hook from "./hook.js";
 
+const NONE_KEY: Key = Key.DIGIT_0;
+const HEBREW_KEY: Key = Key.DIGIT_9;
+const GREEK_KEY: Key = Key.DIGIT_8;
+const LATIN_KEY: Key = Key.DIGIT_7;
+const ARAMAIC_KEY: Key = Key.DIGIT_6;
+const GEEZ_KEY: Key = Key.DIGIT_5;
+const ARABIC_KEY: Key = Key.DIGIT_4;
+
 export class Instance
 {
     private layouts: { [language_name: Name]: Array<Layout.Instance> };
+    private selected_subsets: { [language_name: Name]: Index };
     private default_layout: Layout.Instance | null;
     private current_layout: Layout.Instance | null;
     private divs_to_hooks: Map<HTMLDivElement, Hook.Instance>;
@@ -35,6 +44,7 @@ export class Instance
     )
     {
         this.layouts = Object.create(null);
+        this.selected_subsets = Object.create(null);
 
         for (const layout of layouts) {
             const language_name: Language.Name =
@@ -87,6 +97,7 @@ export class Instance
                     }
                 },
             );
+            this.selected_subsets[language_name] = 0;
         }
 
         if (default_layout_language_name != null) {
@@ -222,7 +233,7 @@ export class Instance
         }
 
         for (const [div, hook] of this.divs_to_hooks.entries()) {
-            hook.On_Change_Layout(
+            hook.On_Change_Global_Layout(
                 div,
                 this.current_layout,
             );
@@ -258,7 +269,7 @@ export class Instance
 
         this.divs_to_hooks.set(div, hook);
 
-        hook.On_Change_Layout(
+        hook.On_Change_Global_Layout(
             div,
             this.current_layout,
         );
@@ -501,44 +512,52 @@ export class Instance
         event.preventDefault();
 
         if (!event.repeat) {
-            // I think we should have a key to goto next language
-            // and a key to go to next subset, maybe = and -.
-            // And then we should have specific keys for each lang
-            // and if shift is held then change subset, else just
-            // change to the last subset.
-
-            if (this.held_keys.Is([Reserved_Keys.META_KEY, Key.DIGIT_0])) {
+            if (this.held_keys.Is([Reserved_Keys.META_KEY, NONE_KEY])) {
                 this.Set_Current_Layout(null, null);
                 this.Send_Message(`Global Layout: None`);
-            } else if (this.held_keys.Is([Reserved_Keys.META_KEY, Key.DIGIT_9])) {
-                if (this.Has_Layout(Language.Name.HEBREW, `Phonetic`)) {
-                    this.Set_Current_Layout(Language.Name.HEBREW, `Phonetic`);
-                    this.Send_Message(`Global Layout: ${this.Current_Layout().Full_Name()}`);
+            } else {
+                let language_name: Language.Name | null;
+                if (this.held_keys.Is([Reserved_Keys.META_KEY, HEBREW_KEY])) {
+                    language_name = Language.Name.HEBREW;
+                } else if (this.held_keys.Is([Reserved_Keys.META_KEY, GREEK_KEY])) {
+                    language_name = Language.Name.GREEK;
+                } else if (this.held_keys.Is([Reserved_Keys.META_KEY, LATIN_KEY])) {
+                    language_name = Language.Name.LATIN;
+                } else if (this.held_keys.Is([Reserved_Keys.META_KEY, ARAMAIC_KEY])) {
+                    language_name = Language.Name.ARAMAIC;
+                } else if (this.held_keys.Is([Reserved_Keys.META_KEY, GEEZ_KEY])) {
+                    language_name = Language.Name.GEEZ;
+                } else if (this.held_keys.Is([Reserved_Keys.META_KEY, ARABIC_KEY])) {
+                    language_name = Language.Name.ARABIC;
+                } else {
+                    language_name = null;
                 }
-            } else if (this.held_keys.Is([Reserved_Keys.META_KEY, Key.DIGIT_8])) {
-                if (this.Has_Layout(Language.Name.GREEK, `Combining Polytonic`)) {
-                    this.Set_Current_Layout(Language.Name.GREEK, `Combining Polytonic`);
-                    this.Send_Message(`Global Layout: ${this.Current_Layout().Full_Name()}`);
-                }
-            } else if (this.held_keys.Is([Reserved_Keys.META_KEY, Key.DIGIT_7])) {
-                if (this.Has_Layout(Language.Name.LATIN, null)) {
-                    this.Set_Current_Layout(Language.Name.LATIN, null);
-                    this.Send_Message(`Global Layout: ${this.Current_Layout().Full_Name()}`);
-                }
-            } else if (this.held_keys.Is([Reserved_Keys.META_KEY, Key.DIGIT_6])) {
-                if (this.Has_Layout(Language.Name.ARAMAIC, `Abjad`)) {
-                    this.Set_Current_Layout(Language.Name.ARAMAIC, `Abjad`);
-                    this.Send_Message(`Global Layout: ${this.Current_Layout().Full_Name()}`);
-                }
-            } else if (this.held_keys.Is([Reserved_Keys.META_KEY, Key.DIGIT_5])) {
-                if (this.Has_Layout(Language.Name.GEEZ, `Abugida`)) {
-                    this.Set_Current_Layout(Language.Name.GEEZ, `Abugida`);
-                    this.Send_Message(`Global Layout: ${this.Current_Layout().Full_Name()}`);
-                }
-            } else if (this.held_keys.Is([Reserved_Keys.META_KEY, Key.DIGIT_4])) {
-                if (this.Has_Layout(Language.Name.ARABIC, `Abjad`)) {
-                    this.Set_Current_Layout(Language.Name.ARABIC, `Abjad`);
-                    this.Send_Message(`Global Layout: ${this.Current_Layout().Full_Name()}`);
+
+                if (
+                    language_name != null &&
+                    this.layouts[language_name] != null
+                ) {
+                    let selected_subset: Index = this.selected_subsets[language_name];
+                    if (
+                        this.message_reference_count > 0 &&
+                        this.Has_Current_Layout() &&
+                        this.Current_Layout().Language_Name() === language_name
+                    ) {
+                        selected_subset += 1;
+                        if (selected_subset >= this.layouts[language_name].length) {
+                            selected_subset = 0;
+                        }
+                        this.selected_subsets[language_name] = selected_subset;
+                    }
+
+                    this.Set_Current_Layout(
+                        language_name,
+                        this.layouts[language_name][selected_subset].Subset_Name(),
+                    );
+
+                    this.Send_Message(
+                        `Global Layout: ${this.Current_Layout().Full_Name()}`,
+                    );
                 }
             }
         }

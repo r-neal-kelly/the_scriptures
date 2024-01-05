@@ -8,7 +8,7 @@ import * as Layout from "./layout.js";
 
 export class Instance
 {
-    async On_Change_Layout(
+    async On_Change_Global_Layout(
         div: HTMLDivElement,
         layout: Layout.Instance | null,
     ):
