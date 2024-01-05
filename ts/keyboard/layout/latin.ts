@@ -406,12 +406,6 @@ export class Instance extends Layout.Instance
                         Space.DEFAULT,
                         Space.IGNORE_CAPS_LOCK,
                     ],
-                    [
-                        [Key.SPACE],
-                        Space.DEFAULT,
-                        SPECIALS,
-                        Space.IGNORE_CAPS_LOCK,
-                    ],
                 ],
             },
         );
