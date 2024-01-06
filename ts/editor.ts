@@ -1584,7 +1584,7 @@ class Editor
                     const file: File = this.children.dictionary_load_input.files[0];
                     const file_text: string = await file.text();
                     this.Set_Dictionary_Name(file.name.replace(/\.[^.]+$/, ``));
-                    this.Set_Dictionary_JSON(file_text);
+                    await this.Set_Dictionary_JSON(file_text);
                     this.children.dictionary_load_input.value = ``;
 
                     this.saved_dictionary = this.Dictionary().To_JSON();
@@ -1606,7 +1606,7 @@ class Editor
                 Promise<void>
             {
                 if (
-                    this.saved_dictionary === null ?
+                    this.saved_dictionary == null ?
                         this.Dictionary().To_JSON() !== new Model.Dictionary.Instance({}).To_JSON() :
                         this.saved_dictionary !== this.Dictionary().To_JSON()
                 ) {
@@ -1898,10 +1898,10 @@ class Editor
         return this.Dictionary().To_JSON();
     }
 
-    Set_Dictionary_JSON(
+    async Set_Dictionary_JSON(
         json: string,
     ):
-        void
+        Promise<void>
     {
         this.dictionary = new Model.Dictionary.Instance(
             {
@@ -1909,7 +1909,61 @@ class Editor
             },
         );
 
+        if (!this.dictionary.Is_Valid()) {
+            this.dictionary = new Model.Dictionary.Instance();
+            await this.Message_Invalid_Dictionary_JSON();
+        }
+
         this.Touch();
+    }
+
+    async Message_Invalid_Dictionary_JSON():
+        Promise<boolean>
+    {
+        return await new Promise<boolean>(
+            function (
+                this: Editor,
+                resolve: any,
+                reject: any,
+            ):
+                void
+            {
+                const modal: HTMLDivElement = document.createElement(`div`);
+                modal.classList.add(`Modal`);
+
+                const message: HTMLDivElement = document.createElement(`div`);
+                message.classList.add(`Modal_Message`);
+                message.innerHTML = `<div>
+                    The loaded dictionary is invalid, and probably not a dictionary.
+                    You are instead working with a new dictionary.
+                </div>`;
+
+                const options: HTMLDivElement = document.createElement(`div`);
+                options.classList.add(`Modal_Options`, `Modal_Options_1`);
+
+                const okay_button: HTMLDivElement = document.createElement(`div`);
+                okay_button.classList.add(`Modal_Button`);
+                okay_button.innerHTML = `<div>Okay</div>`;
+                okay_button.addEventListener(
+                    `click`,
+                    function (
+                        this: Editor,
+                        event: MouseEvent,
+                    ):
+                        void
+                    {
+                        document.body.removeChild(modal);
+                        resolve(true);
+                    }.bind(this),
+                );
+
+                options.appendChild(okay_button);
+
+                modal.appendChild(message);
+                modal.appendChild(options);
+                document.body.appendChild(modal);
+            }.bind(this),
+        );
     }
 
     Save_Dictionary():
@@ -1943,79 +1997,19 @@ class Editor
                 void
             {
                 const modal: HTMLDivElement = document.createElement(`div`);
-                modal.setAttribute(
-                    `style`,
-                    `
-                        display: flex;
-                        flex-direction: column;
-                        justify-content: center;
-                        align-items: center;
-
-                        position: absolute;
-                        left: 0;
-                        top: 0;
-                        z-index: 1;
-
-                        width: 100%;
-                        height: 100%;
-
-                        background-color: rgba(0, 0, 0, 0.7);
-
-                        font-size: 18px;
-                    `,
-                );
+                modal.classList.add(`Modal`);
 
                 const message: HTMLDivElement = document.createElement(`div`);
-                message.setAttribute(
-                    `style`,
-                    `
-                        width: 67%;
-                        margin: 2px;
-                        padding: 7px;
-
-                        background-color: #0f1318;
-
-                        color: #E0ECFF;
-                        text-align: center;
-                    `,
-                );
+                message.classList.add(`Modal_Message`);
                 message.innerHTML = `<div>
                     There are unsaved changes to the current dictionary.
                 </div>`;
 
                 const options: HTMLDivElement = document.createElement(`div`);
-                options.setAttribute(
-                    `style`,
-                    `
-                        display: grid;
-                        grid-template-columns: 1fr;
-                        grid-template-rows: 1fr 1fr 1fr;
-                        grid-gap: 12px;
-
-                        width: 67%;
-                        padding: 7px;
-
-                        background-color: #0f1318;
-
-                        color: #E0ECFF;
-                    `,
-                );
-
-                const button_style: string = `
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-
-                    border-width: 2px;
-                    border-style: solid;
-                    border-color: #3B3A32;
-
-                    cursor: pointer;
-                    user-select: none;
-                `;
+                options.classList.add(`Modal_Options`, `Modal_Options_3`);
 
                 const save_button: HTMLDivElement = document.createElement(`div`);
-                save_button.setAttribute(`style`, button_style);
+                save_button.classList.add(`Modal_Button`);
                 save_button.innerHTML = `<div>Save Changes</div>`;
                 save_button.addEventListener(
                     `click`,
@@ -2032,7 +2026,7 @@ class Editor
                 );
 
                 const discard_button: HTMLDivElement = document.createElement(`div`);
-                discard_button.setAttribute(`style`, button_style);
+                discard_button.classList.add(`Modal_Button`);
                 discard_button.innerHTML = `<div>Discard Changes</div>`;
                 discard_button.addEventListener(
                     `click`,
@@ -2048,7 +2042,7 @@ class Editor
                 );
 
                 const cancel_button: HTMLDivElement = document.createElement(`div`);
-                cancel_button.setAttribute(`style`, button_style);
+                cancel_button.classList.add(`Modal_Button`);
                 cancel_button.innerHTML = `<div>Cancel</div>`;
                 cancel_button.addEventListener(
                     `click`,
@@ -2152,79 +2146,19 @@ class Editor
                 void
             {
                 const modal: HTMLDivElement = document.createElement(`div`);
-                modal.setAttribute(
-                    `style`,
-                    `
-                        display: flex;
-                        flex-direction: column;
-                        justify-content: center;
-                        align-items: center;
-
-                        position: absolute;
-                        left: 0;
-                        top: 0;
-                        z-index: 1;
-
-                        width: 100%;
-                        height: 100%;
-
-                        background-color: rgba(0, 0, 0, 0.7);
-
-                        font-size: 18px;
-                    `,
-                );
+                modal.classList.add(`Modal`);
 
                 const message: HTMLDivElement = document.createElement(`div`);
-                message.setAttribute(
-                    `style`,
-                    `
-                        width: 67%;
-                        margin: 2px;
-                        padding: 7px;
-
-                        background-color: #0f1318;
-
-                        color: #E0ECFF;
-                        text-align: center;
-                    `,
-                );
+                message.classList.add(`Modal_Message`);
                 message.innerHTML = `<div>
                     There are unsaved changes to the current file.
                 </div>`;
 
                 const options: HTMLDivElement = document.createElement(`div`);
-                options.setAttribute(
-                    `style`,
-                    `
-                        display: grid;
-                        grid-template-columns: 1fr;
-                        grid-template-rows: 1fr 1fr 1fr;
-                        grid-gap: 12px;
-
-                        width: 67%;
-                        padding: 7px;
-
-                        background-color: #0f1318;
-
-                        color: #E0ECFF;
-                    `,
-                );
-
-                const button_style: string = `
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-
-                    border-width: 2px;
-                    border-style: solid;
-                    border-color: #3B3A32;
-
-                    cursor: pointer;
-                    user-select: none;
-                `;
+                options.classList.add(`Modal_Options`, `Modal_Options_3`);
 
                 const save_button: HTMLDivElement = document.createElement(`div`);
-                save_button.setAttribute(`style`, button_style);
+                save_button.classList.add(`Modal_Button`);
                 save_button.innerHTML = `<div>Save Changes</div>`;
                 save_button.addEventListener(
                     `click`,
@@ -2241,7 +2175,7 @@ class Editor
                 );
 
                 const discard_button: HTMLDivElement = document.createElement(`div`);
-                discard_button.setAttribute(`style`, button_style);
+                discard_button.classList.add(`Modal_Button`);
                 discard_button.innerHTML = `<div>Discard Changes</div>`;
                 discard_button.addEventListener(
                     `click`,
@@ -2257,7 +2191,7 @@ class Editor
                 );
 
                 const cancel_button: HTMLDivElement = document.createElement(`div`);
-                cancel_button.setAttribute(`style`, button_style);
+                cancel_button.classList.add(`Modal_Button`);
                 cancel_button.innerHTML = `<div>Cancel</div>`;
                 cancel_button.addEventListener(
                     `click`,
@@ -2814,6 +2748,71 @@ class Editor
             width: 100%;
 
             text-align: center;
+        }
+
+        .Modal {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+            position: absolute;
+            left: 0;
+            top: 0;
+            z-index: 1;
+
+            width: 100%;
+            height: 100%;
+
+            background-color: rgba(0, 0, 0, 0.7);
+
+            font-size: 18px;
+        }
+
+        .Modal_Message {
+            width: 67%;
+            margin: 2px;
+            padding: 7px;
+
+            background-color: #0f1318;
+
+            color: #E0ECFF;
+            text-align: center;
+        }
+
+        .Modal_Options {
+            display: grid;
+            grid-template-columns: 1fr;
+
+            grid-gap: 12px;
+
+            width: 67%;
+            padding: 7px;
+
+            background-color: #0f1318;
+
+            color: #E0ECFF;
+        }
+
+        .Modal_Options_1 {
+            grid-template-rows: 1fr;
+        }
+
+        .Modal_Options_3 {
+            grid-template-rows: 1fr 1fr 1fr;
+        }
+
+        .Modal_Button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            border-width: 2px;
+            border-style: solid;
+            border-color: #3B3A32;
+
+            cursor: pointer;
+            user-select: none;
         }
     `);
 

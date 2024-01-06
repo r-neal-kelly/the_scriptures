@@ -72,6 +72,111 @@ export class Instance
             };
     }
 
+    Is_Valid():
+        boolean
+    {
+        // letters, markers
+        for (const property of [`letters`, `markers`]) {
+            if (
+                !(this.info as any).hasOwnProperty(property) ||
+                !Utils.Is.Array((this.info as any)[property])
+            ) {
+                return false;
+            }
+            for (const value of (this.info as any)[property]) {
+                if (!Utils.Is.String(value as any)) {
+                    return false;
+                }
+            }
+        }
+
+        // words
+        if (
+            !(this.info as any).hasOwnProperty(`words`) ||
+            !Utils.Is.Object((this.info as any)[`words`])
+        ) {
+            return false;
+        }
+        for (const [key, value] of Object.entries((this.info as any)[`words`])) {
+            if (
+                !Utils.Is.String(key as any) ||
+                !Utils.Is.Array(value as any)
+            ) {
+                return false;
+            }
+            for (const value_value of (value as any)) {
+                if (!Utils.Is.String(value_value as any)) {
+                    return false;
+                }
+            }
+        }
+
+        // breaks
+        if (
+            !(this.info as any).hasOwnProperty(`breaks`) ||
+            !Utils.Is.Object((this.info as any)[`breaks`])
+        ) {
+            return false;
+        }
+        for (const boundary of [Boundary.START, Boundary.MIDDLE, Boundary.END]) {
+            if (
+                !(this.info as any)[`breaks`].hasOwnProperty(boundary) ||
+                !Utils.Is.Object((this.info as any)[`breaks`][boundary])
+            ) {
+                return false;
+            }
+            for (const [key, value] of Object.entries((this.info as any)[`breaks`][boundary])) {
+                if (
+                    !Utils.Is.String(key as any) ||
+                    !Utils.Is.Array(value as any)
+                ) {
+                    return false;
+                }
+                for (const value_value of (value as any)) {
+                    if (!Utils.Is.String(value_value as any)) {
+                        return false;
+                    }
+                }
+            }
+        }
+
+        // word_errors
+        if (
+            !(this.info as any).hasOwnProperty(`word_errors`) ||
+            !Utils.Is.Array((this.info as any)[`word_errors`])
+        ) {
+            return false;
+        }
+        for (const value of (this.info as any)[`word_errors`]) {
+            if (!Utils.Is.String(value as any)) {
+                return false;
+            }
+        }
+
+        // break_errors
+        if (
+            !(this.info as any).hasOwnProperty(`break_errors`) ||
+            !Utils.Is.Object((this.info as any)[`break_errors`])
+        ) {
+            return false;
+        }
+        for (const boundary of [Boundary.START, Boundary.MIDDLE, Boundary.END]) {
+            if (
+                !(this.info as any)[`break_errors`].hasOwnProperty(boundary) ||
+                !Utils.Is.Array((this.info as any)[`break_errors`][boundary])
+            ) {
+                return false;
+            }
+            for (const value of (this.info as any)[`break_errors`][boundary]) {
+                if (!Utils.Is.String(value as any)) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
     Validate():
         void
     {

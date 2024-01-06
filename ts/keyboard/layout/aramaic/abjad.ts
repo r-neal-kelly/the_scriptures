@@ -20,6 +20,8 @@ const SPECIALS: Space.Combo = [
         [[Key.KEY_Y], `ܞ`, false],
         // U+0727 SYRIAC LETTER REVERSED PE
         [[Key.KEY_P], `ܧ`, false],
+        // U+0716 SYRIAC LETTER DOTLESS DALATH RISH
+        [[Key.KEY_R], `ܖ`, false],
     ],
     Space.DEFAULT,
     Space.IGNORE_CAPS_LOCK,
