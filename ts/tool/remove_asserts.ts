@@ -1,3 +1,4 @@
+import { Count } from "../types.js";
 import { Name } from "../types.js";
 import { Path } from "../types.js";
 
@@ -36,7 +37,7 @@ function Remove_Asserts_From_Text(
             }
             iter = iter.Next();
 
-            let parenthesis_depth: number = 1;
+            let parenthesis_depth: Count = 1;
             let string_delimiter: string | null = null;
             while (parenthesis_depth > 0) {
                 const point: string = iter.Point();

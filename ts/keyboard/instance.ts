@@ -1,3 +1,4 @@
+import { Integer } from "../types.js";
 import { Count } from "../types.js";
 import { Index } from "../types.js";
 import { Name } from "../types.js";
@@ -71,7 +72,7 @@ export class Instance
                     a: Layout.Instance,
                     b: Layout.Instance,
                 ):
-                    number
+                    Integer
                 {
                     if (a.Is_Language_Default()) {
                         return -1;

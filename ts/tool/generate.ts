@@ -1,6 +1,7 @@
 import * as process from "process";
 
 import { Integer } from "../types.js";
+import { Float } from "../types.js";
 import { Count } from "../types.js";
 import { Index } from "../types.js";
 import { Name } from "../types.js";
@@ -78,6 +79,72 @@ class Unique_Parts
         );
 
         return this.parts[part];
+    }
+}
+
+class Line_Language
+{
+    private default_language_name: Language.Name;
+    private part_counts: { [language_name: string]: Count };
+    private total_part_count: Count;
+
+    constructor(
+        default_language_name: Language.Name,
+    )
+    {
+        this.default_language_name = default_language_name;
+        this.part_counts = Object.create(null);
+        this.total_part_count = 0;
+    }
+
+    Add_Part(
+        part: Text.Part.Instance,
+    ):
+        void
+    {
+        if (!part.Is_Command()) {
+            const language_name: Language.Name =
+                part.Language() || this.default_language_name;
+
+            if (this.part_counts[language_name] == null) {
+                this.part_counts[language_name] = 0;
+            }
+            this.part_counts[language_name] += 1;
+            this.total_part_count += 1;
+        }
+    }
+
+    Result():
+        Language.Name
+    {
+        const language_percents: Array<[Language.Name, Float]> =
+            Object.entries(this.part_counts).map(
+                function (
+                    this: Line_Language,
+                    value: [string, Count],
+                ):
+                    [Language.Name, Float]
+                {
+                    return [value[0] as Language.Name, value[1] * 100 / this.total_part_count];
+                }.bind(this),
+            );
+
+        language_percents.sort(
+            function (
+                a: [Language.Name, Float],
+                b: [Language.Name, Float],
+            ):
+                Integer
+            {
+                return b[1] - a[1];
+            },
+        );
+
+        if (language_percents.length > 0) {
+            return language_percents[0][0];
+        } else {
+            return this.default_language_name;
+        }
     }
 }
 
@@ -306,7 +373,6 @@ async function Generate(
                                     value: file_text,
                                 },
                             );
-                            version_info.Increment_Line_Count(language_name, text.Line_Count());
                             version_info.Update_Buffer_Counts(text);
                             file_texts.push(file_text);
                             for (
@@ -315,6 +381,7 @@ async function Generate(
                                 line_idx += 1
                             ) {
                                 const line: Text.Line.Instance = text.Line(line_idx);
+                                const line_language: Line_Language = new Line_Language(language_name as Language.Name);
                                 for (
                                     let column_idx = 0, column_end = line.Column_Count();
                                     column_idx < column_end;
@@ -367,6 +434,7 @@ async function Generate(
                                                 );
                                             }
                                             unique_parts.Add(part_value);
+                                            line_language.Add_Part(part);
                                             version_info.Increment_Unit_Count(part_language_name, part_unit_count);
                                             version_info.Increment_Point_Count(part_language_name, part_point_count);
                                             if (part_type === Text.Part.Type.LETTER) {
@@ -398,6 +466,7 @@ async function Generate(
                                         }
                                     }
                                 }
+                                version_info.Increment_Line_Count(line_language.Result(), 1);
                             }
                         }
                         const files_to_write: Array<Promise<void>> = [];

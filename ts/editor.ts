@@ -1,4 +1,6 @@
+import { Integer } from "./types.js";
 import { Count } from "./types.js";
+import { Index } from "./types.js";
 
 import * as Utils from "./utils.js";
 import * as Unicode from "./unicode.js";
@@ -24,7 +26,7 @@ function Escape_Text(
             if (point === ` `) {
                 return `&#${` `.charCodeAt(0)};`
             } else {
-                const code: number = point.charCodeAt(0);
+                const code: Integer = point.charCodeAt(0);
                 if (code < 0xD800 || code > 0xDFFF) {
                     return `&#${code};`;
                 } else {
@@ -40,12 +42,12 @@ function Text_Offset_To_Node(
     from: Node,
     to: Node,
 ):
-    number
+    Count
 {
     if (from === to) {
         return 0;
     } else {
-        let offset: number = 0;
+        let offset: Count = 0;
 
         for (const child_node of from.childNodes) {
             if (child_node === to) {
@@ -68,7 +70,7 @@ function Text_Offset_To_Node(
 function Text_Offset(
     element: HTMLElement,
 ):
-    number | null
+    Count | null
 {
     const selection: Selection | null = document.getSelection();
     if (selection) {
@@ -135,14 +137,14 @@ function Text_Offset(
 
 function Set_Text_Offset(
     element: HTMLElement,
-    offset: number,
+    offset: Count,
 ):
     void
 {
     class Node_And_Offset
     {
         public node: Node;
-        public offset: number;
+        public offset: Count;
 
         constructor(
             {
@@ -150,7 +152,7 @@ function Set_Text_Offset(
                 offset,
             }: {
                 node: Node,
-                offset: number,
+                offset: Count,
             },
         )
         {
@@ -161,14 +163,14 @@ function Set_Text_Offset(
 
     function Text_Offset_To_Node_And_Offset(
         node: Node,
-        target_offset: number,
-        current_offset: number = 0,
+        target_offset: Count,
+        current_offset: Count = 0,
     ):
-        Node_And_Offset | number
+        Node_And_Offset | Count
     {
         for (const child_node of node.childNodes) {
             if (child_node instanceof Text) {
-                const text_length: number = child_node.textContent ?
+                const text_length: Count = child_node.textContent ?
                     child_node.textContent.length :
                     0;
                 current_offset += text_length;
@@ -190,7 +192,7 @@ function Set_Text_Offset(
                 if (maybe_node_and_offset instanceof Node_And_Offset) {
                     return maybe_node_and_offset as Node_And_Offset;
                 } else {
-                    current_offset = maybe_node_and_offset as number;
+                    current_offset = maybe_node_and_offset as Count;
                 }
             }
         }
@@ -202,7 +204,7 @@ function Set_Text_Offset(
 
     const selection: Selection | null = document.getSelection();
     if (selection) {
-        const maybe_node_and_offset: Node_And_Offset | number = Text_Offset_To_Node_And_Offset(
+        const maybe_node_and_offset: Node_And_Offset | Count = Text_Offset_To_Node_And_Offset(
             element,
             offset,
         );
@@ -215,7 +217,7 @@ function Set_Text_Offset(
         } else {
             selection.collapse(
                 element,
-                maybe_node_and_offset as number,
+                maybe_node_and_offset as Count,
             );
         }
     }
@@ -394,7 +396,7 @@ class Line_Keyboard_Hook extends Keyboard.Hook.Instance
                 if (selection.isCollapsed) {
                     Utils.Assert(selection.anchorNode !== null);
 
-                    const at: number =
+                    const at: Count =
                         Text_Offset_To_Node(
                             this.Element(),
                             selection.anchorNode as Node,
@@ -408,9 +410,9 @@ class Line_Keyboard_Hook extends Keyboard.Hook.Instance
                     Utils.Assert(selection.focusNode !== null);
 
                     let start_node: Node;
-                    let start_offset: number;
+                    let start_offset: Count;
                     let stop_node: Node;
-                    let stop_offset: number;
+                    let stop_offset: Count;
                     if (selection.anchorOffset < selection.focusOffset) {
                         start_node = selection.anchorNode as Node;
                         start_offset = selection.anchorOffset;
@@ -424,13 +426,13 @@ class Line_Keyboard_Hook extends Keyboard.Hook.Instance
                     }
 
                     const top_node: Node = this.Element();
-                    const from: number =
+                    const from: Index =
                         Text_Offset_To_Node(
                             top_node,
                             start_node
                         ) +
                         start_offset;
-                    const to: number =
+                    const to: Index =
                         Text_Offset_To_Node(
                             top_node,
                             stop_node
@@ -441,7 +443,7 @@ class Line_Keyboard_Hook extends Keyboard.Hook.Instance
                     line_text_b = line_text.slice(to, line_text.length);
                 }
 
-                const line_index: number = this.Index();
+                const line_index: Index = this.Index();
                 this.Set_Text(line_text_a);
                 this.Editor().Insert_Line(line_index + 1, line_text_b);
                 this.Editor().Line(line_index + 1).Element().focus();
@@ -449,8 +451,8 @@ class Line_Keyboard_Hook extends Keyboard.Hook.Instance
         } else if (event.key === Keyboard.Key.BACKSPACE) {
             const selection: Selection | null = document.getSelection();
             if (selection) {
-                const line_index: number = this.Index();
-                const text_offset: number = Text_Offset(this.Element()) as number;
+                const line_index: Index = this.Index();
+                const text_offset: Count = Text_Offset(this.Element()) as Count;
                 if (line_index > 0 && selection.isCollapsed && text_offset === 0) {
                     event.preventDefault();
 
@@ -469,9 +471,9 @@ class Line_Keyboard_Hook extends Keyboard.Hook.Instance
             if (!this.Editor().Is_Meta_Key_Active()) {
                 const selection: Selection | null = document.getSelection();
                 if (selection) {
-                    const line_index: number = this.Index();
+                    const line_index: Index = this.Index();
                     if (line_index > 0) {
-                        const text_offset: number = Text_Offset(this.Element()) as number;
+                        const text_offset: Count = Text_Offset(this.Element()) as Count;
                         const above_line: Line = this.Editor().Line(line_index - 1);
                         const above_line_text: string = above_line.Text();
 
@@ -490,10 +492,10 @@ class Line_Keyboard_Hook extends Keyboard.Hook.Instance
             if (!this.Editor().Is_Meta_Key_Active()) {
                 const selection: Selection | null = document.getSelection();
                 if (selection) {
-                    const line_index: number = this.Index();
-                    const line_count: number = this.Editor().Line_Count();
+                    const line_index: Index = this.Index();
+                    const line_count: Count = this.Editor().Line_Count();
                     if (line_index < line_count - 1) {
-                        const text_offset: number = Text_Offset(this.Element()) as number;
+                        const text_offset: Count = Text_Offset(this.Element()) as Count;
                         const below_line: Line = this.Editor().Line(line_index + 1);
                         const below_line_text: string = below_line.Text();
 
@@ -518,19 +520,19 @@ class Line_Keyboard_Hook extends Keyboard.Hook.Instance
                 event.preventDefault();
 
                 const parent: Element = this.Element();
-                const child_index: number = Array.from(parent.children)
+                const child_index: Index = Array.from(parent.children)
                     .indexOf(selection.anchorNode as Element);
                 if (child_index > 0) {
                     selection.getRangeAt(0).setStart(parent.children[child_index - 1], 0);
                     selection.getRangeAt(0).setEnd(parent.children[child_index - 1], 1);
                 }
             } else {
-                const text_offset: number | null = Text_Offset(this.Element());
+                const text_offset: Count | null = Text_Offset(this.Element());
                 if (text_offset != null) {
                     event.preventDefault();
 
                     if (text_offset > 0) {
-                        const previous_code: number = this.Text()[text_offset - 1].charCodeAt(0);
+                        const previous_code: Integer = this.Text()[text_offset - 1].charCodeAt(0);
                         if (
                             previous_code >= 0xDC00 &&
                             previous_code <= 0xDFFF
@@ -554,7 +556,7 @@ class Line_Keyboard_Hook extends Keyboard.Hook.Instance
                 event.preventDefault();
 
                 const parent: Element = this.Element();
-                const child_index: number = Array.from(parent.children)
+                const child_index: Index = Array.from(parent.children)
                     .indexOf(selection.anchorNode as Element);
                 if (
                     child_index >= 0 &&
@@ -564,13 +566,13 @@ class Line_Keyboard_Hook extends Keyboard.Hook.Instance
                     selection.getRangeAt(0).setEnd(parent.children[child_index + 1], 1);
                 }
             } else {
-                const text_offset: number | null = Text_Offset(this.Element());
+                const text_offset: Count | null = Text_Offset(this.Element());
                 if (text_offset != null) {
                     event.preventDefault();
 
                     const text: string = this.Text();
                     if (text_offset + 2 <= text.length) {
-                        const next_code: number = text[text_offset + 1].charCodeAt(0);
+                        const next_code: Integer = text[text_offset + 1].charCodeAt(0);
                         if (
                             next_code >= 0xDC00 &&
                             next_code <= 0xDFFF
@@ -749,7 +751,7 @@ class Line_Keyboard_Hook extends Keyboard.Hook.Instance
     ):
         Promise<void>
     {
-        const text_offset: number = Text_Offset(this.Element()) as number;
+        const text_offset: Count = Text_Offset(this.Element()) as Count;
 
         this.Touch();
         Set_Text_Offset(this.Element(), text_offset);
@@ -881,9 +883,9 @@ class Line
     }
 
     Index():
-        number
+        Index
     {
-        const index: number = this.Editor().Lines().indexOf(this);
+        const index: Index = this.Editor().Lines().indexOf(this);
         Utils.Assert(index > -1);
 
         return index;
@@ -949,7 +951,7 @@ class Line
     Touch():
         void
     {
-        const text_offset: number | null = Text_Offset(this.Element());
+        const text_offset: Count | null = Text_Offset(this.Element());
 
         this.Set_Text(this.Text());
         if (this.Editor().Direction() === Language.Direction.LEFT_TO_RIGHT) {
@@ -1518,7 +1520,7 @@ class Editor
                     input_event.inputType === `deleteContentBackward` ||
                     input_event.inputType === `insertFromPaste`
                 ) {
-                    const text_offset: number = Text_Offset(this.children.dictionary_name) as number;
+                    const text_offset: Count = Text_Offset(this.children.dictionary_name) as Count;
 
                     this.Set_Dictionary_Name(this.Dictionary_Name());
                     Set_Text_Offset(this.children.dictionary_name, text_offset);
@@ -1688,7 +1690,7 @@ class Editor
                     input_event.inputType === `deleteContentBackward` ||
                     input_event.inputType === `insertFromPaste`
                 ) {
-                    const text_offset: number = Text_Offset(this.children.file_name) as number;
+                    const text_offset: Count = Text_Offset(this.children.file_name) as Count;
 
                     this.Set_File_Name(this.File_Name());
                     Set_Text_Offset(this.children.file_name, text_offset);
@@ -2293,7 +2295,7 @@ class Editor
     }
 
     Line_Count():
-        number
+        Count
     {
         return this.lines.length;
     }
@@ -2305,7 +2307,7 @@ class Editor
     }
 
     Line(
-        line_index: number,
+        line_index: Index,
     ):
         Line
     {
@@ -2332,7 +2334,7 @@ class Editor
     }
 
     Remove_Line(
-        line_index: number,
+        line_index: Index,
     ):
         void
     {
@@ -2343,7 +2345,7 @@ class Editor
     }
 
     Insert_Line(
-        at_line_index: number,
+        at_line_index: Index,
         text: string,
     ):
         void
@@ -2430,7 +2432,7 @@ class Editor
     ):
         void
     {
-        const selected_line_idx: number | null = this.Focused_Line_Index();
+        const selected_line_idx: Index | null = this.Focused_Line_Index();
         const selection: Selection | null = document.getSelection();
         if (
             selected_line_idx != null &&
@@ -2446,7 +2448,7 @@ class Editor
             // we have a highlight already, so we look for the next one in this line or the lines that follow
             const selected_line_element: Element =
                 this.lines[selected_line_idx].Element();
-            const selected_child_idx: number =
+            const selected_child_idx: Index =
                 Array.from(selected_line_element.children).indexOf(selection.anchorNode as Element);
             Utils.Assert(selected_child_idx > -1);
 
@@ -2458,8 +2460,8 @@ class Editor
                 ):
                     Element | null
                 {
-                    let line_idx: number = selected_line_idx;
-                    let child_idx: number = selected_child_idx + 1;
+                    let line_idx: Index = selected_line_idx;
+                    let child_idx: Index = selected_child_idx + 1;
                     while (true) {
                         const line: Element = this.lines[line_idx].Element();
                         for (let end = line.children.length; child_idx < end; child_idx += 1) {
@@ -2516,7 +2518,7 @@ class Editor
     ):
         void
     {
-        const selected_line_idx: number | null = this.Focused_Line_Index();
+        const selected_line_idx: Index | null = this.Focused_Line_Index();
         const selection: Selection | null = document.getSelection();
         if (
             selected_line_idx != null &&
@@ -2532,7 +2534,7 @@ class Editor
             // we have a highlight already, so we look for the next one in this line or the lines that follow
             const selected_line_element: Element =
                 this.lines[selected_line_idx].Element();
-            const selected_child_idx: number =
+            const selected_child_idx: Index =
                 Array.from(selected_line_element.children).indexOf(selection.anchorNode as Element);
             Utils.Assert(selected_child_idx > -1);
 
@@ -2544,8 +2546,8 @@ class Editor
                 ):
                     Element | null
                 {
-                    let line_idx: number = selected_line_idx;
-                    let child_idx: number = selected_child_idx + 1;
+                    let line_idx: Index = selected_line_idx;
+                    let child_idx: Index = selected_child_idx + 1;
                     while (true) {
                         const line: Element = this.lines[line_idx].Element();
                         for (let end = line.children.length; child_idx < end; child_idx += 1) {
@@ -2602,7 +2604,7 @@ class Editor
     }
 
     Focused_Line_Index():
-        number | null
+        Index | null
     {
         const selection: Selection | null = document.getSelection();
         if (

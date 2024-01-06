@@ -1,3 +1,4 @@
+import { Integer } from "./types.js";
 import { Count } from "./types.js";
 import { Index } from "./types.js";
 
@@ -356,7 +357,7 @@ function Test():
     void
 {
     {
-        const instance: Instance<number> = new Instance(
+        const instance: Instance<Integer> = new Instance(
             {
                 capacity: 6,
                 initial_unit: -1,

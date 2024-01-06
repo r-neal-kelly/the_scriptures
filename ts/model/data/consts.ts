@@ -1,8 +1,9 @@
+import { Integer } from "../../types.js";
 import { Count } from "../../types.js";
 import { Name } from "../../types.js";
 import { Path } from "../../types.js";
 
-const NUMBER_TO_BE_REPLACED: number = -1;
+const NUMBER_TO_BE_REPLACED: Integer = -1;
 
 export const PATH: Path = `data`;
 
