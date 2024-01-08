@@ -1,20 +1,13 @@
 import * as Utils from "../utils.js";
 import * as Event from "../event.js";
 
-import * as Entity from "./entity.js";
-
-import * as Model from "../model/layout.js";
-import * as View from "./layout.js";
-
+import * as Model from "../model/main.js";
 import * as Fonts_Model from "../model/fonts.js";
-import * as Data_Model from "../model/data.js";
-import * as Selector_Model from "../model/selector.js";
-import * as Browser_Model from "../model/browser.js";
-import * as Browser_View from "./browser.js";
-import * as Finder_Model from "../model/finder.js";
-import * as Finder_View from "./finder.js";
 
-class Body extends Entity.Instance
+import * as Entity from "./entity.js";
+import * as Layout from "./layout.js";
+
+export class Instance extends Entity.Instance
 {
     private model: Model.Instance;
 
@@ -42,7 +35,9 @@ class Body extends Entity.Instance
     override On_Life():
         Array<Event.Listener_Info>
     {
-        Utils.Create_Style_Element(Fonts_Model.Singleton().CSS_Definitions());
+        Utils.Create_Style_Element(
+            Fonts_Model.Singleton().CSS_Definitions(),
+        );
 
         this.Add_CSS(
             `
@@ -77,7 +72,7 @@ class Body extends Entity.Instance
         this.Window().addEventListener(
             `beforeunload`,
             function (
-                this: Body,
+                this: Instance,
                 event: BeforeUnloadEvent,
             ):
                 void
@@ -92,12 +87,12 @@ class Body extends Entity.Instance
     override On_Refresh():
         void
     {
-        if (!this.Has_View()) {
+        if (!this.Has_Layout()) {
             this.Abort_All_Children();
 
-            new View.Instance(
+            new Layout.Instance(
                 {
-                    model: () => this.Model(),
+                    model: () => this.Model().Layout(),
                     root: this,
                 },
             );
@@ -128,124 +123,23 @@ class Body extends Entity.Instance
         return document;
     }
 
-    Has_View():
+    Has_Layout():
         boolean
     {
         return (
             this.Has_Child(0) &&
-            this.Child(0) instanceof View.Instance
+            this.Child(0) instanceof Layout.Instance
         );
     }
 
-    View():
-        View.Instance
+    Layout():
+        Layout.Instance
     {
         Utils.Assert(
-            this.Has_View(),
-            `Does not have a view.`,
+            this.Has_Layout(),
+            `Does not have a layout.`,
         );
 
-        return this.Child(0) as View.Instance;
+        return this.Child(0) as Layout.Instance;
     }
 }
-
-async function Main():
-    Promise<void>
-{
-    const model: Model.Instance = new Model.Instance();
-    const view = new Body(
-        {
-            model: model,
-        },
-    );
-
-    // Once we set up our save file structure, or at least prototype it,
-    // we'll pull each window's model's data from there and pass it along.
-    type Data = Array<
-        [
-            Selector_Model.Slot.Order,
-            string,
-            string,
-            string,
-            string,
-        ]
-    >;
-    const data: Data = [
-        [
-            Selector_Model.Slot.Order.LANGUAGES_VERSIONS_BOOKS,
-            `Genesis`,
-            `English`,
-            `KJV 1872-1888`,
-            `Chapter 01`,
-        ],
-        [
-            Selector_Model.Slot.Order.VERSIONS_BOOKS_LANGUAGES,
-            `Genesis`,
-            `Hebrew`,
-            `Hexaglot 1857-1906`,
-            `Chapter 01`,
-        ],
-        [
-            Selector_Model.Slot.Order.VERSIONS_BOOKS_LANGUAGES,
-            `Genesis`,
-            `Greek`,
-            `Hexaglot 1857-1906`,
-            `Chapter 01`,
-        ],
-        [
-            Selector_Model.Slot.Order.VERSIONS_BOOKS_LANGUAGES,
-            `Genesis`,
-            `Latin`,
-            `Hexaglot 1857-1906`,
-            `Chapter 01`,
-        ],
-        [
-            Selector_Model.Slot.Order.BOOKS_LANGUAGES_VERSIONS,
-            `Jubilees`,
-            `English`,
-            `R. H. Charles 1913`,
-            `Chapter 02`,
-        ],
-    ];
-
-    let is_window_active: boolean = true;
-    for (const [order, book_name, language_name, version_name, file_name] of data) {
-        model.Add_Program(
-            new Model.Window.Program.Instance(
-                {
-                    model_class: Browser_Model.Instance,
-                    model_data: {
-                        selection: new Data_Model.Selection.Name(
-                            {
-                                book: book_name,
-                                language: language_name,
-                                version: version_name,
-                                file: file_name,
-                            },
-                        ),
-                        selector_slot_order: order,
-                        is_selector_open: false,
-                    },
-                    view_class: Browser_View.Instance,
-                    is_window_active: is_window_active,
-                },
-            ),
-        );
-        is_window_active = false;
-    }
-
-    model.Add_Program(
-        new Model.Window.Program.Instance(
-            {
-                model_class: Finder_Model.Instance,
-                model_data: undefined,
-                view_class: Finder_View.Instance,
-                is_window_active: false,
-            },
-        ),
-    );
-
-    view.Refresh();
-}
-
-Main();

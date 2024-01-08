@@ -26,7 +26,8 @@ export class Instance extends Entity.Instance
         this.tabs = [];
 
         this.Add_Dependencies(
-            this.tabs,
+            [
+            ],
         );
     }
 

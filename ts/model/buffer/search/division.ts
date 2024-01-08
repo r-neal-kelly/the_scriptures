@@ -46,6 +46,11 @@ export class Instance extends Entity.Instance
         if (value != null) {
             this.Set_Value(value as Text.Value);
         }
+
+        this.Add_Dependencies(
+            [
+            ],
+        );
     }
 
     Is_Blank():

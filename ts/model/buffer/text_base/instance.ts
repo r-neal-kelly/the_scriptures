@@ -45,6 +45,12 @@ export abstract class Instance<
 
         this.text = text;
         this.lines = [];
+
+        this.Add_Dependencies(
+            [
+                Data.Singleton(),
+            ],
+        );
     }
 
     Default_Language_Name():

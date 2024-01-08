@@ -6,7 +6,6 @@ import * as Utils from "../../../utils.js";
 import * as Entity from "../../entity.js";
 import * as Data from "../../data.js";
 import * as Text from "../../text.js";
-import * as Buffer from "./instance.js";
 
 interface Buffer_Instance_i
 {
@@ -59,6 +58,12 @@ export abstract class Instance<
         Utils.Assert(
             index > -1,
             `index must be greater than -1.`,
+        );
+
+        this.Add_Dependencies(
+            [
+                Data.Singleton(),
+            ],
         );
     }
 

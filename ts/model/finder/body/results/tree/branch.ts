@@ -63,6 +63,10 @@ export class Instance extends Entity.Instance
                 );
             }
         }
+
+        this.Add_Dependencies(
+            this.branches_or_leaves,
+        );
     }
 
     Tree():

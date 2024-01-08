@@ -67,6 +67,10 @@ export class Instance extends Entity.Instance
                 this.selected_item = item;
             }
         }
+
+        this.Add_Dependencies(
+            this.items,
+        );
     }
 
     Selector():

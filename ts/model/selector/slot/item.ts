@@ -27,6 +27,11 @@ export class Instance extends Entity.Instance
         this.slot = slot;
         this.index = index;
         this.name = name;
+
+        this.Add_Dependencies(
+            [
+            ],
+        );
     }
 
     Slot():

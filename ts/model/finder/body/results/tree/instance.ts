@@ -30,6 +30,11 @@ export class Instance extends Entity.Instance
             },
         );
         this.selected = [];
+
+        this.Add_Dependencies(
+            [
+            ],
+        );
     }
 
     Results():

@@ -52,8 +52,7 @@ export class Instance extends Entity.Instance
         }
 
         this.Add_Dependencies(
-            [
-            ],
+            this.files,
         );
     }
 

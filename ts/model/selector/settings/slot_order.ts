@@ -32,6 +32,11 @@ export class Instance extends Entity.Instance
         this.index = index;
         this.value = value;
         this.name = name;
+
+        this.Add_Dependencies(
+            [
+            ],
+        );
     }
 
     Settings():

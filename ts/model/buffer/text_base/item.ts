@@ -57,6 +57,11 @@ export class Instance<
             index > -1,
             `index must be greater than -1.`,
         );
+
+        this.Add_Dependencies(
+            [
+            ],
+        );
     }
 
     Is_Blank():

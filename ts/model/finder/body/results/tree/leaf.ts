@@ -31,6 +31,12 @@ export class Instance extends Entity.Instance
 
         this.parent = parent;
         this.data = data;
+
+        this.Add_Dependencies(
+            [
+                this.data.file,
+            ],
+        );
     }
 
     Tree():

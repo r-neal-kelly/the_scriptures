@@ -73,6 +73,7 @@ export class Instance extends Entity.Instance
         this.Add_Dependencies(
             [
                 Data.Singleton(),
+                this.settings,
             ],
         );
     }
