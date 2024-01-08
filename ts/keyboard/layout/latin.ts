@@ -233,8 +233,8 @@ const SUPERSCRIPTS: Space.Combo = [
         [[Key.KEY_O], `ᵒ`, `ᴼ`],
         // U+1D56 MODIFIER LETTER SMALL P, U+1D3E MODIFIER LETTER CAPITAL P
         [[Key.KEY_P], `ᵖ`, `ᴾ`],
-        // U+A7F4 MODIFIER LETTER CAPITAL Q
-        [[Key.KEY_Q], false, `ꟴ`],
+        // U+107A5 MODIFIER LETTER SMALL Q, U+A7F4 MODIFIER LETTER CAPITAL Q
+        [[Key.KEY_Q], `𐞥`, `ꟴ`],
         // U+02B3 MODIFIER LETTER SMALL R, U+1D3F MODIFIER LETTER CAPITAL R
         [[Key.KEY_R], `ʳ`, `ᴿ`],
         // U+02E2 MODIFIER LETTER SMALL S
@@ -255,8 +255,10 @@ const SUPERSCRIPTS: Space.Combo = [
         [[Key.KEY_Z], `ᶻ`, false],
         // U+10783 MODIFIER LETTER SMALL AE, U+1D2D MODIFIER LETTER CAPITAL AE
         [[Key.BRACKET_LEFT], `𐞃`, `ᴭ`],
+        // U+A7F9 MODIFIER LETTER SMALL LIGATURE OE
+        [[Key.BRACKET_RIGHT], `ꟹ`, false],
         // U+1D3D MODIFIER LETTER CAPITAL OU
-        [[Key.BRACKET_RIGHT], false, `ᴽ`],
+        [[Key.QUOTE], false, `ᴽ`],
         // U+00B9 SUPERSCRIPT ONE
         [[Key.DIGIT_1], `¹`, false, Space.IGNORE_CAPS_LOCK],
         // U+00B2 SUPERSCRIPT TWO
