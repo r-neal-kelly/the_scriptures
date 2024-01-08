@@ -12,7 +12,7 @@
 10 And all people of the earth shall see that thou art called by the name of the ⸨sc⸩Lord⸨/sc⸩; and they shall be afraid of thee.
 11 And the ⸨sc⸩Lord⸨/sc⸩ shall make thee plenteous in goods, in the fruit of thy body, and in the fruit of thy cattle, and in the fruit of thy ground, in the land which the ⸨sc⸩Lord⸨/sc⸩ sware unto thy fathers to give thee.
 12 The ⸨sc⸩Lord⸨/sc⸩ shall open unto thee his good treasure, the heaven to give the rain unto thy land in his season, and to bless all the work of thine hand: and thou shalt lend unto many nations, and thou shalt not borrow.
-13 And the ⸨sc⸩Lord⸨/sc⸩ shall make thee the head, and not the tail; and thou shalt be above only, and thou shalt not be beneath; if that thou hearken unto the commandments of the ⸨sc⸩Lord⸨/sc⸩ thy God, which I command thee this day, to observe and to do ⸨i⸩them⸨/i⸩⸨err::⸩⸨i⸩:⸨/i⸩⸨/err⸩
+13 And the ⸨sc⸩Lord⸨/sc⸩ shall make thee the head, and not the tail; and thou shalt be above only, and thou shalt not be beneath; if that thou hearken unto the commandments of the ⸨sc⸩Lord⸨/sc⸩ thy God, which I command thee this day, to observe and to do ⸨i⸩them⸨/i⸩⸨fix::⸩⸨i⸩:⸨/i⸩⸨/fix⸩
 14 And thou shalt not go aside from any of the words which I command thee this day, ⸨i⸩to⸨/i⸩ the right hand, or ⸨i⸩to⸨/i⸩ the left, to go after other gods to serve them.
 15 ¶ But it shall come to pass, if thou wilt not hearken unto the voice of the ⸨sc⸩Lord⸨/sc⸩ thy God, to observe to do all his commandments and his statutes which I command thee this day; that all these curses shall come upon thee, and overtake thee.
 16 Cursed ⸨i⸩shalt⸨/i⸩ thou ⸨i⸩be⸨/i⸩ in the city, and cursed ⸨i⸩shalt⸨/i⸩ thou ⸨i⸩be⸨/i⸩ in the field.
@@ -38,7 +38,7 @@
 36 The ⸨sc⸩Lord⸨/sc⸩ shall bring thee, and thy king which thou shalt set over thee, unto a nation which neither thou nor thy fathers have known; and there shalt thou serve other gods, wood and stone.
 37 And thou shalt become an astonishment, a proverb, and a byword, among all nations whither the ⸨sc⸩Lord⸨/sc⸩ shall lead thee.
 38 Thou shalt carry much seed out into the field, and shalt gather ⸨i⸩but⸨/i⸩ little in; for the locust shall consume it.
-39 Thou shalt plant vineyards, and dress ⸨i⸩them⸨/i⸩, but shalt neither drink ⸨i⸩of⸨/i⸩ the wine, nor gather ⸨i⸩the grapes⸨/i⸩⸨err:; ⸩⸨i⸩; ⸨/i⸩⸨/err⸩for the worms shall eat them.
+39 Thou shalt plant vineyards, and dress ⸨i⸩them⸨/i⸩, but shalt neither drink ⸨i⸩of⸨/i⸩ the wine, nor gather ⸨i⸩the grapes⸨/i⸩⸨fix:; ⸩⸨i⸩; ⸨/i⸩⸨/fix⸩for the worms shall eat them.
 40 Thou shalt have olive trees throughout all thy coasts, but thou shalt not anoint ⸨i⸩thyself⸨/i⸩ with the oil; for thine olive shall cast ⸨i⸩his fruit⸨/i⸩.
 41 Thou shalt beget sons and daughters, but thou shalt not enjoy them; for they shall go into captivity.
 42 All thy trees and fruit of thy land shall the locust consume.
@@ -46,8 +46,8 @@
 44 He shall lend to thee, and thou shalt not lend to him: he shall be the head, and thou shalt be the tail.
 45 Moreover all these curses shall come upon thee, and shall pursue thee, and overtake thee, till thou be destroyed; because thou hearkenedst not unto the voice of the ⸨sc⸩Lord⸨/sc⸩ thy God, to keep his commandments and his statutes which he commanded thee:
 46 And they shall be upon thee for a sign and for a wonder, and upon thy seed for ever.
-47 Because thou servedst not the ⸨sc⸩Lord⸨/sc⸩ thy God with joyfulness, and with gladness of heart, for the abundance of all ⸨i⸩things⸨/i⸩⸨err:;⸩⸨i⸩;⸨/i⸩⸨/err⸩
-48 Therefore shalt thou serve thine enemies which the ⸨sc⸩Lord⸨/sc⸩ shall send against thee, in hunger, and in thirst, and in nakedness, and in want of all ⸨i⸩things⸨/i⸩⸨err:: ⸩⸨i⸩: ⸨/i⸩⸨/err⸩and he shall put a yoke of iron upon thy neck, until he have destroyed thee.
+47 Because thou servedst not the ⸨sc⸩Lord⸨/sc⸩ thy God with joyfulness, and with gladness of heart, for the abundance of all ⸨i⸩things⸨/i⸩⸨fix:;⸩⸨i⸩;⸨/i⸩⸨/fix⸩
+48 Therefore shalt thou serve thine enemies which the ⸨sc⸩Lord⸨/sc⸩ shall send against thee, in hunger, and in thirst, and in nakedness, and in want of all ⸨i⸩things⸨/i⸩⸨fix:: ⸩⸨i⸩: ⸨/i⸩⸨/fix⸩and he shall put a yoke of iron upon thy neck, until he have destroyed thee.
 49 The ⸨sc⸩Lord⸨/sc⸩ shall bring a nation against thee from far, from the end of the earth, ⸨i⸩as swift⸨/i⸩ as the eagle flieth; a nation whose tongue thou shalt not understand;
 50 A nation of fierce countenance, which shall not regard the person of the old, nor shew favour to the young:
 51 And he shall eat the fruit of thy cattle, and the fruit of thy land, until thou be destroyed: which ⸨i⸩also⸨/i⸩ shall not leave thee ⸨i⸩either⸨/i⸩ corn, wine, or oil, ⸨i⸩or⸨/i⸩ the increase of thy kine, or flocks of thy sheep, until he have destroyed thee.

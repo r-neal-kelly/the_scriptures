@@ -17,4 +17,4 @@
 15 Cumque ascendisset Moyses, operuit nubes montem,
 16 Et habitavit gloria Domini super Sinai, tegens illum nube sex diebus: septimo autem die vocavit eum de medio caliginis.
 17 Erat autem species gloriæ Domini, quasi ignis ardens super verticem montis, in conspectu filiorum Israel.
-18 Ingressusque Moyses medium nebulæ, ascendit in montem: et fuit ibi ⸨err:quadraginta⸩quad raginta⸨/err⸩ diebus, et quadraginta noctibus.
+18 Ingressusque Moyses medium nebulæ, ascendit in montem: et fuit ibi ⸨fix:quadraginta⸩quad raginta⸨/fix⸩ diebus, et quadraginta noctibus.

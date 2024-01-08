@@ -1,20 +1,20 @@
-⸨cen⸩⸨sc⸩⸨err:The⸩the⸨/err⸩ ⸨err:First⸩first⸨/err⸩ ⸨err:Book⸩book⸨/err⸩ of ⸨err:Moses⸩moses⸨/err⸩,⸨/sc⸩
+⸨cen⸩⸨sc⸩⸨fix:The⸩the⸨/fix⸩ ⸨fix:First⸩first⸨/fix⸩ ⸨fix:Book⸩book⸨/fix⸩ of ⸨fix:Moses⸩moses⸨/fix⸩,⸨/sc⸩
 ⸨cen⸩⸨sc⸩called⸨/sc⸩
 ⸨cen⸩GENESIS.
 ⸨cen⸩————
 
 ⸨cen⸩CHAPTER I⸼
-⸨i⸩₁ The ⸨err:creation⸩reation⸨/err⸩ of heaven and earth, ₃ of the light, ₆ of the firmament, ₉ of the earth separated from the waters, ₁₁ and made fruitful, ₁₄ of the sun, moon, and stars, ₂₀ of fish and fowl, ₂₄ of beasts and cattle, ₂₆ of man in the image of God. ₂₉ Also the appointment of food.⸨/i⸩
+⸨i⸩₁ The ⸨fix:creation⸩reation⸨/fix⸩ of heaven and earth, ₃ of the light, ₆ of the firmament, ₉ of the earth separated from the waters, ₁₁ and made fruitful, ₁₄ of the sun, moon, and stars, ₂₀ of fish and fowl, ₂₄ of beasts and cattle, ₂₆ of man in the image of God. ₂₉ Also the appointment of food.⸨/i⸩
 
 ₁ ⸨sc⸩In⸨/sc⸩ ⸨i⸩ᵃ⸨/i⸩ the beginning God created the heaven and the earth.⸨marg⸩⸨i⸩ᵃ⸨/i⸩ Psal⸼ 33⸼ 6⸼⸨row⸩& 136⸼ 5⸼⸨row⸩Acts 14⸼ 15⸼⸨row⸩& 17⸼ 24⸼⸨row⸩Hebr⸼ 11⸼ 3⸼
 ₂ And the earth was without form, and void; and darkness ⸨i⸩was⸨/i⸩ upon the face of the deep. And the Spirit of God moved upon the face of the waters.⸨marg⸩
-₃ And God said, ⸨i⸩ᵇ⸨/i⸩ Let there be light: and there was light.⸨marg⸩⸨i⸩ᵇ⸨/i⸩ 2 Cor⸼ 4⸼ ⸨err:6⸼⸩6⸨/err⸩
+₃ And God said, ⸨i⸩ᵇ⸨/i⸩ Let there be light: and there was light.⸨marg⸩⸨i⸩ᵇ⸨/i⸩ 2 Cor⸼ 4⸼ ⸨fix:6⸼⸩6⸨/fix⸩
 ₄ And God saw the light, that ⸨i⸩it was⸨/i⸩ good: and God divided ⁺the light from the darkness.⸨marg⸩⁺ Heb⸼ ⸨i⸩between the light and between the darkness⸨/i⸩.
 ₅ And God called the light Day, and the darkness he called Night. ⁺And the evening and the morning were the first day.⸨marg⸩⁺ Heb⸼ ⸨i⸩And the evening was, and the morning was, &c⸼⸨/i⸩
 ₆ ¶ And God said, ⸨i⸩ᶜ⸨/i⸩ Let there be a ⁺firmament in the midst of the waters, and let it divide the waters from the waters.⸨marg⸩⸨i⸩ᶜ⸨/i⸩ Psal⸼ 136⸼ 5⸼⸨row⸩Jer⸼ 10⸼ 12⸼⸨row⸩& 51⸼ 15⸼⸨row⸩⁺ Heb⸼ ⸨i⸩expansion⸨/i⸩.
 ₇ And God made the firmament, and divided the waters which ⸨i⸩were⸨/i⸩ under the firmament from the waters which ⸨i⸩were⸨/i⸩ above the firmament: and it was so.⸨marg⸩
 ₈ And God called the ⸨i⸩ᵈ⸨/i⸩ firmament Heaven. And the evening and the morning were the second day.⸨marg⸩⸨i⸩ᵈ⸨/i⸩ Jer⸼ 51⸼ 15⸼
-₉ ¶ And God said, ⸨i⸩ᵉ⸨/i⸩ Let the waters under the heaven be gathered together unto one place, and let the dry ⸨i⸩land⸨/i⸩ appear: and it was so.⸨marg⸩⸨i⸩ᵉ⸨/i⸩ Psal⸼ 33⸼ 7⸼⸨row⸩& 136⸼ ⸨err:6⸼⸩5⸼⸨/err⸩⸨row⸩Job 38⸼ 8⸼
+₉ ¶ And God said, ⸨i⸩ᵉ⸨/i⸩ Let the waters under the heaven be gathered together unto one place, and let the dry ⸨i⸩land⸨/i⸩ appear: and it was so.⸨marg⸩⸨i⸩ᵉ⸨/i⸩ Psal⸼ 33⸼ 7⸼⸨row⸩& 136⸼ ⸨fix:6⸼⸩5⸼⸨/fix⸩⸨row⸩Job 38⸼ 8⸼
 ₁₀ And God called the dry ⸨i⸩land⸨/i⸩ Earth; and the gathering together of the waters called he Seas: and God saw that ⸨i⸩it was⸨/i⸩ good.⸨marg⸩
 ₁₁ And God said, Let the earth bring forth ⁺grass, the herb yielding seed, ⸨i⸩and⸨/i⸩ the fruit tree yielding fruit after his kind, whose seed ⸨i⸩is⸨/i⸩ in itself, upon the earth: and it was so.⸨marg⸩⁺ Heb⸼ ⸨i⸩tender grass⸨/i⸩.
 ₁₂ And the earth brought forth grass, ⸨i⸩and⸨/i⸩ herb yielding seed after his kind, and the tree yielding fruit, whose seed ⸨i⸩was⸨/i⸩ in itself, after his kind: and God saw that ⸨i⸩it was⸨/i⸩ good.⸨marg⸩
@@ -25,15 +25,15 @@
 ₁₇ And God set them in the firmament of the heaven to give light upon the earth,⸨marg⸩
 ₁₈ And to ⸨i⸩ᵍ⸨/i⸩ rule over the day and over the night, and to divide the light from the darkness: and God saw that ⸨i⸩it was⸨/i⸩ good.⸨marg⸩⸨i⸩ᵍ⸨/i⸩ Jer⸼ 31⸼ 35⸼
 ₁₉ And the evening and the morning were the fourth day.⸨marg⸩
-₂₀ And God said, ⸨i⸩ʰ⸨/i⸩ Let the waters bring forth abundantly the ˈmoving creature that hath ⁺life, and fowl ⸨i⸩that⸨/i⸩ may fly above the earth in the ⁺open firmament of heaven.⸨marg⸩⸨i⸩ʰ⸨/i⸩ ⸨err:2⸩4⸨/err⸩ Esdr⸼ 6⸼ 47⸼⸨row⸩ˈ Or, ⸨i⸩creeping⸨/i⸩.⸨row⸩⁺ Heb⸼ ⸨i⸩soul⸨/i⸩.⸨row⸩⁺ Heb⸼ ⸨i⸩face of the firmament of heaven⸨/i⸩.
+₂₀ And God said, ⸨i⸩ʰ⸨/i⸩ Let the waters bring forth abundantly the ˈmoving creature that hath ⁺life, and fowl ⸨i⸩that⸨/i⸩ may fly above the earth in the ⁺open firmament of heaven.⸨marg⸩⸨i⸩ʰ⸨/i⸩ ⸨fix:2⸩4⸨/fix⸩ Esdr⸼ 6⸼ 47⸼⸨row⸩ˈ Or, ⸨i⸩creeping⸨/i⸩.⸨row⸩⁺ Heb⸼ ⸨i⸩soul⸨/i⸩.⸨row⸩⁺ Heb⸼ ⸨i⸩face of the firmament of heaven⸨/i⸩.
 ₂₁ And God created great whales, and every living creature that moveth, which the waters brought forth abundantly, after their kind, and every winged fowl after his kind: and God saw that ⸨i⸩it was⸨/i⸩ good.⸨marg⸩
-₂₂ And God blessed them, saying, ⸨i⸩ⁱ⸨/i⸩ Be fruitful, and multiply, and fill the waters in the seas, and let fowl multiply in the earth.⸨marg⸩⸨i⸩ⁱ⸨/i⸩ chap⸼ ⸨err:8⸼⸩8⸨/err⸩ 17⸼⸨row⸩& 9⸼ 1⸼
+₂₂ And God blessed them, saying, ⸨i⸩ⁱ⸨/i⸩ Be fruitful, and multiply, and fill the waters in the seas, and let fowl multiply in the earth.⸨marg⸩⸨i⸩ⁱ⸨/i⸩ chap⸼ ⸨fix:8⸼⸩8⸨/fix⸩ 17⸼⸨row⸩& 9⸼ 1⸼
 ₂₃ And the evening and the morning were the fifth day.⸨marg⸩
 ₂₄ ¶ And God said, Let the earth bring forth the living creature after his kind, cattle, and creeping thing, and beast of the earth after his kind: and it was so.⸨marg⸩
 ₂₅ And God made the beast of the earth after his kind, and cattle after their kind, and every thing that creepeth upon the earth after his kind: and God saw that ⸨i⸩it was⸨/i⸩ good.⸨marg⸩
-₂₆ ¶ And God said, ⸨i⸩ᵏ⸨/i⸩ Let us make man in our image, after our likeness: and let them have dominion over the fish of the sea, and over the fowl of the air, and over the cattle, and over all the earth, and over every creeping thing that creepeth upon the earth.⸨marg⸩⸨i⸩ᵏ⸨/i⸩ chap⸼ 5⸼ 1⸼⸨row⸩& 9⸼ 6⸼⸨row⸩1 Cor⸼ 11⸼ 7⸼⸨row⸩Ephes⸼ 4⸼ ⸨err:24⸼⸩14⸼⸨/err⸩⸨row⸩⸨err:Col⸼⸩Col⸨/err⸩ 3⸼ 10⸼
+₂₆ ¶ And God said, ⸨i⸩ᵏ⸨/i⸩ Let us make man in our image, after our likeness: and let them have dominion over the fish of the sea, and over the fowl of the air, and over the cattle, and over all the earth, and over every creeping thing that creepeth upon the earth.⸨marg⸩⸨i⸩ᵏ⸨/i⸩ chap⸼ 5⸼ 1⸼⸨row⸩& 9⸼ 6⸼⸨row⸩1 Cor⸼ 11⸼ 7⸼⸨row⸩Ephes⸼ 4⸼ ⸨fix:24⸼⸩14⸼⸨/fix⸩⸨row⸩⸨fix:Col⸼⸩Col⸨/fix⸩ 3⸼ 10⸼
 ₂₇ So God created man in his ⸨i⸩own⸨/i⸩ image, in the image of God created he him; ⸨i⸩ˡ⸨/i⸩ male and female created he them.⸨marg⸩⸨i⸩ˡ⸨/i⸩ Matt⸼ 19⸼ 4⸼⸨row⸩Wisd⸼ 2⸼ 23⸼
 ₂₈ And God blessed them, and God said unto them, ⸨i⸩ᵐ⸨/i⸩ Be fruitful, and multiply, and replenish the earth, and subdue it: and have dominion over the fish of the sea, and over the fowl of the air, and over every living thing that ⁺moveth upon the earth.⸨marg⸩⸨i⸩ᵐ⸨/i⸩ chap⸼ 9⸼ 1⸼⸨row⸩⁺ Heb⸼ ⸨i⸩creepeth⸨/i⸩.
 ₂₉ ¶ And God said, Behold, I have given you every herb ⁺bearing seed, which ⸨i⸩is⸨/i⸩ upon the face of all the earth, and every tree, in the which ⸨i⸩is⸨/i⸩ the fruit of a tree yielding seed; ⸨i⸩ⁿ⸨/i⸩ to you it shall be for meat.⸨marg⸩⁺ Heb⸼ ⸨i⸩seeding seed⸨/i⸩.⸨row⸩⸨i⸩ⁿ⸨/i⸩ chap⸼ 9⸼ 3⸼
-₃₀ And to every beast of the earth, and to every fowl of the air, and to ⸨err:every thing⸩everything⸨/err⸩ that creepeth upon the earth, wherein ⸨i⸩there is⸨/i⸩ ⁺life, ⸨i⸩I have given⸨/i⸩ every green herb for meat: and it was so.⸨marg⸩⁺ Heb⸼ ⸨i⸩a living soul⸨/i⸩.
+₃₀ And to every beast of the earth, and to every fowl of the air, and to ⸨fix:every thing⸩everything⸨/fix⸩ that creepeth upon the earth, wherein ⸨i⸩there is⸨/i⸩ ⁺life, ⸨i⸩I have given⸨/i⸩ every green herb for meat: and it was so.⸨marg⸩⁺ Heb⸼ ⸨i⸩a living soul⸨/i⸩.
 ₃₁ And ⸨i⸩ᵒ⸨/i⸩ God saw every thing that he had made, and, behold, ⸨i⸩it was⸨/i⸩ very good. And the evening and the morning were the sixth day.⸨marg⸩⸨i⸩ᵒ⸨/i⸩ Ecclus⸼ 39⸼ 16⸼

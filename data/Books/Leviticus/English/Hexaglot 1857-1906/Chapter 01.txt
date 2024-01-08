@@ -1,6 +1,6 @@
 ⸨cen⸩LEVITICUS, CHAPTER I⸼
 
-⸨err:1 ⸩⸨/err⸩⸨sc⸩And⸨/sc⸩ the ⸨sc⸩Lord⸨/sc⸩ called unto Moses, and spake unto him out of the tabernacle of the congregation, saying,
+⸨fix:1 ⸩⸨/fix⸩⸨sc⸩And⸨/sc⸩ the ⸨sc⸩Lord⸨/sc⸩ called unto Moses, and spake unto him out of the tabernacle of the congregation, saying,
 2 Speak unto the children of Israel, and say unto them, If any man of you bring an offering unto the ⸨sc⸩Lord⸨/sc⸩, ye shall bring your offering of the cattle, ⸨i⸩even⸨/i⸩ of the herd, and of the flock.
 3 If his offering ⸨i⸩be⸨/i⸩ a burnt sacrifice of the herd, let him offer a male without blemish: he shall offer it of his own voluntary will at the door of the tabernacle of the congregation before the ⸨sc⸩Lord⸨/sc⸩.
 4 And he shall put his hand upon the head of the burnt offering; and it shall be accepted for him to make atonement for him.
@@ -9,7 +9,7 @@
 7 And the sons of Aaron the priest shall put fire upon the altar, and lay the wood in order upon the fire:
 8 And the priests, Aaronʼs sons, shall lay the parts, the head, and the fat, in order upon the wood that ⸨i⸩is⸨/i⸩ on the fire which ⸨i⸩is⸨/i⸩ upon the altar:
 9 But his inwards and his legs shall he wash in water: and the priest shall burn all on the altar, ⸨i⸩to be⸨/i⸩ a burnt sacrifice, an offering made by fire, of a sweet savour unto the ⸨sc⸩Lord⸨/sc⸩.
-10 ¶ And if his offering ⸨i⸩be⸨/i⸩ of the flocks, ⸨i⸩namely⸨/i⸩⸨err:, ⸩⸨i⸩, ⸨/i⸩⸨/err⸩of the sheep, or of the goats, for a burnt sacrifice; he shall bring it a male without blemish.
+10 ¶ And if his offering ⸨i⸩be⸨/i⸩ of the flocks, ⸨i⸩namely⸨/i⸩⸨fix:, ⸩⸨i⸩, ⸨/i⸩⸨/fix⸩of the sheep, or of the goats, for a burnt sacrifice; he shall bring it a male without blemish.
 11 And he shall kill it on the side of the altar northward before the ⸨sc⸩Lord⸨/sc⸩: and the priests, Aaronʼs sons, shall sprinkle his blood round about upon the altar.
 12 And he shall cut it into his pieces, with his head and his fat: and the priest shall lay them in order on the wood that ⸨i⸩is⸨/i⸩ on the fire which ⸨i⸩is⸨/i⸩ upon the altar:
 13 But he shall wash the inwards and the legs with water: and the priest shall bring ⸨i⸩it⸨/i⸩ all, and burn ⸨i⸩it⸨/i⸩ upon the altar: it ⸨i⸩is⸨/i⸩ a burnt sacrifice, an offering made by fire, of a sweet savour unto the ⸨sc⸩Lord⸨/sc⸩.

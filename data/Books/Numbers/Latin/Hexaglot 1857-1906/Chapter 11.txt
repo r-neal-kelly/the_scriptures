@@ -19,7 +19,7 @@
 17 Ut descendam et loquar tibi: et auferam de spiritu tuo, tradamque eis, ut sustentent tecum onus populi, et non tu solus graveris.
 18 Populo quoque dices: Sanctificamini: cras comedetis carnes. Ego enim audivi vos dicere: Quis dabit nobis escas carnium? bene nobis erat in Ægypto. Ut det vobis Dominus carnes, et comedatis:
 19 Non uno die, nec duobus, vel quinque aut decem, nec viginti quidem,
-20 Sed usque ad mensem dierum, donec exeat per nares vestras, et vertatur in nauseam, eo quod repuleritis Dominum, qui in medio vestri est, et fleveritis coram eo, dicentes: Quare egressi sumus ex ⸨err:Ægypto⸩Egypto⸨/err⸩?
+20 Sed usque ad mensem dierum, donec exeat per nares vestras, et vertatur in nauseam, eo quod repuleritis Dominum, qui in medio vestri est, et fleveritis coram eo, dicentes: Quare egressi sumus ex ⸨fix:Ægypto⸩Egypto⸨/fix⸩?
 21 Et ait Moyses: Sexcenta millia peditum hujus populi sunt; et tu dices: Dabo eis esum carnium mense integro.
 22 Numquid ovium et boum multitudo cædetur, ut possit sufficere ad cibum? vel omnes pisces maris in unum congregabuntur, ut eos satient?
 23 Cui respondit Dominus: Numquid manus Domini invalida est? Jam nunc videbis utrum meus sermo opere compleatur.

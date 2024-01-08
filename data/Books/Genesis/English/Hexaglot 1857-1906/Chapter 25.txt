@@ -29,7 +29,7 @@
 27 And the boys grew: and Esau was a cunning hunter, a man of the field; and Jacob ⸨i⸩was⸨/i⸩ a plain man, dwelling in tents.
 28 And Isaac loved Esau, because he did eat of ⸨i⸩his⸨/i⸩ venison: but Rebekah loved Jacob.
 29 ¶ And Jacob sod pottage: and Esau came from the field, and he ⸨i⸩was⸨/i⸩ faint:
-30 And Esau said to Jacob, Feed me, I pray thee, with that same red ⸨i⸩pottage⸨/i⸩⸨err:; ⸩⸨i⸩; ⸨/i⸩⸨/err⸩for I ⸨i⸩am⸨/i⸩ faint: therefore was his name called Edom.
+30 And Esau said to Jacob, Feed me, I pray thee, with that same red ⸨i⸩pottage⸨/i⸩⸨fix:; ⸩⸨i⸩; ⸨/i⸩⸨/fix⸩for I ⸨i⸩am⸨/i⸩ faint: therefore was his name called Edom.
 31 And Jacob said, Sell me this day thy birthright.
 32 And Esau said, Behold, I ⸨i⸩am⸨/i⸩ at the point to die: and what profit shall this birthright do to me?
 33 And Jacob said, Swear to me this day; and he sware unto him: and he sold his birthright unto Jacob.

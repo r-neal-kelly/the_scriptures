@@ -17,7 +17,7 @@
 15 And one kid of the goats for a sin offering unto the ⸨sc⸩Lord⸨/sc⸩ shall be offered, beside the continual burnt offering, and his drink offering.
 16 And in the fourteenth day of the first month ⸨i⸩is⸨/i⸩ the passover of the ⸨sc⸩Lord⸨/sc⸩.
 17 And in the fifteenth day of this month ⸨i⸩is⸨/i⸩ the feast: seven days shall unleavened bread be eaten.
-18 In the first day ⸨i⸩shall be⸨/i⸩ an holy convocation; ye shall do no manner of servile work ⸨i⸩therein⸨/i⸩⸨err::⸩⸨i⸩:⸨/i⸩⸨/err⸩
+18 In the first day ⸨i⸩shall be⸨/i⸩ an holy convocation; ye shall do no manner of servile work ⸨i⸩therein⸨/i⸩⸨fix::⸩⸨i⸩:⸨/i⸩⸨/fix⸩
 19 But ye shall offer a sacrifice made by fire ⸨i⸩for⸨/i⸩ a burnt offering unto the ⸨sc⸩Lord⸨/sc⸩; two young bullocks, and one ram, and seven lambs of the first year: they shall be unto you without blemish:
 20 And their meat offering ⸨i⸩shall be of⸨/i⸩ flour mingled with oil: three tenth deals shall ye offer for a bullock, and two tenth deals for a ram;
 21 A several tenth deal shalt thou offer for every lamb, throughout the seven lambs:

@@ -17,7 +17,7 @@
 15 Nonne quasi alienas reputavit nos, et vendidit, comeditque pretium nostrum?
 16 Sed Deus tulit opes patris nostri, et eas tradidit nobis, ac filiis nostris: unde omnia quæ præcepit tibi Deus, fac.
 17 Surrexit itaque Jacob, et impositis liberis ac conjugibus suis super camelos, abiit.
-18 Tulitque omnem substantiam suam, et greges, et quidquid in ⸨err:Mesopotamia⸩Mesopatamia⸨/err⸩ acquisierat, pergens ad Isaac patrem suum in terram Chanaan.
+18 Tulitque omnem substantiam suam, et greges, et quidquid in ⸨fix:Mesopotamia⸩Mesopatamia⸨/fix⸩ acquisierat, pergens ad Isaac patrem suum in terram Chanaan.
 19 Eo tempore ierat Laban ad tondendas oves, et Rachel furata est idola patris sui.
 20 Noluitque Jacob confiteri socero suo quod fugeret.
 21 Cumque abiisset tam ipse quam omnia quæ juris sui erant, et amne transmisso pergeret contra montem Galaad,

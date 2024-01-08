@@ -22,7 +22,7 @@
 20 But bring your youngest brother unto me; so shall your words be verified, and ye shall not die. And they did so.
 21 ¶ And they said one to another, We ⸨i⸩are⸨/i⸩ verily guilty concerning our brother, in that we saw the anguish of his soul, when he besought us, and we would not hear; therefore is this distress come upon us.
 22 And Reuben answered them, saying, Spake I not unto you, saying, Do not sin against the child; and ye would not hear? therefore, behold, also his blood is required.
-23 And they knew not that Joseph understood ⸨i⸩them⸨/i⸩⸨err:; ⸩⸨i⸩; ⸨/i⸩⸨/err⸩for he spake unto them by an interpreter.
+23 And they knew not that Joseph understood ⸨i⸩them⸨/i⸩⸨fix:; ⸩⸨i⸩; ⸨/i⸩⸨/fix⸩for he spake unto them by an interpreter.
 24 And he turned himself about from them, and wept; and returned to them again, and communed with them, and took from them Simeon, and bound him before their eyes.
 25 ¶ Then Joseph commanded to fill their sacks with corn, and to restore every manʼs money into his sack, and to give them provision for the way: and thus did he unto them.
 26 And they laded their asses with the corn, and departed thence.
@@ -30,11 +30,11 @@
 28 And he said unto his brethren, My money is restored; and, lo, ⸨i⸩it is⸨/i⸩ even in my sack: and their heart failed ⸨i⸩them⸨/i⸩, and they were afraid, saying one to another, What ⸨i⸩is⸨/i⸩ this ⸨i⸩that⸨/i⸩ God hath done unto us?
 29 ¶ And they came unto Jacob their father unto the land of Canaan, and told him all that befell unto them; saying,
 30 The man, ⸨i⸩who is⸨/i⸩ the lord of the land, spake roughly to us, and took us for spies of the country.
-31 And we said unto him, We ⸨i⸩are⸨/i⸩ true ⸨i⸩men⸨/i⸩⸨err:; ⸩⸨i⸩; ⸨/i⸩⸨/err⸩we are no spies:
+31 And we said unto him, We ⸨i⸩are⸨/i⸩ true ⸨i⸩men⸨/i⸩⸨fix:; ⸩⸨i⸩; ⸨/i⸩⸨/fix⸩we are no spies:
 32 We ⸨i⸩be⸨/i⸩ twelve brethren, sons of our father; one ⸨i⸩is⸨/i⸩ not, and the youngest ⸨i⸩is⸨/i⸩ this day with our father in the land of Canaan.
-33 And the man, the lord of the country, said unto us, Hereby shall I know that ye ⸨i⸩are⸨/i⸩ true ⸨i⸩men⸨/i⸩⸨err:; ⸩⸨i⸩; ⸨/i⸩⸨/err⸩leave one of your brethren ⸨i⸩here⸨/i⸩ with me, and take ⸨i⸩food for⸨/i⸩ the famine of your households, and be gone:
-34 And bring your youngest brother unto me: then shall I know that ye ⸨i⸩are⸨/i⸩ no spies, but ⸨i⸩that⸨/i⸩ ye ⸨i⸩are⸨/i⸩ true ⸨i⸩men⸨/i⸩⸨err:: ⸩⸨i⸩: ⸨/i⸩⸨/err⸩so will I deliver you your brother, and ye shall traffick in the land.
+33 And the man, the lord of the country, said unto us, Hereby shall I know that ye ⸨i⸩are⸨/i⸩ true ⸨i⸩men⸨/i⸩⸨fix:; ⸩⸨i⸩; ⸨/i⸩⸨/fix⸩leave one of your brethren ⸨i⸩here⸨/i⸩ with me, and take ⸨i⸩food for⸨/i⸩ the famine of your households, and be gone:
+34 And bring your youngest brother unto me: then shall I know that ye ⸨i⸩are⸨/i⸩ no spies, but ⸨i⸩that⸨/i⸩ ye ⸨i⸩are⸨/i⸩ true ⸨i⸩men⸨/i⸩⸨fix:: ⸩⸨i⸩: ⸨/i⸩⸨/fix⸩so will I deliver you your brother, and ye shall traffick in the land.
 35 ¶ And it came to pass as they emptied their sacks, that, behold, every manʼs bundle of money ⸨i⸩was⸨/i⸩ in his sack: and when ⸨i⸩both⸨/i⸩ they and their father saw the bundles of money, they were afraid.
-36 And Jacob their father said unto them, Me have ye bereaved ⸨i⸩of my children⸨/i⸩⸨err:: ⸩⸨i⸩: ⸨/i⸩⸨/err⸩Joseph ⸨i⸩is⸨/i⸩ not, and Simeon ⸨i⸩is⸨/i⸩ not, and ye will take Benjamin ⸨i⸩away⸨/i⸩⸨err:: ⸩⸨i⸩: ⸨/i⸩⸨/err⸩all these things are against me.
+36 And Jacob their father said unto them, Me have ye bereaved ⸨i⸩of my children⸨/i⸩⸨fix:: ⸩⸨i⸩: ⸨/i⸩⸨/fix⸩Joseph ⸨i⸩is⸨/i⸩ not, and Simeon ⸨i⸩is⸨/i⸩ not, and ye will take Benjamin ⸨i⸩away⸨/i⸩⸨fix:: ⸩⸨i⸩: ⸨/i⸩⸨/fix⸩all these things are against me.
 37 And Reuben spake unto his father, saying, Slay my two sons, if I bring him not to thee: deliver him into my hand, and I will bring him to thee again.
 38 And he said, My son shall not go down with you; for his brother is dead, and he is left alone: if mischief befall him by the way in the which ye go, then shall ye bring down my gray hairs with sorrow to the grave.

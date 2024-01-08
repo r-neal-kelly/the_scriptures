@@ -1,8 +1,8 @@
-⸨cen⸩DEUTERONOMY⸨err:, ⸩. ⸨/err⸩CHAPTER I⸼
+⸨cen⸩DEUTERONOMY⸨fix:, ⸩. ⸨/fix⸩CHAPTER I⸼
 
-⸨err:1 ⸩⸨/err⸩⸨sc⸩These⸨/sc⸩ ⸨i⸩be⸨/i⸩ the words which Moses spake unto all Israel on this side Jordan in the wilderness, in the plain over against the Red ⸨i⸩sea⸨/i⸩, between Paran, and Tophel, and Laban, and Hazeroth, and Dizahab.
-2⸨err: (⸩⸨i⸩ (⸨/i⸩⸨/err⸩⸨i⸩There are⸨/i⸩ eleven daysʼ ⸨i⸩journey⸨/i⸩ from Horeb by the way of mount Seir unto Kadesh‑barnea.)
-3 And it came to pass in the fortieth year, in the eleventh month, on the first ⸨i⸩day⸨/i⸩ of the month, ⸨i⸩that⸨/i⸩ Moses spake unto the children of Israel, according unto all that the ⸨sc⸩Lord⸨/sc⸩ ⸨err:had⸩bad⸨/err⸩ given him in commandment unto them;
+⸨fix:1 ⸩⸨/fix⸩⸨sc⸩These⸨/sc⸩ ⸨i⸩be⸨/i⸩ the words which Moses spake unto all Israel on this side Jordan in the wilderness, in the plain over against the Red ⸨i⸩sea⸨/i⸩, between Paran, and Tophel, and Laban, and Hazeroth, and Dizahab.
+2⸨fix: (⸩⸨i⸩ (⸨/i⸩⸨/fix⸩⸨i⸩There are⸨/i⸩ eleven daysʼ ⸨i⸩journey⸨/i⸩ from Horeb by the way of mount Seir unto Kadesh‑barnea.)
+3 And it came to pass in the fortieth year, in the eleventh month, on the first ⸨i⸩day⸨/i⸩ of the month, ⸨i⸩that⸨/i⸩ Moses spake unto the children of Israel, according unto all that the ⸨sc⸩Lord⸨/sc⸩ ⸨fix:had⸩bad⸨/fix⸩ given him in commandment unto them;
 4 After he had slain Sihon the king of the Amorites, which dwelt in Heshbon, and Og the king of Bashan, which dwelt at Astaroth in Edrei:
 5 On this side Jordan, in the land of Moab, began Moses to declare this law, saying,
 6 The ⸨sc⸩Lord⸨/sc⸩ our God spake unto us in Horeb, saying, Ye have dwelt long enough in this mount:

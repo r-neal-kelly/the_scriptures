@@ -7,7 +7,7 @@
 5 Locutusque contra Deum et Moysen, ait: Cur eduxisti nos de Ægypto, ut moreremur in solitudine? Deest panis, non sunt aquæ: anima nostra jam nauseat super cibo isto levissimo.
 6 Quamobrem misit Dominus in populum ignitos serpentes, ad quorum plagas et mortes plurimorum,
 7 Venerunt ad Moysen, atque dixerunt: Peccavimus, quia locuti sumus contra Dominum et te: ora ut tollat a nobis serpentes. Oravitque Moyses pro populo,
-8 Et locutus est Dominus ad eum: Fac serpentem æneum, et pone eum pro signo⸨err:: ⸩. ⸨/err⸩qui percussus aspexerit eum, vivet.
+8 Et locutus est Dominus ad eum: Fac serpentem æneum, et pone eum pro signo⸨fix:: ⸩. ⸨/fix⸩qui percussus aspexerit eum, vivet.
 9 Fecit ergo Moyses SERPENTEM ÆNEUM, et posuit eum pro signo, quem cum percussi aspicerent, sanabantur.
 10 Profectique filii Israel castrametati sunt in Oboth.
 11 Unde egressi fixere tentoria in Jeabarim, in solitudine, quæ respicit Moab contra orientalem plagam.

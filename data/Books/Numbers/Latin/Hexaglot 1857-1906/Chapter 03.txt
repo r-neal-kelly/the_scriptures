@@ -10,7 +10,7 @@
 8 Et custodiant vasa tabernaculi, servientes in ministerio ejus.
 9 Dabisque dono Levitas
 10 Aaron et filiis ejus, quibus traditi sunt a filiis Israël. Aaron autem et filios ejus constitues super cultum sacerdotii. Externus, qui ad ministrandum accesserit, morietur.
-⸨err:11⸩11⸼⸨/err⸩ Locutusque est Dominus ad Moysen, dicens:
+⸨fix:11⸩11⸼⸨/fix⸩ Locutusque est Dominus ad Moysen, dicens:
 12 Ego tuli Levitas a filiis Israel pro omni primogenito, qui aperit vulvam in filiis Israel, eruntque Levitæ mei.
 13 Meum est enim omne primogenitum: ex quo percussi primogenitos in terra Ægypti: sanctificavi mihi quidquid primum nascitur in Israel ab homine usque ad pecus, mei sunt: ego Dominus.
 14 Locutusque est Dominus ad Moysen in deserto Sinai, dicens:

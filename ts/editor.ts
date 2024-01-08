@@ -2388,7 +2388,7 @@ class Editor
 
             const selected_child_element: Element =
                 selected_line_element.children[selected_child_idx];
-            const next_error_element: Element | null =
+            const next_element: Element | null =
                 (function (
                     this: Editor,
                 ):
@@ -2416,10 +2416,10 @@ class Editor
                     }
                 }.bind(this))();
 
-            if (next_error_element) {
-                Put_Child_At_Parent_Top_Y(this.children.lines, next_error_element);
-                selection.getRangeAt(0).setStart(next_error_element, 0);
-                selection.getRangeAt(0).setEnd(next_error_element, 1);
+            if (next_element) {
+                Put_Child_At_Parent_Top_Y(this.children.lines, next_element);
+                selection.getRangeAt(0).setStart(next_element, 0);
+                selection.getRangeAt(0).setEnd(next_element, 1);
             } else {
                 this.lines[0].Element().focus();
                 selection.getRangeAt(0).setStart(this.lines[0].Element(), 0);
@@ -2474,7 +2474,7 @@ class Editor
 
             const selected_child_element: Element =
                 selected_line_element.children[selected_child_idx];
-            const next_error_element: Element | null =
+            const next_element: Element | null =
                 (function (
                     this: Editor,
                 ):
@@ -2504,10 +2504,10 @@ class Editor
                     }
                 }.bind(this))();
 
-            if (next_error_element) {
-                Put_Child_At_Parent_Top_Y(this.children.lines, next_error_element);
-                selection.getRangeAt(0).setStart(next_error_element, 0);
-                selection.getRangeAt(0).setEnd(next_error_element, 1);
+            if (next_element) {
+                Put_Child_At_Parent_Top_Y(this.children.lines, next_element);
+                selection.getRangeAt(0).setStart(next_element, 0);
+                selection.getRangeAt(0).setEnd(next_element, 1);
             } else {
                 this.lines[0].Element().focus();
                 selection.getRangeAt(0).setStart(this.lines[0].Element(), 0);

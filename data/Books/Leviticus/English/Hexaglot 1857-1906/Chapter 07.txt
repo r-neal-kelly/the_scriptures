@@ -36,5 +36,5 @@
 34 For the wave breast and the heave shoulder have I taken of the children of Israel from off the sacrifices of their peace offerings, and have given them unto Aaron the priest and unto his sons by a statute for ever from among the children of Israel.
 35 ¶ This ⸨i⸩is the portion⸨/i⸩ of the anointing of Aaron, and of the anointing of his sons, out of the offerings of the ⸨sc⸩Lord⸨/sc⸩ made by fire, in the day ⸨i⸩when⸨/i⸩ he presented them to minister unto the ⸨sc⸩Lord⸨/sc⸩ in the priestʼs office;
 36 Which the ⸨sc⸩Lord⸨/sc⸩ commanded to be given them of the children of Israel, in the day that he anointed them, ⸨i⸩by⸨/i⸩ a statute for ever throughout their generations.
-⸨err:37⸩27⸨/err⸩ This ⸨i⸩is⸨/i⸩ the law of the burnt offering, of the meat offering, and of the sin offering, and of the trespass offering, and of the consecrations, and of the sacrifice of the peace offerings;
+⸨fix:37⸩27⸨/fix⸩ This ⸨i⸩is⸨/i⸩ the law of the burnt offering, of the meat offering, and of the sin offering, and of the trespass offering, and of the consecrations, and of the sacrifice of the peace offerings;
 38 Which the ⸨sc⸩Lord⸨/sc⸩ commanded Moses in mount Sinai, in the day that he commanded the children of Israel to offer their oblations unto the ⸨sc⸩Lord⸨/sc⸩, in the wilderness of Sinai.

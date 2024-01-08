@@ -2,7 +2,7 @@
 ⸨i⸩Returns to Canaan where Lot separates from him, and receives the promise of Canaan and journeys to Hebron, 14b–21.⸨/i⸩
 ⸨i⸩Chedorlaomerʼs attack on Sodom and Gomorrah: Lot taken captive, 22–4.⸨/i⸩
 ⸨i⸩Law of tithes enacted, 25–9.⸨/i⸩
-(Cf⸼ Gen⸼ xii⸼ 4–10, 15–17, 19–20; xiii⸼ 11–18; xiv⸼ 8–14⸨err:, ⸩; ⸨/err⸩21–4.)
+(Cf⸼ Gen⸼ xii⸼ 4–10, 15–17, 19–20; xiii⸼ 11–18; xiv⸼ 8–14⸨fix:, ⸩; ⸨/fix⸩21–4.)
 
 ⸨in⸩13¹ And Abram journeyed from Haran, and he took Sarai, his wife, and Lot, his brother Haranʼs son, to the land of Canaan, and he came into †Asshur†, and proceeded to Shechem, and dwelt near a lofty oak.
 ² And he saw, and, behold, the land was very pleasant from the entering of Hamath to the lofty oak.
@@ -19,7 +19,7 @@
 ¹³ And it came to pass when Pharaoh seized Sarai, the wife of Abram, that the Lord plagued Pharaoh and his house with great plagues because of Sarai, Abramʼs wife.
 ¹⁴ And Abram was very glorious by reason of possessions in sheep, and cattle, and asses, and horses, and camels, and menservants, and maidservants, and in silver and gold exceedingly. And Lot also, his brotherʼs son, was wealthy.
 ¹⁵ And Pharaoh gave back Sarai, the wife of Abram, and he sent him out of the land of Egypt, and he journeyed to the place where he had pitched his tent at the beginning, to the place of the altar, with Ai on the east, and Bethel on the west, and he blessed the Lord his God who had brought him back in peace.
-¹⁶ And it came to pass in the forty‑first jubilee, in the third year of the first week, that he returned to this place and offered thereon a burnt sacrifice, and called on the name of the Lord, and said: ‘Thou, the ⸨err:Most⸩most⸨/err⸩ ⸨err:High⸩high⸨/err⸩ God, art my God for ever and ever.’
+¹⁶ And it came to pass in the forty‑first jubilee, in the third year of the first week, that he returned to this place and offered thereon a burnt sacrifice, and called on the name of the Lord, and said: ‘Thou, the ⸨fix:Most⸩most⸨/fix⸩ ⸨fix:High⸩high⸨/fix⸩ God, art my God for ever and ever.’
 ¹⁷ And in the fourth year of this week Lot parted from him, and Lot dwelt in Sodom, and the men of Sodom were sinners exceedingly.
 ¹⁸ And it grieved him in his heart that his brotherʼs son had parted from him; for he had no children.
 ¹⁹ In that year when Lot was taken captive, the Lord said unto Abram, after that Lot had parted from him, in the fourth year of this week: ‘Lift up thine eyes from the place where thou art dwelling, northward and southward, and westward and eastward.
@@ -31,5 +31,5 @@
 ²⁵       .       .       .       .       .       .       .       .       .       .       .       for Abram, and for his seed, a tenth of the first fruits to the Lord, and the Lord ordained it as an ordinance for ever that they should give it to the priests who served before Him, that they should possess it for ever.
 ²⁶ And to this law there is no limit of days; for He hath ordained it for the generations for ever that they should give to the Lord the tenth of everything, of the seed and of the wine and of the oil and of the cattle and of the sheep.
 ²⁷ And He gave (it) unto His priests to eat and to drink with joy before Him.
-²⁸ And the king of Sodom came to him and bowed himself before him, and said: ‘Our ⸨err:lord⸩Lord⸨/err⸩ Abram, give unto us the souls which thou hast rescued, but let the booty be thine.’
+²⁸ And the king of Sodom came to him and bowed himself before him, and said: ‘Our ⸨fix:lord⸩Lord⸨/fix⸩ Abram, give unto us the souls which thou hast rescued, but let the booty be thine.’
 ²⁹ And Abram said unto him: ‘I lift up my hands to the Most High God, that from a thread to a shoe‑latchet I shall not take aught that is thine lest thou shouldst say, I have made Abram rich; save only what the young men have eaten, and the portion of the men who went with me—Aner, Eschol, and Mamre. These shall take their portion.’

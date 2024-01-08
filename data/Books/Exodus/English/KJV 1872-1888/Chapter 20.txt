@@ -4,7 +4,7 @@
 ₁ ⸨sc⸩And⸨/sc⸩ God spake all these words, saying,⸨marg⸩
 ₂ ⸨i⸩ᵃ⸨/i⸩ I ⸨i⸩am⸨/i⸩ the ⸨sc⸩Lord⸨/sc⸩ thy God, which have brought thee out of the land of Egypt, out of the house of ⁺bondage.⸨marg⸩⸨i⸩ᵃ⸨/i⸩ Deut⸼ 5⸼ 6⸼⸨row⸩Psal⸼ 81⸼ 10⸼⸨row⸩⁺ Heb⸼ ⸨i⸩servants⸨/i⸩.
 ₃ Thou shalt have no other gods before me.⸨marg⸩
-₄ ⸨i⸩ᵇ⸨/i⸩ Thou shalt not make unto thee any graven image, or any likeness ⸨i⸩of any thing⸨/i⸩ that ⸨i⸩is⸨/i⸩ in heaven above, or that ⸨i⸩is⸨/i⸩ in the earth beneath, or that ⸨i⸩is⸨/i⸩ in the water under the earth:⸨marg⸩⸨i⸩ᵇ⸨/i⸩ Lev⸼ ⸨err:26⸼⸩16⸼⸨/err⸩ 1⸼⸨row⸩Psal⸼ 97⸼ 7⸼
+₄ ⸨i⸩ᵇ⸨/i⸩ Thou shalt not make unto thee any graven image, or any likeness ⸨i⸩of any thing⸨/i⸩ that ⸨i⸩is⸨/i⸩ in heaven above, or that ⸨i⸩is⸨/i⸩ in the earth beneath, or that ⸨i⸩is⸨/i⸩ in the water under the earth:⸨marg⸩⸨i⸩ᵇ⸨/i⸩ Lev⸼ ⸨fix:26⸼⸩16⸼⸨/fix⸩ 1⸼⸨row⸩Psal⸼ 97⸼ 7⸼
 ₅ Thou shalt not bow down thyself to them, nor serve them: for I the ⸨sc⸩Lord⸨/sc⸩ thy God ⸨i⸩am⸨/i⸩ a jealous God, visiting the iniquity of the fathers upon the children unto the third and fourth ⸨i⸩generation⸨/i⸩ of them that hate me;⸨marg⸩
 ₆ And shewing mercy unto thousands of them that love me, and keep my commandments.⸨marg⸩
 ₇ ⸨i⸩ᶜ⸨/i⸩ Thou shalt not take the name of the ⸨sc⸩Lord⸨/sc⸩ thy God in vain; for the ⸨sc⸩Lord⸨/sc⸩ will not hold him guiltless that taketh his name in vain.⸨marg⸩⸨i⸩ᶜ⸨/i⸩ Lev⸼ 19⸼ 12⸼⸨row⸩Deut⸼ 5⸼ 11⸼⸨row⸩Matt⸼ 5⸼ 33⸼
@@ -19,7 +19,7 @@
 ₁₆ Thou shalt not bear false witness against thy neighbour.⸨marg⸩
 ₁₇ ⸨i⸩ʰ⸨/i⸩ Thou shalt not covet thy neighbourʼs house, thou shalt not covet thy neighbourʼs wife, nor his manservant, nor his maidservant, nor his ox, nor his ass, nor any thing that ⸨i⸩is⸨/i⸩ thy neighbourʼs.⸨marg⸩⸨i⸩ʰ⸨/i⸩ Rom⸼ 7⸼ 7⸼
 ₁₈ ¶ And ⸨i⸩ⁱ⸨/i⸩ all the people saw the thunderings, and the lightnings, and the noise of the trumpet, and the mountain smoking: and when the people saw ⸨i⸩it⸨/i⸩, they removed, and stood afar off.⸨marg⸩⸨i⸩ⁱ⸨/i⸩ Heb⸼ 12⸼ 18⸼
-₁₉ And they said unto Moses, ⸨i⸩ᵏ⸨/i⸩ Speak thou with us, and we will hear: but⸨err: ⸩ ⸨i⸩ᵈ⸨/i⸩ ⸨/err⸩let not God speak with us, lest we die.⸨marg⸩⸨i⸩ᵏ⸨/i⸩ Deut⸼ ⸨err:5⸼⸩5⸨/err⸩ 27⸼⸨row⸩& 18⸼ 16⸼
+₁₉ And they said unto Moses, ⸨i⸩ᵏ⸨/i⸩ Speak thou with us, and we will hear: but⸨fix: ⸩ ⸨i⸩ᵈ⸨/i⸩ ⸨/fix⸩let not God speak with us, lest we die.⸨marg⸩⸨i⸩ᵏ⸨/i⸩ Deut⸼ ⸨fix:5⸼⸩5⸨/fix⸩ 27⸼⸨row⸩& 18⸼ 16⸼
 ₂₀ And Moses said unto the people, Fear not: for God is come to prove you, and that his fear may be before your faces, that ye sin not.⸨marg⸩
 ₂₁ And the people stood afar off, and Moses drew near unto the thick darkness where God ⸨i⸩was⸨/i⸩.⸨marg⸩
 ₂₂ ¶ And the ⸨sc⸩Lord⸨/sc⸩ said unto Moses, Thus thou shalt say unto the children of Israel, Ye have seen that I have talked with you from heaven.⸨marg⸩

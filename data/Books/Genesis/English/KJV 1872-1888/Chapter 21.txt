@@ -1,8 +1,8 @@
 ⸨cen⸩CHAPTER XXI⸼
 ⸨i⸩₁ Isaac is born. ₄ He is circumcised. ₆ Sarahʼs joy. ₉ Hagar and Ishmael are cast forth. ₁₅ Hagar in distress. ₁₇ The angel comforteth her. ₂₂ Abimelechʼs covenant with Abraham at Beer‑sheba.⸨/i⸩
 
-₁ ⸨sc⸩And⸨/sc⸩ the ⸨sc⸩Lord⸨/sc⸩ visited Sarah as he had said, and the ⸨sc⸩Lord⸨/sc⸩ did unto Sarah ⸨i⸩ᵃ⸨/i⸩ as he had spoken.⸨marg⸩⸨i⸩ᵃ⸨/i⸩ chap⸼ 17⸼ ⸨err:19⸼⸩19⸨/err⸩⸨row⸩& 18⸼ 10⸼
-₂ For Sarah ⸨i⸩ᵇ⸨/i⸩ conceived, and bare Abraham a son in his old age, at the set time of which God had spoken to him.⸨marg⸩⸨i⸩ᵇ⸨/i⸩ Acts 7⸼ 8⸼⸨row⸩Gal⸼ 4⸼ 22⸼⸨row⸩⸨err:Hebr⸼⸩Heb⸼⸨/err⸩ 11⸼ 11⸼
+₁ ⸨sc⸩And⸨/sc⸩ the ⸨sc⸩Lord⸨/sc⸩ visited Sarah as he had said, and the ⸨sc⸩Lord⸨/sc⸩ did unto Sarah ⸨i⸩ᵃ⸨/i⸩ as he had spoken.⸨marg⸩⸨i⸩ᵃ⸨/i⸩ chap⸼ 17⸼ ⸨fix:19⸼⸩19⸨/fix⸩⸨row⸩& 18⸼ 10⸼
+₂ For Sarah ⸨i⸩ᵇ⸨/i⸩ conceived, and bare Abraham a son in his old age, at the set time of which God had spoken to him.⸨marg⸩⸨i⸩ᵇ⸨/i⸩ Acts 7⸼ 8⸼⸨row⸩Gal⸼ 4⸼ 22⸼⸨row⸩⸨fix:Hebr⸼⸩Heb⸼⸨/fix⸩ 11⸼ 11⸼
 ₃ And Abraham called the name of his son that was born unto him, whom Sarah bare to him, Isaac.⸨marg⸩
 ₄ And Abraham circumcised his son Isaac being eight days old, ⸨i⸩ᶜ⸨/i⸩ as God had commanded him.⸨marg⸩⸨i⸩ᶜ⸨/i⸩ chap⸼ 17⸼ 12⸼
 ₅ And Abraham was an hundred years old, when his son Isaac was born unto him.⸨marg⸩
@@ -10,7 +10,7 @@
 ₇ And she said, Who would have said unto Abraham, that Sarah should have given children suck? for I have born ⸨i⸩him⸨/i⸩ a son in his old age.⸨marg⸩
 ₈ And the child grew, and was weaned: and Abraham made a great feast the ⸨i⸩same⸨/i⸩ day that Isaac was weaned.⸨marg⸩
 ₉ ¶ And Sarah saw the son of Hagar the Egyptian, which she had born unto Abraham, mocking.⸨marg⸩
-₁₀ Wherefore she said unto Abraham, ⸨i⸩ᵈ⸨/i⸩ Cast out this bondwoman and her son: for the son of this bondwoman shall not be heir with my son, ⸨i⸩even⸨/i⸩ with Isaac.⸨marg⸩⸨i⸩ᵈ⸨/i⸩ Gal⸼ 4⸼ ⸨err:30⸼⸩10⸼⸨/err⸩
+₁₀ Wherefore she said unto Abraham, ⸨i⸩ᵈ⸨/i⸩ Cast out this bondwoman and her son: for the son of this bondwoman shall not be heir with my son, ⸨i⸩even⸨/i⸩ with Isaac.⸨marg⸩⸨i⸩ᵈ⸨/i⸩ Gal⸼ 4⸼ ⸨fix:30⸼⸩10⸼⸨/fix⸩
 ₁₁ And the thing was very grievous in Abrahamʼs sight because of his son.⸨marg⸩
 ₁₂ ¶ And God said unto Abraham, Let it not be grievous in thy sight because of the lad, and because of thy bondwoman; in all that Sarah hath said unto thee, hearken unto her voice; for in Isaac shall thy seed be called.⸨marg⸩
 ₁₃ And also of the son of the bondwoman will I make a nation, because he ⸨i⸩is⸨/i⸩ thy seed.⸨marg⸩

@@ -1,4 +1,4 @@
-⸨in⸩⸨i⸩Proverbs⸨/i⸩.—Tischendorf, following the Codex Vaticanus, has the subjoined omissions⸨err::—⸩: –⸨/err⸩
+⸨in⸩⸨i⸩Proverbs⸨/i⸩.—Tischendorf, following the Codex Vaticanus, has the subjoined omissions⸨fix::—⸩: –⸨/fix⸩
 ⸨in⸩Prov⸼ iv⸼ 5. “Get wisdom, get understanding; forget it not; neither decline from the words of my mouth.” Ver⸼ 7, ⸨lang:Greek⸩Ἀρχὴ σοφίας κτῆσαι σοφίαν καὶ ἐν πάσῃ κτήσει σου κτῆσαι σύνεσιν⸨/lang⸩, “Wisdom is the principal thing, therefore get wisdom,” etc⸼
 ⸨in⸩Prov⸼ viii⸼ 29. “When he gave to the sea his decree, that the waters should not pass his commandment.” Vers⸼ 32, 33, “Blessed are those who keep my ways;” “Hear instruction and be wise; refuse it not.”
 ⸨in⸩Prov⸼ xiii⸼ 6. “Righteousness keepeth him that is upright in the way; but wickedness overthroweth the sinner.”
@@ -8,7 +8,7 @@
 ⸨in⸩Prov⸼ xix⸼ 1, 2. “Better is the poor that walketh in his integrity, than ⸨i⸩he that is⸨/i⸩ perverse in his lips, and is a fool. Also that the soul be without knowledge is not good,” etc⸼
 ⸨in⸩Prov⸼ xxi⸼ 5. “The thoughts of the diligent tend only to plenteousness; but of every one that is hasty only to want.”
 ⸨in⸩Prov⸼ xxii⸼ 6. “Train up a child in the way he should go; and when he is old, he will not depart from it.”
-⸨in⸩Such omissions as these are serious⸨err:; ⸩⸨i⸩; ⸨/i⸩⸨/err⸩we have supplied them, with one exception, from Stier and Theile.
+⸨in⸩Such omissions as these are serious⸨fix:; ⸩⸨i⸩; ⸨/i⸩⸨/fix⸩we have supplied them, with one exception, from Stier and Theile.
 ⸨in⸩Prov⸼ xi⸼ 31. ⸨lang:Greek⸩Εἰ ὁ μὲν δίκαιος μόλις σώζεται, ὁ ἀσεβὴς καὶ ἀμαρτωλὸς ποῦ φανεῖται⸨/lang⸩, agreeing with the Hebrew; cited, 1 Pet⸼ iv⸼ 18.
 ⸨in⸩From Prov⸼ xv⸼ 27, to ver⸼ 10, of the following chapter, Tischendorf retains the arrangement of the Codex Vaticanus. In the Hexaglot Bible the verses are arranged in the same order as the Hebrew.
 ⸨in⸩The interpolations in this book are as numerous as the omissions, but we think the former a poor substitute for the latter; our readers will judge for themselves.
@@ -18,5 +18,5 @@
 ⸨in⸩Prov⸼ xv⸼ 5. “The beginning of a good way is, to do that which is just, and is more acceptable before God than to offer sacrifice. He who seeketh the Lord shall find knowledge with righteousness, and those who seek him aright shall find peace.”
 ⸨in⸩Prov⸼ xviii⸼ 22. “Whoso putteth away a good wife, putteth away good; but he that keepeth an adulteress is foolish and ungodly.”
 ⸨in⸩Prov⸼ xxii⸼ 8. “God blesseth a cheerful and liberal man; and he will accomplish the variety of his works.” Ver⸼ 14, “There are evil ways before a man, and he loveth not to turn away from them; but it is necessary to turn from a crooked and evil way.”
-⸨in⸩Prov⸼ xxvi⸼ 11. “There is a shame which leadeth to sin, and there is a shame which is a glory and grace.” Prov⸼ xxvii⸼ 20. “He that fixes the eye is an abomination to the Lord; so are the undisciplined and unrestrained in tongue.” Ver⸼ 21, “The heart of the lawless seeketh after evil, but the heart of the upright seeketh after knowledge.” Prov⸼ xxviii⸼ 17. “Chastise a son and he will love thee, and will give an ornament to thy soul; he will by no means listen to a transgressing nation⸨err:.”⸩.⸨/err⸩
+⸨in⸩Prov⸼ xxvi⸼ 11. “There is a shame which leadeth to sin, and there is a shame which is a glory and grace.” Prov⸼ xxvii⸼ 20. “He that fixes the eye is an abomination to the Lord; so are the undisciplined and unrestrained in tongue.” Ver⸼ 21, “The heart of the lawless seeketh after evil, but the heart of the upright seeketh after knowledge.” Prov⸼ xxviii⸼ 17. “Chastise a son and he will love thee, and will give an ornament to thy soul; he will by no means listen to a transgressing nation⸨fix:.”⸩.⸨/fix⸩
 ⸨in⸩Prov⸼ xxix⸼ 25. “Ungodliness bringeth to a man calamity, but he that trusteth in the Lord shall be saved;” and ver⸼ 27, “A son that guardeth his speech shall be without destruction, and the receiver hath received him. Let nothing false be said with the tongue to the king, neither let any falsehood proceed from his tongue. The kingʼs tongue is a sword, and not made of flesh, and whosoever is delivered up shall be broken to pieces. For, if his wrath be kindled, he consumeth men with their sinews, and devoureth the bones of men, and they burn together as a flame, so that they are unfit for food for young vultures.”

@@ -1,5 +1,5 @@
 ⸨in⸩⸨i⸩Ezekiel⸨/i⸩.—The Book of Ezekiel, unlike that of Jeremiah, is arranged in chronological order in the Greek as well as in the Hebrew text.
-⸨in⸩Chap⸼ i⸼⸨err:–⸩—⸨/err⸩iii⸼ The son of man, viz⸼, Ezekiel, receives the commission to deliver Godʼs message to the house of Israel. Chap⸼ iv⸼⸨err:–⸩—⸨/err⸩xxiv⸼, Godʼs denunciations against the rebellious house. Chap⸼ xxv⸼⸨err:–⸩—⸨/err⸩xxxii⸼ His denunciations against the Moabites, the Edomites, the Philistines, against Tyre and Zidon, and against Egypt and its Pharaoh. Chap⸼ xxxiii⸼⸨err:–⸩—⸨/err⸩xlviii⸼ Divine warnings to the wicked, and promises to the righteous, and predictions of the first and the second restoration of the Jewish people.
+⸨in⸩Chap⸼ i⸼⸨fix:–⸩—⸨/fix⸩iii⸼ The son of man, viz⸼, Ezekiel, receives the commission to deliver Godʼs message to the house of Israel. Chap⸼ iv⸼⸨fix:–⸩—⸨/fix⸩xxiv⸼, Godʼs denunciations against the rebellious house. Chap⸼ xxv⸼⸨fix:–⸩—⸨/fix⸩xxxii⸼ His denunciations against the Moabites, the Edomites, the Philistines, against Tyre and Zidon, and against Egypt and its Pharaoh. Chap⸼ xxxiii⸼⸨fix:–⸩—⸨/fix⸩xlviii⸼ Divine warnings to the wicked, and promises to the righteous, and predictions of the first and the second restoration of the Jewish people.
 ⸨in⸩Although there is no alteration in the order of chapters in the Book of Ezekiel, it has been found necessary, occasionally, to re‑arrange the verses. There is no little confusion, not only in the arrangement, but in the numeration of the verses in different editions of the Codex Vaticanus. The excellent Oxford edition of 1848 numbers the beginning of Ezekiel vii⸼ thus: (blank) 3, 7, 8, 9, 7, 4, 5; Bagster numbers the same verses: (blank) 2, 3, 7, 8, 9, 7, 4, 5; Tisch⸼, 2, 6, 7, 8, 9, 3, 4, 5; we have ventured to arrange and number these verses in order of the Hebrew.
 ⸨in⸩Chap⸼ xxi⸼ of the Hebrew corresponds to chap⸼ xx⸼ 45 of the other languages. In this instance the French, which followed the Hebrew division, has been altered for the sake of uniformity.
 ⸨in⸩Chap⸼ xxxii⸼ 20. Here again there is great discrepancy in the numeration of verses in the Greek copies, all of which appears to arise from the omission, or from an attempt to conceal the omission, of ver⸼ 19. Verses 19 and 20 in Tischendorf form ver⸼ 20 in the Hexaglot, as in the Hebrew.
@@ -20,8 +20,8 @@
 ⸨col⸩vi⸼ 8⸨col⸩⸨lang:Greek⸩καὶ ὑπολείψομαι⸨/lang⸩⸨col⸩2
 ⸨col⸩vi⸼ 9⸨col⸩⸨lang:Greek⸩τῇ ἀποστάσῃ ἀπ᾽ ἐμοῦ⸨/lang⸩⸨col⸩4
 ⸨col⸩vi⸼ 10⸨col⸩⸨lang:Greek⸩οὐκ εἰς … κακὰ ταῦτα⸨/lang⸩⸨col⸩10
-⸨col⸩vii⸼ 5⸨err:–⸩—⸨/err⸩7⸨col⸩⸨lang:Greek⸩κακία μία … ἡ πλοκὴ⸨/lang⸩⸨col⸩21
-⸨col⸩vii⸼ 11⸨err:–⸩—⸨/err⸩14⸨col⸩⸨lang:Greek⸩καὶ οὐκ … πλῆθος αὐτῆς⸨/lang⸩⸨col⸩48
+⸨col⸩vii⸼ 5⸨fix:–⸩—⸨/fix⸩7⸨col⸩⸨lang:Greek⸩κακία μία … ἡ πλοκὴ⸨/lang⸩⸨col⸩21
+⸨col⸩vii⸼ 11⸨fix:–⸩—⸨/fix⸩14⸨col⸩⸨lang:Greek⸩καὶ οὐκ … πλῆθος αὐτῆς⸨/lang⸩⸨col⸩48
 ⸨col⸩vii⸼ 16⸨col⸩⸨lang:Greek⸩ὡς περιστεραῖ μελετητικαί⸨/lang⸩⸨col⸩3
 ⸨col⸩vii⸼ 19⸨col⸩⸨lang:Greek⸩τὸ ἀργύριον … ὄργης Κυρίου⸨/lang⸩⸨col⸩15
 ⸨col⸩vii⸼ 24⸨col⸩⸨lang:Greek⸩καὶ ἄξω … οἴκους αὐτῶν⸨/lang⸩⸨col⸩9
@@ -52,9 +52,9 @@
 ⸨col⸩xxxii⸼ 19⸨col⸩⸨lang:Greek⸩ἐξ ὑδάτων … μετὰ ἀπεριτμήτων⸨/lang⸩⸨col⸩8
 ⸨col⸩xxxii⸼ 23⸨col⸩⸨lang:Greek⸩οἳ ἔδωκαν … πίπτοντες μαχαίρᾳ⸨/lang⸩⸨col⸩21
 ⸨col⸩xxxii⸼ 25⸨col⸩⸨lang:Greek⸩ἐδόθη κοίτη … τραυματιῶν μαχαίρᾳ⸨/lang⸩⸨col⸩16
-⸨col⸩xxxii⸼ 28⸨col⸩⸨lang:Greek⸩συντριβήσῃ⸨err:, ⸩ ⸨/err⸩καὶ⸨/lang⸩⸨col⸩2
+⸨col⸩xxxii⸼ 28⸨col⸩⸨lang:Greek⸩συντριβήσῃ⸨fix:, ⸩ ⸨/fix⸩καὶ⸨/lang⸩⸨col⸩2
 ⸨col⸩xxxii⸼ 31⸨col⸩⸨lang:Greek⸩τραυματίαι μαχαίρᾳ … δύναμις αὐτοῦ⸨/lang⸩⸨col⸩7
-⸨col⸩xxxiii⸼ 25⸨err:–⸩—⸨/err⸩27⸨col⸩⸨lang:Greek⸩οὕτως εἶπε … εἰπὸν αὐτοῖς⸨/lang⸩⸨col⸩43
+⸨col⸩xxxiii⸼ 25⸨fix:–⸩—⸨/fix⸩27⸨col⸩⸨lang:Greek⸩οὕτως εἶπε … εἰπὸν αὐτοῖς⸨/lang⸩⸨col⸩43
 ⸨col⸩xxxiv⸼ 9⸨col⸩⸨lang:Greek⸩ἀκούσατε λόγον Κυρίου⸨/lang⸩⸨col⸩3
 ⸨col⸩xxxv⸼ 11⸨col⸩⸨lang:Greek⸩καὶ κατὰ … ἐν αὐτοῖς⸨/lang⸩⸨col⸩13
 ⸨col⸩xxxv⸼ 13⸨col⸩⸨lang:Greek⸩καὶ ἐκπλήθησας … σου καὶ⸨/lang⸩⸨col⸩7
@@ -71,7 +71,7 @@
 ⸨in⸩A few of these are of considerable importance; viz⸼, x⸼ 14. “And every one had four faces: the first ⸨i⸩was⸨/i⸩ the face of a cherub, and the second face was the face of a man, and the third, the face of a lion, and the fourth, the face of an eagle.”
 ⸨in⸩xiii⸼ 11, 12. “This city shall not be your caldron; neither shall ye be the flesh in the midst thereof; but I will judge you in the border of Israel. And ye shall know that I am the Lord: for ye have not walked in my statutes, neither executed my judgments, but have done after the manners of the heathen that ⸨i⸩are⸨/i⸩ round about you.”
 ⸨in⸩xxvii⸼ 31, 32. “And they shall make themselves utterly bald for thee, and gird them with sackcloth, and they shall weep for thee with bitterness of heart, ⸨i⸩and⸨/i⸩ bitter wailing … ⸨i⸩saying⸨/i⸩, What ⸨i⸩city is⸨/i⸩ like Tyrus, like the destroyed in the midst of the sea?”
-⸨in⸩xxxiii⸼ 25⸨err:–⸩—⸨/err⸩27. “Thus saith the Lord God, Ye eat with the blood, and lift up your eyes towards your idols, and shed blood: and shall ye possess the land? Ye stand upon your sword, ye work abomination, and ye defile every one his neighbourʼs wife: and shall ye possess the land? Say thou thus unto them.”
-⸨in⸩xxxix⸼ 28. “But I have gathered them” (Hebrew and Greek, ⸨i⸩But I will gather them⸨/i⸩⸨err:) ⸩⸨i⸩) ⸨/i⸩⸨/err⸩unto their own land, and have left (Hebrew and Greek, ⸨i⸩and will leave⸨/i⸩⸨err:) ⸩⸨i⸩) ⸨/i⸩⸨/err⸩none of them any more there.”
+⸨in⸩xxxiii⸼ 25⸨fix:–⸩—⸨/fix⸩27. “Thus saith the Lord God, Ye eat with the blood, and lift up your eyes towards your idols, and shed blood: and shall ye possess the land? Ye stand upon your sword, ye work abomination, and ye defile every one his neighbourʼs wife: and shall ye possess the land? Say thou thus unto them.”
+⸨in⸩xxxix⸼ 28. “But I have gathered them” (Hebrew and Greek, ⸨i⸩But I will gather them⸨/i⸩⸨fix:) ⸩⸨i⸩) ⸨/i⸩⸨/fix⸩unto their own land, and have left (Hebrew and Greek, ⸨i⸩and will leave⸨/i⸩⸨fix:) ⸩⸨i⸩) ⸨/i⸩⸨/fix⸩none of them any more there.”
 ⸨in⸩xl⸼ 38, 39. “Where they washed the burnt‑offering. And in the porch of the gate ⸨i⸩were⸨/i⸩ two tables on this side, and two tables on that side.”
 ⸨in⸩At Ezekiel viii⸼ 17, we meet with one of the ⸨rtl⸩⸨lang:Hebrew⸩תקון ספרים⸨/lang⸩⸨/rtl⸩ or the corrections of the Scribes, ⸨rtl⸩⸨lang:Hebrew⸩אֶל־אַפָּם⸨/lang⸩⸨/rtl⸩ “to ⸨i⸩their⸨/i⸩ face” or “nose,” for ⸨rtl⸩⸨lang:Hebrew⸩אֶל־אַפַּי⸨/lang⸩⸨/rtl⸩ “to my nose.” Upon this the Greek ⸨lang:Greek⸩μυκτηρίζοντες⸨/lang⸩ throws no light. We mention this here merely because we have given the other corrections.

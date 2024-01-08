@@ -34,7 +34,7 @@ export function Is_Symbol(
 
 export enum Parameter
 {
-    ERROR = `err`,
+    FIX = `fix`,
     LANGUAGE = `lang`,
     IMAGE = `img`,
     INLINE_IMAGE = `inl-img`,
@@ -51,7 +51,7 @@ export function Is_Known_Parameter(
     boolean
 {
     return (
-        value === Parameter.ERROR ||
+        value === Parameter.FIX ||
         value === Parameter.LANGUAGE ||
         value === Parameter.IMAGE ||
         value === Parameter.INLINE_IMAGE
@@ -113,8 +113,8 @@ export enum Known_Value
     OPEN_ADDITION = `⸨add⸩`,
     CLOSE_ADDITION = `⸨/add⸩`,
 
-    OPEN_ERROR = `⸨err⸩`,
-    CLOSE_ERROR = `⸨/err⸩`,
+    OPEN_FIX = `⸨fix⸩`,
+    CLOSE_FIX = `⸨/fix⸩`,
 
     OPEN_LEFT_TO_RIGHT = `⸨ltr⸩`,
     CLOSE_LEFT_TO_RIGHT = `⸨/ltr⸩`,
@@ -207,8 +207,8 @@ export function Is_Known_Value(
         value === Known_Value.OPEN_ADDITION ||
         value === Known_Value.CLOSE_ADDITION ||
 
-        value === Known_Value.OPEN_ERROR ||
-        value === Known_Value.CLOSE_ERROR ||
+        value === Known_Value.OPEN_FIX ||
+        value === Known_Value.CLOSE_FIX ||
 
         value === Known_Value.OPEN_LEFT_TO_RIGHT ||
         value === Known_Value.CLOSE_LEFT_TO_RIGHT ||
@@ -246,7 +246,7 @@ export function Is_Known_Value(
                     parameter_and_argument.argument === Language.Name.ENGLISH
                 );
 
-            } else if (parameter_and_argument.parameter === Parameter.ERROR) {
+            } else if (parameter_and_argument.parameter === Parameter.FIX) {
                 return true;
 
             } else if (parameter_and_argument.parameter === Parameter.IMAGE) {
@@ -631,7 +631,7 @@ export function Resolve_Errors(
                     language: null,
                 },
             );
-            if (command.Is_Open_Error()) {
+            if (command.Is_Open_Fix()) {
                 if (command.Has_Argument()) {
                     const { full } = From(it.Points());
                     result += Resolve_Errors(command.Some_Argument(), remove_unresolvable_errors);
@@ -663,7 +663,7 @@ export function Resolve_Errors(
                 }
             } else {
                 if (
-                    !command.Is_Close_Error() ||
+                    !command.Is_Close_Fix() ||
                     !remove_unresolvable_errors
                 ) {
                     result += command.Value();
@@ -978,19 +978,19 @@ export class Instance extends Part.Instance
         return this.Value() === Known_Value.CLOSE_ADDITION;
     }
 
-    Is_Open_Error():
+    Is_Open_Fix():
         boolean
     {
         return (
-            this.Value() === Known_Value.OPEN_ERROR ||
-            this.Parameter() === Parameter.ERROR
+            this.Value() === Known_Value.OPEN_FIX ||
+            this.Parameter() === Parameter.FIX
         );
     }
 
-    Is_Close_Error():
+    Is_Close_Fix():
         boolean
     {
-        return this.Value() === Known_Value.CLOSE_ERROR;
+        return this.Value() === Known_Value.CLOSE_FIX;
     }
 
     Is_Open_Left_To_Right():

@@ -2,7 +2,7 @@
 ⸨i⸩₁ God reneweth his promise by his name JEHOVAH. ₁₄ The genealogy of Reuben, ₁₅ of Simeon, ₁₆ of Levi, of whom came Moses and Aaron.⸨/i⸩
 
 ₁ ⸨sc⸩Then⸨/sc⸩ the ⸨sc⸩Lord⸨/sc⸩ said unto Moses, Now shalt thou see what I will do to Pharaoh: for with a strong hand shall he let them go, and with a strong hand shall he drive them out of his land.⸨marg⸩
-₂ And God spake unto Moses, and said unto him, I ⸨i⸩am⸨/i⸩⸨err: ⸩ ˈ⸨/err⸩the ⸨sc⸩Lord⸨/sc⸩:⸨marg⸩
+₂ And God spake unto Moses, and said unto him, I ⸨i⸩am⸨/i⸩⸨fix: ⸩ ˈ⸨/fix⸩the ⸨sc⸩Lord⸨/sc⸩:⸨marg⸩
 ₃ And I appeared unto Abraham, unto Isaac, and unto Jacob, by ⸨i⸩the name of⸨/i⸩ God Almighty, but by my name JEHOVAH was I not known to them.⸨marg⸩
 ₄ And I have also established my covenant with them, to give them the land of Canaan, the land of their pilgrimage, wherein they were strangers.⸨marg⸩
 ₅ And I have also heard the groaning of the children of Israel, whom the Egyptians keep in bondage; and I have remembered my covenant.⸨marg⸩
@@ -20,7 +20,7 @@
 ₁₇ The sons of Gershon; Libni, and Shimi, according to their families.⸨marg⸩
 ₁₈ And ⸨i⸩ᵈ⸨/i⸩ the sons of Kohath; Amram, and Izhar, and Hebron, and Uzziel: and the years of the life of Kohath ⸨i⸩were⸨/i⸩ an hundred thirty and three years.⸨marg⸩⸨i⸩ᵈ⸨/i⸩ Numb⸼ 26⸼ 57⸼⸨row⸩1 Chron⸼ 6⸼ 1⸼
 ₁₉ And the sons of Merari; Mahali and Mushi: these ⸨i⸩are⸨/i⸩ the families of Levi according to their generations.⸨marg⸩
-₂₀ And ⸨i⸩ᵉ⸨/i⸩ Amram took him Jochebed his fatherʼs sister to wife; and she bare him Aaron and Moses: and the years of the life of Amram ⸨i⸩were⸨/i⸩ an hundred and thirty and seven years.⸨marg⸩⸨i⸩ᵉ⸨/i⸩ chap⸼ 2⸼ ⸨err:1⸼⸩1⸨/err⸩, 2⸼⸨row⸩Numb⸼ 26⸼ 59⸼
+₂₀ And ⸨i⸩ᵉ⸨/i⸩ Amram took him Jochebed his fatherʼs sister to wife; and she bare him Aaron and Moses: and the years of the life of Amram ⸨i⸩were⸨/i⸩ an hundred and thirty and seven years.⸨marg⸩⸨i⸩ᵉ⸨/i⸩ chap⸼ 2⸼ ⸨fix:1⸼⸩1⸨/fix⸩, 2⸼⸨row⸩Numb⸼ 26⸼ 59⸼
 ₂₁ ¶ And the sons of Izhar; Korah, and Nepheg, and Zithri.⸨marg⸩
 ₂₂ And the sons of Uzziel; Mishael, and Elzaphan, and Zithri.⸨marg⸩
 ₂₃ And Aaron took him Elisheba, daughter of Amminadab, sister of Naashon, to wife; and she bare him Nadab, and Abihu, Eleazar, and Ithamar.⸨marg⸩

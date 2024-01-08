@@ -1,7 +1,7 @@
 ⸨cen⸩CHAPTER XXIII⸼
 
 1 ⸨sc⸩Thou⸨/sc⸩ shalt not raise a false report: put not thine hand with the wicked to be an unrighteous witness.
-2 ¶ Thou shalt not follow a multitude to ⸨i⸩do⸨/i⸩ evil; neither shalt thou speak in a cause to decline after many to wrest ⸨i⸩judgment⸨/i⸩⸨err::⸩⸨i⸩:⸨/i⸩⸨/err⸩
+2 ¶ Thou shalt not follow a multitude to ⸨i⸩do⸨/i⸩ evil; neither shalt thou speak in a cause to decline after many to wrest ⸨i⸩judgment⸨/i⸩⸨fix::⸩⸨i⸩:⸨/i⸩⸨/fix⸩
 3 ¶ Neither shalt thou countenance a poor man in his cause.
 4 ¶ If thou meet thine enemyʼs ox or his ass going astray, thou shalt surely bring it back to him again.
 5 If thou see the ass of him that hateth thee lying under his burden, and wouldest forbear to help him, thou shalt surely help with him.

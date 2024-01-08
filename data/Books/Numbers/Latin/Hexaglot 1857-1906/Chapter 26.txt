@@ -47,7 +47,7 @@
 45 FIlii Brie: Heber, a quo familia Heberitarum: et Melchiel, a quo familia Melchielitarum.
 46 Nomen autem filiæ Aser, fuit Sara:
 47 Hæ cognationes filiorum Aser, et numerus eorum, quinquaginta tria millia quadringenti.
-48 Filii ⸨err:Nephthali⸩Nephtali⸨/err⸩ per cognationes suas: Jesiel, a quo familia Jesielitarum: Guni, a quo familia Gunitarum:
+48 Filii ⸨fix:Nephthali⸩Nephtali⸨/fix⸩ per cognationes suas: Jesiel, a quo familia Jesielitarum: Guni, a quo familia Gunitarum:
 49 Jeser, a quo familia Jeseritarum: Sellem, a quo familia Sellemitarum.
 50 Hæ sunt cognationes filiorum Nephthali per familias suas: quorum numerus, quadraginta quinque millia quadringenti.
 51 Ista est summa filiorum Israel, qui recensiti sunt, sexcenta millia, et mille septingenti triginta.

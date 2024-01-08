@@ -6,7 +6,7 @@
 (Cf⸼ Gen⸼ xxvii⸼)
 
 ⸨in⸩26¹ And in the seventh year of this week Isaac called Esau, his elder son, and said unto him: ‘I am old, my son, and behold my eyes are dim in seeing, and I know not the day of my death.
-² And now take thy hunting weapons⸨err:—⸩ ⸨/err⸩thy quiver and thy bow, and go out to the field, and hunt and catch me (venison), my son, and make me savoury meat, such as my soul loveth, and bring it to me that I may eat, and that my soul may bless thee before I die.’
+² And now take thy hunting weapons⸨fix:—⸩ ⸨/fix⸩thy quiver and thy bow, and go out to the field, and hunt and catch me (venison), my son, and make me savoury meat, such as my soul loveth, and bring it to me that I may eat, and that my soul may bless thee before I die.’
 ³ But Rebecca heard Isaac speaking to Esau.
 ⁴ And Esau went forth early to the field to hunt and catch and bring home to his father.
 ⁵ And Rebecca called Jacob, her son, and said unto him: ‘Behold, I heard Isaac, thy father, speak unto Esau, thy brother, saying: “Hunt for me, and make me savoury meat, and bring (it) to me that I may eat and bless thee before the Lord before I die.”
@@ -22,10 +22,10 @@
 ¹⁵ And Jacob said: ‘Because ⟨the Lord⟩ thy God caused me to find.’
 ¹⁶ And Isaac said unto him: ‘Come near, that I may feel thee, my son, if thou art my son Esau or not.’
 ¹⁷ And Jacob went near to Isaac, his father, and he felt him and said:
-¹⁸ ‘The voice is Jacobʼs voice, but the hands are the hands of Esau,’ and he discerned him not, because it was a dispensation from heaven to remove his power of perception⸨err:: ⸩ ⸨/err⸩and Isaac discerned not, for his hands were hairy as ⟨his brother⟩ Esauʼs, so that he blessed him.
+¹⁸ ‘The voice is Jacobʼs voice, but the hands are the hands of Esau,’ and he discerned him not, because it was a dispensation from heaven to remove his power of perception⸨fix:: ⸩ ⸨/fix⸩and Isaac discerned not, for his hands were hairy as ⟨his brother⟩ Esauʼs, so that he blessed him.
 ¹⁹ And he said: ‘Art thou my son Esau?’ and he said: ‘I am thy son’: and he said, ‘Bring near to me that I may eat of that which thou hast caught, my son, that my soul may bless thee.’
 ²⁰ And he brought near to him, and he did eat, and he brought him wine and he drank.
-²¹ And Isaac, his father, said unto him: ‘Come near and kiss me, my son⸨err:.’ ⸩. ⸨/err⸩And he came near and kissed him.
+²¹ And Isaac, his father, said unto him: ‘Come near and kiss me, my son⸨fix:.’ ⸩. ⸨/fix⸩And he came near and kissed him.
 ²² And he smelled the smell of his raiment, and he blessed him and said: ‘Behold, the smell of my son is as the smell of a ⟨full⟩ field which the Lord hath blessed.
 
 ⸨pad⸩²³ And may the Lord give thee of the dew of heaven
@@ -43,12 +43,12 @@
 ⸨pad⸩Cursed be he that curseth thee,
 ⸨pad⸩And blessed be he that blesseth thee.’
 
-²⁵ And it came to pass as soon as Isaac had made an end of blessing his son Jacob, and Jacob had gone forth from Isaac his father⸨err:, †⸩ †⸨/err⸩he hid himself and† Esau, his brother, came in from his hunting.
+²⁵ And it came to pass as soon as Isaac had made an end of blessing his son Jacob, and Jacob had gone forth from Isaac his father⸨fix:, †⸩ †⸨/fix⸩he hid himself and† Esau, his brother, came in from his hunting.
 ²⁶ And he also made savoury meat, and brought (it) to his father, and said unto his father: ‘Let my father arise, and eat of my venison that thy soul may bless me.’
 ²⁷ And Isaac, his father, said unto him: ‘Who art thou?’ And he said unto him: ‘I am thy first born, thy son Esau: I have done as thou hast commanded me.’
-²⁸ And Isaac was very greatly astonished, and said: ‘Who is he that hath hunted and caught and brought (it) to me, and I have eaten of all before thou camest, and have blessed him⸨err:?: (⸩: (⸨/err⸩and) he shall be blessed, and all his seed for ever.’
-²⁹ And it came to pass when Esau heard the words of his father Isaac that he cried with an ⸨err:exceedingly⸩exceeding⸨/err⸩ great and bitter cry, and said unto his father: ‘Bless me, (even) me also, father.’
-³⁰ And he said unto him: ‘Thy brother came with guile, and hath taken away thy blessing.’ And he said: ‘Now I know why his name is named Jacob: behold, he hath supplanted me these two times: he took away my ⸨err:birthright⸩birth‑right⸨/err⸩, and now he hath taken away my blessing.’
+²⁸ And Isaac was very greatly astonished, and said: ‘Who is he that hath hunted and caught and brought (it) to me, and I have eaten of all before thou camest, and have blessed him⸨fix:?: (⸩: (⸨/fix⸩and) he shall be blessed, and all his seed for ever.’
+²⁹ And it came to pass when Esau heard the words of his father Isaac that he cried with an ⸨fix:exceedingly⸩exceeding⸨/fix⸩ great and bitter cry, and said unto his father: ‘Bless me, (even) me also, father.’
+³⁰ And he said unto him: ‘Thy brother came with guile, and hath taken away thy blessing.’ And he said: ‘Now I know why his name is named Jacob: behold, he hath supplanted me these two times: he took away my ⸨fix:birthright⸩birth‑right⸨/fix⸩, and now he hath taken away my blessing.’
 ³¹ And he said: ‘Hast thou not reserved a blessing for me, father?’ and Isaac answered and said unto Esau:
 ⸨pad⸩‘Behold, I have made him thy lord,
 ⸨pad⸩And all his brethren have I given to him for servants,

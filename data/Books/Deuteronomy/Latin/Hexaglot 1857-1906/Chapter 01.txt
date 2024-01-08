@@ -1,6 +1,6 @@
 ⸨cen⸩DEUTERONOMIUM, CAPUT I⸼
 
-⸨err:1 ⸩⸨/err⸩⸨sc⸩Hæc⸨/sc⸩ sunt verba quæ locutus est Moyses ad omnem Israel trans Jordanem in solitudine campestri, contra mare Rubrum, inter Pharan et Thophel et Laban et Haseroth, ubi auri est plurimum:
+⸨fix:1 ⸩⸨/fix⸩⸨sc⸩Hæc⸨/sc⸩ sunt verba quæ locutus est Moyses ad omnem Israel trans Jordanem in solitudine campestri, contra mare Rubrum, inter Pharan et Thophel et Laban et Haseroth, ubi auri est plurimum:
 2 Undecim diebus de Horeb per viam montis Seir usque ad Cadesbarne.
 3 Quadragesimo anno, undecimo mense, prima die mensis, locutus est Moyses ad filios Israel omnia quæ præceperat illi Dominus, ut diceret eis:
 4 Postquam percussit Sehon regem Amorrhæorum, qui habitabat in Hesebon: et Og regem Basan, qui mansit in Astaroth, et in Edrai,

@@ -20,7 +20,7 @@ enum Parse_Type
     POINT,
 }
 
-class Error_Argument_Frame
+class Fix_Argument_Frame
 {
     private first_non_command_index: Index | null;
     private last_non_command_index: Index | null;
@@ -201,7 +201,7 @@ export class Instance
                 const last_non_command_index: Index | null =
                     Part.Command.Last_Non_Command_Index(row_value);
                 const language_stack: Array<Language.Name> = [];
-                const error_argument_stack: Array<Error_Argument_Frame> = [];
+                const fix_argument_stack: Array<Fix_Argument_Frame> = [];
 
                 let current_type: Parse_Type = Parse_Type.POINT;
                 let current_style: Part.Style = Part.Style._NONE_;
@@ -226,11 +226,11 @@ export class Instance
                 ):
                     Dictionary.Boundary
                 {
-                    if (error_argument_stack.length > 0) {
-                        const error_argument_frame: Error_Argument_Frame =
-                            error_argument_stack[error_argument_stack.length - 1];
+                    if (fix_argument_stack.length > 0) {
+                        const fix_argument_frame: Fix_Argument_Frame =
+                            fix_argument_stack[fix_argument_stack.length - 1];
                         if (
-                            first.Index() === error_argument_frame.First_Non_Command_Index() &&
+                            first.Index() === fix_argument_frame.First_Non_Command_Index() &&
                             (
                                 first_non_command_index != null ?
                                     last.Index() < first_non_command_index :
@@ -239,10 +239,10 @@ export class Instance
                         ) {
                             return Dictionary.Boundary.START;
                         } else if (
-                            last.Index() === error_argument_frame.Last_Non_Command_Index() &&
+                            last.Index() === fix_argument_frame.Last_Non_Command_Index() &&
                             (
                                 last_non_command_index != null ?
-                                    error_argument_frame.Closing_Command_Index() > last_non_command_index :
+                                    fix_argument_frame.Closing_Command_Index() > last_non_command_index :
                                     true
                             )
                         ) {
@@ -301,15 +301,15 @@ export class Instance
                         } else if (command.Is_Close_Good()) {
                             currently_force_good = false;
 
-                        } else if (command.Is_Open_Error()) {
+                        } else if (command.Is_Open_Fix()) {
                             this.has_errorless_path = true;
                             if (command.Has_Argument()) {
                                 value =
                                     Part.Command.Symbol.FIRST +
                                     command.Some_Parameter() +
                                     Part.Command.Symbol.DIVIDER;
-                                error_argument_stack.push(
-                                    new Error_Argument_Frame(
+                                fix_argument_stack.push(
+                                    new Fix_Argument_Frame(
                                         {
                                             parameter: command.Some_Parameter(),
                                             argument: command.Some_Argument(),
@@ -322,7 +322,7 @@ export class Instance
                             } else {
                                 current_style |= Part.Style.ERROR;
                             }
-                        } else if (command.Is_Close_Error()) {
+                        } else if (command.Is_Close_Fix()) {
                             current_style &= ~Part.Style.ERROR;
 
                         } else if (command.Is_Open_Hebrew()) {
@@ -371,11 +371,11 @@ export class Instance
                         );
                         current_start = it;
                     } else if (
-                        error_argument_stack.length > 0 &&
+                        fix_argument_stack.length > 0 &&
                         it.Point() === Part.Command.Symbol.LAST
                     ) {
-                        error_argument_stack.pop();
-                        if (error_argument_stack.length === 0) {
+                        fix_argument_stack.pop();
+                        if (fix_argument_stack.length === 0) {
                             current_style &= ~Part.Style.ARGUMENT;
                         }
                         current_style |= Part.Style.ERROR;

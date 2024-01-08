@@ -1,6 +1,6 @@
 ⸨cen⸩CAPUT XIV⸼
 
-⸨err:1 ⸩⸨/err⸩⸨err:⸨sc⸩Locutus⸨/sc⸩⸩Locutus⸨/err⸩ est autem Dominus ad Moysen, dicens:
+⸨fix:1 ⸩⸨/fix⸩⸨fix:⸨sc⸩Locutus⸨/sc⸩⸩Locutus⸨/fix⸩ est autem Dominus ad Moysen, dicens:
 2 Loquere filiis Israel: Reversi castrametentur e regione Phihahiroth, quæ est inter Magdalum et mare contra Beelsephon: in conspectu ejus castra ponetis super mare.
 3 Dicturusque est Pharao super filiis Israel: Coarctati sunt in terra, conclusit eos desertum.
 4 Et indurabo cor ejus, ac persequetur vos: et glorificabor in Pharaone, et in omni exercitu ejus; scientque Ægyptii quia ego sum Dominus. Feceruntque ita.

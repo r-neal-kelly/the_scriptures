@@ -33,4 +33,4 @@
 31 At ille locutus est ad fratres suos, et ad omnem domum patris sui: Ascendam et nuntiabo Pharaoni, dicamque ei: Fratres mei, et domus patris mei, qui erant in terra Chanaan, venerunt ad me:
 32 Et sunt viri pastores ovium, curamque habent alendorum gregum: pecora sua, et armenta, et omnia quæ habere potuerunt, adduxerunt secum.
 33 Cumque vocaverit vos, et dixerit: Quod est opus vestrum?
-34 ⸨err:Respondebitis⸩Repondebitis⸨/err⸩: Viri pastores sumus servi tui, ab infantia nostra usque in præsens, et nos et patres nostri. Hæc autem dicetis, ut habitare possitis in terra Gessen: quia detestantur Ægyptii omnes pastores ovium.
+34 ⸨fix:Respondebitis⸩Repondebitis⸨/fix⸩: Viri pastores sumus servi tui, ab infantia nostra usque in præsens, et nos et patres nostri. Hæc autem dicetis, ut habitare possitis in terra Gessen: quia detestantur Ægyptii omnes pastores ovium.

@@ -2,7 +2,7 @@
 ⸨i⸩₁ Moses keepeth Jethroʼs flock. ₂ God appeareth to him in a burning bush. ₉ He sendeth him to deliver Israel. ₁₄ The name of God. ₁₅ His message to Israel.⸨/i⸩
 
 ₁ ⸨sc⸩Now⸨/sc⸩ Moses kept the flock of Jethro his father in law, the priest of Midian: and he led the flock to the backside of the desert, and came to the mountain of God, ⸨i⸩even⸨/i⸩ to Horeb.⸨marg⸩
-₂ And the angel of the ⸨sc⸩Lord⸨/sc⸩ appeared unto him in a ⸨i⸩ᵃ⸨/i⸩ flame of fire out of the midst of a bush: and he looked, and, behold, the bush burned with fire, and the bush ⸨i⸩was⸨/i⸩ not consumed.⸨marg⸩⸨i⸩ᵃ⸨/i⸩ Acts ⸨err:7⸼⸩7⸨/err⸩ 30⸼
+₂ And the angel of the ⸨sc⸩Lord⸨/sc⸩ appeared unto him in a ⸨i⸩ᵃ⸨/i⸩ flame of fire out of the midst of a bush: and he looked, and, behold, the bush burned with fire, and the bush ⸨i⸩was⸨/i⸩ not consumed.⸨marg⸩⸨i⸩ᵃ⸨/i⸩ Acts ⸨fix:7⸼⸩7⸨/fix⸩ 30⸼
 ₃ And Moses said, I will now turn aside, and see this great sight, why the bush is not burnt.⸨marg⸩
 ₄ And when the ⸨sc⸩Lord⸨/sc⸩ saw that he turned aside to see, God called unto him out of the midst of the bush, and said, Moses, Moses. And he said, Here ⸨i⸩am⸨/i⸩ I.⸨marg⸩
 ₅ And he said, Draw not nigh hither: ⸨i⸩ᵇ⸨/i⸩ put off thy shoes from off thy feet, for the place whereon thou standest ⸨i⸩is⸨/i⸩ holy ground.⸨marg⸩⸨i⸩ᵇ⸨/i⸩ Josh⸼ 5⸼ 15⸼⸨row⸩Acts 7⸼ 33⸼
@@ -22,4 +22,4 @@
 ₁₉ ¶ And I am sure that the king of Egypt will not let you go, ˈno, not by a mighty hand.⸨marg⸩ˈ Or, ⸨i⸩but by strong hand⸨/i⸩.
 ₂₀ And I will stretch out my hand, and smite Egypt with all my wonders which I will do in the midst thereof: and after that he will let you go.⸨marg⸩
 ₂₁ And I will give this people favour in the sight of the Egyptians: and it shall come to pass, that, when ye go, ye shall not go empty:⸨marg⸩
-₂₂ ⸨i⸩ᵈ⸨/i⸩ But every woman shall borrow of her neighbour, and of her that sojourneth in her house, jewels of silver, and jewels of gold, and raiment: and ye shall put ⸨i⸩them⸨/i⸩ upon your sons, and upon your daughters; and ye shall spoil ˈthe Egyptians.⸨marg⸩⸨i⸩ᵈ⸨/i⸩ chap⸼ 11⸼ 2⸼⸨row⸩& ⸨err:12⸼⸩12⸨/err⸩ 35⸼⸨row⸩ˈ Or, ⸨i⸩Egypt⸨/i⸩.
+₂₂ ⸨i⸩ᵈ⸨/i⸩ But every woman shall borrow of her neighbour, and of her that sojourneth in her house, jewels of silver, and jewels of gold, and raiment: and ye shall put ⸨i⸩them⸨/i⸩ upon your sons, and upon your daughters; and ye shall spoil ˈthe Egyptians.⸨marg⸩⸨i⸩ᵈ⸨/i⸩ chap⸼ 11⸼ 2⸼⸨row⸩& ⸨fix:12⸼⸩12⸨/fix⸩ 35⸼⸨row⸩ˈ Or, ⸨i⸩Egypt⸨/i⸩.

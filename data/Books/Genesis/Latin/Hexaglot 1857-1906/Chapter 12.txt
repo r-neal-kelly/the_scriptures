@@ -10,7 +10,7 @@
 8 Et inde transgrediens ad montem, qui erat contra orientem Bethel, tetendit ibi tabernaculum suum, ab occidente habens Bethel, et ab oriente Hai: ædificavit quoque ibi altare Domino, et invocavit nomen ejus.
 9 Perrexitque Abram vadens, et ultra progrediens ad meridiem.
 10 Facta est autem fames in terra: descenditque Abram in Ægyptum, ut peregrinaretur ibi: prævaluerat enim fames in terra.
-11 Cumque prope esset ut ingrederetur ⸨err:Ægyptum⸩Ægptum⸨/err⸩, dixit Sarai uxori suæ: Novi quod pulchra sis mulier:
+11 Cumque prope esset ut ingrederetur ⸨fix:Ægyptum⸩Ægptum⸨/fix⸩, dixit Sarai uxori suæ: Novi quod pulchra sis mulier:
 12 Et quod cum viderint te Ægyptii, dicturi sunt: Uxor ipsius est: et interficient me, et te reservabunt.
 13 Dic ergo, obsecro te, quod soror mea sis: ut bene sit mihi propter te, et vivat anima mea ob gratiam tui.
 14 Cum itaque ingressus esset Abram Ægyptum, viderunt Ægyptii mulierem quod esset pulchra nimis.

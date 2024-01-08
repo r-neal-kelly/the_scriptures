@@ -13,7 +13,7 @@
 11 Quod cum vidissent habitatores terræ Chanaan, dixerunt: Planctus magnus est iste Ægyptiis. Et idcirco vocatum est nomen loci illius, Planctus Ægypti.
 12 Fecerunt ergo filii Jacob sicut præceperat eis:
 13 Et portantes eum in terram Chanaan, sepelierunt eum in spelunca duplici, quam emerat Abraham cum agro in possessionem sepulchri ab Ephron Hethæo contra faciem Mambre.
-14 Reversusque est Joseph in Ægyptum cum fratribus suis, et omni comitatu, ⸨err:sepulto⸩scpulto⸨/err⸩ patre.
+14 Reversusque est Joseph in Ægyptum cum fratribus suis, et omni comitatu, ⸨fix:sepulto⸩scpulto⸨/fix⸩ patre.
 15 Quo mortuo, timentes fratres ejus, et mutuo colloquentes: Ne forte memor sit injuriæ quam passus est, et redat nobis omne malum quod fecimus,
 16 Mandaverunt ei, dicentes: Pater tuus præcepit nobis, antequam moreretur,
 17 Ut hæc tibi verbis illius diceremus: Obsecro ut obliviscaris sceleris fratrum tuorum, et peccati atque malitiæ quam exercuerunt in te: nos quoque oramus ut servis Dei patris tui dimittas iniquitatem hanc. Quibus auditis flevit Joseph.

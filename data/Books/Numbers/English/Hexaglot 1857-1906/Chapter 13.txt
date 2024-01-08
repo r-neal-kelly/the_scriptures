@@ -10,18 +10,18 @@
 8 Of the tribe of Ephraim, Oshea the son of Nun.
 9 Of the tribe of Benjamin, Palti the son of Raphu.
 10 Of the tribe of Zebulun, Gaddiel the son of Sodi.
-11 Of the tribe of Joseph, ⸨i⸩namely⸨/i⸩⸨err:⸨i⸩, ⸨/i⸩⸩, ⸨/err⸩of the tribe of Manasseh, Gaddi the son of Susi.
+11 Of the tribe of Joseph, ⸨i⸩namely⸨/i⸩⸨fix:⸨i⸩, ⸨/i⸩⸩, ⸨/fix⸩of the tribe of Manasseh, Gaddi the son of Susi.
 12 Of the tribe of Dan, Ammiel the son of Gemalli.
 13 Of the tribe of Asher, Sethur the son of Michael.
 14 Of the tribe of Naphtali, Nahbi the son of Vophsi.
 15 Of the tribe of Gad, Geuel the son of Machi.
 16 These ⸨i⸩are⸨/i⸩ the names of the men which Moses sent to spy out the land. And Moses called Oshea the son of Nun Jehoshua.
 17 ¶ And Moses sent them to spy out the land of Canaan, and said unto them, Get you up this ⸨i⸩way⸨/i⸩ southward, and go up into the mountain:
-18 And see the land, what it ⸨i⸩is⸨/i⸩⸨err:; ⸩⸨i⸩; ⸨/i⸩⸨/err⸩and the people that dwelleth therein, whether they ⸨i⸩be⸨/i⸩ strong or weak, few or many;
+18 And see the land, what it ⸨i⸩is⸨/i⸩⸨fix:; ⸩⸨i⸩; ⸨/i⸩⸨/fix⸩and the people that dwelleth therein, whether they ⸨i⸩be⸨/i⸩ strong or weak, few or many;
 19 And what the land ⸨i⸩is⸨/i⸩ that they dwell in, whether it ⸨i⸩be⸨/i⸩ good or bad; and what cities ⸨i⸩they be⸨/i⸩ that they dwell in, whether in tents, or in strong holds;
 20 And what the land ⸨i⸩is⸨/i⸩, whether it ⸨i⸩be⸨/i⸩ fat or lean, whether there be wood therein, or not. And be ye of good courage, and bring of the fruit of the land. Now the time ⸨i⸩was⸨/i⸩ the time of the firstripe grapes.
 21 ¶ So they went up, and searched the land from the wilderness of Zin unto Rehob, as men come to Hamath.
-22 And they ascended by the south, and came unto Hebron; where Ahiman, Sheshai, and Talmai, the children of Anak⸨err:⸨i⸩, ⸨/i⸩⸩, ⸨/err⸩⸨i⸩were⸨/i⸩. (Now Hebron was built seven years before Zoan in Egypt.)
+22 And they ascended by the south, and came unto Hebron; where Ahiman, Sheshai, and Talmai, the children of Anak⸨fix:⸨i⸩, ⸨/i⸩⸩, ⸨/fix⸩⸨i⸩were⸨/i⸩. (Now Hebron was built seven years before Zoan in Egypt.)
 23 And they came unto the brook of Eshcol, and cut down from thence a branch with one cluster of grapes, and they bare it between two upon a staff; and ⸨i⸩they brought⸨/i⸩ of the pomegranates, and of the figs.
 24 The place was called the brook Eshcol, because of the cluster of grapes which the children of Israel cut down from thence.
 25 And they returned from searching of the land after forty days.

@@ -25,6 +25,6 @@
 23 Tantumdem pecuniæ et vestium mittens patri suo, addens et asinos decem, qui subveherent ex omnibus divitiis Ægypti: et totidem asinas, triticum in itinere, panesque portantes.
 24 Dimisit ergo fratres suos, et proficiscentibus ait: Ne irascamini in via.
 25 Qui ascendentes ex Ægypto, venerunt in terram Chanaan ad patrem suum Jacob.
-26 Et nuntiaverunt ei, dicentes: Joseph filius tuus vivit: et ipse dominatur in ⸨err:omni⸩domni⸨/err⸩ terra Ægypti. Quo audito Jacob, quasi de gravi somno evigilans, tamen non credebat eis.
+26 Et nuntiaverunt ei, dicentes: Joseph filius tuus vivit: et ipse dominatur in ⸨fix:omni⸩domni⸨/fix⸩ terra Ægypti. Quo audito Jacob, quasi de gravi somno evigilans, tamen non credebat eis.
 27 Illi econtra referebant omnem ordinem rei. Cumque vidisset plaustra, et universa quæ miserat, revixit spiritus ejus,
 28 Et ait: Sufficit mihi si adhuc Joseph filius meus vivit: vadam, et videbo illum antequam moriar.

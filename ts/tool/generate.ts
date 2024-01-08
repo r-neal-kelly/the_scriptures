@@ -421,7 +421,7 @@ async function Generate(
                                             if (part.Is_Error()) {
                                                 Utils.Assert(
                                                     part.Has_Error_Style(),
-                                                    `Error not wrapped with error command! Should not generate:\n` +
+                                                    `Error not wrapped with fix command! Should not generate:\n` +
                                                     `   Book Name:          ${book_name}\n` +
                                                     `   Language Name:      ${language_name}\n` +
                                                     `   Version Name:       ${version_name}\n` +

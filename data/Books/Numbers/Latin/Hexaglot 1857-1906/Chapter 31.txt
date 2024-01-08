@@ -44,7 +44,7 @@
 42 Ex media parte filiorum Israel, quam separaverat his qui in prælio fuerant.
 43 De media vero parte, quæ contigerat reliquæ multitudini, id est, de ovibus trecentis triginta septem millibus quingentis,
 44 Et de bobus triginta sex millibus,
-45 Et de asinis ⸨err:triginta⸩tringinta⸨/err⸩ millibus quingentis,
+45 Et de asinis ⸨fix:triginta⸩tringinta⸨/fix⸩ millibus quingentis,
 46 Et de hominibus sedecim millibus,
 47 Tulit Moyses quinquagesimum caput, et dedit Levitis, qui excubabant in tabernaculo Domini, sicut præceperat Dominus.
 48 Cumque accessissent principes exercitus ad Moysen, et tribuni, centurionesque, dixerunt:

@@ -1,6 +1,6 @@
 ⸨cen⸩CHAPTER XXVII⸼
 
-1 ⸨sc⸩Then⸨/sc⸩ came the ⸨err:daughters⸩daughter⸨/err⸩ of Zelophehad, the son of Hepher, the son of Gilead, the son of Machir, the son of Manasseh, of the families of Manasseh the son of Joseph: and these ⸨i⸩are⸨/i⸩ the names of his daughters: Mahlah, Noah, and Hoglah, and Milcah, and Tirzah.
+1 ⸨sc⸩Then⸨/sc⸩ came the ⸨fix:daughters⸩daughter⸨/fix⸩ of Zelophehad, the son of Hepher, the son of Gilead, the son of Machir, the son of Manasseh, of the families of Manasseh the son of Joseph: and these ⸨i⸩are⸨/i⸩ the names of his daughters: Mahlah, Noah, and Hoglah, and Milcah, and Tirzah.
 2 And they stood before Moses, and before Eleazar the priest, and before the princes and all the congregation, ⸨i⸩by⸨/i⸩ the door of the tabernacle of the congregation, saying,
 3 Our father died in the wilderness, and he was not in the company of them that gathered themselves together against the ⸨sc⸩Lord⸨/sc⸩ in the company of Korah; but died in his own sin, and had no sons.
 4 Why should the name of our father be done away from among his family, because he hath no son? Give unto us ⸨i⸩therefore⸨/i⸩ a possession among the brethren of our father.

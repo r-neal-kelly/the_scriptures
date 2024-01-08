@@ -17,7 +17,7 @@
 15 And Joseph said unto them, What deed ⸨i⸩is⸨/i⸩ this that ye have done? wot ye not that such a man as I can certainly divine?
 16 And Judah said, What shall we say unto my lord? what shall we speak? or how shall we clear ourselves? God hath found out the iniquity of thy servants: behold, we ⸨i⸩are⸨/i⸩ my lordʼs servants, both we, and ⸨i⸩he⸨/i⸩ also with whom the cup is found.
 17 And he said, God forbid that I should do so: ⸨i⸩but⸨/i⸩ the man in whose hand the cup is found, he shall be my servant; and as for you, get you up in peace unto your father.
-18 ¶ Then Judah came near unto him, and said, Oh my ⸨err:lord⸩Lord⸨/err⸩, let thy servant, I pray thee, speak a word in my lordʼs ears, and let not thine anger burn against thy servant: for thou ⸨i⸩art⸨/i⸩ even as Pharaoh.
+18 ¶ Then Judah came near unto him, and said, Oh my ⸨fix:lord⸩Lord⸨/fix⸩, let thy servant, I pray thee, speak a word in my lordʼs ears, and let not thine anger burn against thy servant: for thou ⸨i⸩art⸨/i⸩ even as Pharaoh.
 19 My lord asked his servants, saying, Have ye a father, or a brother?
 20 And we said unto my lord, We have a father, an old man, and a child of his old age, a little one; and his brother is dead, and he alone is left of his mother, and his father loveth him.
 21 And thou saidst unto thy servants, Bring him down unto me, that I may set mine eyes upon him.
@@ -26,7 +26,7 @@
 24 And it came to pass when we came up unto thy servant my father, we told him the words of my lord.
 25 And our father said, Go again, ⸨i⸩and⸨/i⸩ buy us a little food.
 26 And we said, We cannot go down: if our youngest brother be with us, then will we go down: for we may not see the manʼs face, except our youngest brother ⸨i⸩be⸨/i⸩ with us.
-27 And thy servant my father said unto us, Ye know that my wife bare me two ⸨i⸩sons⸨/i⸩⸨err::⸩⸨i⸩:⸨/i⸩⸨/err⸩
+27 And thy servant my father said unto us, Ye know that my wife bare me two ⸨i⸩sons⸨/i⸩⸨fix::⸩⸨i⸩:⸨/i⸩⸨/fix⸩
 28 And the one went out from me, and I said, Surely he is torn in pieces; and I saw him not since:
 29 And if ye take this also from me, and mischief befall him, ye shall bring down my gray hairs with sorrow to the grave.
 30 Now therefore when I come to thy servant my father, and the lad ⸨i⸩be⸨/i⸩ not with us; seeing that his life is bound up in the ladʼs life;

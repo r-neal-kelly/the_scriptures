@@ -1,4 +1,4 @@
-⸨cen⸩CHAPTER⸨err: ⸩, ⸨/err⸩XI⸼
+⸨cen⸩CHAPTER⸨fix: ⸩, ⸨/fix⸩XI⸼
 
 1 ⸨sc⸩And⸨/sc⸩ ⸨i⸩when⸨/i⸩ the people complained, it displeased the ⸨sc⸩Lord⸨/sc⸩: and the ⸨sc⸩Lord⸨/sc⸩ heard ⸨i⸩it⸨/i⸩: and his anger was kindled; and the fire of the ⸨sc⸩Lord⸨/sc⸩ burnt among them, and consumed ⸨i⸩them that were⸨/i⸩ in the uttermost parts of the camp.
 2 And the people cried unto Moses; and when Moses prayed unto the ⸨sc⸩Lord⸨/sc⸩, the fire was quenched.
@@ -24,7 +24,7 @@
 22 Shall the flocks and the herds be slain for them, to suffice them? or shall all the fish of the sea be gathered together for them, to suffice them?
 23 And the ⸨sc⸩Lord⸨/sc⸩ said unto Moses, Is the ⸨sc⸩Lordʼs⸨/sc⸩ hand waxed short? thou shalt see now whether my word shall come to pass unto thee or not.
 24 ¶ And Moses went out, and told the people the words of the ⸨sc⸩Lord⸨/sc⸩, and gathered the seventy men of the elders of the people, and set them round about the tabernacle.
-25 And the ⸨sc⸩Lord⸨/sc⸩ came down in a cloud, and spake unto him, and took of the spirit that ⸨i⸩was⸨/i⸩ upon him, and gave ⸨i⸩it⸨/i⸩ unto the seventy elders: and it came to pass, ⸨i⸩that⸨/i⸩⸨err:⸨i⸩, ⸨/i⸩⸩, ⸨/err⸩when the spirit rested upon them, they prophesied, and did not cease.
+25 And the ⸨sc⸩Lord⸨/sc⸩ came down in a cloud, and spake unto him, and took of the spirit that ⸨i⸩was⸨/i⸩ upon him, and gave ⸨i⸩it⸨/i⸩ unto the seventy elders: and it came to pass, ⸨i⸩that⸨/i⸩⸨fix:⸨i⸩, ⸨/i⸩⸩, ⸨/fix⸩when the spirit rested upon them, they prophesied, and did not cease.
 26 But there remained two ⸨i⸩of the⸨/i⸩ men in the camp, the name of the one ⸨i⸩was⸨/i⸩ Eldad, and the name of the other Medad: and the spirit rested upon them; and they ⸨i⸩were⸨/i⸩ of them that were written, but went not out unto the tabernacle: and they prophesied in the camp.
 27 And there ran a young man, and told Moses, and said, Eldad and Medad do prophesy in the camp.
 28 And Joshua the son of Nun, the servant of Moses, ⸨i⸩one⸨/i⸩ of his young men, answered and said, My lord Moses, forbid them.

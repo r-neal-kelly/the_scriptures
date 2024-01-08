@@ -1,4 +1,4 @@
-⸨col⸩⸨err:⸨b⸩⸨sc⸩Matthew⸨/sc⸩⸨/b⸩⸩Matt⸼⸨/err⸩⸨col⸩⸨err:⸨b⸩⸨sc⸩Clementine Ed⸼ Vulg⸼⸨/sc⸩⸨/b⸩⸩⸨sc⸩Clementine Ed⸼ Vulg⸼⸨/sc⸩⸨/err⸩⸨col⸩⸨err:⸨b⸩⸨sc⸩Tischendorf, Cod⸼ Amiat⸼⸨/sc⸩⸨/b⸩⸩⸨sc⸩Tischendorf, Cod⸼ Amiat⸼⸨/sc⸩⸨/err⸩
+⸨col⸩⸨fix:⸨b⸩⸨sc⸩Matthew⸨/sc⸩⸨/b⸩⸩Matt⸼⸨/fix⸩⸨col⸩⸨fix:⸨b⸩⸨sc⸩Clementine Ed⸼ Vulg⸼⸨/sc⸩⸨/b⸩⸩⸨sc⸩Clementine Ed⸼ Vulg⸼⸨/sc⸩⸨/fix⸩⸨col⸩⸨fix:⸨b⸩⸨sc⸩Tischendorf, Cod⸼ Amiat⸼⸨/sc⸩⸨/b⸩⸩⸨sc⸩Tischendorf, Cod⸼ Amiat⸼⸨/sc⸩⸨/fix⸩
 ⸨col⸩i⸼ 3⸨col⸩⸨lang:Latin⸩Zaram⸨/lang⸩⸨col⸩⸨lang:Latin⸩Zarad⸨/lang⸩
 ⸨col⸩i⸼ 3⸨col⸩⸨lang:Latin⸩Esron⸨/lang⸩⸨col⸩⸨lang:Latin⸩Esrom⸨/lang⸩
 ⸨col⸩i⸼ 5⸨col⸩⸨lang:Latin⸩Rahab⸨/lang⸩⸨col⸩⸨lang:Latin⸩Racab⸨/lang⸩
@@ -10,7 +10,7 @@
 ⸨col⸩i⸼ 14⸨col⸩⸨lang:Latin⸩Sadoc⸨/lang⸩⸨col⸩⸨lang:Latin⸩Saddoc⸨/lang⸩
 ⸨col⸩i⸼ 15⸨col⸩⸨lang:Latin⸩Mathan⸨/lang⸩⸨col⸩⸨lang:Latin⸩Matthan⸨/lang⸩
 ⸨col⸩i⸼ 20⸨col⸩⸨lang:Latin⸩apparuit in somnis⸨/lang⸩⸨col⸩⸨lang:Latin⸩in somnis apparuit⸨/lang⸩
-⸨col⸩ii⸼ 1⸨col⸩⸨lang:Latin⸩Bethlehem⸨/lang⸩⸨col⸩⸨lang:Latin⸩Bethleem (⸨i⸩freq⸼⸨/i⸩)⸨/lang⸩⸨row⸩⸨lang:Latin⸩Bethlem⸨/lang⸩ (Luke ii⸼ 15)⸨err:⸩.⸨/err⸩
+⸨col⸩ii⸼ 1⸨col⸩⸨lang:Latin⸩Bethlehem⸨/lang⸩⸨col⸩⸨lang:Latin⸩Bethleem (⸨i⸩freq⸼⸨/i⸩)⸨/lang⸩⸨row⸩⸨lang:Latin⸩Bethlem⸨/lang⸩ (Luke ii⸼ 15)⸨fix:⸩.⸨/fix⸩
 ⸨col⸩ii⸼ 1⸨col⸩⸨lang:Latin⸩Juda⸨/lang⸩⸨col⸩⸨lang:Latin⸩Judeæ⸨/lang⸩
 ⸨col⸩ii⸼ 1⸨col⸩⸨lang:Latin⸩Jerosolymam⸨/lang⸩⸨col⸩⸨lang:Latin⸩Hierosolymam (⸨i⸩freq⸼⸨/i⸩)⸨/lang⸩
 ⸨col⸩ii⸼ 5⸨col⸩⸨lang:Latin⸩Judæ⸨/lang⸩⸨col⸩⸨lang:Latin⸩Judeæ⸨/lang⸩
@@ -26,7 +26,7 @@
 ⸨col⸩ii⸼ 22⸨col⸩⸨lang:Latin⸩Nazaræus⸨/lang⸩⸨col⸩⸨lang:Latin⸩Nazareus⸨/lang⸩
 ⸨col⸩iii⸼ 1⸨col⸩⸨lang:Latin⸩Joannes⸨/lang⸩⸨col⸩⸨lang:Latin⸩Johannes (⸨i⸩freq⸼⸨/i⸩)⸨/lang⸩
 ⸨col⸩iii⸼ 2⸨col⸩⸨lang:Latin⸩pœnitentiam⸨/lang⸩⸨col⸩⸨lang:Latin⸩pænitentiam (⸨i⸩freq⸼⸨/i⸩)⸨/lang⸩
-⸨col⸩iii⸼ 2⸨col⸩⸨lang:Latin⸩appropinquavit⸨/lang⸩⸨col⸩⸨lang:Latin⸩adpropinquavit (adp⸼ ⸨i⸩⸨err:freq⸼⸩freq⸨/err⸩⸨/i⸩)⸨/lang⸩
+⸨col⸩iii⸼ 2⸨col⸩⸨lang:Latin⸩appropinquavit⸨/lang⸩⸨col⸩⸨lang:Latin⸩adpropinquavit (adp⸼ ⸨i⸩⸨fix:freq⸼⸩freq⸨/fix⸩⸨/i⸩)⸨/lang⸩
 ⸨col⸩iii⸼ 3⸨col⸩⸨lang:Latin⸩Isaiam⸨/lang⸩⸨col⸩⸨lang:Latin⸩Esaiam (⸨i⸩freq⸼⸨/i⸩)⸨/lang⸩
 ⸨col⸩iii⸼ 4⸨col⸩⸨lang:Latin⸩pelliceam⸨/lang⸩⸨col⸩⸨lang:Latin⸩pelliciam⸨/lang⸩
 ⸨col⸩iii⸼ 4⸨col⸩⸨lang:Latin⸩locustæ⸨/lang⸩⸨col⸩⸨lang:Latin⸩lucustæ⸨/lang⸩
@@ -285,7 +285,7 @@
 ⸨col⸩xix⸼ 29⸨col⸩⸨lang:Latin⸩reliquerit⸨/lang⸩⸨col⸩⸨lang:Latin⸩reliquit⸨/lang⸩
 ⸨col⸩xx⸼ 1⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩⸨col⸩⸨lang:Latin⸩enim⸨/lang⸩
 ⸨col⸩xx⸼ 1⸨col⸩⸨lang:Latin⸩patrifamilias⸨/lang⸩⸨col⸩⸨lang:Latin⸩patri familias (⸨i⸩freq⸼⸨/i⸩)⸨/lang⸩
-⸨col⸩xx⸼ 2⸨col⸩⸨lang:Latin⸩suam⸨/lang⸩⸨col⸩⸨lang:Latin⸩⸨err:(⸩⸨/err⸩deest⸨err:)⸩⸨/err⸩⸨/lang⸩
+⸨col⸩xx⸼ 2⸨col⸩⸨lang:Latin⸩suam⸨/lang⸩⸨col⸩⸨lang:Latin⸩⸨fix:(⸩⸨/fix⸩deest⸨fix:)⸩⸨/fix⸩⸨/lang⸩
 ⸨col⸩xx⸼ 4⸨col⸩⸨lang:Latin⸩dixit illis⸨/lang⸩⸨col⸩⸨lang:Latin⸩illis dixit⸨/lang⸩
 ⸨col⸩xx⸼ 7⸨col⸩⸨lang:Latin⸩meam⸨/lang⸩⸨col⸩⸨lang:Latin⸩(deest)⸨/lang⸩
 ⸨col⸩xx⸼ 16⸨col⸩⸨lang:Latin⸩enim sunt⸨/lang⸩⸨col⸩⸨lang:Latin⸩sunt enim⸨/lang⸩

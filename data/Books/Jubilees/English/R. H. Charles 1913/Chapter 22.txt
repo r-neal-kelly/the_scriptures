@@ -1,18 +1,18 @@
-⸨i⸩Isaac, Ishmael, and Jacob celebrate the feast of first⸨err:‑⸩ ⸨/err⸩fruits at Beersheba with Abraham, 1–5.⸨/i⸩
+⸨i⸩Isaac, Ishmael, and Jacob celebrate the feast of first⸨fix:‑⸩ ⸨/fix⸩fruits at Beersheba with Abraham, 1–5.⸨/i⸩
 ⸨i⸩Prayer of Abraham, 6–9.⸨/i⸩
 ⸨i⸩Abrahamʼs last words to and blessings of Jacob, 10–30.⸨/i⸩
 
-⸨in⸩22¹ And it came to pass in the †first† week in the †forty‑fourth† jubilee, in the †second† year, that is, the year in which Abraham died, that Isaac and Ishmael came from the Well of the Oath to celebrate the feast of weeks—that is, the feast of the first⸨err:‑⸩ ⸨/err⸩fruits of the harvest—to Abraham, their father, and Abraham rejoiced because his two sons had come.
+⸨in⸩22¹ And it came to pass in the †first† week in the †forty‑fourth† jubilee, in the †second† year, that is, the year in which Abraham died, that Isaac and Ishmael came from the Well of the Oath to celebrate the feast of weeks—that is, the feast of the first⸨fix:‑⸩ ⸨/fix⸩fruits of the harvest—to Abraham, their father, and Abraham rejoiced because his two sons had come.
 ² For Isaac had many possessions in Beersheba, and Isaac was wont to go and see his possessions and to return to his father.
-³ And in those days Ishmael came to see his father, and they ⸨b⸩both⸨/b⸩ came together, and Isaac offered a sacrifice for a burnt⸨err:‑⸩ ⸨/err⸩offering, and presented it on the altar of his father which he had made in Hebron.
-⁴ And he offered a thank⸨err:‑⸩ ⸨/err⸩offering and made a feast of joy before Ishmael, his brother: and Rebecca made new cakes from the new grain, and gave them to Jacob, her son, to take them to Abraham, his father, from the first⸨err:‑⸩ ⸨/err⸩fruits of the land, that he might eat and bless the Creator of all things before he died.
-⁵ And Isaac, too, sent by the hand of Jacob to Abraham ⸨err:the⸩a⸨/err⸩ best thank⸨err:‑⸩ ⸨/err⸩offering, that he might eat and drink.
+³ And in those days Ishmael came to see his father, and they ⸨b⸩both⸨/b⸩ came together, and Isaac offered a sacrifice for a burnt⸨fix:‑⸩ ⸨/fix⸩offering, and presented it on the altar of his father which he had made in Hebron.
+⁴ And he offered a thank⸨fix:‑⸩ ⸨/fix⸩offering and made a feast of joy before Ishmael, his brother: and Rebecca made new cakes from the new grain, and gave them to Jacob, her son, to take them to Abraham, his father, from the first⸨fix:‑⸩ ⸨/fix⸩fruits of the land, that he might eat and bless the Creator of all things before he died.
+⁵ And Isaac, too, sent by the hand of Jacob to Abraham ⸨fix:the⸩a⸨/fix⸩ best thank⸨fix:‑⸩ ⸨/fix⸩offering, that he might eat and drink.
 ⁶ And he eat and drank, and blessed the Most High God,
 ⸨pad⸩Who hath created heaven and earth,
 ⸨pad⸩Who hath made all the fat things of the earth,
 ⸨pad⸩And given them to the children of men
 ⸨pad⸩That they might eat and drink and bless their Creator.
-⁷ ‘And now I give thanks unto Thee, my God, because ⸨err:Thou⸩thou⸨/err⸩ hast caused me to see this day: behold, I am one hundred three score and fifteen years, an old man and full of days, and all my days have been unto me peace.
+⁷ ‘And now I give thanks unto Thee, my God, because ⸨fix:Thou⸩thou⸨/fix⸩ hast caused me to see this day: behold, I am one hundred three score and fifteen years, an old man and full of days, and all my days have been unto me peace.
 ⁸ The sword of the adversary has not overcome me in all that Thou hast given me and my children all the days of my life until this day.
 ⁹ My God, may Thy mercy and Thy peace be upon Thy servant, and upon the seed of his sons, that they may be to Thee a chosen nation and an inheritance from amongst all the nations of the earth from henceforth unto all the days of the generations of the earth, unto all the ages.’
 ¹⁰ And he called Jacob and said: ‘My son Jacob, may the God of all bless thee and strengthen thee to do righteousness, and His will before Him, and may He choose thee and thy seed that ye may become a people for His inheritance according to His will alway. And do thou, my son, Jacob, draw near and kiss me.’
@@ -40,11 +40,11 @@
 ⸨pad⸩May they rest on the sacred head of thy seed from generation to generation for ever.
 
 ⸨pad⸩¹⁴ And may He cleanse thee from all ⸨b⸩unrighteousness⸨/b⸩ and impurity,
-⸨pad⸩That thou mayest be forgiven all the transgressions⸨err: ⸩; ⸨/err⸩which thou hast committed ignorantly.
+⸨pad⸩That thou mayest be forgiven all the transgressions⸨fix: ⸩; ⸨/fix⸩which thou hast committed ignorantly.
 
 ⸨pad⸩And may He strengthen thee,
-⸨pad⸩And bless thee⸨err:,⸩.⸨/err⸩
-⸨pad⸩And mayest thou inherit the whole earth⸨err:.⸩,⸨/err⸩
+⸨pad⸩And bless thee⸨fix:,⸩.⸨/fix⸩
+⸨pad⸩And mayest thou inherit the whole earth⸨fix:.⸩,⸨/fix⸩
 
 ⸨pad⸩¹⁵ And may He renew His covenant with thee,
 ⸨pad⸩That thou mayest be to Him a nation for His inheritance for all the ages,
@@ -71,8 +71,8 @@
 ⸨pad⸩¹⁸ They have no heart to understand
 ⸨pad⸩And their eyes do not see what their works are,
 
-⸨pad⸩And how they err in saying to a piece of wood: ‘Thou art my ⸨err:god⸩God⸨/err⸩,’
-⸨pad⸩And to a stone: ‘Thou art my ⸨err:lord⸩Lord⸨/err⸩ and thou art my deliverer.’
+⸨pad⸩And how they err in saying to a piece of wood: ‘Thou art my ⸨fix:god⸩God⸨/fix⸩,’
+⸨pad⸩And to a stone: ‘Thou art my ⸨fix:lord⸩Lord⸨/fix⸩ and thou art my deliverer.’
 ⸨pad⸩[And they have no heart.]
 
 ⸨pad⸩¹⁹ And as for thee, my son Jacob,
@@ -88,10 +88,10 @@
 ⸨pad⸩And none springing from him shall be saved on the day of judgment.
 
 ⸨pad⸩²² And as for all the worshippers of idols and the profane
-⸨pad⸩⸨pad⸩⸨i⸩(⸨err:ᵇ⸩b⸨/err⸩) ⸨/i⸩There shall be no hope for them in the land of the living;
-⸨pad⸩⸨pad⸩⸨i⸩(⸨err:ᶜ⸩c⸨/err⸩) ⸨/i⸩And there shall be no remembrance of them on the earth;
-⸨pad⸩⸨pad⸩⸨i⸩(⸨err:ᶜ⸩c⸨/err⸩) ⸨/i⸩For they shall descend into Sheol,
-⸨pad⸩⸨pad⸩⸨i⸩(⸨err:ᵈ⸩d⸨/err⸩) ⸨/i⸩And into the place of condemnation shall they go,
+⸨pad⸩⸨pad⸩⸨i⸩(⸨fix:ᵇ⸩b⸨/fix⸩) ⸨/i⸩There shall be no hope for them in the land of the living;
+⸨pad⸩⸨pad⸩⸨i⸩(⸨fix:ᶜ⸩c⸨/fix⸩) ⸨/i⸩And there shall be no remembrance of them on the earth;
+⸨pad⸩⸨pad⸩⸨i⸩(⸨fix:ᶜ⸩c⸨/fix⸩) ⸨/i⸩For they shall descend into Sheol,
+⸨pad⸩⸨pad⸩⸨i⸩(⸨fix:ᵈ⸩d⸨/fix⸩) ⸨/i⸩And into the place of condemnation shall they go,
 
 ⸨pad⸩As the children of Sodom were taken away from the earth
 ⸨pad⸩So will all those who worship idols be taken away.
@@ -100,12 +100,12 @@
 ⸨pad⸩And be not dismayed, O son of Abraham:
 
 ⸨pad⸩May the Most High God preserve thee from destruction,
-⸨pad⸩And from all the paths of error may ⸨err:He⸩he⸨/err⸩ deliver thee.
+⸨pad⸩And from all the paths of error may ⸨fix:He⸩he⸨/fix⸩ deliver thee.
 
 ²⁴ This house have I built for myself that I might put my name upon it in the earth: [it is given to thee and to thy seed for ever], and it will be named the house of Abraham; it is given to thee and to thy seed for ever; for thou wilt build my house and establish my name before God for ever: thy seed and thy name will stand throughout all generations of the earth.’
 ⸨in⸩²⁵ And he ceased commanding him and blessing him.
 ²⁶ And the two lay together on one bed, and Jacob slept in the bosom of Abraham, his fatherʼs father and he kissed him seven times, and his affection and his heart rejoiced over him.
-²⁷ And he blessed ⸨err:Him⸩him⸨/err⸩ with all his heart and said: ‘The Most High God, the God of all, and Creator of all, who brought me forth from Ur of the Chaldees, that ⸨err:He⸩he⸨/err⸩ might give me this land to inherit it for ever, and that I might establish a holy seed—blessed be the Most High for ever.’
+²⁷ And he blessed ⸨fix:Him⸩him⸨/fix⸩ with all his heart and said: ‘The Most High God, the God of all, and Creator of all, who brought me forth from Ur of the Chaldees, that ⸨fix:He⸩he⸨/fix⸩ might give me this land to inherit it for ever, and that I might establish a holy seed—blessed be the Most High for ever.’
 ²⁸ And he blessed Jacob and said: ‘My son, over whom with all my heart and my affection I rejoice, may Thy grace and Thy mercy be lift up upon him and upon his seed alway.
 ²⁹ And do not forsake him, nor set him at nought from henceforth unto the days of eternity, and may Thine eyes be opened upon him and upon his seed, that Thou mayst preserve him, and bless him, and mayest sanctify him as a nation for Thine inheritance;
 ³⁰ And bless him with all Thy blessings from henceforth unto all the days of eternity, and renew Thy covenant and Thy grace with him and with his seed according to all Thy good pleasure unto all the generations of the earth.’

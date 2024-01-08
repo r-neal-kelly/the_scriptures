@@ -21,7 +21,7 @@
 19 Ipsa terra, bona an mala: urbes quales, muratæ an absque muris:
 20 Humus, pinguis an sterilis, nemorosa an absque arboribus. Confortamini, et afferte nobis de fructibus terræ. Erat autem tempus quando jam præcoquæ uvæ vesci possunt.
 21 Cumque ascendissent exploraverunt terram a deserto Sin, usque Rohob intrantibus Emath.
-22 Ascenderuntque ad meridiem, et venerunt in Hebron⸨err:, ⸩. ⸨/err⸩ubi erant Achiman et Sisai et Tholmai filii Enac; nam Hebron septem annis ante Tanim urbem Ægypti condita est.
+22 Ascenderuntque ad meridiem, et venerunt in Hebron⸨fix:, ⸩. ⸨/fix⸩ubi erant Achiman et Sisai et Tholmai filii Enac; nam Hebron septem annis ante Tanim urbem Ægypti condita est.
 23 Pergentesque usque ad Torrentem botri, absciderunt palmitem cum uva sua, quem portaverunt in vecte duo viri. De malis quoque granatis et de ficis loci illius tulerunt:
 24 Qui appellatus est Nehelescol, id est, Torrens botri, eo quod botrum portassent inde filii Israel.
 25 Reversique exploratores terræ post quadraginta dies, omni regione circuita,
