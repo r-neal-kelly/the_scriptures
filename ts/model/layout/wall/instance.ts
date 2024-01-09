@@ -21,7 +21,9 @@ export class Instance
     constructor(
         {
             desktop,
-            render_type = Render_Type.LANDSCAPE,
+            render_type = Utils.Is_Landscape() ?
+                Render_Type.LANDSCAPE :
+                Render_Type.PORTRAIT,
             render_limit = Instance.DEFAULT_RENDER_LIMIT,
         }: {
             desktop: Desktop.Instance,
@@ -208,6 +210,17 @@ export class Instance
         Window.Instance | null
     {
         return this.active_window;
+    }
+
+    Active_Window():
+        Window.Instance
+    {
+        Utils.Assert(
+            this.Has_Active_Window(),
+            `Does not have active window.`,
+        );
+
+        return this.active_window as Window.Instance;
     }
 
     __Set_Active_Window__(

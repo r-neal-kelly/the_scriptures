@@ -69,6 +69,8 @@ export class Instance extends Entity.Instance
             `,
         );
 
+        this.Automatically_Resize();
+
         this.Window().addEventListener(
             `beforeunload`,
             function (

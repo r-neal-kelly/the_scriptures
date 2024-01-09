@@ -23,6 +23,8 @@ import * as Unique_ID from "../unique_id.js";
             On_Restyle
         Restyle:
             On_Restyle
+        Resize:
+            On_Resize
         Die:
             Before_Death
 */
@@ -67,6 +69,14 @@ export interface Life_Cycle_Sender_API
         their styles.
     */
     Restyle(): void;
+
+    /*
+        You can call this to resize an entity and all of its children.
+        Calling this does not fully refresh entities.
+    */
+    Resize(
+        parent_rect: DOMRect,
+    ): void;
 
     /*
         Automatically called when the parent of the entity dies,
@@ -122,6 +132,15 @@ export interface Life_Cycle_Listener_API
     On_Restyle(): string | { [index: string]: string };
 
     /*
+        Providing this event handler allows you to resize the underlying element
+        if necessary.
+        Children get this event after their parents.
+    */
+    On_Resize(
+        parent_rect: DOMRect,
+    ): void;
+
+    /*
         Providing this event handler allows you to work with an entity
         before its children die and before it is removed from its parent.
         The entity is still in the DOM during this event.
@@ -152,6 +171,15 @@ export interface CSS_API
     Add_Children_CSS(
         css: string,
     ): void;
+}
+
+export interface Resizable_API
+{
+    /*
+        Causes the entity's Resize sender to automatically be called.
+        It only works if the underlying element is attached to the DOM.
+    */
+    Automatically_Resize(): void;
 }
 
 export interface Element_API
@@ -201,8 +229,8 @@ export interface Child_API
     Abort_All_Children(): void;
 
     /*
-        Works during On_Refresh(), On_Reclass(), and On_Restyle().
-        Allows you to completely skip the above three listeners
+        Works during On_Refresh, On_Reclass, On_Restyle, and On_Resize.
+        Allows you to completely skip the above four listeners
         on the children of an entity.
 
         Is reset after being checked, so the next cycle will not
@@ -211,8 +239,8 @@ export interface Child_API
     Skip_Children(): void;
 
     /*
-        Works during On_Refresh(), On_Reclass(), and On_Restyle().
-        Allows you to completely skip the above three listeners
+        Works during On_Refresh, On_Reclass, On_Restyle, and On_Resize.
+        Allows you to completely skip the above four listeners
         on the remaining siblings of an entity.
 
         Is reset after being checked, so the next cycle will not
@@ -317,6 +345,7 @@ enum Life_Cycle_Listener
     ON_REFRESH,
     ON_RECLASS,
     ON_RESTYLE,
+    ON_RESIZE,
     BEFORE_DEATH,
 }
 
@@ -328,11 +357,107 @@ enum Life_Cycle_Skip
     REMAINING_SIBLINGS = 1 << 1,
 }
 
+class Resizable_Entity
+{
+    private entity: Instance;
+    private current_width: Float;
+    private current_height: Float;
+    private resize_observer: ResizeObserver;
+
+    constructor(
+        entity: Instance,
+    )
+    {
+        const rect: DOMRect = entity.Element().getBoundingClientRect();
+
+        this.entity = entity;
+        this.current_width = rect.width;
+        this.current_height = rect.height;
+        this.resize_observer = new ResizeObserver(this.On_Resize.bind(this));
+
+        this.resize_observer.observe(entity.Element());
+    }
+
+    Destroy():
+        void
+    {
+        this.resize_observer.disconnect();
+    }
+
+    private On_Resize():
+        void
+    {
+        if (this.entity.Is_Alive()) {
+            const element: HTMLElement = this.entity.Element();
+
+            if (element.parentElement != null) {
+                const current_rect: DOMRect = element.getBoundingClientRect();
+
+                if (
+                    this.current_width !== current_rect.width ||
+                    this.current_height !== current_rect.height
+                ) {
+                    this.current_width = current_rect.width;
+                    this.current_height = current_rect.height;
+
+                    this.entity.Resize(element.parentElement.getBoundingClientRect());
+                }
+            }
+        }
+    }
+}
+
+class Resizable_Entities
+{
+    private cache: { [entity_id: ID]: Resizable_Entity };
+
+    constructor()
+    {
+        this.cache = Object.create(null);
+    }
+
+    Has(
+        entity: Instance,
+    ):
+        boolean
+    {
+        return this.cache[entity.ID()] != null;
+    }
+
+    Add(
+        entity: Instance,
+    ):
+        void
+    {
+        Utils.Assert(
+            !this.Has(entity),
+            `Already has entity.`,
+        );
+
+        this.cache[entity.ID()] = new Resizable_Entity(entity);
+    }
+
+    Remove(
+        entity: Instance,
+    ):
+        void
+    {
+        Utils.Assert(
+            this.Has(entity),
+            `Does not have entity.`,
+        );
+
+        this.cache[entity.ID()].Destroy();
+        delete this.cache[entity.ID()];
+    }
+}
+
 export abstract class Instance implements
     Info_API,
     Life_Cycle_Sender_API,
     Life_Cycle_Listener_API,
     CSS_API,
+    Resizable_API,
     Element_API,
     Parent_API,
     Child_API,
@@ -341,6 +466,9 @@ export abstract class Instance implements
 {
     private static class_id: ID =
         `${new Date().getTime()}${Math.random().toString().replace(/\./g, ``)}`;
+
+    private static resizable_entities: Resizable_Entities =
+        new Resizable_Entities();
 
     private id: ID;
     private element: HTMLElement;
@@ -561,6 +689,44 @@ export abstract class Instance implements
         }
     }
 
+    Resize(
+        parent_rect: DOMRect,
+    ):
+        void
+    {
+        if (this.Is_Alive()) {
+            this.life_cycle_skip &= ~Life_Cycle_Skip.CHILDREN;
+            this.Resize_This(parent_rect);
+            if (this.life_cycle_skip & Life_Cycle_Skip.CHILDREN) {
+                return;
+            }
+
+            parent_rect = this.Element().getBoundingClientRect();
+            for (const child of this.children.values()) {
+                child.life_cycle_skip &= ~Life_Cycle_Skip.REMAINING_SIBLINGS;
+                child.Resize(parent_rect);
+                if (child.life_cycle_skip & Life_Cycle_Skip.REMAINING_SIBLINGS) {
+                    return;
+                }
+            }
+        }
+    }
+
+    private Resize_This(
+        parent_rect: DOMRect,
+    ):
+        void
+    {
+        if (
+            this.Is_Alive() &&
+            Object.getPrototypeOf(this).On_Resize !== Instance.prototype.On_Resize
+        ) {
+            this.life_cycle_listener = Life_Cycle_Listener.ON_RESIZE;
+            this.On_Resize(parent_rect);
+            this.life_cycle_listener = Life_Cycle_Listener._NONE_;
+        }
+    }
+
     Die():
         void
     {
@@ -587,6 +753,9 @@ export abstract class Instance implements
                 parent.children.delete(child_element);
             }
 
+            if (Instance.resizable_entities.Has(this)) {
+                Instance.resizable_entities.Remove(this);
+            }
             if (this.css != null) {
                 Utils.Destroy_Style_Element(this.css);
             }
@@ -639,6 +808,19 @@ export abstract class Instance implements
         );
 
         return ``;
+    }
+
+    On_Resize(
+        parent_rect: DOMRect,
+    ):
+        void
+    {
+        Utils.Assert(
+            false,
+            `This method must be overridden to be used.`,
+        );
+
+        return;
     }
 
     Before_Death():
@@ -830,6 +1012,25 @@ export abstract class Instance implements
                 return `${left}${result}${right}`;
             },
         );
+    }
+
+    Automatically_Resize():
+        void
+    {
+        Utils.Assert(
+            this.Is_Alive(),
+            `Cannot make a dead entity resizable.`,
+        );
+        Utils.Assert(
+            this.life_cycle_listener === Life_Cycle_Listener.ON_LIFE,
+            `You can only make an entity resizable during On_Life().`,
+        );
+        Utils.Assert(
+            !Instance.resizable_entities.Has(this),
+            `This entity has already been made resizable.`,
+        );
+
+        Instance.resizable_entities.Add(this);
     }
 
     Element():
@@ -1049,8 +1250,9 @@ export abstract class Instance implements
         Utils.Assert(
             this.life_cycle_listener === Life_Cycle_Listener.ON_REFRESH ||
             this.life_cycle_listener === Life_Cycle_Listener.ON_RECLASS ||
-            this.life_cycle_listener === Life_Cycle_Listener.ON_RESTYLE,
-            `You can only skip children during On_Refresh(), On_Reclass(), or On_Restyle().`,
+            this.life_cycle_listener === Life_Cycle_Listener.ON_RESTYLE ||
+            this.life_cycle_listener === Life_Cycle_Listener.ON_RESIZE,
+            `You can only skip children during On_Refresh, On_Reclass, On_Restyle, or On_Resize.`,
         );
 
         this.life_cycle_skip |= Life_Cycle_Skip.CHILDREN;
@@ -1062,8 +1264,9 @@ export abstract class Instance implements
         Utils.Assert(
             this.life_cycle_listener === Life_Cycle_Listener.ON_REFRESH ||
             this.life_cycle_listener === Life_Cycle_Listener.ON_RECLASS ||
-            this.life_cycle_listener === Life_Cycle_Listener.ON_RESTYLE,
-            `You can only skip remaining siblings during On_Refresh(), On_Reclass(), or On_Restyle().`,
+            this.life_cycle_listener === Life_Cycle_Listener.ON_RESTYLE ||
+            this.life_cycle_listener === Life_Cycle_Listener.ON_RESIZE,
+            `You can only skip remaining siblings during On_Refresh, On_Reclass, On_Restyle, or On_Resize.`,
         );
 
         this.life_cycle_skip |= Life_Cycle_Skip.REMAINING_SIBLINGS;

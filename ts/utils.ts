@@ -38,6 +38,18 @@ export function Is_Little_Endian():
     return !is_big_endian;
 }
 
+export function Is_Landscape():
+    boolean
+{
+    return document.documentElement.clientHeight <= document.documentElement.clientWidth;
+}
+
+export function Is_Portrait():
+    boolean
+{
+    return document.documentElement.clientHeight > document.documentElement.clientWidth;
+}
+
 export async function Wait_Milliseconds(
     milliseconds: Integer,
 ):

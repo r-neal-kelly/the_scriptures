@@ -183,11 +183,42 @@ export class Instance extends Entity.Instance
             primary_grid_template === grid_template_columns ?
                 grid_template_rows :
                 grid_template_columns;
+        const grid_auto_flow: string =
+            render_type === Model.Render_Type.LANDSCAPE ?
+                `row` :
+                `column`;
 
         return `
+            grid-auto-flow: ${grid_auto_flow};
             ${primary_grid_template}: repeat(${render_limit}, ${100 / render_limit}%);
             ${secondary_grid_template}: repeat(${Math.ceil(window_count / render_limit) + maximized_window_count}, 100%);
         `;
+    }
+
+    override On_Resize(
+        parent_rect: DOMRect,
+    ):
+        void
+    {
+        const model: Model.Instance = this.Model();
+
+        if (model.Render_Type() === Model.Render_Type.LANDSCAPE) {
+            if (Utils.Is_Portrait()) {
+                model.Set_Render_Type(Model.Render_Type.PORTRAIT);
+                this.Restyle();
+            }
+        } else {
+            if (Utils.Is_Landscape()) {
+                model.Set_Render_Type(Model.Render_Type.LANDSCAPE);
+                this.Restyle();
+            }
+        }
+
+        if (model.Has_Active_Window()) {
+            this.Move_Window_Into_View(model.Active_Window().Index());
+        } else if (model.Window_Count() > 0) {
+            this.Move_Window_Into_View(0);
+        }
     }
 
     private async After_Window_Toggle_Maximization():

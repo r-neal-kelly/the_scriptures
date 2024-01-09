@@ -339,6 +339,12 @@ export abstract class Instance<
         return this.Default_Font_Styles();
     }
 
+    override On_Resize():
+        void
+    {
+        this.Skip_Children();
+    }
+
     Model():
         Model_Instance
     {
