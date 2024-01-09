@@ -1,10 +1,9 @@
-import * as Entity from "../entity.js";
 import * as Layout from "./instance.js";
 import * as Wall from "./wall.js";
 import * as Window from "./window.js";
 import * as Menu from "./menu.js";
 
-export class Instance extends Entity.Instance
+export class Instance
 {
     private layout: Layout.Instance;
     private wall: Wall.Instance;
@@ -18,8 +17,6 @@ export class Instance extends Entity.Instance
         },
     )
     {
-        super();
-
         this.layout = layout;
         this.wall = new Wall.Instance(
             {
@@ -30,13 +27,6 @@ export class Instance extends Entity.Instance
             {
                 desktop: this,
             },
-        );
-
-        this.Add_Dependencies(
-            [
-                this.wall,
-                this.menu,
-            ],
         );
     }
 

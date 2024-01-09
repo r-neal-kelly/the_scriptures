@@ -3,13 +3,12 @@ import { Index } from "../../types.js";
 
 import * as Utils from "../../utils.js";
 
-import * as Entity from "../entity.js";
 import * as Font from "../font.js";
 import * as Language from "../language.js";
 import * as Languages from "../languages.js";
 import * as Slot from "./slot.js";
 
-export class Instance extends Entity.Instance
+export class Instance
 {
     private static MAX_SLOT_COUNT: Count = 2;
 
@@ -24,15 +23,24 @@ export class Instance extends Entity.Instance
 
     constructor()
     {
-        super();
-
         this.cached_font_slots = {};
         this.slots = [];
 
-        this.Add_Dependencies(
-            [
-            ],
-        );
+        const languages: Languages.Instance = Languages.Singleton();
+        const language_names: Array<Language.Name> = languages.Language_Names();
+        for (const language_name of language_names) {
+            this.cached_font_slots[language_name] = new Slot.Instance(
+                {
+                    selector: this,
+                    index: 1,
+                    type: Slot.Type.FONTS,
+                    item_names: languages.Global_Short_Font_Names(language_name),
+                    selected_item_name: languages.Current_Global_Short_Font_Name(language_name),
+                },
+            );
+        }
+
+        this.Push_Slot();
     }
 
     Slot_Count():
@@ -224,25 +232,5 @@ export class Instance extends Entity.Instance
                 this.Push_Slot();
             }
         }
-    }
-
-    override async After_Dependencies_Are_Ready():
-        Promise<void>
-    {
-        const languages: Languages.Instance = Languages.Singleton();
-        const language_names: Array<Language.Name> = languages.Language_Names();
-        for (const language_name of language_names) {
-            this.cached_font_slots[language_name] = new Slot.Instance(
-                {
-                    selector: this,
-                    index: 1,
-                    type: Slot.Type.FONTS,
-                    item_names: languages.Global_Short_Font_Names(language_name),
-                    selected_item_name: languages.Current_Global_Short_Font_Name(language_name),
-                },
-            );
-        }
-
-        this.Push_Slot();
     }
 }

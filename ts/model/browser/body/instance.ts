@@ -1,11 +1,12 @@
-import * as Entity from "../../entity.js";
+import * as Async from "../../../async.js";
+
 import * as Browser from "../instance.js";
 import * as Selection from "../../data/selection.js";
 import * as Selector from "../../selector.js";
 import * as Font_Selector from "../../font_selector.js";
 import * as Reader from "./reader.js";
 
-export class Instance extends Entity.Instance
+export class Instance extends Async.Instance
 {
     private browser: Browser.Instance;
     private selector: Selector.Instance;
@@ -44,7 +45,6 @@ export class Instance extends Entity.Instance
         this.Add_Dependencies(
             [
                 this.selector,
-                this.font_selector,
                 this.reader,
             ],
         );

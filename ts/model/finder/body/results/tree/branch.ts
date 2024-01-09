@@ -4,7 +4,6 @@ import { Name } from "../../../../../types.js";
 
 import * as Utils from "../../../../../utils.js";
 
-import * as Entity from "../../../../entity.js";
 import * as Tree from "./instance.js";
 import * as Leaf from "./leaf.js";
 
@@ -12,7 +11,7 @@ export type Data = {
     [name: Name]: Data | Array<Leaf.Data>,
 }
 
-export class Instance extends Entity.Instance
+export class Instance
 {
     private parent: Tree.Instance | Instance;
     private name: Name;
@@ -31,8 +30,6 @@ export class Instance extends Entity.Instance
         },
     )
     {
-        super();
-
         this.parent = parent;
         this.name = name;
         this.branches_or_leaves = [];
@@ -63,10 +60,6 @@ export class Instance extends Entity.Instance
                 );
             }
         }
-
-        this.Add_Dependencies(
-            this.branches_or_leaves,
-        );
     }
 
     Tree():

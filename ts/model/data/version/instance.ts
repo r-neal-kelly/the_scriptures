@@ -5,7 +5,6 @@ import { Path } from "../../../types.js";
 
 import * as Utils from "../../../utils.js";
 
-import * as Entity from "../../entity.js";
 import * as Text from "../../text.js";
 
 import * as Language from "../language.js";
@@ -16,7 +15,7 @@ export type Branch = {
     files: Array<File.Leaf>,
 };
 
-export class Instance extends Entity.Instance
+export class Instance
 {
     private language: Language.Instance;
     private name: Name;
@@ -33,8 +32,6 @@ export class Instance extends Entity.Instance
         },
     )
     {
-        super();
-
         this.language = language;
         this.name = branch.name;
         this.path = `${language.Path()}/${branch.name}`;
@@ -50,10 +47,6 @@ export class Instance extends Entity.Instance
                 ),
             );
         }
-
-        this.Add_Dependencies(
-            this.files,
-        );
     }
 
     Language():

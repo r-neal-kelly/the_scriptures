@@ -2,7 +2,6 @@ import { Index } from "../../../types.js";
 
 import * as Utils from "../../../utils.js";
 
-import * as Entity from "../../entity.js";
 import * as Language from "../../language.js";
 import * as Font from "../../font.js";
 import * as Text from "../../text.js";
@@ -29,7 +28,7 @@ interface Segment_Instance_i<
 export class Instance<
     Buffer_Instance extends Buffer_Instance_i,
     Segment_Instance extends Segment_Instance_i<Buffer_Instance>,
-> extends Entity.Instance
+>
 {
     private segment: Segment_Instance;
     private index: Index;
@@ -47,8 +46,6 @@ export class Instance<
         },
     )
     {
-        super();
-
         this.segment = segment;
         this.index = index;
         this.text = text;
@@ -56,11 +53,6 @@ export class Instance<
         Utils.Assert(
             index > -1,
             `index must be greater than -1.`,
-        );
-
-        this.Add_Dependencies(
-            [
-            ],
         );
     }
 

@@ -4,12 +4,11 @@ import { Name } from "../../../types.js";
 
 import * as Utils from "../../../utils.js";
 
-import * as Entity from "../../entity.js";
 import * as Selector from "../instance.js";
 import { Type } from "./type.js";
 import * as Item from "./item.js";
 
-export class Instance extends Entity.Instance
+export class Instance
 {
     private selector: Selector.Instance;
     private index: Index;
@@ -32,8 +31,6 @@ export class Instance extends Entity.Instance
         },
     )
     {
-        super();
-
         this.selector = selector;
         this.index = index;
         this.type = type;
@@ -66,10 +63,6 @@ export class Instance extends Entity.Instance
                 ),
             );
         }
-
-        this.Add_Dependencies(
-            this.items,
-        );
     }
 
     Selector():

@@ -1,9 +1,8 @@
 import * as Utils from "../../../../utils.js";
 
-import * as Entity from "../../../entity.js";
 import * as Commands from "./commands.js";
 
-export class Instance extends Entity.Instance
+export class Instance
 {
     private commands: Commands.Instance;
 
@@ -15,14 +14,7 @@ export class Instance extends Entity.Instance
         },
     )
     {
-        super();
-
         this.commands = commands;
-
-        this.Add_Dependencies(
-            [
-            ],
-        );
     }
 
     Commands():

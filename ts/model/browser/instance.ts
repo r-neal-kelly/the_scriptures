@@ -1,12 +1,13 @@
 import { Name } from "../../types.js";
 
-import * as Entity from "../entity.js";
+import * as Async from "../../async.js";
+
 import * as Selection from "../data/selection.js";
 import * as Selector from "../selector.js";
 import * as Commander from "./commander.js";
 import * as Body from "./body.js";
 
-export class Instance extends Entity.Instance
+export class Instance extends Async.Instance
 {
     private commander: Commander.Instance;
     private body: Body.Instance;
@@ -44,7 +45,6 @@ export class Instance extends Entity.Instance
 
         this.Add_Dependencies(
             [
-                this.commander,
                 this.body,
             ],
         );

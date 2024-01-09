@@ -3,7 +3,6 @@ import { Index } from "../../../types.js";
 
 import * as Utils from "../../../utils.js";
 
-import * as Entity from "../../entity.js";
 import * as Language from "../../language.js";
 import * as Data from "../../data.js";
 import * as Text from "../../text.js";
@@ -42,7 +41,7 @@ export abstract class Instance<
     Line_Instance extends Line_Instance_i,
     Column_Instance extends Column_Instance_i<Buffer_Instance, Line_Instance>,
     Segment_Instance extends Segment_Instance_i,
-> extends Entity.Instance
+>
 {
     private column: Column_Instance;
     private index: Index;
@@ -61,8 +60,6 @@ export abstract class Instance<
         },
     )
     {
-        super();
-
         this.column = column;
         this.index = index;
         this.text = text;
@@ -71,12 +68,6 @@ export abstract class Instance<
         Utils.Assert(
             index > -1,
             `index must be greater than -1.`,
-        );
-
-        this.Add_Dependencies(
-            [
-                Data.Singleton(),
-            ],
         );
     }
 

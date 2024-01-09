@@ -1,9 +1,11 @@
 import { Count } from "../../../types.js";
 import { Index } from "../../../types.js";
+import { ID } from "../../../types.js";
 
 import * as Utils from "../../../utils.js";
+import * as Async from "../../../async.js";
+import * as Unique_ID from "../../../unique_id.js";
 
-import * as Entity from "../../entity.js";
 import * as Wall from "../wall.js";
 import { State } from "./state.js";
 import * as Program from "./program.js";
@@ -12,8 +14,9 @@ import * as Banner from "./banner.js";
 import { Render_Type } from "../wall/render_type.js";
 export { Render_Type } from "../wall/render_type.js";
 
-export class Instance extends Entity.Instance
+export class Instance extends Async.Instance
 {
+    private id: ID;
     private wall: Wall.Instance | null;
     private state: State;
     private program: Program.Instance;
@@ -31,6 +34,7 @@ export class Instance extends Entity.Instance
     {
         super();
 
+        this.id = Unique_ID.New();
         this.wall = wall;
         this.state = State._NONE_;
         this.program = program;
@@ -43,9 +47,14 @@ export class Instance extends Entity.Instance
         this.Add_Dependencies(
             [
                 this.program,
-                this.banner,
             ],
         );
+    }
+
+    ID():
+        ID
+    {
+        return this.id;
     }
 
     Is_In_Wall():

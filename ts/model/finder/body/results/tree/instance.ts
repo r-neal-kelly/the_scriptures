@@ -1,9 +1,8 @@
-import * as Entity from "../../../../entity.js";
 import * as Results from "../instance.js";
 import * as Branch from "./branch.js";
 import * as Leaf from "./leaf.js";
 
-export class Instance extends Entity.Instance
+export class Instance
 {
     private results: Results.Instance;
     private root: Branch.Instance;
@@ -19,8 +18,6 @@ export class Instance extends Entity.Instance
         },
     )
     {
-        super();
-
         this.results = results;
         this.root = new Branch.Instance(
             {
@@ -30,11 +27,6 @@ export class Instance extends Entity.Instance
             },
         );
         this.selected = [];
-
-        this.Add_Dependencies(
-            [
-            ],
-        );
     }
 
     Results():
@@ -70,6 +62,10 @@ export class Instance extends Entity.Instance
             parent = parent.Parent();
         }
 
-        this.Results().Set_Buffer(leaf.Default_Language(), await leaf.File().Text(), leaf.Results());
+        await this.Results().Set_Buffer(
+            leaf.Default_Language(),
+            await leaf.File().Text(),
+            leaf.Results(),
+        );
     }
 }

@@ -3,13 +3,13 @@ import { Index } from "../../types.js";
 import { Name } from "../../types.js";
 
 import * as Utils from "../../utils.js";
+import * as Async from "../../async.js";
 
-import * as Entity from "../entity.js";
 import * as Data from "../data.js";
 import * as Settings from "./settings.js";
 import * as Slot from "./slot.js";
 
-export class Instance extends Entity.Instance
+export class Instance extends Async.Instance
 {
     private static MAX_SLOT_COUNT: Count = 4;
 
@@ -73,7 +73,6 @@ export class Instance extends Entity.Instance
         this.Add_Dependencies(
             [
                 Data.Singleton(),
-                this.settings,
             ],
         );
     }
@@ -777,9 +776,9 @@ export class Instance extends Entity.Instance
         Promise<void>
     {
         if (this.first_selection instanceof Data.Selection.Name) {
-            this.Select_Item(this.first_selection);
+            this.Select_Item(this.first_selection as Data.Selection.Name);
         } else if (this.first_selection instanceof Data.Selection.Index) {
-            this.Select_Item_At(this.first_selection);
+            this.Select_Item_At(this.first_selection as Data.Selection.Index);
         } else {
             this.Push_Slot();
         }

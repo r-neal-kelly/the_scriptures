@@ -1,12 +1,12 @@
 import { Name } from "../../types.js";
 
-import * as Entity from "../entity.js";
-import * as Data from "../data.js";
+import * as Async from "../../async.js";
+
 import * as Search from "../search.js";
 import * as Commander from "./commander.js";
 import * as Body from "./body.js";
 
-export class Instance extends Entity.Instance
+export class Instance extends Async.Instance
 {
     private search_results: Array<Search.Result.Instance> | null;
     private commander: Commander.Instance;
@@ -31,9 +31,6 @@ export class Instance extends Entity.Instance
 
         this.Add_Dependencies(
             [
-                Data.Singleton(),
-                Search.Singleton(),
-                this.commander,
                 this.body,
             ],
         );

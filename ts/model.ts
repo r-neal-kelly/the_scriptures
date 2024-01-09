@@ -1,7 +1,6 @@
 export * as Browser from "./model/browser.js";
 export * as Buffer from "./model/buffer.js";
 export * as Data from "./model/data.js";
-export * as Entity from "./model/entity.js";
 export * as Finder from "./model/finder.js";
 export * as Font_Selector from "./model/font_selector.js";
 export * as Font from "./model/font.js";

@@ -1,9 +1,8 @@
 import { Name } from "../../../../types.js";
 
-import * as Entity from "../../../entity.js";
 import * as Banner from "./instance.js";
 
-export class Instance extends Entity.Instance
+export class Instance
 {
     private banner: Banner.Instance;
 
@@ -15,14 +14,7 @@ export class Instance extends Entity.Instance
         },
     )
     {
-        super();
-
         this.banner = banner;
-
-        this.Add_Dependencies(
-            [
-            ],
-        );
     }
 
     Banner():

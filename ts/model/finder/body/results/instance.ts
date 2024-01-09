@@ -2,9 +2,9 @@ import { Count } from "../../../../types.js";
 import { Name } from "../../../../types.js";
 
 import * as Utils from "../../../../utils.js";
+import * as Async from "../../../../async.js";
 
 import * as Language from "../../../language.js";
-import * as Entity from "../../../entity.js";
 import * as Text from "../../../text.js";
 import * as Search from "../../../search.js";
 import * as Filter from "../../../selector.js";
@@ -12,7 +12,7 @@ import * as Body from "../instance.js";
 import * as Tree from "./tree.js";
 import * as Buffer from "../../../buffer/search.js";
 
-export class Instance extends Entity.Instance
+export class Instance extends Async.Instance
 {
     private body: Body.Instance;
     private tree: Tree.Instance;
@@ -241,7 +241,6 @@ export class Instance extends Entity.Instance
 
         this.Add_Dependencies(
             [
-                this.tree,
                 this.buffer,
             ],
         );
@@ -265,12 +264,12 @@ export class Instance extends Entity.Instance
         return this.buffer;
     }
 
-    Set_Buffer(
+    async Set_Buffer(
         default_language_name: Language.Name,
         text: Text.Instance,
         results: Array<Search.Result.Instance>,
     ):
-        void
+        Promise<void>
     {
         this.buffer = new Buffer.Instance(
             {
@@ -281,6 +280,7 @@ export class Instance extends Entity.Instance
                 is_showing_commands: this.is_showing_commands,
             },
         );
+        await this.buffer.Ready();
     }
 
     Book_Count():

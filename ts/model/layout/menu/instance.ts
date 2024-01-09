@@ -1,9 +1,8 @@
-import * as Entity from "../../entity.js";
 import * as Desktop from "../desktop.js";
 import * as Open_Browser from "./open_browser.js";
 import * as Open_Finder from "./open_finder.js";
 
-export class Instance extends Entity.Instance
+export class Instance
 {
     private desktop: Desktop.Instance;
     private open_browser: Open_Browser.Instance;
@@ -18,8 +17,6 @@ export class Instance extends Entity.Instance
         },
     )
     {
-        super();
-
         this.desktop = desktop;
         this.open_browser = new Open_Browser.Instance(
             {
@@ -32,13 +29,6 @@ export class Instance extends Entity.Instance
             },
         );
         this.is_open = false;
-
-        this.Add_Dependencies(
-            [
-                this.open_browser,
-                this.open_finder,
-            ],
-        );
     }
 
     Desktop():

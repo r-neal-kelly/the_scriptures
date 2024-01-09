@@ -1,7 +1,6 @@
-import * as Entity from "../entity.js";
 import * as Taskbar from "./taskbar.js";
 
-export class Instance extends Entity.Instance
+export class Instance
 {
     private taskbar: Taskbar.Instance;
 
@@ -13,14 +12,7 @@ export class Instance extends Entity.Instance
         },
     )
     {
-        super();
-
         this.taskbar = taskbar;
-
-        this.Add_Dependencies(
-            [
-            ],
-        );
     }
 
     Taskbar():

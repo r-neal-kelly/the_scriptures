@@ -1,7 +1,6 @@
-import * as Entity from "../../entity.js";
 import * as Menu from "./instance.js";
 
-export class Instance extends Entity.Instance
+export class Instance
 {
     private menu: Menu.Instance;
 
@@ -13,14 +12,7 @@ export class Instance extends Entity.Instance
         },
     )
     {
-        super();
-
         this.menu = menu;
-
-        this.Add_Dependencies(
-            [
-            ],
-        );
     }
 
     Menu():

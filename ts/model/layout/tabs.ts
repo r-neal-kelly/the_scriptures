@@ -3,11 +3,10 @@ import { Index } from "../../types.js";
 
 import * as Utils from "../../utils.js";
 
-import * as Entity from "../entity.js";
 import * as Taskbar from "./taskbar.js";
 import * as Tab from "./tab.js";
 
-export class Instance extends Entity.Instance
+export class Instance
 {
     private taskbar: Taskbar.Instance;
     private tabs: Array<Tab.Instance>;
@@ -20,15 +19,8 @@ export class Instance extends Entity.Instance
         },
     )
     {
-        super();
-
         this.taskbar = taskbar;
         this.tabs = [];
-
-        this.Add_Dependencies(
-            [
-            ],
-        );
     }
 
     Taskbar():

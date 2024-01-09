@@ -1,1 +1,1 @@
-import*as Entity from"../../entity.js";export class Instance extends Entity.Instance{constructor(){super(),this.is_toggled=!1,this.Add_Dependencies([])}Is_Toggled(){return this.is_toggled}Toggle(){this.is_toggled=!this.is_toggled}Symbol(){return this.Is_Toggled()?"Close Filter":"Open Filter"}}
+export class Instance{constructor({commander:e}){this.commander=e,this.is_toggled=!1}Commander(){return this.commander}Is_Toggled(){return this.is_toggled}Toggle(){this.is_toggled=!this.is_toggled}Symbol(){return this.Is_Toggled()?"Close Filter":"Open Filter"}}

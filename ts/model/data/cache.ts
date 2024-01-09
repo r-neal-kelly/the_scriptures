@@ -7,7 +7,6 @@ import * as Utils from "../../utils.js";
 import * as Circle_Buffer from "../../circle_buffer.js";
 import * as Compressor from "../../compressor.js";
 
-import * as Entity from "../entity.js";
 import * as Text from "../text.js";
 
 import * as Consts from "./consts.js";
@@ -188,7 +187,7 @@ class File_Cache
     }
 }
 
-export class Instance extends Entity.Instance implements Public_i
+export class Instance implements Public_i
 {
     private info: Info.Instance | null;
 
@@ -208,8 +207,6 @@ export class Instance extends Entity.Instance implements Public_i
         } = {},
     )
     {
-        super();
-
         this.info = null;
 
         this.version_buffer = new Circle_Buffer.Instance(
@@ -227,11 +224,6 @@ export class Instance extends Entity.Instance implements Public_i
             },
         );
         this.file_caches = {};
-
-        this.Add_Dependencies(
-            [
-            ],
-        );
     }
 
     private async String(

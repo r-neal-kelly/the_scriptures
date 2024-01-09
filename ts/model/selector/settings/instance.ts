@@ -4,12 +4,11 @@ import { Name } from "../../../types.js";
 
 import * as Utils from "../../../utils.js";
 
-import * as Entity from "../../entity.js";
 import * as Selector from "../instance.js";
 import * as Slot from "../slot.js";
 import * as Slot_Order from "./slot_order.js";
 
-export class Instance extends Entity.Instance
+export class Instance
 {
     private static slot_order_values: Array<Slot.Order> = [
         Slot.Order.LANGUAGES_VERSIONS_BOOKS,
@@ -50,8 +49,6 @@ export class Instance extends Entity.Instance
         },
     )
     {
-        super();
-
         this.selector = selector;
         this.is_toggled = false;
         this.slot_orders = [];
@@ -70,10 +67,6 @@ export class Instance extends Entity.Instance
                 ),
             );
         }
-
-        this.Add_Dependencies(
-            this.slot_orders,
-        );
     }
 
     Selector():

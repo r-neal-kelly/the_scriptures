@@ -2,11 +2,10 @@ import { Count } from "../../../types.js";
 
 import * as Utils from "../../../utils.js";
 
-import * as Entity from "../../entity.js";
 import * as Selector from "../../selector.js";
 import * as Commander from "./instance.js";
 
-export class Instance extends Entity.Instance
+export class Instance
 {
     private commander: Commander.Instance;
 
@@ -18,14 +17,7 @@ export class Instance extends Entity.Instance
         },
     )
     {
-        super();
-
         this.commander = commander;
-
-        this.Add_Dependencies(
-            [
-            ],
-        );
     }
 
     Commander():
@@ -68,12 +60,12 @@ export class Instance extends Entity.Instance
             const current_file: Selector.Slot.Item.Instance =
                 files.Selected_Item();
             if (current_file.Index() > 0) {
-                await files.Item_At_Index(current_file.Index() - 1).Select();
+                files.Item_At_Index(current_file.Index() - 1).Select();
             } else {
-                await files.Item_At_Index(file_count - 1).Select();
+                files.Item_At_Index(file_count - 1).Select();
             }
         } else {
-            await files.Item_At_Index(file_count - 1).Select();
+            files.Item_At_Index(file_count - 1).Select();
         }
     }
 }

@@ -1,19 +1,26 @@
-import * as Entity from "../../entity.js";
+import * as Commander from "./instance.js";
 
-export class Instance extends Entity.Instance
+export class Instance
 {
+    private commander: Commander.Instance;
     private is_toggled: boolean;
 
-    constructor()
+    constructor(
+        {
+            commander,
+        }: {
+            commander: Commander.Instance,
+        },
+    )
     {
-        super();
-
+        this.commander = commander;
         this.is_toggled = false;
+    }
 
-        this.Add_Dependencies(
-            [
-            ],
-        );
+    Commander():
+        Commander.Instance
+    {
+        return this.commander;
     }
 
     Is_Toggled():

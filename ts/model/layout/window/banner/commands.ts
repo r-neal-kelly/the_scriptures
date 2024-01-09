@@ -1,10 +1,9 @@
-import * as Entity from "../../../entity.js";
 import * as Banner from "./instance.js";
 import * as Minimize from "./minimize.js";
 import * as Maximize from "./maximize.js";
 import * as Close from "./close.js";
 
-export class Instance extends Entity.Instance
+export class Instance
 {
     private banner: Banner.Instance;
     private minimize: Minimize.Instance;
@@ -19,8 +18,6 @@ export class Instance extends Entity.Instance
         },
     )
     {
-        super();
-
         this.banner = banner;
         this.minimize = new Minimize.Instance(
             {
@@ -36,14 +33,6 @@ export class Instance extends Entity.Instance
             {
                 commands: this,
             },
-        );
-
-        this.Add_Dependencies(
-            [
-                this.minimize,
-                this.maximize,
-                this.close,
-            ],
         );
     }
 

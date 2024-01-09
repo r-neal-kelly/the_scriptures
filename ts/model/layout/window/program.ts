@@ -2,9 +2,9 @@ import { Name } from "../../../types.js";
 import { ID } from "../../../types.js";
 
 import * as Utils from "../../../utils.js";
+import * as Async from "../../../async.js";
 
-import * as Model_Entity from "../../../model/entity.js";
-import * as View_Entity from "../../../view/entity.js";
+import * as View from "../../../view.js";
 
 export type Model_Data = any;
 
@@ -15,7 +15,7 @@ export interface Model_Class
     ): Model_Instance;
 }
 
-export interface Model_Instance extends Model_Entity.Instance
+export interface Model_Instance extends Async.Instance
 {
     Title(): Name;
     Short_Title(): Name;
@@ -29,20 +29,20 @@ export interface View_Class
             model,
             event_grid_hook,
         }: {
-            parent: View_Entity.Instance,
+            parent: View.Entity.Instance,
             model: () => Model_Instance,
             event_grid_hook: () => ID,
         },
     ): View_Instance;
 }
 
-export interface View_Instance extends View_Entity.Instance
+export interface View_Instance extends View.Entity.Instance
 {
     Model(): Model_Instance;
     Event_Grid_Hook(): ID;
 }
 
-export class Instance extends Model_Entity.Instance
+export class Instance extends Async.Instance
 {
     private model_class: Model_Class;
     private model_instance: Model_Instance;

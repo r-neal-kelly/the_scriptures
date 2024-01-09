@@ -1,7 +1,6 @@
-import * as Entity from "../../entity.js";
 import * as Commander from "./instance";
 
-export class Instance extends Entity.Instance
+export class Instance
 {
     private commander: Commander.Instance;
     private is_activated: boolean;
@@ -16,15 +15,8 @@ export class Instance extends Entity.Instance
         },
     )
     {
-        super();
-
         this.commander = commander;
         this.is_activated = is_activated;
-
-        this.Add_Dependencies(
-            [
-            ],
-        );
     }
 
     Commander():

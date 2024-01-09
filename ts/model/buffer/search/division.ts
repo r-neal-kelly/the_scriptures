@@ -3,14 +3,13 @@ import { Index } from "../../../types.js";
 import * as Utils from "../../../utils.js";
 
 import * as Languages from "../../languages.js";
-import * as Entity from "../../entity.js";
 import * as Text from "../../text.js";
 import * as Search from "../../search.js";
 
 import * as Buffer from "./instance.js";
 import * as Item from "./item.js";
 
-export class Instance extends Entity.Instance
+export class Instance
 {
     private item: Item.Instance;
     private index: Index;
@@ -31,8 +30,6 @@ export class Instance extends Entity.Instance
         },
     )
     {
-        super();
-
         this.item = item;
         this.index = index;
         this.value = value;
@@ -46,11 +43,6 @@ export class Instance extends Entity.Instance
         if (value != null) {
             this.Set_Value(value as Text.Value);
         }
-
-        this.Add_Dependencies(
-            [
-            ],
-        );
     }
 
     Is_Blank():

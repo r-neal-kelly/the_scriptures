@@ -1,10 +1,9 @@
 import * as Utils from "../../../utils.js";
 
-import * as Entity from "../../entity.js";
 import * as Search from "../../search.js";
 import * as Body from "./instance.js";
 
-export class Instance extends Entity.Instance
+export class Instance
 {
     private body: Body.Instance;
     private value: string;
@@ -18,16 +17,9 @@ export class Instance extends Entity.Instance
         },
     )
     {
-        super();
-
         this.body = body;
         this.value = ``;
         this.help = null;
-
-        this.Add_Dependencies(
-            [
-            ],
-        );
     }
 
     Body():

@@ -1,8 +1,7 @@
-import * as Entity from "../../entity.js";
 import * as Finder from "../instance.js";
 import * as Filter_Visibility from "./filter_visibility.js";
 
-export class Instance extends Entity.Instance
+export class Instance
 {
     private finder: Finder.Instance;
     private filter_visibility: Filter_Visibility.Instance;
@@ -15,15 +14,11 @@ export class Instance extends Entity.Instance
         },
     )
     {
-        super();
-
         this.finder = finder;
-        this.filter_visibility = new Filter_Visibility.Instance();
-
-        this.Add_Dependencies(
-            [
-                this.filter_visibility,
-            ],
+        this.filter_visibility = new Filter_Visibility.Instance(
+            {
+                commander: this,
+            },
         );
     }
 

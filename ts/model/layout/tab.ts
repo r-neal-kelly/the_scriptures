@@ -1,11 +1,10 @@
 import { Index } from "../../types.js";
 import { Name } from "../../types.js";
 
-import * as Entity from "../entity.js";
 import * as Window from "./window.js";
 import * as Tabs from "./tabs.js";
 
-export class Instance extends Entity.Instance
+export class Instance
 {
     private tabs: Tabs.Instance;
     private index: Index;
@@ -20,15 +19,8 @@ export class Instance extends Entity.Instance
         },
     )
     {
-        super();
-
         this.tabs = tabs;
         this.index = index;
-
-        this.Add_Dependencies(
-            [
-            ],
-        );
     }
 
     Tabs():

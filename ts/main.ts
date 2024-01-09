@@ -6,8 +6,6 @@ async function Main():
 {
     const model: Model.Main.Instance = new Model.Main.Instance();
 
-    await model.Ready();
-
     // Once we set up our save file structure, or at least prototype it,
     // we'll pull each window's model's data from there and pass it along.
     type Data = Array<

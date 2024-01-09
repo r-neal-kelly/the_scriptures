@@ -1,4 +1,3 @@
-import * as Entity from "../../entity.js";
 import * as Browser from "../instance.js";
 import * as Allow_Errors from "./allow_errors.js";
 import * as Font_Selector from "./font_selector.js";
@@ -12,7 +11,7 @@ interface Selector_i
     Deactivate(): void;
 }
 
-export class Instance extends Entity.Instance
+export class Instance
 {
     private browser: Browser.Instance;
     private allow_errors: Allow_Errors.Instance;
@@ -34,8 +33,6 @@ export class Instance extends Entity.Instance
         },
     )
     {
-        super();
-
         this.browser = browser;
         this.allow_errors = new Allow_Errors.Instance(
             {
@@ -66,16 +63,6 @@ export class Instance extends Entity.Instance
             },
         );
         this.current_selector = null;
-
-        this.Add_Dependencies(
-            [
-                this.allow_errors,
-                this.font_selector,
-                this.previous,
-                this.selector,
-                this.next,
-            ],
-        );
     }
 
     Browser():

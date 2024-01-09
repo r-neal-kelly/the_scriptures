@@ -1,9 +1,8 @@
-import * as Entity from "../entity.js";
 import * as Layout from "./instance.js";
 import * as Starter from "./starter.js";
 import * as Tabs from "./tabs.js";
 
-export class Instance extends Entity.Instance
+export class Instance
 {
     private layout: Layout.Instance;
     private starter: Starter.Instance;
@@ -17,8 +16,6 @@ export class Instance extends Entity.Instance
         },
     )
     {
-        super();
-
         this.layout = layout;
         this.starter = new Starter.Instance(
             {
@@ -29,13 +26,6 @@ export class Instance extends Entity.Instance
             {
                 taskbar: this,
             },
-        );
-
-        this.Add_Dependencies(
-            [
-                this.starter,
-                this.tabs,
-            ],
         );
     }
 

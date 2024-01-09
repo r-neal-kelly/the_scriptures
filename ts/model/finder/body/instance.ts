@@ -2,8 +2,8 @@ import { Count } from "../../../types.js";
 import { Index } from "../../../types.js";
 
 import * as Utils from "../../../utils.js";
+import * as Async from "../../../async.js";
 
-import * as Entity from "../../entity.js";
 import * as Language from "../../language.js";
 import * as Data from "../../data.js";
 import * as Search from "../../search.js";
@@ -12,7 +12,7 @@ import * as Finder from "../instance.js";
 import * as Expression from "./expression.js";
 import * as Results from "./results.js";
 
-export class Instance extends Entity.Instance
+export class Instance extends Async.Instance
 {
     private finder: Finder.Instance;
     private filter: Selector.Instance;
@@ -76,10 +76,7 @@ export class Instance extends Entity.Instance
 
         this.Add_Dependencies(
             [
-                Data.Singleton(),
-                Search.Singleton(),
                 this.filter,
-                this.expression,
                 this.results,
             ],
         );

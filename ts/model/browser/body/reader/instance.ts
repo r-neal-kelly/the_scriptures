@@ -1,4 +1,5 @@
-import * as Entity from "../../../entity.js";
+import * as Async from "../../../../async.js";
+
 import * as Font from "../../../font.js";
 import * as Language from "../../../language.js";
 import * as Languages from "../../../languages.js";
@@ -7,7 +8,7 @@ import * as Text from "../../../text.js";
 import * as Buffer from "../../../buffer.js";
 import * as Body from "../instance.js";
 
-export class Instance extends Entity.Instance
+export class Instance extends Async.Instance
 {
     private static blank_file: Buffer.Text.Instance = new Buffer.Text.Instance(
         {

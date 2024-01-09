@@ -7,7 +7,6 @@ import { Count } from "../../types.js";
 
 import * as Utils from "../../utils.js";
 
-import * as Entity from "../entity.js";
 import * as Data from "../data.js";
 import * as Text from "../text.js";
 
@@ -17,21 +16,13 @@ import * as Executor from "./executor.js";
 import * as Result from "./result.js";
 import * as Percent_Done from "./percent_done.js";
 
-export class Instance extends Entity.Instance
+export class Instance
 {
     private executor: Executor.Instance;
 
     constructor()
     {
-        super();
-
         this.executor = new Executor.Instance();
-
-        this.Add_Dependencies(
-            [
-                Data.Singleton(),
-            ],
-        );
     }
 
     private Executor():

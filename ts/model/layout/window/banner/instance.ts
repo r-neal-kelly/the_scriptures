@@ -1,9 +1,8 @@
-import * as Entity from "../../../entity.js";
 import * as Window from "../instance.js";
 import * as Title from "./title.js";
 import * as Commands from "./commands.js";
 
-export class Instance extends Entity.Instance
+export class Instance
 {
     private window: Window.Instance;
     private title: Title.Instance;
@@ -17,8 +16,6 @@ export class Instance extends Entity.Instance
         },
     )
     {
-        super();
-
         this.window = window;
         this.title = new Title.Instance(
             {
@@ -29,13 +26,6 @@ export class Instance extends Entity.Instance
             {
                 banner: this,
             },
-        );
-
-        this.Add_Dependencies(
-            [
-                this.title,
-                this.commands,
-            ],
         );
     }
 

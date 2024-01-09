@@ -3,14 +3,12 @@ import { Index } from "../../../types.js";
 
 import * as Utils from "../../../utils.js";
 
-import * as Entity from "../../entity.js";
-
 import * as Desktop from "../desktop.js";
 import * as Window from "../window.js";
 
 import { Render_Type } from "./render_type.js";
 
-export class Instance extends Entity.Instance
+export class Instance
 {
     static DEFAULT_RENDER_LIMIT: Count = 2;
 
@@ -32,8 +30,6 @@ export class Instance extends Entity.Instance
         },
     )
     {
-        super();
-
         this.desktop = desktop;
         this.render_type = render_type;
         this.render_limit = Instance.DEFAULT_RENDER_LIMIT;
@@ -41,11 +37,6 @@ export class Instance extends Entity.Instance
         this.active_window = null;
 
         this.Set_Render_Limit(render_limit);
-
-        this.Add_Dependencies(
-            [
-            ],
-        );
     }
 
     Desktop():

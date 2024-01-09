@@ -2,8 +2,8 @@ import { Count } from "../../../types.js";
 import { Index } from "../../../types.js";
 
 import * as Utils from "../../../utils.js";
+import * as Async from "../../../async.js";
 
-import * as Entity from "../../entity.js";
 import * as Language from "../../language.js";
 import * as Languages from "../../languages.js";
 import * as Font from "../../font.js";
@@ -16,7 +16,7 @@ interface Line_Instance_i
 
 export abstract class Instance<
     Line_Instance extends Line_Instance_i,
-> extends Entity.Instance
+> extends Async.Instance
 {
     private default_language_name: Language.Name;
     private default_font_name: Font.Name;

@@ -3,7 +3,6 @@ import { Name } from "../../../types.js";
 import { Path } from "../../../types.js";
 
 import * as Language from "../../language.js";
-import * as Entity from "../../entity.js";
 import * as Text from "../../text.js";
 
 import * as Consts from "../consts.js";
@@ -13,7 +12,7 @@ import * as Transfer from "./transfer.js";
 
 export type Leaf = Name;
 
-export class Instance extends Entity.Instance
+export class Instance
 {
     private version: Version.Instance;
     private title: Name;
@@ -33,18 +32,11 @@ export class Instance extends Entity.Instance
         },
     )
     {
-        super();
-
         this.version = version;
         this.title = title;
         this.name = `${title}.${Consts.FILE_EXTENSION}`;
         this.index = index;
         this.path = `${version.Path()}/${this.name}`;
-
-        this.Add_Dependencies(
-            [
-            ],
-        );
     }
 
     Version():

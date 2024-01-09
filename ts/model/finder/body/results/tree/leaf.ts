@@ -1,7 +1,6 @@
 import { Name } from "../../../../../types.js";
 
 import * as Language from "../../../../language.js";
-import * as Entity from "../../../../entity.js";
 import * as File from "../../../../data/file.js";
 import * as Search from "../../../../search.js";
 import * as Tree from "./instance.js";
@@ -12,7 +11,7 @@ export type Data = {
     results: Array<Search.Result.Instance>,
 }
 
-export class Instance extends Entity.Instance
+export class Instance
 {
     private parent: Branch.Instance;
     private data: Data;
@@ -27,16 +26,8 @@ export class Instance extends Entity.Instance
         },
     )
     {
-        super();
-
         this.parent = parent;
         this.data = data;
-
-        this.Add_Dependencies(
-            [
-                this.data.file,
-            ],
-        );
     }
 
     Tree():
