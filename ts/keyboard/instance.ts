@@ -339,10 +339,12 @@ export class Instance
             }
         }
 
-        if (this.held_keys.Has(Reserved_Keys.META_KEY)) {
-            await this.On_Meta_Keydown(event);
-        } else {
-            await this.On_Layout_Keydown(event);
+        if (!event.defaultPrevented) {
+            if (this.held_keys.Has(Reserved_Keys.META_KEY)) {
+                await this.On_Meta_Keydown(event);
+            } else {
+                await this.On_Layout_Keydown(event);
+            }
         }
     }
 
@@ -352,10 +354,12 @@ export class Instance
     ):
         Promise<void>
     {
-        if (this.held_keys.Has(Reserved_Keys.META_KEY)) {
-            await this.On_Meta_Keyup(event);
-        } else {
-            await this.On_Layout_Keyup(event);
+        if (!event.defaultPrevented) {
+            if (this.held_keys.Has(Reserved_Keys.META_KEY)) {
+                await this.On_Meta_Keyup(event);
+            } else {
+                await this.On_Layout_Keyup(event);
+            }
         }
 
         this.held_keys.Remove(event.code as Key);
@@ -367,39 +371,41 @@ export class Instance
     ):
         Promise<void>
     {
-        const div: HTMLDivElement =
-            this.Div_From_Event(event);
-        const hook: Hook.Instance =
-            this.divs_to_hooks.get(div) as Hook.Instance;
-        Utils.Assert(
-            hook != null,
-            `hook should not be null`,
-        );
-
-        if (event.inputType === `insertText`) {
-            event.preventDefault();
-
-            await this.Send_Insert_To_Selection(
-                div,
-                hook,
-                event.data || ``,
+        if (!event.defaultPrevented) {
+            const div: HTMLDivElement =
+                this.Div_From_Event(event);
+            const hook: Hook.Instance =
+                this.divs_to_hooks.get(div) as Hook.Instance;
+            Utils.Assert(
+                hook != null,
+                `hook should not be null`,
             );
-        } else if (event.inputType === `insertFromPaste`) {
-            event.preventDefault();
 
-            await this.Send_Paste_To_Selection(
-                div,
-                hook,
-                event.data || event.dataTransfer?.getData(`text/plain`) || ``,
-            );
-        } else if (event.inputType === `deleteContentBackward`) {
-            event.preventDefault();
+            if (event.inputType === `insertText`) {
+                event.preventDefault();
 
-            await this.Send_Delete(
-                div,
-                hook,
-                event.getTargetRanges()[0],
-            );
+                await this.Send_Insert_To_Selection(
+                    div,
+                    hook,
+                    event.data || ``,
+                );
+            } else if (event.inputType === `insertFromPaste`) {
+                event.preventDefault();
+
+                await this.Send_Paste_To_Selection(
+                    div,
+                    hook,
+                    event.data || event.dataTransfer?.getData(`text/plain`) || ``,
+                );
+            } else if (event.inputType === `deleteContentBackward`) {
+                event.preventDefault();
+
+                await this.Send_Delete(
+                    div,
+                    hook,
+                    event.getTargetRanges()[0],
+                );
+            }
         }
     }
 
@@ -589,7 +595,6 @@ export class Instance
         await hook.On_Key_Down(event);
 
         if (
-            !event.defaultPrevented &&
             !event.ctrlKey &&
             !event.altKey &&
             this.Has_Current_Layout()

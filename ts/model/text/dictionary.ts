@@ -3,6 +3,8 @@ import { Index } from "../../types.js";
 import * as Utils from "../../utils.js";
 import * as Unicode from "../../unicode.js";
 
+import * as Language from "../language.js";
+
 import { Value } from "./value.js";
 
 export type Letter = Value;
@@ -18,25 +20,52 @@ export enum Boundary
     END = `END`,
 };
 
-// this should probably go in data
-type Info = {
-    letters: Array<Letter>;
-    markers: Array<Marker>;
+export type Validation_Error = string;
 
-    words: { [index: Letter]: Array<Word> };
-    breaks: {
-        [Boundary.START]: { [index: Marker]: Array<Break> },
-        [Boundary.MIDDLE]: { [index: Marker]: Array<Break> },
-        [Boundary.END]: { [index: Marker]: Array<Break> },
-    };
+type Letters = {
+    [language_name: string]: Array<Letter>
+};
 
-    word_errors: Array<Word>;
-    break_errors: {
+type Markers = {
+    [language_name: string]: Array<Marker>
+};
+
+type Words = {
+    [language_name: string]: {
+        [letter: Letter]: Array<Word>
+    }
+};
+
+type Breaks = {
+    [language_name: string]: {
+        [Boundary.START]: { [marker: Marker]: Array<Break> },
+        [Boundary.MIDDLE]: { [marker: Marker]: Array<Break> },
+        [Boundary.END]: { [marker: Marker]: Array<Break> },
+    }
+};
+
+type Word_Errors = {
+    [language_name: string]: Array<Word>
+};
+
+type Break_Errors = {
+    [language_name: string]: {
         [Boundary.START]: Array<Break>,
         [Boundary.MIDDLE]: Array<Break>,
         [Boundary.END]: Array<Break>,
-    };
-}
+    }
+};
+
+type Info = {
+    letters: Letters;
+    markers: Markers;
+    words: Words;
+    breaks: Breaks;
+    word_errors: Word_Errors;
+    break_errors: Break_Errors;
+};
+
+const DEFAULT_LANGUAGE_KEY: string = ``;
 
 export class Instance
 {
@@ -50,234 +79,197 @@ export class Instance
         } = {},
     )
     {
-        this.info = json != null ?
-            JSON.parse(json) :
-            {
-                letters: [],
-                markers: [],
-
-                words: {},
-                breaks: {
-                    [Boundary.START]: {},
-                    [Boundary.MIDDLE]: {},
-                    [Boundary.END]: {},
-                },
-
-                word_errors: [],
-                break_errors: {
-                    [Boundary.START]: [],
-                    [Boundary.MIDDLE]: [],
-                    [Boundary.END]: [],
-                },
-            };
+        if (json != null) {
+            this.info = Object.create(null);
+            this.From_JSON(json);
+        } else {
+            this.info = Object.assign(
+                Object.create(null),
+                {
+                    letters: Object.create(null) as Letters,
+                    markers: Object.create(null) as Markers,
+                    words: Object.create(null) as Words,
+                    breaks: Object.create(null) as Breaks,
+                    word_errors: Object.create(null) as Word_Errors,
+                    break_errors: Object.create(null) as Break_Errors,
+                } as Info,
+            );
+        }
     }
 
-    Is_Valid():
-        boolean
+    Maybe_Validation_Error():
+        Validation_Error | null
     {
-        // letters, markers
+        const info: any = this.info as any;
+
+        if (!Utils.Is.Object(info)) {
+            return `info is not an object.`;
+        }
+
         for (const property of [`letters`, `markers`]) {
-            if (
-                !(this.info as any).hasOwnProperty(property) ||
-                !Utils.Is.Array((this.info as any)[property])
-            ) {
-                return false;
+            if (info[property] == null) {
+                return `${property} is missing.`;
             }
-            for (const value of (this.info as any)[property]) {
-                if (!Utils.Is.String(value as any)) {
-                    return false;
+            if (!Utils.Is.Object(info[property])) {
+                return `${property} is not an object.`;
+            }
+            for (const language_name of Object.keys(info[property])) {
+                if (!Utils.Is.String(language_name)) {
+                    return `${language_name} is not a string in ${property}.`;
                 }
-            }
-        }
-
-        // words
-        if (
-            !(this.info as any).hasOwnProperty(`words`) ||
-            !Utils.Is.Object((this.info as any)[`words`])
-        ) {
-            return false;
-        }
-        for (const [key, value] of Object.entries((this.info as any)[`words`])) {
-            if (
-                !Utils.Is.String(key as any) ||
-                !Utils.Is.Array(value as any)
-            ) {
-                return false;
-            }
-            for (const value_value of (value as any)) {
-                if (!Utils.Is.String(value_value as any)) {
-                    return false;
+                if (!Utils.Is.Array(info[property][language_name])) {
+                    return `${property}.${language_name} is not an array.`;
                 }
-            }
-        }
-
-        // breaks
-        if (
-            !(this.info as any).hasOwnProperty(`breaks`) ||
-            !Utils.Is.Object((this.info as any)[`breaks`])
-        ) {
-            return false;
-        }
-        for (const boundary of [Boundary.START, Boundary.MIDDLE, Boundary.END]) {
-            if (
-                !(this.info as any)[`breaks`].hasOwnProperty(boundary) ||
-                !Utils.Is.Object((this.info as any)[`breaks`][boundary])
-            ) {
-                return false;
-            }
-            for (const [key, value] of Object.entries((this.info as any)[`breaks`][boundary])) {
-                if (
-                    !Utils.Is.String(key as any) ||
-                    !Utils.Is.Array(value as any)
-                ) {
-                    return false;
-                }
-                for (const value_value of (value as any)) {
-                    if (!Utils.Is.String(value_value as any)) {
-                        return false;
+                for (const letter_or_marker of info[property][language_name]) {
+                    if (!Utils.Is.String(letter_or_marker)) {
+                        return `${letter_or_marker} is not a string in ${property}.${language_name}.`;
                     }
                 }
             }
         }
 
-        // word_errors
-        if (
-            !(this.info as any).hasOwnProperty(`word_errors`) ||
-            !Utils.Is.Array((this.info as any)[`word_errors`])
-        ) {
-            return false;
+        if (info[`words`] == null) {
+            return `words is missing.`;
         }
-        for (const value of (this.info as any)[`word_errors`]) {
-            if (!Utils.Is.String(value as any)) {
-                return false;
+        if (!Utils.Is.Object(info[`words`])) {
+            return `words is not an object.`;
+        }
+        for (const language_name of Object.keys(info[`words`])) {
+            if (!Utils.Is.String(language_name)) {
+                return `${language_name} is not a string in words.`;
             }
-        }
-
-        // break_errors
-        if (
-            !(this.info as any).hasOwnProperty(`break_errors`) ||
-            !Utils.Is.Object((this.info as any)[`break_errors`])
-        ) {
-            return false;
-        }
-        for (const boundary of [Boundary.START, Boundary.MIDDLE, Boundary.END]) {
-            if (
-                !(this.info as any)[`break_errors`].hasOwnProperty(boundary) ||
-                !Utils.Is.Array((this.info as any)[`break_errors`][boundary])
-            ) {
-                return false;
+            if (!Utils.Is.Object(info[`words`][language_name])) {
+                return `words.${language_name} is not an object.`;
             }
-            for (const value of (this.info as any)[`break_errors`][boundary]) {
-                if (!Utils.Is.String(value as any)) {
-                    return false;
+            for (const letter of Object.keys(info[`words`][language_name])) {
+                if (!Utils.Is.String(letter)) {
+                    return `${letter} is not a string in words.${language_name}.`;
+                }
+                if (!Utils.Is.Array(info[`words`][language_name][letter])) {
+                    return `words.${language_name}.${letter} is not an array.`;
+                }
+                for (const word of info[`words`][language_name][letter]) {
+                    if (!Utils.Is.String(word)) {
+                        return `${word} is not a string in words.${language_name}.${letter}.`;
+                    }
                 }
             }
         }
 
-        return true;
+        if (info[`breaks`] == null) {
+            return `breaks is missing.`;
+        }
+        if (!Utils.Is.Object(info[`breaks`])) {
+            return `breaks is not an object.`;
+        }
+        for (const language_name of Object.keys(info[`breaks`])) {
+            if (!Utils.Is.String(language_name)) {
+                return `${language_name} is not a string in breaks.`;
+            }
+            if (!Utils.Is.Object(info[`breaks`][language_name])) {
+                return `breaks.${language_name} is not an object.`;
+            }
+            for (const boundary of [Boundary.START, Boundary.MIDDLE, Boundary.END]) {
+                if (info[`breaks`][language_name][boundary] == null) {
+                    return `breaks.${language_name}.${boundary} is missing.`;
+                }
+                if (!Utils.Is.Object(info[`breaks`][language_name][boundary])) {
+                    return `breaks.${language_name}.${boundary} is not an object.`;
+                }
+                for (const marker of Object.keys(info[`breaks`][language_name][boundary])) {
+                    if (!Utils.Is.String(marker)) {
+                        return `${marker} is not a string in breaks.${language_name}.${boundary}.`;
+                    }
+                    if (!Utils.Is.Array(info[`breaks`][language_name][boundary][marker])) {
+                        return `breaks.${language_name}.${boundary}.${marker} is not an array.`;
+                    }
+                    for (const break_ of info[`breaks`][language_name][boundary][marker]) {
+                        if (!Utils.Is.String(break_)) {
+                            return `${break_} is not a string in breaks.${language_name}.${boundary}.${marker}.`;
+                        }
+                    }
+                }
+            }
+        }
+
+        if (info[`word_errors`] == null) {
+            return `word_errors is missing.`;
+        }
+        if (!Utils.Is.Object(info[`word_errors`])) {
+            return `word_errors is not an object.`;
+        }
+        for (const language_name of Object.keys(info[`word_errors`])) {
+            if (!Utils.Is.String(language_name)) {
+                return `${language_name} is not a string in word_errors.`;
+            }
+            if (!Utils.Is.Array(info[`word_errors`][language_name])) {
+                return `word_errors.${language_name} is not an array.`;
+            }
+            for (const word_error of info[`word_errors`][language_name]) {
+                if (!Utils.Is.String(word_error)) {
+                    return `${word_error} is not a string in word_errors.${language_name}.`;
+                }
+            }
+        }
+
+        if (info[`break_errors`] == null) {
+            return `break_errors is missing.`;
+        }
+        if (!Utils.Is.Object(info[`break_errors`])) {
+            return `break_errors is not an object.`;
+        }
+        for (const language_name of Object.keys(info[`break_errors`])) {
+            if (!Utils.Is.String(language_name)) {
+                return `${language_name} is not a string in break_errors.`;
+            }
+            if (!Utils.Is.Object(info[`break_errors`][language_name])) {
+                return `break_errors.${language_name} is not an object.`;
+            }
+            for (const boundary of [Boundary.START, Boundary.MIDDLE, Boundary.END]) {
+                if (info[`break_errors`][language_name][boundary] == null) {
+                    return `break_errors.${language_name}.${boundary} is missing.`;
+                }
+                if (!Utils.Is.Array(info[`break_errors`][language_name][boundary])) {
+                    return `break_errors.${language_name}.${boundary} is not an array.`;
+                }
+                for (const break_error of info[`break_errors`][language_name][boundary]) {
+                    if (!Utils.Is.String(break_error)) {
+                        return `${break_error} is not a string in break_errors.${language_name}.${boundary}.`;
+                    }
+                }
+            }
+        }
+
+        return null;
     }
 
-    Validate():
-        void
+    private Language_Key(
+        language_name: Language.Name | null,
+    ):
+        string
     {
-        // letters, markers
-        for (const property of [`letters`, `markers`]) {
-            Utils.Assert(
-                (this.info as any).hasOwnProperty(property) &&
-                Utils.Is.Array((this.info as any)[property]),
-                `info.${property} is missing or is invalid.`,
-            );
-            for (const value of (this.info as any)[property]) {
-                Utils.Assert(
-                    Utils.Is.String(value as any),
-                    `info.${property} is missing or is invalid.`,
-                );
-            }
+        if (language_name != null) {
+            return language_name as string;
+        } else {
+            return DEFAULT_LANGUAGE_KEY;
         }
+    }
 
-        // words
-        Utils.Assert(
-            (this.info as any).hasOwnProperty(`words`) &&
-            Utils.Is.Object((this.info as any)[`words`]),
-            `info.words is missing or is invalid.`,
-        );
-        for (const [key, value] of Object.entries((this.info as any)[`words`])) {
-            Utils.Assert(
-                Utils.Is.String(key as any) &&
-                Utils.Is.Array(value as any),
-                `info.words is missing or is invalid.`,
-            );
-            for (const value_value of (value as any)) {
-                Utils.Assert(
-                    Utils.Is.String(value_value as any),
-                    `info.words is missing or is invalid.`,
-                );
-            }
-        }
-
-        // breaks
-        Utils.Assert(
-            (this.info as any).hasOwnProperty(`breaks`) &&
-            Utils.Is.Object((this.info as any)[`breaks`]),
-            `info.breaks is missing or is invalid.`,
-        );
-        for (const boundary of [Boundary.START, Boundary.MIDDLE, Boundary.END]) {
-            Utils.Assert(
-                (this.info as any)[`breaks`].hasOwnProperty(boundary) &&
-                Utils.Is.Object((this.info as any)[`breaks`][boundary]),
-                `info.breaks is missing or is invalid.`,
-            );
-            for (const [key, value] of Object.entries((this.info as any)[`breaks`][boundary])) {
-                Utils.Assert(
-                    Utils.Is.String(key as any) &&
-                    Utils.Is.Array(value as any),
-                    `info.breaks is missing or is invalid.`,
-                );
-                for (const value_value of (value as any)) {
-                    Utils.Assert(
-                        Utils.Is.String(value_value as any),
-                        `info.breaks is missing or is invalid.`,
-                    );
-                }
-            }
-        }
-
-        // word_errors
-        Utils.Assert(
-            (this.info as any).hasOwnProperty(`word_errors`) &&
-            Utils.Is.Array((this.info as any)[`word_errors`]),
-            `info.word_errors is missing or is invalid.`,
-        );
-        for (const value of (this.info as any)[`word_errors`]) {
-            Utils.Assert(
-                Utils.Is.String(value as any),
-                `info.word_errors is missing or is invalid.`,
-            );
-        }
-
-        // break_errors
-        Utils.Assert(
-            (this.info as any).hasOwnProperty(`break_errors`) &&
-            Utils.Is.Object((this.info as any)[`break_errors`]),
-            `info.break_errors is missing or is invalid.`,
-        );
-        for (const boundary of [Boundary.START, Boundary.MIDDLE, Boundary.END]) {
-            Utils.Assert(
-                (this.info as any)[`break_errors`].hasOwnProperty(boundary) &&
-                Utils.Is.Array((this.info as any)[`break_errors`][boundary]),
-                `info.break_errors is missing or is invalid.`,
-            );
-            for (const value of (this.info as any)[`break_errors`][boundary]) {
-                Utils.Assert(
-                    Utils.Is.String(value as any),
-                    `info.break_errors is missing or is invalid.`,
-                );
-            }
+    private Language_Name(
+        language_key: string
+    ):
+        Language.Name | null
+    {
+        if (language_key === DEFAULT_LANGUAGE_KEY) {
+            return null;
+        } else {
+            return language_key as Language.Name;
         }
     }
 
     Has_Letter(
         letter: Letter,
+        language_name: Language.Name | null,
     ):
         boolean
     {
@@ -286,11 +278,36 @@ export class Instance
             `Letter must be a point.`,
         );
 
-        return this.info.letters.includes(letter);
+        const language_key: string = this.Language_Key(language_name);
+
+        return (
+            this.info.letters[language_key] != null &&
+            this.info.letters[language_key].includes(letter)
+        );
+    }
+
+    Is_Letter(
+        letter: Letter,
+    ):
+        boolean
+    {
+        Utils.Assert(
+            Unicode.Is_Point(letter),
+            `Letter must be a point.`,
+        );
+
+        for (const language_key of Object.keys(this.info.letters)) {
+            if (this.Has_Letter(letter, this.Language_Name(language_key))) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     Add_Letter(
         letter: Letter,
+        language_name: Language.Name | null,
     ):
         void
     {
@@ -299,15 +316,24 @@ export class Instance
             `Letter must be a point.`,
         );
 
-        if (!this.info.letters.includes(letter)) {
-            this.info.letters.push(letter);
+        const language_key: string = this.Language_Key(language_name);
 
-            this.info.words[letter] = [];
+        if (this.info.letters[language_key] == null) {
+            this.info.letters[language_key] = [];
+        }
+        if (!this.info.letters[language_key].includes(letter)) {
+            this.info.letters[language_key].push(letter);
+
+            if (this.info.words[language_key] == null) {
+                this.info.words[language_key] = Object.create(null);
+            }
+            this.info.words[language_key][letter] = [];
         }
     }
 
     Remove_Letter(
         letter: Letter,
+        language_name: Language.Name | null,
     ):
         void
     {
@@ -316,17 +342,26 @@ export class Instance
             `Letter must be a point.`,
         );
 
-        const index: Index = this.info.letters.indexOf(letter);
-        if (index > -1) {
-            this.info.letters[index] = this.info.letters[this.info.letters.length - 1];
-            this.info.letters.pop();
+        const language_key: string = this.Language_Key(language_name);
 
-            delete this.info.words[letter];
+        if (this.info.letters[language_key] != null) {
+            const index: Index = this.info.letters[language_key].indexOf(letter);
+
+            if (index > -1) {
+                const last_index: Index = this.info.letters[language_key].length - 1;
+
+                this.info.letters[language_key][index] =
+                    this.info.letters[language_key][last_index];
+                this.info.letters[language_key].pop();
+
+                delete this.info.words[language_key][letter];
+            }
         }
     }
 
     Has_Marker(
         marker: Marker,
+        language_name: Language.Name | null,
     ):
         boolean
     {
@@ -335,11 +370,36 @@ export class Instance
             `Marker must be a point.`,
         );
 
-        return this.info.markers.includes(marker);
+        const language_key: string = this.Language_Key(language_name);
+
+        return (
+            this.info.markers[language_key] != null &&
+            this.info.markers[language_key].includes(marker)
+        );
+    }
+
+    Is_Marker(
+        marker: Marker,
+    ):
+        boolean
+    {
+        Utils.Assert(
+            Unicode.Is_Point(marker),
+            `Marker must be a point.`,
+        );
+
+        for (const language_key of Object.keys(this.info.markers)) {
+            if (this.Has_Marker(marker, this.Language_Name(language_key))) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     Add_Marker(
         marker: Marker,
+        language_name: Language.Name | null,
     ):
         void
     {
@@ -348,17 +408,29 @@ export class Instance
             `Marker must be a point.`,
         );
 
-        if (!this.info.markers.includes(marker)) {
-            this.info.markers.push(marker);
+        const language_key: string = this.Language_Key(language_name);
 
-            this.info.breaks[Boundary.START][marker] = [];
-            this.info.breaks[Boundary.MIDDLE][marker] = [];
-            this.info.breaks[Boundary.END][marker] = [];
+        if (this.info.markers[language_key] == null) {
+            this.info.markers[language_key] = [];
+        }
+        if (!this.info.markers[language_key].includes(marker)) {
+            this.info.markers[language_key].push(marker);
+
+            if (this.info.breaks[language_key] == null) {
+                this.info.breaks[language_key] = Object.create(null);
+                this.info.breaks[language_key][Boundary.START] = Object.create(null);
+                this.info.breaks[language_key][Boundary.MIDDLE] = Object.create(null);
+                this.info.breaks[language_key][Boundary.END] = Object.create(null);
+            }
+            this.info.breaks[language_key][Boundary.START][marker] = [];
+            this.info.breaks[language_key][Boundary.MIDDLE][marker] = [];
+            this.info.breaks[language_key][Boundary.END][marker] = [];
         }
     }
 
     Remove_Marker(
         marker: Marker,
+        language_name: Language.Name | null,
     ):
         void
     {
@@ -367,18 +439,51 @@ export class Instance
             `Marker must be a point.`,
         );
 
-        const index: Index = this.info.markers.indexOf(marker);
-        if (index > -1) {
-            this.info.markers[index] = this.info.markers[this.info.markers.length - 1];
-            this.info.markers.pop();
+        const language_key: string = this.Language_Key(language_name);
 
-            delete this.info.breaks[Boundary.START][marker];
-            delete this.info.breaks[Boundary.MIDDLE][marker];
-            delete this.info.breaks[Boundary.END][marker];
+        if (this.info.markers[language_key] != null) {
+            const index: Index = this.info.markers[language_key].indexOf(marker);
+
+            if (index > -1) {
+                const last_index: Index = this.info.markers[language_key].length - 1;
+
+                this.info.markers[language_key][index] =
+                    this.info.markers[language_key][last_index];
+                this.info.markers[language_key].pop();
+
+                delete this.info.breaks[language_key][Boundary.START][marker];
+                delete this.info.breaks[language_key][Boundary.MIDDLE][marker];
+                delete this.info.breaks[language_key][Boundary.END][marker];
+            }
         }
     }
 
     Has_Word(
+        word: Word,
+        language_name: Language.Name | null,
+    ):
+        boolean
+    {
+        Utils.Assert(
+            word.length > 0,
+            `Word must have a length greater than 0.`,
+        );
+
+        const language_key: string = this.Language_Key(language_name);
+
+        if (this.info.words[language_key] != null) {
+            const first_point: string = Unicode.First_Point(word);
+
+            return (
+                this.info.words[language_key][first_point] != null &&
+                this.info.words[language_key][first_point].includes(word)
+            );
+        } else {
+            return false;
+        }
+    }
+
+    Is_Word(
         word: Word,
     ):
         boolean
@@ -388,16 +493,18 @@ export class Instance
             `Word must have a length greater than 0.`,
         );
 
-        const first_point: string = Unicode.First_Point(word);
+        for (const language_key of Object.keys(this.info.words)) {
+            if (this.Has_Word(word, this.Language_Name(language_key))) {
+                return true;
+            }
+        }
 
-        return (
-            this.info.words[first_point] != null &&
-            this.info.words[first_point].includes(word)
-        );
+        return false;
     }
 
     Add_Word(
         word: Word,
+        language_name: Language.Name | null,
     ):
         void
     {
@@ -406,24 +513,29 @@ export class Instance
             `Word must have a length greater than 0.`,
         );
         Utils.Assert(
-            !this.Has_Word_Error(word),
+            !this.Has_Word_Error(word, language_name),
             `Word must not be considered an error.`,
         );
 
+        const language_key: string = this.Language_Key(language_name);
         const first_point: string = Unicode.First_Point(word);
 
-        if (this.info.words[first_point] == null) {
-            this.Add_Letter(first_point);
-            this.info.words[first_point].push(word);
+        if (
+            this.info.words[language_key] == null ||
+            this.info.words[language_key][first_point] == null
+        ) {
+            this.Add_Letter(first_point, language_name);
+            this.info.words[language_key][first_point].push(word);
         } else {
-            if (!this.info.words[first_point].includes(word)) {
-                this.info.words[first_point].push(word);
+            if (!this.info.words[language_key][first_point].includes(word)) {
+                this.info.words[language_key][first_point].push(word);
             }
         }
     }
 
     Remove_Word(
         word: Word,
+        language_name: Language.Name | null,
     ):
         void
     {
@@ -432,14 +544,21 @@ export class Instance
             `Word must have a length greater than 0.`,
         );
 
-        const first_point: string = Unicode.First_Point(word);
+        const language_key: string = this.Language_Key(language_name);
 
-        if (this.info.words[first_point] != null) {
-            const index: Index = this.info.words[first_point].indexOf(word);
-            if (index > -1) {
-                this.info.words[first_point][index] =
-                    this.info.words[first_point][this.info.words[first_point].length - 1];
-                this.info.words[first_point].pop();
+        if (this.info.words[language_key] != null) {
+            const first_point: string = Unicode.First_Point(word);
+
+            if (this.info.words[language_key][first_point] != null) {
+                const index: Index = this.info.words[language_key][first_point].indexOf(word);
+
+                if (index > -1) {
+                    const last_index: Index = this.info.words[language_key][first_point].length - 1;
+
+                    this.info.words[language_key][first_point][index] =
+                        this.info.words[language_key][first_point][last_index];
+                    this.info.words[language_key][first_point].pop();
+                }
             }
         }
     }
@@ -447,6 +566,7 @@ export class Instance
     Has_Break(
         break_: Break,
         boundary: Boundary,
+        language_name: Language.Name | null,
     ):
         boolean
     {
@@ -455,17 +575,44 @@ export class Instance
             `Break must have a length greater than 0.`,
         );
 
-        const first_point: string = Unicode.First_Point(break_);
+        const language_key: string = this.Language_Key(language_name);
 
-        return (
-            this.info.breaks[boundary][first_point] != null &&
-            this.info.breaks[boundary][first_point].includes(break_)
+        if (this.info.breaks[language_key] != null) {
+            const first_point: string = Unicode.First_Point(break_);
+
+            return (
+                this.info.breaks[language_key][boundary][first_point] != null &&
+                this.info.breaks[language_key][boundary][first_point].includes(break_)
+            );
+        } else {
+            return false;
+        }
+    }
+
+    Is_Break(
+        break_: Break,
+        boundary: Boundary,
+    ):
+        boolean
+    {
+        Utils.Assert(
+            break_.length > 0,
+            `Break must have a length greater than 0.`,
         );
+
+        for (const language_key of Object.keys(this.info.breaks)) {
+            if (this.Has_Break(break_, boundary, this.Language_Name(language_key))) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     Add_Break(
         break_: Break,
         boundary: Boundary,
+        language_name: Language.Name | null,
     ):
         void
     {
@@ -474,18 +621,22 @@ export class Instance
             `Break must have a length greater than 0.`,
         );
         Utils.Assert(
-            !this.Has_Break_Error(break_, boundary),
+            !this.Has_Break_Error(break_, boundary, language_name),
             `Break must not be considered an error.`,
         );
 
+        const language_key: string = this.Language_Key(language_name);
         const first_point: string = Unicode.First_Point(break_);
 
-        if (this.info.breaks[boundary][first_point] == null) {
-            this.Add_Marker(first_point);
-            this.info.breaks[boundary][first_point].push(break_);
+        if (
+            this.info.breaks[language_key] == null ||
+            this.info.breaks[language_key][boundary][first_point] == null
+        ) {
+            this.Add_Marker(first_point, language_name);
+            this.info.breaks[language_key][boundary][first_point].push(break_);
         } else {
-            if (!this.info.breaks[boundary][first_point].includes(break_)) {
-                this.info.breaks[boundary][first_point].push(break_);
+            if (!this.info.breaks[language_key][boundary][first_point].includes(break_)) {
+                this.info.breaks[language_key][boundary][first_point].push(break_);
             }
         }
     }
@@ -493,6 +644,7 @@ export class Instance
     Remove_Break(
         break_: Break,
         boundary: Boundary,
+        language_name: Language.Name | null,
     ):
         void
     {
@@ -501,20 +653,30 @@ export class Instance
             `Break must have a length greater than 0.`,
         );
 
-        const first_point: string = Unicode.First_Point(break_);
+        const language_key: string = this.Language_Key(language_name);
 
-        if (this.info.breaks[boundary][first_point] != null) {
-            const index: Index = this.info.breaks[boundary][first_point].indexOf(break_);
-            if (index > -1) {
-                this.info.breaks[boundary][first_point][index] =
-                    this.info.breaks[boundary][first_point][this.info.breaks[boundary][first_point].length - 1];
-                this.info.breaks[boundary][first_point].pop();
+        if (this.info.breaks[language_key] != null) {
+            const first_point: string = Unicode.First_Point(break_);
+
+            if (this.info.breaks[language_key][boundary][first_point] != null) {
+                const index: Index =
+                    this.info.breaks[language_key][boundary][first_point].indexOf(break_);
+
+                if (index > -1) {
+                    const last_index: Index =
+                        this.info.breaks[language_key][boundary][first_point].length - 1;
+
+                    this.info.breaks[language_key][boundary][first_point][index] =
+                        this.info.breaks[language_key][boundary][first_point][last_index];
+                    this.info.breaks[language_key][boundary][first_point].pop();
+                }
             }
         }
     }
 
     Has_Word_Error(
         word_error: Word,
+        language_name: Language.Name | null,
     ):
         boolean
     {
@@ -523,11 +685,36 @@ export class Instance
             `Word error must have a length greater than 0.`,
         );
 
-        return this.info.word_errors.includes(word_error);
+        const language_key: string = this.Language_Key(language_name);
+
+        return (
+            this.info.word_errors[language_key] != null &&
+            this.info.word_errors[language_key].includes(word_error)
+        );
+    }
+
+    Is_Word_Error(
+        word_error: Word,
+    ):
+        boolean
+    {
+        Utils.Assert(
+            word_error.length > 0,
+            `Word error must have a length greater than 0.`,
+        );
+
+        for (const language_key of Object.keys(this.info.word_errors)) {
+            if (this.Has_Word_Error(word_error, this.Language_Name(language_key))) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     Add_Word_Error(
         word_error: Word,
+        language_name: Language.Name | null,
     ):
         void
     {
@@ -536,17 +723,23 @@ export class Instance
             `Word error must have a length greater than 0.`,
         );
         Utils.Assert(
-            !this.Has_Word(word_error),
+            !this.Has_Word(word_error, language_name),
             `Error must not be considered a word.`,
         );
 
-        if (!this.info.word_errors.includes(word_error)) {
-            this.info.word_errors.push(word_error);
+        const language_key: string = this.Language_Key(language_name);
+
+        if (this.info.word_errors[language_key] == null) {
+            this.info.word_errors[language_key] = [];
+        }
+        if (!this.info.word_errors[language_key].includes(word_error)) {
+            this.info.word_errors[language_key].push(word_error);
         }
     }
 
     Remove_Word_Error(
         word_error: Word,
+        language_name: Language.Name | null,
     ):
         void
     {
@@ -555,17 +748,25 @@ export class Instance
             `Word error must have a length greater than 0.`,
         );
 
-        const index: Index = this.info.word_errors.indexOf(word_error);
-        if (index > -1) {
-            this.info.word_errors[index] =
-                this.info.word_errors[this.info.word_errors.length - 1];
-            this.info.word_errors.pop();
+        const language_key: string = this.Language_Key(language_name);
+
+        if (this.info.word_errors[language_key] != null) {
+            const index: Index = this.info.word_errors[language_key].indexOf(word_error);
+
+            if (index > -1) {
+                const last_index: Index = this.info.word_errors[language_key].length - 1;
+
+                this.info.word_errors[language_key][index] =
+                    this.info.word_errors[language_key][last_index];
+                this.info.word_errors[language_key].pop();
+            }
         }
     }
 
     Has_Break_Error(
         break_error: Break,
         boundary: Boundary,
+        language_name: Language.Name | null,
     ):
         boolean
     {
@@ -574,12 +775,38 @@ export class Instance
             `Break error must have a length greater than 0.`,
         );
 
-        return this.info.break_errors[boundary].includes(break_error);
+        const language_key: string = this.Language_Key(language_name);
+
+        return (
+            this.info.break_errors[language_key] != null &&
+            this.info.break_errors[language_key][boundary].includes(break_error)
+        );
+    }
+
+    Is_Break_Error(
+        break_error: Break,
+        boundary: Boundary,
+    ):
+        boolean
+    {
+        Utils.Assert(
+            break_error.length > 0,
+            `Break error must have a length greater than 0.`,
+        );
+
+        for (const language_key of Object.keys(this.info.break_errors)) {
+            if (this.Has_Break_Error(break_error, boundary, this.Language_Name(language_key))) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     Add_Break_Error(
         break_error: Break,
         boundary: Boundary,
+        language_name: Language.Name | null,
     ):
         void
     {
@@ -588,18 +815,27 @@ export class Instance
             `Break error must have a length greater than 0.`,
         );
         Utils.Assert(
-            !this.Has_Break(break_error, boundary),
+            !this.Has_Break(break_error, boundary, language_name),
             `Error must not be considered a break.`,
         );
 
-        if (!this.info.break_errors[boundary].includes(break_error)) {
-            this.info.break_errors[boundary].push(break_error);
+        const language_key: string = this.Language_Key(language_name);
+
+        if (this.info.break_errors[language_key] == null) {
+            this.info.break_errors[language_key] = Object.create(null);
+            this.info.break_errors[language_key][Boundary.START] = [];
+            this.info.break_errors[language_key][Boundary.MIDDLE] = [];
+            this.info.break_errors[language_key][Boundary.END] = [];
+        }
+        if (!this.info.break_errors[language_key][boundary].includes(break_error)) {
+            this.info.break_errors[language_key][boundary].push(break_error);
         }
     }
 
     Remove_Break_Error(
         break_error: Break,
         boundary: Boundary,
+        language_name: Language.Name | null,
     ):
         void
     {
@@ -608,88 +844,159 @@ export class Instance
             `Break error must have a length greater than 0.`,
         );
 
-        const index: Index = this.info.break_errors[boundary].indexOf(break_error);
-        if (index > -1) {
-            this.info.break_errors[boundary][index] =
-                this.info.break_errors[boundary][this.info.break_errors[boundary].length - 1];
-            this.info.break_errors[boundary].pop();
+        const language_key: string = this.Language_Key(language_name);
+
+        if (this.info.break_errors[language_key] != null) {
+            const index: Index =
+                this.info.break_errors[language_key][boundary].indexOf(break_error);
+
+            if (index > -1) {
+                const last_index: Index =
+                    this.info.break_errors[language_key][boundary].length - 1;
+
+                this.info.break_errors[language_key][boundary][index] =
+                    this.info.break_errors[language_key][boundary][last_index];
+                this.info.break_errors[language_key][boundary].pop();
+            }
+        }
+    }
+
+    private Sort():
+        void
+    {
+        // Object.keys returns only an object's own keys, nothing on the prototype,
+        // which is what we want. Unlike getOwnPropertyNames, keys only returns
+        // enumerable properties, which is fine, because these should all be enumerable.
+
+        const sorted_letters: Letters = Object.create(null);
+        for (const language_name of Object.keys(this.info.letters).sort()) {
+            sorted_letters[language_name] =
+                this.info.letters[language_name].sort();
+        }
+        this.info.letters = sorted_letters;
+
+        const sorted_markers: Markers = Object.create(null);
+        for (const language_name of Object.keys(this.info.markers).sort()) {
+            sorted_markers[language_name] =
+                this.info.markers[language_name].sort();
+        }
+        this.info.markers = sorted_markers;
+
+        const sorted_words: Words = Object.create(null);
+        for (const language_name of Object.keys(this.info.words).sort()) {
+            sorted_words[language_name] = Object.create(null);
+            for (const letter of Object.keys(this.info.words[language_name]).sort()) {
+                sorted_words[language_name][letter] =
+                    this.info.words[language_name][letter].sort();
+            }
+        }
+        this.info.words = sorted_words;
+
+        const sorted_breaks: Breaks = Object.create(null);
+        for (const language_name of Object.keys(this.info.breaks).sort()) {
+            sorted_breaks[language_name] = Object.create(null);
+            for (const boundary of [Boundary.START, Boundary.MIDDLE, Boundary.END]) {
+                sorted_breaks[language_name][boundary] = Object.create(null);
+                for (const marker of Object.keys(this.info.breaks[language_name][boundary]).sort()) {
+                    sorted_breaks[language_name][boundary][marker] =
+                        this.info.breaks[language_name][boundary][marker].sort();
+                }
+            }
+        }
+        this.info.breaks = sorted_breaks;
+
+        const sorted_word_errors: Word_Errors = Object.create(null);
+        for (const language_name of Object.keys(this.info.word_errors).sort()) {
+            sorted_word_errors[language_name] =
+                this.info.word_errors[language_name].sort();
+        }
+        this.info.word_errors = sorted_word_errors;
+
+        const sorted_break_errors: Break_Errors = Object.create(null);
+        for (const language_name of Object.keys(this.info.break_errors).sort()) {
+            sorted_break_errors[language_name] = Object.create(null);
+            for (const boundary of [Boundary.START, Boundary.MIDDLE, Boundary.END]) {
+                sorted_break_errors[language_name][boundary] =
+                    this.info.break_errors[language_name][boundary].sort();
+            }
+        }
+        this.info.break_errors = sorted_break_errors;
+    }
+
+    From_JSON(
+        json: string,
+    ):
+        void
+    {
+        const object: any = JSON.parse(json);
+
+        this.info = Object.create(null);
+
+        if (object.letters != null) {
+            this.info.letters = Object.assign(
+                Object.create(null),
+                object.letters,
+            );
+        }
+
+        if (object.markers != null) {
+            this.info.markers = Object.assign(
+                Object.create(null),
+                object.markers,
+            );
+        }
+
+        if (object.words != null) {
+            this.info.words = Object.create(null);
+            for (const language_name of Object.keys(object.words)) {
+                this.info.words[language_name] = Object.assign(
+                    Object.create(null),
+                    object.words[language_name],
+                );
+            }
+        }
+
+        if (object.breaks != null) {
+            this.info.breaks = Object.create(null);
+            for (const language_name of Object.keys(object.breaks)) {
+                this.info.breaks[language_name] = Object.create(null);
+                for (const boundary of [Boundary.START, Boundary.MIDDLE, Boundary.END]) {
+                    if (object.breaks[language_name][boundary] != null) {
+                        this.info.breaks[language_name][boundary] = Object.assign(
+                            Object.create(null),
+                            object.breaks[language_name][boundary],
+                        );
+                    }
+                }
+            }
+        }
+
+        if (object.word_errors != null) {
+            this.info.word_errors = Object.assign(
+                Object.create(null),
+                object.word_errors,
+            );
+        }
+
+        if (object.break_errors != null) {
+            this.info.break_errors = Object.create(null);
+            for (const language_name of Object.keys(object.break_errors)) {
+                this.info.break_errors[language_name] = Object.create(null);
+                for (const boundary of [Boundary.START, Boundary.MIDDLE, Boundary.END]) {
+                    if (object.break_errors[language_name][boundary] != null) {
+                        this.info.break_errors[language_name][boundary] =
+                            object.break_errors[language_name][boundary];
+                    }
+                }
+            }
         }
     }
 
     To_JSON():
         string
     {
-        this.info.letters.sort();
-        this.info.markers.sort();
-
-        const sorted_words: { [index: Letter]: Array<Word> } = {};
-        for (const letter of Object.keys(this.info.words).sort()) {
-            sorted_words[letter] = this.info.words[letter].sort();
-        }
-        this.info.words = sorted_words;
-
-        const sorted_breaks: {
-            [Boundary.START]: { [index: Marker]: Array<Break> },
-            [Boundary.MIDDLE]: { [index: Marker]: Array<Break> },
-            [Boundary.END]: { [index: Marker]: Array<Break> },
-        } = {
-            [Boundary.START]: {},
-            [Boundary.MIDDLE]: {},
-            [Boundary.END]: {},
-        };
-        for (const boundary of [Boundary.START, Boundary.MIDDLE, Boundary.END]) {
-            for (const marker of Object.keys(this.info.breaks[boundary]).sort()) {
-                sorted_breaks[boundary][marker] = this.info.breaks[boundary][marker].sort();
-            }
-        }
-        this.info.breaks = sorted_breaks;
-
-        this.info.word_errors.sort();
-        for (const boundary of [Boundary.START, Boundary.MIDDLE, Boundary.END]) {
-            this.info.break_errors[boundary].sort();
-        }
+        this.Sort();
 
         return JSON.stringify(this.info);
-    }
-
-    Unique_Parts():
-        Array<string>
-    {
-        const unique_parts: Set<string> = new Set();
-
-        for (const parts of Object.values(this.info.words)) {
-            for (const part of parts) {
-                unique_parts.add(part);
-            }
-        }
-        for (const parts of Object.values(this.info.breaks[Boundary.START])) {
-            for (const part of parts) {
-                unique_parts.add(part);
-            }
-        }
-        for (const parts of Object.values(this.info.breaks[Boundary.MIDDLE])) {
-            for (const part of parts) {
-                unique_parts.add(part);
-            }
-        }
-        for (const parts of Object.values(this.info.breaks[Boundary.END])) {
-            for (const part of parts) {
-                unique_parts.add(part);
-            }
-        }
-        for (const part of this.info.word_errors) {
-            unique_parts.add(part);
-        }
-        for (const part of this.info.break_errors[Boundary.START]) {
-            unique_parts.add(part);
-        }
-        for (const part of this.info.break_errors[Boundary.MIDDLE]) {
-            unique_parts.add(part);
-        }
-        for (const part of this.info.break_errors[Boundary.END]) {
-            unique_parts.add(part);
-        }
-
-        return Array.from(unique_parts).sort();
     }
 }

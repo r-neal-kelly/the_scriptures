@@ -117,8 +117,8 @@ export class Instance
             } else {
                 const value: string = this.values[it.Point().codePointAt(0) as Index];
                 if (
-                    dictionary.Has_Word(value) ||
-                    dictionary.Has_Word_Error(value)
+                    dictionary.Is_Word(value) ||
+                    dictionary.Is_Word_Error(value)
                 ) {
                     if (previous_part_is_word) {
                         uncompressed_parts.push(` `);

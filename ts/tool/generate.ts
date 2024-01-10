@@ -359,10 +359,15 @@ async function Generate(
                                 json: dictionary_json,
                             },
                         );
+                        const maybe_dictionary_validation_error: Text.Dictionary.Validation_Error | null =
+                            dictionary.Maybe_Validation_Error();
                         const unique_parts: Unique_Parts = new Unique_Parts();
                         const file_texts: Array<string> = [];
+                        Utils.Assert(
+                            maybe_dictionary_validation_error == null,
+                            `Dictionary failed to validate: ${maybe_dictionary_validation_error}`,
+                        );
                         version_info.Increment_File_Count(language_name, file_names.length);
-                        dictionary.Validate();
                         await Delete_Compiled_Files(files_path);
                         for (const file_name of file_names) {
                             const file_path: Path = `${files_path}/${file_name}`;

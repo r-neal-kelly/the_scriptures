@@ -258,6 +258,7 @@ enum Part_Class
 type Dictionary_Entry = {
     text: string,
     class: Part_Class,
+    language: Language.Name | null,
     boundary: Model.Dictionary.Boundary,
 };
 
@@ -314,6 +315,11 @@ function Selected_Part():
                         dictionary_class = Part_Class.KNOWN_BREAK_ERROR;
                     }
 
+                    const dictionary_language: Language.Name | null =
+                        span.dataset.language != null && span.dataset.language != `` ?
+                            span.dataset.language as Language.Name :
+                            null;
+
                     if (dictionary_class !== Part_Class._NONE_) {
                         let dictionary_boundary: Model.Dictionary.Boundary = Model.Dictionary.Boundary.MIDDLE;
                         if (span.classList.contains(Model.Dictionary.Boundary.START)) {
@@ -325,6 +331,7 @@ function Selected_Part():
                         return {
                             text: dictionary_text,
                             class: dictionary_class,
+                            language: dictionary_language,
                             boundary: dictionary_boundary,
                         };
                     } else {
@@ -593,17 +600,17 @@ class Line_Keyboard_Hook extends Keyboard.Hook.Instance
                 const selected: Dictionary_Entry | null = Selected_Part();
                 if (selected) {
                     if (selected.class === Part_Class.UNKNOWN_POINT) {
-                        this.Editor().Dictionary().Add_Letter(selected.text);
+                        this.Editor().Dictionary().Add_Letter(selected.text, selected.language);
                         this.Editor().Touch();
                     } else if (selected.class === Part_Class.KNOWN_LETTER) {
-                        this.Editor().Dictionary().Remove_Letter(selected.text);
+                        this.Editor().Dictionary().Remove_Letter(selected.text, selected.language);
                         this.Editor().Touch();
                     } else if (
                         selected.class === Part_Class.UNKNOWN_WORD ||
                         selected.class === Part_Class.KNOWN_WORD
                     ) {
                         if (Unicode.Is_Point(selected.text)) {
-                            this.Editor().Dictionary().Remove_Letter(selected.text);
+                            this.Editor().Dictionary().Remove_Letter(selected.text, selected.language);
                             this.Editor().Touch();
                         }
                     }
@@ -616,17 +623,17 @@ class Line_Keyboard_Hook extends Keyboard.Hook.Instance
                 const selected: Dictionary_Entry | null = Selected_Part();
                 if (selected) {
                     if (selected.class === Part_Class.UNKNOWN_POINT) {
-                        this.Editor().Dictionary().Add_Marker(selected.text);
+                        this.Editor().Dictionary().Add_Marker(selected.text, selected.language);
                         this.Editor().Touch();
                     } else if (selected.class === Part_Class.KNOWN_MARKER) {
-                        this.Editor().Dictionary().Remove_Marker(selected.text);
+                        this.Editor().Dictionary().Remove_Marker(selected.text, selected.language);
                         this.Editor().Touch();
                     } else if (
                         selected.class === Part_Class.UNKNOWN_BREAK ||
                         selected.class === Part_Class.KNOWN_BREAK
                     ) {
                         if (Unicode.Is_Point(selected.text)) {
-                            this.Editor().Dictionary().Remove_Marker(selected.text);
+                            this.Editor().Dictionary().Remove_Marker(selected.text, selected.language);
                             this.Editor().Touch();
                         }
                     }
@@ -639,14 +646,14 @@ class Line_Keyboard_Hook extends Keyboard.Hook.Instance
                 const selected: Dictionary_Entry | null = Selected_Part();
                 if (selected) {
                     if (selected.class === Part_Class.UNKNOWN_WORD) {
-                        this.Editor().Dictionary().Add_Word(selected.text);
+                        this.Editor().Dictionary().Add_Word(selected.text, selected.language);
                         this.Editor().Touch();
                     } else if (selected.class === Part_Class.KNOWN_WORD) {
-                        this.Editor().Dictionary().Remove_Word(selected.text);
+                        this.Editor().Dictionary().Remove_Word(selected.text, selected.language);
                         this.Editor().Touch();
                     } else if (selected.class === Part_Class.KNOWN_WORD_ERROR) {
-                        this.Editor().Dictionary().Remove_Word_Error(selected.text);
-                        this.Editor().Dictionary().Add_Word(selected.text);
+                        this.Editor().Dictionary().Remove_Word_Error(selected.text, selected.language);
+                        this.Editor().Dictionary().Add_Word(selected.text, selected.language);
                         this.Editor().Touch();
                     }
                 }
@@ -658,14 +665,14 @@ class Line_Keyboard_Hook extends Keyboard.Hook.Instance
                 const selected: Dictionary_Entry | null = Selected_Part();
                 if (selected) {
                     if (selected.class === Part_Class.UNKNOWN_BREAK) {
-                        this.Editor().Dictionary().Add_Break(selected.text, selected.boundary);
+                        this.Editor().Dictionary().Add_Break(selected.text, selected.boundary, selected.language);
                         this.Editor().Touch();
                     } else if (selected.class === Part_Class.KNOWN_BREAK) {
-                        this.Editor().Dictionary().Remove_Break(selected.text, selected.boundary);
+                        this.Editor().Dictionary().Remove_Break(selected.text, selected.boundary, selected.language);
                         this.Editor().Touch();
                     } else if (selected.class === Part_Class.KNOWN_BREAK_ERROR) {
-                        this.Editor().Dictionary().Remove_Break_Error(selected.text, selected.boundary);
-                        this.Editor().Dictionary().Add_Break(selected.text, selected.boundary);
+                        this.Editor().Dictionary().Remove_Break_Error(selected.text, selected.boundary, selected.language);
+                        this.Editor().Dictionary().Add_Break(selected.text, selected.boundary, selected.language);
                         this.Editor().Touch();
                     }
                 }
@@ -677,24 +684,24 @@ class Line_Keyboard_Hook extends Keyboard.Hook.Instance
                 const selected: Dictionary_Entry | null = Selected_Part();
                 if (selected) {
                     if (selected.class === Part_Class.UNKNOWN_WORD) {
-                        this.Editor().Dictionary().Add_Word_Error(selected.text);
+                        this.Editor().Dictionary().Add_Word_Error(selected.text, selected.language);
                         this.Editor().Touch();
                     } else if (selected.class === Part_Class.KNOWN_WORD) {
-                        this.Editor().Dictionary().Remove_Word(selected.text);
-                        this.Editor().Dictionary().Add_Word_Error(selected.text);
+                        this.Editor().Dictionary().Remove_Word(selected.text, selected.language);
+                        this.Editor().Dictionary().Add_Word_Error(selected.text, selected.language);
                         this.Editor().Touch();
                     } else if (selected.class === Part_Class.UNKNOWN_BREAK) {
-                        this.Editor().Dictionary().Add_Break_Error(selected.text, selected.boundary);
+                        this.Editor().Dictionary().Add_Break_Error(selected.text, selected.boundary, selected.language);
                         this.Editor().Touch();
                     } else if (selected.class === Part_Class.KNOWN_BREAK) {
-                        this.Editor().Dictionary().Remove_Break(selected.text, selected.boundary);
-                        this.Editor().Dictionary().Add_Break_Error(selected.text, selected.boundary);
+                        this.Editor().Dictionary().Remove_Break(selected.text, selected.boundary, selected.language);
+                        this.Editor().Dictionary().Add_Break_Error(selected.text, selected.boundary, selected.language);
                         this.Editor().Touch();
                     } else if (selected.class === Part_Class.KNOWN_WORD_ERROR) {
-                        this.Editor().Dictionary().Remove_Word_Error(selected.text);
+                        this.Editor().Dictionary().Remove_Word_Error(selected.text, selected.language);
                         this.Editor().Touch();
                     } else if (selected.class === Part_Class.KNOWN_BREAK_ERROR) {
-                        this.Editor().Dictionary().Remove_Break_Error(selected.text, selected.boundary);
+                        this.Editor().Dictionary().Remove_Break_Error(selected.text, selected.boundary, selected.language);
                         this.Editor().Touch();
                     }
                 }
@@ -706,17 +713,17 @@ class Line_Keyboard_Hook extends Keyboard.Hook.Instance
                 const selected: Dictionary_Entry | null = Selected_Part();
                 if (selected) {
                     if (selected.class === Part_Class.UNKNOWN_POINT) {
-                        this.Editor().Dictionary().Add_Word_Error(selected.text);
+                        this.Editor().Dictionary().Add_Word_Error(selected.text, selected.language);
                         this.Editor().Touch();
                     } else if (selected.class === Part_Class.UNKNOWN_WORD) {
-                        this.Editor().Dictionary().Add_Word_Error(selected.text);
+                        this.Editor().Dictionary().Add_Word_Error(selected.text, selected.language);
                         this.Editor().Touch();
                     } else if (selected.class === Part_Class.KNOWN_WORD) {
-                        this.Editor().Dictionary().Remove_Word(selected.text);
-                        this.Editor().Dictionary().Add_Word_Error(selected.text);
+                        this.Editor().Dictionary().Remove_Word(selected.text, selected.language);
+                        this.Editor().Dictionary().Add_Word_Error(selected.text, selected.language);
                         this.Editor().Touch();
                     } else if (selected.class === Part_Class.KNOWN_WORD_ERROR) {
-                        this.Editor().Dictionary().Remove_Word_Error(selected.text);
+                        this.Editor().Dictionary().Remove_Word_Error(selected.text, selected.language);
                         this.Editor().Touch();
                     }
                 }
@@ -728,17 +735,17 @@ class Line_Keyboard_Hook extends Keyboard.Hook.Instance
                 const selected: Dictionary_Entry | null = Selected_Part();
                 if (selected) {
                     if (selected.class === Part_Class.UNKNOWN_POINT) {
-                        this.Editor().Dictionary().Add_Break_Error(selected.text, selected.boundary);
+                        this.Editor().Dictionary().Add_Break_Error(selected.text, selected.boundary, selected.language);
                         this.Editor().Touch();
                     } else if (selected.class === Part_Class.UNKNOWN_BREAK) {
-                        this.Editor().Dictionary().Add_Break_Error(selected.text, selected.boundary);
+                        this.Editor().Dictionary().Add_Break_Error(selected.text, selected.boundary, selected.language);
                         this.Editor().Touch();
                     } else if (selected.class === Part_Class.KNOWN_BREAK) {
-                        this.Editor().Dictionary().Remove_Break(selected.text, selected.boundary);
-                        this.Editor().Dictionary().Add_Break_Error(selected.text, selected.boundary);
+                        this.Editor().Dictionary().Remove_Break(selected.text, selected.boundary, selected.language);
+                        this.Editor().Dictionary().Add_Break_Error(selected.text, selected.boundary, selected.language);
                         this.Editor().Touch();
                     } else if (selected.class === Part_Class.KNOWN_BREAK_ERROR) {
-                        this.Editor().Dictionary().Remove_Break_Error(selected.text, selected.boundary);
+                        this.Editor().Dictionary().Remove_Break_Error(selected.text, selected.boundary, selected.language);
                         this.Editor().Touch();
                     }
                 }
@@ -1030,10 +1037,10 @@ class Line
 
                         if (command.Is_Good()) {
                             inner_html +=
-                                `<span class="COMMAND${command_classes}">${Escape_Text(command.Value())}</span>`;
+                                `<span class="COMMAND${command_classes}" data-language="${part.Language() || ``}">${Escape_Text(command.Value())}</span>`;
                         } else {
                             inner_html +=
-                                `<span class="BAD_COMMAND${command_classes}">${Escape_Text(command.Value())}</span>`;
+                                `<span class="BAD_COMMAND${command_classes}" data-language="${part.Language() || ``}">${Escape_Text(command.Value())}</span>`;
                         }
 
                     } else {
@@ -1059,17 +1066,17 @@ class Line
 
                         if (part.Is_Point()) {
                             inner_html +=
-                                `<span class="UNKNOWN_POINT${command_classes}">${Escape_Text(part.Value())}</span>`;
+                                `<span class="UNKNOWN_POINT${command_classes}" data-language="${part.Language() || ``}">${Escape_Text(part.Value())}</span>`;
                         } else if (part.Is_Word()) {
                             if (part.Is_Good()) {
                                 inner_html +=
-                                    `<span class="KNOWN_WORD${command_classes}">${Escape_Text(part.Value())}</span>`;
+                                    `<span class="KNOWN_WORD${command_classes}" data-language="${part.Language() || ``}">${Escape_Text(part.Value())}</span>`;
                             } else if (part.Is_Error()) {
                                 inner_html +=
-                                    `<span class="KNOWN_WORD_ERROR${command_classes}">${Escape_Text(part.Value())}</span>`;
+                                    `<span class="KNOWN_WORD_ERROR${command_classes}" data-language="${part.Language() || ``}">${Escape_Text(part.Value())}</span>`;
                             } else if (part.Is_Unknown()) {
                                 inner_html +=
-                                    `<span class="UNKNOWN_WORD${command_classes}">${Escape_Text(part.Value())}</span>`;
+                                    `<span class="UNKNOWN_WORD${command_classes}" data-language="${part.Language() || ``}">${Escape_Text(part.Value())}</span>`;
                             } else {
                                 Utils.Assert(
                                     false,
@@ -1080,13 +1087,13 @@ class Line
                             let boundary_class: string = ` ` + (part as Model.Part.Break.Instance).Boundary();
                             if (part.Is_Good()) {
                                 inner_html +=
-                                    `<span class="KNOWN_BREAK${boundary_class}${command_classes}">${Escape_Text(part.Value())}</span>`;
+                                    `<span class="KNOWN_BREAK${boundary_class}${command_classes}" data-language="${part.Language() || ``}">${Escape_Text(part.Value())}</span>`;
                             } else if (part.Is_Error()) {
                                 inner_html +=
-                                    `<span class="KNOWN_BREAK_ERROR${boundary_class}${command_classes}">${Escape_Text(part.Value())}</span>`;
+                                    `<span class="KNOWN_BREAK_ERROR${boundary_class}${command_classes}" data-language="${part.Language() || ``}">${Escape_Text(part.Value())}</span>`;
                             } else if (part.Is_Unknown()) {
                                 inner_html +=
-                                    `<span class="UNKNOWN_BREAK${boundary_class}${command_classes}">${Escape_Text(part.Value())}</span>`;
+                                    `<span class="UNKNOWN_BREAK${boundary_class}${command_classes}" data-language="${part.Language() || ``}">${Escape_Text(part.Value())}</span>`;
                             } else {
                                 Utils.Assert(
                                     false,
@@ -1157,18 +1164,18 @@ class Line
                         );
                         for (; !it.Is_At_End(); it = it.Next()) {
                             inner_html +=
-                                `<span class="COMMAND SEPARATE_POINT">${Escape_Text(it.Point())}</span>`;
+                                `<span class="COMMAND SEPARATE_POINT" data-language="${part.Language() || ``}">${Escape_Text(it.Point())}</span>`;
                         }
                     } else {
                         if (part.Is_Letter()) {
                             inner_html +=
-                                `<span class="KNOWN_LETTER SEPARATE_POINT">${Escape_Text(part.Value())}</span>`;
+                                `<span class="KNOWN_LETTER SEPARATE_POINT" data-language="${part.Language() || ``}">${Escape_Text(part.Value())}</span>`;
                         } else if (part.Is_Marker()) {
                             inner_html +=
-                                `<span class="KNOWN_MARKER SEPARATE_POINT">${Escape_Text(part.Value())}</span>`;
+                                `<span class="KNOWN_MARKER SEPARATE_POINT" data-language="${part.Language() || ``}">${Escape_Text(part.Value())}</span>`;
                         } else if (part.Is_Point()) {
                             inner_html +=
-                                `<span class="UNKNOWN_POINT SEPARATE_POINT">${Escape_Text(part.Value())}</span>`;
+                                `<span class="UNKNOWN_POINT SEPARATE_POINT" data-language="${part.Language() || ``}">${Escape_Text(part.Value())}</span>`;
                         } else {
                             Utils.Assert(
                                 false,
@@ -1293,162 +1300,20 @@ class Editor
                 overflow-y: auto;
             `,
         );
+
         this.element.addEventListener(
             `keydown`,
-            function (
-                this: Editor,
-                event: KeyboardEvent,
-            ):
-                void
+            this.On_Key_Down.bind(this),
             {
-                const keyboard_event: KeyboardEvent = event as KeyboardEvent;
-                if (keyboard_event.key === `Escape`) {
-                    event.preventDefault();
-
-                    this.is_meta_key_active = true;
-                } else if (keyboard_event.key === `ArrowLeft`) {
-                    if (this.Is_Meta_Key_Active()) {
-                        this.Set_Direction(Language.Direction.RIGHT_TO_LEFT);
-                    }
-                } else if (keyboard_event.key === `ArrowRight`) {
-                    if (this.Is_Meta_Key_Active()) {
-                        this.Set_Direction(Language.Direction.LEFT_TO_RIGHT);
-                    }
-                } else if (keyboard_event.key === `ArrowDown`) {
-                    if (this.Is_Meta_Key_Active()) {
-                        this.is_in_point_mode = true;
-                        this.Touch();
-                    }
-                } else if (keyboard_event.key === `ArrowUp`) {
-                    if (this.Is_Meta_Key_Active()) {
-                        this.is_in_point_mode = false;
-                        this.Touch();
-                    }
-                } else if (keyboard_event.key === `|`) {
-                    if (this.Is_Meta_Key_Active()) {
-                        keyboard_event.preventDefault();
-
-                        this.are_rows_expanded = !this.are_rows_expanded;
-                        this.Touch();
-                    }
-                } else if (keyboard_event.key === `\``) {
-                    if (this.Is_Meta_Key_Active()) {
-                        keyboard_event.preventDefault();
-
-                        this.Highlight_Next_Class(
-                            [
-                                `UNKNOWN_POINT`,
-                                `UNKNOWN_WORD`,
-                                `UNKNOWN_BREAK`,
-                            ],
-                        );
-                    }
-                } else if (keyboard_event.key === `1`) {
-                    if (this.Is_Meta_Key_Active()) {
-                        keyboard_event.preventDefault();
-
-                        this.Highlight_Next_Class(
-                            [
-                                `KNOWN_WORD_ERROR`,
-                                `KNOWN_BREAK_ERROR`,
-                                `BAD_COMMAND`,
-                            ],
-                        );
-                    }
-                } else if (keyboard_event.key === `~`) {
-                    if (this.Is_Meta_Key_Active()) {
-                        keyboard_event.preventDefault();
-
-                        this.Highlight_Next(
-                            [
-                                `⸨err⸩`,
-                                `⸨/err⸩`,
-                            ],
-                        );
-                    }
-                } else if (keyboard_event.key === `!`) {
-                    if (this.Is_Meta_Key_Active()) {
-                        keyboard_event.preventDefault();
-
-                        this.Highlight_Next(
-                            [
-                                `⸨b⸩`,
-                                `⸨/b⸩`,
-                            ],
-                        );
-                    }
-                } else if (keyboard_event.key === `)`) {
-                    if (this.Is_Meta_Key_Active()) {
-                        keyboard_event.preventDefault();
-
-                        // English
-                        document.body.style.fontFamily = `sans-serif`;
-                        document.body.style.fontSize = `24px`;
-                        this.Set_Direction(Language.Direction.LEFT_TO_RIGHT);
-                    }
-                } else if (keyboard_event.key === `(`) {
-                    if (this.Is_Meta_Key_Active()) {
-                        keyboard_event.preventDefault();
-
-                        // Hebrew
-                        document.body.style.fontFamily = `"${Font.Family.EZRA_SR}"`;
-                        document.body.style.fontSize = `30px`;
-                        this.Set_Direction(Language.Direction.RIGHT_TO_LEFT);
-                    }
-                } else if (keyboard_event.key === `*`) {
-                    if (this.Is_Meta_Key_Active()) {
-                        keyboard_event.preventDefault();
-
-                        // Greek
-                        document.body.style.fontFamily = `"${Font.Family.GENTIUM}"`;
-                        document.body.style.fontSize = `32px`;
-                        this.Set_Direction(Language.Direction.LEFT_TO_RIGHT);
-                    }
-                } else if (keyboard_event.key === `&`) {
-                    if (this.Is_Meta_Key_Active()) {
-                        keyboard_event.preventDefault();
-
-                        // Latin
-                        document.body.style.fontFamily = `"${Font.Family.GENTIUM}"`;
-                        document.body.style.fontSize = `26px`;
-                        this.Set_Direction(Language.Direction.LEFT_TO_RIGHT);
-                    }
-                } else if (keyboard_event.key === `^`) {
-                    if (this.Is_Meta_Key_Active()) {
-                        keyboard_event.preventDefault();
-
-                        // German
-                        document.body.style.fontFamily = `"${Font.Family.GENTIUM}"`;
-                        document.body.style.fontSize = `26px`;
-                        this.Set_Direction(Language.Direction.LEFT_TO_RIGHT);
-                    }
-                } else if (keyboard_event.key === `%`) {
-                    if (this.Is_Meta_Key_Active()) {
-                        keyboard_event.preventDefault();
-
-                        // French
-                        document.body.style.fontFamily = `"${Font.Family.GENTIUM}"`;
-                        document.body.style.fontSize = `26px`;
-                        this.Set_Direction(Language.Direction.LEFT_TO_RIGHT);
-                    }
-                }
-            }.bind(this),
+                capture: true,
+            },
         );
         this.element.addEventListener(
             `keyup`,
-            function (
-                this: Editor,
-                event: KeyboardEvent,
-            ):
-                void
+            this.On_Key_Up.bind(this),
             {
-                const keyboard_event: KeyboardEvent = event as KeyboardEvent;
-                if (keyboard_event.key === `Escape`) {
-                    event.preventDefault();
-
-                    this.is_meta_key_active = false;
-                }
-            }.bind(this),
+                capture: true,
+            },
         );
 
         this.children.controls.setAttribute(
@@ -1909,7 +1774,7 @@ class Editor
             },
         );
 
-        if (!this.dictionary.Is_Valid()) {
+        if (this.dictionary.Maybe_Validation_Error() != null) {
             this.dictionary = new Model.Dictionary.Instance();
             await this.Message_Invalid_Dictionary_JSON();
         }
@@ -2557,6 +2422,93 @@ class Editor
             return null;
         } else {
             return null;
+        }
+    }
+
+    private On_Key_Down(
+        event: KeyboardEvent,
+    ):
+        void
+    {
+        if (this.Is_Meta_Key_Active()) {
+            if (event.key === `ArrowLeft`) {
+                event.preventDefault();
+
+                this.Set_Direction(Language.Direction.RIGHT_TO_LEFT);
+            } else if (event.key === `ArrowRight`) {
+                event.preventDefault();
+
+                this.Set_Direction(Language.Direction.LEFT_TO_RIGHT);
+            } else if (event.key === `ArrowDown`) {
+                event.preventDefault();
+
+                this.is_in_point_mode = true;
+                this.Touch();
+            } else if (event.key === `ArrowUp`) {
+                event.preventDefault();
+
+                this.is_in_point_mode = false;
+                this.Touch();
+            } else if (event.key === `|`) {
+                event.preventDefault();
+
+                this.are_rows_expanded = !this.are_rows_expanded;
+                this.Touch();
+            } else if (event.key === `\``) {
+                event.preventDefault();
+
+                this.Highlight_Next_Class(
+                    [
+                        `UNKNOWN_POINT`,
+                        `UNKNOWN_WORD`,
+                        `UNKNOWN_BREAK`,
+                    ],
+                );
+            } else if (event.key === `1`) {
+                event.preventDefault();
+
+                this.Highlight_Next_Class(
+                    [
+                        `KNOWN_WORD_ERROR`,
+                        `KNOWN_BREAK_ERROR`,
+                        `BAD_COMMAND`,
+                    ],
+                );
+            } else if (event.key === `~`) {
+                event.preventDefault();
+
+                this.Highlight_Next(
+                    [
+                        `⸨fix⸩`,
+                        `⸨/fix⸩`,
+                    ],
+                );
+            } else if (event.key === `!`) {
+                event.preventDefault();
+
+                this.Highlight_Next(
+                    [
+                        `⸨b⸩`,
+                        `⸨/b⸩`,
+                    ],
+                );
+            }
+        } else if (event.key === `Escape`) {
+            event.preventDefault();
+
+            this.is_meta_key_active = true;
+        }
+    }
+
+    private On_Key_Up(
+        event: KeyboardEvent,
+    ):
+        void
+    {
+        if (event.key === `Escape`) {
+            event.preventDefault();
+
+            this.is_meta_key_active = false;
         }
     }
 }

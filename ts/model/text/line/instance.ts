@@ -391,6 +391,7 @@ export class Instance
                         it = it.Next();
                         current_start = it;
                     } else {
+                        const current_language: Language.Name | null = Current_Language();
                         const this_point: Value = it.Point();
                         const next_point: Value | null = it.Look_Forward_Point();
                         const next_maybe_valid_command: Value | null =
@@ -398,24 +399,24 @@ export class Instance
                                 it.Look_Forward_Points() || ``,
                             );
 
-                        if (dictionary.Has_Letter(this_point)) {
+                        if (dictionary.Has_Letter(this_point, current_language)) {
                             path.Update_Letter(
                                 row_value,
                                 {
                                     value: this_point,
                                     style: current_style,
-                                    language: Current_Language(),
+                                    language: current_language,
                                 },
                             );
 
                             current_type = Parse_Type.WORD;
-                        } else if (dictionary.Has_Marker(this_point)) {
+                        } else if (dictionary.Has_Marker(this_point, current_language)) {
                             path.Update_Marker(
                                 row_value,
                                 {
                                     value: this_point,
                                     style: current_style,
-                                    language: Current_Language(),
+                                    language: current_language,
                                 },
                             );
 
@@ -426,7 +427,7 @@ export class Instance
                                 {
                                     value: this_point,
                                     style: current_style,
-                                    language: Current_Language(),
+                                    language: current_language,
                                 },
                             );
 
@@ -439,7 +440,7 @@ export class Instance
                             if (
                                 next_point == null ||
                                 next_maybe_valid_command != null ||
-                                !dictionary.Has_Letter(next_point)
+                                !dictionary.Has_Letter(next_point, current_language)
                             ) {
                                 const word: Value = it.Text().slice(
                                     current_start.Index(),
@@ -447,9 +448,9 @@ export class Instance
                                 );
                                 const status: Part.Status = currently_force_good ?
                                     Part.Status.GOOD :
-                                    dictionary.Has_Word(word) ?
+                                    dictionary.Has_Word(word, current_language) ?
                                         Part.Status.GOOD :
-                                        dictionary.Has_Word_Error(word) ?
+                                        dictionary.Has_Word_Error(word, current_language) ?
                                             Part.Status.ERROR :
                                             Part.Status.UNKNOWN;
 
@@ -459,7 +460,7 @@ export class Instance
                                         value: word,
                                         status: status,
                                         style: current_style,
-                                        language: Current_Language(),
+                                        language: current_language,
                                     },
                                 );
 
@@ -469,7 +470,7 @@ export class Instance
                             if (
                                 next_point == null ||
                                 next_maybe_valid_command != null ||
-                                !dictionary.Has_Marker(next_point)
+                                !dictionary.Has_Marker(next_point, current_language)
                             ) {
                                 const break_: Value = it.Text().slice(
                                     current_start.Index(),
@@ -479,9 +480,9 @@ export class Instance
                                     Break_Boundary(current_start, it);
                                 const status: Part.Status = currently_force_good ?
                                     Part.Status.GOOD :
-                                    dictionary.Has_Break(break_, boundary) ?
+                                    dictionary.Has_Break(break_, boundary, current_language) ?
                                         Part.Status.GOOD :
-                                        dictionary.Has_Break_Error(break_, boundary) ?
+                                        dictionary.Has_Break_Error(break_, boundary, current_language) ?
                                             Part.Status.ERROR :
                                             Part.Status.UNKNOWN;
 
@@ -491,7 +492,7 @@ export class Instance
                                         value: break_,
                                         status: status,
                                         style: current_style,
-                                        language: Current_Language(),
+                                        language: current_language,
                                         boundary: boundary,
                                     },
                                 );
