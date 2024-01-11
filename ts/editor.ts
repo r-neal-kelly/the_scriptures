@@ -2434,11 +2434,11 @@ class Editor
             if (event.key === `ArrowLeft`) {
                 event.preventDefault();
 
-                this.Set_Direction(Language.Direction.RIGHT_TO_LEFT);
+                this.Set_Direction(Language.Direction.LEFT_TO_RIGHT);
             } else if (event.key === `ArrowRight`) {
                 event.preventDefault();
 
-                this.Set_Direction(Language.Direction.LEFT_TO_RIGHT);
+                this.Set_Direction(Language.Direction.RIGHT_TO_LEFT);
             } else if (event.key === `ArrowDown`) {
                 event.preventDefault();
 
