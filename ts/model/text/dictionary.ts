@@ -517,19 +517,17 @@ export class Instance
             `Word must not be considered an error.`,
         );
 
+        for (const letter of Unicode.Points(word)) {
+            if (!this.Has_Letter(letter, language_name)) {
+                return;
+            }
+        }
+
         const language_key: string = this.Language_Key(language_name);
         const first_point: string = Unicode.First_Point(word);
 
-        if (
-            this.info.words[language_key] == null ||
-            this.info.words[language_key][first_point] == null
-        ) {
-            this.Add_Letter(first_point, language_name);
+        if (!this.info.words[language_key][first_point].includes(word)) {
             this.info.words[language_key][first_point].push(word);
-        } else {
-            if (!this.info.words[language_key][first_point].includes(word)) {
-                this.info.words[language_key][first_point].push(word);
-            }
         }
     }
 
@@ -625,19 +623,17 @@ export class Instance
             `Break must not be considered an error.`,
         );
 
+        for (const marker of Unicode.Points(break_)) {
+            if (!this.Has_Marker(marker, language_name)) {
+                return;
+            }
+        }
+
         const language_key: string = this.Language_Key(language_name);
         const first_point: string = Unicode.First_Point(break_);
 
-        if (
-            this.info.breaks[language_key] == null ||
-            this.info.breaks[language_key][boundary][first_point] == null
-        ) {
-            this.Add_Marker(first_point, language_name);
+        if (!this.info.breaks[language_key][boundary][first_point].includes(break_)) {
             this.info.breaks[language_key][boundary][first_point].push(break_);
-        } else {
-            if (!this.info.breaks[language_key][boundary][first_point].includes(break_)) {
-                this.info.breaks[language_key][boundary][first_point].push(break_);
-            }
         }
     }
 
@@ -726,6 +722,12 @@ export class Instance
             !this.Has_Word(word_error, language_name),
             `Error must not be considered a word.`,
         );
+
+        for (const letter of Unicode.Points(word_error)) {
+            if (!this.Has_Letter(letter, language_name)) {
+                return;
+            }
+        }
 
         const language_key: string = this.Language_Key(language_name);
 
@@ -818,6 +820,12 @@ export class Instance
             !this.Has_Break(break_error, boundary, language_name),
             `Error must not be considered a break.`,
         );
+
+        for (const marker of Unicode.Points(break_error)) {
+            if (!this.Has_Marker(marker, language_name)) {
+                return;
+            }
+        }
 
         const language_key: string = this.Language_Key(language_name);
 

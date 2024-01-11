@@ -78,6 +78,20 @@ export function Point_Count(
     return count;
 }
 
+export function Points(
+    text: string,
+):
+    Array<string>
+{
+    const result: Array<string> = [];
+
+    for (let it = new Iterator({ text: text }); !it.Is_At_End(); it = it.Next()) {
+        result.push(it.Point());
+    }
+
+    return result;
+}
+
 export function Expected_UTF_8_Unit_Count(
     text: string,
 ):
