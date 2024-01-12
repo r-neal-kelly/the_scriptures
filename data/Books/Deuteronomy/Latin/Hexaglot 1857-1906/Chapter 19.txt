@@ -1,23 +1,23 @@
 ⸨cen⸩CAPUT XIX⸼
 
-1 ⸨sc⸩Cum⸨/sc⸩ disperdiderit Dominus Deus tuus gentes, quarum tibi traditurus est terram, et possederis eam, habitaverisque in urbibus ejus et in ædibus:
-2 Tres civitates separabis tibi in medio terræ, quam Dominus Deus tuus dabit tibi in possessionem,
-3 Sternens diligenter viam: et in tres æqualiter partes totam terræ tuæ provinciam divides: ut habeat e vicino qui propter homicidium profugus est, quo possit evadere.
-4 Hæc erit lex homicidæ fugientis, cujus vita servanda est: Qui ⸨fix:percusserit⸩percussserit⸨/fix⸩ proximum suum nesciens, et qui heri et nudiustertius nullum contra eum odium habuisse comprobatur:
-5 Sed abiisse cum eo simpliciter in silvam ad ligna cædenda, et in succisione lignorum securis fugerit manu, ferrumque lapsum de manubrio amicum ejus percusserit, et occiderit: hic ad unam supradictarum urbium confugiet, et vivet:
-6 Ne forsitan proximus ejus, cujus effusus est sanguis, dolore stimulatus, persequatur, et apprehendat eum si longior via fuerit, et percutiat animam ejus, qui non est reus mortis: quia nullum contra eum, qui occisus est, odium prius habuisse monstratur.
-7 Idcirco præcipio tibi, ut tres civitates æqualis inter se spatii dividas.
-8 Cum autem dilataverit Dominus Deus tuus terminos tuos, sicut juravit patribus tuis, et dederit tibi cunctam terram, quam eis pollicitus est,
-9 (Si tamen custodieris mandata ejus, et feceris quæ hodie præcipio tibi, ut diligas Dominum Deum tuum, et ambules in viis ejus omni tempore) addes tibi tres alias civitates, et supradictarum trium urbium numerum duplicabis;
-10 Ut non effundatur sanguis innoxius in medio terræ, quam Dominus Deus tuus dabit tibi possidendam, ne sis sanguinis reus.
-11 Si quis autem odio habens proximum suum, insidiatus fuerit vitæ ejus, surgensque percusserit illum, et mortuus fuerit, fugeritque ad unam de supradictis urbibus,
-12 Mittent seniores civitatis illius, et arripient eum de loco effugii, tradentque in manu proximi, cujus sanguis effusus est, et morietur.
-13 Non misereberis ejus, et auferes innoxium sanguinem de Israel, ut bene sit tibi.
-14 Non assumes, et transferes terminos proximi tui, quos fixerunt priores in possessione tua, quam Dominus Deus tuus dabit tibi in terra, quam acceperis possidendam.
-15 Non stabit testis unus contra aliquem, quidquid illud peccati et facinoris fuerit: sed in ore duorum aut trium testium stabit omne verbum.
-16 Si steterit testis mendax contra hominem, accusans eum prævaricationis,
-17 Stabunt ambo, quorum causa est, ante Dominum in conspectu sacerdotum et judicum qui fuerint in diebus illis.
-18 Cumque diligentissime perscrutantes, invenerint falsum testem dixisse contra fratrem suum mendacium:
-19 Reddent ei sicut fratri suo facere cogitavit, et auferes malum de medio tui:
-20 Ut audientes ceteri timorem habeant, et nequaquam talia audeant facere.
-21 Non misereberis ejus, sed animam pro anima, oculum pro oculo, dentem pro dente, manum pro manu, pedem pro pede exiges.
+⸨lang:English⸩1⸨/lang⸩ ⸨sc⸩Cum⸨/sc⸩ disperdiderit Dominus Deus tuus gentes, quarum tibi traditurus est terram, et possederis eam, habitaverisque in urbibus ejus et in ædibus:
+⸨lang:English⸩2⸨/lang⸩ Tres civitates separabis tibi in medio terræ, quam Dominus Deus tuus dabit tibi in possessionem,
+⸨lang:English⸩3⸨/lang⸩ Sternens diligenter viam: et in tres æqualiter partes totam terræ tuæ provinciam divides: ut habeat e vicino qui propter homicidium profugus est, quo possit evadere.
+⸨lang:English⸩4⸨/lang⸩ Hæc erit lex homicidæ fugientis, cujus vita servanda est: Qui ⸨fix:percusserit⸩percussserit⸨/fix⸩ proximum suum nesciens, et qui heri et nudiustertius nullum contra eum odium habuisse comprobatur:
+⸨lang:English⸩5⸨/lang⸩ Sed abiisse cum eo simpliciter in silvam ad ligna cædenda, et in succisione lignorum securis fugerit manu, ferrumque lapsum de manubrio amicum ejus percusserit, et occiderit: hic ad unam supradictarum urbium confugiet, et vivet:
+⸨lang:English⸩6⸨/lang⸩ Ne forsitan proximus ejus, cujus effusus est sanguis, dolore stimulatus, persequatur, et apprehendat eum si longior via fuerit, et percutiat animam ejus, qui non est reus mortis: quia nullum contra eum, qui occisus est, odium prius habuisse monstratur.
+⸨lang:English⸩7⸨/lang⸩ Idcirco præcipio tibi, ut tres civitates æqualis inter se spatii dividas.
+⸨lang:English⸩8⸨/lang⸩ Cum autem dilataverit Dominus Deus tuus terminos tuos, sicut juravit patribus tuis, et dederit tibi cunctam terram, quam eis pollicitus est,
+⸨lang:English⸩9⸨/lang⸩ (Si tamen custodieris mandata ejus, et feceris quæ hodie præcipio tibi, ut diligas Dominum Deum tuum, et ambules in viis ejus omni tempore) addes tibi tres alias civitates, et supradictarum trium urbium numerum duplicabis;
+⸨lang:English⸩10⸨/lang⸩ Ut non effundatur sanguis innoxius in medio terræ, quam Dominus Deus tuus dabit tibi possidendam, ne sis sanguinis reus.
+⸨lang:English⸩11⸨/lang⸩ Si quis autem odio habens proximum suum, insidiatus fuerit vitæ ejus, surgensque percusserit illum, et mortuus fuerit, fugeritque ad unam de supradictis urbibus,
+⸨lang:English⸩12⸨/lang⸩ Mittent seniores civitatis illius, et arripient eum de loco effugii, tradentque in manu proximi, cujus sanguis effusus est, et morietur.
+⸨lang:English⸩13⸨/lang⸩ Non misereberis ejus, et auferes innoxium sanguinem de Israel, ut bene sit tibi.
+⸨lang:English⸩14⸨/lang⸩ Non assumes, et transferes terminos proximi tui, quos fixerunt priores in possessione tua, quam Dominus Deus tuus dabit tibi in terra, quam acceperis possidendam.
+⸨lang:English⸩15⸨/lang⸩ Non stabit testis unus contra aliquem, quidquid illud peccati et facinoris fuerit: sed in ore duorum aut trium testium stabit omne verbum.
+⸨lang:English⸩16⸨/lang⸩ Si steterit testis mendax contra hominem, accusans eum prævaricationis,
+⸨lang:English⸩17⸨/lang⸩ Stabunt ambo, quorum causa est, ante Dominum in conspectu sacerdotum et judicum qui fuerint in diebus illis.
+⸨lang:English⸩18⸨/lang⸩ Cumque diligentissime perscrutantes, invenerint falsum testem dixisse contra fratrem suum mendacium:
+⸨lang:English⸩19⸨/lang⸩ Reddent ei sicut fratri suo facere cogitavit, et auferes malum de medio tui:
+⸨lang:English⸩20⸨/lang⸩ Ut audientes ceteri timorem habeant, et nequaquam talia audeant facere.
+⸨lang:English⸩21⸨/lang⸩ Non misereberis ejus, sed animam pro anima, oculum pro oculo, dentem pro dente, manum pro manu, pedem pro pede exiges.

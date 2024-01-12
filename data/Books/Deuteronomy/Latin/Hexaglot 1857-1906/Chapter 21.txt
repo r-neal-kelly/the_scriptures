@@ -1,25 +1,25 @@
 ⸨cen⸩CAPUT XXI⸼
 
-1 ⸨sc⸩Quando⸨/sc⸩ inventum fuerit in terra, quam Dominus Deus tuus daturus est tibi, hominis cadaver occisi, et ignorabitur cædis reus,
-2 Egredientur majores natu, et judices tui, et metientur a loco cadaveris singularum per circuitum spatia civitatum:
-3 Et quam viciniorem ceteris esse perspexerint, seniores civitatis illius tollent vitulam de armento, quæ non traxit jugum, nec terram scidit vomere,
-4 Et ducent eam ad vallem asperam atque sacosam, quæ nunquam arata est, nec sementem recepit: et cædent in ea cervices vitulæ:
-5 Accedentque sacerdotes filii Levi, quos elegerit Dominus Deus tuus ut ministrent ei, et benedicant in nomine ejus, et ad verbum eorum, omne negotium, et quidquid mundum, vel immundum est, judicetur.
-6 Et venient majores natu civitatis illius ad interfectum, lavabuntque manus suas super vitulam, quæ in valle percussa est,
-7 Et dicent: Manus nostræ non effuderunt sanguinem hunc, nec oculi viderunt;
-8 Propitius esto populo tuo Israel, quem redemisti, Domine, et ne reputes sanguinem innocentem in medio populi tui Israel. Et auferetur ab eis reatus sanguinis:
-9 Tu autem alienus eris ab innocentis cruore, qui fusus est, cum feceris quod præcepit Dominus.
-10 Si egressus fueris ad pugnam contra inimicos tuos, et tradiderit eos Dominus Deus tuus in manu tua, captivosque duxeris,
-11 Et videris in numero captivorum mulierem pulchram, et adamaveris eam, voluerisque habere uxorem,
-12 Introduces eam in domum tuam: quæ radet cæsariem, et circumcidet ungues,
-13 Et deponet vestem, in qua capta est: sedensque in domo tua, flebit patrem et matrem suam uno mense: et postea intrabis ad eam, dormiesque cum illa, et erit uxor tua.
-14 Si autem postea non sederit animo tuo, dimittes eam liberam, nec vendere poteris pecunia, nec opprimere per potentiam: quia humiliasti eam.
-15 Si habuerit homo uxores duas, unam dilectam, et alteram odiosam, genuerintque ex eo liberos, et fuerit filius odiosæ primogenitus,
-16 Volueritque substantiam inter filios suos dividere: non poterit filium dilectæ facere primogenitum, et præferre filio odiosæ.
-17 Sed filium odiosæ agnoscet primogenitum, dabitque ei de his quæ habuerit cuncta duplicia: iste est enim principium liberorum ejus, et huic debentur primogenita.
-18 Si genuerit homo filium contumacem et protervum, qui non audiat patris aut matris imperium, et coercitus obedire contempserit:
-19 Apprehendent eum, et ducent ad seniores civitatis illius, et ad portam judicii,
-20 Dicentque ad eos: Filius noster iste protervus et contumax est, monita nostra audire contemnit, comessationibus vacat, et luxuriæ atque conviviis:
-21 Lapidibus eum obruet populus civitatis: et morietur, ut auferatis malum de medio vestri, et universus Israel audiens pertimescat.
-22 Quando peccaverit homo quod morte plectendum est, et adjudicatus morti appensus fuerit in patibulo:
-23 Non permanebit cadaver ejus in ligno, sed in eadem die sepelietur: quia maledictus a Deo est qui pendet in ligno: et nequaquam contaminabis terram tuam, quam Dominus Deus tuus dederit tibi in possessionem.
+⸨lang:English⸩1⸨/lang⸩ ⸨sc⸩Quando⸨/sc⸩ inventum fuerit in terra, quam Dominus Deus tuus daturus est tibi, hominis cadaver occisi, et ignorabitur cædis reus,
+⸨lang:English⸩2⸨/lang⸩ Egredientur majores natu, et judices tui, et metientur a loco cadaveris singularum per circuitum spatia civitatum:
+⸨lang:English⸩3⸨/lang⸩ Et quam viciniorem ceteris esse perspexerint, seniores civitatis illius tollent vitulam de armento, quæ non traxit jugum, nec terram scidit vomere,
+⸨lang:English⸩4⸨/lang⸩ Et ducent eam ad vallem asperam atque sacosam, quæ nunquam arata est, nec sementem recepit: et cædent in ea cervices vitulæ:
+⸨lang:English⸩5⸨/lang⸩ Accedentque sacerdotes filii Levi, quos elegerit Dominus Deus tuus ut ministrent ei, et benedicant in nomine ejus, et ad verbum eorum, omne negotium, et quidquid mundum, vel immundum est, judicetur.
+⸨lang:English⸩6⸨/lang⸩ Et venient majores natu civitatis illius ad interfectum, lavabuntque manus suas super vitulam, quæ in valle percussa est,
+⸨lang:English⸩7⸨/lang⸩ Et dicent: Manus nostræ non effuderunt sanguinem hunc, nec oculi viderunt;
+⸨lang:English⸩8⸨/lang⸩ Propitius esto populo tuo Israel, quem redemisti, Domine, et ne reputes sanguinem innocentem in medio populi tui Israel. Et auferetur ab eis reatus sanguinis:
+⸨lang:English⸩9⸨/lang⸩ Tu autem alienus eris ab innocentis cruore, qui fusus est, cum feceris quod præcepit Dominus.
+⸨lang:English⸩10⸨/lang⸩ Si egressus fueris ad pugnam contra inimicos tuos, et tradiderit eos Dominus Deus tuus in manu tua, captivosque duxeris,
+⸨lang:English⸩11⸨/lang⸩ Et videris in numero captivorum mulierem pulchram, et adamaveris eam, voluerisque habere uxorem,
+⸨lang:English⸩12⸨/lang⸩ Introduces eam in domum tuam: quæ radet cæsariem, et circumcidet ungues,
+⸨lang:English⸩13⸨/lang⸩ Et deponet vestem, in qua capta est: sedensque in domo tua, flebit patrem et matrem suam uno mense: et postea intrabis ad eam, dormiesque cum illa, et erit uxor tua.
+⸨lang:English⸩14⸨/lang⸩ Si autem postea non sederit animo tuo, dimittes eam liberam, nec vendere poteris pecunia, nec opprimere per potentiam: quia humiliasti eam.
+⸨lang:English⸩15⸨/lang⸩ Si habuerit homo uxores duas, unam dilectam, et alteram odiosam, genuerintque ex eo liberos, et fuerit filius odiosæ primogenitus,
+⸨lang:English⸩16⸨/lang⸩ Volueritque substantiam inter filios suos dividere: non poterit filium dilectæ facere primogenitum, et præferre filio odiosæ.
+⸨lang:English⸩17⸨/lang⸩ Sed filium odiosæ agnoscet primogenitum, dabitque ei de his quæ habuerit cuncta duplicia: iste est enim principium liberorum ejus, et huic debentur primogenita.
+⸨lang:English⸩18⸨/lang⸩ Si genuerit homo filium contumacem et protervum, qui non audiat patris aut matris imperium, et coercitus obedire contempserit:
+⸨lang:English⸩19⸨/lang⸩ Apprehendent eum, et ducent ad seniores civitatis illius, et ad portam judicii,
+⸨lang:English⸩20⸨/lang⸩ Dicentque ad eos: Filius noster iste protervus et contumax est, monita nostra audire contemnit, comessationibus vacat, et luxuriæ atque conviviis:
+⸨lang:English⸩21⸨/lang⸩ Lapidibus eum obruet populus civitatis: et morietur, ut auferatis malum de medio vestri, et universus Israel audiens pertimescat.
+⸨lang:English⸩22⸨/lang⸩ Quando peccaverit homo quod morte plectendum est, et adjudicatus morti appensus fuerit in patibulo:
+⸨lang:English⸩23⸨/lang⸩ Non permanebit cadaver ejus in ligno, sed in eadem die sepelietur: quia maledictus a Deo est qui pendet in ligno: et nequaquam contaminabis terram tuam, quam Dominus Deus tuus dederit tibi in possessionem.
