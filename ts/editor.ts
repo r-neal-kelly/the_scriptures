@@ -771,8 +771,6 @@ class Line
 
     private parent: HTMLElement;
     private element: HTMLDivElement;
-    private children: {
-    };
 
     private keyboard_hook: Line_Keyboard_Hook;
 
@@ -790,8 +788,6 @@ class Line
 
         this.parent = parent;
         this.element = document.createElement(`div`);
-        this.children = {
-        };
 
         this.element.setAttribute(
             `contentEditable`,
@@ -1188,6 +1184,106 @@ class Line
         }
 
         return inner_html;
+    }
+
+    Try_To_Add_Unknown_Parts_To_Dictionary():
+        void
+    {
+        const dictionary: Model.Dictionary.Instance =
+            this.Editor().Dictionary();
+        const model: Model.Instance = new Model.Instance(
+            {
+                dictionary: dictionary,
+                value: this.Text(),
+            },
+        );
+        const line: Model.Line.Instance =
+            model.Line(0);
+
+        for (
+            let column_idx = 0, column_end = line.Column_Count();
+            column_idx < column_end;
+            column_idx += 1
+        ) {
+            const column: Model.Column.Instance = line.Column(column_idx);
+            for (
+                let row_idx = 0, row_end = column.Row_Count();
+                row_idx < row_end;
+                row_idx += 1
+            ) {
+                const row: Model.Row.Instance = column.Row(row_idx);
+                for (
+                    let part_idx = 0, part_end = row.Micro_Part_Count();
+                    part_idx < part_end;
+                    part_idx += 1
+                ) {
+                    const part: Model.Part.Instance = row.Micro_Part(part_idx);
+                    if (part.Is_Unknown()) {
+                        return;
+                    }
+                }
+            }
+        }
+
+        for (
+            let column_idx = 0, column_end = line.Column_Count();
+            column_idx < column_end;
+            column_idx += 1
+        ) {
+            const column: Model.Column.Instance = line.Column(column_idx);
+            for (
+                let row_idx = 0, row_end = column.Row_Count();
+                row_idx < row_end;
+                row_idx += 1
+            ) {
+                const row: Model.Row.Instance = column.Row(row_idx);
+                for (
+                    let part_idx = 0, part_end = row.Macro_Part_Count();
+                    part_idx < part_end;
+                    part_idx += 1
+                ) {
+                    const part: Model.Part.Instance = row.Macro_Part(part_idx);
+                    if (part.Is_Unknown()) {
+                        if (part.Is_Word()) {
+                            const word: Model.Part.Word.Instance =
+                                part as Model.Part.Word.Instance;
+                            if (part.Has_Error_Style()) {
+                                dictionary.Add_Word_Error(
+                                    word.Value(),
+                                    word.Language(),
+                                );
+                            } else {
+                                dictionary.Add_Word(
+                                    word.Value(),
+                                    word.Language(),
+                                );
+                            }
+                        } else if (part.Is_Break()) {
+                            const break_: Model.Part.Break.Instance =
+                                part as Model.Part.Break.Instance;
+                            if (part.Has_Error_Style()) {
+                                dictionary.Add_Break_Error(
+                                    break_.Value(),
+                                    break_.Boundary(),
+                                    break_.Language(),
+                                );
+                            } else {
+                                dictionary.Add_Break(
+                                    break_.Value(),
+                                    break_.Boundary(),
+                                    break_.Language(),
+                                );
+                            }
+                        } else {
+                            Utils.Assert(
+                                false,
+                                `unknown part type`,
+                            );
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -2226,6 +2322,14 @@ class Editor
         this.Touch();
     }
 
+    Try_To_Add_Unknown_Parts_To_Dictionary():
+        void
+    {
+        for (const line of this.lines) {
+            line.Try_To_Add_Unknown_Parts_To_Dictionary();
+        }
+    }
+
     Highlight_Next(
         targets: Array<string>,
     ):
@@ -2453,6 +2557,11 @@ class Editor
                 event.preventDefault();
 
                 this.are_rows_expanded = !this.are_rows_expanded;
+                this.Touch();
+            } else if (event.key === `+`) {
+                event.preventDefault();
+
+                this.Try_To_Add_Unknown_Parts_To_Dictionary();
                 this.Touch();
             } else if (event.key === `\``) {
                 event.preventDefault();
