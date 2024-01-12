@@ -1186,7 +1186,7 @@ class Line
         return inner_html;
     }
 
-    Try_To_Add_Unknown_Parts_To_Dictionary():
+    Try_To_Update_Dictionary_With_Parts():
         void
     {
         const dictionary: Model.Dictionary.Instance =
@@ -1247,33 +1247,91 @@ class Line
                         if (part.Is_Word()) {
                             const word: Model.Part.Word.Instance =
                                 part as Model.Part.Word.Instance;
-                            if (part.Has_Error_Style()) {
-                                dictionary.Add_Word_Error(
+                            if (
+                                !dictionary.Has_Word(
                                     word.Value(),
                                     word.Language(),
-                                );
-                            } else {
-                                dictionary.Add_Word(
-                                    word.Value(),
-                                    word.Language(),
-                                );
+                                )
+                            ) {
+                                if (part.Has_Error_Style()) {
+                                    dictionary.Add_Word_Error(
+                                        word.Value(),
+                                        word.Language(),
+                                    );
+                                } else {
+                                    dictionary.Remove_Word_Error(
+                                        word.Value(),
+                                        word.Language(),
+                                    );
+                                    dictionary.Add_Word(
+                                        word.Value(),
+                                        word.Language(),
+                                    );
+                                }
                             }
                         } else if (part.Is_Break()) {
                             const break_: Model.Part.Break.Instance =
                                 part as Model.Part.Break.Instance;
-                            if (part.Has_Error_Style()) {
-                                dictionary.Add_Break_Error(
+                            if (
+                                !dictionary.Has_Break(
                                     break_.Value(),
                                     break_.Boundary(),
                                     break_.Language(),
-                                );
-                            } else {
-                                dictionary.Add_Break(
-                                    break_.Value(),
-                                    break_.Boundary(),
-                                    break_.Language(),
-                                );
+                                )
+                            ) {
+                                if (part.Has_Error_Style()) {
+                                    dictionary.Add_Break_Error(
+                                        break_.Value(),
+                                        break_.Boundary(),
+                                        break_.Language(),
+                                    );
+                                } else {
+                                    dictionary.Remove_Break_Error(
+                                        break_.Value(),
+                                        break_.Boundary(),
+                                        break_.Language(),
+                                    );
+                                    dictionary.Add_Break(
+                                        break_.Value(),
+                                        break_.Boundary(),
+                                        break_.Language(),
+                                    );
+                                }
                             }
+                        } else {
+                            Utils.Assert(
+                                false,
+                                `unknown part type`,
+                            );
+                        }
+                    } else if (
+                        part.Is_Error() &&
+                        !part.Has_Error_Style()
+                    ) {
+                        if (part.Is_Word()) {
+                            const word: Model.Part.Word.Instance =
+                                part as Model.Part.Word.Instance;
+                            dictionary.Remove_Word_Error(
+                                word.Value(),
+                                word.Language(),
+                            );
+                            dictionary.Add_Word(
+                                word.Value(),
+                                word.Language(),
+                            );
+                        } else if (part.Is_Break()) {
+                            const break_: Model.Part.Break.Instance =
+                                part as Model.Part.Break.Instance;
+                            dictionary.Remove_Break_Error(
+                                break_.Value(),
+                                break_.Boundary(),
+                                break_.Language(),
+                            );
+                            dictionary.Add_Break(
+                                break_.Value(),
+                                break_.Boundary(),
+                                break_.Language(),
+                            );
                         } else {
                             Utils.Assert(
                                 false,
@@ -2322,11 +2380,11 @@ class Editor
         this.Touch();
     }
 
-    Try_To_Add_Unknown_Parts_To_Dictionary():
+    Try_To_Update_Dictionary_With_Parts():
         void
     {
         for (const line of this.lines) {
-            line.Try_To_Add_Unknown_Parts_To_Dictionary();
+            line.Try_To_Update_Dictionary_With_Parts();
         }
     }
 
@@ -2561,7 +2619,7 @@ class Editor
             } else if (event.key === `+`) {
                 event.preventDefault();
 
-                this.Try_To_Add_Unknown_Parts_To_Dictionary();
+                this.Try_To_Update_Dictionary_With_Parts();
                 this.Touch();
             } else if (event.key === `\``) {
                 event.preventDefault();
