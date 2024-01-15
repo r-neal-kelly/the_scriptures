@@ -1,33 +1,33 @@
 ⸨cen⸩CAPUT XXII⸼
 
-1 ⸨sc⸩Si⸨/sc⸩ quis furatus fuerit bovem, aut ovem, et occiderit vel vendiderit: quinque boves pro uno bove restituet, et quatuor oves pro una ove.
-2 Si effringens fur domum sive suffodiens fuerit inventus, et accepto vulnere mortuus fuerit: percussor non erit reus sanguinis.
-3 Quod si orto sole hoc fecerit, homicidium perpetravit, et ipse morietur. Si non habuerit quod pro furte reddat, ipse venundabitur
-4 Si inventum fuerit apud eum quod furatus est, vivens, sive bos, sive asinus, sive ovis: duplum restituet.
-5 Si læserit quispiam agrum vel vineam, et dimiserit jumentum suum ut depascatur aliena: quidquid optimum habuerit in agro suo, vel in vinea, pro damni æstimatione restituet.
-6 Si egressus ignis invenerit spinas, et comprehenderit acervos frugum, sive stantes segetes in agris, reddet damnum qui ignem succenderit.
-7 Si quis commendaverit amico pecuniam, aut vas in custodiam, et ab eo qui susceperat, furto ablata fuerint: si invenitur fur, duplum reddet.
-8 Si latet fur, dominus domus applicabitur ad deos, et jurabit quod non extenderit manum in rem proximi sui,
-9 Ad perpetrandam fraudem, tam in bove, quam in asino, et ove ac vestimento, et quidquid damnum inferre potest: ad deos utriusque causa perveniet; et si illi judicaverint, duplum restituet proximo suo.
-10 Si quis commendaverit proximo suo asinum, bovem, ovem, et omne jumentum ad custodiam, et mortuum fuerit, aut debilitatum, vel captum ab hostibus, nullusque hoc viderit:
-11 Jusjurandum erit in medio, quod non extenderit manum ad rem proximi sui: suscipietque dominus juramentum, et ille reddere non cogetur.
-12 Quod si furto ablatum fuerit, restituet damnum domino.
-13 Si comestum a bestia, deferat ad eum quod occisum est, et non restituet.
-14 Qui a proximo suo quidquam horum mutuo postulaverit, et debilitatum aut mortuum fuerit domino non præsente, reddere compelletur.
-15 Quod si impræsentiarum dominus fuerit, non restituet, maxime si conductum venerat pro mercede operis sui.
-16 Si seduxerit quis virginem necdum desponsatam, dormieritque cum ea: dotabit eam, et habebit eam uxorem.
-17 Si pater virginis dare noluerit, reddet pecuniam juxta modum dotis, quam virgines accipere consueverunt
-18 Maleficos non patieris vivere.
-19 Qui coierit cum jumento, morte moriatur.
-20 Qui immolat diis, occidetur, præterquam Domino soli.
-21 Advenam non contristabis, neque affliges eum: advenæ enim et ipsi fuistis in terra Ægypti.
-22 Viduæ et pupillo non nocebitis.
-23 Si læseritis eos, vociferabuntur ad me, et ego audiam clamorem corum:
-24 Et indignabitur furor meus, percutiamque vos gladio, et erunt uxores vestræ viduæ, et filii vestri pupilli.
-25 Si pecuniam mutuam dederis populo meo pauperi qui habitat tecum, non urgebis eum quasi exactor, nec usuris opprimes.
-26 Si pignus a proximo tuo acceperis vestimentum, ante solis occasum reddes ei
-27 Ipsum enim est solum quo operitur, indumentum carnis ejus, nec habet aliud in quo dormiat: si clamaverit ad me, exaudiam eum, quia misericors sum.
-28 Diis non detrahes, et principi populi tui non maledices.
-29 Decimas tuas et primitias tuas non tardabis reddere: primogenitum filiorum tuorum dabis mihi.
-30 De bobus quoque, et ovibus similiter facies: septem diebus sit cum matre sua, die octava reddes illum mihi.
-31 Viri sancti eritis mihi: carnem, quæ a bestiis fuerit prægustata, non comedetis, sed projicietis canibus.
+⸨lang:English⸩1 ⸨/lang⸩⸨sc⸩Si⸨/sc⸩ quis furatus fuerit bovem, aut ovem, et occiderit vel vendiderit: quinque boves pro uno bove restituet, et quatuor oves pro una ove.
+⸨lang:English⸩2 ⸨/lang⸩Si effringens fur domum sive suffodiens fuerit inventus, et accepto vulnere mortuus fuerit: percussor non erit reus sanguinis.
+⸨lang:English⸩3 ⸨/lang⸩Quod si orto sole hoc fecerit, homicidium perpetravit, et ipse morietur. Si non habuerit quod pro furte reddat, ipse venundabitur
+⸨lang:English⸩4 ⸨/lang⸩Si inventum fuerit apud eum quod furatus est, vivens, sive bos, sive asinus, sive ovis: duplum restituet.
+⸨lang:English⸩5 ⸨/lang⸩Si læserit quispiam agrum vel vineam, et dimiserit jumentum suum ut depascatur aliena: quidquid optimum habuerit in agro suo, vel in vinea, pro damni æstimatione restituet.
+⸨lang:English⸩6 ⸨/lang⸩Si egressus ignis invenerit spinas, et comprehenderit acervos frugum, sive stantes segetes in agris, reddet damnum qui ignem succenderit.
+⸨lang:English⸩7 ⸨/lang⸩Si quis commendaverit amico pecuniam, aut vas in custodiam, et ab eo qui susceperat, furto ablata fuerint: si invenitur fur, duplum reddet.
+⸨lang:English⸩8 ⸨/lang⸩Si latet fur, dominus domus applicabitur ad deos, et jurabit quod non extenderit manum in rem proximi sui,
+⸨lang:English⸩9 ⸨/lang⸩Ad perpetrandam fraudem, tam in bove, quam in asino, et ove ac vestimento, et quidquid damnum inferre potest: ad deos utriusque causa perveniet; et si illi judicaverint, duplum restituet proximo suo.
+⸨lang:English⸩10 ⸨/lang⸩Si quis commendaverit proximo suo asinum, bovem, ovem, et omne jumentum ad custodiam, et mortuum fuerit, aut debilitatum, vel captum ab hostibus, nullusque hoc viderit:
+⸨lang:English⸩11 ⸨/lang⸩Jusjurandum erit in medio, quod non extenderit manum ad rem proximi sui: suscipietque dominus juramentum, et ille reddere non cogetur.
+⸨lang:English⸩12 ⸨/lang⸩Quod si furto ablatum fuerit, restituet damnum domino.
+⸨lang:English⸩13 ⸨/lang⸩Si comestum a bestia, deferat ad eum quod occisum est, et non restituet.
+⸨lang:English⸩14 ⸨/lang⸩Qui a proximo suo quidquam horum mutuo postulaverit, et debilitatum aut mortuum fuerit domino non præsente, reddere compelletur.
+⸨lang:English⸩15 ⸨/lang⸩Quod si impræsentiarum dominus fuerit, non restituet, maxime si conductum venerat pro mercede operis sui.
+⸨lang:English⸩16 ⸨/lang⸩Si seduxerit quis virginem necdum desponsatam, dormieritque cum ea: dotabit eam, et habebit eam uxorem.
+⸨lang:English⸩17 ⸨/lang⸩Si pater virginis dare noluerit, reddet pecuniam juxta modum dotis, quam virgines accipere consueverunt
+⸨lang:English⸩18 ⸨/lang⸩Maleficos non patieris vivere.
+⸨lang:English⸩19 ⸨/lang⸩Qui coierit cum jumento, morte moriatur.
+⸨lang:English⸩20 ⸨/lang⸩Qui immolat diis, occidetur, præterquam Domino soli.
+⸨lang:English⸩21 ⸨/lang⸩Advenam non contristabis, neque affliges eum: advenæ enim et ipsi fuistis in terra Ægypti.
+⸨lang:English⸩22 ⸨/lang⸩Viduæ et pupillo non nocebitis.
+⸨lang:English⸩23 ⸨/lang⸩Si læseritis eos, vociferabuntur ad me, et ego audiam clamorem corum:
+⸨lang:English⸩24 ⸨/lang⸩Et indignabitur furor meus, percutiamque vos gladio, et erunt uxores vestræ viduæ, et filii vestri pupilli.
+⸨lang:English⸩25 ⸨/lang⸩Si pecuniam mutuam dederis populo meo pauperi qui habitat tecum, non urgebis eum quasi exactor, nec usuris opprimes.
+⸨lang:English⸩26 ⸨/lang⸩Si pignus a proximo tuo acceperis vestimentum, ante solis occasum reddes ei
+⸨lang:English⸩27 ⸨/lang⸩Ipsum enim est solum quo operitur, indumentum carnis ejus, nec habet aliud in quo dormiat: si clamaverit ad me, exaudiam eum, quia misericors sum.
+⸨lang:English⸩28 ⸨/lang⸩Diis non detrahes, et principi populi tui non maledices.
+⸨lang:English⸩29 ⸨/lang⸩Decimas tuas et primitias tuas non tardabis reddere: primogenitum filiorum tuorum dabis mihi.
+⸨lang:English⸩30 ⸨/lang⸩De bobus quoque, et ovibus similiter facies: septem diebus sit cum matre sua, die octava reddes illum mihi.
+⸨lang:English⸩31 ⸨/lang⸩Viri sancti eritis mihi: carnem, quæ a bestiis fuerit prægustata, non comedetis, sed projicietis canibus.

@@ -1,24 +1,24 @@
 ⸨cen⸩EXODUS, CAPUT I⸼
 
-⸨fix:1 ⸩⸨/fix⸩⸨sc⸩Hæc⸨/sc⸩ sunt nomina filiorum Israel qui ingressi sunt in Ægyptum cum Jacob: singuli cum domibus suis introierunt:
-2 Ruben, Simeon, Levi, Judas,
-3 Issachar, Zabulon et Benjamin,
-4 Dan, et Nephthali, Gad, et Aser.
-5 Erant igitur omnes animæ eorum qui egressi sunt de femore Jacob, septuaginta: Joseph autem in Ægypto erat.
-6 Quo mortuo, et universis fratribus ejus, omnique cognatione illa,
-7 Filii Israel creverunt, et quasi germinantes multiplicati sunt: ac roborati nimis, impleverunt terram.
-8 Surrexit interea rex novus super Ægyptum, qui ignorabat Joseph:
-9 Et ait ad populum suum: Ecce, populus filiorum Israel multus, et fortior nobis est.
-10 Venite, sapienter opprimamus eum, ne forte multiplicetur: et si ingruerit contra nos bellum, addatur inimicis nostris, expugnatisque nobis egrediatur de terra.
-11 Præposuit itaque eis magistros operum, ut affligerent eos oneribus: ædificaveruntque urbes tabernaculorum Pharaoni, Phithom et Ramesses.
-12 Quantoque opprimebant eos, tanto magis multiplicabantur, et crescebant:
-13 Oderantque filios Israel Ægyptii, et affligebant illudentes eis:
-14 Atque ad amaritudinem perducebant vitam eorum operibus duris luti, et lateris, omnique famulatu, quo in terræ operibus premebantur.
-15 Dixit autem rex Ægypti obstetricibus Hebræorum, quarum una vocabatur Sephora, altera Phua,
-16 Præcipiens eis: Quando obstetricabitis Hebræas, et partus tempus advenerit: si masculus fuerit, interficite eum: si femina, reservate.
-17 Timuerunt autem obstetrices Deum, et non fecerunt juxta præceptum regis Ægypti, sed conservabant mares.
-18 Quibus ad se accersitis, rex ait: Quidnam est hoc quod facere voluistis ut pueros servaretis?
-19 Quæ responderunt: Non sunt Hebrææ sicut Ægyptiæ mulieres: ipsæ enim obstetricandi habent scientiam, et priusquam veniamus ad eas, pariunt.
-20 Bene ergo fecit Deus obstetricibus: et crevit populus, confortatusque est nimis.
-21 Et quia timuerunt obstetrices Deum, ædificavit eis domos.
-22 Præcepit ergo Pharao omni populo suo, dicens: Quidquid masculini sexus natum fuerit, in flumen projicite: quidquid feminini, reservate.
+⸨lang:English⸩⸨fix:1 ⸩⸨/fix⸩⸨/lang⸩⸨sc⸩Hæc⸨/sc⸩ sunt nomina filiorum Israel qui ingressi sunt in Ægyptum cum Jacob: singuli cum domibus suis introierunt:
+⸨lang:English⸩2 ⸨/lang⸩Ruben, Simeon, Levi, Judas,
+⸨lang:English⸩3 ⸨/lang⸩Issachar, Zabulon et Benjamin,
+⸨lang:English⸩4 ⸨/lang⸩Dan, et Nephthali, Gad, et Aser.
+⸨lang:English⸩5 ⸨/lang⸩Erant igitur omnes animæ eorum qui egressi sunt de femore Jacob, septuaginta: Joseph autem in Ægypto erat.
+⸨lang:English⸩6 ⸨/lang⸩Quo mortuo, et universis fratribus ejus, omnique cognatione illa,
+⸨lang:English⸩7 ⸨/lang⸩Filii Israel creverunt, et quasi germinantes multiplicati sunt: ac roborati nimis, impleverunt terram.
+⸨lang:English⸩8 ⸨/lang⸩Surrexit interea rex novus super Ægyptum, qui ignorabat Joseph:
+⸨lang:English⸩9 ⸨/lang⸩Et ait ad populum suum: Ecce, populus filiorum Israel multus, et fortior nobis est.
+⸨lang:English⸩10 ⸨/lang⸩Venite, sapienter opprimamus eum, ne forte multiplicetur: et si ingruerit contra nos bellum, addatur inimicis nostris, expugnatisque nobis egrediatur de terra.
+⸨lang:English⸩11 ⸨/lang⸩Præposuit itaque eis magistros operum, ut affligerent eos oneribus: ædificaveruntque urbes tabernaculorum Pharaoni, Phithom et Ramesses.
+⸨lang:English⸩12 ⸨/lang⸩Quantoque opprimebant eos, tanto magis multiplicabantur, et crescebant:
+⸨lang:English⸩13 ⸨/lang⸩Oderantque filios Israel Ægyptii, et affligebant illudentes eis:
+⸨lang:English⸩14 ⸨/lang⸩Atque ad amaritudinem perducebant vitam eorum operibus duris luti, et lateris, omnique famulatu, quo in terræ operibus premebantur.
+⸨lang:English⸩15 ⸨/lang⸩Dixit autem rex Ægypti obstetricibus Hebræorum, quarum una vocabatur Sephora, altera Phua,
+⸨lang:English⸩16 ⸨/lang⸩Præcipiens eis: Quando obstetricabitis Hebræas, et partus tempus advenerit: si masculus fuerit, interficite eum: si femina, reservate.
+⸨lang:English⸩17 ⸨/lang⸩Timuerunt autem obstetrices Deum, et non fecerunt juxta præceptum regis Ægypti, sed conservabant mares.
+⸨lang:English⸩18 ⸨/lang⸩Quibus ad se accersitis, rex ait: Quidnam est hoc quod facere voluistis ut pueros servaretis?
+⸨lang:English⸩19 ⸨/lang⸩Quæ responderunt: Non sunt Hebrææ sicut Ægyptiæ mulieres: ipsæ enim obstetricandi habent scientiam, et priusquam veniamus ad eas, pariunt.
+⸨lang:English⸩20 ⸨/lang⸩Bene ergo fecit Deus obstetricibus: et crevit populus, confortatusque est nimis.
+⸨lang:English⸩21 ⸨/lang⸩Et quia timuerunt obstetrices Deum, ædificavit eis domos.
+⸨lang:English⸩22 ⸨/lang⸩Præcepit ergo Pharao omni populo suo, dicens: Quidquid masculini sexus natum fuerit, in flumen projicite: quidquid feminini, reservate.

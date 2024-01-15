@@ -1,42 +1,42 @@
 ⸨cen⸩CAPUT XXV⸼
 
-1 ⸨sc⸩Locutusque⸨/sc⸩ est Dominus ad Moysen, dicens:
-2 Loquere filiis Israel, ut tollant mihi primitias, ab omni homine qui offeret ultroneus, accipietis eas.
-3 Hæc sunt autem quæ accipere debetis: aurum, et argentum, et æs,
-4 Hyacinthum et purpuram, coccumque bis tinctum, et byssum, pilos caprarum,
-5 Et pelles arietum rubricatas, pellesque ianthinas, et ligna setim:
-6 Oleum ad luminaria concinnanda: aromata in unguentum, et thymiamata boni odoris:
-7 Lapides onychinos, et gemmas ad ornandum ephod ac rationale.
-8 Facientque mihi sanctuarium, et habitabo in medio eorum:
-9 Juxta omnem similitudinem tabernaculi quod ostendam tibi, et omnium vasorum in cultum ejus: sicque facietis illud:
-10 Arcam de lignis setim compingite, cujus longitudo habeat duos et semis cubitos: latitudo, cubitum et dimidium: altitudo, cubitum similiter ac semissem.
-11 Et deaurabis eam auro mundissimo intus et foris: faciesque supra, coronam auream per circuitum:
-12 Et quatuor circulos aureos, quos pones per quatuor arcæ angulos: duo circuli sint in latere uno, et duo in altero.
-13 Facies quoque vectes de lignis setim, et operies eos auro.
-14 Inducesque per circulos qui sunt in arcæ lateribus, ut portetur in eis:
-15 Qui semper erunt in circulis, nec unquam extrahentur ab eis.
-16 Ponesque in arca testificationem quam dabo tibi.
-17 Facies et propitiatorium de auro mundissimo: duos cubitos et dimidium tenebit longitudo ejus, et cubitum ac semissem latitudo.
-18 Duos quoque cherubim aureos et productiles facies, ex utraque parte oraculi.
-19 Cherub unus sit in latere uno, et alter in altero.
-20 Utrumque latus propitiatorii tegant, expandentes alas et operientes oraculum, respiciantque se mutuo versis vultibus in propitiatorium quo operienda est arca,
-21 In qua pones testimonium quod dabo tibi.
-22 Inde præcipiam, et loquar ad te supra propitiatorium, ac de medio duorum cherubim, qui erunt super arcam testimonii, cuncta quæ mandabo per te filiis Israel.
-23 Facies et mensam de lignis setim, habentem duos cubitos longitudinis, et in latitudine cubitum, et in altitudine cubitum ac semissem.
-24 Et inaurabis eam auro purissimo: faciesque illi labium aureum per circuitum,
-25 Et ipsi labio coronam interrasilem altam quatuor digitis: et super illam, alteram coronam aureolam.
-26 Quatuor quoque circulos aureos præparabis, et pones eos in quatuor angulis ejusdem mensæ per singulos pedes.
-27 Subter coronam erunt circuli aurei, ut mittantur vectes per eos, et possit mensa portari.
-28 Ipsos quoque vectes facies de lignis setim, et circumdabis auro ad subvehendam mensam.
-29 Parabis et acetabula, ac phialas, thuribula, et cyathos, in quibus offerenda sunt libamina, ex auro purissimo.
-30 Et pones super mensam panes propositionis in conspectu meo semper.
-31 Facies et candelabrum ductile de auro mundissimo, hastile ejus, et calamos, scyphos, et sphærulas, ac lilia ex ipso procedentia.
-32 Sex calami egredientur de lateribus, tres ex uno latere, et tres ex altero.
-33 Tres scyphi quasi in nucis modum per calamos singulos, sphærulaque simul et lilium: et tres similiter scyphi instar nucis in calamo altero, sphærulaque simul et lilium; hoc erit opus sex calamorum, qui producendi sunt de hastili.
-34 In ipso autem candelabro erunt quatuor scyphi in nucis modum, sphærulæque per singulos, et lilia.
-35 Sphærulæ sub duobus calamis per tria loca, qui simul sex fiunt, procedentes de hastili uno.
-36 Et sphærulæ igitur et calami ex ipso erunt, universa ductilia de auro purissimo.
-37 Facies et lucernas septem, et pones eas super candelabrum, ut luceant ex adverso.
-38 Emunctora quoque, et ubi quæ emuncta sunt extinguantur, fiant de auro purissimo.
-39 Omne pondus candelabri cum universis vasis suis habebit talentum auri purissimi.
-40 Inspice, et fac secundum exemplar quod tibi in monte monstratum est.
+⸨lang:English⸩1 ⸨/lang⸩⸨sc⸩Locutusque⸨/sc⸩ est Dominus ad Moysen, dicens:
+⸨lang:English⸩2 ⸨/lang⸩Loquere filiis Israel, ut tollant mihi primitias, ab omni homine qui offeret ultroneus, accipietis eas.
+⸨lang:English⸩3 ⸨/lang⸩Hæc sunt autem quæ accipere debetis: aurum, et argentum, et æs,
+⸨lang:English⸩4 ⸨/lang⸩Hyacinthum et purpuram, coccumque bis tinctum, et byssum, pilos caprarum,
+⸨lang:English⸩5 ⸨/lang⸩Et pelles arietum rubricatas, pellesque ianthinas, et ligna setim:
+⸨lang:English⸩6 ⸨/lang⸩Oleum ad luminaria concinnanda: aromata in unguentum, et thymiamata boni odoris:
+⸨lang:English⸩7 ⸨/lang⸩Lapides onychinos, et gemmas ad ornandum ephod ac rationale.
+⸨lang:English⸩8 ⸨/lang⸩Facientque mihi sanctuarium, et habitabo in medio eorum:
+⸨lang:English⸩9 ⸨/lang⸩Juxta omnem similitudinem tabernaculi quod ostendam tibi, et omnium vasorum in cultum ejus: sicque facietis illud:
+⸨lang:English⸩10 ⸨/lang⸩Arcam de lignis setim compingite, cujus longitudo habeat duos et semis cubitos: latitudo, cubitum et dimidium: altitudo, cubitum similiter ac semissem.
+⸨lang:English⸩11 ⸨/lang⸩Et deaurabis eam auro mundissimo intus et foris: faciesque supra, coronam auream per circuitum:
+⸨lang:English⸩12 ⸨/lang⸩Et quatuor circulos aureos, quos pones per quatuor arcæ angulos: duo circuli sint in latere uno, et duo in altero.
+⸨lang:English⸩13 ⸨/lang⸩Facies quoque vectes de lignis setim, et operies eos auro.
+⸨lang:English⸩14 ⸨/lang⸩Inducesque per circulos qui sunt in arcæ lateribus, ut portetur in eis:
+⸨lang:English⸩15 ⸨/lang⸩Qui semper erunt in circulis, nec unquam extrahentur ab eis.
+⸨lang:English⸩16 ⸨/lang⸩Ponesque in arca testificationem quam dabo tibi.
+⸨lang:English⸩17 ⸨/lang⸩Facies et propitiatorium de auro mundissimo: duos cubitos et dimidium tenebit longitudo ejus, et cubitum ac semissem latitudo.
+⸨lang:English⸩18 ⸨/lang⸩Duos quoque cherubim aureos et productiles facies, ex utraque parte oraculi.
+⸨lang:English⸩19 ⸨/lang⸩Cherub unus sit in latere uno, et alter in altero.
+⸨lang:English⸩20 ⸨/lang⸩Utrumque latus propitiatorii tegant, expandentes alas et operientes oraculum, respiciantque se mutuo versis vultibus in propitiatorium quo operienda est arca,
+⸨lang:English⸩21 ⸨/lang⸩In qua pones testimonium quod dabo tibi.
+⸨lang:English⸩22 ⸨/lang⸩Inde præcipiam, et loquar ad te supra propitiatorium, ac de medio duorum cherubim, qui erunt super arcam testimonii, cuncta quæ mandabo per te filiis Israel.
+⸨lang:English⸩23 ⸨/lang⸩Facies et mensam de lignis setim, habentem duos cubitos longitudinis, et in latitudine cubitum, et in altitudine cubitum ac semissem.
+⸨lang:English⸩24 ⸨/lang⸩Et inaurabis eam auro purissimo: faciesque illi labium aureum per circuitum,
+⸨lang:English⸩25 ⸨/lang⸩Et ipsi labio coronam interrasilem altam quatuor digitis: et super illam, alteram coronam aureolam.
+⸨lang:English⸩26 ⸨/lang⸩Quatuor quoque circulos aureos præparabis, et pones eos in quatuor angulis ejusdem mensæ per singulos pedes.
+⸨lang:English⸩27 ⸨/lang⸩Subter coronam erunt circuli aurei, ut mittantur vectes per eos, et possit mensa portari.
+⸨lang:English⸩28 ⸨/lang⸩Ipsos quoque vectes facies de lignis setim, et circumdabis auro ad subvehendam mensam.
+⸨lang:English⸩29 ⸨/lang⸩Parabis et acetabula, ac phialas, thuribula, et cyathos, in quibus offerenda sunt libamina, ex auro purissimo.
+⸨lang:English⸩30 ⸨/lang⸩Et pones super mensam panes propositionis in conspectu meo semper.
+⸨lang:English⸩31 ⸨/lang⸩Facies et candelabrum ductile de auro mundissimo, hastile ejus, et calamos, scyphos, et sphærulas, ac lilia ex ipso procedentia.
+⸨lang:English⸩32 ⸨/lang⸩Sex calami egredientur de lateribus, tres ex uno latere, et tres ex altero.
+⸨lang:English⸩33 ⸨/lang⸩Tres scyphi quasi in nucis modum per calamos singulos, sphærulaque simul et lilium: et tres similiter scyphi instar nucis in calamo altero, sphærulaque simul et lilium; hoc erit opus sex calamorum, qui producendi sunt de hastili.
+⸨lang:English⸩34 ⸨/lang⸩In ipso autem candelabro erunt quatuor scyphi in nucis modum, sphærulæque per singulos, et lilia.
+⸨lang:English⸩35 ⸨/lang⸩Sphærulæ sub duobus calamis per tria loca, qui simul sex fiunt, procedentes de hastili uno.
+⸨lang:English⸩36 ⸨/lang⸩Et sphærulæ igitur et calami ex ipso erunt, universa ductilia de auro purissimo.
+⸨lang:English⸩37 ⸨/lang⸩Facies et lucernas septem, et pones eas super candelabrum, ut luceant ex adverso.
+⸨lang:English⸩38 ⸨/lang⸩Emunctora quoque, et ubi quæ emuncta sunt extinguantur, fiant de auro purissimo.
+⸨lang:English⸩39 ⸨/lang⸩Omne pondus candelabri cum universis vasis suis habebit talentum auri purissimi.
+⸨lang:English⸩40 ⸨/lang⸩Inspice, et fac secundum exemplar quod tibi in monte monstratum est.
