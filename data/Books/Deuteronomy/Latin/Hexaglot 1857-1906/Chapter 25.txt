@@ -1,21 +1,21 @@
 ⸨cen⸩CAPUT XXV⸼
 
-⸨lang:English⸩1⸨/lang⸩ ⸨sc⸩Si⸨/sc⸩ fuerit causa inter aliquos, et interpellaverint judices: quem justum esse perspexerint, illi justitiæ palmam dabunt: quem impium, condemnabunt impietatis.
-⸨lang:English⸩2⸨/lang⸩ Sin autem eum qui peccavit, dignum viderint plagis: prosternent, et coram se facient verberari. Pro mensura peccati erit et plagarum modus:
-⸨lang:English⸩3⸨/lang⸩ Ita duntaxat, ut quadragenarium numerum non excedant: ne fœde laceratus ante oculos tuos abeat frater tuus.
-⸨lang:English⸩4⸨/lang⸩ Non ligabis os bovis terentis in area fruges tuas.
-⸨lang:English⸩5⸨/lang⸩ Quando habitaverint fratres simul, et unus ex eis absque liberis mortuus fuerit, uxor defuncti non nubet alteri: sed accipiet eam frater ejus, et suscitabit semen fratris sui:
-⸨lang:English⸩6⸨/lang⸩ Et primogenitum ex ea filium nomine illius appellabit, ut non deleatur nomen ejus ex Israel.
-⸨lang:English⸩7⸨/lang⸩ Sin autem noluerit accipere uxorem fratris sui, quæ ei lege debetur, perget mulier ad portam civitatis, et interpellabit majores natu, dicetque: Non vult frater viri mei suscitare nomen fratris sui in Israel, nec me in conjugem sumere.
-⸨lang:English⸩8⸨/lang⸩ Statimque accersiri eum facient, et interrogabunt. Si responderit: Nolo eam uxorem accipere:
-⸨lang:English⸩9⸨/lang⸩ Accedet mulier ad eum coram senioribus, et tollet calceamentum de pede ejus, spuetque in faciem illius, et dicet: Sic fiet homini, qui non ædificat domum fratris sui.
-⸨lang:English⸩10⸨/lang⸩ Et vocabitur nomen illius in Israel, Domus discalceati.
-⸨lang:English⸩11⸨/lang⸩ Si habuerint inter se jurgium viri duo, et unus contra alterum rixari cœperit, volensque uxor alterius eruere virum suum de manu fortioris, miseritque manum, et apprehenderit verenda ejus:
-⸨lang:English⸩12⸨/lang⸩ Abscides manum illius, nec flecteris super eam ulla misericordia.
-⸨lang:English⸩13⸨/lang⸩ Non habebis in sacculo diversa pondera, majus et minus:
-⸨lang:English⸩14⸨/lang⸩ Nec erit in domo tua modius major et minor;
-⸨lang:English⸩15⸨/lang⸩ Pondus habebis justum et verum, et modius æqualis et verus erit tibi: ut multo vivas tempore super terram, quam Dominus Deus tuus dederit tibi;
-⸨lang:English⸩16⸨/lang⸩ Abominatur enim Dominus Deus tuus eum qui facit hæc, et aversatur omnem injustitiam.
-⸨lang:English⸩17⸨/lang⸩ Memento quæ fecerit tibi Amalec in via quando egrediebaris ex Ægypto:
-⸨lang:English⸩18⸨/lang⸩ Quomodo occurrerit tibi: et extremos agminis tui, qui lassi residebant, ceciderit, quando tu eras fame et labore confectus, et non timuerit Deum.
-⸨lang:English⸩19⸨/lang⸩ Cum ergo Dominus Deus tuus dederit tibi requiem, et subjecerit cunctas per circuitum nationes, in terra, quam tibi pollicitus est: delebis nomen ejus sub cælo. Cave ne obliviscaris.
+⸨lang:English⸩1 ⸨/lang⸩⸨sc⸩Si⸨/sc⸩ fuerit causa inter aliquos, et interpellaverint judices: quem justum esse perspexerint, illi justitiæ palmam dabunt: quem impium, condemnabunt impietatis.
+⸨lang:English⸩2 ⸨/lang⸩Sin autem eum qui peccavit, dignum viderint plagis: prosternent, et coram se facient verberari. Pro mensura peccati erit et plagarum modus:
+⸨lang:English⸩3 ⸨/lang⸩Ita duntaxat, ut quadragenarium numerum non excedant: ne fœde laceratus ante oculos tuos abeat frater tuus.
+⸨lang:English⸩4 ⸨/lang⸩Non ligabis os bovis terentis in area fruges tuas.
+⸨lang:English⸩5 ⸨/lang⸩Quando habitaverint fratres simul, et unus ex eis absque liberis mortuus fuerit, uxor defuncti non nubet alteri: sed accipiet eam frater ejus, et suscitabit semen fratris sui:
+⸨lang:English⸩6 ⸨/lang⸩Et primogenitum ex ea filium nomine illius appellabit, ut non deleatur nomen ejus ex Israel.
+⸨lang:English⸩7 ⸨/lang⸩Sin autem noluerit accipere uxorem fratris sui, quæ ei lege debetur, perget mulier ad portam civitatis, et interpellabit majores natu, dicetque: Non vult frater viri mei suscitare nomen fratris sui in Israel, nec me in conjugem sumere.
+⸨lang:English⸩8 ⸨/lang⸩Statimque accersiri eum facient, et interrogabunt. Si responderit: Nolo eam uxorem accipere:
+⸨lang:English⸩9 ⸨/lang⸩Accedet mulier ad eum coram senioribus, et tollet calceamentum de pede ejus, spuetque in faciem illius, et dicet: Sic fiet homini, qui non ædificat domum fratris sui.
+⸨lang:English⸩10 ⸨/lang⸩Et vocabitur nomen illius in Israel, Domus discalceati.
+⸨lang:English⸩11 ⸨/lang⸩Si habuerint inter se jurgium viri duo, et unus contra alterum rixari cœperit, volensque uxor alterius eruere virum suum de manu fortioris, miseritque manum, et apprehenderit verenda ejus:
+⸨lang:English⸩12 ⸨/lang⸩Abscides manum illius, nec flecteris super eam ulla misericordia.
+⸨lang:English⸩13 ⸨/lang⸩Non habebis in sacculo diversa pondera, majus et minus:
+⸨lang:English⸩14 ⸨/lang⸩Nec erit in domo tua modius major et minor;
+⸨lang:English⸩15 ⸨/lang⸩Pondus habebis justum et verum, et modius æqualis et verus erit tibi: ut multo vivas tempore super terram, quam Dominus Deus tuus dederit tibi;
+⸨lang:English⸩16 ⸨/lang⸩Abominatur enim Dominus Deus tuus eum qui facit hæc, et aversatur omnem injustitiam.
+⸨lang:English⸩17 ⸨/lang⸩Memento quæ fecerit tibi Amalec in via quando egrediebaris ex Ægypto:
+⸨lang:English⸩18 ⸨/lang⸩Quomodo occurrerit tibi: et extremos agminis tui, qui lassi residebant, ceciderit, quando tu eras fame et labore confectus, et non timuerit Deum.
+⸨lang:English⸩19 ⸨/lang⸩Cum ergo Dominus Deus tuus dederit tibi requiem, et subjecerit cunctas per circuitum nationes, in terra, quam tibi pollicitus est: delebis nomen ejus sub cælo. Cave ne obliviscaris.

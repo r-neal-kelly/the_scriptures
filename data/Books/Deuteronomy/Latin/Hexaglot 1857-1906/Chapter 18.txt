@@ -1,24 +1,24 @@
 ⸨cen⸩CAPUT XVIII⸼
 
-⸨lang:English⸩1⸨/lang⸩ ⸨sc⸩Non⸨/sc⸩ habebunt sacerdotes et Levitæ, et omnes qui de eadem tribu sunt, partem et hereditatem cum reliquo Israel, quia sacrificia Domini, et oblationes ejus comedent,
-⸨lang:English⸩2⸨/lang⸩ Et nihil aliud accipient de possessione fratrum suorum: Dominus enim ipse est hereditas eorum, sicut locutus est illis.
-⸨lang:English⸩3⸨/lang⸩ Hoc erit judicium sacerdotum a populo, et ab his qui offerunt victimas: sive bovem, sive ovem immolaverint, dabunt sacerdoti armum ac ventriculum:
-⸨lang:English⸩4⸨/lang⸩ Primitias frumenti, vini, et olei, et lanarum partem ex ovium tonsione.
-⸨lang:English⸩5⸨/lang⸩ Ipsum enim elegit Dominus Deus tuus de cunctis tribubus tuis, ut stet, et ministret nomini Domini ipse, et filii ejus in sempiternum.
-⸨lang:English⸩6⸨/lang⸩ Si exierit Levites ex una urbium tuarum ex omni Israel in qua habitat, et voluerit venire, desiderans locum quem elegerit Dominus,
-⸨lang:English⸩7⸨/lang⸩ Ministrabit in nomine Domini Dei sui, sicut omnes fratres ejus Levitæ, qui stabunt eo tempore coram Domino.
-⸨lang:English⸩8⸨/lang⸩ Partem ciborum eamdem accipiet, quam et ceteri: excepto eo, quod in urbe sua ex paterna ei successione debetur.
-⸨lang:English⸩9⸨/lang⸩ Quando ingressus fueris terram, quam Dominus Deus tuus dabit tibi, cave ne imitari velis abominationes illarum gentium;
-⸨lang:English⸩10⸨/lang⸩ Nec inveniatur in te qui lustret filium suum, aut filiam, ducens per ignem: aut qui ariolos sciscitetur, et observet somnia atque auguria, nec sit maleficus,
-⸨lang:English⸩11⸨/lang⸩ Nec incantator, nec qui pythones consulat, nec divinos, aut quærat a mortuis veritatem;
-⸨lang:English⸩12⸨/lang⸩ Omnia enim hæc abominatur Dominus, et propter istiusmodi scelera delebit eos in introitu tuo:
-⸨lang:English⸩13⸨/lang⸩ Perfectus eris, et absque macula cum Domino Deo tuo.
-⸨lang:English⸩14⸨/lang⸩ Gentes istæ, quarum possidebis terram, augures et divinos audiunt: tu autem a Domino Deo tuo aliter institutus es.
-⸨lang:English⸩15⸨/lang⸩ PROPHETAM de gente tua et de fratribus tuis sicut me, suscitabit tibi Dominus Deus tuus: ipsum audies,
-⸨lang:English⸩16⸨/lang⸩ Ut petisti a Domino Deo tuo in Horeb, quando concio congregata est, atque dixisti. Ultra non audiam vocem Domini Dei mei, et ignem hunc maximum amplius non videbo, ne moriar.
-⸨lang:English⸩17⸨/lang⸩ Et ait Dominus mihi: Bene omnia sunt locuti.
-⸨lang:English⸩18⸨/lang⸩ Prophetam suscitabo eis de medio fratrum suorum similem tui: et ponam verba mea in ore ejus, loqueturque ad eos omnia quæ præcepero illi.
-⸨lang:English⸩19⸨/lang⸩ Qui autem verba ejus, quæ loquetur in nomine meo, audire noluerit, ego ultor existam.
-⸨lang:English⸩20⸨/lang⸩ Propheta autem qui arrogantia depravatus voluerit loqui in nomine meo, quæ ego non præcepi illi ut diceret, aut ex nomine alienorum deorum, interficietur.
-⸨lang:English⸩21⸨/lang⸩ Quod si tacita cogitatione responderis: Quo modo possum intelligere verbum, quod Dominus non est locutus?
-⸨lang:English⸩22⸨/lang⸩ Hoc habebis signum: Quod in nomine Domini propheta ille prædixerit, et non evenerit: hoc Dominus non est locutus, sed per tumorem animi sui propheta confinxit: et idcirco non timebis eum.
+⸨lang:English⸩1 ⸨/lang⸩⸨sc⸩Non⸨/sc⸩ habebunt sacerdotes et Levitæ, et omnes qui de eadem tribu sunt, partem et hereditatem cum reliquo Israel, quia sacrificia Domini, et oblationes ejus comedent,
+⸨lang:English⸩2 ⸨/lang⸩Et nihil aliud accipient de possessione fratrum suorum: Dominus enim ipse est hereditas eorum, sicut locutus est illis.
+⸨lang:English⸩3 ⸨/lang⸩Hoc erit judicium sacerdotum a populo, et ab his qui offerunt victimas: sive bovem, sive ovem immolaverint, dabunt sacerdoti armum ac ventriculum:
+⸨lang:English⸩4 ⸨/lang⸩Primitias frumenti, vini, et olei, et lanarum partem ex ovium tonsione.
+⸨lang:English⸩5 ⸨/lang⸩Ipsum enim elegit Dominus Deus tuus de cunctis tribubus tuis, ut stet, et ministret nomini Domini ipse, et filii ejus in sempiternum.
+⸨lang:English⸩6 ⸨/lang⸩Si exierit Levites ex una urbium tuarum ex omni Israel in qua habitat, et voluerit venire, desiderans locum quem elegerit Dominus,
+⸨lang:English⸩7 ⸨/lang⸩Ministrabit in nomine Domini Dei sui, sicut omnes fratres ejus Levitæ, qui stabunt eo tempore coram Domino.
+⸨lang:English⸩8 ⸨/lang⸩Partem ciborum eamdem accipiet, quam et ceteri: excepto eo, quod in urbe sua ex paterna ei successione debetur.
+⸨lang:English⸩9 ⸨/lang⸩Quando ingressus fueris terram, quam Dominus Deus tuus dabit tibi, cave ne imitari velis abominationes illarum gentium;
+⸨lang:English⸩10 ⸨/lang⸩Nec inveniatur in te qui lustret filium suum, aut filiam, ducens per ignem: aut qui ariolos sciscitetur, et observet somnia atque auguria, nec sit maleficus,
+⸨lang:English⸩11 ⸨/lang⸩Nec incantator, nec qui pythones consulat, nec divinos, aut quærat a mortuis veritatem;
+⸨lang:English⸩12 ⸨/lang⸩Omnia enim hæc abominatur Dominus, et propter istiusmodi scelera delebit eos in introitu tuo:
+⸨lang:English⸩13 ⸨/lang⸩Perfectus eris, et absque macula cum Domino Deo tuo.
+⸨lang:English⸩14 ⸨/lang⸩Gentes istæ, quarum possidebis terram, augures et divinos audiunt: tu autem a Domino Deo tuo aliter institutus es.
+⸨lang:English⸩15 ⸨/lang⸩PROPHETAM de gente tua et de fratribus tuis sicut me, suscitabit tibi Dominus Deus tuus: ipsum audies,
+⸨lang:English⸩16 ⸨/lang⸩Ut petisti a Domino Deo tuo in Horeb, quando concio congregata est, atque dixisti. Ultra non audiam vocem Domini Dei mei, et ignem hunc maximum amplius non videbo, ne moriar.
+⸨lang:English⸩17 ⸨/lang⸩Et ait Dominus mihi: Bene omnia sunt locuti.
+⸨lang:English⸩18 ⸨/lang⸩Prophetam suscitabo eis de medio fratrum suorum similem tui: et ponam verba mea in ore ejus, loqueturque ad eos omnia quæ præcepero illi.
+⸨lang:English⸩19 ⸨/lang⸩Qui autem verba ejus, quæ loquetur in nomine meo, audire noluerit, ego ultor existam.
+⸨lang:English⸩20 ⸨/lang⸩Propheta autem qui arrogantia depravatus voluerit loqui in nomine meo, quæ ego non præcepi illi ut diceret, aut ex nomine alienorum deorum, interficietur.
+⸨lang:English⸩21 ⸨/lang⸩Quod si tacita cogitatione responderis: Quo modo possum intelligere verbum, quod Dominus non est locutus?
+⸨lang:English⸩22 ⸨/lang⸩Hoc habebis signum: Quod in nomine Domini propheta ille prædixerit, et non evenerit: hoc Dominus non est locutus, sed per tumorem animi sui propheta confinxit: et idcirco non timebis eum.

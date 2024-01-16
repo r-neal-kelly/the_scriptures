@@ -1,14 +1,14 @@
 ⸨cen⸩CAPUT XXXIV⸼
 
-⸨lang:English⸩1⸨/lang⸩ ⸨sc⸩Ascendit⸨/sc⸩ ergo Moyses de campestribus Moab super montem Nebo, in verticem Phasga contra Jericho: ostenditque ei Dominus omnem terram Galaad usque Dan,
-⸨lang:English⸩2⸨/lang⸩ Et universum Nephthali, terramque Ephraim et Manasse, et omnem terram Juda usque ad mare novissimum,
-⸨lang:English⸩3⸨/lang⸩ Et australem partem, et latitudinem campi Jericho civitatis palmarum usque Segor.
-⸨lang:English⸩4⸨/lang⸩ Dixitque Dominus ad eum: Hæc est terra, pro qua juravi Abraham, Isaac, et Jacob, dicens: Semini tuo dabo eam. Vidisti eam oculis tuis, et non transibis ad illam.
-⸨lang:English⸩5⸨/lang⸩ Mortuusque est ibi Moyses servus Domini, in terra Moab, jubente Domino:
-⸨lang:English⸩6⸨/lang⸩ Et sepelivit eum in valle terræ Moab contra Phogor: et non cognovit homo sepulchrum ejus usque in præsentem diem.
-⸨lang:English⸩7⸨/lang⸩ Moyses centum et viginti annorum erat quando mortuus est: non caligavit oculus ejus, nec dentes illius moti sunt.
-⸨lang:English⸩8⸨/lang⸩ Fleveruntque eum filii Israel in campestribus Moab triginta diebus: et completi sunt dies planctus lugentium Moysen.
-⸨lang:English⸩9⸨/lang⸩ Josue vero filius Nun repletus est Spiritu sapientiæ, quia Moyses posuit super eum manus suas. Et obedierunt ei filii Israel, feceruntque sicut præcepit Dominus Moysi.
-⸨lang:English⸩10⸨/lang⸩ Et non surrexit ultra propheta in Israel sicut Moyses, quem nosset Dominus facie ad faciem,
-⸨lang:English⸩11⸨/lang⸩ In omnibus signis atque portentis, quæ misit per eum, ut faceret in terra Ægypti Pharaoni, et omnibus servis ejus, universæque terræ illius,
-⸨lang:English⸩12⸨/lang⸩ Et cunctam manum robustam, magnaque mirabilia, quæ fecit Moyses coram universo Israel.
+⸨lang:English⸩1 ⸨/lang⸩⸨sc⸩Ascendit⸨/sc⸩ ergo Moyses de campestribus Moab super montem Nebo, in verticem Phasga contra Jericho: ostenditque ei Dominus omnem terram Galaad usque Dan,
+⸨lang:English⸩2 ⸨/lang⸩Et universum Nephthali, terramque Ephraim et Manasse, et omnem terram Juda usque ad mare novissimum,
+⸨lang:English⸩3 ⸨/lang⸩Et australem partem, et latitudinem campi Jericho civitatis palmarum usque Segor.
+⸨lang:English⸩4 ⸨/lang⸩Dixitque Dominus ad eum: Hæc est terra, pro qua juravi Abraham, Isaac, et Jacob, dicens: Semini tuo dabo eam. Vidisti eam oculis tuis, et non transibis ad illam.
+⸨lang:English⸩5 ⸨/lang⸩Mortuusque est ibi Moyses servus Domini, in terra Moab, jubente Domino:
+⸨lang:English⸩6 ⸨/lang⸩Et sepelivit eum in valle terræ Moab contra Phogor: et non cognovit homo sepulchrum ejus usque in præsentem diem.
+⸨lang:English⸩7 ⸨/lang⸩Moyses centum et viginti annorum erat quando mortuus est: non caligavit oculus ejus, nec dentes illius moti sunt.
+⸨lang:English⸩8 ⸨/lang⸩Fleveruntque eum filii Israel in campestribus Moab triginta diebus: et completi sunt dies planctus lugentium Moysen.
+⸨lang:English⸩9 ⸨/lang⸩Josue vero filius Nun repletus est Spiritu sapientiæ, quia Moyses posuit super eum manus suas. Et obedierunt ei filii Israel, feceruntque sicut præcepit Dominus Moysi.
+⸨lang:English⸩10 ⸨/lang⸩Et non surrexit ultra propheta in Israel sicut Moyses, quem nosset Dominus facie ad faciem,
+⸨lang:English⸩11 ⸨/lang⸩In omnibus signis atque portentis, quæ misit per eum, ut faceret in terra Ægypti Pharaoni, et omnibus servis ejus, universæque terræ illius,
+⸨lang:English⸩12 ⸨/lang⸩Et cunctam manum robustam, magnaque mirabilia, quæ fecit Moyses coram universo Israel.

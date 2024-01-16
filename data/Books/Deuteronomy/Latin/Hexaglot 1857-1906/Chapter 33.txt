@@ -1,31 +1,31 @@
 ⸨cen⸩CAPUT XXXIII⸼
 
-⸨lang:English⸩1⸨/lang⸩ ⸨sc⸩Hæc⸨/sc⸩ est benedictio, qua benedixit Moyses, homo Dei, filiis Israel ante mortem suam.
-⸨lang:English⸩2⸨/lang⸩ Et ait: Dominus de Sinai venit, et de Seir ortus est nobis: apparuit de monte Pharan, et cum eo sanctorum millia. In dextera ejus ignea lex.
-⸨lang:English⸩3⸨/lang⸩ Dilexit populos, omnes sancti in manu illius sunt: et qui appropinquant pedibus ejus, accipient de doctrina illius.
-⸨lang:English⸩4⸨/lang⸩ Legem præcepit nobis Moyses, hereditatem multitudinis Jacob.
-⸨lang:English⸩5⸨/lang⸩ Erit apud rectissimum rex, congregatis principibus populi cum tribubus Israel.
-⸨lang:English⸩6⸨/lang⸩ Vivat Ruben, et non moriatur, et sit parvus in numero.
-⸨lang:English⸩7⸨/lang⸩ Hæc est Judæ benedictio: Audi, Domine, vocem Judæ, et ad populum suum introduc eum: manus ejus pugnabunt pro eo, et adjutor illius contra adversarios ejus erit
-⸨lang:English⸩8⸨/lang⸩ Levi quoque ait: Perfectio tua, et doctrina tua viro sancto tuo, quem probasti in tentatione, et judicasti ad Aquas contradictionis.
-⸨lang:English⸩9⸨/lang⸩ Qui dixit patri suo, et matri suæ: Nescio vos; et fratribus suis: Ignoro vos: et nescierunt filios suos. Hi custodierunt eloquium tuum, et pactum tuum servaverunt,
-⸨lang:English⸩10⸨/lang⸩ Judicia tua o Jacob, et legem tuam o Israël: ponent thymiama in furore tuo, et holocaustum super altare tuum.
-⸨lang:English⸩11⸨/lang⸩ Benedic, Domine, fortitudini ejus, et opera manuum illius suscipe. Percute doras inimicorum ejus: et qui oderunt eum, non consurgant.
-⸨lang:English⸩12⸨/lang⸩ Et Benjamin ait: Amantissimus Domini habitabit confidenter in eo: quasi in thalamo tota die morabitur, et inter humeros illius requiescet.
-⸨lang:English⸩13⸨/lang⸩ Joseph quoque ait: De benedictione Domini terra ejus, de pomis cæli, et rore, atque abysso subjacente.
-⸨lang:English⸩14⸨/lang⸩ De pomis fructuum solis ac lunæ.
-⸨lang:English⸩15⸨/lang⸩ De vertice antiquorum montium, de pomis collium æternorum:
-⸨lang:English⸩16⸨/lang⸩ Et de frugibus terræ, et de plenitudine ejus. Benedictio illius qui apparuit in rubo, veniat super caput Joseph, et super verticem Nazaræi inter fratres suos.
-⸨lang:English⸩17⸨/lang⸩ Quasi primogeniti tauri pulchritudo ejus, cornua rhinocerotis cornua illius: in ipsis ventilabit gentes usque ad terminos terræ; hæ sunt multitudines Ephraim: et hæc millia Manasse.
-⸨lang:English⸩18⸨/lang⸩ Et Zabulon ait: Lætare Zabulon in exitu tuo, et Issachar in tabernaculis tuis.
-⸨lang:English⸩19⸨/lang⸩ Populos vocabunt ad montem: ibi immolabunt victimas justitiæ. Qui inundationem maris quasi lac sugent, et thesauros absconditos arenarum.
-⸨lang:English⸩20⸨/lang⸩ Et Gad ait: Benedictus in latitudine Gad: quasi leo requievit, cepitque brachium et verticem.
-⸨lang:English⸩21⸨/lang⸩ Et vidit principatum suum, quod in parte sua doctor esset repositus: qui fuit cum principibus populi, et fecit justitias Domini, et judicium suum cum Israel.
-⸨lang:English⸩22⸨/lang⸩ Dan quoque ait: Dan catulus leonis, fluet largiter de Basan.
-⸨lang:English⸩23⸨/lang⸩ Et Nephthali dixit: Nephthali abundantia perfruetur, et plenus erit benedictionibus Domini: mare et meridiem possidebit.
-⸨lang:English⸩24⸨/lang⸩ Aser quoque ait: Benedictus in filiis Aser, sit placens fratribus suis, et tingat in oleo pedem suum.
-⸨lang:English⸩25⸨/lang⸩ Ferrum et æs calceamentum ejus. Sicut dies juventutis tuæ, ita et senectus tua.
-⸨lang:English⸩26⸨/lang⸩ Non est deus alius ut Deus rectissimi: ascensor cœli auxiliator tuus. Magnificentia ejus discurrunt nubes.
-⸨lang:English⸩27⸨/lang⸩ Habitaculum ejus sursum, et subter brachia sempiterna: ejiciet a facie tua inimicum, dicetque: Conterere.
-⸨lang:English⸩28⸨/lang⸩ Habitabit Israel confidenter, et solus. Oculus Jacob in terra frumenti et vini, cælique caligabunt rore.
-⸨lang:English⸩29⸨/lang⸩ Beatus es tu Israel: quisquis similis tui, popule, qui salvaris in Domino? scutum auxilii tui, et gladius gloriæ tuæ: negabunt te inimici tui, et tu eorum colla calcabis.
+⸨lang:English⸩1 ⸨/lang⸩⸨sc⸩Hæc⸨/sc⸩ est benedictio, qua benedixit Moyses, homo Dei, filiis Israel ante mortem suam.
+⸨lang:English⸩2 ⸨/lang⸩Et ait: Dominus de Sinai venit, et de Seir ortus est nobis: apparuit de monte Pharan, et cum eo sanctorum millia. In dextera ejus ignea lex.
+⸨lang:English⸩3 ⸨/lang⸩Dilexit populos, omnes sancti in manu illius sunt: et qui appropinquant pedibus ejus, accipient de doctrina illius.
+⸨lang:English⸩4 ⸨/lang⸩Legem præcepit nobis Moyses, hereditatem multitudinis Jacob.
+⸨lang:English⸩5 ⸨/lang⸩Erit apud rectissimum rex, congregatis principibus populi cum tribubus Israel.
+⸨lang:English⸩6 ⸨/lang⸩Vivat Ruben, et non moriatur, et sit parvus in numero.
+⸨lang:English⸩7 ⸨/lang⸩Hæc est Judæ benedictio: Audi, Domine, vocem Judæ, et ad populum suum introduc eum: manus ejus pugnabunt pro eo, et adjutor illius contra adversarios ejus erit
+⸨lang:English⸩8 ⸨/lang⸩Levi quoque ait: Perfectio tua, et doctrina tua viro sancto tuo, quem probasti in tentatione, et judicasti ad Aquas contradictionis.
+⸨lang:English⸩9 ⸨/lang⸩Qui dixit patri suo, et matri suæ: Nescio vos; et fratribus suis: Ignoro vos: et nescierunt filios suos. Hi custodierunt eloquium tuum, et pactum tuum servaverunt,
+⸨lang:English⸩10 ⸨/lang⸩Judicia tua o Jacob, et legem tuam o Israël: ponent thymiama in furore tuo, et holocaustum super altare tuum.
+⸨lang:English⸩11 ⸨/lang⸩Benedic, Domine, fortitudini ejus, et opera manuum illius suscipe. Percute doras inimicorum ejus: et qui oderunt eum, non consurgant.
+⸨lang:English⸩12 ⸨/lang⸩Et Benjamin ait: Amantissimus Domini habitabit confidenter in eo: quasi in thalamo tota die morabitur, et inter humeros illius requiescet.
+⸨lang:English⸩13 ⸨/lang⸩Joseph quoque ait: De benedictione Domini terra ejus, de pomis cæli, et rore, atque abysso subjacente.
+⸨lang:English⸩14 ⸨/lang⸩De pomis fructuum solis ac lunæ.
+⸨lang:English⸩15 ⸨/lang⸩De vertice antiquorum montium, de pomis collium æternorum:
+⸨lang:English⸩16 ⸨/lang⸩Et de frugibus terræ, et de plenitudine ejus. Benedictio illius qui apparuit in rubo, veniat super caput Joseph, et super verticem Nazaræi inter fratres suos.
+⸨lang:English⸩17 ⸨/lang⸩Quasi primogeniti tauri pulchritudo ejus, cornua rhinocerotis cornua illius: in ipsis ventilabit gentes usque ad terminos terræ; hæ sunt multitudines Ephraim: et hæc millia Manasse.
+⸨lang:English⸩18 ⸨/lang⸩Et Zabulon ait: Lætare Zabulon in exitu tuo, et Issachar in tabernaculis tuis.
+⸨lang:English⸩19 ⸨/lang⸩Populos vocabunt ad montem: ibi immolabunt victimas justitiæ. Qui inundationem maris quasi lac sugent, et thesauros absconditos arenarum.
+⸨lang:English⸩20 ⸨/lang⸩Et Gad ait: Benedictus in latitudine Gad: quasi leo requievit, cepitque brachium et verticem.
+⸨lang:English⸩21 ⸨/lang⸩Et vidit principatum suum, quod in parte sua doctor esset repositus: qui fuit cum principibus populi, et fecit justitias Domini, et judicium suum cum Israel.
+⸨lang:English⸩22 ⸨/lang⸩Dan quoque ait: Dan catulus leonis, fluet largiter de Basan.
+⸨lang:English⸩23 ⸨/lang⸩Et Nephthali dixit: Nephthali abundantia perfruetur, et plenus erit benedictionibus Domini: mare et meridiem possidebit.
+⸨lang:English⸩24 ⸨/lang⸩Aser quoque ait: Benedictus in filiis Aser, sit placens fratribus suis, et tingat in oleo pedem suum.
+⸨lang:English⸩25 ⸨/lang⸩Ferrum et æs calceamentum ejus. Sicut dies juventutis tuæ, ita et senectus tua.
+⸨lang:English⸩26 ⸨/lang⸩Non est deus alius ut Deus rectissimi: ascensor cœli auxiliator tuus. Magnificentia ejus discurrunt nubes.
+⸨lang:English⸩27 ⸨/lang⸩Habitaculum ejus sursum, et subter brachia sempiterna: ejiciet a facie tua inimicum, dicetque: Conterere.
+⸨lang:English⸩28 ⸨/lang⸩Habitabit Israel confidenter, et solus. Oculus Jacob in terra frumenti et vini, cælique caligabunt rore.
+⸨lang:English⸩29 ⸨/lang⸩Beatus es tu Israel: quisquis similis tui, popule, qui salvaris in Domino? scutum auxilii tui, et gladius gloriæ tuæ: negabunt te inimici tui, et tu eorum colla calcabis.

@@ -1,28 +1,28 @@
 ⸨cen⸩CAPUT VII⸼
 
-⸨lang:English⸩1⸨/lang⸩ ⸨sc⸩Cum⸨/sc⸩ introduxerit te Dominus Deus tuus in terram, quam possessurus ingrederis, et deleverit gentes multas coram te, Hethæum, et Gergezæum, et Amorrhæum, Chananæum, et Pherezæum, et Hevæum, et Jebusæum, septem gentes multo majoris numeri quam tu es, et robustiores te:
-⸨lang:English⸩2⸨/lang⸩ Tradideritque eas Dominus Deus tuus tibi, percuties eas usque ad internecionem. Non inibis cum eis fœdus, nec misereberis earum,
-⸨lang:English⸩3⸨/lang⸩ Neque sociabis cum eis conjugia. Filiam tuam non dabis filio ejus, nec filiam illius accipies filio tuo:
-⸨lang:English⸩4⸨/lang⸩ Quia seducet filium tuum, ne sequatur me, et ut magis serviat diis alienis: irasceturque furor Domini, et delebit te cito.
-⸨lang:English⸩5⸨/lang⸩ Quin potius hæc facietis eis: Aras eorum subvertite, et confringite statuas, lucosque succidite, et sculptilia comburite.
-⸨lang:English⸩6⸨/lang⸩ Quia populus sanctus es Domino Deo tuo. Te elegit Dominus Deus tuus, ut sis ei populus peculiaris de cunctis populis, qui sunt super terram.
-⸨lang:English⸩7⸨/lang⸩ Non quia cunctas gentes numero vincebatis, vobis junctus est Dominus, et elegit vos, cum omnibus sitis populis pauciores:
-⸨lang:English⸩8⸨/lang⸩ Sed quia dilexit vos Dominus, et custodivit juramentum, quod juravit patribus vestris: eduxitque vos in manu forti, et redemit de domo servitutis, de manu Pharaonis regis Ægypti.
-⸨lang:English⸩9⸨/lang⸩ Et scies, quia Dominus Deus tuus, ipse est Deus fortis et fidelis, custodiens pactum et misericordiam diligentibus se, et his qui custodiunt præcepta ejus, in mille generationes:
-⸨lang:English⸩10⸨/lang⸩ Et reddens odientibus se statim, ita ut disperdat eos, et ultra non differat, protinus eis restituens quod merentur.
-⸨lang:English⸩11⸨/lang⸩ Custodi ergo præcepta et ceremonias atque judicia, quæ ego mando tibi hodie ut facias.
-⸨lang:English⸩12⸨/lang⸩ Si postquam audieris hæc judicia, custodieris ea et feceris, custodiet et Dominus Deus tuus pactum tibi, et misericordiam quam juravit patribus tuis:
-⸨lang:English⸩13⸨/lang⸩ Et diliget te ac multiplicabit, benedicetque fructui ventris tui, et fructui terræ tuæ, frumento tuo, atque vindemiæ, oleo, et armentis, gregibus ovium tuarum super terram, pro qua juravit patribus tuis ut daret eam tibi.
-⸨lang:English⸩14⸨/lang⸩ Benedictus eris inter omnes populos. Non erit apud te sterilis utriusque sexus, tam in hominibus quam in gregibus tuis.
-⸨lang:English⸩15⸨/lang⸩ Auferet Dominus a te omnem languorem: et infirmitates Ægypti pessimas, quas novisti, non inferet tibi, sed cunctis hostibus tuis.
-⸨lang:English⸩16⸨/lang⸩ Devorabis omnes populos quos Dominus Deus tuus daturus est tibi. Non parcet eis oculus tuus, nec servies diis eorum, ne sint in ruinam tui.
-⸨lang:English⸩17⸨/lang⸩ Si dixeris in corde tuo: Plures sunt gentes istæ quam ego, quomodo potero delere eas?
-⸨lang:English⸩18⸨/lang⸩ Noli metuere, sed recordare quæ fecerit Dominus Deus tuus Pharaoni, et cunctis Ægyptiis,
-⸨lang:English⸩19⸨/lang⸩ Plagas maximas, quas viderunt oculi tui, et signa atque portenta, manumque robustam, et extentum brachium, ut educeret te Dominus Deus tuus; sic faciet cunctis populis, quos metuis.
-⸨lang:English⸩20⸨/lang⸩ Insuper et crabrones mittet Dominus Deus tuus in eos, donec deleat omnes atque disperdat qui te fugerint, et latere potuerint.
-⸨lang:English⸩21⸨/lang⸩ Non timebis eos, quia Dominus Deus tuus in medio tui est, Deus magnus et terribilis:
-⸨lang:English⸩22⸨/lang⸩ Ipse consumet nationes has in conspectu tuo paulatim atque per partes. Non poteris eas delere pariter: ne forte multiplicentur contra te bestiæ terræ.
-⸨lang:English⸩23⸨/lang⸩ Dabitque eos Dominus Deus tuus in conspectu tuo: et interficiet illos donec penitus deleantur.
-⸨lang:English⸩24⸨/lang⸩ Tradetque reges eorum in manus tuas, et disperdes nomina eorum sub cælo: nullus poterit resistere tibi, donec conteras eos.
-⸨lang:English⸩25⸨/lang⸩ Sculptilia eorum igne combures: non concupisces argentum et aurum, de quibus facta sunt, neque assumes ex eis tibi quidquam, ne offendas, propterea quia abominatio est Domini Dei tui.
-⸨lang:English⸩26⸨/lang⸩ Nec inferes quippiam ex idolo in domum tuam, ne fias anathema, sicut et illud est. Quasi spurcitiam detestaberis, et velut inquinamentum ac sordes abominationi habebis, quia anathema est.
+⸨lang:English⸩1 ⸨/lang⸩⸨sc⸩Cum⸨/sc⸩ introduxerit te Dominus Deus tuus in terram, quam possessurus ingrederis, et deleverit gentes multas coram te, Hethæum, et Gergezæum, et Amorrhæum, Chananæum, et Pherezæum, et Hevæum, et Jebusæum, septem gentes multo majoris numeri quam tu es, et robustiores te:
+⸨lang:English⸩2 ⸨/lang⸩Tradideritque eas Dominus Deus tuus tibi, percuties eas usque ad internecionem. Non inibis cum eis fœdus, nec misereberis earum,
+⸨lang:English⸩3 ⸨/lang⸩Neque sociabis cum eis conjugia. Filiam tuam non dabis filio ejus, nec filiam illius accipies filio tuo:
+⸨lang:English⸩4 ⸨/lang⸩Quia seducet filium tuum, ne sequatur me, et ut magis serviat diis alienis: irasceturque furor Domini, et delebit te cito.
+⸨lang:English⸩5 ⸨/lang⸩Quin potius hæc facietis eis: Aras eorum subvertite, et confringite statuas, lucosque succidite, et sculptilia comburite.
+⸨lang:English⸩6 ⸨/lang⸩Quia populus sanctus es Domino Deo tuo. Te elegit Dominus Deus tuus, ut sis ei populus peculiaris de cunctis populis, qui sunt super terram.
+⸨lang:English⸩7 ⸨/lang⸩Non quia cunctas gentes numero vincebatis, vobis junctus est Dominus, et elegit vos, cum omnibus sitis populis pauciores:
+⸨lang:English⸩8 ⸨/lang⸩Sed quia dilexit vos Dominus, et custodivit juramentum, quod juravit patribus vestris: eduxitque vos in manu forti, et redemit de domo servitutis, de manu Pharaonis regis Ægypti.
+⸨lang:English⸩9 ⸨/lang⸩Et scies, quia Dominus Deus tuus, ipse est Deus fortis et fidelis, custodiens pactum et misericordiam diligentibus se, et his qui custodiunt præcepta ejus, in mille generationes:
+⸨lang:English⸩10 ⸨/lang⸩Et reddens odientibus se statim, ita ut disperdat eos, et ultra non differat, protinus eis restituens quod merentur.
+⸨lang:English⸩11 ⸨/lang⸩Custodi ergo præcepta et ceremonias atque judicia, quæ ego mando tibi hodie ut facias.
+⸨lang:English⸩12 ⸨/lang⸩Si postquam audieris hæc judicia, custodieris ea et feceris, custodiet et Dominus Deus tuus pactum tibi, et misericordiam quam juravit patribus tuis:
+⸨lang:English⸩13 ⸨/lang⸩Et diliget te ac multiplicabit, benedicetque fructui ventris tui, et fructui terræ tuæ, frumento tuo, atque vindemiæ, oleo, et armentis, gregibus ovium tuarum super terram, pro qua juravit patribus tuis ut daret eam tibi.
+⸨lang:English⸩14 ⸨/lang⸩Benedictus eris inter omnes populos. Non erit apud te sterilis utriusque sexus, tam in hominibus quam in gregibus tuis.
+⸨lang:English⸩15 ⸨/lang⸩Auferet Dominus a te omnem languorem: et infirmitates Ægypti pessimas, quas novisti, non inferet tibi, sed cunctis hostibus tuis.
+⸨lang:English⸩16 ⸨/lang⸩Devorabis omnes populos quos Dominus Deus tuus daturus est tibi. Non parcet eis oculus tuus, nec servies diis eorum, ne sint in ruinam tui.
+⸨lang:English⸩17 ⸨/lang⸩Si dixeris in corde tuo: Plures sunt gentes istæ quam ego, quomodo potero delere eas?
+⸨lang:English⸩18 ⸨/lang⸩Noli metuere, sed recordare quæ fecerit Dominus Deus tuus Pharaoni, et cunctis Ægyptiis,
+⸨lang:English⸩19 ⸨/lang⸩Plagas maximas, quas viderunt oculi tui, et signa atque portenta, manumque robustam, et extentum brachium, ut educeret te Dominus Deus tuus; sic faciet cunctis populis, quos metuis.
+⸨lang:English⸩20 ⸨/lang⸩Insuper et crabrones mittet Dominus Deus tuus in eos, donec deleat omnes atque disperdat qui te fugerint, et latere potuerint.
+⸨lang:English⸩21 ⸨/lang⸩Non timebis eos, quia Dominus Deus tuus in medio tui est, Deus magnus et terribilis:
+⸨lang:English⸩22 ⸨/lang⸩Ipse consumet nationes has in conspectu tuo paulatim atque per partes. Non poteris eas delere pariter: ne forte multiplicentur contra te bestiæ terræ.
+⸨lang:English⸩23 ⸨/lang⸩Dabitque eos Dominus Deus tuus in conspectu tuo: et interficiet illos donec penitus deleantur.
+⸨lang:English⸩24 ⸨/lang⸩Tradetque reges eorum in manus tuas, et disperdes nomina eorum sub cælo: nullus poterit resistere tibi, donec conteras eos.
+⸨lang:English⸩25 ⸨/lang⸩Sculptilia eorum igne combures: non concupisces argentum et aurum, de quibus facta sunt, neque assumes ex eis tibi quidquam, ne offendas, propterea quia abominatio est Domini Dei tui.
+⸨lang:English⸩26 ⸨/lang⸩Nec inferes quippiam ex idolo in domum tuam, ne fias anathema, sicut et illud est. Quasi spurcitiam detestaberis, et velut inquinamentum ac sordes abominationi habebis, quia anathema est.

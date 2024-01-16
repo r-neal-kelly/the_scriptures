@@ -1,25 +1,25 @@
 ⸨cen⸩CAPUT XV⸼
 
-⸨lang:English⸩1⸨/lang⸩ ⸨sc⸩Septimo⸨/sc⸩ anno facies remissionem,
-⸨lang:English⸩2⸨/lang⸩ Quæ hoc ordine celebrabitur. Cui debetur aliquid ab amico vel proximo ac fratre suo, repetere non poterit, quia annus remissionis est Domini.
-⸨lang:English⸩3⸨/lang⸩ A peregrino et advena exiges: civem et propinquum repetendi non habebis potestatem.
-⸨lang:English⸩4⸨/lang⸩ Et omnino indigens et mendicus non erit inter vos: ut benedicat tibi Dominus Deus tuus in terra, quam traditurus est tibi in possessionem.
-⸨lang:English⸩5⸨/lang⸩ Si tamen audieris vocem Domini Dei tui, et custodieris universa quæ jussit, et quæ ego hodie præcipio tibi, benedicet tibi, ut pollicitus est.
-⸨lang:English⸩6⸨/lang⸩ Fœnerabis gentibus multis, et ipse a nullo accipies mutuum. Dominaberis nationibus plurimis, et tui nemo dominabitur.
-⸨lang:English⸩7⸨/lang⸩ Si unus de fratribus tuis, qui morantur intra portas civitatis tuæ, in terra quam Dominus Deus tuus daturus est tibi, ad paupertatem venerit: non obdurabis cor tuum, nec contrahes manum,
-⸨lang:English⸩8⸨/lang⸩ Sed aperies eam pauperi, et dabis mutuum, quo eum indigere perspexeris.
-⸨lang:English⸩9⸨/lang⸩ Cave ne forte subrepat tibi impia cogitatio, et dicas in corde tuo: Appropinquat septimus annus remissionis; et avertas oculos tuos a paupere fratre tuo, nolens ei quod postulat mutuum commodare: ne clamet contra te ad Dominum, et fiat tibi in peccatum.
-⸨lang:English⸩10⸨/lang⸩ Sed dabis ei: nec ages quippiam callide in ejus necessitatibus sublevandis: ut benedicat tibi Dominus Deus tuus in omni tempore, et in cunctis ad quæ manum miseris.
-⸨lang:English⸩11⸨/lang⸩ Non deerunt pauperes in terra habitationis tuæ: idcirco ego præcipio tibi, ut aperias manum fratri tuo egeno et pauperi, qui tecum versatur in terra.
-⸨lang:English⸩12⸨/lang⸩ Cum tibi venditus fuerit frater tuus Hebræus, aut Hebræa, et sex annis servierit tibi, in septimo anno dimittes eum liberum:
-⸨lang:English⸩13⸨/lang⸩ Et quem libertate donaveris, nequaquam vacuum abire patieris:
-⸨lang:English⸩14⸨/lang⸩ Sed dabis viaticum de gregibus, et de area, et torculari tuo, quibus Dominus Deus tuus benedixerit tibi.
-⸨lang:English⸩15⸨/lang⸩ Memento quod et ipse servieris in terra Ægypti, et liberaverit te Dominus Deus tuus, et idcirco ego nunc præcipio tibi.
-⸨lang:English⸩16⸨/lang⸩ Sin autem dixerit: Nolo egredi: eo quod diligat te, et domum tuam, et bene sibi apud te esse sentiat:
-⸨lang:English⸩17⸨/lang⸩ Assumes subulam, et perforabis aurem ejus in janua domus tuæ, et serviet tibi usque in æternum: ancillæ quoque similiter facies.
-⸨lang:English⸩18⸨/lang⸩ Non avertas ab eis oculos tuos, quando dimiseris eos liberos: quoniam juxta mercedem mercenarii per sex annos servivit tibi: ut benedicat tibi Dominus Deus tuus in cunctis operibus quæ agis.
-⸨lang:English⸩19⸨/lang⸩ De primogenitis, quæ nascuntur in armentis, et in ovibus tuis, quidquid est sexus masculini, sanctificabis Domino Deo tuo. Non operaberis in primogenito bovis, et non tondebis primogenita ovium.
-⸨lang:English⸩20⸨/lang⸩ In conspectu Domini Dei tui comedes ea per annos singulos, in loco quem elegerit Dominus, tu et domus tua.
-⸨lang:English⸩21⸨/lang⸩ Sin autem habuerit maculam, vel claudum fuerit, vel cæcum, aut in aliqua parte deforme vel debile, non immolabitur Domino Deo tuo:
-⸨lang:English⸩22⸨/lang⸩ Sed intra portas urbis tuæ comedes illud: tam mundus quam immundus similiter vescentur eis, quasi caprea et cervo.
-⸨lang:English⸩23⸨/lang⸩ Hoc solum observabis, ut sanguinem eorum non comedas, sed effundes in terram quasi aquam.
+⸨lang:English⸩1 ⸨/lang⸩⸨sc⸩Septimo⸨/sc⸩ anno facies remissionem,
+⸨lang:English⸩2 ⸨/lang⸩Quæ hoc ordine celebrabitur. Cui debetur aliquid ab amico vel proximo ac fratre suo, repetere non poterit, quia annus remissionis est Domini.
+⸨lang:English⸩3 ⸨/lang⸩A peregrino et advena exiges: civem et propinquum repetendi non habebis potestatem.
+⸨lang:English⸩4 ⸨/lang⸩Et omnino indigens et mendicus non erit inter vos: ut benedicat tibi Dominus Deus tuus in terra, quam traditurus est tibi in possessionem.
+⸨lang:English⸩5 ⸨/lang⸩Si tamen audieris vocem Domini Dei tui, et custodieris universa quæ jussit, et quæ ego hodie præcipio tibi, benedicet tibi, ut pollicitus est.
+⸨lang:English⸩6 ⸨/lang⸩Fœnerabis gentibus multis, et ipse a nullo accipies mutuum. Dominaberis nationibus plurimis, et tui nemo dominabitur.
+⸨lang:English⸩7 ⸨/lang⸩Si unus de fratribus tuis, qui morantur intra portas civitatis tuæ, in terra quam Dominus Deus tuus daturus est tibi, ad paupertatem venerit: non obdurabis cor tuum, nec contrahes manum,
+⸨lang:English⸩8 ⸨/lang⸩Sed aperies eam pauperi, et dabis mutuum, quo eum indigere perspexeris.
+⸨lang:English⸩9 ⸨/lang⸩Cave ne forte subrepat tibi impia cogitatio, et dicas in corde tuo: Appropinquat septimus annus remissionis; et avertas oculos tuos a paupere fratre tuo, nolens ei quod postulat mutuum commodare: ne clamet contra te ad Dominum, et fiat tibi in peccatum.
+⸨lang:English⸩10 ⸨/lang⸩Sed dabis ei: nec ages quippiam callide in ejus necessitatibus sublevandis: ut benedicat tibi Dominus Deus tuus in omni tempore, et in cunctis ad quæ manum miseris.
+⸨lang:English⸩11 ⸨/lang⸩Non deerunt pauperes in terra habitationis tuæ: idcirco ego præcipio tibi, ut aperias manum fratri tuo egeno et pauperi, qui tecum versatur in terra.
+⸨lang:English⸩12 ⸨/lang⸩Cum tibi venditus fuerit frater tuus Hebræus, aut Hebræa, et sex annis servierit tibi, in septimo anno dimittes eum liberum:
+⸨lang:English⸩13 ⸨/lang⸩Et quem libertate donaveris, nequaquam vacuum abire patieris:
+⸨lang:English⸩14 ⸨/lang⸩Sed dabis viaticum de gregibus, et de area, et torculari tuo, quibus Dominus Deus tuus benedixerit tibi.
+⸨lang:English⸩15 ⸨/lang⸩Memento quod et ipse servieris in terra Ægypti, et liberaverit te Dominus Deus tuus, et idcirco ego nunc præcipio tibi.
+⸨lang:English⸩16 ⸨/lang⸩Sin autem dixerit: Nolo egredi: eo quod diligat te, et domum tuam, et bene sibi apud te esse sentiat:
+⸨lang:English⸩17 ⸨/lang⸩Assumes subulam, et perforabis aurem ejus in janua domus tuæ, et serviet tibi usque in æternum: ancillæ quoque similiter facies.
+⸨lang:English⸩18 ⸨/lang⸩Non avertas ab eis oculos tuos, quando dimiseris eos liberos: quoniam juxta mercedem mercenarii per sex annos servivit tibi: ut benedicat tibi Dominus Deus tuus in cunctis operibus quæ agis.
+⸨lang:English⸩19 ⸨/lang⸩De primogenitis, quæ nascuntur in armentis, et in ovibus tuis, quidquid est sexus masculini, sanctificabis Domino Deo tuo. Non operaberis in primogenito bovis, et non tondebis primogenita ovium.
+⸨lang:English⸩20 ⸨/lang⸩In conspectu Domini Dei tui comedes ea per annos singulos, in loco quem elegerit Dominus, tu et domus tua.
+⸨lang:English⸩21 ⸨/lang⸩Sin autem habuerit maculam, vel claudum fuerit, vel cæcum, aut in aliqua parte deforme vel debile, non immolabitur Domino Deo tuo:
+⸨lang:English⸩22 ⸨/lang⸩Sed intra portas urbis tuæ comedes illud: tam mundus quam immundus similiter vescentur eis, quasi caprea et cervo.
+⸨lang:English⸩23 ⸨/lang⸩Hoc solum observabis, ut sanguinem eorum non comedas, sed effundes in terram quasi aquam.
