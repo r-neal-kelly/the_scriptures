@@ -1,33 +1,33 @@
 ⸨cen⸩CAPUT XLVII⸼
 
-1 ⸨sc⸩Ingressus⸨/sc⸩ ergo Joseph nuntiavit Pharaoni, dicens: Pater meus et fratres, oves eorum et armenta, et cuncta quæ possident, venerunt de terra Chanaan: et ecce consistunt in terra Gessen.
-2 Extremos quoque fratrum suorum quinque viros constituit coram rege:
-3 Quos ille interrogavit: Quid habetis operis? Responderunt: Pastores ovium sumus servi tui, et nos, et patres nostri.
-4 Ad peregrinandum in terra tua venimus: quoniam non est herba gregibus servorum tuorum, ingravescente fame in terra Chanaan: petimusque ut esse nos jubeas servos tuos in terra Gessen.
-5 Dixit itaque rex ad Joseph: Pater tuus et fratres tui venerunt ad te.
-6 Terra Ægypti in conspectu tuo est: in optimo loco fac eos habitare, et trade eis terram Gessen. Quod si nosti in eis esse viros industrios, constitue illos magistros pecorum meorum.
-7 Post hæc introduxit Joseph patrem suum ad regem, et statuit eum coram eo: qui benedicens illi,
-8 Et interrogatus ab eo: Quot sunt dies annorum vitæ tuæ?
-9 Respondit: Dies peregrinationis meæ centum triginta annorum sunt, parvi et mali, et non pervenerunt usque ad dies patrum meorum quibus peregrinati sunt.
-10 Et benedicto rege, egressus est foras.
-11 Joseph vero patri et fratribus suis dedit possessionem in Ægypto in optimo terræ loco, Ramesses, ut præceperat Pharao.
-12 Et alebat eos, omnemque domum patris sui, præbens cibaria singulis.
-13 In toto enim orbe panis deerat, et oppresserat fames terram, maxime Ægypti et Chanaan.
-14 E quibus omnem pecuniam congregavit pro venditione frumenti, et intulit eam in ærarium regis.
-15 Cumque defecisset emptoribus pretium, venit cuncta Ægyptus ad Joseph, dicens: Da nobis panes: quare morimur coram te, deficiente pecunia?
-16 Quibus ille respondit: Adducite pecora vestra, et dabo vobis pro eis cibos, si pretium non habetis.
-17 Quæ cum adduxissent, dedit eis alimenta pro equis, et ovibus, et bobus, et asinis: sustentavitque eos illo anno pro commutatione pecorum.
-18 Venerunt quoque anno secundo, et dixerunt ei: Non celabimus dominum nostrum quod deficiente pecunia, pecora simul defecerunt: nec clam te est, quod absque corporibus et terra nihil habeamus.
-19 Cur ergo moriemur te vidente? et nos et terra nostra tui erimus: eme nos in servitutem regiam, et præbe semina, ne pereunte cultore redigatur terra in solitudinem.
-20 Emit igitur Joseph omnem terram Ægypti, vendentibus singulis possessiones suas præ magnitudine famis. Subjecitque eam Pharaoni,
-21 Et cunctos populos ejus, a novissimis terminis Ægypti usque ad extremos fines ejus,
-22 Præter terram sacerdotum, quæ a rege tradita fuerat eis: quibus et statuta cibaria ex horreis publicis præhebantur, et idcirco non sunt compulsi vendere possessiones suas.
-23 Dixit ergo Joseph ad populos: En, ut cernitis, et vos et terram vestram Pharao possidet: accipite semina, et serite agros,
-24 Ut fruges habere possitis. Quintam partem regi dabitis: quatuor reliquas permitto vobis in sementem, et in cibum familiis et liberis vestris.
-25 Qui responderunt: Salus nostra in manu tua est: respiciat nos tantum dominus noster, et læti serviemus regi.
-26 Ex eo tempore usque in præsentem diem, in universa terra Ægypti, regibus quinta pars solvitur, et factum est quasi in legem, absque terra sacerdotali, quæ libera ab hac conditione fuit.
-27 Habitavit ergo Israel in Ægypto, id est, in terra Gessen, et possedit eam: auctusque est, et multiplicatus nimis.
-28 Et vixit in ea decem et septem annis: factique sunt omnes dies vitæ illius centum quadraginta septem annorum.
-29 Cumque appropinquare cerneret diem mortis suæ, vocavit filium suum Joseph, et dixit ad eum: Si inveni gratiam in conspectu tuo, pone manum tuam sub femore meo: et facies mihi misericordiam et veritatem, ut non sepelias me in Ægypto:
-30 Sed dormiam cum patribus meis, et auferas me de terra hac, condasque in sepulchro majorum meorum. Cui respondit Joseph: Ego faciam quod jussisti.
-31 Et ille: Jura ergo, inquit, mihi. Quo jurante, adoravit Israel Deum, conversus ad lectuli caput.
+⸨lang:English⸩1 ⸨/lang⸩⸨sc⸩Ingressus⸨/sc⸩ ergo Joseph nuntiavit Pharaoni, dicens: Pater meus et fratres, oves eorum et armenta, et cuncta quæ possident, venerunt de terra Chanaan: et ecce consistunt in terra Gessen.
+⸨lang:English⸩2 ⸨/lang⸩Extremos quoque fratrum suorum quinque viros constituit coram rege:
+⸨lang:English⸩3 ⸨/lang⸩Quos ille interrogavit: Quid habetis operis? Responderunt: Pastores ovium sumus servi tui, et nos, et patres nostri.
+⸨lang:English⸩4 ⸨/lang⸩Ad peregrinandum in terra tua venimus: quoniam non est herba gregibus servorum tuorum, ingravescente fame in terra Chanaan: petimusque ut esse nos jubeas servos tuos in terra Gessen.
+⸨lang:English⸩5 ⸨/lang⸩Dixit itaque rex ad Joseph: Pater tuus et fratres tui venerunt ad te.
+⸨lang:English⸩6 ⸨/lang⸩Terra Ægypti in conspectu tuo est: in optimo loco fac eos habitare, et trade eis terram Gessen. Quod si nosti in eis esse viros industrios, constitue illos magistros pecorum meorum.
+⸨lang:English⸩7 ⸨/lang⸩Post hæc introduxit Joseph patrem suum ad regem, et statuit eum coram eo: qui benedicens illi,
+⸨lang:English⸩8 ⸨/lang⸩Et interrogatus ab eo: Quot sunt dies annorum vitæ tuæ?
+⸨lang:English⸩9 ⸨/lang⸩Respondit: Dies peregrinationis meæ centum triginta annorum sunt, parvi et mali, et non pervenerunt usque ad dies patrum meorum quibus peregrinati sunt.
+⸨lang:English⸩10 ⸨/lang⸩Et benedicto rege, egressus est foras.
+⸨lang:English⸩11 ⸨/lang⸩Joseph vero patri et fratribus suis dedit possessionem in Ægypto in optimo terræ loco, Ramesses, ut præceperat Pharao.
+⸨lang:English⸩12 ⸨/lang⸩Et alebat eos, omnemque domum patris sui, præbens cibaria singulis.
+⸨lang:English⸩13 ⸨/lang⸩In toto enim orbe panis deerat, et oppresserat fames terram, maxime Ægypti et Chanaan.
+⸨lang:English⸩14 ⸨/lang⸩E quibus omnem pecuniam congregavit pro venditione frumenti, et intulit eam in ærarium regis.
+⸨lang:English⸩15 ⸨/lang⸩Cumque defecisset emptoribus pretium, venit cuncta Ægyptus ad Joseph, dicens: Da nobis panes: quare morimur coram te, deficiente pecunia?
+⸨lang:English⸩16 ⸨/lang⸩Quibus ille respondit: Adducite pecora vestra, et dabo vobis pro eis cibos, si pretium non habetis.
+⸨lang:English⸩17 ⸨/lang⸩Quæ cum adduxissent, dedit eis alimenta pro equis, et ovibus, et bobus, et asinis: sustentavitque eos illo anno pro commutatione pecorum.
+⸨lang:English⸩18 ⸨/lang⸩Venerunt quoque anno secundo, et dixerunt ei: Non celabimus dominum nostrum quod deficiente pecunia, pecora simul defecerunt: nec clam te est, quod absque corporibus et terra nihil habeamus.
+⸨lang:English⸩19 ⸨/lang⸩Cur ergo moriemur te vidente? et nos et terra nostra tui erimus: eme nos in servitutem regiam, et præbe semina, ne pereunte cultore redigatur terra in solitudinem.
+⸨lang:English⸩20 ⸨/lang⸩Emit igitur Joseph omnem terram Ægypti, vendentibus singulis possessiones suas præ magnitudine famis. Subjecitque eam Pharaoni,
+⸨lang:English⸩21 ⸨/lang⸩Et cunctos populos ejus, a novissimis terminis Ægypti usque ad extremos fines ejus,
+⸨lang:English⸩22 ⸨/lang⸩Præter terram sacerdotum, quæ a rege tradita fuerat eis: quibus et statuta cibaria ex horreis publicis præhebantur, et idcirco non sunt compulsi vendere possessiones suas.
+⸨lang:English⸩23 ⸨/lang⸩Dixit ergo Joseph ad populos: En, ut cernitis, et vos et terram vestram Pharao possidet: accipite semina, et serite agros,
+⸨lang:English⸩24 ⸨/lang⸩Ut fruges habere possitis. Quintam partem regi dabitis: quatuor reliquas permitto vobis in sementem, et in cibum familiis et liberis vestris.
+⸨lang:English⸩25 ⸨/lang⸩Qui responderunt: Salus nostra in manu tua est: respiciat nos tantum dominus noster, et læti serviemus regi.
+⸨lang:English⸩26 ⸨/lang⸩Ex eo tempore usque in præsentem diem, in universa terra Ægypti, regibus quinta pars solvitur, et factum est quasi in legem, absque terra sacerdotali, quæ libera ab hac conditione fuit.
+⸨lang:English⸩27 ⸨/lang⸩Habitavit ergo Israel in Ægypto, id est, in terra Gessen, et possedit eam: auctusque est, et multiplicatus nimis.
+⸨lang:English⸩28 ⸨/lang⸩Et vixit in ea decem et septem annis: factique sunt omnes dies vitæ illius centum quadraginta septem annorum.
+⸨lang:English⸩29 ⸨/lang⸩Cumque appropinquare cerneret diem mortis suæ, vocavit filium suum Joseph, et dixit ad eum: Si inveni gratiam in conspectu tuo, pone manum tuam sub femore meo: et facies mihi misericordiam et veritatem, ut non sepelias me in Ægypto:
+⸨lang:English⸩30 ⸨/lang⸩Sed dormiam cum patribus meis, et auferas me de terra hac, condasque in sepulchro majorum meorum. Cui respondit Joseph: Ego faciam quod jussisti.
+⸨lang:English⸩31 ⸨/lang⸩Et ille: Jura ergo, inquit, mihi. Quo jurante, adoravit Israel Deum, conversus ad lectuli caput.

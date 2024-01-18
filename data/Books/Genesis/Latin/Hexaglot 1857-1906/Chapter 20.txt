@@ -1,20 +1,20 @@
 ⸨cen⸩CAPUT XX⸼
 
-1 ⸨sc⸩Profectus⸨/sc⸩ inde Abraham in terram australem, habitavit inter Cades et Sur: et peregrinatus est in Geraris.
-2 Dixitque de Sara uxore sua: Soror mea est. Misit ergo Abimelech rex Geraræ, et tulit eam.
-3 Venit autem Deus ad Abimelech per somnium nocte, et ait illi: En morieris propter mulierem quam tulisti: habet enim virum.
-4 Abimelech vero non tetigerat eam, et ait: Domine, num gentem ignorantem et justam interficies?
-5 Nonne ipse dixit mihi: Soror mea est: et ipsa ait: Frater meus est? in simplicitate cordis mei, et munditia manuum mearum, feci hoc.
-6 Dixitque ad eum Deus: Et ego scio quod simplici corde feceris: et ideo custodivi te ne peccares in me, et non dimisi ut tangeres eam.
-7 Nunc ergo redde viro suo uxorem, quia propheta est: et orabit pro te, et vives; si autem nolueris reddere, scito quod morte morieris tu, et omnia quæ tua sunt.
-8 Statimque de nocte consurgens Abimelech, vocavit omnes servos suos: et locutus est universa verba hæc in auribus eorum, timueruntque omnes viri valde.
-9 Vocavit autem Abimelech etiam Abraham, et dixit ei: Quid fecisti nobis? quid peccavimus in te, quia induxisti super me et super regnum meum peccatum grande? quæ non debuisti facere, fecisti nobis.
-10 Rursumque expostulans, ait: Quid vidisti, ut hoc faceres?
-11 Respondit Abraham: Cogitavi mecum, dicens: Forsitan non est timor Dei in loco isto: et interficient me propter uxorem meam:
-12 Alias autem et vere soror mea est, filia patris mei, et non filia matris meæ, et duxi eam in uxorem.
-13 Postquam autem eduxit me Deus de domo patris mei, dixi ad eam: Hanc misericordiam facies mecum: In omni loco, ad quem ingrediemur, dices quod frater tuus sim.
-14 Tulit igitur Abimelech oves et boves, et servos, et ancillas, et dedit Abraham: reddiditque illi Saram uxorem suam,
-15 Et ait: Terra coram vobis est ubicumque tibi placuerit habita.
-16 Saræ autem dixit: Ecce mille argenteos dedi fratri tuo, hoc erit tibi in velamen oculorum ad omnes qui tecum sunt, et quocumque perrexeris: mementoque te deprehensam.
-17 Orante autem Abraham, sanavit Deus Abimelech et uxorem, ancillasque ejus, et pepererunt:
-18 Concluserat enim Dominus omnem vulvam domus Abimelech propter Saram uxorem Abrahæ.
+⸨lang:English⸩1 ⸨/lang⸩⸨sc⸩Profectus⸨/sc⸩ inde Abraham in terram australem, habitavit inter Cades et Sur: et peregrinatus est in Geraris.
+⸨lang:English⸩2 ⸨/lang⸩Dixitque de Sara uxore sua: Soror mea est. Misit ergo Abimelech rex Geraræ, et tulit eam.
+⸨lang:English⸩3 ⸨/lang⸩Venit autem Deus ad Abimelech per somnium nocte, et ait illi: En morieris propter mulierem quam tulisti: habet enim virum.
+⸨lang:English⸩4 ⸨/lang⸩Abimelech vero non tetigerat eam, et ait: Domine, num gentem ignorantem et justam interficies?
+⸨lang:English⸩5 ⸨/lang⸩Nonne ipse dixit mihi: Soror mea est: et ipsa ait: Frater meus est? in simplicitate cordis mei, et munditia manuum mearum, feci hoc.
+⸨lang:English⸩6 ⸨/lang⸩Dixitque ad eum Deus: Et ego scio quod simplici corde feceris: et ideo custodivi te ne peccares in me, et non dimisi ut tangeres eam.
+⸨lang:English⸩7 ⸨/lang⸩Nunc ergo redde viro suo uxorem, quia propheta est: et orabit pro te, et vives; si autem nolueris reddere, scito quod morte morieris tu, et omnia quæ tua sunt.
+⸨lang:English⸩8 ⸨/lang⸩Statimque de nocte consurgens Abimelech, vocavit omnes servos suos: et locutus est universa verba hæc in auribus eorum, timueruntque omnes viri valde.
+⸨lang:English⸩9 ⸨/lang⸩Vocavit autem Abimelech etiam Abraham, et dixit ei: Quid fecisti nobis? quid peccavimus in te, quia induxisti super me et super regnum meum peccatum grande? quæ non debuisti facere, fecisti nobis.
+⸨lang:English⸩10 ⸨/lang⸩Rursumque expostulans, ait: Quid vidisti, ut hoc faceres?
+⸨lang:English⸩11 ⸨/lang⸩Respondit Abraham: Cogitavi mecum, dicens: Forsitan non est timor Dei in loco isto: et interficient me propter uxorem meam:
+⸨lang:English⸩12 ⸨/lang⸩Alias autem et vere soror mea est, filia patris mei, et non filia matris meæ, et duxi eam in uxorem.
+⸨lang:English⸩13 ⸨/lang⸩Postquam autem eduxit me Deus de domo patris mei, dixi ad eam: Hanc misericordiam facies mecum: In omni loco, ad quem ingrediemur, dices quod frater tuus sim.
+⸨lang:English⸩14 ⸨/lang⸩Tulit igitur Abimelech oves et boves, et servos, et ancillas, et dedit Abraham: reddiditque illi Saram uxorem suam,
+⸨lang:English⸩15 ⸨/lang⸩Et ait: Terra coram vobis est ubicumque tibi placuerit habita.
+⸨lang:English⸩16 ⸨/lang⸩Saræ autem dixit: Ecce mille argenteos dedi fratri tuo, hoc erit tibi in velamen oculorum ad omnes qui tecum sunt, et quocumque perrexeris: mementoque te deprehensam.
+⸨lang:English⸩17 ⸨/lang⸩Orante autem Abraham, sanavit Deus Abimelech et uxorem, ancillasque ejus, et pepererunt:
+⸨lang:English⸩18 ⸨/lang⸩Concluserat enim Dominus omnem vulvam domus Abimelech propter Saram uxorem Abrahæ.
