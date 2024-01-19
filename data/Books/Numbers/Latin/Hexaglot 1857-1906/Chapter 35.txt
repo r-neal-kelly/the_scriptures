@@ -1,36 +1,36 @@
 ⸨cen⸩CAPUT XXXV⸼
 
-1 ⸨sc⸩Hæc⸨/sc⸩ quoque locutus est Dominus ad Moysen in campestribus Moab supra Jordanem, contra Jericho:
-2 Præcipe filiis Israel ut dent Levitis de possessionibus suis
-3 Urbes ad habitandum, et suburbana earum per circuitum: ut ipsi in oppidis maneant, et suburbana sint pecoribus ac jumentis:
-4 Quæ a muris civitatum forinsecus, per circuitum, mille passuum spatio tendentur;
-5 Contra orientem duo millia erunt cubiti, et contra meridiem similiter erunt duo millia: ad mare quoque, quod respicit ad occidentem, eadem mensura erit, et septentrionalis plaga æquali termino finietur; eruntque urbes in medio, et foris suburbana.
-6 De ipsis autem oppidis, quæ Levitis dabitis, sex erunt in fugitivorum auxilia separata, ut fugiat ad ea qui fuderit sanguinem: et exceptis his, alia quadraginta duo oppida,
-7 Id est, simul quadraginta octo cum suburbanis suis.
-8 Ipsæque urbes, quæ dabuntur de possessionibus filiorum Israel, ab his qui plus habent, plures auferentur: et qui minus, pauciores; singuli juxta mensuram hereditatis suæ dabunt oppida Levitis.
-9 Ait Dominus ad Moysen:
-10 Loquere filiis Israel, et dices ad eos: Quando transgressi fueritis Jordanem in terram Chanaan,
-11 Decernite quæ urbes esse debeant in præsidia fugitivorum, qui nolentes sanguinem fuderint:
-12 In quibus cum fuerit profugus, cognatus occisi non poterit eum occidere, donec stet in conspectu multitudinis, et causa illius judicetur.
-13 De ipsis autem urbibus, quæ ad fugitivorum subsidia separantur,
-14 Tres erunt trans Jordanem, et tres in terra Chanaan,
-15 Tam filiis Israel quam advenis atque peregrinis, ut confugiat ad eas qui nolens sanguinem fuderit.
-16 Si quis ferro percusserit, et mortuus fuerit qui percussus est: reus erit homicidii, et ipse morietur.
-17 Si lapidem jecerit, et ictus occubuerit: similiter punietur.
-18 Si ligno percussus interierit: percussoris sanguine vindicabitur.
-19 Propinquus occisi, homicidam interficiet: statim ut apprehenderit eum, interficiet.
-20 Si per odium quis hominem impulerit, vel jecerit quippiam in eum per insidias:
-21 Aut cum esset inimicus, manu percusserit, et ille mortuus fuerit: percussor, homicidii reus erit; cognatus occisi statim ut invenerit eum, jugulabit.
-22 Quod si fortuitu, et absque odio,
-23 Et inimicitiis, quidquam horum fecerit,
-24 Et hoc audiente populo fuerit comprobatum, atque inter percussorem et propinquum sanguinis quæstio ventilata:
-25 Liberabitur innocens de ultoris manu, et reducetur per sententiam in urbem ad quam confugerat, manebitque ibi, donec sacerdos magnus, qui oleo sancto unctus est, moriatur.
-26 Si interfector extra fines urbium, quæ exulibus deputatæ sunt,
-27 Fuerit inventus, et percussus ab eo qui ultor est sanguinis: absque noxa erit qui eum occiderit;
-28 Debuerat enim profugus usque ad mortem pontificis in urbe residere; postquam autem ille obierit, homicida revertetur in terram suam.
-29 Hæc sempiterna erunt, et legitima in cunctis habitationibus vestris.
-30 Homicida sub testibus punietur: ad unius testimonium nullus condemnabitur.
-31 Non accipietis pretium ab eo qui reus est sanguinis, statim et ipse morietur.
-32 Exules et profugi ante mortem pontificis nullo modo in urbes suas reverti poterunt:
-33 Ne polluatis terram habitationis vestræ, quæ insontium cruore maculatur: nec aliter expiari potest, nisi per ejus sanguinem, qui alterius sanguinem fuderit.
-34 Atque ita emundabitur vestra possessio, me commorante vobiscum; ego enim sum Dominus qui habito inter filios Israel.
+⸨lang:English⸩1 ⸨/lang⸩⸨sc⸩Hæc⸨/sc⸩ quoque locutus est Dominus ad Moysen in campestribus Moab supra Jordanem, contra Jericho:
+⸨lang:English⸩2 ⸨/lang⸩Præcipe filiis Israel ut dent Levitis de possessionibus suis
+⸨lang:English⸩3 ⸨/lang⸩Urbes ad habitandum, et suburbana earum per circuitum: ut ipsi in oppidis maneant, et suburbana sint pecoribus ac jumentis:
+⸨lang:English⸩4 ⸨/lang⸩Quæ a muris civitatum forinsecus, per circuitum, mille passuum spatio tendentur;
+⸨lang:English⸩5 ⸨/lang⸩Contra orientem duo millia erunt cubiti, et contra meridiem similiter erunt duo millia: ad mare quoque, quod respicit ad occidentem, eadem mensura erit, et septentrionalis plaga æquali termino finietur; eruntque urbes in medio, et foris suburbana.
+⸨lang:English⸩6 ⸨/lang⸩De ipsis autem oppidis, quæ Levitis dabitis, sex erunt in fugitivorum auxilia separata, ut fugiat ad ea qui fuderit sanguinem: et exceptis his, alia quadraginta duo oppida,
+⸨lang:English⸩7 ⸨/lang⸩Id est, simul quadraginta octo cum suburbanis suis.
+⸨lang:English⸩8 ⸨/lang⸩Ipsæque urbes, quæ dabuntur de possessionibus filiorum Israel, ab his qui plus habent, plures auferentur: et qui minus, pauciores; singuli juxta mensuram hereditatis suæ dabunt oppida Levitis.
+⸨lang:English⸩9 ⸨/lang⸩Ait Dominus ad Moysen:
+⸨lang:English⸩10 ⸨/lang⸩Loquere filiis Israel, et dices ad eos: Quando transgressi fueritis Jordanem in terram Chanaan,
+⸨lang:English⸩11 ⸨/lang⸩Decernite quæ urbes esse debeant in præsidia fugitivorum, qui nolentes sanguinem fuderint:
+⸨lang:English⸩12 ⸨/lang⸩In quibus cum fuerit profugus, cognatus occisi non poterit eum occidere, donec stet in conspectu multitudinis, et causa illius judicetur.
+⸨lang:English⸩13 ⸨/lang⸩De ipsis autem urbibus, quæ ad fugitivorum subsidia separantur,
+⸨lang:English⸩14 ⸨/lang⸩Tres erunt trans Jordanem, et tres in terra Chanaan,
+⸨lang:English⸩15 ⸨/lang⸩Tam filiis Israel quam advenis atque peregrinis, ut confugiat ad eas qui nolens sanguinem fuderit.
+⸨lang:English⸩16 ⸨/lang⸩Si quis ferro percusserit, et mortuus fuerit qui percussus est: reus erit homicidii, et ipse morietur.
+⸨lang:English⸩17 ⸨/lang⸩Si lapidem jecerit, et ictus occubuerit: similiter punietur.
+⸨lang:English⸩18 ⸨/lang⸩Si ligno percussus interierit: percussoris sanguine vindicabitur.
+⸨lang:English⸩19 ⸨/lang⸩Propinquus occisi, homicidam interficiet: statim ut apprehenderit eum, interficiet.
+⸨lang:English⸩20 ⸨/lang⸩Si per odium quis hominem impulerit, vel jecerit quippiam in eum per insidias:
+⸨lang:English⸩21 ⸨/lang⸩Aut cum esset inimicus, manu percusserit, et ille mortuus fuerit: percussor, homicidii reus erit; cognatus occisi statim ut invenerit eum, jugulabit.
+⸨lang:English⸩22 ⸨/lang⸩Quod si fortuitu, et absque odio,
+⸨lang:English⸩23 ⸨/lang⸩Et inimicitiis, quidquam horum fecerit,
+⸨lang:English⸩24 ⸨/lang⸩Et hoc audiente populo fuerit comprobatum, atque inter percussorem et propinquum sanguinis quæstio ventilata:
+⸨lang:English⸩25 ⸨/lang⸩Liberabitur innocens de ultoris manu, et reducetur per sententiam in urbem ad quam confugerat, manebitque ibi, donec sacerdos magnus, qui oleo sancto unctus est, moriatur.
+⸨lang:English⸩26 ⸨/lang⸩Si interfector extra fines urbium, quæ exulibus deputatæ sunt,
+⸨lang:English⸩27 ⸨/lang⸩Fuerit inventus, et percussus ab eo qui ultor est sanguinis: absque noxa erit qui eum occiderit;
+⸨lang:English⸩28 ⸨/lang⸩Debuerat enim profugus usque ad mortem pontificis in urbe residere; postquam autem ille obierit, homicida revertetur in terram suam.
+⸨lang:English⸩29 ⸨/lang⸩Hæc sempiterna erunt, et legitima in cunctis habitationibus vestris.
+⸨lang:English⸩30 ⸨/lang⸩Homicida sub testibus punietur: ad unius testimonium nullus condemnabitur.
+⸨lang:English⸩31 ⸨/lang⸩Non accipietis pretium ab eo qui reus est sanguinis, statim et ipse morietur.
+⸨lang:English⸩32 ⸨/lang⸩Exules et profugi ante mortem pontificis nullo modo in urbes suas reverti poterunt:
+⸨lang:English⸩33 ⸨/lang⸩Ne polluatis terram habitationis vestræ, quæ insontium cruore maculatur: nec aliter expiari potest, nisi per ejus sanguinem, qui alterius sanguinem fuderit.
+⸨lang:English⸩34 ⸨/lang⸩Atque ita emundabitur vestra possessio, me commorante vobiscum; ego enim sum Dominus qui habito inter filios Israel.

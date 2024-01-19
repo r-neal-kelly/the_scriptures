@@ -1,36 +1,36 @@
 ⸨cen⸩CAPUT II⸼
 
-1 ⸨sc⸩Locutusque⸨/sc⸩ est Dominus ad Moysen et Aaron, dicens:
-2 Singuli per turmas, signa, atque vexilla, et domos cognationum suarum, castrametabuntur filii Israel, per gyrum tabernaculi fœderis.
-3 Ad orientem Judas figet tentoria per turmas exercitus sui: eritque princeps filiorum ejus Nahasson filius Aminadab;
-4 Et omnis de stirpe ejus summa pugnantium, septuaginta quatuor millia sexcenti
-5 Juxta eum castrametati sunt de tribu Issachar, quorum princeps fuit Nathanael filius Suar
-6 Et omnis numerus pugnatorum ejus, quinquaginta quatuor millia quadringenti.
-7 In tribu Zabulon princeps fuit Eliab filius Helon.
-8 Omnis de stirpe ejus exercitus pugnatorum, quinquaginta septem millia quadringenti.
-9 Universi qui in castris Judæ annumerati sunt, fuerunt centum octoginta sex millia quadringenti: et per turmas suas primi egredientur.
-10 In castris filiorum Ruben ad meridianam plagam erit princeps Elisur filius Sedeur:
-11 Et cunctus exercitus pugnatorum ejus qui numerati sunt, quadraginta sex millia quingenti.
-12 Juxta eum castrametati sunt de tribu Simeon: quorum princeps fuit Salamiel filius Surisaddai:
-13 Et cunctus exercitus pugnatorum ejus qui numerati sunt, quinquaginta novem millia trecenti.
-14 In tribu Gad princeps fuit Eliasaph filius Duel:
-15 Et cunctus exercitus pugnatorum ejus qui numerati sunt, quadraginta quinque millia sexcenti quinquaginta.
-16 Omnes qui recensiti sunt in castris Ruben, centum quinquaginta millia et mille quadringenti quinquaginta per turmas suas: in secundo loco proficiscentur.
-17 Levabitur autem tabernaculum testimonii per officia Levitarum et turmas eorum: quomodo erigetur, ita et deponetur. Singuli per loca et ordines suos proficiscentur.
-18 Ad occidentalem plagam erunt castra filiorum Ephraïm, quorum princeps fuit Elisama filius Ammiud;
-19 Cunctus exercitus pugnatorum ejus, qui numerati sunt, quadraginta millia quingenti.
-20 Et cum eis tribus filiorum Manasse, quorum princeps fuit Gamaliel filius Phadassur;
-21 Cunctusque exercitus pugnatorum ejus qui numerati sunt, triginta duo millia ducenti.
-22 In tribu filiorum Benjamin princeps fuit Abidan filius Gedeonis:
-23 Et cunctus exercitus pugnatorum ejus qui recensiti sunt, triginta quinque millia quadringenti.
-24 Omnes qui numerati sunt in castris Ephraïm, centum octo millia centum per turmas suas: tertii proficiscentur.
-25 Ad aquilonis partem castrametati sunt filii Dan: quorum princeps fuit Ahiezer filius Ammisaddai;
-26 Cunctus exercitus pugnatorum ejus qui numerati sunt, sexaginta duo millia septingenti.
-27 Juxta eum fixere tentoria de tribu Aser: quorum princeps fuit Phegiel filius Ochran;
-28 Cunctus exercitus pugnatorum ejus qui numerati sunt, quadraginta millia et mille quingenti.
-29 De tribu filiorum Nephthali princeps fuit Ahira filius Enan
-30 Cunctus exercitus pugnatorum ejus, quinquaginta tria millia quadringenti.
-31 Omnes qui numerati sunt in castris Dan, fuerunt centum quinquaginta septem millia sexcenti: et novissimi proficiscentur.
-32 Hic numerus filiorum Israel, per domos cognationum suarum et turmas divisi exercitus, sexcenta tria millia quingenti quinquaginta.
-33 Levitæ autem non sunt numerati inter filios Israel: sic enim præceperat Dominus Moysi.
-34 Feceruntque filii Israel juxta omnia quæ mandaverat Dominus. Castrametati sunt per turmas suas, et profecti per familias ac domos patrum suorum.
+⸨lang:English⸩1 ⸨/lang⸩⸨sc⸩Locutusque⸨/sc⸩ est Dominus ad Moysen et Aaron, dicens:
+⸨lang:English⸩2 ⸨/lang⸩Singuli per turmas, signa, atque vexilla, et domos cognationum suarum, castrametabuntur filii Israel, per gyrum tabernaculi fœderis.
+⸨lang:English⸩3 ⸨/lang⸩Ad orientem Judas figet tentoria per turmas exercitus sui: eritque princeps filiorum ejus Nahasson filius Aminadab;
+⸨lang:English⸩4 ⸨/lang⸩Et omnis de stirpe ejus summa pugnantium, septuaginta quatuor millia sexcenti
+⸨lang:English⸩5 ⸨/lang⸩Juxta eum castrametati sunt de tribu Issachar, quorum princeps fuit Nathanael filius Suar
+⸨lang:English⸩6 ⸨/lang⸩Et omnis numerus pugnatorum ejus, quinquaginta quatuor millia quadringenti.
+⸨lang:English⸩7 ⸨/lang⸩In tribu Zabulon princeps fuit Eliab filius Helon.
+⸨lang:English⸩8 ⸨/lang⸩Omnis de stirpe ejus exercitus pugnatorum, quinquaginta septem millia quadringenti.
+⸨lang:English⸩9 ⸨/lang⸩Universi qui in castris Judæ annumerati sunt, fuerunt centum octoginta sex millia quadringenti: et per turmas suas primi egredientur.
+⸨lang:English⸩10 ⸨/lang⸩In castris filiorum Ruben ad meridianam plagam erit princeps Elisur filius Sedeur:
+⸨lang:English⸩11 ⸨/lang⸩Et cunctus exercitus pugnatorum ejus qui numerati sunt, quadraginta sex millia quingenti.
+⸨lang:English⸩12 ⸨/lang⸩Juxta eum castrametati sunt de tribu Simeon: quorum princeps fuit Salamiel filius Surisaddai:
+⸨lang:English⸩13 ⸨/lang⸩Et cunctus exercitus pugnatorum ejus qui numerati sunt, quinquaginta novem millia trecenti.
+⸨lang:English⸩14 ⸨/lang⸩In tribu Gad princeps fuit Eliasaph filius Duel:
+⸨lang:English⸩15 ⸨/lang⸩Et cunctus exercitus pugnatorum ejus qui numerati sunt, quadraginta quinque millia sexcenti quinquaginta.
+⸨lang:English⸩16 ⸨/lang⸩Omnes qui recensiti sunt in castris Ruben, centum quinquaginta millia et mille quadringenti quinquaginta per turmas suas: in secundo loco proficiscentur.
+⸨lang:English⸩17 ⸨/lang⸩Levabitur autem tabernaculum testimonii per officia Levitarum et turmas eorum: quomodo erigetur, ita et deponetur. Singuli per loca et ordines suos proficiscentur.
+⸨lang:English⸩18 ⸨/lang⸩Ad occidentalem plagam erunt castra filiorum Ephraïm, quorum princeps fuit Elisama filius Ammiud;
+⸨lang:English⸩19 ⸨/lang⸩Cunctus exercitus pugnatorum ejus, qui numerati sunt, quadraginta millia quingenti.
+⸨lang:English⸩20 ⸨/lang⸩Et cum eis tribus filiorum Manasse, quorum princeps fuit Gamaliel filius Phadassur;
+⸨lang:English⸩21 ⸨/lang⸩Cunctusque exercitus pugnatorum ejus qui numerati sunt, triginta duo millia ducenti.
+⸨lang:English⸩22 ⸨/lang⸩In tribu filiorum Benjamin princeps fuit Abidan filius Gedeonis:
+⸨lang:English⸩23 ⸨/lang⸩Et cunctus exercitus pugnatorum ejus qui recensiti sunt, triginta quinque millia quadringenti.
+⸨lang:English⸩24 ⸨/lang⸩Omnes qui numerati sunt in castris Ephraïm, centum octo millia centum per turmas suas: tertii proficiscentur.
+⸨lang:English⸩25 ⸨/lang⸩Ad aquilonis partem castrametati sunt filii Dan: quorum princeps fuit Ahiezer filius Ammisaddai;
+⸨lang:English⸩26 ⸨/lang⸩Cunctus exercitus pugnatorum ejus qui numerati sunt, sexaginta duo millia septingenti.
+⸨lang:English⸩27 ⸨/lang⸩Juxta eum fixere tentoria de tribu Aser: quorum princeps fuit Phegiel filius Ochran;
+⸨lang:English⸩28 ⸨/lang⸩Cunctus exercitus pugnatorum ejus qui numerati sunt, quadraginta millia et mille quingenti.
+⸨lang:English⸩29 ⸨/lang⸩De tribu filiorum Nephthali princeps fuit Ahira filius Enan
+⸨lang:English⸩30 ⸨/lang⸩Cunctus exercitus pugnatorum ejus, quinquaginta tria millia quadringenti.
+⸨lang:English⸩31 ⸨/lang⸩Omnes qui numerati sunt in castris Dan, fuerunt centum quinquaginta septem millia sexcenti: et novissimi proficiscentur.
+⸨lang:English⸩32 ⸨/lang⸩Hic numerus filiorum Israel, per domos cognationum suarum et turmas divisi exercitus, sexcenta tria millia quingenti quinquaginta.
+⸨lang:English⸩33 ⸨/lang⸩Levitæ autem non sunt numerati inter filios Israel: sic enim præceperat Dominus Moysi.
+⸨lang:English⸩34 ⸨/lang⸩Feceruntque filii Israel juxta omnia quæ mandaverat Dominus. Castrametati sunt per turmas suas, et profecti per familias ac domos patrum suorum.

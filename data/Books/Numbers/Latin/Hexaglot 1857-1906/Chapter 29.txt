@@ -1,41 +1,41 @@
 ⸨cen⸩CAPUT XXIX⸼
 
-1 ⸨sc⸩Mensis⸨/sc⸩ etiam septimi prima dies venerabilis et sancta erit vobis: omne opus servile non facietis in ea, quia dies clangoris est et tubarum.
-2 Offeretisque holocaustum in odorem suavissimum Domino, vitulum de armento unum, arietem unum, et agnos anniculos immaculatos septem:
-3 Et in sacrificiis eorum, similæ oleo conspersæ tres decimas per singulos vitulos, duas decimas per arietem,
-4 Unam decimam per agnum, qui simul sunt agni septem:
-5 Et hircum pro peccato, qui offertur in expiationem populi,
-6 Præter holocaustum calendarum cum sacrificiis suis, et holocaustum sempiternum cum libationibus solitis; eisdem ceremoniis offeretis in odorem suavissimum incensum Domino.
-7 Decima quoque dies mensis hujus septimi erit vobis sancta atque venerabilis et affligetis animas vestras: omne opus servile non facietis in ea.
-8 Offeretisque holocaustum Domino in odorem suavissimum, vitulum de armento unum, arietem unum, agnos anniculos immaculatos septem:
-9 Et in sacrificiis eorum, similæ oleo conspersæ tres decimas per singulos vitulos, duas decimas per arietem,
-10 Decimam decimæ per agnos singulos, qui sunt simul agni septem:
-11 Et hircum pro peccato, absque his quæ offerri pro delicto solent in expiationem, et holocaustum sempiternum, cum sacrificio et libaminibus eorum.
-12 Quintadecima vero die mensis septimi, quæ vobis sancta erit atque venerabilis, omne opus servile non facietis in ea, sed celebrabitis solemnitatem Domino septem diebus;
-13 Offeretisque holocaustum in odorem suavissimum Domino, vitulos de armento tredecim, arietes duos, agnos anniculos immaculatos quatuordecim:
-14 Et in libamentis eorum, similæ oleo conspersæ tres decimas per vitulos singulos, qui sunt simul vituli tredecim: et duas decimas arieti uno, id est, simul arietibus duobus,
-15 Et decimam decimæ agnis singulis, qui sunt simul agni quatuordecim:
-16 Et hircum pro peccato, absque holocausto sempiterno, et sacrificio, et libamine ejus.
-17 In die altero offeretis vitulos de armento duodecim, arietes duos, agnos anniculos immaculatos quatuordecim:
-18 Sacrificiaque et libamina singulorum per vitulos et arietes et agnos rite celebrabitis:
-19 Et hircum pro peccato, absque holocausto sempiterno, sacrificioque et libamine ejus.
-20 Die tertio offeretis vitulos undecim, arietes duos, agnos anniculos immaculatos quatuordecim:
-21 Sacrificiaque et libamina singulorum per vitulos et arietes et agnos rite celebrabitis:
-22 Et hircum pro peccato, absque holocausto sempiterno, sacrificioque et libamine ejus.
-23 Die quarto offeretis vitulos decem, arietes duos, agnos anniculos immaculatos quatuordecim:
-24 Sacrificiaque et libamina singulorum per vitulos et arietes et agnos rite celebrabitis:
-25 Et hircum pro peccato, absque holocausto sempiterno, sacrificioque ejus et libamine.
-26 Die quinto offeretis vitulos novem, arietes duos, agnos anniculos immaculatos quatuordecim:
-27 Sacrificiaque et libamina singulorum per vitulos et arietes et agnos rite celebrabitis:
-28 Et hircum pro peccato absque holocausto sempiterno, sacrificioque ejus et libamine.
-29 Die sexto offeretis vitulos octo, arietes duos, agnos anniculos immaculatos quatuordecim:
-30 Sacrificiaque et libamina singulorum per vitulos et arietes et agnos rite celebrabitis:
-31 Et hircum pro peccato, absque holocausto sempiterno, sacrificioque ejus et libamine.
-32 Die septimo offeretis vitulos septem, et arietes duos, agnos anniculos immaculatos quatuordecim:
-33 Sacrificiaque et libamina singulorum per vitulos et arietes et agnos rite celebrabitis:
-34 Et hircum pro peccato, absque holocausto sempiterno, sacrificioque ejus et libamine.
-35 Die octavo, qui est celeberrimus, omne opus servile non facietis,
-36 Offerentes holocaustum in odorem suavissimum Domino, vitulum unum, arietem unum, agnos anniculos immaculatos septem:
-37 Sacrificiaque et libamina singulorum per vitulos et arietes et agnos rite celebrabitis:
-38 Et hircum pro peccato, absque holocausto sempiterno, sacrificioque ejus et libamine.
-39 Hæc offeretis Domino in solemnitatibus vestris: præter vota et oblationes spontaneas in holocausto, in sacrificio, in libamine, et in hostiis pacificis.
+⸨lang:English⸩1 ⸨/lang⸩⸨sc⸩Mensis⸨/sc⸩ etiam septimi prima dies venerabilis et sancta erit vobis: omne opus servile non facietis in ea, quia dies clangoris est et tubarum.
+⸨lang:English⸩2 ⸨/lang⸩Offeretisque holocaustum in odorem suavissimum Domino, vitulum de armento unum, arietem unum, et agnos anniculos immaculatos septem:
+⸨lang:English⸩3 ⸨/lang⸩Et in sacrificiis eorum, similæ oleo conspersæ tres decimas per singulos vitulos, duas decimas per arietem,
+⸨lang:English⸩4 ⸨/lang⸩Unam decimam per agnum, qui simul sunt agni septem:
+⸨lang:English⸩5 ⸨/lang⸩Et hircum pro peccato, qui offertur in expiationem populi,
+⸨lang:English⸩6 ⸨/lang⸩Præter holocaustum calendarum cum sacrificiis suis, et holocaustum sempiternum cum libationibus solitis; eisdem ceremoniis offeretis in odorem suavissimum incensum Domino.
+⸨lang:English⸩7 ⸨/lang⸩Decima quoque dies mensis hujus septimi erit vobis sancta atque venerabilis et affligetis animas vestras: omne opus servile non facietis in ea.
+⸨lang:English⸩8 ⸨/lang⸩Offeretisque holocaustum Domino in odorem suavissimum, vitulum de armento unum, arietem unum, agnos anniculos immaculatos septem:
+⸨lang:English⸩9 ⸨/lang⸩Et in sacrificiis eorum, similæ oleo conspersæ tres decimas per singulos vitulos, duas decimas per arietem,
+⸨lang:English⸩10 ⸨/lang⸩Decimam decimæ per agnos singulos, qui sunt simul agni septem:
+⸨lang:English⸩11 ⸨/lang⸩Et hircum pro peccato, absque his quæ offerri pro delicto solent in expiationem, et holocaustum sempiternum, cum sacrificio et libaminibus eorum.
+⸨lang:English⸩12 ⸨/lang⸩Quintadecima vero die mensis septimi, quæ vobis sancta erit atque venerabilis, omne opus servile non facietis in ea, sed celebrabitis solemnitatem Domino septem diebus;
+⸨lang:English⸩13 ⸨/lang⸩Offeretisque holocaustum in odorem suavissimum Domino, vitulos de armento tredecim, arietes duos, agnos anniculos immaculatos quatuordecim:
+⸨lang:English⸩14 ⸨/lang⸩Et in libamentis eorum, similæ oleo conspersæ tres decimas per vitulos singulos, qui sunt simul vituli tredecim: et duas decimas arieti uno, id est, simul arietibus duobus,
+⸨lang:English⸩15 ⸨/lang⸩Et decimam decimæ agnis singulis, qui sunt simul agni quatuordecim:
+⸨lang:English⸩16 ⸨/lang⸩Et hircum pro peccato, absque holocausto sempiterno, et sacrificio, et libamine ejus.
+⸨lang:English⸩17 ⸨/lang⸩In die altero offeretis vitulos de armento duodecim, arietes duos, agnos anniculos immaculatos quatuordecim:
+⸨lang:English⸩18 ⸨/lang⸩Sacrificiaque et libamina singulorum per vitulos et arietes et agnos rite celebrabitis:
+⸨lang:English⸩19 ⸨/lang⸩Et hircum pro peccato, absque holocausto sempiterno, sacrificioque et libamine ejus.
+⸨lang:English⸩20 ⸨/lang⸩Die tertio offeretis vitulos undecim, arietes duos, agnos anniculos immaculatos quatuordecim:
+⸨lang:English⸩21 ⸨/lang⸩Sacrificiaque et libamina singulorum per vitulos et arietes et agnos rite celebrabitis:
+⸨lang:English⸩22 ⸨/lang⸩Et hircum pro peccato, absque holocausto sempiterno, sacrificioque et libamine ejus.
+⸨lang:English⸩23 ⸨/lang⸩Die quarto offeretis vitulos decem, arietes duos, agnos anniculos immaculatos quatuordecim:
+⸨lang:English⸩24 ⸨/lang⸩Sacrificiaque et libamina singulorum per vitulos et arietes et agnos rite celebrabitis:
+⸨lang:English⸩25 ⸨/lang⸩Et hircum pro peccato, absque holocausto sempiterno, sacrificioque ejus et libamine.
+⸨lang:English⸩26 ⸨/lang⸩Die quinto offeretis vitulos novem, arietes duos, agnos anniculos immaculatos quatuordecim:
+⸨lang:English⸩27 ⸨/lang⸩Sacrificiaque et libamina singulorum per vitulos et arietes et agnos rite celebrabitis:
+⸨lang:English⸩28 ⸨/lang⸩Et hircum pro peccato absque holocausto sempiterno, sacrificioque ejus et libamine.
+⸨lang:English⸩29 ⸨/lang⸩Die sexto offeretis vitulos octo, arietes duos, agnos anniculos immaculatos quatuordecim:
+⸨lang:English⸩30 ⸨/lang⸩Sacrificiaque et libamina singulorum per vitulos et arietes et agnos rite celebrabitis:
+⸨lang:English⸩31 ⸨/lang⸩Et hircum pro peccato, absque holocausto sempiterno, sacrificioque ejus et libamine.
+⸨lang:English⸩32 ⸨/lang⸩Die septimo offeretis vitulos septem, et arietes duos, agnos anniculos immaculatos quatuordecim:
+⸨lang:English⸩33 ⸨/lang⸩Sacrificiaque et libamina singulorum per vitulos et arietes et agnos rite celebrabitis:
+⸨lang:English⸩34 ⸨/lang⸩Et hircum pro peccato, absque holocausto sempiterno, sacrificioque ejus et libamine.
+⸨lang:English⸩35 ⸨/lang⸩Die octavo, qui est celeberrimus, omne opus servile non facietis,
+⸨lang:English⸩36 ⸨/lang⸩Offerentes holocaustum in odorem suavissimum Domino, vitulum unum, arietem unum, agnos anniculos immaculatos septem:
+⸨lang:English⸩37 ⸨/lang⸩Sacrificiaque et libamina singulorum per vitulos et arietes et agnos rite celebrabitis:
+⸨lang:English⸩38 ⸨/lang⸩Et hircum pro peccato, absque holocausto sempiterno, sacrificioque ejus et libamine.
+⸨lang:English⸩39 ⸨/lang⸩Hæc offeretis Domino in solemnitatibus vestris: præter vota et oblationes spontaneas in holocausto, in sacrificio, in libamine, et in hostiis pacificis.

@@ -1,33 +1,33 @@
 ⸨cen⸩CAPUT V⸼
 
-1 ⸨sc⸩Locutusque⸨/sc⸩ est Dominus ad Moysen, dicens:
-2 Præcipe filiis Israel, ut ejiciant de castris omnem leprosum, et qui semine fluit, pollutusque est super mortuo:
-3 Tam masculum quam feminam ejicite de castris, ne contaminent ea cum habitaverim vobiscum.
-4 Feceruntque ita filii Israel, et ejecerunt eos extra castra, sicut locutus erat Dominus Moysi.
-5 Locutusque est Dominus ad Moysen, dicens:
-6 Loquere ad filios Israel: Vir, sive mulier, cum fecerint ex omnibus peccatis, quæ solent hominibus accidere, et per negligentiam transgressi fuerint mandatum Domini, atque deliquerint,
-7 Confitebuntur peccatum suum, et reddent ipsum caput, quintamque partem desuper, ei in quem peccaverint.
-8 Sin autem non fuerit qui recipiat, dabunt Domino, et erit sacerdotis, excepto ariete, qui offertur pro expiatione, ut sit placabilis hostia.
-9 Omnes quoque primitiæ, quas offerunt filii Israel, ad sacerdotem pertinent:
-10 Et quidquid in sanctuarium offertur a singulis, et traditur manibus sacerdotis, ipsius erit.
-11 Locutusque est Dominus ad Moysen, dicens;
-12 Loquere ad filios Israel, et dices ad eos: Vir, cujus uxor erraverit, maritumque contemnens,
-13 Dormierit cum altero viro, et hoc maritus deprehendere non quiverit, sed latet adulterium, et testibus argui non potest, quia non est inventa in stupro:
-14 Si spiritus zelotypiæ concitaverit virum contra uxorem suam, quæ vel polluta est, vel falsa suspicione appetitur,
-15 Adducet eam ad sacerdotem, et offeret oblationem pro illa, decimam partem sati farinæ hordeaceæ: non fundet super eam oleum, nec imponet thus: quia sacrificium zelotypiæ est, et oblatio investigans adulterium.
-16 Offeret igitur eam sacerdos, et statuet coram Domino,
-17 Assumetque aquam sanctam in vase fictili, et pauxillum terræ de pavimento tabernaculi mittet in eam.
-18 Cumque steterit mulier in conspectu Domini, discooperiet caput ejus, et ponet super manus illius sacrificium recordationis, et oblationem zelotypiæ: ipse autem tenebit aquas amarissimas, in quibus cum execratione maledicta congessit;
-19 Adjurabitque eam, et dicet: Si non dormivit vir alienus tecum, et si non polluta es deserto mariti thoro, non te nocebunt aquæ istæ amarissimæ, in quas maledicta congessi.
-20 Sin autem declinasti a viro tuo, atque polluta es, et concubuisti cum altero viro:
-21 His maledictionibus subjacebis: Det te Dominus in maledictionem, exemplumque cunctorum in populo suo: putrescere faciat femur tuum, et tumens uterus tuus disrumpatur.
-22 Ingrediantur aquæ maledictæ in ventrem tuum, et utero tumescente putrescat femur. Et respondebit mulier, Amen, amen.
-23 Scribetque sacerdos in libello ista maledicta, et delebit ea aquis amarissimis, in quas maledicta congessit,
-24 Et dabit ei bibere. Quas cum exhauserit,
-25 Tollet sacerdos de manu ejus sacrificium zelotypiæ, et elevabit illud coram Domino, imponetque illud super altare: ita duntaxat ut prius,
-26 Pugillum sacrificii tollat de eo quod offertur, et incendat super altare: et sic potum det mulieri aquas amarissimas.
-27 Quas cum biberit, si polluta est, et contempto viro adulterii rea, pertransibunt eam aquæ maledictionis, et inflato ventre computrescet femur: eritque mulier in maledictionem, et in exemplum omni populo.
-28 Quod si polluta non fuerit, erit innoxia, et faciet liberos.
-29 Ista est lex zelotypiæ. Si declinaverit mulier a viro suo, et si polluta fuerit,
-30 Maritusque zelotypiæ spiritu concitatus adduxerit eam in conspectu Domini, et fecerit ei sacerdos juxta omnia quæ scripta sunt:
-31 Maritus absque culpa erit, et illa recipiet iniquitatem suam.
+⸨lang:English⸩1 ⸨/lang⸩⸨sc⸩Locutusque⸨/sc⸩ est Dominus ad Moysen, dicens:
+⸨lang:English⸩2 ⸨/lang⸩Præcipe filiis Israel, ut ejiciant de castris omnem leprosum, et qui semine fluit, pollutusque est super mortuo:
+⸨lang:English⸩3 ⸨/lang⸩Tam masculum quam feminam ejicite de castris, ne contaminent ea cum habitaverim vobiscum.
+⸨lang:English⸩4 ⸨/lang⸩Feceruntque ita filii Israel, et ejecerunt eos extra castra, sicut locutus erat Dominus Moysi.
+⸨lang:English⸩5 ⸨/lang⸩Locutusque est Dominus ad Moysen, dicens:
+⸨lang:English⸩6 ⸨/lang⸩Loquere ad filios Israel: Vir, sive mulier, cum fecerint ex omnibus peccatis, quæ solent hominibus accidere, et per negligentiam transgressi fuerint mandatum Domini, atque deliquerint,
+⸨lang:English⸩7 ⸨/lang⸩Confitebuntur peccatum suum, et reddent ipsum caput, quintamque partem desuper, ei in quem peccaverint.
+⸨lang:English⸩8 ⸨/lang⸩Sin autem non fuerit qui recipiat, dabunt Domino, et erit sacerdotis, excepto ariete, qui offertur pro expiatione, ut sit placabilis hostia.
+⸨lang:English⸩9 ⸨/lang⸩Omnes quoque primitiæ, quas offerunt filii Israel, ad sacerdotem pertinent:
+⸨lang:English⸩10 ⸨/lang⸩Et quidquid in sanctuarium offertur a singulis, et traditur manibus sacerdotis, ipsius erit.
+⸨lang:English⸩11 ⸨/lang⸩Locutusque est Dominus ad Moysen, dicens;
+⸨lang:English⸩12 ⸨/lang⸩Loquere ad filios Israel, et dices ad eos: Vir, cujus uxor erraverit, maritumque contemnens,
+⸨lang:English⸩13 ⸨/lang⸩Dormierit cum altero viro, et hoc maritus deprehendere non quiverit, sed latet adulterium, et testibus argui non potest, quia non est inventa in stupro:
+⸨lang:English⸩14 ⸨/lang⸩Si spiritus zelotypiæ concitaverit virum contra uxorem suam, quæ vel polluta est, vel falsa suspicione appetitur,
+⸨lang:English⸩15 ⸨/lang⸩Adducet eam ad sacerdotem, et offeret oblationem pro illa, decimam partem sati farinæ hordeaceæ: non fundet super eam oleum, nec imponet thus: quia sacrificium zelotypiæ est, et oblatio investigans adulterium.
+⸨lang:English⸩16 ⸨/lang⸩Offeret igitur eam sacerdos, et statuet coram Domino,
+⸨lang:English⸩17 ⸨/lang⸩Assumetque aquam sanctam in vase fictili, et pauxillum terræ de pavimento tabernaculi mittet in eam.
+⸨lang:English⸩18 ⸨/lang⸩Cumque steterit mulier in conspectu Domini, discooperiet caput ejus, et ponet super manus illius sacrificium recordationis, et oblationem zelotypiæ: ipse autem tenebit aquas amarissimas, in quibus cum execratione maledicta congessit;
+⸨lang:English⸩19 ⸨/lang⸩Adjurabitque eam, et dicet: Si non dormivit vir alienus tecum, et si non polluta es deserto mariti thoro, non te nocebunt aquæ istæ amarissimæ, in quas maledicta congessi.
+⸨lang:English⸩20 ⸨/lang⸩Sin autem declinasti a viro tuo, atque polluta es, et concubuisti cum altero viro:
+⸨lang:English⸩21 ⸨/lang⸩His maledictionibus subjacebis: Det te Dominus in maledictionem, exemplumque cunctorum in populo suo: putrescere faciat femur tuum, et tumens uterus tuus disrumpatur.
+⸨lang:English⸩22 ⸨/lang⸩Ingrediantur aquæ maledictæ in ventrem tuum, et utero tumescente putrescat femur. Et respondebit mulier, Amen, amen.
+⸨lang:English⸩23 ⸨/lang⸩Scribetque sacerdos in libello ista maledicta, et delebit ea aquis amarissimis, in quas maledicta congessit,
+⸨lang:English⸩24 ⸨/lang⸩Et dabit ei bibere. Quas cum exhauserit,
+⸨lang:English⸩25 ⸨/lang⸩Tollet sacerdos de manu ejus sacrificium zelotypiæ, et elevabit illud coram Domino, imponetque illud super altare: ita duntaxat ut prius,
+⸨lang:English⸩26 ⸨/lang⸩Pugillum sacrificii tollat de eo quod offertur, et incendat super altare: et sic potum det mulieri aquas amarissimas.
+⸨lang:English⸩27 ⸨/lang⸩Quas cum biberit, si polluta est, et contempto viro adulterii rea, pertransibunt eam aquæ maledictionis, et inflato ventre computrescet femur: eritque mulier in maledictionem, et in exemplum omni populo.
+⸨lang:English⸩28 ⸨/lang⸩Quod si polluta non fuerit, erit innoxia, et faciet liberos.
+⸨lang:English⸩29 ⸨/lang⸩Ista est lex zelotypiæ. Si declinaverit mulier a viro suo, et si polluta fuerit,
+⸨lang:English⸩30 ⸨/lang⸩Maritusque zelotypiæ spiritu concitatus adduxerit eam in conspectu Domini, et fecerit ei sacerdos juxta omnia quæ scripta sunt:
+⸨lang:English⸩31 ⸨/lang⸩Maritus absque culpa erit, et illa recipiet iniquitatem suam.
