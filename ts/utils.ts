@@ -13,6 +13,17 @@ export function Assert(
     }
 }
 
+export function Assert_In_Release(
+    boolean_statement: boolean,
+    failure_message: string = `Failed assert.`,
+):
+    void
+{
+    if (boolean_statement === false) {
+        throw new Error(failure_message);
+    }
+}
+
 export function Print(
     ...data: any
 ):
