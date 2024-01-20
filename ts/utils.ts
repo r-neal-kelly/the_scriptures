@@ -13,7 +13,7 @@ export function Assert(
     }
 }
 
-export function Assert_In_Release(
+export function Assert_Even_In_Release(
     boolean_statement: boolean,
     failure_message: string = `Failed assert.`,
 ):

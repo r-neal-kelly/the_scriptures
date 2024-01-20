@@ -178,7 +178,7 @@ async function Read_And_Sort_File_Names(
             }
         }
 
-        Utils.Assert_In_Release(
+        Utils.Assert_Even_In_Release(
             missing_file_names.length === 0,
             `${folder_path}/${Data.Consts.ORDER_JSON_NAME} is missing various files:\n${JSON.stringify(missing_file_names)}`,
         );
@@ -197,7 +197,7 @@ async function Read_File_Text(
     const file_text: string =
         await File_System.Read_And_Write_File_With_No_Carriage_Returns(file_path);
 
-    Utils.Assert_In_Release(
+    Utils.Assert_Even_In_Release(
         Language.Greek.Normalize_With_Combined_Points(
             Language.Greek.Normalize_With_Baked_Points(file_text),
         ) === file_text,
@@ -363,7 +363,7 @@ async function Generate(
                             dictionary.Maybe_Validation_Error();
                         const unique_parts: Unique_Parts = new Unique_Parts();
                         const file_texts: Array<string> = [];
-                        Utils.Assert_In_Release(
+                        Utils.Assert_Even_In_Release(
                             maybe_dictionary_validation_error == null,
                             `Dictionary failed to validate: ${maybe_dictionary_validation_error}`,
                         );
@@ -410,7 +410,7 @@ async function Generate(
                                             const part_unit_count: Count = part_value.length;
                                             const part_point_count: Count = Unicode.Point_Count(part_value);
                                             const part_language_name: Name = part.Language() ? part.Language() as Name : language_name;
-                                            Utils.Assert_In_Release(
+                                            Utils.Assert_Even_In_Release(
                                                 !part.Is_Unknown(),
                                                 `Unknown part! Cannot generate:\n` +
                                                 `   Book Name:          ${book_name}\n` +
@@ -424,7 +424,7 @@ async function Generate(
                                                 `   Macro Part Value:   ${part_value}\n`,
                                             );
                                             if (part.Is_Error()) {
-                                                Utils.Assert_In_Release(
+                                                Utils.Assert_Even_In_Release(
                                                     part.Has_Error_Style(),
                                                     `Error not wrapped with fix command! Should not generate:\n` +
                                                     `   Book Name:          ${book_name}\n` +
@@ -502,11 +502,11 @@ async function Generate(
                                 },
                             );
                         const compressed_file_texts: Array<string> = [];
-                        Utils.Assert_In_Release(
+                        Utils.Assert_Even_In_Release(
                             decompressed_unique_part_values_json === unique_part_values_json,
                             `Invalid unique_part_values_json decompression!`,
                         );
-                        Utils.Assert_In_Release(
+                        Utils.Assert_Even_In_Release(
                             decompressed_dictionary_json === dictionary_json,
                             `Invalid dictionary decompression!`,
                         );
@@ -546,7 +546,7 @@ async function Generate(
                                         file_value: compressed_file_text,
                                     },
                                 );
-                            Utils.Assert_In_Release(
+                            Utils.Assert_Even_In_Release(
                                 decompressed_file_text === file_text,
                                 `Invalid decompression!\n` +
                                 `   Book Name: ${book_name}\n` +
@@ -599,7 +599,7 @@ async function Generate(
         const data_info_json: string = data_info.JSON_String();
         const compressed_data_info_json: string = Compressor.LZSS_Compress(data_info_json);
         const decompressed_data_info_json: string = Compressor.LZSS_Decompress(compressed_data_info_json);
-        Utils.Assert_In_Release(
+        Utils.Assert_Even_In_Release(
             decompressed_data_info_json === data_info_json,
             `LZSS failed to decompress data_info_json`,
         );
