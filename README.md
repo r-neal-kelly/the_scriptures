@@ -62,8 +62,8 @@ We have plenty of other materials planned for addition into the program as we pr
     - French: 0 (~0%)
     - Italian: 0 (~0%)
     - Dutch: 0 (~0%)
-- Total Files: 1,046
-    - English: 479 (~46%)
+- Total Files: 1,048
+    - English: 481 (~46%)
     - Hebrew: 193 (~18%)
     - Greek: 187 (~18%)
     - Latin: 187 (~18%)
@@ -73,8 +73,8 @@ We have plenty of other materials planned for addition into the program as we pr
     - French: 0 (~0%)
     - Italian: 0 (~0%)
     - Dutch: 0 (~0%)
-- Total Lines: 35,447
-    - English: 13,604 (~38%)
+- Total Lines: 35,509
+    - English: 13,666 (~38%)
     - Hebrew: 9,013 (~25%)
     - Greek: 6,355 (~18%)
     - Latin: 6,471 (~18%)
@@ -84,10 +84,10 @@ We have plenty of other materials planned for addition into the program as we pr
     - French: 2 (~0%)
     - Italian: 0 (~0%)
     - Dutch: 0 (~0%)
-- Total Parts: 1,598,064
+- Total Parts: 1,601,603
     - <i>By Language</i>
-        - English: 929,431 (~58%)
-        - Hebrew: 184,062 (~12%)
+        - English: 932,970 (~58%)
+        - Hebrew: 184,062 (~11%)
         - Greek: 270,584 (~17%)
         - Latin: 212,398 (~13%)
         - Aramaic: 5 (~0%)
@@ -97,8 +97,8 @@ We have plenty of other materials planned for addition into the program as we pr
         - Italian: 17 (~0%)
         - Dutch: 49 (~0%)
     - <i>By Components</i>
-        - Words: 761,768 (~48%)
-            - English: 445,814 (~59%)
+        - Words: 763,392 (~48%)
+            - English: 447,438 (~59%)
             - Hebrew: 85,364 (~11%)
             - Greek: 129,363 (~17%)
             - Latin: 100,430 (~13%)
@@ -108,8 +108,8 @@ We have plenty of other materials planned for addition into the program as we pr
             - French: 502 (~0%)
             - Italian: 9 (~0%)
             - Dutch: 21 (~0%)
-        - Meta-Words: 79,373 (~5%)
-            - English: 37,777 (~48%)
+        - Meta-Words: 79,663 (~5%)
+            - English: 38,067 (~48%)
             - Hebrew: 16,094 (~20%)
             - Greek: 12,873 (~16%)
             - Latin: 12,541 (~16%)
@@ -119,8 +119,8 @@ We have plenty of other materials planned for addition into the program as we pr
             - French: 22 (~0%)
             - Italian: 0 (~0%)
             - Dutch: 16 (~0%)
-        - Non-Words: 756,923 (~47%)
-            - English: 445,840 (~59%)
+        - Non-Words: 758,548 (~47%)
+            - English: 447,465 (~59%)
             - Hebrew: 82,604 (~11%)
             - Greek: 128,348 (~17%)
             - Latin: 99,427 (~13%)
@@ -130,9 +130,9 @@ We have plenty of other materials planned for addition into the program as we pr
             - French: 474 (~0%)
             - Italian: 8 (~0%)
             - Dutch: 12 (~0%)
-- Total Unicode Points: 5,210,715
+- Total Unicode Points: 5,220,471
     - <i>By Language</i>
-        - English: 2,447,164 (~47%)
+        - English: 2,456,920 (~47%)
         - Hebrew: 906,627 (~17%)
         - Greek: 1,064,260 (~20%)
         - Latin: 787,164 (~15%)
@@ -143,8 +143,8 @@ We have plenty of other materials planned for addition into the program as we pr
         - Italian: 63 (~0%)
         - Dutch: 223 (~0%)
     - <i>By Components</i>
-        - Letters: 3,770,605 (~72%)
-            - English: 1,755,227 (~47%)
+        - Letters: 3,777,266 (~72%)
+            - English: 1,761,888 (~47%)
             - Hebrew: 670,127 (~18%)
             - Greek: 795,854 (~21%)
             - Latin: 544,971 (~14%)
@@ -154,8 +154,8 @@ We have plenty of other materials planned for addition into the program as we pr
             - French: 2,647 (~0%)
             - Italian: 53 (~0%)
             - Dutch: 150 (~0%)
-        - Meta-Letters: 595,911 (~11%)
-            - English: 186,875 (~31%)
+        - Meta-Letters: 597,179 (~11%)
+            - English: 188,143 (~32%)
             - Hebrew: 152,853 (~26%)
             - Greek: 129,231 (~22%)
             - Latin: 126,634 (~21%)
@@ -165,8 +165,8 @@ We have plenty of other materials planned for addition into the program as we pr
             - French: 77 (~0%)
             - Italian: 0 (~0%)
             - Dutch: 61 (~0%)
-        - Non-Letters: 844,199 (~16%)
-            - English: 505,062 (~60%)
+        - Non-Letters: 846,026 (~16%)
+            - English: 506,889 (~60%)
             - Hebrew: 83,647 (~10%)
             - Greek: 139,175 (~16%)
             - Latin: 115,559 (~14%)
