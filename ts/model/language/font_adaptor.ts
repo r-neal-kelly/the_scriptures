@@ -42,7 +42,7 @@ export class Instance
         this.styles = styles;
         this.treater = treater;
 
-        this.styles[`font-family`] = `"${this.font.Family()}"`;
+        this.styles[`font-family`] = `"${this.font.Family()}", sans-serif`;
         if (!this.styles.hasOwnProperty(`font-size`)) {
             this.styles[`font-size`] = `1em`;
         }
