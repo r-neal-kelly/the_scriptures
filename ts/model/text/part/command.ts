@@ -103,6 +103,12 @@ export enum Known_Value
     OPEN_SMALL_CAPS = `⸨sc⸩`,
     CLOSE_SMALL_CAPS = `⸨/sc⸩`,
 
+    OPEN_SUPERSCRIPT = `⸨sup⸩`,
+    CLOSE_SUPERSCRIPT = `⸨/sup⸩`,
+
+    OPEN_SUBSCRIPT = `⸨sub⸩`,
+    CLOSE_SUBSCRIPT = `⸨/sub⸩`,
+
     OPEN_GOOD = `⸨good⸩`,
     CLOSE_GOOD = `⸨/good⸩`,
 
@@ -200,6 +206,12 @@ export function Is_Known_Value(
 
         value === Known_Value.OPEN_SMALL_CAPS ||
         value === Known_Value.CLOSE_SMALL_CAPS ||
+
+        value === Known_Value.OPEN_SUPERSCRIPT ||
+        value === Known_Value.CLOSE_SUPERSCRIPT ||
+
+        value === Known_Value.OPEN_SUBSCRIPT ||
+        value === Known_Value.CLOSE_SUBSCRIPT ||
 
         value === Known_Value.OPEN_GOOD ||
         value === Known_Value.CLOSE_GOOD ||
@@ -952,6 +964,30 @@ export class Instance extends Part.Instance
         boolean
     {
         return this.Value() === Known_Value.CLOSE_SMALL_CAPS;
+    }
+
+    Is_Open_Superscript():
+        boolean
+    {
+        return this.Value() === Known_Value.OPEN_SUPERSCRIPT;
+    }
+
+    Is_Close_Superscript():
+        boolean
+    {
+        return this.Value() === Known_Value.CLOSE_SUPERSCRIPT;
+    }
+
+    Is_Open_Subscript():
+        boolean
+    {
+        return this.Value() === Known_Value.OPEN_SUBSCRIPT;
+    }
+
+    Is_Close_Subscript():
+        boolean
+    {
+        return this.Value() === Known_Value.CLOSE_SUBSCRIPT;
     }
 
     Is_Open_Good():

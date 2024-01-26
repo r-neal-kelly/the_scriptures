@@ -27,6 +27,10 @@ interface Model_Instance_i
         boolean;
     Has_Small_Caps_Style():
         boolean;
+    Has_Superscript_Style():
+        boolean;
+    Has_Subscript_Style():
+        boolean;
     Has_Error_Style():
         boolean;
     Has_Argument_Style():
@@ -114,6 +118,11 @@ export abstract class Instance<
             }
             if (model.Has_Small_Caps_Style()) {
                 classes.push(`Small_Caps_Item`);
+            }
+            if (model.Has_Superscript_Style()) {
+                classes.push(`Superscript_Item`);
+            } else if (model.Has_Subscript_Style()) {
+                classes.push(`Subscript_Item`);
             }
             if (
                 model.Is_Error() ||

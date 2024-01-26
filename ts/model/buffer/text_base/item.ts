@@ -200,6 +200,28 @@ export class Instance<
         return this.Part().Has_Small_Caps_Style();
     }
 
+    Has_Superscript_Style():
+        boolean
+    {
+        Utils.Assert(
+            !this.Is_Blank(),
+            `item is blank.`,
+        );
+
+        return this.Part().Has_Superscript_Style();
+    }
+
+    Has_Subscript_Style():
+        boolean
+    {
+        Utils.Assert(
+            !this.Is_Blank(),
+            `item is blank.`,
+        );
+
+        return this.Part().Has_Subscript_Style();
+    }
+
     Has_Error_Style():
         boolean
     {

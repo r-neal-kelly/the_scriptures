@@ -241,6 +241,18 @@ export class Instance implements Item.Instance
         return (this.style & Style.SMALL_CAPS) != 0;
     }
 
+    Has_Superscript_Style():
+        boolean
+    {
+        return (this.style & Style.SUPERSCRIPT) != 0;
+    }
+
+    Has_Subscript_Style():
+        boolean
+    {
+        return (this.style & Style.SUBSCRIPT) != 0;
+    }
+
     Has_Error_Style():
         boolean
     {

@@ -1107,6 +1107,11 @@ class Line
                         if (part.Has_Small_Caps_Style()) {
                             command_classes += ` SMALL_CAPS`;
                         }
+                        if (part.Has_Superscript_Style()) {
+                            command_classes += ` SUPERSCRIPT`;
+                        } else if (part.Has_Subscript_Style()) {
+                            command_classes += ` SUBSCRIPT`;
+                        }
                         if (part.Has_Error_Style()) {
                             command_classes += ` ERROR`;
                         }
@@ -2790,6 +2795,22 @@ class Editor
         
         .SMALL_CAPS {
             font-variant: small-caps;
+        }
+
+        .SUPERSCRIPT {
+            /* font-variant-position might be nice, but still experimental in chromium */
+
+            font-size: 0.7em;
+            line-height: 0.7em;
+            vertical-align: super;
+        }
+
+        .SUBSCRIPT {
+            /* font-variant-position might be nice, but still experimental in chromium */
+
+            font-size: 0.7em;
+            line-height: 0.7em;
+            vertical-align: sub;
         }
 
         .ERROR {

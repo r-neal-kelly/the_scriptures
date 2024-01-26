@@ -277,6 +277,22 @@ export abstract class Instance<
                     font-variant: small-caps;
                 }
 
+                .Superscript_Item {
+                    /* font-variant-position might be nice, but still experimental in chromium */
+
+                    font-size: 0.7em;
+                    line-height: 0.7em;
+                    vertical-align: super;
+                }
+
+                .Subscript_Item {
+                    /* font-variant-position might be nice, but still experimental in chromium */
+
+                    font-size: 0.7em;
+                    line-height: 0.7em;
+                    vertical-align: sub;
+                }
+
                 .Error_Item {
                     border-color: #ffcbcb;
 

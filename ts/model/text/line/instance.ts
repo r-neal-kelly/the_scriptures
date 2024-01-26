@@ -296,6 +296,16 @@ export class Instance
                         } else if (command.Is_Close_Small_Caps()) {
                             current_style &= ~Part.Style.SMALL_CAPS;
 
+                        } else if (command.Is_Open_Superscript()) {
+                            current_style |= Part.Style.SUPERSCRIPT;
+                        } else if (command.Is_Close_Superscript()) {
+                            current_style &= ~Part.Style.SUPERSCRIPT;
+
+                        } else if (command.Is_Open_Subscript()) {
+                            current_style |= Part.Style.SUBSCRIPT;
+                        } else if (command.Is_Close_Subscript()) {
+                            current_style &= ~Part.Style.SUBSCRIPT;
+
                         } else if (command.Is_Open_Good()) {
                             currently_force_good = true;
                         } else if (command.Is_Close_Good()) {
