@@ -273,7 +273,10 @@ export function Styles_To_Inline_String(
     let result: string = ``;
 
     for (const css_property of Object.keys(styles)) {
-        result += `${css_property}:${styles[css_property].replace(/"/g, interior_quotation_mark)};`;
+        const css_value: string =
+            styles[css_property].replace(/["']/g, interior_quotation_mark);
+
+        result += `${css_property}:${css_value};`;
     }
 
     return result;

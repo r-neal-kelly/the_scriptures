@@ -13,6 +13,16 @@ import * as Model from "./model/text.js";
 
 const INDENT_AMOUNT: Count = 6;
 
+const DEFAULT_FONT_STYLES: { [language_name: string]: string } = {};
+for (const language_name of Languages.Singleton().Language_Names()) {
+    DEFAULT_FONT_STYLES[language_name] = Utils.Styles_To_Inline_String(
+        Languages.Singleton().Default_Global_Font_Styles(
+            language_name,
+        ),
+        `'`,
+    );
+}
+
 function Escape_Text(
     text: String,
 ):
@@ -1017,17 +1027,10 @@ class Line
                 ) {
                     const part: Model.Part.Instance = row.Macro_Part(part_idx);
                     const language: Language.Name | null = part.Language();
-                    const styles: string | null = language && !part.Is_Command() ?
-                        Utils.Styles_To_Inline_String(
-                            Languages.Singleton().Default_Global_Font_Styles(
-                                language,
-                            ),
-                            `'`,
-                        ) :
-                        null;
 
                     let primary_classes: string = ``;
                     let command_classes: string = ``;
+                    let styles: string | null = null;
 
                     if (part.Is_Command()) {
                         const command = part as Model.Part.Command.Instance;
@@ -1110,6 +1113,15 @@ class Line
                         if (part.Has_Argument_Style()) {
                             command_classes += ` ARGUMENT`;
                         }
+
+                        if (language != null) {
+                            Utils.Assert(
+                                DEFAULT_FONT_STYLES[language] != null,
+                                `should have default_font_styles for ${language}!`,
+                            );
+
+                            styles = DEFAULT_FONT_STYLES[language];
+                        }
                     }
 
                     inner_html +=
@@ -1147,27 +1159,32 @@ class Line
             `model's line count should be 1.`,
         );
 
+        const line: Model.Line.Instance = model.Line(0);
+
         let inner_html: string = ``;
 
-        const line: Model.Line.Instance = model.Line(0);
         for (
             let column_idx = 0, column_end = line.Column_Count();
             column_idx < column_end;
             column_idx += 1
         ) {
             const column: Model.Column.Instance = line.Column(column_idx);
+
             for (
                 let row_idx = 0, row_end = column.Row_Count();
                 row_idx < row_end;
                 row_idx += 1
             ) {
                 const row: Model.Row.Instance = column.Row(row_idx);
+
                 for (
                     let part_idx = 0, part_end = row.Micro_Part_Count();
                     part_idx < part_end;
                     part_idx += 1
                 ) {
                     const part = row.Micro_Part(part_idx);
+                    const language: Language.Name | null = part.Language();
+
                     if (part.Is_Command()) {
                         let it: Unicode.Iterator = new Unicode.Iterator(
                             {
@@ -1175,26 +1192,51 @@ class Line
                                 index: 0,
                             },
                         );
+
                         for (; !it.Is_At_End(); it = it.Next()) {
                             inner_html +=
-                                `<span class="COMMAND SEPARATE_POINT" data-language="${part.Language() || ``}">${Escape_Text(it.Point())}</span>`;
+                                `<span ` +
+                                `class="COMMAND SEPARATE_POINT" ` +
+                                `data-language="${language || ``}" ` +
+                                `style ` +
+                                `>` +
+                                Escape_Text(it.Point()) +
+                                `</span>`;
                         }
                     } else {
+                        let classes: string = ``;
+                        let styles: string | null = null;
+
                         if (part.Is_Letter()) {
-                            inner_html +=
-                                `<span class="KNOWN_LETTER SEPARATE_POINT" data-language="${part.Language() || ``}">${Escape_Text(part.Value())}</span>`;
+                            classes += `KNOWN_LETTER SEPARATE_POINT`;
                         } else if (part.Is_Marker()) {
-                            inner_html +=
-                                `<span class="KNOWN_MARKER SEPARATE_POINT" data-language="${part.Language() || ``}">${Escape_Text(part.Value())}</span>`;
+                            classes += `KNOWN_MARKER SEPARATE_POINT`;
                         } else if (part.Is_Point()) {
-                            inner_html +=
-                                `<span class="UNKNOWN_POINT SEPARATE_POINT" data-language="${part.Language() || ``}">${Escape_Text(part.Value())}</span>`;
+                            classes += `UNKNOWN_POINT SEPARATE_POINT`;
                         } else {
                             Utils.Assert(
                                 false,
                                 `invalid micro part.`,
                             );
                         }
+
+                        if (language != null) {
+                            Utils.Assert(
+                                DEFAULT_FONT_STYLES[language] != null,
+                                `should have default_font_styles for ${language}!`,
+                            );
+
+                            styles = DEFAULT_FONT_STYLES[language];
+                        }
+
+                        inner_html +=
+                            `<span ` +
+                            `class="${classes}" ` +
+                            `data-language="${language || ``}" ` +
+                            `style="${styles || ``}" ` +
+                            `>` +
+                            Escape_Text(part.Value()) +
+                            `</span>`;
                     }
                 }
             }
