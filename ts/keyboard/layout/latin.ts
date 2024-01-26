@@ -151,6 +151,10 @@ const SYMBOLS: Space.Combo = [
         [[Key.BRACKET_RIGHT], `’`, `”`, Space.IGNORE_CAPS_LOCK],
         // U+2020 DAGGER, U+2021 DOUBLE DAGGER
         [[Key.KEY_T], `†`, `‡`, Space.IGNORE_CAPS_LOCK],
+        // U+271D LATIN CROSS
+        [[Key.KEY_K], `✝`, false, Space.IGNORE_CAPS_LOCK],
+        // U+2758 LIGHT VERTICAL BAR, U+2759 MEDIUM VERTICAL BAR
+        [[Key.KEY_I], `❘`, `❙`, Space.IGNORE_CAPS_LOCK],
         // U+00B7 MIDDLE DOT, U+27E8 MATHEMATICAL LEFT ANGLE BRACKET
         [[Key.COMMA], `·`, `⟨`, Space.IGNORE_CAPS_LOCK],
         // U+2E3C STENOGRAPHIC FULL STOP, U+27E9 MATHEMATICAL RIGHT ANGLE BRACKET

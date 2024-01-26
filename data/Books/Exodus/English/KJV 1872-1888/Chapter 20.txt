@@ -2,7 +2,7 @@
 ⸨i⸩₁ The ten commandments. ₁₈ The people are afraid. ₂₀ Moses comforteth them. ₂₂ Idolatry is forbidden. ₂₄ Of what sort the altar should be.⸨/i⸩
 
 ₁ ⸨sc⸩And⸨/sc⸩ God spake all these words, saying,⸨marg⸩
-₂ ⸨i⸩ᵃ⸨/i⸩ I ⸨i⸩am⸨/i⸩ the ⸨sc⸩Lord⸨/sc⸩ thy God, which have brought thee out of the land of Egypt, out of the house of ⁺bondage.⸨marg⸩⸨i⸩ᵃ⸨/i⸩ Deut⸼ 5⸼ 6⸼⸨row⸩Psal⸼ 81⸼ 10⸼⸨row⸩⁺ Heb⸼ ⸨i⸩servants⸨/i⸩.
+₂ ⸨i⸩ᵃ⸨/i⸩ I ⸨i⸩am⸨/i⸩ the ⸨sc⸩Lord⸨/sc⸩ thy God, which have brought thee out of the land of Egypt, out of the house of ⸨sup⸩✝⸨/sup⸩bondage.⸨marg⸩⸨i⸩ᵃ⸨/i⸩ Deut⸼ 5⸼ 6⸼⸨row⸩Psal⸼ 81⸼ 10⸼⸨row⸩⸨sup⸩✝⸨/sup⸩ Heb⸼ ⸨i⸩servants⸨/i⸩.
 ₃ Thou shalt have no other gods before me.⸨marg⸩
 ₄ ⸨i⸩ᵇ⸨/i⸩ Thou shalt not make unto thee any graven image, or any likeness ⸨i⸩of any thing⸨/i⸩ that ⸨i⸩is⸨/i⸩ in heaven above, or that ⸨i⸩is⸨/i⸩ in the earth beneath, or that ⸨i⸩is⸨/i⸩ in the water under the earth:⸨marg⸩⸨i⸩ᵇ⸨/i⸩ Lev⸼ ⸨fix:26⸼⸩16⸼⸨/fix⸩ 1⸼⸨row⸩Psal⸼ 97⸼ 7⸼
 ₅ Thou shalt not bow down thyself to them, nor serve them: for I the ⸨sc⸩Lord⸨/sc⸩ thy God ⸨i⸩am⸨/i⸩ a jealous God, visiting the iniquity of the fathers upon the children unto the third and fourth ⸨i⸩generation⸨/i⸩ of them that hate me;⸨marg⸩
@@ -25,5 +25,5 @@
 ₂₂ ¶ And the ⸨sc⸩Lord⸨/sc⸩ said unto Moses, Thus thou shalt say unto the children of Israel, Ye have seen that I have talked with you from heaven.⸨marg⸩
 ₂₃ Ye shall not make with me gods of silver, neither shall ye make unto you gods of gold.⸨marg⸩
 ₂₄ ¶ And altar of earth thou shalt make unto me, and shalt sacrifice thereon thy burnt offerings, and thy peace offerings, thy sheep, and thine oxen: in all places where I record my name I will come unto thee, and I will bless thee.⸨marg⸩
-₂₅ And ⸨i⸩ˡ⸨/i⸩ if thou wilt make me an altar of stone, thou shalt not ⁺build it of hewn stone: for if thou lift up thy tool upon it, thou hast polluted it.⸨marg⸩⸨i⸩ˡ⸨/i⸩ Deut⸼ 27⸼ 5⸼⸨row⸩Josh⸼ 8⸼ 31⸼⸨row⸩⁺ Heb⸼ ⸨i⸩build them⸨/i⸩ with ⸨i⸩hewing⸨/i⸩.
+₂₅ And ⸨i⸩ˡ⸨/i⸩ if thou wilt make me an altar of stone, thou shalt not ⸨sup⸩✝⸨/sup⸩build it of hewn stone: for if thou lift up thy tool upon it, thou hast polluted it.⸨marg⸩⸨i⸩ˡ⸨/i⸩ Deut⸼ 27⸼ 5⸼⸨row⸩Josh⸼ 8⸼ 31⸼⸨row⸩⸨sup⸩✝⸨/sup⸩ Heb⸼ ⸨i⸩build them⸨/i⸩ with ⸨i⸩hewing⸨/i⸩.
 ₂₆ Neither shalt thou go up by steps unto mine altar, that thy nakedness be not discovered thereon.⸨marg⸩
