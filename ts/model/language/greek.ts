@@ -1255,6 +1255,8 @@ export class Instance extends Language.Instance
                         {
                             font_name: Font.Name.GENTIUM,
                             short_font_name: Font.Name.GENTIUM,
+                            fallback_font_names: [
+                            ],
                             styles: {
                                 "font-size": `1.25em`,
                                 "line-height": `1.3`,
@@ -1265,6 +1267,8 @@ export class Instance extends Language.Instance
                         {
                             font_name: Font.Name.GENTIUM_BOOK,
                             short_font_name: Font.Name.GENTIUM_BOOK,
+                            fallback_font_names: [
+                            ],
                             styles: {
                                 "font-size": `1.25em`,
                                 "line-height": `1.3`,
@@ -1275,6 +1279,8 @@ export class Instance extends Language.Instance
                         {
                             font_name: Font.Name.QUIVIRA,
                             short_font_name: Font.Name.QUIVIRA,
+                            fallback_font_names: [
+                            ],
                             styles: {
                                 "font-size": `1.25em`,
                                 "line-height": `1.3`,
@@ -1285,6 +1291,8 @@ export class Instance extends Language.Instance
                         {
                             font_name: Font.Name.KRIS_J_UDD_GREEK_ARCHAIC,
                             short_font_name: `K.J.U. Archaic`,
+                            fallback_font_names: [
+                            ],
                             styles: {
                                 "font-size": `1.25em`,
                                 "line-height": `1.3`,

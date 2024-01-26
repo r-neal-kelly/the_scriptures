@@ -14,13 +14,15 @@ export enum Family
     GENTIUM = `GentiumPlusW`,
     GENTIUM_BOOK = `GentiumBookPlusW`,
 
+    NOTO_SANS_SYMBOLS = `Noto Sans Symbols`,
+
     ORKNEY = `Orkney`,
 
     QUIVIRA = `Quivira`,
 
-    NEAL_PALEO_HEBREW = `CustomHebrew`,
-
     UNIFRAKTUR_MAGUNTIA = `UnifrakturMaguntia`,
+
+    NEAL_PALEO_HEBREW = `CustomHebrew`,
 
     ANCIENT_SEMETIC_ARAMAIC_EARLY_BR_RKB = `Aramaic Early Br Rkb`,
     ANCIENT_SEMETIC_ARAMAIC_IMPERIAL_YEB = `Aramaic Imperial Yeb`,

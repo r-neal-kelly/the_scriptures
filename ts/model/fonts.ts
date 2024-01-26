@@ -207,6 +207,34 @@ export class Instance
             },
         );
 
+        this.fonts[Font.Name.NOTO_SANS_SYMBOLS] = new Font.Instance(
+            {
+                name: Font.Name.NOTO_SANS_SYMBOLS,
+                faces: [
+                    new Font.Face.Instance(
+                        {
+                            css_family: Font.Family.NOTO_SANS_SYMBOLS,
+                            css_url: `fonts/Noto/Sans/Symbols/NotoSansSymbols-Regular.ttf`,
+                        },
+                    ),
+                    new Font.Face.Instance(
+                        {
+                            css_family: Font.Family.NOTO_SANS_SYMBOLS,
+                            css_url: `fonts/Noto/Sans/Symbols/NotoSansSymbols-Bold.ttf`,
+                            css_weight: `bold`,
+                        },
+                    ),
+                    new Font.Face.Instance(
+                        {
+                            css_family: Font.Family.NOTO_SANS_SYMBOLS,
+                            css_url: `fonts/Noto/Sans/Symbols/NotoSansSymbols-Light.ttf`,
+                            css_weight: `300`,
+                        },
+                    ),
+                ],
+            },
+        );
+
         this.fonts[Font.Name.ORKNEY] = new Font.Instance(
             {
                 name: Font.Name.ORKNEY,
@@ -272,20 +300,6 @@ export class Instance
             },
         );
 
-        this.fonts[Font.Name.NEAL_PALEO_HEBREW] = new Font.Instance(
-            {
-                name: Font.Name.NEAL_PALEO_HEBREW,
-                faces: [
-                    new Font.Face.Instance(
-                        {
-                            css_family: Font.Family.NEAL_PALEO_HEBREW,
-                            css_url: `fonts/Neal/CustomHebrew.ttf`,
-                        },
-                    ),
-                ],
-            },
-        );
-
         this.fonts[Font.Name.UNIFRAKTUR_MAGUNTIA] = new Font.Instance(
             {
                 name: Font.Name.UNIFRAKTUR_MAGUNTIA,
@@ -294,6 +308,20 @@ export class Instance
                         {
                             css_family: Font.Family.UNIFRAKTUR_MAGUNTIA,
                             css_url: `fonts/Unifraktur Maguntia/UnifrakturMaguntia.ttf`,
+                        },
+                    ),
+                ],
+            },
+        );
+
+        this.fonts[Font.Name.NEAL_PALEO_HEBREW] = new Font.Instance(
+            {
+                name: Font.Name.NEAL_PALEO_HEBREW,
+                faces: [
+                    new Font.Face.Instance(
+                        {
+                            css_family: Font.Family.NEAL_PALEO_HEBREW,
+                            css_url: `fonts/Neal/CustomHebrew.ttf`,
                         },
                     ),
                 ],

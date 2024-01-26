@@ -20,6 +20,8 @@ export class Instance extends Language.Instance
                         {
                             font_name: Font.Name.ALEGREYA,
                             short_font_name: Font.Name.ALEGREYA,
+                            fallback_font_names: [
+                            ],
                             styles: {
                                 "font-size": `1.1em`,
                                 "line-height": `1.1`,
@@ -38,6 +40,8 @@ export class Instance extends Language.Instance
                         {
                             font_name: Font.Name.GENTIUM,
                             short_font_name: Font.Name.GENTIUM,
+                            fallback_font_names: [
+                            ],
                             styles: {
                                 "font-size": `1.125em`,
                                 "line-height": `1.1`,

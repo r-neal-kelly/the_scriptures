@@ -20,6 +20,8 @@ export class Instance extends Language.Instance
                         {
                             font_name: Font.Name.GENTIUM,
                             short_font_name: Font.Name.GENTIUM,
+                            fallback_font_names: [
+                            ],
                             styles: {
                                 "font-size": `1.5em`,
                                 "line-height": `1.2`,

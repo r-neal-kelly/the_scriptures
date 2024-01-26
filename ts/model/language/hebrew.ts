@@ -59,6 +59,8 @@ export class Instance extends Language.Instance
                         {
                             font_name: Font.Name.EZRA,
                             short_font_name: Font.Name.EZRA,
+                            fallback_font_names: [
+                            ],
                             styles: {
                                 "font-size": `1.125em`,
                                 "line-height": `1.45`,
@@ -69,6 +71,8 @@ export class Instance extends Language.Instance
                         {
                             font_name: Font.Name.EZRA_SR,
                             short_font_name: Font.Name.EZRA_SR,
+                            fallback_font_names: [
+                            ],
                             styles: {
                                 "font-size": `1.125em`,
                                 "line-height": `1.45`,
@@ -80,6 +84,8 @@ export class Instance extends Language.Instance
                         {
                             font_name: Font.Name.NEAL_PALEO_HEBREW,
                             short_font_name: Font.Name.NEAL_PALEO_HEBREW,
+                            fallback_font_names: [
+                            ],
                             styles: {
                                 "font-size": `1.125em`,
                                 "line-height": `1.45`,
@@ -100,6 +106,8 @@ export class Instance extends Language.Instance
                         {
                             font_name: Font.Name.ANCIENT_SEMETIC_HEBREW_ANCIENT,
                             short_font_name: `AS - Ancient`,
+                            fallback_font_names: [
+                            ],
                             styles: {
                                 "font-size": `1.125em`,
                                 "line-height": `1.45`,
@@ -118,6 +126,8 @@ export class Instance extends Language.Instance
                         {
                             font_name: Font.Name.ANCIENT_SEMETIC_HEBREW_PALEO_GEZER,
                             short_font_name: `AS - Paleo Gezer`,
+                            fallback_font_names: [
+                            ],
                             styles: {
                                 "font-size": `1.125em`,
                                 "line-height": `1.45`,
@@ -136,6 +146,8 @@ export class Instance extends Language.Instance
                         {
                             font_name: Font.Name.ANCIENT_SEMETIC_HEBREW_PALEO_LACHISH,
                             short_font_name: `AS - Paleo Lachish`,
+                            fallback_font_names: [
+                            ],
                             styles: {
                                 "font-size": `1.125em`,
                                 "line-height": `1.45`,
@@ -154,6 +166,8 @@ export class Instance extends Language.Instance
                         {
                             font_name: Font.Name.ANCIENT_SEMETIC_HEBREW_PALEO_MESHA,
                             short_font_name: `AS - Paleo Mesha`,
+                            fallback_font_names: [
+                            ],
                             styles: {
                                 "font-size": `1.125em`,
                                 "line-height": `1.45`,
@@ -172,6 +186,8 @@ export class Instance extends Language.Instance
                         {
                             font_name: Font.Name.ANCIENT_SEMETIC_HEBREW_PALEO_QUMRAN,
                             short_font_name: `AS - Paleo Qumran`,
+                            fallback_font_names: [
+                            ],
                             styles: {
                                 "font-size": `1.125em`,
                                 "line-height": `1.45`,
@@ -190,6 +206,8 @@ export class Instance extends Language.Instance
                         {
                             font_name: Font.Name.ANCIENT_SEMETIC_HEBREW_PALEO_SILOAM,
                             short_font_name: `AS - Paleo Siloam`,
+                            fallback_font_names: [
+                            ],
                             styles: {
                                 "font-size": `1.125em`,
                                 "line-height": `1.45`,

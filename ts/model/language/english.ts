@@ -20,6 +20,9 @@ export class Instance extends Language.Instance
                         {
                             font_name: Font.Name.ORKNEY,
                             short_font_name: Font.Name.ORKNEY,
+                            fallback_font_names: [
+                                Font.Name.NOTO_SANS_SYMBOLS,
+                            ],
                             styles: {
                                 "font-size": `1em`,
                                 "line-height": `1.2`,

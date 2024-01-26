@@ -15,6 +15,7 @@ export class Instance
 
     private font: Font.Instance;
     private short_font_name: string;
+    private fallback_fonts: Array<Font.Instance>;
     private styles: { [css_property: string]: string };
     private treater: (text: string) => string;
 
@@ -22,11 +23,13 @@ export class Instance
         {
             font_name,
             short_font_name,
+            fallback_font_names,
             styles,
             treater = Instance.DEFAULT_TREATER,
         }: {
             font_name: Font.Name,
             short_font_name: string,
+            fallback_font_names: Array<Font.Name>,
             styles: { [css_property: string]: string },
             treater?: (text: string) => string,
         },
@@ -37,12 +40,24 @@ export class Instance
             `can't add font-family to styles when its frozen`,
         );
 
-        this.font = Fonts.Singleton().Font(font_name);
+        const fonts: Fonts.Instance = Fonts.Singleton();
+
+        this.font = fonts.Font(font_name);
         this.short_font_name = short_font_name;
+        this.fallback_fonts = fallback_font_names.map(font_name => fonts.Font(font_name));
         this.styles = styles;
         this.treater = treater;
 
-        this.styles[`font-family`] = `"${this.font.Family()}", sans-serif`;
+        const fallback_font_families: string =
+            this.fallback_fonts.map(font => `"${font.Family()}"`).join(`, `);
+
+        if (fallback_font_families !== ``) {
+            this.styles[`font-family`] =
+                `"${this.font.Family()}", ${fallback_font_families}, sans-serif`;
+        } else {
+            this.styles[`font-family`] =
+                `"${this.font.Family()}", sans-serif`;
+        }
         if (!this.styles.hasOwnProperty(`font-size`)) {
             this.styles[`font-size`] = `1em`;
         }
@@ -56,6 +71,7 @@ export class Instance
             this.styles[`word-spacing`] = `normal`;
         }
 
+        Object.freeze(this.fallback_fonts);
         Object.freeze(this.styles);
     }
 
@@ -69,6 +85,12 @@ export class Instance
         string
     {
         return this.short_font_name;
+    }
+
+    Fallback_Fonts():
+        Array<Font.Instance>
+    {
+        return Array.from(this.fallback_fonts);
     }
 
     Styles():
