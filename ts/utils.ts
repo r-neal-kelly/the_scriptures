@@ -257,3 +257,24 @@ export function Destroy_Style_Element(
 {
     document.head.removeChild(style_element);
 }
+
+export function Styles_To_Inline_String(
+    styles: { [css_property: string]: string },
+    interior_quotation_mark: string,
+):
+    string
+{
+    Assert(
+        interior_quotation_mark === `"` ||
+        interior_quotation_mark === `'`,
+        `invalid interior_quotation_mark`,
+    );
+
+    let result: string = ``;
+
+    for (const css_property of Object.keys(styles)) {
+        result += `${css_property}:${styles[css_property].replace(/"/g, interior_quotation_mark)};`;
+    }
+
+    return result;
+}

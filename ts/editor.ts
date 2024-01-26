@@ -7,7 +7,7 @@ import * as Unicode from "./unicode.js";
 import * as Keyboard from "./keyboard.js";
 
 import * as Language from "./model/language.js";
-import * as Font from "./model/font.js";
+import * as Languages from "./model/languages.js";
 import * as Fonts from "./model/fonts.js";
 import * as Model from "./model/text.js";
 
@@ -983,38 +983,61 @@ class Line
             `model's line count should be 1.`,
         );
 
+        const line: Model.Line.Instance = model.Line(0);
+
         let inner_html: string = ``;
         let is_centered: boolean | null = null;
         let padding_count: Count | null = null;
 
-        const line: Model.Line.Instance = model.Line(0);
         for (
             let column_idx = 0, column_end = line.Column_Count();
             column_idx < column_end;
             column_idx += 1
         ) {
             const column: Model.Column.Instance = line.Column(column_idx);
+
             for (
                 let row_idx = 0, row_end = column.Row_Count();
                 row_idx < row_end;
                 row_idx += 1
             ) {
                 const row: Model.Row.Instance = column.Row(row_idx);
+
                 if (is_centered == null) {
                     is_centered = row.Is_Centered();
                 }
                 if (padding_count == null) {
                     padding_count = row.Padding_Count();
                 }
+
                 for (
                     let part_idx = 0, part_end = row.Macro_Part_Count();
                     part_idx < part_end;
                     part_idx += 1
                 ) {
                     const part: Model.Part.Instance = row.Macro_Part(part_idx);
+                    const language: Language.Name | null = part.Language();
+                    const styles: string | null = language && !part.Is_Command() ?
+                        Utils.Styles_To_Inline_String(
+                            Languages.Singleton().Default_Global_Font_Styles(
+                                language,
+                            ),
+                            `'`,
+                        ) :
+                        null;
+
+                    let primary_classes: string = ``;
+                    let command_classes: string = ``;
+
                     if (part.Is_Command()) {
                         const command = part as Model.Part.Command.Instance;
-                        let command_classes: string = ``;
+
+                        if (command.Is_Good()) {
+                            primary_classes += `COMMAND`;
+                        } else {
+                            primary_classes += `BAD_COMMAND`;
+                        }
+
                         if (command.Is_Indent()) {
                             command_classes += ` INDENT`;
                         } else if (command.Is_Column()) {
@@ -1030,17 +1053,45 @@ class Line
                         } else if (command.Is_Interlinear()) {
                             command_classes += ` INTERLINEAR`;
                         }
-
-                        if (command.Is_Good()) {
-                            inner_html +=
-                                `<span class="COMMAND${command_classes}" data-language="${part.Language() || ``}">${Escape_Text(command.Value())}</span>`;
+                    } else {
+                        if (part.Is_Point()) {
+                            primary_classes += `UNKNOWN_POINT`;
+                        } else if (part.Is_Word()) {
+                            if (part.Is_Good()) {
+                                primary_classes += `KNOWN_WORD`;
+                            } else if (part.Is_Error()) {
+                                primary_classes += `KNOWN_WORD_ERROR`;
+                            } else if (part.Is_Unknown()) {
+                                primary_classes += `UNKNOWN_WORD`;
+                            } else {
+                                Utils.Assert(
+                                    false,
+                                    `unknown part state.`,
+                                );
+                            }
+                        } else if (part.Is_Break()) {
+                            if (part.Is_Good()) {
+                                primary_classes += `KNOWN_BREAK`;
+                            } else if (part.Is_Error()) {
+                                primary_classes += `KNOWN_BREAK_ERROR`;
+                            } else if (part.Is_Unknown()) {
+                                primary_classes += `UNKNOWN_BREAK`;
+                            } else {
+                                Utils.Assert(
+                                    false,
+                                    `unknown part state.`,
+                                );
+                            }
+                            primary_classes +=
+                                ` ` +
+                                (part as Model.Part.Break.Instance).Boundary();
                         } else {
-                            inner_html +=
-                                `<span class="BAD_COMMAND${command_classes}" data-language="${part.Language() || ``}">${Escape_Text(command.Value())}</span>`;
+                            Utils.Assert(
+                                false,
+                                `invalid macro part.`,
+                            );
                         }
 
-                    } else {
-                        let command_classes: string = ``;
                         if (part.Has_Italic_Style()) {
                             command_classes += ` ITALIC`;
                         }
@@ -1059,50 +1110,16 @@ class Line
                         if (part.Has_Argument_Style()) {
                             command_classes += ` ARGUMENT`;
                         }
-
-                        if (part.Is_Point()) {
-                            inner_html +=
-                                `<span class="UNKNOWN_POINT${command_classes}" data-language="${part.Language() || ``}">${Escape_Text(part.Value())}</span>`;
-                        } else if (part.Is_Word()) {
-                            if (part.Is_Good()) {
-                                inner_html +=
-                                    `<span class="KNOWN_WORD${command_classes}" data-language="${part.Language() || ``}">${Escape_Text(part.Value())}</span>`;
-                            } else if (part.Is_Error()) {
-                                inner_html +=
-                                    `<span class="KNOWN_WORD_ERROR${command_classes}" data-language="${part.Language() || ``}">${Escape_Text(part.Value())}</span>`;
-                            } else if (part.Is_Unknown()) {
-                                inner_html +=
-                                    `<span class="UNKNOWN_WORD${command_classes}" data-language="${part.Language() || ``}">${Escape_Text(part.Value())}</span>`;
-                            } else {
-                                Utils.Assert(
-                                    false,
-                                    `unknown part state.`,
-                                );
-                            }
-                        } else if (part.Is_Break()) {
-                            let boundary_class: string = ` ` + (part as Model.Part.Break.Instance).Boundary();
-                            if (part.Is_Good()) {
-                                inner_html +=
-                                    `<span class="KNOWN_BREAK${boundary_class}${command_classes}" data-language="${part.Language() || ``}">${Escape_Text(part.Value())}</span>`;
-                            } else if (part.Is_Error()) {
-                                inner_html +=
-                                    `<span class="KNOWN_BREAK_ERROR${boundary_class}${command_classes}" data-language="${part.Language() || ``}">${Escape_Text(part.Value())}</span>`;
-                            } else if (part.Is_Unknown()) {
-                                inner_html +=
-                                    `<span class="UNKNOWN_BREAK${boundary_class}${command_classes}" data-language="${part.Language() || ``}">${Escape_Text(part.Value())}</span>`;
-                            } else {
-                                Utils.Assert(
-                                    false,
-                                    `unknown part state.`,
-                                );
-                            }
-                        } else {
-                            Utils.Assert(
-                                false,
-                                `invalid macro part.`,
-                            );
-                        }
                     }
+
+                    inner_html +=
+                        `<span ` +
+                        `class="${primary_classes}${command_classes}" ` +
+                        `data-language="${language || ``}" ` +
+                        `style="${styles || ``}" ` +
+                        `>` +
+                        Escape_Text(part.Value()) +
+                        `</span>`;
                 }
             }
         }
