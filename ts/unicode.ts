@@ -92,6 +92,32 @@ export function Points(
     return result;
 }
 
+export function Has_Point(
+    text: string,
+    point: string,
+):
+    boolean
+{
+    Utils.Assert(
+        Is_Point(point),
+        `point must be a point.`,
+    );
+
+    let iter: Iterator = new Iterator(
+        {
+            text: text,
+        },
+    );
+
+    for (; !iter.Is_At_End(); iter = iter.Next()) {
+        if (iter.Point() === point) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 export function Expected_UTF_8_Unit_Count(
     text: string,
 ):
