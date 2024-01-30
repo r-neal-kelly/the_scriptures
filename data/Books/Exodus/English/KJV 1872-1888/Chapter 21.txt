@@ -2,7 +2,7 @@
 ⸨i⸩⸨sub⸩1⸨/sub⸩ Laws for menservants. ⸨sub⸩5⸨/sub⸩ For the servant whose ⸨fix:ear⸩car⸨/fix⸩ is bored. ⸨sub⸩7⸨/sub⸩ For womenservants. ⸨sub⸩12⸨/sub⸩ For manslaughter. ⸨sub⸩16⸨/sub⸩ For stealers of men. ⸨sub⸩17⸨/sub⸩ For cursers of parents. ⸨sub⸩18⸨/sub⸩ For smiters. ⸨sub⸩22⸨/sub⸩ For a hurt by chance. ⸨sub⸩28⸨/sub⸩ For an ox that goreth. ⸨sub⸩33⸨/sub⸩ For him that is an occasion of harm.⸨/i⸩
 
 ⸨sub⸩1⸨/sub⸩ ⸨sc⸩Now⸨/sc⸩ these ⸨i⸩are⸨/i⸩ the judgments which thou shalt set before them.⸨marg⸩
-⸨sub⸩2⸨/sub⸩ ⸨i⸩ᵃ⸨/i⸩ If thou buy an Hebrew servant, six years he shall serve: and in the seventh he shall go out free for nothing.⸨marg⸩⸨i⸩ᵃ⸨/i⸩ Lev⸼ 25⸼ 41⸼⸨row⸩Deut⸼ ⸨fix:15⸼⸩15⸨/fix⸩ 12⸼⸨row⸩Jer⸼ 34⸼ 14⸼
+⸨sub⸩2⸨/sub⸩ ⸨sup⸩⸨i⸩a⸨/i⸩⸨/sup⸩ If thou buy an Hebrew servant, six years he shall serve: and in the seventh he shall go out free for nothing.⸨marg⸩⸨sup⸩⸨i⸩a⸨/i⸩⸨/sup⸩ Lev⸼ 25⸼ 41⸼⸨row⸩Deut⸼ ⸨fix:15⸼⸩15⸨/fix⸩ 12⸼⸨row⸩Jer⸼ 34⸼ 14⸼
 ⸨sub⸩3⸨/sub⸩ If he came in ⸨sup⸩✝⸨/sup⸩by himself, he shall go out by himself: if he were married, then his wife shall go out with him.⸨marg⸩⸨sup⸩✝⸨/sup⸩ Heb⸼ ⸨i⸩with his body⸨/i⸩.
 ⸨sub⸩4⸨/sub⸩ If his master have given him a wife, and she have born him sons or daughters; the wife and her children shall be her masterʼs, and he shall go out by himself.⸨marg⸩
 ⸨sub⸩5⸨/sub⸩ And if the servant ⸨sup⸩✝⸨/sup⸩shall plainly say, I love my master, my wife, and my children; I will not go out free:⸨marg⸩⸨sup⸩✝⸨/sup⸩ Heb⸼ ⸨i⸩saying shall say⸨/i⸩.
@@ -12,23 +12,23 @@
 ⸨sub⸩9⸨/sub⸩ And if he have betrothed her unto his son, he shall deal with her after the manner of daughters.⸨marg⸩
 ⸨sub⸩10⸨/sub⸩ If he take him another ⸨i⸩wife⸨/i⸩⸨fix:; ⸩⸨i⸩; ⸨/i⸩⸨/fix⸩her food, her raiment, and her duty of marriage, shall he not diminish.⸨marg⸩
 ⸨sub⸩11⸨/sub⸩ And if he do not these three unto her, then shall she go out free without money.⸨marg⸩
-⸨sub⸩12⸨/sub⸩ ¶ ⸨i⸩ᵇ⸨/i⸩ He that smiteth a man, so that he die, shall be surely put to death.⸨marg⸩⸨i⸩ᵇ⸨/i⸩ Lev⸼ 24⸼ 17⸼
-⸨sub⸩13⸨/sub⸩ And if a man lie not in wait, but God deliver ⸨i⸩him⸨/i⸩ into his hand; then ⸨i⸩ᶜ⸨/i⸩ I will appoint thee a place whither he shall flee.⸨marg⸩⸨i⸩ᶜ⸨/i⸩ Deut⸼ 19⸼ 3⸼
+⸨sub⸩12⸨/sub⸩ ¶ ⸨sup⸩⸨i⸩b⸨/i⸩⸨/sup⸩ He that smiteth a man, so that he die, shall be surely put to death.⸨marg⸩⸨sup⸩⸨i⸩b⸨/i⸩⸨/sup⸩ Lev⸼ 24⸼ 17⸼
+⸨sub⸩13⸨/sub⸩ And if a man lie not in wait, but God deliver ⸨i⸩him⸨/i⸩ into his hand; then ⸨sup⸩⸨i⸩c⸨/i⸩⸨/sup⸩ I will appoint thee a place whither he shall flee.⸨marg⸩⸨sup⸩⸨i⸩c⸨/i⸩⸨/sup⸩ Deut⸼ 19⸼ 3⸼
 ⸨sub⸩14⸨/sub⸩ But if a man come presumptuously upon his neighbour, to slay him with guile; thou shalt take him from mine altar, that he may die.⸨marg⸩
 ⸨sub⸩15⸨/sub⸩ ¶ And he that smiteth his father, or his mother, shall be surely put to death.⸨marg⸩
 ⸨sub⸩16⸨/sub⸩ ¶ And he that stealeth a man, and selleth him, or if he be found in his hand, he shall surely be put to death.⸨marg⸩
-⸨sub⸩17⸨/sub⸩ ¶ And ⸨i⸩ᵈ⸨/i⸩ he that ⸨sup⸩❙⸨/sup⸩curseth his father, or his mother, shall surely be put to death.⸨marg⸩⸨i⸩ᵈ⸨/i⸩ Lev⸼ 20⸼ 9⸼⸨row⸩Prov⸼ 20⸼ 20⸼⸨row⸩Matt⸼ 15⸼ 4⸼⸨row⸩Mark 7⸼ 10⸼⸨row⸩⸨sup⸩❙⸨/sup⸩ Or, ⸨i⸩revileth⸨/i⸩.
+⸨sub⸩17⸨/sub⸩ ¶ And ⸨sup⸩⸨i⸩d⸨/i⸩⸨/sup⸩ he that ⸨sup⸩❙⸨/sup⸩curseth his father, or his mother, shall surely be put to death.⸨marg⸩⸨sup⸩⸨i⸩d⸨/i⸩⸨/sup⸩ Lev⸼ 20⸼ 9⸼⸨row⸩Prov⸼ 20⸼ 20⸼⸨row⸩Matt⸼ 15⸼ 4⸼⸨row⸩Mark 7⸼ 10⸼⸨row⸩⸨sup⸩❙⸨/sup⸩ Or, ⸨i⸩revileth⸨/i⸩.
 ⸨sub⸩18⸨/sub⸩ ¶ And if men strive together, and one smite ⸨sup⸩❙⸨/sup⸩another with a stone, or with ⸨i⸩his⸨/i⸩ fist, and he die not, but keepeth ⸨i⸩his⸨/i⸩ bed:⸨marg⸩⸨sup⸩❙⸨/sup⸩ Or, ⸨i⸩his neighbour⸨/i⸩.
 ⸨sub⸩19⸨/sub⸩ If he rise again, and walk abroad upon his staff, then shall he that smote ⸨i⸩him⸨/i⸩ be quit: only he shall pay ⸨i⸩for⸨/i⸩ ⸨sup⸩✝⸨/sup⸩the loss of his time, and shall cause ⸨i⸩him⸨/i⸩ to be thoroughly healed.⸨marg⸩⸨sup⸩✝⸨/sup⸩ Heb⸼⸨i⸩ [his] ceasing⸨/i⸩.
 ⸨sub⸩20⸨/sub⸩ ¶ And if a man smite his servant, or his maid, with a rod, and he die under his hand; he shall be surely ⸨sup⸩✝⸨/sup⸩punished.⸨marg⸩⸨sup⸩✝⸨/sup⸩ Heb⸼ ⸨i⸩avenged⸨/i⸩.
 ⸨sub⸩21⸨/sub⸩ Notwithstanding, if he continue a day or two, he shall not be punished: for he ⸨i⸩is⸨/i⸩ his money.⸨marg⸩
 ⸨sub⸩22⸨/sub⸩ ¶ If men strive, and hurt a woman with child, so that her fruit depart ⸨i⸩from her⸨/i⸩, and yet no mischief follow: he shall be surely punished, according as the womanʼs husband will lay upon him; and he shall pay as the judges ⸨i⸩determine⸨/i⸩.⸨marg⸩
 ⸨sub⸩23⸨/sub⸩ And if ⸨i⸩any⸨/i⸩ mischief follow, then thou shalt give life for life,⸨marg⸩
-⸨sub⸩24⸨/sub⸩ ⸨i⸩ᵉ⸨/i⸩ Eye for eye, tooth for tooth, hand for hand, foot for foot,⸨marg⸩⸨i⸩ᵉ⸨/i⸩ Lev⸼ 24⸼ 20⸼⸨row⸩Deut⸼ 19⸼ 21⸼⸨row⸩Matt⸼ 5⸼ 38⸼
+⸨sub⸩24⸨/sub⸩ ⸨sup⸩⸨i⸩e⸨/i⸩⸨/sup⸩ Eye for eye, tooth for tooth, hand for hand, foot for foot,⸨marg⸩⸨sup⸩⸨i⸩e⸨/i⸩⸨/sup⸩ Lev⸼ 24⸼ 20⸼⸨row⸩Deut⸼ 19⸼ 21⸼⸨row⸩Matt⸼ 5⸼ 38⸼
 ⸨sub⸩25⸨/sub⸩ Burning for burning, wound for wound, stripe for stripe.⸨marg⸩
 ⸨sub⸩26⸨/sub⸩ ¶ And if a man smite the eye of his servant, or the eye of his maid, that it perish; he shall let him go free for his eyeʼs sake.⸨marg⸩
 ⸨sub⸩27⸨/sub⸩ And if he smite out his manservantʼs tooth, or his maidservantʼs tooth; he shall let him go free for his toothʼs sake.⸨marg⸩
-⸨sub⸩28⸨/sub⸩ ¶ If an ox gore a man or a woman, that they die: then ⸨i⸩ᶠ⸨/i⸩ the ox shall be surely stoned, and his flesh shall not be eaten; but the owner of the ox ⸨i⸩shall be⸨/i⸩ quit.⸨marg⸩⸨i⸩ᶠ⸨/i⸩ Gen⸼ ⸨fix:9⸼⸩9⸨/fix⸩ ⸨fix:5⸼⸩5⸨/fix⸩
+⸨sub⸩28⸨/sub⸩ ¶ If an ox gore a man or a woman, that they die: then ⸨sup⸩⸨i⸩f⸨/i⸩⸨/sup⸩ the ox shall be surely stoned, and his flesh shall not be eaten; but the owner of the ox ⸨i⸩shall be⸨/i⸩ quit.⸨marg⸩⸨sup⸩⸨i⸩f⸨/i⸩⸨/sup⸩ Gen⸼ ⸨fix:9⸼⸩9⸨/fix⸩ ⸨fix:5⸼⸩5⸨/fix⸩
 ⸨sub⸩29⸨/sub⸩ But if the ox were wont to push with his horn in time past, and it hath been testified to his owner, and he hath not kept him in, but that he hath killed a man or a woman; the ox shall be stoned, and his owner also shall be put to death.⸨marg⸩
 ⸨sub⸩30⸨/sub⸩ If there be laid on him a sum of money, then he shall give for the ransom of his life whatsoever is laid upon him.⸨marg⸩
 ⸨sub⸩31⸨/sub⸩ Whether he have gored a son, or have gored a daughter, according to this judgment shall it be done unto him.⸨marg⸩

@@ -1,10 +1,10 @@
 ⸨cen⸩CHAPTER X⸼
 ⸨i⸩⸨sub⸩1⸨/sub⸩ God threateneth to send locusts. ⸨sub⸩7⸨/sub⸩ Pharaoh, moved by his servants, inclineth to let the Israelites go. ⸨sub⸩12⸨/sub⸩ The plague of the locusts. ⸨sub⸩16⸨/sub⸩ Pharaoh sueth to Moses. ⸨sub⸩21⸨/sub⸩ The plague of darkness. ⸨sub⸩24⸨/sub⸩ Pharaoh sueth unto Moses, ⸨sub⸩27⸨/sub⸩ but yet is hardened.⸨/i⸩
 
-⸨sub⸩1⸨/sub⸩ ⸨sc⸩And⸨/sc⸩ the ⸨sc⸩Lord⸨/sc⸩ said unto Moses, Go in unto Pharaoh: for ⸨i⸩ᵃ⸨/i⸩ I have hardened his heart, and the heart of his servants, that I might shew these my signs before him:⸨marg⸩⸨i⸩ᵃ⸨/i⸩ ⸨fix:chap⸼⸩chap⸨/fix⸩ ⸨fix:4⸼⸩4⸨/fix⸩ 21⸼
+⸨sub⸩1⸨/sub⸩ ⸨sc⸩And⸨/sc⸩ the ⸨sc⸩Lord⸨/sc⸩ said unto Moses, Go in unto Pharaoh: for ⸨sup⸩⸨i⸩a⸨/i⸩⸨/sup⸩ I have hardened his heart, and the heart of his servants, that I might shew these my signs before him:⸨marg⸩⸨sup⸩⸨i⸩a⸨/i⸩⸨/sup⸩ ⸨fix:chap⸼⸩chap⸨/fix⸩ ⸨fix:4⸼⸩4⸨/fix⸩ 21⸼
 ⸨sub⸩2⸨/sub⸩ And that thou mayest tell in the ears of thy son, and of thy sonʼs son, what things I have wrought in Egypt, and my signs which I have done among them; that ye may know how that I ⸨i⸩am⸨/i⸩ the ⸨sc⸩Lord⸨/sc⸩.⸨marg⸩
 ⸨sub⸩3⸨/sub⸩ And Moses and Aaron came in unto Pharaoh, and said unto him, Thus saith the ⸨sc⸩Lord⸨/sc⸩ God of the Hebrews, How long wilt thou refuse to humble thyself before me? let my people go, that they may serve me.⸨marg⸩
-⸨sub⸩4⸨/sub⸩ Else, if thou refuse to let my people go, behold, to morrow will I bring the ⸨i⸩ᵇ⸨/i⸩ locusts into thy coast:⸨marg⸩⸨i⸩⸨fix:ᵇ⸩·⸨/fix⸩⸨/i⸩ Wisd⸼ 16⸼ 9⸼
+⸨sub⸩4⸨/sub⸩ Else, if thou refuse to let my people go, behold, to morrow will I bring the ⸨sup⸩⸨i⸩b⸨/i⸩⸨/sup⸩ locusts into thy coast:⸨marg⸩⸨sup⸩⸨i⸩⸨fix:b⸩·⸨/fix⸩⸨/i⸩⸨/sup⸩ Wisd⸼ 16⸼ 9⸼
 ⸨sub⸩5⸨/sub⸩ And they shall cover the ⸨sup⸩✝⸨/sup⸩face of the earth, that one cannot be able to see the earth: and they shall eat the residue of that which is escaped, which remaineth unto you from the hail, and shall eat every tree which groweth for you out of the field:⸨marg⸩⸨sup⸩✝⸨/sup⸩ Heb⸼ ⸨i⸩eye⸨/i⸩.
 ⸨sub⸩6⸨/sub⸩ And they shall fill thy houses, and the houses of all thy servants, and the houses of all the Egyptians; which neither thy fathers, nor thy fathersʼ fathers have seen, since the day that they were upon the earth unto this day. And he turned himself, and went out from Pharaoh.⸨marg⸩
 ⸨sub⸩7⸨/sub⸩ And Pharaohʼs servants said unto him, How long shall this man be a snare unto us? let the men go, that they may serve the ⸨sc⸩Lord⸨/sc⸩ their God: knowest thou not yet that Egypt is destroyed?⸨marg⸩
@@ -23,7 +23,7 @@
 ⸨sub⸩20⸨/sub⸩ But the ⸨sc⸩Lord⸨/sc⸩ hardened Pharaohʼs heart, so that he would not let the children of Israel go.⸨marg⸩
 ⸨sub⸩21⸨/sub⸩ ¶ And the ⸨sc⸩Lord⸨/sc⸩ said unto Moses, Stretch out thine hand toward heaven, that there may be darkness over the land of Egypt, ⸨sup⸩✝⸨/sup⸩even darkness ⸨i⸩which⸨/i⸩ may be felt.⸨marg⸩⸨sup⸩✝⸨/sup⸩ Heb⸼ ⸨i⸩that one may feel darkness⸨/i⸩.
 ⸨sub⸩22⸨/sub⸩ And Moses stretched forth his hand toward heaven; and there was a thick darkness in all the land of Egypt three days:⸨marg⸩
-⸨sub⸩23⸨/sub⸩ They saw not one another, neither rose any from his place for three days: ⸨i⸩ᶜ⸨/i⸩ but all the children of Israel had light in their dwellings.⸨marg⸩⸨i⸩ᶜ⸨/i⸩ Wisd⸼ ⸨fix:18⸼⸩18⸨/fix⸩ 1⸼
+⸨sub⸩23⸨/sub⸩ They saw not one another, neither rose any from his place for three days: ⸨sup⸩⸨i⸩c⸨/i⸩⸨/sup⸩ but all the children of Israel had light in their dwellings.⸨marg⸩⸨sup⸩⸨i⸩c⸨/i⸩⸨/sup⸩ Wisd⸼ ⸨fix:18⸼⸩18⸨/fix⸩ 1⸼
 ⸨sub⸩24⸨/sub⸩ ¶ And Pharaoh called unto Moses, and said, Go ye, serve the ⸨sc⸩Lord⸨/sc⸩; only let your flocks and your herds be stayed: let your little ones also go with you.⸨marg⸩
 ⸨sub⸩25⸨/sub⸩ And Moses said, Thou must give ⸨sup⸩✝⸨/sup⸩us also sacrifices and burnt offerings, that we may sacrifice unto the ⸨sc⸩Lord⸨/sc⸩ our God.⸨marg⸩⸨sup⸩✝⸨/sup⸩ Heb⸼ ⸨i⸩into our hands⸨/i⸩.
 ⸨sub⸩26⸨/sub⸩ Our cattle also shall go with us; there shall not an hoof be left behind; for thereof must we take to serve the ⸨sc⸩Lord⸨/sc⸩ our God; and we know not with what we must serve the ⸨sc⸩Lord⸨/sc⸩, until we come thither.⸨marg⸩

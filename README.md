@@ -84,9 +84,9 @@ We have plenty of other materials planned for addition into the program as we pr
     - French: 2 (~0%)
     - Italian: 0 (~0%)
     - Dutch: 0 (~0%)
-- Total Parts: 1,615,184
+- Total Parts: 1,616,676
     - <i>By Language</i>
-        - English: 946,551 (~59%)
+        - English: 948,043 (~59%)
         - Hebrew: 184,062 (~11%)
         - Greek: 270,584 (~17%)
         - Latin: 212,398 (~13%)
@@ -108,10 +108,10 @@ We have plenty of other materials planned for addition into the program as we pr
             - French: 502 (~0%)
             - Italian: 9 (~0%)
             - Dutch: 21 (~0%)
-        - Meta-Words: 88,047 (~5%)
-            - English: 46,451 (~53%)
+        - Meta-Words: 89,539 (~6%)
+            - English: 47,943 (~54%)
             - Hebrew: 16,094 (~18%)
-            - Greek: 12,873 (~15%)
+            - Greek: 12,873 (~14%)
             - Latin: 12,541 (~14%)
             - Aramaic: 0 (~0%)
             - Arabic: 0 (~0%)
@@ -130,9 +130,9 @@ We have plenty of other materials planned for addition into the program as we pr
             - French: 474 (~0%)
             - Italian: 8 (~0%)
             - Dutch: 12 (~0%)
-- Total Unicode Points: 5,276,544
+- Total Unicode Points: 5,284,750
     - <i>By Language</i>
-        - English: 2,512,993 (~48%)
+        - English: 2,521,199 (~48%)
         - Hebrew: 906,627 (~17%)
         - Greek: 1,064,260 (~20%)
         - Latin: 787,164 (~15%)
@@ -154,11 +154,11 @@ We have plenty of other materials planned for addition into the program as we pr
             - French: 2,647 (~0%)
             - Italian: 53 (~0%)
             - Dutch: 150 (~0%)
-        - Meta-Letters: 642,885 (~12%)
-            - English: 233,849 (~36%)
-            - Hebrew: 152,853 (~24%)
+        - Meta-Letters: 651,091 (~12%)
+            - English: 242,055 (~37%)
+            - Hebrew: 152,853 (~23%)
             - Greek: 129,231 (~20%)
-            - Latin: 126,634 (~20%)
+            - Latin: 126,634 (~19%)
             - Aramaic: 0 (~0%)
             - Arabic: 0 (~0%)
             - German: 180 (~0%)

@@ -2,12 +2,12 @@
 ⸨i⸩⸨sub⸩1⸨/sub⸩ Judah begetteth Er, Onan, and Shelah. ⸨sub⸩6⸨/sub⸩ Er marrieth Tamar. ⸨sub⸩8⸨/sub⸩ The trespass of Onan. ⸨sub⸩11⸨/sub⸩ Tamar stayeth for Shelah. ⸨sub⸩13⸨/sub⸩ She deceiveth Judah. ⸨sub⸩27⸨/sub⸩ She beareth twins, Pharez and Zarah.⸨/i⸩
 
 ⸨sub⸩1⸨/sub⸩ ⸨sc⸩And⸨/sc⸩ it came to pass at that time, that Judah went down from his brethren, and turned in to a certain Adullamite, whose name ⸨i⸩was⸨/i⸩ Hirah.⸨marg⸩
-⸨sub⸩2⸨/sub⸩ And Judah saw there a daughter of a certain Canaanite, whose name ⸨i⸩was⸨/i⸩ ⸨i⸩ᵃ⸨/i⸩ Shuah; and he took her, and went in unto her.⸨marg⸩⸨i⸩ᵃ⸨/i⸩ 1 Chron⸼ 2⸼ 3⸼
+⸨sub⸩2⸨/sub⸩ And Judah saw there a daughter of a certain Canaanite, whose name ⸨i⸩was⸨/i⸩ ⸨sup⸩⸨i⸩a⸨/i⸩⸨/sup⸩ Shuah; and he took her, and went in unto her.⸨marg⸩⸨sup⸩⸨i⸩a⸨/i⸩⸨/sup⸩ 1 Chron⸼ 2⸼ 3⸼
 ⸨sub⸩3⸨/sub⸩ And she conceived, and bare a son; and he called his name Er.⸨marg⸩
-⸨sub⸩4⸨/sub⸩ ⸨i⸩ᵇ⸨/i⸩ And she conceived again, and bare a son; and she called his name Onan.⸨marg⸩⸨i⸩ᵇ⸨/i⸩ Numb⸼ 26⸼ 19⸼
+⸨sub⸩4⸨/sub⸩ ⸨sup⸩⸨i⸩b⸨/i⸩⸨/sup⸩ And she conceived again, and bare a son; and she called his name Onan.⸨marg⸩⸨sup⸩⸨i⸩b⸨/i⸩⸨/sup⸩ Numb⸼ 26⸼ 19⸼
 ⸨sub⸩5⸨/sub⸩ And she yet again conceived, and bare a son; and called his name Shelah: and he was at Chezib, when she bare him.⸨marg⸩
 ⸨sub⸩6⸨/sub⸩ And Judah took a wife for Er his firstborn, whose name ⸨i⸩was⸨/i⸩ Tamar.⸨marg⸩
-⸨sub⸩7⸨/sub⸩ And ⸨i⸩ᶜ⸨/i⸩ Er, Judahʼs firstborn, was wicked in the sight of the ⸨sc⸩Lord⸨/sc⸩; and the ⸨sc⸩Lord⸨/sc⸩ slew him.⸨marg⸩⸨i⸩ᶜ⸨/i⸩ Numb⸼ 26⸼ 19⸼
+⸨sub⸩7⸨/sub⸩ And ⸨sup⸩⸨i⸩c⸨/i⸩⸨/sup⸩ Er, Judahʼs firstborn, was wicked in the sight of the ⸨sc⸩Lord⸨/sc⸩; and the ⸨sc⸩Lord⸨/sc⸩ slew him.⸨marg⸩⸨sup⸩⸨i⸩c⸨/i⸩⸨/sup⸩ Numb⸼ 26⸼ 19⸼
 ⸨sub⸩8⸨/sub⸩ And Judah said unto Onan, Go in unto thy brotherʼs wife, and marry her, and raise up seed to thy brother.⸨marg⸩
 ⸨sub⸩9⸨/sub⸩ And Onan knew that the seed should not be his; and it came to pass, when he went in unto his brotherʼs wife, that he spilled ⸨i⸩it⸨/i⸩ on the ground, lest that he should give seed to his brother.⸨marg⸩
 ⸨sub⸩10⸨/sub⸩ And the thing which he did ⸨sup⸩✝⸨/sup⸩displeased the ⸨sc⸩Lord⸨/sc⸩: wherefore he slew him also.⸨marg⸩⸨sup⸩✝⸨/sup⸩ Heb⸼ ⸨i⸩was evil in the eyes of the ⸨fix:⸨sc⸩Lord⸨/sc⸩⸩LORD⸨/fix⸩⸨/i⸩.
@@ -29,5 +29,5 @@
 ⸨sub⸩26⸨/sub⸩ And Judah acknowledged ⸨i⸩them⸨/i⸩, and said, She hath been more righteous than I; because that I gave her not to Shelah my son. And he knew her again no more.⸨marg⸩
 ⸨sub⸩27⸨/sub⸩ ¶ And it came to pass in the time of her travail, that, behold, twins ⸨i⸩were⸨/i⸩ in her womb.⸨marg⸩
 ⸨sub⸩28⸨/sub⸩ And it came to pass, when she travailed, that ⸨i⸩the one⸨/i⸩ put out ⸨i⸩his⸨/i⸩ hand: and the midwife took and bound upon his hand a scarlet thread, saying, This came out first.⸨marg⸩
-⸨sub⸩29⸨/sub⸩ And it came to pass, as he drew back his hand, that, behold, his brother came out: and she said, ⸨sup⸩❙⸨/sup⸩How hast thou broken forth? ⸨i⸩this⸨/i⸩ breach ⸨i⸩be⸨/i⸩ upon thee: therefore his name was called⸨fix: ⸨i⸩ᵈ⸨/i⸩ ⸨sup⸩❙⸨/sup⸩⸩ ⸨sup⸩❙⸨/sup⸩⸨i⸩ᵈ⸨/i⸩ ⸨/fix⸩Pharez.⸨marg⸩⸨sup⸩❙⸨/sup⸩ Or, ⸨i⸩Wherefore hast thou made⸨/i⸩ this ⸨i⸩breach against thee?⸨/i⸩⸨row⸩⸨i⸩ᵈ⸨/i⸩ 1 Chron⸼ 2⸼ 4⸼⸨row⸩Matt⸼ 1⸼ 3⸼⸨row⸩⸨sup⸩❙⸨/sup⸩ That is, ⸨i⸩a breach⸨/i⸩.
+⸨sub⸩29⸨/sub⸩ And it came to pass, as he drew back his hand, that, behold, his brother came out: and she said, ⸨sup⸩❙⸨/sup⸩How hast thou broken forth? ⸨i⸩this⸨/i⸩ breach ⸨i⸩be⸨/i⸩ upon thee: therefore his name was called⸨fix: ⸨sup⸩⸨i⸩d⸨/i⸩⸨/sup⸩ ⸨sup⸩❙⸨/sup⸩⸩ ⸨sup⸩❙⸨/sup⸩⸨sup⸩⸨i⸩d⸨/i⸩⸨/sup⸩ ⸨/fix⸩Pharez.⸨marg⸩⸨sup⸩❙⸨/sup⸩ Or, ⸨i⸩Wherefore hast thou made⸨/i⸩ this ⸨i⸩breach against thee?⸨/i⸩⸨row⸩⸨sup⸩⸨i⸩d⸨/i⸩⸨/sup⸩ 1 Chron⸼ 2⸼ 4⸼⸨row⸩Matt⸼ 1⸼ 3⸼⸨row⸩⸨sup⸩❙⸨/sup⸩ That is, ⸨i⸩a breach⸨/i⸩.
 ⸨sub⸩30⸨/sub⸩ And afterward came out his brother, that had the scarlet thread upon his hand: and his name was called Zarah.⸨marg⸩

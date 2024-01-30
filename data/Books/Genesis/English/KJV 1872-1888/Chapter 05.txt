@@ -1,10 +1,10 @@
 ⸨cen⸩CHAPTER V⸼
 ⸨i⸩⸨sub⸩1⸨/sub⸩ The genealogy, age, and death of the patriarchs from Adam unto Noah. ⸨sub⸩24⸨/sub⸩ The godliness and translation of Enoch.⸨/i⸩
 
-⸨sub⸩1⸨/sub⸩ ⸨sc⸩This⸨/sc⸩ ⸨i⸩is⸨/i⸩ the ⸨i⸩ᵃ⸨/i⸩ book of the generations of Adam. In the day that God created man, in the likeness of God made he him;⸨marg⸩⸨i⸩ᵃ⸨/i⸩ 1 Chron⸼ 1⸼ 1⸼
-⸨sub⸩2⸨/sub⸩ ⸨i⸩ᵇ⸨/i⸩ Male and female created he them; and blessed them, and called their name Adam, in the day when they were created.⸨marg⸩⸨i⸩ᵇ⸨/i⸩ Wisd⸼ 2⸼ 23⸼
+⸨sub⸩1⸨/sub⸩ ⸨sc⸩This⸨/sc⸩ ⸨i⸩is⸨/i⸩ the ⸨sup⸩⸨i⸩a⸨/i⸩⸨/sup⸩ book of the generations of Adam. In the day that God created man, in the likeness of God made he him;⸨marg⸩⸨sup⸩⸨i⸩a⸨/i⸩⸨/sup⸩ 1 Chron⸼ 1⸼ 1⸼
+⸨sub⸩2⸨/sub⸩ ⸨sup⸩⸨i⸩b⸨/i⸩⸨/sup⸩ Male and female created he them; and blessed them, and called their name Adam, in the day when they were created.⸨marg⸩⸨sup⸩⸨i⸩b⸨/i⸩⸨/sup⸩ Wisd⸼ 2⸼ 23⸼
 ⸨sub⸩3⸨/sub⸩ ¶ And Adam lived an hundred and thirty years, and begat ⸨i⸩a son⸨/i⸩ in his own likeness, after his image; and called his name Seth:⸨marg⸩
-⸨sub⸩4⸨/sub⸩ ⸨i⸩ᶜ⸨/i⸩ And the days of Adam after he had begotten Seth were eight hundred years: and he begat sons and daughters:⸨marg⸩⸨i⸩ᶜ⸨/i⸩ 1 ⸨fix:Chron⸼⸩Chron⸨/fix⸩ ⸨fix:1⸼⸩1⸨/fix⸩⸨fix: ⸩, ⸨/fix⸩1⸼ &c⸼
+⸨sub⸩4⸨/sub⸩ ⸨sup⸩⸨i⸩c⸨/i⸩⸨/sup⸩ And the days of Adam after he had begotten Seth were eight hundred years: and he begat sons and daughters:⸨marg⸩⸨sup⸩⸨i⸩c⸨/i⸩⸨/sup⸩ 1 ⸨fix:Chron⸼⸩Chron⸨/fix⸩ ⸨fix:1⸼⸩1⸨/fix⸩⸨fix: ⸩, ⸨/fix⸩1⸼ &c⸼
 ⸨sub⸩5⸨/sub⸩ And all the days that Adam lived were nine hundred and thirty years: and he died.⸨marg⸩
 ⸨sub⸩6⸨/sub⸩ And Seth lived an hundred and five years, and begat ⸨sup⸩✝⸨/sup⸩Enos:⸨marg⸩⸨sup⸩✝⸨/sup⸩ Heb⸼ ⸨i⸩Enosh⸨/i⸩⸨fix:.⸩⸨/fix⸩
 ⸨sub⸩7⸨/sub⸩ And Seth lived after he begat Enos eight hundred and seven years, and begat sons and daughters:⸨marg⸩
@@ -24,7 +24,7 @@
 ⸨sub⸩21⸨/sub⸩ ¶ And Enoch lived sixty and five years, and begat ⸨sup⸩✝⸨/sup⸩Methuselah:⸨marg⸩⸨sup⸩✝⸨/sup⸩ Gr⸼ ⸨i⸩Mathusala⸨/i⸩.
 ⸨sub⸩22⸨/sub⸩ And Enoch walked with God after he begat Methuselah three hundred years, and begat sons and daughters:⸨marg⸩
 ⸨sub⸩23⸨/sub⸩ And all the days of Enoch were three hundred sixty and five years:⸨marg⸩
-⸨sub⸩24⸨/sub⸩ And ⸨i⸩ᵈ⸨/i⸩ Enoch walked with God: and he ⸨i⸩was⸨/i⸩ not; for God took him.⸨marg⸩⸨i⸩ᵈ⸨/i⸩ Ecclus⸼ 44⸼ 16⸼⸨row⸩⸨fix:Hebr⸼⸩Heb⸼⸨/fix⸩ 11⸼ 5⸼
+⸨sub⸩24⸨/sub⸩ And ⸨sup⸩⸨i⸩d⸨/i⸩⸨/sup⸩ Enoch walked with God: and he ⸨i⸩was⸨/i⸩ not; for God took him.⸨marg⸩⸨sup⸩⸨i⸩d⸨/i⸩⸨/sup⸩ Ecclus⸼ 44⸼ 16⸼⸨row⸩⸨fix:Hebr⸼⸩Heb⸼⸨/fix⸩ 11⸼ 5⸼
 ⸨sub⸩25⸨/sub⸩ And Methuselah lived an hundred eighty and seven years, and begat ⸨sup⸩✝⸨/sup⸩Lamech:⸨marg⸩⸨sup⸩✝⸨/sup⸩ Heb⸼ ⸨i⸩Lemech⸨/i⸩.
 ⸨sub⸩26⸨/sub⸩ And Methuselah lived after he begat Lamech seven hundred eighty and two years, and begat sons and daughters:⸨marg⸩
 ⸨sub⸩27⸨/sub⸩ And all the days of Methuselah were nine hundred sixty and nine years: and he died.⸨marg⸩

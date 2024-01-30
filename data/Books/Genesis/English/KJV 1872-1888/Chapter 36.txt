@@ -4,13 +4,13 @@
 ⸨sub⸩1⸨/sub⸩ ⸨sc⸩Now⸨/sc⸩ these ⸨i⸩are⸨/i⸩ the generations of Esau, who ⸨i⸩is⸨/i⸩ Edom.⸨marg⸩
 ⸨sub⸩2⸨/sub⸩ Esau took his wives of the daughters of Canaan; Adah the daughter of Elon the Hittite, and Aholibamah the daughter of Anah the daughter of Zibeon the Hivite;⸨marg⸩
 ⸨sub⸩3⸨/sub⸩ And Bashemath Ishmaelʼs daughter, sister of Nebajoth.⸨marg⸩
-⸨sub⸩4⸨/sub⸩ And ⸨i⸩ᵃ⸨/i⸩ Adah bare to Esau Eliphaz; and Bashemath bare Reuel;⸨marg⸩⸨i⸩ᵃ⸨/i⸩ 1 Chron⸼ 1⸼ 35⸼
+⸨sub⸩4⸨/sub⸩ And ⸨sup⸩⸨i⸩a⸨/i⸩⸨/sup⸩ Adah bare to Esau Eliphaz; and Bashemath bare Reuel;⸨marg⸩⸨sup⸩⸨i⸩a⸨/i⸩⸨/sup⸩ 1 Chron⸼ 1⸼ 35⸼
 ⸨sub⸩5⸨/sub⸩ And Aholibamah bare Jeush, and Jaalam, and Korah: these ⸨i⸩are⸨/i⸩ the sons of Esau, which were born unto him in the land of Canaan.⸨marg⸩
 ⸨sub⸩6⸨/sub⸩ And Esau took his wives, and his sons, and his daughters, and all the ⸨sup⸩✝⸨/sup⸩persons of his house, and his cattle, and all his beasts, and all his substance, which he had got in the land of Canaan; and went into the country from the face of his brother Jacob.⸨marg⸩⸨sup⸩✝⸨/sup⸩ Heb⸼ ⸨i⸩souls⸨/i⸩⸨fix:.⸩⸨/fix⸩
 ⸨sub⸩7⸨/sub⸩ For their riches were more than that they might dwell together; and the land wherein they were strangers could not bear them because of their cattle.⸨marg⸩
-⸨sub⸩8⸨/sub⸩ Thus dwelt Esau in ⸨i⸩ᵇ⸨/i⸩ mount Seir: Esau ⸨i⸩is⸨/i⸩ Edom.⸨marg⸩⸨i⸩ᵇ⸨/i⸩ Josh⸼ 24⸼ 4⸼
+⸨sub⸩8⸨/sub⸩ Thus dwelt Esau in ⸨sup⸩⸨i⸩b⸨/i⸩⸨/sup⸩ mount Seir: Esau ⸨i⸩is⸨/i⸩ Edom.⸨marg⸩⸨sup⸩⸨i⸩b⸨/i⸩⸨/sup⸩ Josh⸼ 24⸼ 4⸼
 ⸨sub⸩9⸨/sub⸩ ¶ And these ⸨i⸩are⸨/i⸩ the generations of Esau the father of ⸨sup⸩✝⸨/sup⸩the Edomites in mount Seir:⸨marg⸩⸨sup⸩✝⸨/sup⸩ Heb⸼ ⸨i⸩Edom⸨/i⸩.
-⸨sub⸩10⸨/sub⸩ These ⸨i⸩are⸨/i⸩ the names of Esauʼs sons; ⸨i⸩ᶜ⸨/i⸩ Eliphaz the son of Adah the wife of Esau, Reuel the son of Bashemath the wife of Esau.⸨marg⸩⸨i⸩ᶜ⸨/i⸩ 1 Chron⸼ 1⸼ 35, &c⸼
+⸨sub⸩10⸨/sub⸩ These ⸨i⸩are⸨/i⸩ the names of Esauʼs sons; ⸨sup⸩⸨i⸩c⸨/i⸩⸨/sup⸩ Eliphaz the son of Adah the wife of Esau, Reuel the son of Bashemath the wife of Esau.⸨marg⸩⸨sup⸩⸨i⸩c⸨/i⸩⸨/sup⸩ 1 Chron⸼ 1⸼ 35, &c⸼
 ⸨sub⸩11⸨/sub⸩ And the sons of Eliphaz were Teman, Omar, Zepho, and Gatam, and Kenaz.⸨marg⸩
 ⸨sub⸩12⸨/sub⸩ And Timna was concubine to Eliphaz Esauʼs son; and she bare to Eliphaz Amalek: these ⸨i⸩were⸨/i⸩ the sons of Adah Esauʼs wife.⸨marg⸩
 ⸨sub⸩13⸨/sub⸩ And these ⸨i⸩are⸨/i⸩ the sons of Reuel; Nahath, and Zerah, Shammah, and Mizzah: these were the sons of Bashemath Esauʼs wife.⸨marg⸩
@@ -20,7 +20,7 @@
 ⸨sub⸩17⸨/sub⸩ ¶ And these ⸨i⸩are⸨/i⸩ the sons of Reuel Esauʼs son; duke Nahath, duke Zerah, duke Shammah, duke Mizzah: these ⸨i⸩are⸨/i⸩ the dukes ⸨i⸩that came⸨/i⸩ of Reuel in the land of Edom; these ⸨i⸩are⸨/i⸩ the sons of Bashemath Esauʼs wife.⸨marg⸩
 ⸨sub⸩18⸨/sub⸩ ¶ And these ⸨i⸩are⸨/i⸩ the sons of Aholibamah Esauʼs wife; duke Jeush, duke Jaalam, duke Korah: these ⸨i⸩were⸨/i⸩ the dukes ⸨i⸩that came⸨/i⸩ of Aholibamah the daughter of Anah, Esauʼs wife.⸨marg⸩
 ⸨sub⸩19⸨/sub⸩ These ⸨i⸩are⸨/i⸩ the sons of Esau, who ⸨i⸩is⸨/i⸩ Edom, and these ⸨i⸩are⸨/i⸩ their dukes.⸨marg⸩
-⸨sub⸩20⸨/sub⸩ ¶ ⸨i⸩ᵈ⸨/i⸩ These ⸨i⸩are⸨/i⸩ the sons of Seir the Horite, who inhabited the land; Lotan, and Shobal, and Zibeon, and Anah,⸨marg⸩⸨i⸩ᵈ⸨/i⸩ 1 Chron⸼ 1⸼ 38⸼
+⸨sub⸩20⸨/sub⸩ ¶ ⸨sup⸩⸨i⸩d⸨/i⸩⸨/sup⸩ These ⸨i⸩are⸨/i⸩ the sons of Seir the Horite, who inhabited the land; Lotan, and Shobal, and Zibeon, and Anah,⸨marg⸩⸨sup⸩⸨i⸩d⸨/i⸩⸨/sup⸩ 1 Chron⸼ 1⸼ 38⸼
 ⸨sub⸩21⸨/sub⸩ And Dishon, and Ezer, and Dishan: these ⸨i⸩are⸨/i⸩ the dukes of the Horites, the children of Seir in the land of Edom.⸨marg⸩
 ⸨sub⸩22⸨/sub⸩ And the children of Lotan were Hori and Hemam; and Lotanʼs sister ⸨i⸩was⸨/i⸩ Timna.⸨marg⸩
 ⸨sub⸩23⸨/sub⸩ And the children of Shobal ⸨i⸩were⸨/i⸩ these; Alvan, and Manahath, and Ebal, Shepho, and Onam.⸨marg⸩

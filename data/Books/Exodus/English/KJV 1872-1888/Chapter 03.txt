@@ -2,11 +2,11 @@
 ⸨i⸩⸨sub⸩1⸨/sub⸩ Moses keepeth Jethroʼs flock. ⸨sub⸩2⸨/sub⸩ God appeareth to him in a burning bush. ⸨sub⸩9⸨/sub⸩ He sendeth him to deliver Israel. ⸨sub⸩14⸨/sub⸩ The name of God. ⸨sub⸩15⸨/sub⸩ His message to Israel.⸨/i⸩
 
 ⸨sub⸩1⸨/sub⸩ ⸨sc⸩Now⸨/sc⸩ Moses kept the flock of Jethro his father in law, the priest of Midian: and he led the flock to the backside of the desert, and came to the mountain of God, ⸨i⸩even⸨/i⸩ to Horeb.⸨marg⸩
-⸨sub⸩2⸨/sub⸩ And the angel of the ⸨sc⸩Lord⸨/sc⸩ appeared unto him in a ⸨i⸩ᵃ⸨/i⸩ flame of fire out of the midst of a bush: and he looked, and, behold, the bush burned with fire, and the bush ⸨i⸩was⸨/i⸩ not consumed.⸨marg⸩⸨i⸩ᵃ⸨/i⸩ Acts ⸨fix:7⸼⸩7⸨/fix⸩ 30⸼
+⸨sub⸩2⸨/sub⸩ And the angel of the ⸨sc⸩Lord⸨/sc⸩ appeared unto him in a ⸨sup⸩⸨i⸩a⸨/i⸩⸨/sup⸩ flame of fire out of the midst of a bush: and he looked, and, behold, the bush burned with fire, and the bush ⸨i⸩was⸨/i⸩ not consumed.⸨marg⸩⸨sup⸩⸨i⸩a⸨/i⸩⸨/sup⸩ Acts ⸨fix:7⸼⸩7⸨/fix⸩ 30⸼
 ⸨sub⸩3⸨/sub⸩ And Moses said, I will now turn aside, and see this great sight, why the bush is not burnt.⸨marg⸩
 ⸨sub⸩4⸨/sub⸩ And when the ⸨sc⸩Lord⸨/sc⸩ saw that he turned aside to see, God called unto him out of the midst of the bush, and said, Moses, Moses. And he said, Here ⸨i⸩am⸨/i⸩ I.⸨marg⸩
-⸨sub⸩5⸨/sub⸩ And he said, Draw not nigh hither: ⸨i⸩ᵇ⸨/i⸩ put off thy shoes from off thy feet, for the place whereon thou standest ⸨i⸩is⸨/i⸩ holy ground.⸨marg⸩⸨i⸩ᵇ⸨/i⸩ Josh⸼ 5⸼ 15⸼⸨row⸩Acts 7⸼ 33⸼
-⸨sub⸩6⸨/sub⸩ Moreover he said, ⸨i⸩ᶜ⸨/i⸩ I ⸨i⸩am⸨/i⸩ the God of thy father, the God of Abraham, the God of Isaac, and the God of Jacob. And Moses hid his face; for he was afraid to look upon God.⸨marg⸩⸨i⸩ᶜ⸨/i⸩ Matt⸼ 22⸼ 32⸼⸨row⸩Acts 7⸼ 32⸼
+⸨sub⸩5⸨/sub⸩ And he said, Draw not nigh hither: ⸨sup⸩⸨i⸩b⸨/i⸩⸨/sup⸩ put off thy shoes from off thy feet, for the place whereon thou standest ⸨i⸩is⸨/i⸩ holy ground.⸨marg⸩⸨sup⸩⸨i⸩b⸨/i⸩⸨/sup⸩ Josh⸼ 5⸼ 15⸼⸨row⸩Acts 7⸼ 33⸼
+⸨sub⸩6⸨/sub⸩ Moreover he said, ⸨sup⸩⸨i⸩c⸨/i⸩⸨/sup⸩ I ⸨i⸩am⸨/i⸩ the God of thy father, the God of Abraham, the God of Isaac, and the God of Jacob. And Moses hid his face; for he was afraid to look upon God.⸨marg⸩⸨sup⸩⸨i⸩c⸨/i⸩⸨/sup⸩ Matt⸼ 22⸼ 32⸼⸨row⸩Acts 7⸼ 32⸼
 ⸨sub⸩7⸨/sub⸩ ¶ And the ⸨sc⸩Lord⸨/sc⸩ said, I have surely seen the affliction of my people which ⸨i⸩are⸨/i⸩ in Egypt, and have heard their cry by reason of their taskmasters; for I know their sorrows;⸨marg⸩
 ⸨sub⸩8⸨/sub⸩ And I am come down to deliver them out of the hand of the Egyptians, and to bring them up out of that land unto a good land and a large, unto a land flowing with milk and honey; unto the place of the Canaanites, and the Hittites, and the Amorites, and the Perizzites, and the Hivites, and the Jebusites.⸨marg⸩
 ⸨sub⸩9⸨/sub⸩ Now therefore, behold, the cry of the children of Israel is come unto me: and I have also seen the oppression wherewith the Egyptians oppress them.⸨marg⸩
@@ -22,4 +22,4 @@
 ⸨sub⸩19⸨/sub⸩ ¶ And I am sure that the king of Egypt will not let you go, ⸨sup⸩❙⸨/sup⸩no, not by a mighty hand.⸨marg⸩⸨sup⸩❙⸨/sup⸩ Or, ⸨i⸩but by strong hand⸨/i⸩.
 ⸨sub⸩20⸨/sub⸩ And I will stretch out my hand, and smite Egypt with all my wonders which I will do in the midst thereof: and after that he will let you go.⸨marg⸩
 ⸨sub⸩21⸨/sub⸩ And I will give this people favour in the sight of the Egyptians: and it shall come to pass, that, when ye go, ye shall not go empty:⸨marg⸩
-⸨sub⸩22⸨/sub⸩ ⸨i⸩ᵈ⸨/i⸩ But every woman shall borrow of her neighbour, and of her that sojourneth in her house, jewels of silver, and jewels of gold, and raiment: and ye shall put ⸨i⸩them⸨/i⸩ upon your sons, and upon your daughters; and ye shall spoil ⸨sup⸩❙⸨/sup⸩the Egyptians.⸨marg⸩⸨i⸩ᵈ⸨/i⸩ chap⸼ 11⸼ 2⸼⸨row⸩& ⸨fix:12⸼⸩12⸨/fix⸩ 35⸼⸨row⸩⸨sup⸩❙⸨/sup⸩ Or, ⸨i⸩Egypt⸨/i⸩.
+⸨sub⸩22⸨/sub⸩ ⸨sup⸩⸨i⸩d⸨/i⸩⸨/sup⸩ But every woman shall borrow of her neighbour, and of her that sojourneth in her house, jewels of silver, and jewels of gold, and raiment: and ye shall put ⸨i⸩them⸨/i⸩ upon your sons, and upon your daughters; and ye shall spoil ⸨sup⸩❙⸨/sup⸩the Egyptians.⸨marg⸩⸨sup⸩⸨i⸩d⸨/i⸩⸨/sup⸩ chap⸼ 11⸼ 2⸼⸨row⸩& ⸨fix:12⸼⸩12⸨/fix⸩ 35⸼⸨row⸩⸨sup⸩❙⸨/sup⸩ Or, ⸨i⸩Egypt⸨/i⸩.

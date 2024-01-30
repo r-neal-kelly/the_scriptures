@@ -2,11 +2,11 @@
 ⸨i⸩⸨sub⸩1⸨/sub⸩ The generations of Noah. ⸨sub⸩2⸨/sub⸩ The sons of Japheth. ⸨sub⸩6⸨/sub⸩ The sons of Ham. ⸨sub⸩8⸨/sub⸩ Nimrod the first monarch. ⸨sub⸩21⸨/sub⸩ The sons of Shem.⸨/i⸩
 
 ⸨sub⸩1⸨/sub⸩ ⸨sc⸩Now⸨/sc⸩ these ⸨i⸩are⸨/i⸩ the generations of the sons of Noah, Shem, Ham, and Japheth: and unto them were sons born after the flood.⸨marg⸩
-⸨sub⸩2⸨/sub⸩ ⸨i⸩ᵃ⸨/i⸩ The sons of Japheth; Gomer, and Magog, and Madai, and Javan, and Tubal, and Meshech, and Tiras.⸨marg⸩⸨i⸩ᵃ⸨/i⸩ 1 Chron⸼ 1⸼ 5⸼
+⸨sub⸩2⸨/sub⸩ ⸨sup⸩⸨i⸩a⸨/i⸩⸨/sup⸩ The sons of Japheth; Gomer, and Magog, and Madai, and Javan, and Tubal, and Meshech, and Tiras.⸨marg⸩⸨sup⸩⸨i⸩a⸨/i⸩⸨/sup⸩ 1 Chron⸼ 1⸼ 5⸼
 ⸨sub⸩3⸨/sub⸩ And the sons of Gomer; Ashkenaz, and Riphath, and Togarmah.⸨marg⸩
 ⸨sub⸩4⸨/sub⸩ And the sons of Javan; Elishah, and Tarshish, Kittim, and Dodanim.⸨marg⸩
 ⸨sub⸩5⸨/sub⸩ By these were the isles of the Gentiles divided in their lands; every one after his tongue, after their families, in their nations.⸨marg⸩
-⸨sub⸩6⸨/sub⸩ ¶ ⸨i⸩ᵇ⸨/i⸩ And the sons of Ham; Cush, and Mizraim, and Phut, and Canaan.⸨marg⸩⸨i⸩ᵇ⸨/i⸩ 1 ⸨fix:Chron⸼⸩Chron⸨/fix⸩ 1⸼ 8⸼
+⸨sub⸩6⸨/sub⸩ ¶ ⸨sup⸩⸨i⸩b⸨/i⸩⸨/sup⸩ And the sons of Ham; Cush, and Mizraim, and Phut, and Canaan.⸨marg⸩⸨sup⸩⸨i⸩b⸨/i⸩⸨/sup⸩ 1 ⸨fix:Chron⸼⸩Chron⸨/fix⸩ 1⸼ 8⸼
 ⸨sub⸩7⸨/sub⸩ And the sons of Cush; Seba, and Havilah, and Sabtah, and Raamah, and Sabtechah: and the sons of Raamah; Sheba, and Dedan.⸨marg⸩
 ⸨sub⸩8⸨/sub⸩ And Cush begat Nimrod: he began to be a mighty one in the earth.⸨marg⸩
 ⸨sub⸩9⸨/sub⸩ He was a mighty hunter before the ⸨sc⸩Lord⸨/sc⸩: wherefore it is said, Even as Nimrod the mighty hunter before the ⸨sc⸩Lord⸨/sc⸩.⸨marg⸩
@@ -22,10 +22,10 @@
 ⸨sub⸩19⸨/sub⸩ And the border of the Canaanites was from Sidon, as thou comest to Gerar, unto ⸨sup⸩✝⸨/sup⸩Gaza; as thou goest, unto Sodom, and Gomorrah, and Admah, and Zeboim, even unto Lasha.⸨marg⸩⸨sup⸩✝⸨/sup⸩ ⸨fix:Heb⸼⸩Heb⸨/fix⸩ ⸨i⸩Azzah⸨/i⸩.
 ⸨sub⸩20⸨/sub⸩ These ⸨i⸩are⸨/i⸩ the sons of Ham, after their families, after their tongues, in their countries, ⸨i⸩and⸨/i⸩ in their nations.⸨marg⸩
 ⸨sub⸩21⸨/sub⸩ ¶ Unto Shem also, the father of all the children of Eber, the brother of Japheth the elder, even to him were ⸨i⸩children⸨/i⸩ born.⸨marg⸩
-⸨sub⸩22⸨/sub⸩ The ⸨i⸩ᶜ⸨/i⸩ children of Shem; Elam, and Asshur, and ⸨sup⸩✝⸨/sup⸩Arphaxad, and Lud, and Aram.⸨marg⸩⸨i⸩ᶜ⸨/i⸩ 1 Chron⸼ 1⸼ 17⸼⸨row⸩⸨sup⸩✝⸨/sup⸩ ⸨fix:Heb⸼⸩Heb⸨/fix⸩ ⸨i⸩Arpachshad⸨/i⸩.
+⸨sub⸩22⸨/sub⸩ The ⸨sup⸩⸨i⸩c⸨/i⸩⸨/sup⸩ children of Shem; Elam, and Asshur, and ⸨sup⸩✝⸨/sup⸩Arphaxad, and Lud, and Aram.⸨marg⸩⸨sup⸩⸨i⸩c⸨/i⸩⸨/sup⸩ 1 Chron⸼ 1⸼ 17⸼⸨row⸩⸨sup⸩✝⸨/sup⸩ ⸨fix:Heb⸼⸩Heb⸨/fix⸩ ⸨i⸩Arpachshad⸨/i⸩.
 ⸨sub⸩23⸨/sub⸩ And the children of Aram; Uz, and Hul, and Gether, and Mash.⸨marg⸩
 ⸨sub⸩24⸨/sub⸩ And Arphaxad begat ⸨sup⸩✝⸨/sup⸩Salah; and Salah begat Eber.⸨marg⸩⸨sup⸩✝⸨/sup⸩ Heb⸼ ⸨i⸩Shelah⸨/i⸩.
-⸨sub⸩25⸨/sub⸩ ⸨i⸩ᵈ⸨/i⸩ And unto Eber were born two sons: the name of one ⸨i⸩was⸨/i⸩ Peleg; for in his days was the earth divided; and his brotherʼs name ⸨i⸩was⸨/i⸩ Joktan.⸨marg⸩⸨i⸩ᵈ⸨/i⸩ 1 Chron⸼ 1⸼ 19⸼
+⸨sub⸩25⸨/sub⸩ ⸨sup⸩⸨i⸩d⸨/i⸩⸨/sup⸩ And unto Eber were born two sons: the name of one ⸨i⸩was⸨/i⸩ Peleg; for in his days was the earth divided; and his brotherʼs name ⸨i⸩was⸨/i⸩ Joktan.⸨marg⸩⸨sup⸩⸨i⸩d⸨/i⸩⸨/sup⸩ 1 Chron⸼ 1⸼ 19⸼
 ⸨sub⸩26⸨/sub⸩ And Joktan begat Almodad, and Sheleph, and Hazarmaveth, and Jerah,⸨marg⸩
 ⸨sub⸩27⸨/sub⸩ And Hadoram, and Uzal, and Diklah,⸨marg⸩
 ⸨sub⸩28⸨/sub⸩ And Obal, and Abimael, and Sheba,⸨marg⸩
