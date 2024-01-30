@@ -280,7 +280,7 @@ export abstract class Instance<
                 .Superscript_Item {
                     /* font-variant-position might be nice, but still experimental in chromium */
 
-                    font-size: 0.7em;
+                    font-size: 0.6em;
                     line-height: 0.7em;
                     vertical-align: super;
                 }
@@ -288,7 +288,7 @@ export abstract class Instance<
                 .Subscript_Item {
                     /* font-variant-position might be nice, but still experimental in chromium */
 
-                    font-size: 0.7em;
+                    font-size: 0.6em;
                     line-height: 0.7em;
                     vertical-align: sub;
                 }

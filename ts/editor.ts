@@ -2800,7 +2800,7 @@ class Editor
         .SUPERSCRIPT {
             /* font-variant-position might be nice, but still experimental in chromium */
 
-            font-size: 0.7em;
+            font-size: 0.6em;
             line-height: 0.7em;
             vertical-align: super;
         }
@@ -2808,7 +2808,7 @@ class Editor
         .SUBSCRIPT {
             /* font-variant-position might be nice, but still experimental in chromium */
 
-            font-size: 0.7em;
+            font-size: 0.6em;
             line-height: 0.7em;
             vertical-align: sub;
         }
