@@ -22,9 +22,9 @@ export class Instance extends Language.Instance
                             short_font_name: Font.Name.GENTIUM,
                             fallback_font_names: [
                             ],
+                            font_size_multiplier: 1.125,
+                            line_height_multiplier: 1.1,
                             styles: {
-                                "font-size": `1.125em`,
-                                "line-height": `1.1`,
                             },
                             treater: function (
                                 text: string,

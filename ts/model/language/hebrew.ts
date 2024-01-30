@@ -61,9 +61,9 @@ export class Instance extends Language.Instance
                             short_font_name: Font.Name.EZRA,
                             fallback_font_names: [
                             ],
+                            font_size_multiplier: 1.125,
+                            line_height_multiplier: 1.45,
                             styles: {
-                                "font-size": `1.125em`,
-                                "line-height": `1.45`,
                             },
                         },
                     ),
@@ -73,9 +73,9 @@ export class Instance extends Language.Instance
                             short_font_name: Font.Name.EZRA_SR,
                             fallback_font_names: [
                             ],
+                            font_size_multiplier: 1.125,
+                            line_height_multiplier: 1.45,
                             styles: {
-                                "font-size": `1.125em`,
-                                "line-height": `1.45`,
                             },
                         },
                     ),
@@ -86,9 +86,9 @@ export class Instance extends Language.Instance
                             short_font_name: Font.Name.NEAL_PALEO_HEBREW,
                             fallback_font_names: [
                             ],
+                            font_size_multiplier: 1.125,
+                            line_height_multiplier: 1.45,
                             styles: {
-                                "font-size": `1.125em`,
-                                "line-height": `1.45`,
                                 "letter-spacing": `-0.07em`,
                                 "word-spacing": `0.1em`,
                             },
@@ -108,9 +108,9 @@ export class Instance extends Language.Instance
                             short_font_name: `AS - Ancient`,
                             fallback_font_names: [
                             ],
+                            font_size_multiplier: 1.125,
+                            line_height_multiplier: 1.45,
                             styles: {
-                                "font-size": `1.125em`,
-                                "line-height": `1.45`,
                                 "word-spacing": `0.1em`,
                             },
                             treater: function (
@@ -128,9 +128,9 @@ export class Instance extends Language.Instance
                             short_font_name: `AS - Paleo Gezer`,
                             fallback_font_names: [
                             ],
+                            font_size_multiplier: 1.125,
+                            line_height_multiplier: 1.45,
                             styles: {
-                                "font-size": `1.125em`,
-                                "line-height": `1.45`,
                                 "word-spacing": `0.1em`,
                             },
                             treater: function (
@@ -148,9 +148,9 @@ export class Instance extends Language.Instance
                             short_font_name: `AS - Paleo Lachish`,
                             fallback_font_names: [
                             ],
+                            font_size_multiplier: 1.125,
+                            line_height_multiplier: 1.45,
                             styles: {
-                                "font-size": `1.125em`,
-                                "line-height": `1.45`,
                                 "word-spacing": `0.1em`,
                             },
                             treater: function (
@@ -168,9 +168,9 @@ export class Instance extends Language.Instance
                             short_font_name: `AS - Paleo Mesha`,
                             fallback_font_names: [
                             ],
+                            font_size_multiplier: 1.125,
+                            line_height_multiplier: 1.45,
                             styles: {
-                                "font-size": `1.125em`,
-                                "line-height": `1.45`,
                                 "word-spacing": `0.1em`,
                             },
                             treater: function (
@@ -188,9 +188,9 @@ export class Instance extends Language.Instance
                             short_font_name: `AS - Paleo Qumran`,
                             fallback_font_names: [
                             ],
+                            font_size_multiplier: 1.125,
+                            line_height_multiplier: 1.45,
                             styles: {
-                                "font-size": `1.125em`,
-                                "line-height": `1.45`,
                                 "word-spacing": `0.1em`,
                             },
                             treater: function (
@@ -208,9 +208,9 @@ export class Instance extends Language.Instance
                             short_font_name: `AS - Paleo Siloam`,
                             fallback_font_names: [
                             ],
+                            font_size_multiplier: 1.125,
+                            line_height_multiplier: 1.45,
                             styles: {
-                                "font-size": `1.125em`,
-                                "line-height": `1.45`,
                                 "word-spacing": `0.1em`,
                             },
                             treater: function (

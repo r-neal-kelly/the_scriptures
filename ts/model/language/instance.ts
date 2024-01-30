@@ -162,7 +162,7 @@ export class Instance
     Default_Font_Styles():
         { [css_property: string]: string }
     {
-        return this.Some_Font_Adaptor(this.Default_Font_Name()).Styles();
+        return this.Font_Styles(this.Default_Font_Name());
     }
 
     Current_Font_Name():
@@ -193,7 +193,7 @@ export class Instance
     Current_Font_Styles():
         { [css_property: string]: string }
     {
-        return this.Some_Font_Adaptor(this.Current_Font_Name()).Styles();
+        return this.Font_Styles(this.Current_Font_Name());
     }
 
     Has_Font_Adaptor(

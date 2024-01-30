@@ -675,7 +675,7 @@ export abstract class Instance implements
             const styles: string | { [index: string]: string } = this.On_Restyle();
             this.life_cycle_listener = Life_Cycle_Listener._NONE_;
 
-            if (styles as any instanceof Object) {
+            if (Utils.Is.Object(styles)) {
                 const element: HTMLElement = this.Element();
                 for (const style of Object.entries(styles)) {
                     (element.style as any)[style[0]] = style[1];

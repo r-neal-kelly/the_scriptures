@@ -8,6 +8,7 @@ import * as Keyboard from "./keyboard.js";
 
 import * as Language from "./model/language.js";
 import * as Languages from "./model/languages.js";
+import * as Font from "./model/font.js";
 import * as Fonts from "./model/fonts.js";
 import * as Model from "./model/text.js";
 
@@ -2796,20 +2797,20 @@ class Editor
         .SMALL_CAPS {
             font-variant: small-caps;
         }
-
+        
         .SUPERSCRIPT {
             /* font-variant-position might be nice, but still experimental in chromium */
 
-            font-size: 0.6em;
-            line-height: 0.7em;
+            font-size: ${Font.Consts.SUPERSCRIPT_FONT_SIZE_MULTIPLIER}em;
+            line-height: ${Font.Consts.SUPERSCRIPT_LINE_HEIGHT_MULTIPLIER}em;
             vertical-align: super;
         }
 
         .SUBSCRIPT {
             /* font-variant-position might be nice, but still experimental in chromium */
 
-            font-size: 0.6em;
-            line-height: 0.7em;
+            font-size: ${Font.Consts.SUBSCRIPT_FONT_SIZE_MULTIPLIER}em;
+            line-height: ${Font.Consts.SUBSCRIPT_LINE_HEIGHT_MULTIPLIER}em;
             vertical-align: sub;
         }
 

@@ -23,9 +23,9 @@ export class Instance extends Language.Instance
                             fallback_font_names: [
                                 Font.Name.NOTO_SANS_SYMBOLS,
                             ],
+                            font_size_multiplier: 1.125,
+                            line_height_multiplier: 1.1,
                             styles: {
-                                "font-size": `1.125em`,
-                                "line-height": `1.1`,
                             },
                             treater: function (
                                 text: string,

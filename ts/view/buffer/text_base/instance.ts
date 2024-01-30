@@ -280,16 +280,16 @@ export abstract class Instance<
                 .Superscript_Item {
                     /* font-variant-position might be nice, but still experimental in chromium */
 
-                    font-size: 0.6em;
-                    line-height: 0.7em;
+                    font-size: ${Font.Consts.SUPERSCRIPT_FONT_SIZE_MULTIPLIER}em;
+                    line-height: ${Font.Consts.SUPERSCRIPT_LINE_HEIGHT_MULTIPLIER}em;
                     vertical-align: super;
                 }
 
                 .Subscript_Item {
                     /* font-variant-position might be nice, but still experimental in chromium */
 
-                    font-size: 0.6em;
-                    line-height: 0.7em;
+                    font-size: ${Font.Consts.SUBSCRIPT_FONT_SIZE_MULTIPLIER}em;
+                    line-height: ${Font.Consts.SUBSCRIPT_LINE_HEIGHT_MULTIPLIER}em;
                     vertical-align: sub;
                 }
 

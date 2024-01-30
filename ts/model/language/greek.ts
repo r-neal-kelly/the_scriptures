@@ -1257,9 +1257,9 @@ export class Instance extends Language.Instance
                             short_font_name: Font.Name.GENTIUM,
                             fallback_font_names: [
                             ],
+                            font_size_multiplier: 1.25,
+                            line_height_multiplier: 1.3,
                             styles: {
-                                "font-size": `1.25em`,
-                                "line-height": `1.3`,
                             },
                         },
                     ),
@@ -1269,9 +1269,9 @@ export class Instance extends Language.Instance
                             short_font_name: Font.Name.GENTIUM_BOOK,
                             fallback_font_names: [
                             ],
+                            font_size_multiplier: 1.25,
+                            line_height_multiplier: 1.3,
                             styles: {
-                                "font-size": `1.25em`,
-                                "line-height": `1.3`,
                             },
                         },
                     ),
@@ -1281,9 +1281,9 @@ export class Instance extends Language.Instance
                             short_font_name: Font.Name.QUIVIRA,
                             fallback_font_names: [
                             ],
+                            font_size_multiplier: 1.25,
+                            line_height_multiplier: 1.3,
                             styles: {
-                                "font-size": `1.25em`,
-                                "line-height": `1.3`,
                             },
                         },
                     ),
@@ -1293,9 +1293,9 @@ export class Instance extends Language.Instance
                             short_font_name: `K.J.U. Archaic`,
                             fallback_font_names: [
                             ],
+                            font_size_multiplier: 1.25,
+                            line_height_multiplier: 1.3,
                             styles: {
-                                "font-size": `1.25em`,
-                                "line-height": `1.3`,
                                 "word-spacing": `0.215em`,
                             },
                             treater: function (

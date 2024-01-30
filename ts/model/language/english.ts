@@ -24,9 +24,9 @@ export class Instance extends Language.Instance
                                 Font.Name.GENTIUM,
                                 Font.Name.NOTO_SANS_SYMBOLS,
                             ],
+                            font_size_multiplier: 1,
+                            line_height_multiplier: 1.2,
                             styles: {
-                                "font-size": `1em`,
-                                "line-height": `1.2`,
                             },
                             treater: function (
                                 text: string,
