@@ -163,6 +163,16 @@ export class Instance extends Entity.Instance
         return [`Browser`];
     }
 
+    override On_Restyle():
+        string | { [index: string]: string; }
+    {
+        const model: Model.Instance = this.Model();
+
+        return `
+            font-size: ${model.Body().Options().Underlying_Font_Size_PX()}px;
+        `;
+    }
+
     private async After_Browser_Commander_Previous():
         Promise<void>
     {

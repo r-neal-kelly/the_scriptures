@@ -117,6 +117,16 @@ export class Instance extends Entity.Instance
         return [`Finder`];
     }
 
+    override On_Restyle():
+        string | { [index: string]: string; }
+    {
+        const model: Model.Instance = this.Model();
+
+        return `
+            font-size: ${model.Body().Options().Underlying_Font_Size_PX()}px;
+        `;
+    }
+
     private async On_Finder_Body_Expression_Enter():
         Promise<void>
     {
