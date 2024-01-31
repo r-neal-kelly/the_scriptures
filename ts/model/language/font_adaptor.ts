@@ -4,6 +4,7 @@ import * as Utils from "../../utils.js";
 
 import * as Font from "../font.js";
 import * as Fonts from "../fonts.js";
+import { Script_Position } from "../script_position.js";
 
 export class Instance
 {
@@ -82,6 +83,9 @@ export class Instance
             `"${this.font.Family()}", sans-serif`;
         this.styles[`font-size`] = `${this.font_size_multiplier}em`;
         this.styles[`line-height`] = `${this.line_height_multiplier}em`;
+        if (this.styles[`vertical-align`] == null) {
+            this.styles[`vertical-align`] = `baseline`;
+        }
         if (this.styles[`letter-spacing`] == null) {
             this.styles[`letter-spacing`] = `normal`;
         }
@@ -111,10 +115,31 @@ export class Instance
         return Array.from(this.fallback_fonts);
     }
 
-    Styles():
+    Styles(
+        script_position: Script_Position,
+    ):
         { [css_property: string]: string }
     {
-        return Object.assign(Object.create(null), this.styles);
+        const styles: { [css_property: string]: string } =
+            Object.assign(Object.create(null), this.styles);
+
+        if (script_position === Script_Position.SUPER) {
+            styles[`font-size`] =
+                `${this.font_size_multiplier * Font.Consts.SUPERSCRIPT_FONT_SIZE_MULTIPLIER}em`;
+            styles[`line-height`] =
+                `${this.line_height_multiplier * Font.Consts.SUPERSCRIPT_LINE_HEIGHT_MULTIPLIER}em`;
+            styles[`vertical-align`] =
+                `super`;
+        } else if (script_position === Script_Position.SUB) {
+            styles[`font-size`] =
+                `${this.font_size_multiplier * Font.Consts.SUBSCRIPT_FONT_SIZE_MULTIPLIER}em`;
+            styles[`line-height`] =
+                `${this.line_height_multiplier * Font.Consts.SUBSCRIPT_LINE_HEIGHT_MULTIPLIER}em`;
+            styles[`vertical-align`] =
+                `sub`;
+        }
+
+        return styles;
     }
 
     Treat_Text(

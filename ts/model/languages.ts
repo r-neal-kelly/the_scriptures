@@ -3,6 +3,7 @@ import * as Utils from "../utils.js";
 import * as Font from "./font.js";
 import * as Language from "./language.js";
 import * as Name_Sorter from "./name_sorter.js";
+import { Script_Position } from "./script_position.js";
 
 export class Instance
 {
@@ -179,10 +180,11 @@ export class Instance
     Font_Styles(
         language_name: Language.Name,
         font_name: Font.Name,
+        script_position: Script_Position,
     ):
         { [css_property: string]: string }
     {
-        return this.Language(language_name).Font_Styles(font_name);
+        return this.Language(language_name).Font_Styles(font_name, script_position);
     }
 
     Default_Global_Font_Name(
@@ -203,10 +205,11 @@ export class Instance
 
     Default_Global_Font_Styles(
         language_name: Language.Name,
+        script_position: Script_Position,
     ):
         { [css_property: string]: string }
     {
-        return this.Language(language_name).Default_Font_Styles();
+        return this.Language(language_name).Default_Font_Styles(script_position);
     }
 
     Current_Global_Font_Name(
@@ -236,10 +239,11 @@ export class Instance
 
     Current_Global_Font_Styles(
         language_name: Language.Name,
+        script_position: Script_Position,
     ):
         { [css_property: string]: string }
     {
-        return this.Language(language_name).Current_Font_Styles();
+        return this.Language(language_name).Current_Font_Styles(script_position);
     }
 
     Adapt_Text_To_Font(

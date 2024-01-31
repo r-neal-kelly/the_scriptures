@@ -7,6 +7,7 @@ import * as Event from "../../../event.js";
 import * as Language from "../../../model/language.js";
 import * as Languages from "../../../model/languages.js";
 import * as Font from "../../../model/font.js";
+import { Script_Position } from "../../../model/script_position.js";
 
 import * as Entity from "../../entity.js";
 
@@ -352,7 +353,7 @@ export abstract class Instance<
     override On_Restyle():
         string | { [index: string]: string; }
     {
-        return this.Default_Font_Styles();
+        return this.Default_Font_Styles(Script_Position.DEFAULT);
     }
 
     override On_Resize():
@@ -395,7 +396,9 @@ export abstract class Instance<
         }
     }
 
-    Default_Font_Styles():
+    Default_Font_Styles(
+        script_position: Script_Position,
+    ):
         { [css_property: string]: string }
     {
         const model: Model_Instance = this.Model();
@@ -403,11 +406,13 @@ export abstract class Instance<
         return Languages.Singleton().Font_Styles(
             model.Default_Language_Name(),
             model.Default_Font_Name(),
+            script_position,
         );
     }
 
     Override_Font_Styles(
         language_name: Language.Name,
+        script_position: Script_Position,
     ):
         { [css_property: string]: string }
     {
@@ -416,6 +421,7 @@ export abstract class Instance<
         return Languages.Singleton().Font_Styles(
             language_name,
             model.Override_Font_Name(language_name),
+            script_position,
         );
     }
 }

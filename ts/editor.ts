@@ -10,18 +10,33 @@ import * as Language from "./model/language.js";
 import * as Languages from "./model/languages.js";
 import * as Font from "./model/font.js";
 import * as Fonts from "./model/fonts.js";
+import { Script_Position } from "./model/script_position.js";
 import * as Model from "./model/text.js";
 
 const INDENT_AMOUNT: Count = 6;
 
-const DEFAULT_FONT_STYLES: { [language_name: string]: string } = {};
+const DEFAULT_FONT_STYLES: {
+    [language_name: string]: {
+        [script_position: Integer]: string,
+    }
+} = Object.create(null);
 for (const language_name of Languages.Singleton().Language_Names()) {
-    DEFAULT_FONT_STYLES[language_name] = Utils.Styles_To_Inline_String(
-        Languages.Singleton().Default_Global_Font_Styles(
-            language_name,
-        ),
-        `'`,
-    );
+    DEFAULT_FONT_STYLES[language_name] = Object.create(null);
+    for (const script_position of
+        [
+            Script_Position.DEFAULT,
+            Script_Position.SUPER,
+            Script_Position.SUB,
+        ]
+    ) {
+        DEFAULT_FONT_STYLES[language_name][script_position] = Utils.Styles_To_Inline_String(
+            Languages.Singleton().Default_Global_Font_Styles(
+                language_name,
+                script_position,
+            ),
+            `'`,
+        );
+    }
 }
 
 function Escape_Text(
@@ -1058,6 +1073,9 @@ class Line
                             command_classes += ` INTERLINEAR`;
                         }
                     } else {
+                        const script_position: Script_Position =
+                            part.Script_Position();
+
                         if (part.Is_Point()) {
                             primary_classes += `UNKNOWN_POINT`;
                         } else if (part.Is_Word()) {
@@ -1108,9 +1126,9 @@ class Line
                         if (part.Has_Small_Caps_Style()) {
                             command_classes += ` SMALL_CAPS`;
                         }
-                        if (part.Has_Superscript_Style()) {
+                        if (script_position === Script_Position.SUPER) {
                             command_classes += ` SUPERSCRIPT`;
-                        } else if (part.Has_Subscript_Style()) {
+                        } else if (script_position === Script_Position.SUB) {
                             command_classes += ` SUBSCRIPT`;
                         }
                         if (part.Has_Error_Style()) {
@@ -1126,7 +1144,7 @@ class Line
                                 `should have default_font_styles for ${language}!`,
                             );
 
-                            styles = DEFAULT_FONT_STYLES[language];
+                            styles = DEFAULT_FONT_STYLES[language][script_position];
                         }
                     }
 
@@ -1232,7 +1250,7 @@ class Line
                                 `should have default_font_styles for ${language}!`,
                             );
 
-                            styles = DEFAULT_FONT_STYLES[language];
+                            styles = DEFAULT_FONT_STYLES[language][part.Script_Position()];
                         }
 
                         inner_html +=

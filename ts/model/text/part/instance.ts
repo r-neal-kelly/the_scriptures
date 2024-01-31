@@ -3,6 +3,8 @@ import { Index } from "../../../types.js"
 import * as Utils from "../../../utils.js";
 
 import * as Language from "../../language.js";
+import { Script_Position } from "../../script_position.js";
+
 import { Value } from "../value.js";
 import * as Item from "../item.js";
 import { Type } from "./type.js";
@@ -269,5 +271,15 @@ export class Instance implements Item.Instance
         Language.Name | null
     {
         return this.language;
+    }
+
+    Script_Position():
+        Script_Position
+    {
+        return this.Has_Superscript_Style() ?
+            Script_Position.SUPER :
+            this.Has_Subscript_Style() ?
+                Script_Position.SUB :
+                Script_Position.DEFAULT;
     }
 }

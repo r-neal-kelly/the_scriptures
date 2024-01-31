@@ -80,7 +80,10 @@ export class Instance extends Text_Base.Item.Instance<
             const language: Model_Language.Name | null =
                 model.Override_Language_Name();
             if (language) {
-                return Model_Languages.Singleton().Default_Global_Font_Styles(language);
+                return Model_Languages.Singleton().Default_Global_Font_Styles(
+                    language,
+                    model.Script_Position(),
+                );
             } else {
                 return ``;
             }

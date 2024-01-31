@@ -1,5 +1,7 @@
 import * as Utils from "../../utils.js";
+
 import * as Font from "../font.js";
+import { Script_Position } from "../script_position.js";
 
 import { Name } from "./name.js";
 import { Direction } from "./direction.js";
@@ -141,10 +143,11 @@ export class Instance
 
     Font_Styles(
         font_name: Font.Name,
+        script_position: Script_Position,
     ):
         { [css_property: string]: string }
     {
-        return this.Some_Font_Adaptor(font_name).Styles();
+        return this.Some_Font_Adaptor(font_name).Styles(script_position);
     }
 
     Default_Font_Name():
@@ -159,10 +162,12 @@ export class Instance
         return this.Font_Name_To_Short_Font_Name(this.Default_Font_Name());
     }
 
-    Default_Font_Styles():
+    Default_Font_Styles(
+        script_position: Script_Position,
+    ):
         { [css_property: string]: string }
     {
-        return this.Font_Styles(this.Default_Font_Name());
+        return this.Font_Styles(this.Default_Font_Name(), script_position);
     }
 
     Current_Font_Name():
@@ -190,10 +195,12 @@ export class Instance
         return this.Font_Name_To_Short_Font_Name(this.Current_Font_Name());
     }
 
-    Current_Font_Styles():
+    Current_Font_Styles(
+        script_position: Script_Position,
+    ):
         { [css_property: string]: string }
     {
-        return this.Font_Styles(this.Current_Font_Name());
+        return this.Font_Styles(this.Current_Font_Name(), script_position);
     }
 
     Has_Font_Adaptor(

@@ -1,5 +1,6 @@
 import * as Language from "../model/language.js";
 import * as Languages from "../model/languages.js";
+import { Script_Position } from "../model/script_position.js";
 
 import * as Layout from "./layout.js";
 
@@ -15,8 +16,14 @@ export class Instance
         Promise<void>
     {
         const default_global_font_styles: { [css_property: string]: string } = layout != null ?
-            Languages.Singleton().Default_Global_Font_Styles(layout.Language_Name()) :
-            Languages.Singleton().Default_Global_Font_Styles(Language.Name.ENGLISH);
+            Languages.Singleton().Default_Global_Font_Styles(
+                layout.Language_Name(),
+                Script_Position.DEFAULT,
+            ) :
+            Languages.Singleton().Default_Global_Font_Styles(
+                Language.Name.ENGLISH,
+                Script_Position.DEFAULT,
+            );
 
         for (const style of Object.entries(default_global_font_styles)) {
             (div.style as any)[style[0]] = style[1];

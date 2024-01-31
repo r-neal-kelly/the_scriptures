@@ -10,6 +10,7 @@ export * as Languages from "./model/languages.js";
 export * as Layout from "./model/layout.js";
 export * as Main from "./model/main.js";
 export * as Name_Sorter from "./model/name_sorter.js";
+export { Script_Position } from "./model/script_position.js";
 export * as Search from "./model/search.js";
 export * as Selector from "./model/selector.js";
 export * as Text from "./model/text.js";

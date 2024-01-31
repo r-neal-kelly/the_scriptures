@@ -3,6 +3,7 @@ import { ID } from "../../../types.js";
 import * as Utils from "../../../utils.js";
 
 import * as Language from "../../../model/language.js";
+import { Script_Position } from "../../../model/script_position.js";
 
 import * as Entity from "../../entity.js";
 
@@ -38,6 +39,9 @@ interface Model_Instance_i
 
     Override_Language_Name():
         Language.Name | null;
+
+    Script_Position():
+        Script_Position;
 }
 
 interface Buffer_Instance_i
@@ -45,10 +49,13 @@ interface Buffer_Instance_i
     Event_Grid_Hook():
         ID;
 
-    Default_Font_Styles():
+    Default_Font_Styles(
+        script_position: Script_Position,
+    ):
         { [css_property: string]: string };
     Override_Font_Styles(
         language_name: Language.Name,
+        script_position: Script_Position,
     ): { [css_property: string]: string };
 }
 
@@ -159,6 +166,21 @@ export abstract class Instance<
         return this.Parent() as Segment_Instance;
     }
 
+    Default_Font_Styles():
+        { [css_property: string]: string }
+    {
+        const model: Model_Instance = this.Model();
+
+        Utils.Assert(
+            !model.Is_Blank(),
+            `item is blank.`,
+        );
+
+        return this.Buffer().Default_Font_Styles(
+            model.Script_Position(),
+        );
+    }
+
     Has_Override_Font_Styles():
         boolean
     {
@@ -186,7 +208,10 @@ export abstract class Instance<
             `Does not have override font styles.`,
         );
 
-        return this.Buffer().Override_Font_Styles(model.Override_Language_Name() as Language.Name);
+        return this.Buffer().Override_Font_Styles(
+            model.Override_Language_Name() as Language.Name,
+            model.Script_Position(),
+        );
     }
 
     Has_Inline_Image_Styles():
@@ -220,7 +245,7 @@ export abstract class Instance<
         if (model.Override_Language_Name() != null) {
             height = this.Override_Font_Styles()[`font-size`];
         } else {
-            height = this.Buffer().Default_Font_Styles()[`font-size`];
+            height = this.Default_Font_Styles()[`font-size`];
         }
 
         return {

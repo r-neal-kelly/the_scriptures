@@ -4,6 +4,7 @@ import * as Utils from "../../../utils.js";
 
 import * as Language from "../../language.js";
 import * as Font from "../../font.js";
+import { Script_Position } from "../../script_position.js";
 import * as Text from "../../text.js";
 
 interface Buffer_Instance_i
@@ -326,5 +327,11 @@ export class Instance<
         } else {
             return this.Default_Font_Name();
         }
+    }
+
+    Script_Position():
+        Script_Position
+    {
+        return this.Part().Script_Position();
     }
 }
