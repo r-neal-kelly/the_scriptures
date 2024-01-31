@@ -14,107 +14,107 @@
 ⸨cen⸩דודי צח ואדום סימן׃
 
 ⸨cen⸩א
-⸨lang:English⸩¹ ⸨/lang⸩ויקרא א׳ זעירא
-⸨lang:English⸩⁵ ⸨/lang⸩בֶּ֥ן ב׳ בסגולתא
+⸨lang:English⸩⸨sup⸩1⸨/sup⸩ ⸨/lang⸩ויקרא א׳ זעירא
+⸨lang:English⸩⸨sup⸩5⸨/sup⸩ ⸨/lang⸩בֶּ֥ן ב׳ בסגולתא
 
 ⸨cen⸩ב
-⸨lang:English⸩¹³ ⸨/lang⸩תמלָח֒ קמץ בסגולתא
+⸨lang:English⸩⸨sup⸩13⸨/sup⸩ ⸨/lang⸩תמלָח֒ קמץ בסגולתא
 
 ⸨cen⸩ד
-⸨lang:English⸩⁴ ⸨/lang⸩אֹהל מועד לפני סבירין אשר לפני
+⸨lang:English⸩⸨sup⸩4⸨/sup⸩ ⸨/lang⸩אֹהל מועד לפני סבירין אשר לפני
 
 ⸨cen⸩ה
-⸨lang:English⸩¹ ⸨/lang⸩אם לוא מלא ו׳
-⸨lang:English⸩² ⸨/lang⸩או תליתאה יתיב
-⸨lang:English⸩¹² ⸨/lang⸩והביאהּ מפיק ה׳
+⸨lang:English⸩⸨sup⸩1⸨/sup⸩ ⸨/lang⸩אם לוא מלא ו׳
+⸨lang:English⸩⸨sup⸩2⸨/sup⸩ ⸨/lang⸩או תליתאה יתיב
+⸨lang:English⸩⸨sup⸩12⸨/sup⸩ ⸨/lang⸩והביאהּ מפיק ה׳
 מלוא קמצו מלא ו׳
-⸨lang:English⸩¹⁸ ⸨/lang⸩שגָ֛ג קמץ בתביר
-⸨lang:English⸩²³ ⸨/lang⸩גזָ֗ל קמץ ברביע
+⸨lang:English⸩⸨sup⸩18⸨/sup⸩ ⸨/lang⸩שגָ֛ג קמץ בתביר
+⸨lang:English⸩⸨sup⸩23⸨/sup⸩ ⸨/lang⸩גזָ֗ל קמץ ברביע
 עשָ֔ק קמץ בז״ק
 א֚ו יתיב
 
 ⸨cen⸩ו
-⸨lang:English⸩² ⸨/lang⸩מוקדה מ׳ זעירא
-⸨lang:English⸩⁸ ⸨/lang⸩ממנו סבירין ממנה
+⸨lang:English⸩⸨sup⸩2⸨/sup⸩ ⸨/lang⸩מוקדה מ׳ זעירא
+⸨lang:English⸩⸨sup⸩8⸨/sup⸩ ⸨/lang⸩ממנו סבירין ממנה
 
 ⸨cen⸩ז
-⸨lang:English⸩³⁰ ⸨/lang⸩תביאינה בתרין יודי״ן
-⸨lang:English⸩³⁶ ⸨/lang⸩אשר צוה סבירין כאשר
-⸨lang:English⸩³⁸ ⸨/lang⸩קרבְניהם ב׳ בשוא
+⸨lang:English⸩⸨sup⸩30⸨/sup⸩ ⸨/lang⸩תביאינה בתרין יודי״ן
+⸨lang:English⸩⸨sup⸩36⸨/sup⸩ ⸨/lang⸩אשר צוה סבירין כאשר
+⸨lang:English⸩⸨sup⸩38⸨/sup⸩ ⸨/lang⸩קרבְניהם ב׳ בשוא
 
 ⸨cen⸩ח
-⸨lang:English⸩⁷ ⸨/lang⸩חצי התורה בפסוקים
+⸨lang:English⸩⸨sup⸩7⸨/sup⸩ ⸨/lang⸩חצי התורה בפסוקים
 
 ⸨cen⸩ט
-⸨lang:English⸩²² ⸨/lang⸩ידו ידיו קרי
+⸨lang:English⸩⸨sup⸩22⸨/sup⸩ ⸨/lang⸩ידו ידיו קרי
 
 ⸨cen⸩י
-⸨lang:English⸩⁴ ⸨/lang⸩ק֠רב֞ו ב׳ טעמים׃ הקורא יטעים הגרש קודם התלשא
-⸨lang:English⸩¹⁰ ⸨/lang⸩ולהבד֔יל הד׳ בז״ק
-⸨lang:English⸩¹² ⸨/lang⸩א֨יתמ֥ר ב׳ טעמים
-⸨lang:English⸩¹⁶ ⸨/lang⸩דּרַש בראש שטה והוא חצי התורה בתיבות
-⸨lang:English⸩¹⁹ ⸨/lang⸩היּיטב י׳ קדמאה דגושה
+⸨lang:English⸩⸨sup⸩4⸨/sup⸩ ⸨/lang⸩ק֠רב֞ו ב׳ טעמים׃ הקורא יטעים הגרש קודם התלשא
+⸨lang:English⸩⸨sup⸩10⸨/sup⸩ ⸨/lang⸩ולהבד֔יל הד׳ בז״ק
+⸨lang:English⸩⸨sup⸩12⸨/sup⸩ ⸨/lang⸩א֨יתמ֥ר ב׳ טעמים
+⸨lang:English⸩⸨sup⸩16⸨/sup⸩ ⸨/lang⸩דּרַש בראש שטה והוא חצי התורה בתיבות
+⸨lang:English⸩⸨sup⸩19⸨/sup⸩ ⸨/lang⸩היּיטב י׳ קדמאה דגושה
 
 ⸨cen⸩יא
-⸨lang:English⸩²¹ ⸨/lang⸩לא לו קרי
-⸨lang:English⸩³⁰ ⸨/lang⸩והלטאה בקצת ספרים ל׳ רבתי
-⸨lang:English⸩⁴² ⸨/lang⸩גחון ו׳ רבתי והוא חצי התורה באותיות
-⸨lang:English⸩⁴³ ⸨/lang⸩ונטמתם בם חסר א׳
+⸨lang:English⸩⸨sup⸩21⸨/sup⸩ ⸨/lang⸩לא לו קרי
+⸨lang:English⸩⸨sup⸩30⸨/sup⸩ ⸨/lang⸩והלטאה בקצת ספרים ל׳ רבתי
+⸨lang:English⸩⸨sup⸩42⸨/sup⸩ ⸨/lang⸩גחון ו׳ רבתי והוא חצי התורה באותיות
+⸨lang:English⸩⸨sup⸩43⸨/sup⸩ ⸨/lang⸩ונטמתם בם חסר א׳
 
 ⸨cen⸩יב
-⸨lang:English⸩⁴ ⸨/lang⸩בדמי טהרה ה׳ רפה
-⸨lang:English⸩⁵ ⸨/lang⸩דמי טהרה ה׳ רפה
+⸨lang:English⸩⸨sup⸩4⸨/sup⸩ ⸨/lang⸩בדמי טהרה ה׳ רפה
+⸨lang:English⸩⸨sup⸩5⸨/sup⸩ ⸨/lang⸩דמי טהרה ה׳ רפה
 
 ⸨cen⸩יג
-⸨lang:English⸩¹⁰ ⸨/lang⸩בשאת ש׳ רפה
-⸨lang:English⸩³³ ⸨/lang⸩והתגּלָּ֔ח ג׳ רבתי קבז״ק
+⸨lang:English⸩⸨sup⸩10⸨/sup⸩ ⸨/lang⸩בשאת ש׳ רפה
+⸨lang:English⸩⸨sup⸩33⸨/sup⸩ ⸨/lang⸩והתגּלָּ֔ח ג׳ רבתי קבז״ק
 
 ⸨cen⸩יד
-⸨lang:English⸩⁵⁶ ⸨/lang⸩ולשאת ש׳ רפה
+⸨lang:English⸩⸨sup⸩56⸨/sup⸩ ⸨/lang⸩ולשאת ש׳ רפה
 
 ⸨cen⸩טו
-⸨lang:English⸩⁹ ⸨/lang⸩המרכָב הכ׳ בקמץ
-⸨lang:English⸩²⁹ ⸨/lang⸩והביאַ֤ה מלרע
+⸨lang:English⸩⸨sup⸩9⸨/sup⸩ ⸨/lang⸩המרכָב הכ׳ בקמץ
+⸨lang:English⸩⸨sup⸩29⸨/sup⸩ ⸨/lang⸩והביאַ֤ה מלרע
 
 ⸨cen⸩טז
-⸨lang:English⸩⁴ ⸨/lang⸩ילבָּ֗ש קמץ ברביע
-⸨lang:English⸩⁸ ⸨/lang⸩שנֵ֥י בראש עמוד סימן ביה שמו
-⸨lang:English⸩²¹ ⸨/lang⸩ידו ידיו קרי
+⸨lang:English⸩⸨sup⸩4⸨/sup⸩ ⸨/lang⸩ילבָּ֗ש קמץ ברביע
+⸨lang:English⸩⸨sup⸩8⸨/sup⸩ ⸨/lang⸩שנֵ֥י בראש עמוד סימן ביה שמו
+⸨lang:English⸩⸨sup⸩21⸨/sup⸩ ⸨/lang⸩ידו ידיו קרי
 
 ⸨cen⸩יז
-⸨lang:English⸩³ ⸨/lang⸩ישחָ֔ט קמץ בז״ק
-⸨lang:English⸩⁴ ⸨/lang⸩שפָ֔ךְ קמץ בז״ק
+⸨lang:English⸩⸨sup⸩3⸨/sup⸩ ⸨/lang⸩ישחָ֔ט קמץ בז״ק
+⸨lang:English⸩⸨sup⸩4⸨/sup⸩ ⸨/lang⸩שפָ֔ךְ קמץ בז״ק
 
 ⸨cen⸩יח
-⸨lang:English⸩¹⁴ ⸨/lang⸩תקרָ֔ב קמץ בז״ק
-⸨lang:English⸩²² ⸨/lang⸩ואת נ״א את
+⸨lang:English⸩⸨sup⸩14⸨/sup⸩ ⸨/lang⸩תקרָ֔ב קמץ בז״ק
+⸨lang:English⸩⸨sup⸩22⸨/sup⸩ ⸨/lang⸩ואת נ״א את
 
 ⸨cen⸩כא
-⸨lang:English⸩⁴ ⸨/lang⸩לה֖חלֽו ב׳ טעמים
-⸨lang:English⸩⁵ ⸨/lang⸩יקרחֻה יקרחו קרי
-⸨lang:English⸩¹⁰ ⸨/lang⸩יפרָע קמץ בז״ק
+⸨lang:English⸩⸨sup⸩4⸨/sup⸩ ⸨/lang⸩לה֖חלֽו ב׳ טעמים
+⸨lang:English⸩⸨sup⸩5⸨/sup⸩ ⸨/lang⸩יקרחֻה יקרחו קרי
+⸨lang:English⸩⸨sup⸩10⸨/sup⸩ ⸨/lang⸩יפרָע קמץ בז״ק
 
 ⸨cen⸩כב
-⸨lang:English⸩¹³ ⸨/lang⸩ושב֞ה מלרע
+⸨lang:English⸩⸨sup⸩13⸨/sup⸩ ⸨/lang⸩ושב֞ה מלרע
 
 ⸨cen⸩כג
-⸨lang:English⸩¹³ ⸨/lang⸩ונסכֹה ונסכֹו קרי
-⸨lang:English⸩¹⁷ ⸨/lang⸩תביא֗ו א׳ דגושה
-⸨lang:English⸩²⁰ ⸨/lang⸩מושבֹ֥תיכ֖ם בקצת ספרים ב׳ טעמים
+⸨lang:English⸩⸨sup⸩13⸨/sup⸩ ⸨/lang⸩ונסכֹה ונסכֹו קרי
+⸨lang:English⸩⸨sup⸩17⸨/sup⸩ ⸨/lang⸩תביא֗ו א׳ דגושה
+⸨lang:English⸩⸨sup⸩20⸨/sup⸩ ⸨/lang⸩מושבֹ֥תיכ֖ם בקצת ספרים ב׳ טעמים
 
 ⸨cen⸩כד
-⸨lang:English⸩¹⁰ ⸨/lang⸩בֶּ֚ן תניינא ב׳ בסגול
+⸨lang:English⸩⸨sup⸩10⸨/sup⸩ ⸨/lang⸩בֶּ֚ן תניינא ב׳ בסגול
 
 ⸨cen⸩כה
-⸨lang:English⸩⁴ ⸨/lang⸩תזרָ֔ע קמץ בז״ק
-⸨lang:English⸩²⁰ ⸨/lang⸩נזרָ֔ע קמץ בז״ק
-⸨lang:English⸩³⁰ ⸨/lang⸩לֹ֣א לֹו קרי
-⸨lang:English⸩⁴⁶ ⸨/lang⸩יבא֨חיכ֤ם ב׳ טעמים
+⸨lang:English⸩⸨sup⸩4⸨/sup⸩ ⸨/lang⸩תזרָ֔ע קמץ בז״ק
+⸨lang:English⸩⸨sup⸩20⸨/sup⸩ ⸨/lang⸩נזרָ֔ע קמץ בז״ק
+⸨lang:English⸩⸨sup⸩30⸨/sup⸩ ⸨/lang⸩לֹ֣א לֹו קרי
+⸨lang:English⸩⸨sup⸩46⸨/sup⸩ ⸨/lang⸩יבא֨חיכ֤ם ב׳ טעמים
 
 ⸨cen⸩כו
-⸨lang:English⸩¹ ⸨/lang⸩אלילִם חסר י׳ תניינא
-⸨lang:English⸩⁴² ⸨/lang⸩יעקוב מלא ו׳
+⸨lang:English⸩⸨sup⸩1⸨/sup⸩ ⸨/lang⸩אלילִם חסר י׳ תניינא
+⸨lang:English⸩⸨sup⸩42⸨/sup⸩ ⸨/lang⸩יעקוב מלא ו׳
 
 ⸨cen⸩כז
-⸨lang:English⸩⁹ ⸨/lang⸩ממנו סבירין ממנה
-⸨lang:English⸩¹⁰ ⸨/lang⸩ברָ֖ע קמץ בטרחא
+⸨lang:English⸩⸨sup⸩9⸨/sup⸩ ⸨/lang⸩ממנו סבירין ממנה
+⸨lang:English⸩⸨sup⸩10⸨/sup⸩ ⸨/lang⸩ברָ֖ע קמץ בטרחא

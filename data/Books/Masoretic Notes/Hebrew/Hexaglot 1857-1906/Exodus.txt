@@ -16,169 +16,169 @@
 ⸨cen⸩ישלח עזרך מקדש ומציון יסעדך סימן׃
 
 ⸨cen⸩ב
-⸨lang:English⸩³ ⸨/lang⸩הצּפינו צ׳ דגושה
+⸨lang:English⸩⸨sup⸩3⸨/sup⸩ ⸨/lang⸩הצּפינו צ׳ דגושה
 ותחמרה ה׳ בלא מפיק
 
 ⸨cen⸩ג
-⸨lang:English⸩¹ ⸨/lang⸩רע֛ה את־צ֛אן ב׳ תבירין
-⸨lang:English⸩⁴ ⸨/lang⸩כ֣י ס֣ר ב׳ מונחין
+⸨lang:English⸩⸨sup⸩1⸨/sup⸩ ⸨/lang⸩רע֛ה את־צ֛אן ב׳ תבירין
+⸨lang:English⸩⸨sup⸩4⸨/sup⸩ ⸨/lang⸩כ֣י ס֣ר ב׳ מונחין
 משה משה בלא פסיק ביניהן
 
 ⸨cen⸩ד
-⸨lang:English⸩² ⸨/lang⸩מזה מה זה קרי
-⸨lang:English⸩¹⁰ ⸨/lang⸩אנ֗כי מלעיל
+⸨lang:English⸩⸨sup⸩2⸨/sup⸩ ⸨/lang⸩מזה מה זה קרי
+⸨lang:English⸩⸨sup⸩10⸨/sup⸩ ⸨/lang⸩אנ֗כי מלעיל
 
 ⸨cen⸩ה
-⸨lang:English⸩¹⁵ ⸨/lang⸩תעשֶ֦ה במרכא כפולה
-⸨lang:English⸩¹⁶ ⸨/lang⸩נִתָּן ת׳ קמוצה
+⸨lang:English⸩⸨sup⸩15⸨/sup⸩ ⸨/lang⸩תעשֶ֦ה במרכא כפולה
+⸨lang:English⸩⸨sup⸩16⸨/sup⸩ ⸨/lang⸩נִתָּן ת׳ קמוצה
 
 ⸨cen⸩ו
-⸨lang:English⸩¹⁷ ⸨/lang⸩למשפחֹתם בנוסחא אחרינא לתֹלדֹתם
+⸨lang:English⸩⸨sup⸩17⸨/sup⸩ ⸨/lang⸩למשפחֹתם בנוסחא אחרינא לתֹלדֹתם
 
 ⸨cen⸩ז
-⸨lang:English⸩²⁹ ⸨/lang⸩ובכה יתיר ה׳
+⸨lang:English⸩⸨sup⸩29⸨/sup⸩ ⸨/lang⸩ובכה יתיר ה׳
 
 ⸨cen⸩ח
-⸨lang:English⸩¹² ⸨/lang⸩לכִנִם חסר דחסר
-⸨lang:English⸩¹⁵ ⸨/lang⸩החרטמִם חסר י׳
+⸨lang:English⸩⸨sup⸩12⸨/sup⸩ ⸨/lang⸩לכִנִם חסר דחסר
+⸨lang:English⸩⸨sup⸩15⸨/sup⸩ ⸨/lang⸩החרטמִם חסר י׳
 
 ⸨cen⸩ט
-⸨lang:English⸩¹⁸ ⸨/lang⸩הוסדהֿ ה׳ רפה
+⸨lang:English⸩⸨sup⸩18⸨/sup⸩ ⸨/lang⸩הוסדהֿ ה׳ רפה
 
 ⸨cen⸩י
-⸨lang:English⸩⁹ ⸨/lang⸩ובזקנינו מלא י׳
-⸨lang:English⸩¹⁹ ⸨/lang⸩סּוּף ס׳ דגושה
-⸨lang:English⸩²⁹ ⸨/lang⸩דבַ֑רת פתח באתנח
+⸨lang:English⸩⸨sup⸩9⸨/sup⸩ ⸨/lang⸩ובזקנינו מלא י׳
+⸨lang:English⸩⸨sup⸩19⸨/sup⸩ ⸨/lang⸩סּוּף ס׳ דגושה
+⸨lang:English⸩⸨sup⸩29⸨/sup⸩ ⸨/lang⸩דבַ֑רת פתח באתנח
 
 ⸨cen⸩יא
-⸨lang:English⸩⁶ ⸨/lang⸩כמֹהו סבירין כמוהָ
+⸨lang:English⸩⸨sup⸩6⸨/sup⸩ ⸨/lang⸩כמֹהו סבירין כמוהָ
 
 ⸨cen⸩יב
-⸨lang:English⸩⁷ ⸨/lang⸩הבָּ֣תִּ֔ים בשני טעמים
-⸨lang:English⸩¹¹ ⸨/lang⸩וככה יתיר ה׳
-⸨lang:English⸩²² ⸨/lang⸩בסָף֒ קמץ בסגולתא
-⸨lang:English⸩³¹ ⸨/lang⸩צּאו הצ׳ דגושה
-⸨lang:English⸩³⁹ ⸨/lang⸩עגות הג׳ רפה
+⸨lang:English⸩⸨sup⸩7⸨/sup⸩ ⸨/lang⸩הבָּ֣תִּ֔ים בשני טעמים
+⸨lang:English⸩⸨sup⸩11⸨/sup⸩ ⸨/lang⸩וככה יתיר ה׳
+⸨lang:English⸩⸨sup⸩22⸨/sup⸩ ⸨/lang⸩בסָף֒ קמץ בסגולתא
+⸨lang:English⸩⸨sup⸩31⸨/sup⸩ ⸨/lang⸩צּאו הצ׳ דגושה
+⸨lang:English⸩⸨sup⸩39⸨/sup⸩ ⸨/lang⸩עגות הג׳ רפה
 
 ⸨cen⸩יג
-⸨lang:English⸩¹⁶ ⸨/lang⸩ידכה בה׳ נוספת
+⸨lang:English⸩⸨sup⸩16⸨/sup⸩ ⸨/lang⸩ידכה בה׳ נוספת
 
 ⸨cen⸩יד
-⸨lang:English⸩¹³ ⸨/lang⸩אשר תניינא סבירין כאשר
-⸨lang:English⸩²⁸ ⸨/lang⸩ה֯באים בראש עמוד סימן ביה שמו
-⸨lang:English⸩²⁹ ⸨/lang⸩חֹמה חסר ו׳
+⸨lang:English⸩⸨sup⸩13⸨/sup⸩ ⸨/lang⸩אשר תניינא סבירין כאשר
+⸨lang:English⸩⸨sup⸩28⸨/sup⸩ ⸨/lang⸩ה֯באים בראש עמוד סימן ביה שמו
+⸨lang:English⸩⸨sup⸩29⸨/sup⸩ ⸨/lang⸩חֹמה חסר ו׳
 
 ⸨cen⸩טו
-⸨lang:English⸩¹ ⸨/lang⸩גָּאָה ג׳ דגושה
-⸨lang:English⸩⁷ ⸨/lang⸩כקַ֑ש פתח באתנח
-⸨lang:English⸩¹¹ ⸨/lang⸩כּמֹכה תניינא בדגש הכ׳
+⸨lang:English⸩⸨sup⸩1⸨/sup⸩ ⸨/lang⸩גָּאָה ג׳ דגושה
+⸨lang:English⸩⸨sup⸩7⸨/sup⸩ ⸨/lang⸩כקַ֑ש פתח באתנח
+⸨lang:English⸩⸨sup⸩11⸨/sup⸩ ⸨/lang⸩כּמֹכה תניינא בדגש הכ׳
 באֵלִם חסר דחסר
-⸨lang:English⸩¹³ ⸨/lang⸩גּאלת ג׳ דגושה
-⸨lang:English⸩¹⁶ ⸨/lang⸩כּאבן כ׳ דגושה
-⸨lang:English⸩¹⁷ ⸨/lang⸩מקּדש ק׳ דגושה
+⸨lang:English⸩⸨sup⸩13⸨/sup⸩ ⸨/lang⸩גּאלת ג׳ דגושה
+⸨lang:English⸩⸨sup⸩16⸨/sup⸩ ⸨/lang⸩כּאבן כ׳ דגושה
+⸨lang:English⸩⸨sup⸩17⸨/sup⸩ ⸨/lang⸩מקּדש ק׳ דגושה
 
 ⸨cen⸩טז
-⸨lang:English⸩² ⸨/lang⸩וילינו וילונו קרי
-⸨lang:English⸩⁷ ⸨/lang⸩תלונו תליני קרי
-⸨lang:English⸩¹² ⸨/lang⸩תלוּנּת דגש אחר שורק
-⸨lang:English⸩¹³ ⸨/lang⸩השלו השליו קרי
-⸨lang:English⸩²⁰ ⸨/lang⸩ויבאַ֑ש פתח באתנח
+⸨lang:English⸩⸨sup⸩2⸨/sup⸩ ⸨/lang⸩וילינו וילונו קרי
+⸨lang:English⸩⸨sup⸩7⸨/sup⸩ ⸨/lang⸩תלונו תליני קרי
+⸨lang:English⸩⸨sup⸩12⸨/sup⸩ ⸨/lang⸩תלוּנּת דגש אחר שורק
+⸨lang:English⸩⸨sup⸩13⸨/sup⸩ ⸨/lang⸩השלו השליו קרי
+⸨lang:English⸩⸨sup⸩20⸨/sup⸩ ⸨/lang⸩ויבאַ֑ש פתח באתנח
 
 ⸨cen⸩יח
-⸨lang:English⸩²⁶ ⸨/lang⸩ישפוט֥ו כצ״ל ומלרע
+⸨lang:English⸩⸨sup⸩26⸨/sup⸩ ⸨/lang⸩ישפוט֥ו כצ״ל ומלרע
 
 ⸨cen⸩יט
-⸨lang:English⸩⁴ ⸨/lang⸩למצרים בנ״א במצרים
-⸨lang:English⸩⁵ ⸨/lang⸩וה֨ייתם מלעיל
-⸨lang:English⸩¹⁶ ⸨/lang⸩קֹלֹת חסר דחסר
+⸨lang:English⸩⸨sup⸩4⸨/sup⸩ ⸨/lang⸩למצרים בנ״א במצרים
+⸨lang:English⸩⸨sup⸩5⸨/sup⸩ ⸨/lang⸩וה֨ייתם מלעיל
+⸨lang:English⸩⸨sup⸩16⸨/sup⸩ ⸨/lang⸩קֹלֹת חסר דחסר
 
 ⸨cen⸩כא
-⸨lang:English⸩⁸ ⸨/lang⸩לא לו קרי
+⸨lang:English⸩⸨sup⸩8⸨/sup⸩ ⸨/lang⸩לא לו קרי
 
 ⸨cen⸩כב
-⸨lang:English⸩⁴ ⸨/lang⸩בעירֹה בעירו קרי
-⸨lang:English⸩⁸ ⸨/lang⸩ירשיעֻן חסר
-⸨lang:English⸩²² ⸨/lang⸩תענֵה הג׳ בצירי
-⸨lang:English⸩²⁴ ⸨/lang⸩נֶֽשך סגול בס״פ
-⸨lang:English⸩²⁶ ⸨/lang⸩כסותֹה כסותו קרי
+⸨lang:English⸩⸨sup⸩4⸨/sup⸩ ⸨/lang⸩בעירֹה בעירו קרי
+⸨lang:English⸩⸨sup⸩8⸨/sup⸩ ⸨/lang⸩ירשיעֻן חסר
+⸨lang:English⸩⸨sup⸩22⸨/sup⸩ ⸨/lang⸩תענֵה הג׳ בצירי
+⸨lang:English⸩⸨sup⸩24⸨/sup⸩ ⸨/lang⸩נֶֽשך סגול בס״פ
+⸨lang:English⸩⸨sup⸩26⸨/sup⸩ ⸨/lang⸩כסותֹה כסותו קרי
 ישכָּ֔ב קמץ בז״ק
 
 ⸨cen⸩כג
-⸨lang:English⸩² ⸨/lang⸩רִב חסר י׳
-⸨lang:English⸩¹⁵ ⸨/lang⸩צויתִך חסר י׳ תניינא
-⸨lang:English⸩²⁰ ⸨/lang⸩הכִנֹתִי חסר דחסר
+⸨lang:English⸩⸨sup⸩2⸨/sup⸩ ⸨/lang⸩רִב חסר י׳
+⸨lang:English⸩⸨sup⸩15⸨/sup⸩ ⸨/lang⸩צויתִך חסר י׳ תניינא
+⸨lang:English⸩⸨sup⸩20⸨/sup⸩ ⸨/lang⸩הכִנֹתִי חסר דחסר
 
 ⸨cen⸩כד
-⸨lang:English⸩⁶ ⸨/lang⸩באגנֹת חסר ו׳
+⸨lang:English⸩⸨sup⸩6⸨/sup⸩ ⸨/lang⸩באגנֹת חסר ו׳
 
 ⸨cen⸩כה
-⸨lang:English⸩²⁹ ⸨/lang⸩קּערותיו ק׳ דגושה
-⸨lang:English⸩³¹ ⸨/lang⸩תיעשה יתיר י׳
-⸨lang:English⸩³³ ⸨/lang⸩מְֽשקדים מ׳ בשוא וגעיא
-⸨lang:English⸩³⁹ ⸨/lang⸩יעשה סבירין תעשה
+⸨lang:English⸩⸨sup⸩29⸨/sup⸩ ⸨/lang⸩קּערותיו ק׳ דגושה
+⸨lang:English⸩⸨sup⸩31⸨/sup⸩ ⸨/lang⸩תיעשה יתיר י׳
+⸨lang:English⸩⸨sup⸩33⸨/sup⸩ ⸨/lang⸩מְֽשקדים מ׳ בשוא וגעיא
+⸨lang:English⸩⸨sup⸩39⸨/sup⸩ ⸨/lang⸩יעשה סבירין תעשה
 
 ⸨cen⸩כו
-⸨lang:English⸩³³ ⸨/lang⸩והבדילה מלרע
+⸨lang:English⸩⸨sup⸩33⸨/sup⸩ ⸨/lang⸩והבדילה מלרע
 
 ⸨cen⸩כז
-⸨lang:English⸩³ ⸨/lang⸩סּירותיו ס׳ דגושה
-⸨lang:English⸩⁵ ⸨/lang⸩מלמטּה ט׳ דגושה
-⸨lang:English⸩¹¹ ⸨/lang⸩יעמֻדו ועמדיו קרי
+⸨lang:English⸩⸨sup⸩3⸨/sup⸩ ⸨/lang⸩סּירותיו ס׳ דגושה
+⸨lang:English⸩⸨sup⸩5⸨/sup⸩ ⸨/lang⸩מלמטּה ט׳ דגושה
+⸨lang:English⸩⸨sup⸩11⸨/sup⸩ ⸨/lang⸩יעמֻדו ועמדיו קרי
 
 ⸨cen⸩כח
-⸨lang:English⸩²⁸ ⸨/lang⸩מטבעֹתו מטבעֹתיו קרי
-⸨lang:English⸩⁴² ⸨/lang⸩בָ֔ד קמץ בז״ק
+⸨lang:English⸩⸨sup⸩28⸨/sup⸩ ⸨/lang⸩מטבעֹתו מטבעֹתיו קרי
+⸨lang:English⸩⸨sup⸩42⸨/sup⸩ ⸨/lang⸩בָ֔ד קמץ בז״ק
 
 ⸨cen⸩כט
-⸨lang:English⸩² ⸨/lang⸩וחלֹת מצֹת חסר
-⸨lang:English⸩³ ⸨/lang⸩אותם קדמאה מלא
-⸨lang:English⸩³⁵ ⸨/lang⸩אֹתכה חסר ו׳ ומלא ה׳
-⸨lang:English⸩⁴³ ⸨/lang⸩ונֹעדתי חסר
+⸨lang:English⸩⸨sup⸩2⸨/sup⸩ ⸨/lang⸩וחלֹת מצֹת חסר
+⸨lang:English⸩⸨sup⸩3⸨/sup⸩ ⸨/lang⸩אותם קדמאה מלא
+⸨lang:English⸩⸨sup⸩35⸨/sup⸩ ⸨/lang⸩אֹתכה חסר ו׳ ומלא ה׳
+⸨lang:English⸩⸨sup⸩43⸨/sup⸩ ⸨/lang⸩ונֹעדתי חסר
 ונקדש ד׳ קמוצה בס״ס
 
 ⸨cen⸩ל
-⸨lang:English⸩¹⁸ ⸨/lang⸩לרחצה ה׳ בלא מפיק
+⸨lang:English⸩⸨sup⸩18⸨/sup⸩ ⸨/lang⸩לרחצה ה׳ בלא מפיק
 
 ⸨cen⸩לא
-⸨lang:English⸩¹⁴ ⸨/lang⸩יומָ֔ת קמץ בז״ק
-⸨lang:English⸩¹⁸ ⸨/lang⸩לֻחֹת חסר דחסר
+⸨lang:English⸩⸨sup⸩14⸨/sup⸩ ⸨/lang⸩יומָ֔ת קמץ בז״ק
+⸨lang:English⸩⸨sup⸩18⸨/sup⸩ ⸨/lang⸩לֻחֹת חסר דחסר
 
 ⸨cen⸩לב
-⸨lang:English⸩¹ ⸨/lang⸩בשׁש חסר
-⸨lang:English⸩⁷ ⸨/lang⸩העלֵית הל׳ בצירי
-⸨lang:English⸩¹⁷ ⸨/lang⸩ברעֹה ברעו קרי
-⸨lang:English⸩¹⁹ ⸨/lang⸩מידו מידיו קרי
-⸨lang:English⸩²⁵ ⸨/lang⸩בקמיהם בקצת ספרים ק׳ זעירא
-⸨lang:English⸩³¹ ⸨/lang⸩א֣נ֗א ב׳ טעמים
+⸨lang:English⸩⸨sup⸩1⸨/sup⸩ ⸨/lang⸩בשׁש חסר
+⸨lang:English⸩⸨sup⸩7⸨/sup⸩ ⸨/lang⸩העלֵית הל׳ בצירי
+⸨lang:English⸩⸨sup⸩17⸨/sup⸩ ⸨/lang⸩ברעֹה ברעו קרי
+⸨lang:English⸩⸨sup⸩19⸨/sup⸩ ⸨/lang⸩מידו מידיו קרי
+⸨lang:English⸩⸨sup⸩25⸨/sup⸩ ⸨/lang⸩בקמיהם בקצת ספרים ק׳ זעירא
+⸨lang:English⸩⸨sup⸩31⸨/sup⸩ ⸨/lang⸩א֣נ֗א ב׳ טעמים
 
 ⸨cen⸩לג
-⸨lang:English⸩¹³ ⸨/lang⸩דרכך חסר
+⸨lang:English⸩⸨sup⸩13⸨/sup⸩ ⸨/lang⸩דרכך חסר
 
 ⸨cen⸩לד
-⸨lang:English⸩⁷ ⸨/lang⸩נצר נ׳ רבתי
-⸨lang:English⸩¹⁴ ⸨/lang⸩אחר ר׳ רבתי
-⸨lang:English⸩¹⁹ ⸨/lang⸩תזכָ֔ר קמץ בז״ק
+⸨lang:English⸩⸨sup⸩7⸨/sup⸩ ⸨/lang⸩נצר נ׳ רבתי
+⸨lang:English⸩⸨sup⸩14⸨/sup⸩ ⸨/lang⸩אחר ר׳ רבתי
+⸨lang:English⸩⸨sup⸩19⸨/sup⸩ ⸨/lang⸩תזכָ֔ר קמץ בז״ק
 
 ⸨cen⸩לה
-⸨lang:English⸩¹¹ ⸨/lang⸩בריחו בריחיו קרי
-⸨lang:English⸩²⁷ ⸨/lang⸩והנשִאִם חסר דחסר
+⸨lang:English⸩⸨sup⸩11⸨/sup⸩ ⸨/lang⸩בריחו בריחיו קרי
+⸨lang:English⸩⸨sup⸩27⸨/sup⸩ ⸨/lang⸩והנשִאִם חסר דחסר
 
 ⸨cen⸩לו
-⸨lang:English⸩¹⁰ ⸨/lang⸩חבָ֔ר בקצת ספרים הב׳ בקמץ
-⸨lang:English⸩¹² ⸨/lang⸩האחָת קמץ בסגולתא
-⸨lang:English⸩²¹ ⸨/lang⸩אמֹת חסר ו׳
-⸨lang:English⸩²⁹ ⸨/lang⸩תואמם מלא ו׳ וחסר י׳
+⸨lang:English⸩⸨sup⸩10⸨/sup⸩ ⸨/lang⸩חבָ֔ר בקצת ספרים הב׳ בקמץ
+⸨lang:English⸩⸨sup⸩12⸨/sup⸩ ⸨/lang⸩האחָת קמץ בסגולתא
+⸨lang:English⸩⸨sup⸩21⸨/sup⸩ ⸨/lang⸩אמֹת חסר ו׳
+⸨lang:English⸩⸨sup⸩29⸨/sup⸩ ⸨/lang⸩תואמם מלא ו׳ וחסר י׳
 
 ⸨cen⸩לז
-⸨lang:English⸩⁸ ⸨/lang⸩קצוותו קצותיו קרי
-⸨lang:English⸩¹⁹ ⸨/lang⸩מְֽשקדים בשוא וגעיא
+⸨lang:English⸩⸨sup⸩8⸨/sup⸩ ⸨/lang⸩קצוותו קצותיו קרי
+⸨lang:English⸩⸨sup⸩19⸨/sup⸩ ⸨/lang⸩מְֽשקדים בשוא וגעיא
 
 ⸨cen⸩לח
-⸨lang:English⸩¹ ⸨/lang⸩וחמש לב״א הטעם
+⸨lang:English⸩⸨sup⸩1⸨/sup⸩ ⸨/lang⸩וחמש לב״א הטעם
 בח׳ ולב״נ הטעם במ״ם
 
 ⸨cen⸩לט
-⸨lang:English⸩⁴ ⸨/lang⸩קצוותו קצותיו קרי
-⸨lang:English⸩²¹ ⸨/lang⸩מטבעֹתו בקצת ספרים
+⸨lang:English⸩⸨sup⸩4⸨/sup⸩ ⸨/lang⸩קצוותו קצותיו קרי
+⸨lang:English⸩⸨sup⸩21⸨/sup⸩ ⸨/lang⸩מטבעֹתו בקצת ספרים
 מטבעתוו ואין כאן ק׳ וכ׳
-⸨lang:English⸩³³ ⸨/lang⸩בריחו בריחיו קרי
+⸨lang:English⸩⸨sup⸩33⸨/sup⸩ ⸨/lang⸩בריחו בריחיו קרי

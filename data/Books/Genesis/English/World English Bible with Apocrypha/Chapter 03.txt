@@ -1,43 +1,43 @@
 ⸨cen⸩⸨b⸩3⸨/b⸩
 
-⸨in⸩¹ Now the serpent was more subtle than any animal of the field which Yahweh God had made. He said to the woman, “Has God really said, ‘You shall not eat of any tree of the garden’?”
-⸨in⸩² The woman said to the serpent, “We may eat fruit from the trees of the garden, ³ but not the fruit of the tree which is in the middle of the garden. God has said, ‘You shall not eat of it. You shall not touch it, lest you die.’”
-⸨in⸩⁴ The serpent said to the woman, “You wonʼt really die, ⁵ for God knows that in the day you eat it, your eyes will be opened, and you will be like God, knowing good and evil.”
-⸨in⸩⁶ When the woman saw that the tree was good for food, and that it was a delight to the eyes, and that the tree was to be desired to make one wise, she took some of its fruit, and ate. Then she gave some to her husband with her, and he ate it, too. ⁷ Their eyes were opened, and they both knew that they were naked. They sewed fig leaves together, and made coverings for themselves. ⁸ They heard Yahweh Godʼs voice walking in the garden in the cool of the day, and the man and his wife hid themselves from the presence of Yahweh God among the trees of the garden.
-⸨in⸩⁹ Yahweh God called to the man, and said to him, “Where are you?”
-⸨in⸩¹⁰ The man said, “I heard your voice in the garden, and I was afraid, because I was naked; so I hid myself.”
-⸨in⸩¹¹ God said, “Who told you that you were naked? Have you eaten from the tree that I commanded you not to eat from?”
-⸨in⸩¹² The man said, “The woman whom you gave to be with me, she gave me fruit from the tree, and I ate it.”
-⸨in⸩¹³ Yahweh God said to the woman, “What have you done?”
+⸨in⸩⸨sup⸩1⸨/sup⸩ Now the serpent was more subtle than any animal of the field which Yahweh God had made. He said to the woman, “Has God really said, ‘You shall not eat of any tree of the garden’?”
+⸨in⸩⸨sup⸩2⸨/sup⸩ The woman said to the serpent, “We may eat fruit from the trees of the garden, ⸨sup⸩3⸨/sup⸩ but not the fruit of the tree which is in the middle of the garden. God has said, ‘You shall not eat of it. You shall not touch it, lest you die.’”
+⸨in⸩⸨sup⸩4⸨/sup⸩ The serpent said to the woman, “You wonʼt really die, ⸨sup⸩5⸨/sup⸩ for God knows that in the day you eat it, your eyes will be opened, and you will be like God, knowing good and evil.”
+⸨in⸩⸨sup⸩6⸨/sup⸩ When the woman saw that the tree was good for food, and that it was a delight to the eyes, and that the tree was to be desired to make one wise, she took some of its fruit, and ate. Then she gave some to her husband with her, and he ate it, too. ⸨sup⸩7⸨/sup⸩ Their eyes were opened, and they both knew that they were naked. They sewed fig leaves together, and made coverings for themselves. ⸨sup⸩8⸨/sup⸩ They heard Yahweh Godʼs voice walking in the garden in the cool of the day, and the man and his wife hid themselves from the presence of Yahweh God among the trees of the garden.
+⸨in⸩⸨sup⸩9⸨/sup⸩ Yahweh God called to the man, and said to him, “Where are you?”
+⸨in⸩⸨sup⸩10⸨/sup⸩ The man said, “I heard your voice in the garden, and I was afraid, because I was naked; so I hid myself.”
+⸨in⸩⸨sup⸩11⸨/sup⸩ God said, “Who told you that you were naked? Have you eaten from the tree that I commanded you not to eat from?”
+⸨in⸩⸨sup⸩12⸨/sup⸩ The man said, “The woman whom you gave to be with me, she gave me fruit from the tree, and I ate it.”
+⸨in⸩⸨sup⸩13⸨/sup⸩ Yahweh God said to the woman, “What have you done?”
 ⸨in⸩The woman said, “The serpent deceived me, and I ate.”
-⸨in⸩¹⁴ Yahweh God said to the serpent,
+⸨in⸩⸨sup⸩14⸨/sup⸩ Yahweh God said to the serpent,
 ⸨pad⸩“Because you have done this,
 ⸨pad⸩⸨pad⸩you are cursed above all livestock,
 ⸨pad⸩⸨pad⸩and above every animal of the field.
 ⸨pad⸩You shall go on your belly
 ⸨pad⸩⸨pad⸩and you shall eat dust all the days of your life.
-⸨pad⸩¹⁵ I will put hostility between you and the woman,
+⸨pad⸩⸨sup⸩15⸨/sup⸩ I will put hostility between you and the woman,
 ⸨pad⸩⸨pad⸩and between your offspring and her offspring.
 ⸨pad⸩He will bruise your head,
 ⸨pad⸩⸨pad⸩and you will bruise his heel.”
-⸨in⸩¹⁶ To the woman he said,
+⸨in⸩⸨sup⸩16⸨/sup⸩ To the woman he said,
 ⸨pad⸩“I will greatly multiply your pain in childbirth.
 ⸨pad⸩⸨pad⸩You will bear children in pain.
 ⸨pad⸩Your desire will be for your husband,
 ⸨pad⸩⸨pad⸩and he will rule over you.”
-⸨in⸩¹⁷ To Adam he said,
+⸨in⸩⸨sup⸩17⸨/sup⸩ To Adam he said,
 ⸨pad⸩“Because you have listened to your wifeʼs voice,
 ⸨pad⸩⸨pad⸩and have eaten from the tree,
 ⸨pad⸩⸨pad⸩about which I commanded you, saying, ‘You shall not eat of it,’
 ⸨pad⸩⸨pad⸩the ground is cursed for your sake.
 ⸨pad⸩You will eat from it with much labor all the days of your life.
-⸨pad⸩⸨pad⸩¹⁸ It will yield thorns and thistles to you;
+⸨pad⸩⸨pad⸩⸨sup⸩18⸨/sup⸩ It will yield thorns and thistles to you;
 ⸨pad⸩⸨pad⸩and you will eat the herb of the field.
-⸨pad⸩¹⁹ You will eat bread by the sweat of your face until you return to the ground,
+⸨pad⸩⸨sup⸩19⸨/sup⸩ You will eat bread by the sweat of your face until you return to the ground,
 ⸨pad⸩⸨pad⸩for you were taken out of it.
 ⸨pad⸩For you are dust,
 ⸨pad⸩⸨pad⸩and you shall return to dust.”
-⸨in⸩²⁰ The man called his wife Eve because she would be the mother of all the living. ²¹ Yahweh God made garments of animal skins for Adam and for his wife, and clothed them.
-⸨in⸩²² Yahweh God said, “Behold, the man has become like one of us, knowing good and evil. Now, lest he reach out his hand, and also take of the tree of life, and eat, and live forever⸨fix:—” ⸩–” ⸨/fix⸩²³ Therefore Yahweh God sent him out from the garden of Eden, to till the ground from which he was taken. ²⁴ So he drove out the man; and he placed cherubim† at the east of the garden of Eden, and a flaming sword which turned every way, to guard the way to the tree of life.
+⸨in⸩⸨sup⸩20⸨/sup⸩ The man called his wife Eve because she would be the mother of all the living. ⸨sup⸩21⸨/sup⸩ Yahweh God made garments of animal skins for Adam and for his wife, and clothed them.
+⸨in⸩⸨sup⸩22⸨/sup⸩ Yahweh God said, “Behold, the man has become like one of us, knowing good and evil. Now, lest he reach out his hand, and also take of the tree of life, and eat, and live forever⸨fix:—” ⸩–” ⸨/fix⸩⸨sup⸩23⸨/sup⸩ Therefore Yahweh God sent him out from the garden of Eden, to till the ground from which he was taken. ⸨sup⸩24⸨/sup⸩ So he drove out the man; and he placed cherubim† at the east of the garden of Eden, and a flaming sword which turned every way, to guard the way to the tree of life.
 
 † ⸨b⸩3:24⸨/b⸩ cherubim are powerful angelic creatures, messengers of God with wings. See Ezekiel 10.

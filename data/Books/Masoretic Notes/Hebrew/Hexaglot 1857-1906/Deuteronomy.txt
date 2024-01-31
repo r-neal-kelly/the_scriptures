@@ -24,147 +24,147 @@
 ⸨cen⸩נמצאו מניין כל הפרשיות פתוחות וסתומות (שש מאות וששים ותשעה) ⸨fix:לׄאׄ⸩לאׄ⸨/fix⸩ ⸨fix:תׄחׄסׄרׄ⸩תׄחסׄרׄ⸨/fix⸩ כל בה סימן׃
 
 ⸨cen⸩א
-⸨lang:English⸩⁴ ⸨/lang⸩אֵ֚ת יתיב
-⸨lang:English⸩²⁸ ⸨/lang⸩אָנָ֣ה מלרע
-⸨lang:English⸩³⁸ ⸨/lang⸩יָב֣א מלעיל
+⸨lang:English⸩⸨sup⸩4⸨/sup⸩ ⸨/lang⸩אֵ֚ת יתיב
+⸨lang:English⸩⸨sup⸩28⸨/sup⸩ ⸨/lang⸩אָנָ֣ה מלרע
+⸨lang:English⸩⸨sup⸩38⸨/sup⸩ ⸨/lang⸩יָב֣א מלעיל
 
 ⸨cen⸩ב
-⸨lang:English⸩⁵ ⸨/lang⸩תתגר֣ו מלרע
-⸨lang:English⸩⁸ ⸨/lang⸩פסקא באמצע פסוק
-⸨lang:English⸩²¹ ⸨/lang⸩וירשֻם חסר
-⸨lang:English⸩²⁴ ⸨/lang⸩סּעו ס׳ דגושה
-⸨lang:English⸩²⁷ ⸨/lang⸩ושמאול מלא ו׳
-⸨lang:English⸩³³ ⸨/lang⸩בנו בניו קרי
-⸨lang:English⸩³⁴ ⸨/lang⸩מְתִם חסר י׳
+⸨lang:English⸩⸨sup⸩5⸨/sup⸩ ⸨/lang⸩תתגר֣ו מלרע
+⸨lang:English⸩⸨sup⸩8⸨/sup⸩ ⸨/lang⸩פסקא באמצע פסוק
+⸨lang:English⸩⸨sup⸩21⸨/sup⸩ ⸨/lang⸩וירשֻם חסר
+⸨lang:English⸩⸨sup⸩24⸨/sup⸩ ⸨/lang⸩סּעו ס׳ דגושה
+⸨lang:English⸩⸨sup⸩27⸨/sup⸩ ⸨/lang⸩ושמאול מלא ו׳
+⸨lang:English⸩⸨sup⸩33⸨/sup⸩ ⸨/lang⸩בנו בניו קרי
+⸨lang:English⸩⸨sup⸩34⸨/sup⸩ ⸨/lang⸩מְתִם חסר י׳
 
 ⸨cen⸩ג
-⸨lang:English⸩¹¹ ⸨/lang⸩הלֹה כתיב בה׳
-⸨lang:English⸩²¹ ⸨/lang⸩יהושוע מלא דמלא
+⸨lang:English⸩⸨sup⸩11⸨/sup⸩ ⸨/lang⸩הלֹה כתיב בה׳
+⸨lang:English⸩⸨sup⸩21⸨/sup⸩ ⸨/lang⸩יהושוע מלא דמלא
 
 ⸨cen⸩ד
-⸨lang:English⸩⁷ ⸨/lang⸩אלהים קרֹבים קודש
-⸨lang:English⸩²⁰ ⸨/lang⸩ויוצִא חסר י׳
-⸨lang:English⸩³³ ⸨/lang⸩השָ֣מַ֥ע ב׳ טעמים
-⸨lang:English⸩⁴³ ⸨/lang⸩ראמת כ״כ
+⸨lang:English⸩⸨sup⸩7⸨/sup⸩ ⸨/lang⸩אלהים קרֹבים קודש
+⸨lang:English⸩⸨sup⸩20⸨/sup⸩ ⸨/lang⸩ויוצִא חסר י׳
+⸨lang:English⸩⸨sup⸩33⸨/sup⸩ ⸨/lang⸩השָ֣מַ֥ע ב׳ טעמים
+⸨lang:English⸩⸨sup⸩43⸨/sup⸩ ⸨/lang⸩ראמת כ״כ
 
 ⸨cen⸩ה
-⸨lang:English⸩¹⁰ ⸨/lang⸩מצותו מצותי קרי
+⸨lang:English⸩⸨sup⸩10⸨/sup⸩ ⸨/lang⸩מצותו מצותי קרי
 
 ⸨cen⸩ו
-⸨lang:English⸩⁴ ⸨/lang⸩שמע ע׳ רבתי
-⸨lang:English⸩⁴ ⸨/lang⸩אחד ד׳ רבתי
-⸨lang:English⸩¹¹ ⸨/lang⸩וב֨ת֜ים ב׳ טעמים
-⸨lang:English⸩¹¹ ⸨/lang⸩ובֹרֹת חסר דחסר
+⸨lang:English⸩⸨sup⸩4⸨/sup⸩ ⸨/lang⸩שמע ע׳ רבתי
+⸨lang:English⸩⸨sup⸩4⸨/sup⸩ ⸨/lang⸩אחד ד׳ רבתי
+⸨lang:English⸩⸨sup⸩11⸨/sup⸩ ⸨/lang⸩וב֨ת֜ים ב׳ טעמים
+⸨lang:English⸩⸨sup⸩11⸨/sup⸩ ⸨/lang⸩ובֹרֹת חסר דחסר
 
 ⸨cen⸩ז
-⸨lang:English⸩⁹ ⸨/lang⸩מצותו מצותיו קרי
-⸨lang:English⸩¹³ ⸨/lang⸩ויצהרֶך בלא י׳ הרבים
-⸨lang:English⸩²² ⸨/lang⸩הגוים האֵל סבירין האלה
+⸨lang:English⸩⸨sup⸩9⸨/sup⸩ ⸨/lang⸩מצותו מצותיו קרי
+⸨lang:English⸩⸨sup⸩13⸨/sup⸩ ⸨/lang⸩ויצהרֶך בלא י׳ הרבים
+⸨lang:English⸩⸨sup⸩22⸨/sup⸩ ⸨/lang⸩הגוים האֵל סבירין האלה
 
 ⸨cen⸩ח
-⸨lang:English⸩² ⸨/lang⸩מצותו מצותיו קרי
-⸨lang:English⸩⁷ ⸨/lang⸩מָ֔ים קמץ בז״ק
-⸨lang:English⸩¹⁶ ⸨/lang⸩המאכ֨לך֥ בשני טעמים
-⸨lang:English⸩¹⁹ ⸨/lang⸩ועבדתָ֖ם קמץ בטרחא
+⸨lang:English⸩⸨sup⸩2⸨/sup⸩ ⸨/lang⸩מצותו מצותיו קרי
+⸨lang:English⸩⸨sup⸩7⸨/sup⸩ ⸨/lang⸩מָ֔ים קמץ בז״ק
+⸨lang:English⸩⸨sup⸩16⸨/sup⸩ ⸨/lang⸩המאכ֨לך֥ בשני טעמים
+⸨lang:English⸩⸨sup⸩19⸨/sup⸩ ⸨/lang⸩ועבדתָ֖ם קמץ בטרחא
 
 ⸨cen⸩ט
-⸨lang:English⸩¹⁴ ⸨/lang⸩ורָ֖ב קמץ בטרחא
-⸨lang:English⸩²⁴ ⸨/lang⸩ממרים בקצת ספרים מ׳ קדמאה זעירא
+⸨lang:English⸩⸨sup⸩14⸨/sup⸩ ⸨/lang⸩ורָ֖ב קמץ בטרחא
+⸨lang:English⸩⸨sup⸩24⸨/sup⸩ ⸨/lang⸩ממרים בקצת ספרים מ׳ קדמאה זעירא
 
 ⸨cen⸩י
-⸨lang:English⸩² ⸨/lang⸩שבַ֥רת פתח באתנח
-⸨lang:English⸩⸨fix:¹⁷⸩¹⸨/fix⸩ ⸨/lang⸩ואדני האדנים א׳ נעה
-⸨lang:English⸩²⁰ ⸨/lang⸩תדבָ֔ק קמץ בז״ק
+⸨lang:English⸩⸨sup⸩2⸨/sup⸩ ⸨/lang⸩שבַ֥רת פתח באתנח
+⸨lang:English⸩⸨sup⸩⸨fix:17⸩1⸨/fix⸩⸨/sup⸩ ⸨/lang⸩ואדני האדנים א׳ נעה
+⸨lang:English⸩⸨sup⸩20⸨/sup⸩ ⸨/lang⸩תדבָ֔ק קמץ בז״ק
 
 ⸨cen⸩יא
-⸨lang:English⸩⁷ ⸨/lang⸩הרֹאֹת כלו חסר
-⸨lang:English⸩¹² ⸨/lang⸩מרשית חסר א׳
+⸨lang:English⸩⸨sup⸩7⸨/sup⸩ ⸨/lang⸩הרֹאֹת כלו חסר
+⸨lang:English⸩⸨sup⸩12⸨/sup⸩ ⸨/lang⸩מרשית חסר א׳
 
 ⸨cen⸩יב
-⸨lang:English⸩²⁸ ⸨/lang⸩שמר לדעת קצת הוא בראש עמוד
+⸨lang:English⸩⸨sup⸩28⸨/sup⸩ ⸨/lang⸩שמר לדעת קצת הוא בראש עמוד
 
 ⸨cen⸩יג
-⸨lang:English⸩³ ⸨/lang⸩ידעתָם הת׳ בקמץ
-⸨lang:English⸩⁶ ⸨/lang⸩יומָ֗ת קמץ ברביע
+⸨lang:English⸩⸨sup⸩3⸨/sup⸩ ⸨/lang⸩ידעתָם הת׳ בקמץ
+⸨lang:English⸩⸨sup⸩6⸨/sup⸩ ⸨/lang⸩יומָ֗ת קמץ ברביע
 
 ⸨cen⸩טז
-⸨lang:English⸩¹⁶ ⸨/lang⸩יבחָר קמץ בז״ק
+⸨lang:English⸩⸨sup⸩16⸨/sup⸩ ⸨/lang⸩יבחָר קמץ בז״ק
 
 ⸨cen⸩יז
-⸨lang:English⸩¹⁹ ⸨/lang⸩וקרא בו סבירין בה
-⸨lang:English⸩²⁰ ⸨/lang⸩ושמאול יתיר י׳
+⸨lang:English⸩⸨sup⸩19⸨/sup⸩ ⸨/lang⸩וקרא בו סבירין בה
+⸨lang:English⸩⸨sup⸩20⸨/sup⸩ ⸨/lang⸩ושמאול יתיר י׳
 
 ⸨cen⸩יח
-⸨lang:English⸩¹³ ⸨/lang⸩תמים במקצת ספרים ת׳ רבתי
-⸨lang:English⸩¹⁶ ⸨/lang⸩אלהי קמץ בז״ק
+⸨lang:English⸩⸨sup⸩13⸨/sup⸩ ⸨/lang⸩תמים במקצת ספרים ת׳ רבתי
+⸨lang:English⸩⸨sup⸩16⸨/sup⸩ ⸨/lang⸩אלהי קמץ בז״ק
 
 ⸨cen⸩כא
-⸨lang:English⸩¹ ⸨/lang⸩בָאדמה ב׳ בקמץ
-⸨lang:English⸩⁷ ⸨/lang⸩שפכֻה שפכו קרי
+⸨lang:English⸩⸨sup⸩1⸨/sup⸩ ⸨/lang⸩בָאדמה ב׳ בקמץ
+⸨lang:English⸩⸨sup⸩7⸨/sup⸩ ⸨/lang⸩שפכֻה שפכו קרי
 
 ⸨cen⸩כב
-⸨lang:English⸩⁹ ⸨/lang⸩תזרָ֔ע קמץ בז״ק
-⸨lang:English⸩¹⁵ ⸨/lang⸩הנער הנערה קרי
-⸨lang:English⸩¹⁶ ⸨/lang⸩הנער הנערה קרי
-⸨lang:English⸩²⁰ ⸨/lang⸩לנער לנערה קרי
-⸨lang:English⸩²¹ ⸨/lang⸩הנער הנערה קרי
-⸨lang:English⸩²³ ⸨/lang⸩נער נערה קרי
-⸨lang:English⸩²⁴ ⸨/lang⸩הנער הנערה קרי
-⸨lang:English⸩²⁵ ⸨/lang⸩הנער הנערה קרי
-⸨lang:English⸩²⁶ ⸨/lang⸩ולנער לנער רה קרי
-⸨lang:English⸩²⁷ ⸨/lang⸩הנער הנערה קרי
-⸨lang:English⸩²⁸ ⸨/lang⸩נער נערה קרי
-⸨lang:English⸩²⁹ ⸨/lang⸩הנער הנערה קרי
+⸨lang:English⸩⸨sup⸩9⸨/sup⸩ ⸨/lang⸩תזרָ֔ע קמץ בז״ק
+⸨lang:English⸩⸨sup⸩15⸨/sup⸩ ⸨/lang⸩הנער הנערה קרי
+⸨lang:English⸩⸨sup⸩16⸨/sup⸩ ⸨/lang⸩הנער הנערה קרי
+⸨lang:English⸩⸨sup⸩20⸨/sup⸩ ⸨/lang⸩לנער לנערה קרי
+⸨lang:English⸩⸨sup⸩21⸨/sup⸩ ⸨/lang⸩הנער הנערה קרי
+⸨lang:English⸩⸨sup⸩23⸨/sup⸩ ⸨/lang⸩נער נערה קרי
+⸨lang:English⸩⸨sup⸩24⸨/sup⸩ ⸨/lang⸩הנער הנערה קרי
+⸨lang:English⸩⸨sup⸩25⸨/sup⸩ ⸨/lang⸩הנער הנערה קרי
+⸨lang:English⸩⸨sup⸩26⸨/sup⸩ ⸨/lang⸩ולנער לנער רה קרי
+⸨lang:English⸩⸨sup⸩27⸨/sup⸩ ⸨/lang⸩הנער הנערה קרי
+⸨lang:English⸩⸨sup⸩28⸨/sup⸩ ⸨/lang⸩נער נערה קרי
+⸨lang:English⸩⸨sup⸩29⸨/sup⸩ ⸨/lang⸩הנער הנערה קרי
 
 ⸨cen⸩כג
-⸨lang:English⸩²⁴ ⸨/lang⸩מוצא שפתיך לדעת קצת הוא כראש עמוד
+⸨lang:English⸩⸨sup⸩24⸨/sup⸩ ⸨/lang⸩מוצא שפתיך לדעת קצת הוא כראש עמוד
 
 ⸨cen⸩כד
-⸨lang:English⸩⁷ ⸨/lang⸩והתעמר בו סבירין בה
+⸨lang:English⸩⸨sup⸩7⸨/sup⸩ ⸨/lang⸩והתעמר בו סבירין בה
 
 ⸨cen⸩כו
-⸨lang:English⸩¹⁴ ⸨/lang⸩אלהָ֔י קמץ בז״ק
+⸨lang:English⸩⸨sup⸩14⸨/sup⸩ ⸨/lang⸩אלהָ֔י קמץ בז״ק
 
 ⸨cen⸩כז
-⸨lang:English⸩⁸ ⸨/lang⸩בַאר ב׳ פתוחה
-⸨lang:English⸩⁹ ⸨/lang⸩לעָ֔ם קמץ בז״ק
-⸨lang:English⸩¹⁰ ⸨/lang⸩מצותו מצותיו קרי
+⸨lang:English⸩⸨sup⸩8⸨/sup⸩ ⸨/lang⸩בַאר ב׳ פתוחה
+⸨lang:English⸩⸨sup⸩9⸨/sup⸩ ⸨/lang⸩לעָ֔ם קמץ בז״ק
+⸨lang:English⸩⸨sup⸩10⸨/sup⸩ ⸨/lang⸩מצותו מצותיו קרי
 
 ⸨cen⸩כח
-⸨lang:English⸩¹⁴ ⸨/lang⸩ושמאול מלא ו׳
-⸨lang:English⸩²⁷ ⸨/lang⸩ובעפֹלים ובטחורים קרי
-⸨lang:English⸩³⁰ ⸨/lang⸩ישגלנה ישכבנה קרי
-⸨lang:English⸩⁴⁸ ⸨/lang⸩הצלָצַֽל פתח בס״פ
-⸨lang:English⸩⁵⁷ ⸨/lang⸩היוצת חסר א׳
-⸨lang:English⸩⁶² ⸨/lang⸩מעָ֔ט קמץ בז״ק
-⸨lang:English⸩⁶⁷ ⸨/lang⸩תפחָ֔ד קמץ בז״ק
+⸨lang:English⸩⸨sup⸩14⸨/sup⸩ ⸨/lang⸩ושמאול מלא ו׳
+⸨lang:English⸩⸨sup⸩27⸨/sup⸩ ⸨/lang⸩ובעפֹלים ובטחורים קרי
+⸨lang:English⸩⸨sup⸩30⸨/sup⸩ ⸨/lang⸩ישגלנה ישכבנה קרי
+⸨lang:English⸩⸨sup⸩48⸨/sup⸩ ⸨/lang⸩הצלָצַֽל פתח בס״פ
+⸨lang:English⸩⸨sup⸩57⸨/sup⸩ ⸨/lang⸩היוצת חסר א׳
+⸨lang:English⸩⸨sup⸩62⸨/sup⸩ ⸨/lang⸩מעָ֔ט קמץ בז״ק
+⸨lang:English⸩⸨sup⸩67⸨/sup⸩ ⸨/lang⸩תפחָ֔ד קמץ בז״ק
 
 ⸨cen⸩כט
-⸨lang:English⸩²² ⸨/lang⸩וצביים וצבוים קרי
-⸨lang:English⸩²⁷ ⸨/lang⸩וישלכם ל׳ רבתי
-⸨lang:English⸩²⁸ ⸨/lang⸩י״א נקודות על לׄנׄוׄ וׄלׄבׄנׄיׄנׄוּׄ ⸨fix:עׄדׄ⸩עׄד⸨/fix⸩
+⸨lang:English⸩⸨sup⸩22⸨/sup⸩ ⸨/lang⸩וצביים וצבוים קרי
+⸨lang:English⸩⸨sup⸩27⸨/sup⸩ ⸨/lang⸩וישלכם ל׳ רבתי
+⸨lang:English⸩⸨sup⸩28⸨/sup⸩ ⸨/lang⸩י״א נקודות על לׄנׄוׄ וׄלׄבׄנׄיׄנׄוּׄ ⸨fix:עׄדׄ⸩עׄד⸨/fix⸩
 
 ⸨cen⸩לא
-⸨lang:English⸩⁷ ⸨/lang⸩ואמָץ֒ קמץ בסגולתא
-⸨lang:English⸩²³ ⸨/lang⸩ואמָץ֒ קמץ בסגולתא
-⸨lang:English⸩²⁸ ⸨/lang⸩ואעידה בם בראש עמוד סימן ביה שמו
+⸨lang:English⸩⸨sup⸩7⸨/sup⸩ ⸨/lang⸩ואמָץ֒ קמץ בסגולתא
+⸨lang:English⸩⸨sup⸩23⸨/sup⸩ ⸨/lang⸩ואמָץ֒ קמץ בסגולתא
+⸨lang:English⸩⸨sup⸩28⸨/sup⸩ ⸨/lang⸩ואעידה בם בראש עמוד סימן ביה שמו
 
 ⸨cen⸩לב
-⸨lang:English⸩⁴ ⸨/lang⸩הצור בקצת ספרים צ׳ רבתי
-⸨lang:English⸩⁶ ⸨/lang⸩הליהוה ה׳ רבתי והוא תיבה בפני עצמה ולדעת קצת הל לחוד יהוה לחוד
-⸨lang:English⸩¹³ ⸨/lang⸩במותי ו׳ יתירה
+⸨lang:English⸩⸨sup⸩4⸨/sup⸩ ⸨/lang⸩הצור בקצת ספרים צ׳ רבתי
+⸨lang:English⸩⸨sup⸩6⸨/sup⸩ ⸨/lang⸩הליהוה ה׳ רבתי והוא תיבה בפני עצמה ולדעת קצת הל לחוד יהוה לחוד
+⸨lang:English⸩⸨sup⸩13⸨/sup⸩ ⸨/lang⸩במותי ו׳ יתירה
 אָ֔רץ קמץ בז״ק
-⸨lang:English⸩¹⁵ ⸨/lang⸩ויבעָ֔ט קמץ בז״ק
-⸨lang:English⸩¹⁷ ⸨/lang⸩אלה חול ולדעת קצת קודש
-⸨lang:English⸩¹⁸ ⸨/lang⸩תשי י׳ זעירא
-⸨lang:English⸩²¹ ⸨/lang⸩בלא אל חול ולדעת קצת קודש
+⸨lang:English⸩⸨sup⸩15⸨/sup⸩ ⸨/lang⸩ויבעָ֔ט קמץ בז״ק
+⸨lang:English⸩⸨sup⸩17⸨/sup⸩ ⸨/lang⸩אלה חול ולדעת קצת קודש
+⸨lang:English⸩⸨sup⸩18⸨/sup⸩ ⸨/lang⸩תשי י׳ זעירא
+⸨lang:English⸩⸨sup⸩21⸨/sup⸩ ⸨/lang⸩בלא אל חול ולדעת קצת קודש
 עָ֔ם קמץ בז״ק
-⸨lang:English⸩⁴¹ ⸨/lang⸩לצרָ֔י קמץ בז״ק
+⸨lang:English⸩⸨sup⸩41⸨/sup⸩ ⸨/lang⸩לצרָ֔י קמץ בז״ק
 
 ⸨cen⸩לג
-⸨lang:English⸩² ⸨/lang⸩אֵשׁדָת ב׳ מילין קרי
-⸨lang:English⸩⁵ ⸨/lang⸩עָ֔ם קמץ בז״ק
-⸨lang:English⸩⁷ ⸨/lang⸩רָב ר׳ בקמץ
-⸨lang:English⸩⁹ ⸨/lang⸩בנו בניו קרי
-⸨lang:English⸩¹³ ⸨/lang⸩מט֔ל קמץ בז״ק
-⸨lang:English⸩²¹ ⸨/lang⸩עָ֔ם קמץ בז״ק
+⸨lang:English⸩⸨sup⸩2⸨/sup⸩ ⸨/lang⸩אֵשׁדָת ב׳ מילין קרי
+⸨lang:English⸩⸨sup⸩5⸨/sup⸩ ⸨/lang⸩עָ֔ם קמץ בז״ק
+⸨lang:English⸩⸨sup⸩7⸨/sup⸩ ⸨/lang⸩רָב ר׳ בקמץ
+⸨lang:English⸩⸨sup⸩9⸨/sup⸩ ⸨/lang⸩בנו בניו קרי
+⸨lang:English⸩⸨sup⸩13⸨/sup⸩ ⸨/lang⸩מט֔ל קמץ בז״ק
+⸨lang:English⸩⸨sup⸩21⸨/sup⸩ ⸨/lang⸩עָ֔ם קמץ בז״ק

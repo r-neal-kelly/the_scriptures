@@ -1,56 +1,56 @@
 ⸨cen⸩⸨b⸩15⸨/b⸩
 
-⸨in⸩¹ Then Moses and the children of Israel sang this song to Yahweh, and said,
+⸨in⸩⸨sup⸩1⸨/sup⸩ Then Moses and the children of Israel sang this song to Yahweh, and said,
 ⸨pad⸩“I will sing to Yahweh, for he has triumphed gloriously.
 ⸨pad⸩⸨pad⸩He has thrown the horse and his rider into the sea.
-⸨pad⸩² Yah is my strength and song.
+⸨pad⸩⸨sup⸩2⸨/sup⸩ Yah is my strength and song.
 ⸨pad⸩⸨pad⸩He has become my salvation.
 ⸨pad⸩This is my God, and I will praise him;
 ⸨pad⸩⸨pad⸩my fatherʼs God, and I will exalt him.
-⸨pad⸩³ Yahweh is a man of war.
+⸨pad⸩⸨sup⸩3⸨/sup⸩ Yahweh is a man of war.
 ⸨pad⸩⸨pad⸩Yahweh is his name.
-⸨pad⸩⁴ He has cast Pharaohʼs chariots and his army into the sea.
+⸨pad⸩⸨sup⸩4⸨/sup⸩ He has cast Pharaohʼs chariots and his army into the sea.
 ⸨pad⸩⸨pad⸩His chosen captains are sunk in the Red Sea.
-⸨pad⸩⁵ The deeps cover them.
+⸨pad⸩⸨sup⸩5⸨/sup⸩ The deeps cover them.
 ⸨pad⸩⸨pad⸩They went down into the depths like a stone.
-⸨pad⸩⁶ Your right hand, Yahweh, is glorious in power.
+⸨pad⸩⸨sup⸩6⸨/sup⸩ Your right hand, Yahweh, is glorious in power.
 ⸨pad⸩⸨pad⸩Your right hand, Yahweh, dashes the enemy in pieces.
-⸨pad⸩⁷ In the greatness of your excellency, you overthrow those who rise up against you.
+⸨pad⸩⸨sup⸩7⸨/sup⸩ In the greatness of your excellency, you overthrow those who rise up against you.
 ⸨pad⸩⸨pad⸩You send out your wrath. It consumes them as stubble.
-⸨pad⸩⁸ With the blast of your nostrils, the waters were piled up.
+⸨pad⸩⸨sup⸩8⸨/sup⸩ With the blast of your nostrils, the waters were piled up.
 ⸨pad⸩⸨pad⸩The floods stood upright as a heap.
 ⸨pad⸩⸨pad⸩The deeps were congealed in the heart of the sea.
-⸨pad⸩⁹ The enemy said, ‘I will pursue. I will overtake. I will divide the plunder.
+⸨pad⸩⸨sup⸩9⸨/sup⸩ The enemy said, ‘I will pursue. I will overtake. I will divide the plunder.
 ⸨pad⸩⸨pad⸩My desire will be satisfied on them.
 ⸨pad⸩⸨pad⸩I will draw my sword. My hand will destroy them.’
-⸨pad⸩¹⁰ You blew with your wind.
+⸨pad⸩⸨sup⸩10⸨/sup⸩ You blew with your wind.
 ⸨pad⸩⸨pad⸩The sea covered them.
 ⸨pad⸩⸨pad⸩They sank like lead in the mighty waters.
-⸨pad⸩¹¹ Who is like you, Yahweh, among the gods?
+⸨pad⸩⸨sup⸩11⸨/sup⸩ Who is like you, Yahweh, among the gods?
 ⸨pad⸩⸨pad⸩Who is like you, glorious in holiness,
 ⸨pad⸩⸨pad⸩fearful in praises, doing wonders?
-⸨pad⸩¹² You stretched out your right hand.
+⸨pad⸩⸨sup⸩12⸨/sup⸩ You stretched out your right hand.
 ⸨pad⸩⸨pad⸩The earth swallowed them.
-⸨pad⸩¹³ “You, in your loving kindness, have led the people that you have redeemed.
+⸨pad⸩⸨sup⸩13⸨/sup⸩ “You, in your loving kindness, have led the people that you have redeemed.
 ⸨pad⸩⸨pad⸩You have guided them in your strength to your holy habitation.
-⸨pad⸩¹⁴ The peoples have heard.
+⸨pad⸩⸨sup⸩14⸨/sup⸩ The peoples have heard.
 ⸨pad⸩⸨pad⸩They tremble.
 ⸨pad⸩⸨pad⸩Pangs have taken hold of the inhabitants of Philistia.
-⸨pad⸩¹⁵ Then the chiefs of Edom were dismayed.
+⸨pad⸩⸨sup⸩15⸨/sup⸩ Then the chiefs of Edom were dismayed.
 ⸨pad⸩⸨pad⸩Trembling takes hold of the mighty men of Moab.
 ⸨pad⸩⸨pad⸩All the inhabitants of Canaan have melted away.
-⸨pad⸩¹⁶ Terror and dread falls on them.
+⸨pad⸩⸨sup⸩16⸨/sup⸩ Terror and dread falls on them.
 ⸨pad⸩⸨pad⸩By the greatness of your arm they are as still as a stone,
 ⸨pad⸩⸨pad⸩until your people pass over, Yahweh,
 ⸨pad⸩⸨pad⸩until the people you have purchased pass over.
-⸨pad⸩⸨pad⸩¹⁷ You will bring them in, and plant them in the mountain of your inheritance,
+⸨pad⸩⸨pad⸩⸨sup⸩17⸨/sup⸩ You will bring them in, and plant them in the mountain of your inheritance,
 ⸨pad⸩⸨pad⸩the place, Yahweh, which you have made for yourself to dwell in:
 ⸨pad⸩⸨pad⸩the sanctuary, Lord, which your hands have established.
-⸨pad⸩¹⁸ Yahweh will reign forever and ever.”
-⸨in⸩¹⁹ For the horses of Pharaoh went in with his chariots and with his horsemen into the sea, and Yahweh brought back the waters of the sea on them; but the children of Israel walked on dry land in the middle of the sea. ²⁰ Miriam the prophetess, the sister of Aaron, took a tambourine in her hand; and all the women went out after her with tambourines and with dances. ²¹ Miriam answered them,
+⸨pad⸩⸨sup⸩18⸨/sup⸩ Yahweh will reign forever and ever.”
+⸨in⸩⸨sup⸩19⸨/sup⸩ For the horses of Pharaoh went in with his chariots and with his horsemen into the sea, and Yahweh brought back the waters of the sea on them; but the children of Israel walked on dry land in the middle of the sea. ⸨sup⸩20⸨/sup⸩ Miriam the prophetess, the sister of Aaron, took a tambourine in her hand; and all the women went out after her with tambourines and with dances. ⸨sup⸩21⸨/sup⸩ Miriam answered them,
 ⸨pad⸩“Sing to Yahweh, for he has triumphed gloriously.
 ⸨pad⸩He has thrown the horse and his rider into the sea.”
-⸨in⸩²² Moses led Israel onward from the Red Sea, and they went out into the wilderness of Shur; and they went three days in the wilderness, and found no water. ²³ When they came to Marah, they couldnʼt drink from the waters of Marah, for they were bitter. Therefore its name was called Marah⸨fix:†. ⸩.† ⸨/fix⸩²⁴ The people murmured against Moses, saying, “What shall we drink?” ²⁵ Then he cried to Yahweh. Yahweh showed him a tree, and he threw it into the waters, and the waters were made sweet. There he made a statute and an ordinance for them, and there he tested them. ²⁶ He said, “If you will diligently listen to Yahweh your Godʼs voice, and will do that which is right in his eyes, and will pay attention to his commandments, and keep all his statutes, I will put none of the diseases on you which I have put on the Egyptians; for I am Yahweh who heals you.”
-⸨in⸩²⁷ They came to Elim, where there were twelve springs of water and seventy palm trees. They encamped there by the waters.
+⸨in⸩⸨sup⸩22⸨/sup⸩ Moses led Israel onward from the Red Sea, and they went out into the wilderness of Shur; and they went three days in the wilderness, and found no water. ⸨sup⸩23⸨/sup⸩ When they came to Marah, they couldnʼt drink from the waters of Marah, for they were bitter. Therefore its name was called Marah⸨fix:†. ⸩.† ⸨/fix⸩⸨sup⸩24⸨/sup⸩ The people murmured against Moses, saying, “What shall we drink?” ⸨sup⸩25⸨/sup⸩ Then he cried to Yahweh. Yahweh showed him a tree, and he threw it into the waters, and the waters were made sweet. There he made a statute and an ordinance for them, and there he tested them. ⸨sup⸩26⸨/sup⸩ He said, “If you will diligently listen to Yahweh your Godʼs voice, and will do that which is right in his eyes, and will pay attention to his commandments, and keep all his statutes, I will put none of the diseases on you which I have put on the Egyptians; for I am Yahweh who heals you.”
+⸨in⸩⸨sup⸩27⸨/sup⸩ They came to Elim, where there were twelve springs of water and seventy palm trees. They encamped there by the waters.
 
 † ⸨b⸩15:23⸨/b⸩ Marah means bitter.
