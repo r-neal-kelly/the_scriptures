@@ -1036,11 +1036,6 @@ export abstract class Instance implements
     Element():
         HTMLElement
     {
-        Utils.Assert(
-            this.Is_Alive(),
-            `Cannot get an element from a dead entity.`,
-        );
-
         return this.element;
     }
 

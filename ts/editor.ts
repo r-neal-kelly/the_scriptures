@@ -394,18 +394,40 @@ class Line_Keyboard_Hook extends Keyboard.Hook.Instance
     private line: Line;
 
     constructor(
+        keyboard: Keyboard.Instance,
         line: Line,
     )
     {
-        super();
+        super(
+            {
+                keyboard: keyboard,
+                div: line.Element(),
+            },
+        );
 
         this.line = line;
+
+        this.Enable();
+    }
+
+    Line():
+        Line
+    {
+        return this.line;
     }
 
     Underlying_Font_Size_PX():
         Float
     {
         return UNDERLYING_FONT_SIZE_PX;
+    }
+
+    override async On_Try_Change_Language_Direction(
+        language_direction: Language.Direction,
+    ):
+        Promise<boolean>
+    {
+        return false;
     }
 
     override async On_Key_Down(
@@ -853,8 +875,7 @@ class Line
 
         this.parent.appendChild(this.element);
 
-        this.keyboard_hook = new Line_Keyboard_Hook(this);
-        Keyboard.Singleton().Add_Div(this.element, this.keyboard_hook);
+        this.keyboard_hook = new Line_Keyboard_Hook(Keyboard.Singleton(), this);
 
         this.element.addEventListener(
             `dblclick`,
@@ -898,7 +919,7 @@ class Line
     Destruct():
         void
     {
-        Keyboard.Singleton().Remove_Div(this.element);
+        this.keyboard_hook.Disable();
 
         this.parent.removeChild(this.element);
     }

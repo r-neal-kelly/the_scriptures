@@ -4,36 +4,121 @@ import * as Language from "../model/language.js";
 import * as Languages from "../model/languages.js";
 import { Script_Position } from "../model/script_position.js";
 
+import * as Keyboard from "./instance.js";
 import * as Layout from "./layout.js";
-
-// We're still working on the signatures of some of these event handlers.
-// For example we may require a View.Entity.Instance instead of a HTMLDivElement.
 
 export abstract class Instance
 {
+    private keyboard: Keyboard.Instance;
+    private div: HTMLDivElement;
+
+    constructor(
+        {
+            keyboard,
+            div,
+        }: {
+            keyboard: Keyboard.Instance,
+            div: HTMLDivElement,
+        },
+    )
+    {
+        this.keyboard = keyboard;
+        this.div = div;
+    }
+
+    Keyboard():
+        Keyboard.Instance
+    {
+        return this.keyboard;
+    }
+
+    Div():
+        HTMLDivElement
+    {
+        return this.div;
+    }
+
+    Enable():
+        void
+    {
+        if (!this.keyboard.Has_Div(this.div)) {
+            this.div.setAttribute(`contentEditable`, `true`);
+            this.keyboard.Add_Div(this.div, this);
+        }
+    }
+
+    Disable():
+        void
+    {
+        if (this.keyboard.Has_Div(this.div)) {
+            this.keyboard.Remove_Div(this.div);
+            this.div.setAttribute(`contentEditable`, `false`);
+        }
+    }
+
     abstract Underlying_Font_Size_PX():
         Float;
 
+    async On_Change_Underlying_Font_Size_PX():
+        Promise<void>
+    {
+        await this.Update_Language_Styles(
+            this.keyboard.Current_Language_Name(),
+        );
+    }
+
     async On_Change_Global_Layout(
-        div: HTMLDivElement,
         layout: Layout.Instance | null,
     ):
         Promise<void>
     {
-        const default_global_font_styles: { [css_property: string]: string } = layout != null ?
-            Languages.Singleton().Default_Global_Font_Styles(
-                layout.Language_Name(),
-                this.Underlying_Font_Size_PX(),
-                Script_Position.DEFAULT,
-            ) :
-            Languages.Singleton().Default_Global_Font_Styles(
+        await this.Update_Language_Styles(
+            layout != null ?
+                layout.Language_Name() :
                 Language.Name.ENGLISH,
+        );
+    }
+
+    async On_Try_Change_Language_Direction(
+        language_direction: Language.Direction,
+    ):
+        Promise<boolean>
+    {
+        return true;
+    }
+
+    private async Update_Language_Styles(
+        language_name: Language.Name,
+    ):
+        Promise<void>
+    {
+        const language_direction: Language.Direction =
+            Languages.Singleton().Direction(language_name);
+        const default_global_font_styles: { [css_property: string]: string } =
+            Languages.Singleton().Default_Global_Font_Styles(
+                language_name,
                 this.Underlying_Font_Size_PX(),
                 Script_Position.DEFAULT,
             );
 
         for (const style of Object.entries(default_global_font_styles)) {
-            (div.style as any)[style[0]] = style[1];
+            (this.div.style as any)[style[0]] = style[1];
+        }
+
+        if (language_direction === Language.Direction.LEFT_TO_RIGHT) {
+            if (
+                (this.div.style as any)[`direction`] !== `ltr` &&
+                await this.On_Try_Change_Language_Direction(language_direction)
+            ) {
+                (this.div.style as any)[`direction`] = `ltr`;
+            }
+        } else {
+            if (
+                (this.div.style as any)[`direction`] !== `rtl` &&
+                await this.On_Try_Change_Language_Direction(language_direction)
+            ) {
+                (this.div.style as any)[`direction`] = `rtl`;
+            }
         }
     }
 
@@ -53,11 +138,9 @@ export abstract class Instance
 
     async On_Insert(
         {
-            div,
             data,
             range,
         }: {
-            div: HTMLDivElement,
             data: string,
             range: Range,
         },
@@ -91,11 +174,9 @@ export abstract class Instance
 
     async On_Paste(
         {
-            div,
             data,
             range,
         }: {
-            div: HTMLDivElement,
             data: string,
             range: Range,
         },
@@ -104,7 +185,6 @@ export abstract class Instance
     {
         await this.On_Insert(
             {
-                div: div,
                 data: data,
                 range: range,
             },
@@ -113,10 +193,8 @@ export abstract class Instance
 
     async On_Delete(
         {
-            div,
             range,
         }: {
-            div: HTMLDivElement,
             range: Range,
         },
     ):

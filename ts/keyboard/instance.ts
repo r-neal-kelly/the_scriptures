@@ -233,11 +233,20 @@ export class Instance
             this.current_layout = null;
         }
 
-        for (const [div, hook] of this.divs_to_hooks.entries()) {
+        for (const hook of this.divs_to_hooks.values()) {
             hook.On_Change_Global_Layout(
-                div,
                 this.current_layout,
             );
+        }
+    }
+
+    Current_Language_Name():
+        Language.Name
+    {
+        if (this.Has_Current_Layout()) {
+            return this.Current_Layout().Language_Name();
+        } else {
+            return Language.Name.ENGLISH;
         }
     }
 
@@ -271,7 +280,6 @@ export class Instance
         this.divs_to_hooks.set(div, hook);
 
         hook.On_Change_Global_Layout(
-            div,
             this.current_layout,
         );
     }
@@ -431,7 +439,6 @@ export class Instance
 
         await hook.On_Insert(
             {
-                div: div,
                 data: data.replace(/ /g, ` `),
                 range: range,
             },
@@ -461,7 +468,6 @@ export class Instance
 
         await hook.On_Paste(
             {
-                div: div,
                 data: data.replace(/ /g, ` `),
                 range: range,
             },
@@ -483,7 +489,6 @@ export class Instance
 
         await hook.On_Delete(
             {
-                div: div,
                 range: range,
             },
         );

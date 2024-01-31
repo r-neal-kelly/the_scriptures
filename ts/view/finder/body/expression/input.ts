@@ -14,12 +14,24 @@ class Keyboard_Hook extends Keyboard.Hook.Instance
     private instance: Instance;
 
     constructor(
+        keyboard: Keyboard.Instance,
         instance: Instance,
     )
     {
-        super();
+        super(
+            {
+                keyboard: keyboard,
+                div: instance.Element() as HTMLDivElement,
+            },
+        );
 
         this.instance = instance;
+    }
+
+    Instance():
+        Instance
+    {
+        return this.instance;
     }
 
     Underlying_Font_Size_PX():
@@ -127,7 +139,7 @@ export class Instance extends Entity.Instance
         );
 
         this.model = model;
-        this.keyboard_hook = new Keyboard_Hook(this);
+        this.keyboard_hook = new Keyboard_Hook(Keyboard.Singleton(), this);
 
         this.Live();
     }
@@ -135,13 +147,9 @@ export class Instance extends Entity.Instance
     override On_Life():
         Array<Event.Listener_Info>
     {
-        this.Element().setAttribute(`contentEditable`, `true`);
         this.Element().setAttribute(`spellcheck`, `false`);
 
-        Keyboard.Singleton().Add_Div(
-            this.Element() as HTMLDivElement,
-            this.keyboard_hook,
-        );
+        this.keyboard_hook.Enable();
 
         return [
             new Event.Listener_Info(
@@ -173,7 +181,7 @@ export class Instance extends Entity.Instance
     override Before_Death():
         void
     {
-        Keyboard.Singleton().Remove_Div(this.Element() as HTMLDivElement);
+        this.keyboard_hook.Disable();
     }
 
     private async On_Finder_Body_Expression_Change():
