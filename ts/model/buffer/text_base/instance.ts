@@ -1,3 +1,4 @@
+import { Float } from "../../../types.js";
 import { Count } from "../../../types.js";
 import { Index } from "../../../types.js";
 
@@ -20,6 +21,7 @@ export abstract class Instance<
 {
     private default_language_name: Language.Name;
     private default_font_name: Font.Name;
+    private underlying_font_size_px: Float;
 
     private text: Text.Instance;
     private lines: Array<Line_Instance>;
@@ -28,11 +30,13 @@ export abstract class Instance<
         {
             default_language_name,
             default_font_name,
+            underlying_font_size_px,
 
             text,
         }: {
             default_language_name: Language.Name,
             default_font_name: Font.Name,
+            underlying_font_size_px: Float,
 
             text: Text.Instance,
         },
@@ -42,6 +46,7 @@ export abstract class Instance<
 
         this.default_language_name = default_language_name;
         this.default_font_name = default_font_name;
+        this.underlying_font_size_px = underlying_font_size_px;
 
         this.text = text;
         this.lines = [];
@@ -69,6 +74,12 @@ export abstract class Instance<
         Font.Name
     {
         return this.default_font_name;
+    }
+
+    Underlying_Font_Size_PX():
+        Float
+    {
+        return this.underlying_font_size_px;
     }
 
     abstract Override_Font_Name(

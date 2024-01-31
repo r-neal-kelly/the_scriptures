@@ -82,6 +82,7 @@ export class Instance extends Text_Base.Item.Instance<
             if (language) {
                 return Model_Languages.Singleton().Default_Global_Font_Styles(
                     language,
+                    this.Buffer().Model().Underlying_Font_Size_PX(),
                     model.Script_Position(),
                 );
             } else {

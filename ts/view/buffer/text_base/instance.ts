@@ -1,3 +1,4 @@
+import { Float } from "../../../types.js";
 import { Count } from "../../../types.js";
 import { Index } from "../../../types.js";
 import { ID } from "../../../types.js";
@@ -22,6 +23,8 @@ export interface Model_Instance_i
     Override_Font_Name(
         language_name: Language.Name,
     ): Font.Name;
+    Underlying_Font_Size_PX():
+        Float;
 
     Line_Buffer_Count():
         Count;
@@ -406,6 +409,7 @@ export abstract class Instance<
         return Languages.Singleton().Font_Styles(
             model.Default_Language_Name(),
             model.Default_Font_Name(),
+            model.Underlying_Font_Size_PX(),
             script_position,
         );
     }
@@ -421,6 +425,7 @@ export abstract class Instance<
         return Languages.Singleton().Font_Styles(
             language_name,
             model.Override_Font_Name(language_name),
+            model.Underlying_Font_Size_PX(),
             script_position,
         );
     }

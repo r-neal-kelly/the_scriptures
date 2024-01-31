@@ -1,4 +1,5 @@
 import { Integer } from "./types.js";
+import { Float } from "./types.js";
 import { Count } from "./types.js";
 import { Index } from "./types.js";
 
@@ -12,6 +13,8 @@ import * as Font from "./model/font.js";
 import * as Fonts from "./model/fonts.js";
 import { Script_Position } from "./model/script_position.js";
 import * as Model from "./model/text.js";
+
+const UNDERLYING_FONT_SIZE_PX: Float = 24;
 
 const INDENT_AMOUNT: Count = 6;
 
@@ -32,6 +35,7 @@ for (const language_name of Languages.Singleton().Language_Names()) {
         DEFAULT_FONT_STYLES[language_name][script_position] = Utils.Styles_To_Inline_String(
             Languages.Singleton().Default_Global_Font_Styles(
                 language_name,
+                UNDERLYING_FONT_SIZE_PX,
                 script_position,
             ),
             `'`,
@@ -396,6 +400,12 @@ class Line_Keyboard_Hook extends Keyboard.Hook.Instance
         super();
 
         this.line = line;
+    }
+
+    Underlying_Font_Size_PX():
+        Float
+    {
+        return UNDERLYING_FONT_SIZE_PX;
     }
 
     override async On_Key_Down(
@@ -2786,7 +2796,7 @@ class Editor
             background-color: black;
 
             font-family: sans-serif;
-            font-size: 24px;
+            font-size: ${UNDERLYING_FONT_SIZE_PX}px;
         }
 
         body {

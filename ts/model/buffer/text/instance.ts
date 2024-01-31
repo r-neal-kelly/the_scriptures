@@ -1,3 +1,4 @@
+import { Float } from "../../../types.js";
 import { Index } from "../../../types.js";
 
 import * as Language from "../../language.js";
@@ -18,6 +19,7 @@ export class Instance extends Text_Base.Instance<
             default_language_name,
             default_font_name,
             override_font_name,
+            underlying_font_size_px,
 
             text,
             allow_errors,
@@ -25,6 +27,7 @@ export class Instance extends Text_Base.Instance<
             default_language_name: Language.Name,
             default_font_name: Font.Name,
             override_font_name: (language_name: Language.Name) => Font.Name,
+            underlying_font_size_px: Float,
 
             text: Text.Instance,
             allow_errors: boolean,
@@ -35,6 +38,7 @@ export class Instance extends Text_Base.Instance<
             {
                 default_language_name: default_language_name,
                 default_font_name: default_font_name,
+                underlying_font_size_px: underlying_font_size_px,
 
                 text: text,
             },

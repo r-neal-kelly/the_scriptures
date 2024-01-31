@@ -232,6 +232,7 @@ export class Instance extends Async.Instance
         this.buffer = new Buffer.Instance(
             {
                 default_language_name: Language.Name.ENGLISH,
+                underlying_font_size_px: 16,
 
                 text: new Text.Instance(),
                 results: [],
@@ -274,6 +275,7 @@ export class Instance extends Async.Instance
         this.buffer = new Buffer.Instance(
             {
                 default_language_name: default_language_name,
+                underlying_font_size_px: 16,
 
                 text: text,
                 results: results,

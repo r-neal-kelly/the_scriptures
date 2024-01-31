@@ -1,3 +1,5 @@
+import { Float } from "../types.js";
+
 import * as Language from "../model/language.js";
 import * as Languages from "../model/languages.js";
 import { Script_Position } from "../model/script_position.js";
@@ -7,8 +9,11 @@ import * as Layout from "./layout.js";
 // We're still working on the signatures of some of these event handlers.
 // For example we may require a View.Entity.Instance instead of a HTMLDivElement.
 
-export class Instance
+export abstract class Instance
 {
+    abstract Underlying_Font_Size_PX():
+        Float;
+
     async On_Change_Global_Layout(
         div: HTMLDivElement,
         layout: Layout.Instance | null,
@@ -18,10 +23,12 @@ export class Instance
         const default_global_font_styles: { [css_property: string]: string } = layout != null ?
             Languages.Singleton().Default_Global_Font_Styles(
                 layout.Language_Name(),
+                this.Underlying_Font_Size_PX(),
                 Script_Position.DEFAULT,
             ) :
             Languages.Singleton().Default_Global_Font_Styles(
                 Language.Name.ENGLISH,
+                this.Underlying_Font_Size_PX(),
                 Script_Position.DEFAULT,
             );
 

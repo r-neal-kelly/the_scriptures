@@ -1,3 +1,5 @@
+import { Float } from "../../../../types.js";
+
 import * as Event from "../../../../event.js";
 import * as Keyboard from "../../../../keyboard.js";
 
@@ -18,6 +20,12 @@ class Keyboard_Hook extends Keyboard.Hook.Instance
         super();
 
         this.instance = instance;
+    }
+
+    Underlying_Font_Size_PX():
+        Float
+    {
+        return 16;
     }
 
     override async On_Key_Down(

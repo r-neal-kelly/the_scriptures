@@ -1,3 +1,5 @@
+import { Float } from "../../types.js";
+
 import * as Utils from "../../utils.js";
 
 import * as Font from "../font.js";
@@ -143,11 +145,15 @@ export class Instance
 
     Font_Styles(
         font_name: Font.Name,
+        underlying_font_size_px: Float,
         script_position: Script_Position,
     ):
         { [css_property: string]: string }
     {
-        return this.Some_Font_Adaptor(font_name).Styles(script_position);
+        return this.Some_Font_Adaptor(font_name).Styles(
+            underlying_font_size_px,
+            script_position,
+        );
     }
 
     Default_Font_Name():
@@ -163,11 +169,16 @@ export class Instance
     }
 
     Default_Font_Styles(
+        underlying_font_size_px: Float,
         script_position: Script_Position,
     ):
         { [css_property: string]: string }
     {
-        return this.Font_Styles(this.Default_Font_Name(), script_position);
+        return this.Font_Styles(
+            this.Default_Font_Name(),
+            underlying_font_size_px,
+            script_position,
+        );
     }
 
     Current_Font_Name():
@@ -196,11 +207,16 @@ export class Instance
     }
 
     Current_Font_Styles(
+        underlying_font_size_px: Float,
         script_position: Script_Position,
     ):
         { [css_property: string]: string }
     {
-        return this.Font_Styles(this.Current_Font_Name(), script_position);
+        return this.Font_Styles(
+            this.Current_Font_Name(),
+            underlying_font_size_px,
+            script_position,
+        );
     }
 
     Has_Font_Adaptor(

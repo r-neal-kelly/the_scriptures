@@ -81,8 +81,6 @@ export class Instance
         this.styles[`font-family`] = fallback_font_families !== `` ?
             `"${this.font.Family()}", ${fallback_font_families}, sans-serif` :
             `"${this.font.Family()}", sans-serif`;
-        this.styles[`font-size`] = `${this.font_size_multiplier}em`;
-        this.styles[`line-height`] = `${this.line_height_multiplier}em`;
         if (this.styles[`vertical-align`] == null) {
             this.styles[`vertical-align`] = `baseline`;
         }
@@ -128,27 +126,37 @@ export class Instance
     }
 
     Styles(
+        underlying_font_size_px: Float,
         script_position: Script_Position,
     ):
         { [css_property: string]: string }
     {
         const styles: { [css_property: string]: string } =
             Object.assign(Object.create(null), this.styles);
+        const font_size: Float =
+            underlying_font_size_px * this.font_size_multiplier;
+        const line_height: Float =
+            font_size * this.line_height_multiplier;
 
         if (script_position === Script_Position.SUPER) {
             styles[`font-size`] =
-                `${this.font_size_multiplier * Font.Consts.SUPERSCRIPT_FONT_SIZE_MULTIPLIER}em`;
+                `${font_size * Font.Consts.SUPERSCRIPT_FONT_SIZE_MULTIPLIER}px`;
             styles[`line-height`] =
-                `${this.line_height_multiplier * Font.Consts.SUPERSCRIPT_LINE_HEIGHT_MULTIPLIER}em`;
+                `${line_height * Font.Consts.SUPERSCRIPT_LINE_HEIGHT_MULTIPLIER}px`;
             styles[`vertical-align`] =
                 `super`;
         } else if (script_position === Script_Position.SUB) {
             styles[`font-size`] =
-                `${this.font_size_multiplier * Font.Consts.SUBSCRIPT_FONT_SIZE_MULTIPLIER}em`;
+                `${font_size * Font.Consts.SUBSCRIPT_FONT_SIZE_MULTIPLIER}px`;
             styles[`line-height`] =
-                `${this.line_height_multiplier * Font.Consts.SUBSCRIPT_LINE_HEIGHT_MULTIPLIER}em`;
+                `${line_height * Font.Consts.SUBSCRIPT_LINE_HEIGHT_MULTIPLIER}px`;
             styles[`vertical-align`] =
                 `sub`;
+        } else {
+            styles[`font-size`] =
+                `${font_size}px`;
+            styles[`line-height`] =
+                `${line_height}px`;
         }
 
         return styles;

@@ -21,6 +21,7 @@ export class Instance extends Async.Instance
             {
                 return Languages.Singleton().Default_Global_Font_Name(language_name);
             },
+            underlying_font_size_px: 16,
 
             text: new Text.Instance(),
             allow_errors: false,
@@ -111,6 +112,7 @@ export class Instance extends Async.Instance
                                 .Font_Selector()
                                 .Some_Selected_Font_Name(language_name);
                         }.bind(this),
+                        underlying_font_size_px: 16,
 
                         text: await new_data.Text(),
                         allow_errors: allows_errors,

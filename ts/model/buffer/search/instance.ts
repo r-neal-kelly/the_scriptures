@@ -1,3 +1,4 @@
+import { Float } from "../../../types.js";
 import { Index } from "../../../types.js";
 
 import * as Language from "../../language.js";
@@ -18,12 +19,14 @@ export class Instance extends Text_Base.Instance<
     constructor(
         {
             default_language_name,
+            underlying_font_size_px,
 
             text,
             results,
             is_showing_commands,
         }: {
             default_language_name: Language.Name,
+            underlying_font_size_px: Float,
 
             text: Text.Instance,
             results: Array<Search.Result.Instance>,
@@ -37,6 +40,7 @@ export class Instance extends Text_Base.Instance<
                     default_language_name,
                 default_font_name:
                     Languages.Singleton().Default_Global_Font_Name(default_language_name),
+                underlying_font_size_px: underlying_font_size_px,
 
                 text: text,
             },
