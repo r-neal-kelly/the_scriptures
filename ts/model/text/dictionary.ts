@@ -345,26 +345,32 @@ export class Instance
         const language_key: string = this.Language_Key(language_name);
 
         if (this.info.letters[language_key] != null) {
-            const words_to_remove: Array<Word> = [];
-            const word_errors_to_remove: Array<Word> = [];
+            {
+                const words_to_remove: Array<Word> = [];
 
-            for (const info_letter of this.info.letters[language_key]) {
-                for (const info_word of this.info.words[language_key][info_letter]) {
-                    if (Unicode.Has_Point(info_word, letter)) {
-                        words_to_remove.push(info_word);
+                for (const info_letter of this.info.letters[language_key]) {
+                    for (const info_word of this.info.words[language_key][info_letter]) {
+                        if (Unicode.Has_Point(info_word, letter)) {
+                            words_to_remove.push(info_word);
+                        }
                     }
                 }
-            }
-            for (const info_word_error of this.info.word_errors[language_key]) {
-                if (Unicode.Has_Point(info_word_error, letter)) {
-                    word_errors_to_remove.push(info_word_error);
+                for (const word_to_remove of words_to_remove) {
+                    this.Remove_Word(word_to_remove, language_name);
                 }
             }
-            for (const word_to_remove of words_to_remove) {
-                this.Remove_Word(word_to_remove, language_name);
-            }
-            for (const word_error_to_remove of word_errors_to_remove) {
-                this.Remove_Word_Error(word_error_to_remove, language_name);
+
+            if (this.info.word_errors[language_key] != null) {
+                const word_errors_to_remove: Array<Word> = [];
+
+                for (const info_word_error of this.info.word_errors[language_key]) {
+                    if (Unicode.Has_Point(info_word_error, letter)) {
+                        word_errors_to_remove.push(info_word_error);
+                    }
+                }
+                for (const word_error_to_remove of word_errors_to_remove) {
+                    this.Remove_Word_Error(word_error_to_remove, language_name);
+                }
             }
 
             const index: Index = this.info.letters[language_key].indexOf(letter);
@@ -464,30 +470,36 @@ export class Instance
         const language_key: string = this.Language_Key(language_name);
 
         if (this.info.markers[language_key] != null) {
-            const breaks_to_remove: Array<[Break, Boundary]> = [];
-            const break_errors_to_remove: Array<[Break, Boundary]> = [];
+            {
+                const breaks_to_remove: Array<[Break, Boundary]> = [];
 
-            for (const info_marker of this.info.markers[language_key]) {
-                for (const info_boundary of [Boundary.START, Boundary.MIDDLE, Boundary.END]) {
-                    for (const info_break of this.info.breaks[language_key][info_boundary][info_marker]) {
-                        if (Unicode.Has_Point(info_break, marker)) {
-                            breaks_to_remove.push([info_break, info_boundary]);
+                for (const info_marker of this.info.markers[language_key]) {
+                    for (const info_boundary of [Boundary.START, Boundary.MIDDLE, Boundary.END]) {
+                        for (const info_break of this.info.breaks[language_key][info_boundary][info_marker]) {
+                            if (Unicode.Has_Point(info_break, marker)) {
+                                breaks_to_remove.push([info_break, info_boundary]);
+                            }
                         }
                     }
                 }
-            }
-            for (const info_boundary of [Boundary.START, Boundary.MIDDLE, Boundary.END]) {
-                for (const info_break_error of this.info.break_errors[language_key][info_boundary]) {
-                    if (Unicode.Has_Point(info_break_error, marker)) {
-                        break_errors_to_remove.push([info_break_error, info_boundary]);
-                    }
+                for (const [break_to_remove, boundary] of breaks_to_remove) {
+                    this.Remove_Break(break_to_remove, boundary, language_name);
                 }
             }
-            for (const [break_to_remove, boundary] of breaks_to_remove) {
-                this.Remove_Break(break_to_remove, boundary, language_name);
-            }
-            for (const [break_error_to_remove, boundary] of break_errors_to_remove) {
-                this.Remove_Break_Error(break_error_to_remove, boundary, language_name);
+
+            if (this.info.break_errors[language_key] != null) {
+                const break_errors_to_remove: Array<[Break, Boundary]> = [];
+
+                for (const info_boundary of [Boundary.START, Boundary.MIDDLE, Boundary.END]) {
+                    for (const info_break_error of this.info.break_errors[language_key][info_boundary]) {
+                        if (Unicode.Has_Point(info_break_error, marker)) {
+                            break_errors_to_remove.push([info_break_error, info_boundary]);
+                        }
+                    }
+                }
+                for (const [break_error_to_remove, boundary] of break_errors_to_remove) {
+                    this.Remove_Break_Error(break_error_to_remove, boundary, language_name);
+                }
             }
 
             const index: Index = this.info.markers[language_key].indexOf(marker);

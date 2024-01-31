@@ -115,6 +115,18 @@ export class Instance
         return Array.from(this.fallback_fonts);
     }
 
+    Font_Size_Multiplier():
+        Float
+    {
+        return this.font_size_multiplier;
+    }
+
+    Line_Height_Multiplier():
+        Float
+    {
+        return this.line_height_multiplier;
+    }
+
     Styles(
         script_position: Script_Position,
     ):
