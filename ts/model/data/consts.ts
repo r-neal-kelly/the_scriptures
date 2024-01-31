@@ -1,4 +1,5 @@
 import { Integer } from "../../types.js";
+import { Float } from "../../types.js";
 import { Count } from "../../types.js";
 import { Name } from "../../types.js";
 import { Path } from "../../types.js";
@@ -42,3 +43,5 @@ export const VERSION_TEXT_FILE_BREAK: string = `\n~~~FILE_BREAK~~~\n`;
 export const VERSION_FILE_FETCH_LIMIT: Count = 8;
 
 export const FILE_EXTENSION: Name = COMP_EXTENSION;
+
+export const DEFAULT_UNDERLYING_FONT_SIZE_PX: Float = 16;

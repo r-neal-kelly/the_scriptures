@@ -2,6 +2,7 @@ import * as Utils from "../utils.js";
 import * as Event from "../event.js";
 
 import * as Model from "../model/main.js";
+import * as Data_Model from "../model/data.js";
 import * as Fonts_Model from "../model/fonts.js";
 
 import * as Entity from "./entity.js";
@@ -64,7 +65,7 @@ export class Instance extends Entity.Instance
                     background-color: black;
 
                     font-family: sans-serif;
-                    font-size: 16px;
+                    font-size: ${Data_Model.Consts.DEFAULT_UNDERLYING_FONT_SIZE_PX}px;
                 }
             `,
         );

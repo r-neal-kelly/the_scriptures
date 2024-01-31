@@ -8,13 +8,16 @@ import * as Language from "../../language.js";
 import * as Data from "../../data.js";
 import * as Search from "../../search.js";
 import * as Selector from "../../selector.js";
+
 import * as Finder from "../instance.js";
+import * as Options from "./options.js";
 import * as Expression from "./expression.js";
 import * as Results from "./results.js";
 
 export class Instance extends Async.Instance
 {
     private finder: Finder.Instance;
+    private options: Options.Instance;
     private filter: Selector.Instance;
     private expression: Expression.Instance;
     private results: Results.Instance;
@@ -37,6 +40,12 @@ export class Instance extends Async.Instance
         super();
 
         this.finder = finder;
+        this.options = new Options.Instance(
+            {
+                body: this,
+                underlying_font_size_px: Data.Consts.DEFAULT_UNDERLYING_FONT_SIZE_PX,
+            },
+        );
         this.filter = new Selector.Instance(
             {
                 slot_order: Selector.Slot.Order.LANGUAGES_VERSIONS_BOOKS,
@@ -61,6 +70,7 @@ export class Instance extends Async.Instance
                 is_showing_commands: false,
             },
         );
+
         this.is_waiting = false;
         this.waiting_milliseconds_interval = 100;
         this.waiting_percent_done = null;
@@ -86,6 +96,12 @@ export class Instance extends Async.Instance
         Finder.Instance
     {
         return this.finder;
+    }
+
+    Options():
+        Options.Instance
+    {
+        return this.options;
     }
 
     Filter():

@@ -1,3 +1,5 @@
+import { Float } from "../../../../types.js";
+
 import * as Async from "../../../../async.js";
 
 import * as Font from "../../../font.js";
@@ -21,7 +23,7 @@ export class Instance extends Async.Instance
             {
                 return Languages.Singleton().Default_Global_Font_Name(language_name);
             },
-            underlying_font_size_px: 16,
+            underlying_font_size_px: Data.Consts.DEFAULT_UNDERLYING_FONT_SIZE_PX,
 
             text: new Text.Instance(),
             allow_errors: false,
@@ -91,11 +93,14 @@ export class Instance extends Async.Instance
                 this.Body().Font_Selector().Some_Selected_Font_Name(default_language_name);
             const allows_errors: boolean =
                 this.Body().Browser().Commander().Allow_Errors().Is_Activated();
+            const underlying_font_size_px: Float =
+                this.Body().Options().Underlying_Font_Size_PX();
             if (
                 force ||
-                this.Maybe_Current_Data() != new_data ||
-                this.current_file.Default_Font_Name() != default_font_name ||
-                this.current_file.Allows_Errors() != allows_errors
+                this.Maybe_Current_Data() !== new_data ||
+                this.current_file.Default_Font_Name() !== default_font_name ||
+                this.current_file.Allows_Errors() !== allows_errors ||
+                this.current_file.Underlying_Font_Size_PX() !== underlying_font_size_px
             ) {
                 this.current_data = new_data;
                 this.current_file = new Buffer.Text.Instance(
@@ -112,7 +117,7 @@ export class Instance extends Async.Instance
                                 .Font_Selector()
                                 .Some_Selected_Font_Name(language_name);
                         }.bind(this),
-                        underlying_font_size_px: 16,
+                        underlying_font_size_px: underlying_font_size_px,
 
                         text: await new_data.Text(),
                         allow_errors: allows_errors,

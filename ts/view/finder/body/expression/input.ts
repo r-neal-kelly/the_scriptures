@@ -25,7 +25,7 @@ class Keyboard_Hook extends Keyboard.Hook.Instance
     Underlying_Font_Size_PX():
         Float
     {
-        return 16;
+        return this.instance.Model().Body().Options().Underlying_Font_Size_PX();
     }
 
     override async On_Key_Down(

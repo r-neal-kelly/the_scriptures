@@ -1,0 +1,1 @@
+export class Instance{constructor({body:n,underlying_font_size_px:_}){this.body=n,this.underlying_font_size_px=_}Body(){return this.body}Underlying_Font_Size_PX(){return this.underlying_font_size_px}Set_Underlying_Font_Size_PX(n){this.underlying_font_size_px=n}}
