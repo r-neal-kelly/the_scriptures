@@ -1,3 +1,4 @@
+import { Float } from "../../../types.js";
 import { Index } from "../../../types.js"
 
 import * as Utils from "../../../utils.js";
@@ -18,6 +19,7 @@ export class Instance implements Item.Instance
     private value: Value;
     private status: Status;
     private style: Style;
+    private size: Float | null;
     private language: Language.Name | null;
 
     constructor(
@@ -27,6 +29,7 @@ export class Instance implements Item.Instance
             value,
             status,
             style,
+            size,
             language,
         }: {
             part_type: Type,
@@ -34,6 +37,7 @@ export class Instance implements Item.Instance
             value: Value,
             status: Status,
             style: Style | Array<Style>,
+            size: Float | null,
             language: Language.Name | null,
         },
     )
@@ -45,6 +49,10 @@ export class Instance implements Item.Instance
         Utils.Assert(
             value.length > 0,
             `value must have a length greater than 0.`,
+        );
+        Utils.Assert(
+            size == null || Utils.Is.Number(size),
+            `size must be a float or null`,
         );
 
         this.part_type = part_type;
@@ -59,6 +67,7 @@ export class Instance implements Item.Instance
         } else {
             this.style = style;
         }
+        this.size = size;
         this.language = language;
     }
 
@@ -265,6 +274,18 @@ export class Instance implements Item.Instance
         boolean
     {
         return (this.style & Style.ARGUMENT) != 0;
+    }
+
+    Has_Size():
+        boolean
+    {
+        return this.size != null;
+    }
+
+    Size():
+        Float | null
+    {
+        return this.size;
     }
 
     Language():

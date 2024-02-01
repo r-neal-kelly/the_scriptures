@@ -1,1 +1,1 @@
-import*as Part from"./instance.js";import{Type}from"./type.js";import{Status}from"./status.js";export class Instance extends Part.Instance{constructor({index:t,value:s,style:e,language:a}){super({part_type:Type.LETTER,index:t,value:s,status:Status.GOOD,style:e,language:a})}}
+import*as Part from"./instance.js";import{Type}from"./type.js";import{Status}from"./status.js";export class Instance extends Part.Instance{constructor({index:t,value:s,style:e,size:a,language:r}){super({part_type:Type.LETTER,index:t,value:s,status:Status.GOOD,style:e,size:a,language:r})}}

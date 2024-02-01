@@ -1,4 +1,5 @@
 import { Integer } from "../../../types.js";
+import { Float } from "../../../types.js";
 import { Count } from "../../../types.js";
 import { Index } from "../../../types.js";
 
@@ -200,6 +201,7 @@ export class Instance
                     Part.Command.First_Non_Command_Index(row_value);
                 const last_non_command_index: Index | null =
                     Part.Command.Last_Non_Command_Index(row_value);
+                const size_stack: Array<Float | null> = [];
                 const language_stack: Array<Language.Name> = [];
                 const fix_argument_stack: Array<Fix_Argument_Frame> = [];
 
@@ -211,6 +213,14 @@ export class Instance
                         text: row_value,
                     },
                 );
+
+                function Current_Size():
+                    Float | null
+                {
+                    return size_stack.length > 0 ?
+                        size_stack[size_stack.length - 1] :
+                        null;
+                }
 
                 function Current_Language():
                     Language.Name | null
@@ -267,11 +277,13 @@ export class Instance
 
                     if (maybe_valid_command_value != null) {
                         let value: Value = maybe_valid_command_value;
+                        let size: Float | null = Current_Size();
                         let language: Language.Name | null = Current_Language();
                         let command: Part.Command.Instance = new Part.Command.Instance(
                             {
                                 index: 0,
                                 value: value,
+                                size: null,
                                 language: null,
                             },
                         );
@@ -336,7 +348,12 @@ export class Instance
                             current_style &= ~Part.Style.ERROR;
 
                         } else if (command.Is_Open_Size()) {
+                            size_stack.push(command.Size_Argument());
+                            size = Current_Size();
                         } else if (command.Is_Close_Size()) {
+                            if (size_stack.length > 0) {
+                                size_stack.pop();
+                            }
 
                         } else if (command.Is_Open_Hebrew()) {
                             language_stack.push(Language.Name.HEBREW);
@@ -372,6 +389,7 @@ export class Instance
                             row_value,
                             {
                                 value: value,
+                                size: size,
                                 language: language,
                             },
                         );
@@ -397,6 +415,7 @@ export class Instance
                             row_value,
                             {
                                 value: Part.Command.Symbol.LAST,
+                                size: Current_Size(),
                                 language: Current_Language(),
                             }
                         );
@@ -404,6 +423,7 @@ export class Instance
                         it = it.Next();
                         current_start = it;
                     } else {
+                        const current_size: Float | null = Current_Size();
                         const current_language: Language.Name | null = Current_Language();
                         const this_point: Value = it.Point();
                         const next_point: Value | null = it.Look_Forward_Point();
@@ -418,6 +438,7 @@ export class Instance
                                 {
                                     value: this_point,
                                     style: current_style,
+                                    size: current_size,
                                     language: current_language,
                                 },
                             );
@@ -429,6 +450,7 @@ export class Instance
                                 {
                                     value: this_point,
                                     style: current_style,
+                                    size: current_size,
                                     language: current_language,
                                 },
                             );
@@ -440,6 +462,7 @@ export class Instance
                                 {
                                     value: this_point,
                                     style: current_style,
+                                    size: current_size,
                                     language: current_language,
                                 },
                             );
@@ -473,6 +496,7 @@ export class Instance
                                         value: word,
                                         status: status,
                                         style: current_style,
+                                        size: current_size,
                                         language: current_language,
                                     },
                                 );
@@ -505,6 +529,7 @@ export class Instance
                                         value: break_,
                                         status: status,
                                         style: current_style,
+                                        size: current_size,
                                         language: current_language,
                                         boundary: boundary,
                                     },

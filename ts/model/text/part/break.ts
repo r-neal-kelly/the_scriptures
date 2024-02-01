@@ -1,3 +1,4 @@
+import { Float } from "../../../types.js";
 import { Index } from "../../../types.js";
 
 import * as Language from "../../language.js";
@@ -18,6 +19,7 @@ export class Instance extends Part.Instance
             value,
             status,
             style,
+            size,
             language,
             boundary,
         }: {
@@ -25,6 +27,7 @@ export class Instance extends Part.Instance
             value: Value,
             status: Status,
             style: Style | Array<Style>,
+            size: Float | null,
             language: Language.Name | null,
             boundary: Dictionary.Boundary,
         },
@@ -37,6 +40,7 @@ export class Instance extends Part.Instance
                 value: value,
                 status: status,
                 style: style,
+                size: size,
                 language,
             }
         );

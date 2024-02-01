@@ -422,6 +422,16 @@ class Line_Keyboard_Hook extends Keyboard.Hook.Instance
         return UNDERLYING_FONT_SIZE_PX;
     }
 
+    override async On_Change_Global_Layout(
+        layout: Keyboard.Layout.Instance,
+    ):
+        Promise<void>
+    {
+        await super.On_Change_Global_Layout(layout);
+
+        this.line.Editor().Touch();
+    }
+
     override async On_Try_Change_Language_Direction(
         language_direction: Language.Direction,
     ):
@@ -1073,7 +1083,9 @@ class Line
                     part_idx += 1
                 ) {
                     const part: Model.Part.Instance = row.Macro_Part(part_idx);
-                    const language: Language.Name | null = part.Language();
+                    const size: Float | null = part.Size();
+                    const language_name: Language.Name | null = part.Language();
+                    const script_position: Script_Position = part.Script_Position();
 
                     let primary_classes: string = ``;
                     let command_classes: string = ``;
@@ -1104,9 +1116,6 @@ class Line
                             command_classes += ` INTERLINEAR`;
                         }
                     } else {
-                        const script_position: Script_Position =
-                            part.Script_Position();
-
                         if (part.Is_Point()) {
                             primary_classes += `UNKNOWN_POINT`;
                         } else if (part.Is_Word()) {
@@ -1169,20 +1178,28 @@ class Line
                             command_classes += ` ARGUMENT`;
                         }
 
-                        if (language != null) {
+                        if (language_name != null) {
                             Utils.Assert(
-                                DEFAULT_FONT_STYLES[language] != null,
-                                `should have default_font_styles for ${language}!`,
+                                DEFAULT_FONT_STYLES[language_name] != null,
+                                `should have default_font_styles for ${language_name}!`,
                             );
 
-                            styles = DEFAULT_FONT_STYLES[language][script_position];
+                            styles = DEFAULT_FONT_STYLES[language_name][script_position];
                         }
+                    }
+
+                    if (size != null) {
+                        styles = this.Resize_Styles_String(
+                            styles,
+                            size,
+                            script_position,
+                        );
                     }
 
                     inner_html +=
                         `<span ` +
                         `class="${primary_classes}${command_classes}" ` +
-                        `data-language="${language || ``}" ` +
+                        `data-language="${language_name || ``}" ` +
                         `style="${styles || ``}" ` +
                         `>` +
                         Escape_Text(part.Value()) +
@@ -1238,7 +1255,11 @@ class Line
                     part_idx += 1
                 ) {
                     const part = row.Micro_Part(part_idx);
-                    const language: Language.Name | null = part.Language();
+                    const size: Float | null = part.Size();
+                    const language_name: Language.Name | null = part.Language();
+                    const script_position: Script_Position = part.Script_Position();
+
+                    let styles: string | null = null;
 
                     if (part.Is_Command()) {
                         let it: Unicode.Iterator = new Unicode.Iterator(
@@ -1248,19 +1269,26 @@ class Line
                             },
                         );
 
+                        if (size != null) {
+                            styles = this.Resize_Styles_String(
+                                styles,
+                                size,
+                                script_position,
+                            );
+                        }
+
                         for (; !it.Is_At_End(); it = it.Next()) {
                             inner_html +=
                                 `<span ` +
                                 `class="COMMAND SEPARATE_POINT" ` +
-                                `data-language="${language || ``}" ` +
-                                `style ` +
+                                `data-language="${language_name || ``}" ` +
+                                `style="${styles || ``}" ` +
                                 `>` +
                                 Escape_Text(it.Point()) +
                                 `</span>`;
                         }
                     } else {
                         let classes: string = ``;
-                        let styles: string | null = null;
 
                         if (part.Is_Letter()) {
                             classes += `KNOWN_LETTER SEPARATE_POINT`;
@@ -1275,19 +1303,27 @@ class Line
                             );
                         }
 
-                        if (language != null) {
+                        if (language_name != null) {
                             Utils.Assert(
-                                DEFAULT_FONT_STYLES[language] != null,
-                                `should have default_font_styles for ${language}!`,
+                                DEFAULT_FONT_STYLES[language_name] != null,
+                                `should have default_font_styles for ${language_name}!`,
                             );
 
-                            styles = DEFAULT_FONT_STYLES[language][part.Script_Position()];
+                            styles = DEFAULT_FONT_STYLES[language_name][script_position];
+                        }
+
+                        if (size != null) {
+                            styles = this.Resize_Styles_String(
+                                styles,
+                                size,
+                                script_position,
+                            );
                         }
 
                         inner_html +=
                             `<span ` +
                             `class="${classes}" ` +
-                            `data-language="${language || ``}" ` +
+                            `data-language="${language_name || ``}" ` +
                             `style="${styles || ``}" ` +
                             `>` +
                             Escape_Text(part.Value()) +
@@ -1298,6 +1334,47 @@ class Line
         }
 
         return inner_html;
+    }
+
+    private Resize_Styles_String(
+        styles: string | null,
+        size: Float,
+        script_position: Script_Position,
+    ):
+        string
+    {
+        if (styles == null) {
+            const language_name: Language.Name =
+                this.keyboard_hook.Keyboard().Current_Language_Name();
+
+            styles = DEFAULT_FONT_STYLES[language_name][script_position];
+        }
+
+        styles = styles.replace(
+            /font-size\s*:\s*(\d+)/,
+            function (
+                match: string,
+                px: string,
+            ):
+                string
+            {
+                return `font-size:${parseFloat(px) * size}`;
+            },
+        );
+
+        styles = styles.replace(
+            /line-height\s*:\s*(\d+)/,
+            function (
+                match: string,
+                px: string,
+            ):
+                string
+            {
+                return `line-height:${parseFloat(px) * size}`;
+            },
+        );
+
+        return styles;
     }
 
     Try_To_Update_Dictionary_With_Parts():

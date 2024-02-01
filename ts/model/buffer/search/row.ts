@@ -54,6 +54,7 @@ export class Instance extends Text_Base.Row.Instance<
                             value: ` `,
                             status: Text.Part.Status.GOOD,
                             style: Text.Part.Style._NONE_,
+                            size: null,
                             language: null,
                         },
                     ),

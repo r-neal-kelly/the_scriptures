@@ -1,3 +1,4 @@
+import { Float } from "../../types.js";
 import { Index } from "../../types.js";
 
 import * as Utils from "../../utils.js";
@@ -172,5 +173,17 @@ export class Instance implements Item.Instance
         );
 
         return ``;
+    }
+
+    Has_Size():
+        boolean
+    {
+        return this.Break().Has_Size();
+    }
+
+    Size():
+        Float | null
+    {
+        return this.Break().Size();
     }
 }

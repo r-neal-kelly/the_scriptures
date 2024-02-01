@@ -1,3 +1,4 @@
+import { Float } from "../../../types.js";
 import { Count } from "../../../types.js";
 import { Index } from "../../../types.js";
 
@@ -67,10 +68,12 @@ export class Instance
         {
             value,
             style,
+            size,
             language,
         }: {
             value: Value,
             style: Part.Style,
+            size: Float | null,
             language: Language.Name | null,
         },
     ):
@@ -86,6 +89,7 @@ export class Instance
                 index: 0,
                 value: value,
                 style: style,
+                size: size,
                 language: language,
             },
         );
@@ -94,6 +98,7 @@ export class Instance
                 index: 0,
                 value: value,
                 style: style,
+                size: size,
                 language: language,
             },
         );
@@ -110,10 +115,12 @@ export class Instance
         {
             value,
             style,
+            size,
             language,
         }: {
             value: Value,
             style: Part.Style,
+            size: Float | null,
             language: Language.Name | null,
         },
     ):
@@ -129,6 +136,7 @@ export class Instance
                 index: 0,
                 value: value,
                 style: style,
+                size: size,
                 language: language,
             },
         );
@@ -145,10 +153,12 @@ export class Instance
         {
             value,
             style,
+            size,
             language,
         }: {
             value: Value,
             style: Part.Style,
+            size: Float | null,
             language: Language.Name | null,
         },
     ):
@@ -164,6 +174,7 @@ export class Instance
                 index: 0,
                 value: value,
                 style: style,
+                size: size,
                 language: language,
             },
         );
@@ -181,11 +192,13 @@ export class Instance
             value,
             status,
             style,
+            size,
             language,
         }: {
             value: Value,
             status: Part.Status,
             style: Part.Style,
+            size: Float | null,
             language: Language.Name | null,
         },
     ):
@@ -202,6 +215,7 @@ export class Instance
                 value: value,
                 status: status,
                 style: style,
+                size: size,
                 language: language,
             },
         );
@@ -219,12 +233,14 @@ export class Instance
             value,
             status,
             style,
+            size,
             language,
             boundary,
         }: {
             value: Value,
             status: Part.Status,
             style: Part.Style,
+            size: Float | null,
             language: Language.Name | null,
             boundary: Dictionary.Boundary,
         },
@@ -242,6 +258,7 @@ export class Instance
                 value: value,
                 status: status,
                 style: style,
+                size: size,
                 language: language,
                 boundary: boundary,
             },
@@ -258,9 +275,11 @@ export class Instance
         row_value: Value,
         {
             value,
+            size,
             language,
         }: {
             value: Value,
+            size: Float | null,
             language: Language.Name | null,
         },
     ):
@@ -275,6 +294,7 @@ export class Instance
             {
                 index: 0,
                 value: value,
+                size: size,
                 language: language,
             },
         );
@@ -282,6 +302,7 @@ export class Instance
             {
                 index: 0,
                 value: value,
+                size: size,
                 language: language,
             },
         );

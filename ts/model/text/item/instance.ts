@@ -1,3 +1,4 @@
+import { Float } from "../../../types.js";
 import { Index } from "../../../types.js";
 
 import { Value } from "../value.js";
@@ -19,4 +20,7 @@ export interface Instance
     Has_Image_Value(): boolean;
     Is_Image_Value_Inline(): boolean;
     Image_Value(): Value;
+
+    Has_Size(): boolean;
+    Size(): Float | null;
 }

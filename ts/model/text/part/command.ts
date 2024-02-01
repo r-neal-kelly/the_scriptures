@@ -1,3 +1,4 @@
+import { Float } from "../../../types.js";
 import { Count } from "../../../types.js";
 import { Index } from "../../../types.js";
 
@@ -43,7 +44,7 @@ export enum Parameter
 
 type Parameter_And_Argument = {
     parameter: string,
-    argument: string | number,
+    argument: string | Float,
 };
 
 export function Is_Known_Parameter(
@@ -553,6 +554,7 @@ export function Partition_Into_Row_Values(
                 {
                     index: 0,
                     value: maybe_valid_command_value,
+                    size: null,
                     language: null,
                 },
             );
@@ -651,6 +653,7 @@ export function Resolve_Errors(
                 {
                     index: 0,
                     value: maybe_command,
+                    size: null,
                     language: null,
                 },
             );
@@ -742,16 +745,18 @@ export function Padding_Count(
 export class Instance extends Part.Instance
 {
     private parameter: string | null;
-    private argument: string | number | null;
+    private argument: string | Float | null;
 
     constructor(
         {
             index,
             value,
+            size,
             language,
         }: {
             index: Index,
             value: Value,
+            size: Float | null,
             language: Language.Name | null,
         },
     )
@@ -767,6 +772,7 @@ export class Instance extends Part.Instance
                         Status.UNKNOWN :
                         Status.ERROR,
                 style: Style._NONE_,
+                size: size,
                 language: language,
             }
         );
@@ -835,20 +841,47 @@ export class Instance extends Part.Instance
     }
 
     Argument():
-        string | number | null
+        string | Float | null
     {
         return this.argument;
     }
 
     Some_Argument():
-        string | number
+        string | Float
     {
         Utils.Assert(
             this.Has_Argument(),
             `doesn't have an argument`,
         );
 
-        return this.argument as string | number;
+        return this.argument as string | Float;
+    }
+
+    Has_Size_Argument():
+        boolean
+    {
+        return this.Has_Argument() && this.Is_Good();
+    }
+
+    Size_Argument():
+        Float | null
+    {
+        if (this.Has_Size_Argument()) {
+            return this.Some_Argument() as Float;
+        } else {
+            return null;
+        }
+    }
+
+    Some_Size_Argument():
+        Float
+    {
+        Utils.Assert(
+            this.Has_Size_Argument(),
+            `doesn't have a size argument`,
+        );
+
+        return this.Some_Argument() as Float;
     }
 
     Is_Column():
