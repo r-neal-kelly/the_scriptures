@@ -20,7 +20,7 @@ export enum Symbol
 }
 
 export function Is_Symbol(
-    point: Value,
+    point: string,
 ):
     boolean
 {
@@ -35,23 +35,25 @@ export function Is_Symbol(
 export enum Parameter
 {
     FIX = `fix`,
+    SIZE = `size`,
     LANGUAGE = `lang`,
     IMAGE = `img`,
     INLINE_IMAGE = `inl-img`,
 }
 
 type Parameter_And_Argument = {
-    parameter: Value,
-    argument: Value,
+    parameter: string,
+    argument: string | number,
 };
 
 export function Is_Known_Parameter(
-    value: Value,
+    value: string,
 ):
     boolean
 {
     return (
         value === Parameter.FIX ||
+        value === Parameter.SIZE ||
         value === Parameter.LANGUAGE ||
         value === Parameter.IMAGE ||
         value === Parameter.INLINE_IMAGE
@@ -59,7 +61,7 @@ export function Is_Known_Parameter(
 }
 
 export function Is_Known_Open_Parameter(
-    value: Value,
+    value: string,
 ):
     boolean
 {
@@ -72,7 +74,7 @@ export function Is_Known_Open_Parameter(
 }
 
 export function Is_Known_Close_Parameter(
-    value: Value,
+    value: string,
 ):
     boolean
 {
@@ -122,6 +124,8 @@ export enum Known_Value
     OPEN_FIX = `⸨fix⸩`,
     CLOSE_FIX = `⸨/fix⸩`,
 
+    CLOSE_SIZE = `⸨/size⸩`,
+
     OPEN_LEFT_TO_RIGHT = `⸨ltr⸩`,
     CLOSE_LEFT_TO_RIGHT = `⸨/ltr⸩`,
 
@@ -161,15 +165,17 @@ function Interior_Parameter_And_Argument(
     const interior_divider_index: Index =
         interior_value.indexOf(Symbol.DIVIDER);
     if (interior_divider_index > -1) {
-        const interior_parameter: Value =
+        const interior_parameter: string =
             interior_value.slice(0, interior_divider_index);
         if (interior_parameter.length > 0) {
-            const interior_argument: Value =
+            const interior_argument: string =
                 interior_value.slice(interior_divider_index + Symbol.DIVIDER.length);
 
             return {
                 parameter: interior_parameter,
-                argument: interior_argument,
+                argument: interior_parameter === Parameter.SIZE ?
+                    parseFloat(interior_argument) :
+                    interior_argument,
             };
         } else {
             return null;
@@ -222,6 +228,8 @@ export function Is_Known_Value(
         value === Known_Value.OPEN_FIX ||
         value === Known_Value.CLOSE_FIX ||
 
+        value === Known_Value.CLOSE_SIZE ||
+
         value === Known_Value.OPEN_LEFT_TO_RIGHT ||
         value === Known_Value.CLOSE_LEFT_TO_RIGHT ||
 
@@ -261,11 +269,14 @@ export function Is_Known_Value(
             } else if (parameter_and_argument.parameter === Parameter.FIX) {
                 return true;
 
+            } else if (parameter_and_argument.parameter === Parameter.SIZE) {
+                return Utils.Is.Number(parameter_and_argument.argument);
+
             } else if (parameter_and_argument.parameter === Parameter.IMAGE) {
-                return parameter_and_argument.argument != null;
+                return parameter_and_argument.argument != ``;
 
             } else if (parameter_and_argument.parameter === Parameter.INLINE_IMAGE) {
-                return parameter_and_argument.argument != null;
+                return parameter_and_argument.argument != ``;
 
             } else {
                 return false;
@@ -646,7 +657,7 @@ export function Resolve_Errors(
             if (command.Is_Open_Fix()) {
                 if (command.Has_Argument()) {
                     const { full } = From(it.Points());
-                    result += Resolve_Errors(command.Some_Argument(), remove_unresolvable_errors);
+                    result += Resolve_Errors(command.Some_Argument().toString(), remove_unresolvable_errors);
                     it = new Unicode.Iterator(
                         {
                             text: it.Text(),
@@ -730,8 +741,8 @@ export function Padding_Count(
 
 export class Instance extends Part.Instance
 {
-    private parameter: Value | null;
-    private argument: Value | null;
+    private parameter: string | null;
+    private argument: string | number | null;
 
     constructor(
         {
@@ -791,7 +802,7 @@ export class Instance extends Part.Instance
             `Does not have an image value.`,
         );
 
-        return Utils.Resolve_Path(this.Some_Argument());
+        return Utils.Resolve_Path(this.Some_Argument() as Value);
     }
 
     Has_Parameter():
@@ -801,20 +812,20 @@ export class Instance extends Part.Instance
     }
 
     Parameter():
-        Value | null
+        string | null
     {
         return this.parameter;
     }
 
     Some_Parameter():
-        Value
+        string
     {
         Utils.Assert(
             this.Has_Parameter(),
             `doesn't have a parameter`,
         );
 
-        return this.parameter as Value;
+        return this.parameter as string;
     }
 
     Has_Argument():
@@ -824,20 +835,20 @@ export class Instance extends Part.Instance
     }
 
     Argument():
-        Value | null
+        string | number | null
     {
         return this.argument;
     }
 
     Some_Argument():
-        Value
+        string | number
     {
         Utils.Assert(
             this.Has_Argument(),
             `doesn't have an argument`,
         );
 
-        return this.argument as Value;
+        return this.argument as string | number;
     }
 
     Is_Column():
@@ -1027,6 +1038,18 @@ export class Instance extends Part.Instance
         boolean
     {
         return this.Value() === Known_Value.CLOSE_FIX;
+    }
+
+    Is_Open_Size():
+        boolean
+    {
+        return this.Parameter() === Parameter.SIZE;
+    }
+
+    Is_Close_Size():
+        boolean
+    {
+        return this.Value() === Known_Value.CLOSE_SIZE;
     }
 
     Is_Open_Left_To_Right():

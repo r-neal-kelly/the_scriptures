@@ -322,7 +322,7 @@ export class Instance
                                     new Fix_Argument_Frame(
                                         {
                                             parameter: command.Some_Parameter(),
-                                            argument: command.Some_Argument(),
+                                            argument: command.Some_Argument() as string,
                                             from_text: it.Points(),
                                             from_text_index: it.Index(),
                                         },
@@ -334,6 +334,9 @@ export class Instance
                             }
                         } else if (command.Is_Close_Fix()) {
                             current_style &= ~Part.Style.ERROR;
+
+                        } else if (command.Is_Open_Size()) {
+                        } else if (command.Is_Close_Size()) {
 
                         } else if (command.Is_Open_Hebrew()) {
                             language_stack.push(Language.Name.HEBREW);
