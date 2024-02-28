@@ -142,4 +142,10 @@ export class Instance
             return maybe_output as string;
         }
     }
+
+    Reset():
+        void
+    {
+        this.Reset_Current_Space();
+    }
 }

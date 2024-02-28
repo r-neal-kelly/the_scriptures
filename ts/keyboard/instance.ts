@@ -340,10 +340,10 @@ export class Instance
         if (!event.repeat) {
             const key: Key = event.code as Key;
             if (
-                !Reserved_Keys.Has(key) ||
-                key === Reserved_Keys.META_KEY
+                key === Reserved_Keys.META_KEY ||
+                !Reserved_Keys.Has(key)
             ) {
-                this.held_keys.Add(event.code as Key);
+                this.held_keys.Add(key);
             }
         }
 
@@ -600,6 +600,14 @@ export class Instance
         await hook.On_Key_Down(event);
 
         if (
+            (
+                (event.code as Key) === Key.ENTER ||
+                (event.code as Key) === Key.BACKSPACE
+            ) &&
+            this.Has_Current_Layout()
+        ) {
+            this.Current_Layout().Reset();
+        } else if (
             !event.ctrlKey &&
             !event.altKey &&
             this.Has_Current_Layout()
