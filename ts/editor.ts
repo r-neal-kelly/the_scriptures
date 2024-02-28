@@ -410,6 +410,11 @@ class Line_Keyboard_Hook extends Keyboard.Hook.Instance
         this.Enable();
     }
 
+    Destruct()
+    {
+        this.Disable();
+    }
+
     Line():
         Line
     {
@@ -429,7 +434,10 @@ class Line_Keyboard_Hook extends Keyboard.Hook.Instance
     {
         await super.On_Change_Global_Layout(layout);
 
-        this.line.Editor().Touch();
+        // It's necessary to use a request because it is the case
+        // that this handler will be called on each line, and we
+        // only want to touch the editor once per batch.
+        this.line.Editor().Request_Touch();
     }
 
     override async On_Try_Change_Language_Direction(
@@ -929,7 +937,7 @@ class Line
     Destruct():
         void
     {
-        this.keyboard_hook.Disable();
+        this.keyboard_hook.Destruct();
 
         this.parent.removeChild(this.element);
     }
@@ -1547,6 +1555,7 @@ class Editor
     private is_meta_key_active: boolean;
     private is_in_point_mode: boolean;
     private are_rows_expanded: boolean;
+    private will_touch_by_request: boolean;
     private direction: Language.Direction;
 
     private parent: HTMLElement;
@@ -1599,6 +1608,7 @@ class Editor
         this.is_meta_key_active = false;
         this.is_in_point_mode = false;
         this.are_rows_expanded = true;
+        this.will_touch_by_request = false;
         this.direction = Language.Direction.LEFT_TO_RIGHT;
 
         this.parent = parent;
@@ -2534,6 +2544,19 @@ class Editor
 
         for (const line of this.lines) {
             line.Touch();
+        }
+    }
+
+    async Request_Touch():
+        Promise<void>
+    {
+        if (!this.will_touch_by_request) {
+            this.will_touch_by_request = true;
+
+            await Utils.Wait_Milliseconds(1);
+            this.Touch();
+
+            this.will_touch_by_request = false;
         }
     }
 
