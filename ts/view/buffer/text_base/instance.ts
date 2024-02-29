@@ -181,9 +181,9 @@ export abstract class Instance<
                 .Marginal_Column {
                     font-size: .85em;
                 }
-
+                
                 .Inter_Marginal_Column {
-                    
+                    align-content: center;
                 }
 
                 .Interlinear_Column {
