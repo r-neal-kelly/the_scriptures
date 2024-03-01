@@ -235,6 +235,8 @@ export abstract class Instance<
                 .Segment {
                     display: inline-block;
 
+                    align-self: baseline;
+
                     color: inherit;
                 }
 
