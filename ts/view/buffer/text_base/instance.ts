@@ -356,7 +356,12 @@ export abstract class Instance<
     override On_Restyle():
         string | { [index: string]: string; }
     {
-        return this.Default_Font_Styles(Script_Position.DEFAULT);
+        return this.Default_Font_Styles(
+            {
+                underlying_font_size_multiplier: 1.0,
+                script_position: Script_Position.DEFAULT,
+            },
+        );
     }
 
     override On_Resize():
@@ -400,33 +405,52 @@ export abstract class Instance<
     }
 
     Default_Font_Styles(
-        script_position: Script_Position,
+        {
+            underlying_font_size_multiplier,
+            script_position,
+        }: {
+            underlying_font_size_multiplier: Float,
+            script_position: Script_Position,
+        },
     ):
         { [css_property: string]: string }
     {
         const model: Model_Instance = this.Model();
 
         return Languages.Singleton().Font_Styles(
-            model.Default_Language_Name(),
-            model.Default_Font_Name(),
-            model.Underlying_Font_Size_PX(),
-            script_position,
+            {
+                language_name: model.Default_Language_Name(),
+                font_name: model.Default_Font_Name(),
+                underlying_font_size_px: model.Underlying_Font_Size_PX(),
+                underlying_font_size_multiplier: underlying_font_size_multiplier,
+                script_position: script_position,
+            },
         );
     }
 
     Override_Font_Styles(
-        language_name: Language.Name,
-        script_position: Script_Position,
+        {
+            language_name,
+            underlying_font_size_multiplier,
+            script_position,
+        }: {
+            language_name: Language.Name,
+            underlying_font_size_multiplier: Float,
+            script_position: Script_Position,
+        },
     ):
         { [css_property: string]: string }
     {
         const model: Model_Instance = this.Model();
 
         return Languages.Singleton().Font_Styles(
-            language_name,
-            model.Override_Font_Name(language_name),
-            model.Underlying_Font_Size_PX(),
-            script_position,
+            {
+                language_name: language_name,
+                font_name: model.Override_Font_Name(language_name),
+                underlying_font_size_px: model.Underlying_Font_Size_PX(),
+                underlying_font_size_multiplier: underlying_font_size_multiplier,
+                script_position: script_position,
+            },
         );
     }
 }

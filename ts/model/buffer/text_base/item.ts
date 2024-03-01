@@ -1,3 +1,4 @@
+import { Float } from "../../../types.js";
 import { Index } from "../../../types.js";
 
 import * as Utils from "../../../utils.js";
@@ -333,5 +334,11 @@ export class Instance<
         Script_Position
     {
         return this.Part().Script_Position();
+    }
+
+    Maybe_Size():
+        Float | null
+    {
+        return this.Part().Size();
     }
 }

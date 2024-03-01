@@ -34,9 +34,12 @@ for (const language_name of Languages.Singleton().Language_Names()) {
     ) {
         DEFAULT_FONT_STYLES[language_name][script_position] = Utils.Styles_To_Inline_String(
             Languages.Singleton().Default_Global_Font_Styles(
-                language_name,
-                UNDERLYING_FONT_SIZE_PX,
-                script_position,
+                {
+                    language_name: language_name,
+                    underlying_font_size_px: UNDERLYING_FONT_SIZE_PX,
+                    underlying_font_size_multiplier: 1.0,
+                    script_position,
+                },
             ),
             `'`,
         );

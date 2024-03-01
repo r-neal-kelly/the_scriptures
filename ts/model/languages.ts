@@ -180,17 +180,29 @@ export class Instance
     }
 
     Font_Styles(
-        language_name: Language.Name,
-        font_name: Font.Name,
-        underlying_font_size_px: Float,
-        script_position: Script_Position,
+        {
+            language_name,
+            font_name,
+            underlying_font_size_px,
+            underlying_font_size_multiplier,
+            script_position,
+        }: {
+            language_name: Language.Name,
+            font_name: Font.Name,
+            underlying_font_size_px: Float,
+            underlying_font_size_multiplier: Float,
+            script_position: Script_Position,
+        },
     ):
         { [css_property: string]: string }
     {
         return this.Language(language_name).Font_Styles(
-            font_name,
-            underlying_font_size_px,
-            script_position,
+            {
+                font_name: font_name,
+                underlying_font_size_px: underlying_font_size_px,
+                underlying_font_size_multiplier: underlying_font_size_multiplier,
+                script_position: script_position,
+            },
         );
     }
 
@@ -211,15 +223,26 @@ export class Instance
     }
 
     Default_Global_Font_Styles(
-        language_name: Language.Name,
-        underlying_font_size_px: Float,
-        script_position: Script_Position,
+        {
+            language_name,
+            underlying_font_size_px,
+            underlying_font_size_multiplier,
+            script_position,
+        }: {
+            language_name: Language.Name,
+            underlying_font_size_px: Float,
+            underlying_font_size_multiplier: Float,
+            script_position: Script_Position,
+        },
     ):
         { [css_property: string]: string }
     {
         return this.Language(language_name).Default_Font_Styles(
-            underlying_font_size_px,
-            script_position,
+            {
+                underlying_font_size_px: underlying_font_size_px,
+                underlying_font_size_multiplier: underlying_font_size_multiplier,
+                script_position: script_position,
+            },
         );
     }
 
@@ -249,15 +272,26 @@ export class Instance
     }
 
     Current_Global_Font_Styles(
-        language_name: Language.Name,
-        underlying_font_size_px: Float,
-        script_position: Script_Position,
+        {
+            language_name,
+            underlying_font_size_px,
+            underlying_font_size_multiplier,
+            script_position,
+        }: {
+            language_name: Language.Name,
+            underlying_font_size_px: Float,
+            underlying_font_size_multiplier: Float,
+            script_position: Script_Position,
+        },
     ):
         { [css_property: string]: string }
     {
         return this.Language(language_name).Current_Font_Styles(
-            underlying_font_size_px,
-            script_position,
+            {
+                underlying_font_size_px: underlying_font_size_px,
+                underlying_font_size_multiplier: underlying_font_size_multiplier,
+                script_position: script_position,
+            },
         );
     }
 

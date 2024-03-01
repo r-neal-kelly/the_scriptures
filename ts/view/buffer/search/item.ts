@@ -1,8 +1,6 @@
 import { Count } from "../../../types.js";
 
 import * as Model from "../../../model/buffer/search/item.js";
-import * as Model_Language from "../../../model/language.js";
-import * as Model_Languages from "../../../model/languages.js";
 
 import * as Text_Base from "../text_base.js";
 import * as Buffer from "./instance.js";
@@ -69,27 +67,6 @@ export class Instance extends Text_Base.Item.Instance<
                     this.Abort_Child(this.Child(idx));
                 }
             }
-        }
-    }
-
-    override On_Restyle():
-        string | { [index: string]: string; }
-    {
-        const model: Model.Instance = this.Model();
-        if (!model.Is_Blank()) {
-            const language: Model_Language.Name | null =
-                model.Override_Language_Name();
-            if (language) {
-                return Model_Languages.Singleton().Default_Global_Font_Styles(
-                    language,
-                    this.Buffer().Model().Underlying_Font_Size_PX(),
-                    model.Script_Position(),
-                );
-            } else {
-                return ``;
-            }
-        } else {
-            return ``;
         }
     }
 }

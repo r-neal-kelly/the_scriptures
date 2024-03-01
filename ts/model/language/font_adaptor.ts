@@ -126,15 +126,22 @@ export class Instance
     }
 
     Styles(
-        underlying_font_size_px: Float,
-        script_position: Script_Position,
+        {
+            underlying_font_size_px,
+            underlying_font_size_multiplier,
+            script_position,
+        }: {
+            underlying_font_size_px: Float,
+            underlying_font_size_multiplier: Float,
+            script_position: Script_Position,
+        },
     ):
         { [css_property: string]: string }
     {
         const styles: { [css_property: string]: string } =
             Object.assign(Object.create(null), this.styles);
         const font_size: Float =
-            underlying_font_size_px * this.font_size_multiplier;
+            underlying_font_size_px * underlying_font_size_multiplier * this.font_size_multiplier;
         const line_height: Float =
             font_size * this.line_height_multiplier;
 

@@ -62,26 +62,4 @@ export class Instance extends Text_Base.Item.Instance<
             }
         }
     }
-
-    override On_Restyle():
-        string | { [index: string]: string; }
-    {
-        const model: Model.Instance = this.Model();
-
-        if (model.Is_Blank()) {
-            return ``;
-        } else if (model.Has_Image_Value()) {
-            if (this.Has_Inline_Image_Styles()) {
-                return this.Inline_Image_Styles();
-            } else {
-                return ``;
-            }
-        } else {
-            if (this.Has_Override_Font_Styles()) {
-                return this.Override_Font_Styles();
-            } else {
-                return ``;
-            }
-        }
-    }
 }

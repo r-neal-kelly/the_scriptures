@@ -144,15 +144,26 @@ export class Instance
     }
 
     Font_Styles(
-        font_name: Font.Name,
-        underlying_font_size_px: Float,
-        script_position: Script_Position,
+        {
+            font_name,
+            underlying_font_size_px,
+            underlying_font_size_multiplier,
+            script_position,
+        }: {
+            font_name: Font.Name,
+            underlying_font_size_px: Float,
+            underlying_font_size_multiplier: Float,
+            script_position: Script_Position,
+        },
     ):
         { [css_property: string]: string }
     {
         return this.Some_Font_Adaptor(font_name).Styles(
-            underlying_font_size_px,
-            script_position,
+            {
+                underlying_font_size_px: underlying_font_size_px,
+                underlying_font_size_multiplier: underlying_font_size_multiplier,
+                script_position: script_position,
+            },
         );
     }
 
@@ -169,15 +180,25 @@ export class Instance
     }
 
     Default_Font_Styles(
-        underlying_font_size_px: Float,
-        script_position: Script_Position,
+        {
+            underlying_font_size_px,
+            underlying_font_size_multiplier,
+            script_position,
+        }: {
+            underlying_font_size_px: Float,
+            underlying_font_size_multiplier: Float,
+            script_position: Script_Position,
+        },
     ):
         { [css_property: string]: string }
     {
         return this.Font_Styles(
-            this.Default_Font_Name(),
-            underlying_font_size_px,
-            script_position,
+            {
+                font_name: this.Default_Font_Name(),
+                underlying_font_size_px: underlying_font_size_px,
+                underlying_font_size_multiplier: underlying_font_size_multiplier,
+                script_position: script_position,
+            },
         );
     }
 
@@ -207,15 +228,25 @@ export class Instance
     }
 
     Current_Font_Styles(
-        underlying_font_size_px: Float,
-        script_position: Script_Position,
+        {
+            underlying_font_size_px,
+            underlying_font_size_multiplier,
+            script_position,
+        }: {
+            underlying_font_size_px: Float,
+            underlying_font_size_multiplier: Float,
+            script_position: Script_Position,
+        },
     ):
         { [css_property: string]: string }
     {
         return this.Font_Styles(
-            this.Current_Font_Name(),
-            underlying_font_size_px,
-            script_position,
+            {
+                font_name: this.Current_Font_Name(),
+                underlying_font_size_px: underlying_font_size_px,
+                underlying_font_size_multiplier: underlying_font_size_multiplier,
+                script_position: script_position,
+            },
         );
     }
 

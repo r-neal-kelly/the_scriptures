@@ -96,9 +96,12 @@ export abstract class Instance
             Languages.Singleton().Direction(language_name);
         const default_global_font_styles: { [css_property: string]: string } =
             Languages.Singleton().Default_Global_Font_Styles(
-                language_name,
-                this.Underlying_Font_Size_PX(),
-                Script_Position.DEFAULT,
+                {
+                    language_name: language_name,
+                    underlying_font_size_px: this.Underlying_Font_Size_PX(),
+                    underlying_font_size_multiplier: 1.0,
+                    script_position: Script_Position.DEFAULT,
+                },
             );
 
         for (const style of Object.entries(default_global_font_styles)) {

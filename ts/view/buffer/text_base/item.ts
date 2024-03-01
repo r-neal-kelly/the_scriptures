@@ -1,3 +1,4 @@
+import { Float } from "../../../types.js";
 import { ID } from "../../../types.js";
 
 import * as Utils from "../../../utils.js";
@@ -42,6 +43,8 @@ interface Model_Instance_i
 
     Script_Position():
         Script_Position;
+    Maybe_Size():
+        Float | null;
 }
 
 interface Buffer_Instance_i
@@ -50,13 +53,27 @@ interface Buffer_Instance_i
         ID;
 
     Default_Font_Styles(
-        script_position: Script_Position,
+        {
+            underlying_font_size_multiplier,
+            script_position,
+        }: {
+            underlying_font_size_multiplier: Float,
+            script_position: Script_Position,
+        },
     ):
         { [css_property: string]: string };
     Override_Font_Styles(
-        language_name: Language.Name,
-        script_position: Script_Position,
-    ): { [css_property: string]: string };
+        {
+            language_name,
+            underlying_font_size_multiplier,
+            script_position,
+        }: {
+            language_name: Language.Name,
+            underlying_font_size_multiplier: Float,
+            script_position: Script_Position,
+        },
+    ):
+        { [css_property: string]: string };
 }
 
 interface Segment_Instance_i<
@@ -145,8 +162,71 @@ export abstract class Instance<
         return classes;
     }
 
-    abstract override On_Restyle():
-        string | { [index: string]: string; };
+    override On_Restyle():
+        string | { [index: string]: string; }
+    {
+        const model: Model_Instance = this.Model();
+
+        if (!model.Is_Blank()) {
+            const maybe_override_language_name: Language.Name | null =
+                model.Override_Language_Name();
+            const maybe_size: Float | null =
+                model.Maybe_Size();
+
+            if (model.Has_Image_Value()) {
+                if (model.Is_Image_Value_Inline()) {
+                    if (maybe_override_language_name != null) {
+                        return {
+                            "height":
+                                this.Buffer().Override_Font_Styles(
+                                    {
+                                        language_name: maybe_override_language_name as Language.Name,
+                                        underlying_font_size_multiplier: maybe_size || 1.0,
+                                        script_position: model.Script_Position(),
+                                    },
+                                )[`font-size`],
+                        };
+                    } else {
+                        return {
+                            "height":
+                                this.Buffer().Default_Font_Styles(
+                                    {
+                                        underlying_font_size_multiplier: maybe_size || 1.0,
+                                        script_position: model.Script_Position(),
+                                    },
+                                )[`font-size`],
+                        };
+                    }
+                } else {
+                    // It might be nice to be able to control the size of block images too.
+                    // But we need to examine the CSS closer before we start executing upon it.
+
+                    return ``;
+                }
+            } else {
+                if (maybe_override_language_name != null) {
+                    return this.Buffer().Override_Font_Styles(
+                        {
+                            language_name: maybe_override_language_name as Language.Name,
+                            underlying_font_size_multiplier: maybe_size || 1.0,
+                            script_position: model.Script_Position(),
+                        },
+                    );
+                } else if (maybe_size != null) {
+                    return this.Buffer().Default_Font_Styles(
+                        {
+                            underlying_font_size_multiplier: maybe_size as Float,
+                            script_position: model.Script_Position(),
+                        },
+                    );
+                } else {
+                    return ``;
+                }
+            }
+        } else {
+            return ``;
+        }
+    }
 
     Model():
         Model_Instance
@@ -164,92 +244,5 @@ export abstract class Instance<
         Segment_Instance
     {
         return this.Parent() as Segment_Instance;
-    }
-
-    Default_Font_Styles():
-        { [css_property: string]: string }
-    {
-        const model: Model_Instance = this.Model();
-
-        Utils.Assert(
-            !model.Is_Blank(),
-            `item is blank.`,
-        );
-
-        return this.Buffer().Default_Font_Styles(
-            model.Script_Position(),
-        );
-    }
-
-    Has_Override_Font_Styles():
-        boolean
-    {
-        const model: Model_Instance = this.Model();
-
-        Utils.Assert(
-            !model.Is_Blank(),
-            `item is blank.`,
-        );
-
-        return model.Override_Language_Name() != null;
-    }
-
-    Override_Font_Styles():
-        { [css_property: string]: string }
-    {
-        const model: Model_Instance = this.Model();
-
-        Utils.Assert(
-            !model.Is_Blank(),
-            `item is blank.`,
-        );
-        Utils.Assert(
-            this.Has_Override_Font_Styles(),
-            `Does not have override font styles.`,
-        );
-
-        return this.Buffer().Override_Font_Styles(
-            model.Override_Language_Name() as Language.Name,
-            model.Script_Position(),
-        );
-    }
-
-    Has_Inline_Image_Styles():
-        boolean
-    {
-        const model: Model_Instance = this.Model();
-
-        Utils.Assert(
-            !model.Is_Blank(),
-            `item is blank.`,
-        );
-
-        return model.Is_Image_Value_Inline();
-    }
-
-    Inline_Image_Styles():
-        { [css_property: string]: string }
-    {
-        const model: Model_Instance = this.Model();
-
-        Utils.Assert(
-            !model.Is_Blank(),
-            `item is blank.`,
-        );
-        Utils.Assert(
-            this.Has_Inline_Image_Styles(),
-            `Does not have inline image styles.`,
-        );
-
-        let height;
-        if (model.Override_Language_Name() != null) {
-            height = this.Override_Font_Styles()[`font-size`];
-        } else {
-            height = this.Default_Font_Styles()[`font-size`];
-        }
-
-        return {
-            "height": height,
-        };
     }
 }
