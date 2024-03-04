@@ -1,5 +1,5 @@
 ⸨cen⸩CHAPTER XXVII⸼
-⸨i⸩⸨sub⸩1⸨/sub⸩ The altar of burnt offering, with the vessels thereof. ⸨sub⸩9⸨/sub⸩ The court of the tabernacle inclosed with hangings and pillars. ⸨sub⸩18⸨/sub⸩ The measure of the court. ⸨sub⸩20⸨/sub⸩ The oil for the lamp.⸨/i⸩
+⸨size:0.85⸩⸨i⸩⸨sub⸩1⸨/sub⸩ The altar of burnt offering, with the vessels thereof. ⸨sub⸩9⸨/sub⸩ The court of the tabernacle inclosed with hangings and pillars. ⸨sub⸩18⸨/sub⸩ The measure of the court. ⸨sub⸩20⸨/sub⸩ The oil for the lamp.⸨/i⸩⸨/size⸩
 
 ⸨sub⸩1⸨/sub⸩ ⸨sc⸩And⸨/sc⸩ thou shalt make an altar ⸨i⸩of⸨/i⸩ shittim wood, five cubits long, and five cubits broad; the altar shall be foursquare: and the height thereof ⸨i⸩shall be⸨/i⸩ three cubits.⸨marg⸩
 ⸨sub⸩2⸨/sub⸩ And thou shalt make the horns of it upon the four corners thereof: his horns shall be of the same: and thou shalt overlay it with brass.⸨marg⸩

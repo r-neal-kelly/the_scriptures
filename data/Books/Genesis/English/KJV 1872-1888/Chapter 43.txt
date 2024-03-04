@@ -1,5 +1,5 @@
 ⸨cen⸩CHAPTER XLIII⸼
-⸨i⸩⸨sub⸩1⸨/sub⸩ Jacob is hardly persuaded to send Benjamin. ⸨sub⸩15⸨/sub⸩ Joseph entertaineth his brethren. ⸨sub⸩31⸨/sub⸩ He maketh them a feast.⸨/i⸩
+⸨size:0.85⸩⸨i⸩⸨sub⸩1⸨/sub⸩ Jacob is hardly persuaded to send Benjamin. ⸨sub⸩15⸨/sub⸩ Joseph entertaineth his brethren. ⸨sub⸩31⸨/sub⸩ He maketh them a feast.⸨/i⸩⸨/size⸩
 
 ⸨sub⸩1⸨/sub⸩ ⸨sc⸩And⸨/sc⸩ the famine ⸨i⸩was⸨/i⸩ sore in the land.⸨marg⸩
 ⸨sub⸩2⸨/sub⸩ And it came to pass, when they had eaten up the corn which they had brought out of Egypt, their father said unto them, Go again, buy us a little food.⸨marg⸩

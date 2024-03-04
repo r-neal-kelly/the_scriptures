@@ -1,10 +1,10 @@
 ⸨cen⸩⸨sc⸩⸨fix:The⸩the⸨/fix⸩ ⸨fix:Second⸩second⸨/fix⸩ ⸨fix:Book⸩book⸨/fix⸩ of ⸨fix:Moses⸩moses⸨/fix⸩,⸨/sc⸩
-⸨cen⸩⸨sc⸩called⸨/sc⸩
-⸨cen⸩EXODUS.
+⸨cen⸩⸨size:0.75⸩⸨sc⸩called⸨/sc⸩⸨/size⸩
+⸨cen⸩⸨size:2⸩EXODUS.⸨/size⸩
 ⸨cen⸩————
 
 ⸨cen⸩CHAPTER I⸼
-⸨i⸩⸨sub⸩1⸨/sub⸩ The children of Israel, after Josephʼs death, do multiply. ⸨sub⸩8⸨/sub⸩ The more they are oppressed by a new king, the more they multiply. ⸨sub⸩15⸨/sub⸩ The godliness of the midwives, in saving the men children alive. ⸨sub⸩22⸨/sub⸩ Pharaoh commandeth the male children to be cast into the river.⸨/i⸩
+⸨size:0.85⸩⸨i⸩⸨sub⸩1⸨/sub⸩ The children of Israel, after Josephʼs death, do multiply. ⸨sub⸩8⸨/sub⸩ The more they are oppressed by a new king, the more they multiply. ⸨sub⸩15⸨/sub⸩ The godliness of the midwives, in saving the men children alive. ⸨sub⸩22⸨/sub⸩ Pharaoh commandeth the male children to be cast into the river.⸨/i⸩⸨/size⸩
 
 ⸨sub⸩1⸨/sub⸩ ⸨sc⸩Now⸨/sc⸩ these ⸨i⸩are⸨/i⸩ the names of the ⸨sup⸩⸨i⸩a⸨/i⸩⸨/sup⸩ children of Israel, which came into Egypt; every man and his household came with Jacob.⸨marg⸩⸨sup⸩⸨i⸩a⸨/i⸩⸨/sup⸩ Gen⸼ 46⸼ 8⸼⸨row⸩chap⸼ 6⸼ 14⸼
 ⸨sub⸩2⸨/sub⸩ Reuben, Simeon, Levi, and Judah,⸨marg⸩
