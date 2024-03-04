@@ -2987,6 +2987,8 @@ class Editor
         }
 
         .UNKNOWN_POINT {
+            align-self: baseline;
+
             border-width: 0 0 2px 0;
             border-style: solid;
             border-color: #ffff00;
@@ -2995,6 +2997,8 @@ class Editor
         }
 
         .KNOWN_LETTER {
+            align-self: baseline;
+
             border-width: 0 0 2px 0;
             border-style: solid;
             border-color: transparent;
@@ -3003,6 +3007,8 @@ class Editor
         }
 
         .KNOWN_MARKER {
+            align-self: baseline;
+
             border-width: 0 0 2px 0;
             border-style: solid;
             border-color: transparent;
@@ -3011,6 +3017,8 @@ class Editor
         }
 
         .UNKNOWN_WORD {
+            align-self: baseline;
+
             border-width: 0 0 2px 0;
             border-style: solid;
             border-color: #ff5858;
@@ -3019,6 +3027,8 @@ class Editor
         }
 
         .KNOWN_WORD {
+            align-self: baseline;
+
             border-width: 0 0 2px 0;
             border-style: solid;
             border-color: transparent;
@@ -3027,6 +3037,8 @@ class Editor
         }
 
         .UNKNOWN_BREAK {
+            align-self: baseline;
+
             border-width: 0 0 2px 0;
             border-style: solid;
             border-color: #00da6f;
@@ -3035,6 +3047,8 @@ class Editor
         }
 
         .KNOWN_BREAK {
+            align-self: baseline;
+
             border-width: 0 0 2px 0;
             border-style: solid;
             border-color: transparent;
@@ -3043,6 +3057,8 @@ class Editor
         }
 
         .KNOWN_WORD_ERROR {
+            align-self: baseline;
+
             border-width: 0 0 2px 0;
             border-style: solid;
             border-color: #e767c3;
@@ -3051,6 +3067,8 @@ class Editor
         }
 
         .KNOWN_BREAK_ERROR {
+            align-self: baseline;
+
             border-width: 0 0 2px 0;
             border-style: solid;
             border-color: #e767c3;
@@ -3059,6 +3077,8 @@ class Editor
         }
 
         .COMMAND {
+            align-self: baseline;
+
             border-width: 0 0 2px 0;
             border-style: solid;
             border-color: transparent;
@@ -3067,6 +3087,8 @@ class Editor
         }
 
         .BAD_COMMAND {
+            align-self: baseline;
+            
             border-width: 0 0 2px 0;
             border-style: solid;
             border-color: orange;
