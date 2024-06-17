@@ -204,6 +204,20 @@ export abstract class Instance
         Promise<void>
     {
         range.deleteContents();
+
+        // should scroll the element with the range into
+        // view, such as after hitting backspace. We maybe
+        // can put this in on the higher event that includes both insert and delete, etc.
+        const node: Node = range.startContainer;
+        if (node.parentElement != null) {
+            node.parentElement.scrollIntoView(
+                {
+                    behavior: `instant` as ScrollBehavior,
+                    block: `nearest`,
+                    inline: `nearest`,
+                } as ScrollIntoViewOptions,
+            );
+        }
     }
 
     async After_Insert_Or_Paste_Or_Delete():
