@@ -1,0 +1,54 @@
+⸨cen⸩⸨sc⸩⸨fix:The⸩the⸨/fix⸩ ⸨fix:Fifth⸩fifth⸨/fix⸩ ⸨fix:Book⸩book⸨/fix⸩ of ⸨fix:Moses⸩moses⸨/fix⸩,⸨/sc⸩
+⸨cen⸩⸨size:0.75⸩⸨sc⸩called⸨/sc⸩⸨/size⸩
+⸨cen⸩⸨size:2⸩DEUTERONOMY.⸨/size⸩
+⸨cen⸩————
+
+⸨cen⸩CHAPTER I⸼
+⸨size:0.85⸩⸨i⸩⸨sub⸩1⸨/sub⸩ Mosesʼ speech in the end of the fortieth year, briefly rehearsing the story ⸨sub⸩6⸨/sub⸩ of Godʼs promise, ⸨sub⸩13⸨/sub⸩ of giving them officers, ⸨sub⸩19⸨/sub⸩ of sending the spies to search the land, ⸨sub⸩34⸨/sub⸩ of Godʼs anger for their incredulity, ⸨sub⸩41⸨/sub⸩ and disobedience.⸨/i⸩⸨/size⸩
+
+⸨add⸩⸨sub⸩1⸨/sub⸩ ⸨/add⸩⸨sc⸩These⸨/sc⸩ ⸨i⸩be⸨/i⸩ the words which Moses spake unto all Israel on this side Jordan in the wilderness, in the plain over against ⸨sup⸩❙⸨/sup⸩the Red ⸨i⸩sea⸨/i⸩, between Paran, and Tophel, and Laban, and Hazeroth, and Dizahab.⸨marg⸩⸨sup⸩❙⸨/sup⸩ Or, ⸨i⸩Zuph⸨/i⸩.
+⸨sub⸩2⸨/sub⸩ (⸨i⸩There are⸨/i⸩ eleven daysʼ ⸨i⸩journey⸨/i⸩ from Horeb by the way of mount Seir unto Kadesh‑barnea.)⸨marg⸩
+⸨sub⸩3⸨/sub⸩ And it came to pass in the fortieth year, in the eleventh month, on the first ⸨i⸩day⸨/i⸩ of the month, ⸨i⸩that⸨/i⸩ Moses spake unto the children of Israel, according unto all that the ⸨sc⸩Lord⸨/sc⸩ had given him in commandment unto them;⸨marg⸩
+⸨sub⸩4⸨/sub⸩ ⸨sup⸩⸨i⸩a⸨/i⸩⸨/sup⸩ After he had slain Sihon ⸨fix:the⸩th·⸨/fix⸩ king of the Amorites, which ⸨fix:dwelt⸩dwel·⸨/fix⸩ in Heshbon, and Og the king of Bashan, which dwelt at Astaroth in Edrei:⸨marg⸩⸨fix:⸨sup⸩⸨i⸩a⸨/i⸩⸨/sup⸩ ⸩ ⸨/fix⸩Numb⸼ ⸨fix:21⸼⸩·1⸼⸨/fix⸩ 24⸼
+⸨sub⸩5⸨/sub⸩ On this side Jordan, in the land of Moab, began Moses to declare this law, saying,⸨marg⸩
+⸨sub⸩6⸨/sub⸩ The ⸨sc⸩Lord⸨/sc⸩ our God spake unto us in Horeb, saying, Ye have dwelt long enough in this mount:⸨marg⸩
+⸨sub⸩7⸨/sub⸩ Turn you, and take your journey, and go to the mount of the Amorites, and unto ⸨sup⸩✝⸨/sup⸩all ⸨i⸩the places⸨/i⸩ nigh thereunto, in the plain, in the hills, and in the vale, and in the south, and by the sea side, to the land of the Canaanites, and unto Lebanon, unto the great river, the river Euphrates.⸨marg⸩⸨sup⸩✝⸨/sup⸩ Heb⸼ ⸨i⸩all his neighbours⸨/i⸩.
+⸨sub⸩8⸨/sub⸩ Behold, I have ⸨sup⸩✝⸨/sup⸩set the land before you: go in and possess the land which the ⸨sc⸩Lord⸨/sc⸩ sware unto your fathers, ⸨sup⸩⸨i⸩b⸨/i⸩⸨/sup⸩ Abraham, Isaac, and Jacob, to give unto them and to their seed after them.⸨marg⸩⸨sup⸩✝⸨/sup⸩ Heb⸼ ⸨i⸩given⸨/i⸩.⸨row⸩⸨sup⸩⸨i⸩b⸨/i⸩⸨/sup⸩ Gen⸼ 15⸼ 18⸼⸨row⸩& 17⸼ ⸨fix:7⸼⸩·⸨/fix⸩, ⸨fix:8⸼⸩8⸨/fix⸩
+⸨sub⸩9⸨/sub⸩ ¶ And I spake unto you at that time, saying, I am not able to bear you myself alone:⸨marg⸩
+⸨sub⸩10⸨/sub⸩ The ⸨sc⸩Lord⸨/sc⸩ your God hath multiplied you, and, behold, ye ⸨i⸩are⸨/i⸩ this day as the stars of heaven for multitude.⸨marg⸩
+⸨sub⸩11⸨/sub⸩ (The ⸨sc⸩Lord⸨/sc⸩ God of your fathers make you a thousand times so many more as ye ⸨i⸩are⸨/i⸩, and bless you, as he hath promised you!)⸨marg⸩
+⸨sub⸩12⸨/sub⸩ How can I myself alone bear your cumbrance, and your burden, and your strife?⸨marg⸩
+⸨sub⸩13⸨/sub⸩ ⸨sup⸩✝⸨/sup⸩Take you wise men, and understanding, and known among your tribes, and I will make them rulers over you.⸨marg⸩⸨sup⸩✝⸨/sup⸩ Heb⸼ ⸨i⸩Give⸨/i⸩.
+⸨sub⸩14⸨/sub⸩ And ye answered me, and said, The thing which thou hast spoken ⸨i⸩is⸨/i⸩ good ⸨i⸩for us⸨/i⸩ to do.⸨marg⸩
+⸨sub⸩15⸨/sub⸩ So I took the chief of your tribes, wise men, and known, and ⸨sup⸩✝⸨/sup⸩made them heads over you, captains over thousands, and captains over hundreds, and captains over fifties, and captains over tens, and officers among your tribes.⸨marg⸩⸨sup⸩✝⸨/sup⸩ Heb⸼ ⸨i⸩gave⸨/i⸩.
+⸨sub⸩16⸨/sub⸩ And I charged your judges at that time, saying, Hear ⸨i⸩the causes⸨/i⸩ between your brethren, and ⸨sup⸩⸨i⸩c⸨/i⸩⸨/sup⸩ judge righteously between ⸨i⸩every⸨/i⸩ man and his brother, and the stranger ⸨i⸩that is⸨/i⸩ with him.⸨marg⸩⸨sup⸩⸨i⸩c⸨/i⸩⸨/sup⸩ John 7⸼ 24⸼
+⸨sub⸩17⸨/sub⸩ ⸨sup⸩⸨i⸩d⸨/i⸩⸨/sup⸩ Ye shall not ⸨sup⸩✝⸨/sup⸩respect persons in judgment; ⸨i⸩but⸨/i⸩ ye shall hear the small as well as the great; ye shall not be afraid of the face of man; for the judgment ⸨i⸩is⸨/i⸩ Godʼs: and the cause that is too hard for you, bring ⸨i⸩it⸨/i⸩ unto me, and I will hear it.⸨marg⸩⸨sup⸩⸨i⸩d⸨/i⸩⸨/sup⸩ Lev⸼ 19⸼ 15⸼⸨row⸩chap⸼ 16⸼ 19⸼⸨row⸩1 Sam⸼ 16⸼ 7⸼⸨row⸩Prov⸼ 24⸼ 23⸼⸨row⸩⸨sup⸩✝⸨/sup⸩ Heb⸼ ⸨i⸩acknowledge faces⸨/i⸩.
+⸨sub⸩18⸨/sub⸩ And I commanded you at that time all the things which ye should do.⸨marg⸩
+⸨sub⸩19⸨/sub⸩ ¶ And when we departed from Horeb, we went through all that great and terrible wilderness, which ye saw by the way of the mountain of the Amorites, as the ⸨sc⸩Lord⸨/sc⸩ our God commanded us; and we came to Kadesh‑barnea.⸨marg⸩
+⸨sub⸩20⸨/sub⸩ And I said unto you, Ye are come unto the mountain of the Amorites, which the ⸨sc⸩Lord⸨/sc⸩ our God doth give unto us.⸨marg⸩
+⸨sub⸩21⸨/sub⸩ Behold, the ⸨sc⸩Lord⸨/sc⸩ thy God hath set the land before thee: go up ⸨i⸩and⸨/i⸩ possess ⸨i⸩it⸨/i⸩, as the ⸨sc⸩Lord⸨/sc⸩ God of thy fathers hath said unto thee; fear not, neither be discouraged.⸨marg⸩
+⸨sub⸩22⸨/sub⸩ ¶ And ye came near unto me every one of you, and said, We will send men before us, and they shall search us out the land, and bring us word again by what way we must go up, and into what cities we shall come.⸨marg⸩
+⸨sub⸩23⸨/sub⸩ And the saying pleased me well: and ⸨sup⸩⸨i⸩e⸨/i⸩⸨/sup⸩ I took twelve men of you, one of a tribe:⸨marg⸩⸨sup⸩⸨i⸩e⸨/i⸩⸨/sup⸩ Numb⸼ 13⸼ 3⸼
+⸨sub⸩24⸨/sub⸩ And ⸨sup⸩⸨i⸩f⸨/i⸩⸨/sup⸩ they turned and went up into the mountain, and came unto the valley of Eshcol, and searched it out.⸨marg⸩⸨sup⸩⸨i⸩f⸨/i⸩⸨/sup⸩ Numb⸼ 13⸼ 24⸼
+⸨sub⸩25⸨/sub⸩ And they took of the fruit of the land in their hands, and brought ⸨i⸩it⸨/i⸩ down unto us, and brought us word again, and said, ⸨i⸩It is⸨/i⸩ a good land which the ⸨sc⸩Lord⸨/sc⸩ our God doth give us.⸨marg⸩
+⸨sub⸩26⸨/sub⸩ Notwithstanding ye would not go up, but rebelled against the commandment of the ⸨sc⸩Lord⸨/sc⸩ your God:⸨marg⸩
+⸨sub⸩27⸨/sub⸩ And ye murmured in your tents, and said, Because the ⸨sc⸩Lord⸨/sc⸩ hated us, he hath brought us forth out of the land of Egypt, to deliver us into the hand of the Amorites, to destroy us.⸨marg⸩
+⸨sub⸩28⸨/sub⸩ Whither shall we go up? our brethren have ⸨sup⸩✝⸨/sup⸩discouraged our heart, ⸨fix:saying⸩saving⸨/fix⸩, The people ⸨i⸩is⸨/i⸩ greater and taller than we; the cities ⸨i⸩are⸨/i⸩ great and walled up to heaven; and moreover we have seen the sons of the ⸨sup⸩⸨i⸩g⸨/i⸩⸨/sup⸩ Anakims there.⸨marg⸩⸨sup⸩✝⸨/sup⸩ Heb⸼ ⸨i⸩melted⸨/i⸩.⸨row⸩⸨sup⸩⸨i⸩g⸨/i⸩⸨/sup⸩ Numb⸼ 13⸼ 28⸼
+⸨sub⸩29⸨/sub⸩ Then I said unto you, Dread not, neither be afraid of them.⸨marg⸩
+⸨sub⸩30⸨/sub⸩ The ⸨sc⸩Lord⸨/sc⸩ your God which goeth before you, he shall fight for you, according to all that he did for you in Egypt before your eyes;⸨marg⸩
+⸨sub⸩31⸨/sub⸩ And in the wilderness, where thou hast seen how that the ⸨sc⸩Lord⸨/sc⸩ thy God bare thee, as a man doth bear his son, in all the way that ye went, until ye came into this place.⸨marg⸩
+⸨sub⸩32⸨/sub⸩ Yet in this thing ye did not believe the ⸨sc⸩Lord⸨/sc⸩ your God,⸨marg⸩
+⸨sub⸩33⸨/sub⸩ ⸨sup⸩⸨i⸩h⸨/i⸩⸨/sup⸩ Who went in the way before you, to search you out a place to pitch your tents ⸨i⸩in⸨/i⸩, in fire by night, to shew you by what way ye should go, and in a cloud by day.⸨marg⸩⸨sup⸩⸨i⸩h⸨/i⸩⸨/sup⸩ Exod⸼ 13⸼ 21⸼
+⸨sub⸩34⸨/sub⸩ And the ⸨sc⸩Lord⸨/sc⸩ heard the voice of your words, and was wroth, and sware, saying,⸨marg⸩
+⸨sub⸩35⸨/sub⸩ ⸨sup⸩⸨i⸩i⸨/i⸩⸨/sup⸩ Surely there shall not one of these men of this evil generation see that good land, which I sware to give unto your fathers,⸨marg⸩⸨sup⸩⸨i⸩i⸨/i⸩⸨/sup⸩ Numb⸼ 14⸼ 29⸼
+⸨sub⸩36⸨/sub⸩ Save Caleb the son of Jephunneh; he shall see it, and to him will I give the land that he hath trodden upon, and to his children, because he hath ⸨sup⸩✝⸨/sup⸩wholly followed the ⸨sc⸩Lord⸨/sc⸩.⸨marg⸩⸨sup⸩✝⸨/sup⸩ Heb⸼ ⸨i⸩fulfilled⸨/i⸩ to go ⸨i⸩after⸨/i⸩.
+⸨sub⸩37⸨/sub⸩ ⸨sup⸩⸨i⸩k⸨/i⸩⸨/sup⸩ Also the ⸨sc⸩Lord⸨/sc⸩ was angry with me for your sakes, saying, ⸨sup⸩⸨i⸩l⸨/i⸩⸨/sup⸩ Thou also shalt not go in thither.⸨marg⸩⸨sup⸩⸨i⸩k⸨/i⸩⸨/sup⸩ Numb⸼ 20⸼ 12⸼⸨row⸩& 27⸼ 14⸼⸨row⸩⸨sup⸩⸨i⸩l⸨/i⸩⸨/sup⸩ chap⸼ 3⸼ 26⸼⸨row⸩& 4⸼ 21⸼⸨row⸩& 34⸼ 4⸼
+⸨sub⸩38⸨/sub⸩ ⸨i⸩But⸨/i⸩ Joshua the son of Nun, which standeth before thee, he shall go in thither: encourage him: for he shall cause Israel to inherit it.⸨marg⸩
+⸨sub⸩39⸨/sub⸩ Moreover your little ones, which ye said should be a prey, and your children, which in that day had no knowledge between good and evil, they shall go in thither, and unto them will I give it, and they shall possess it.⸨marg⸩
+⸨sub⸩40⸨/sub⸩ But ⸨i⸩as for⸨/i⸩ you, turn you, and take your journey into the wilderness by the way of the Red sea.⸨marg⸩
+⸨sub⸩41⸨/sub⸩ Then ye answered and said unto me, ⸨sup⸩⸨i⸩m⸨/i⸩⸨/sup⸩ We have sinned against the ⸨sc⸩Lord⸨/sc⸩, we will go up and fight, according to all that the ⸨sc⸩Lord⸨/sc⸩ our God commanded us. And when ye had girded on every man his weapons of war, ye were ready to go up into the hill.⸨marg⸩⸨sup⸩⸨i⸩m⸨/i⸩⸨/sup⸩ Numb⸼ 14⸼ 40⸼
+⸨sub⸩42⸨/sub⸩ And the ⸨sc⸩Lord⸨/sc⸩ said unto me, Say unto them, Go not up, neither fight; for I ⸨i⸩am⸨/i⸩ not among you; lest ye be smitten before your enemies.⸨marg⸩
+⸨sub⸩43⸨/sub⸩ So I spake unto you; and ye would not hear, but rebelled against the commandment of the ⸨sc⸩Lord⸨/sc⸩, and ⸨sup⸩✝⸨/sup⸩went presumptuously up into the hill.⸨marg⸩⸨sup⸩✝⸨/sup⸩ Heb⸼ ⸨i⸩you were presumptuous, and went up⸨/i⸩⸨fix:.⸩⸨/fix⸩
+⸨sub⸩44⸨/sub⸩ And the Amorites, which dwelt in that mountain, came out against you, and chased you, as bees do, and destroyed you in Seir, ⸨i⸩even⸨/i⸩ unto Hormah.⸨marg⸩
+⸨sub⸩45⸨/sub⸩ And ye returned and wept before the ⸨sc⸩Lord⸨/sc⸩; but the ⸨sc⸩Lord⸨/sc⸩ would not hearken to your voice, nor give ear unto you.⸨marg⸩
+⸨sub⸩46⸨/sub⸩ So ye abode in Kadesh many days, according unto the days that ye abode ⸨i⸩there⸨/i⸩.⸨marg⸩
