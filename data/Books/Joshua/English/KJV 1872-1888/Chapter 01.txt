@@ -1,0 +1,25 @@
+⸨cen⸩⸨sc⸩⸨fix:The⸩the⸨/fix⸩ ⸨fix:Book⸩book⸨/fix⸩ of⸨/sc⸩
+⸨cen⸩⸨size:2⸩JOSHUA.⸨/size⸩
+⸨cen⸩————
+
+⸨cen⸩CHAPTER I⸼
+⸨size:0.85⸩⸨i⸩⸨sub⸩1⸨/sub⸩ The ⸨fix:⸨sc⸩Lord⸨/sc⸩⸩Lord⸨/fix⸩ appointeth Joshua to succeed Moses. ⸨sub⸩3⸨/sub⸩ The borders of the promised land. ⸨sub⸩5, 9⸨/sub⸩ God promiseth to assist Joshua. ⸨sub⸩8⸨/sub⸩ He giveth him instructions. ⸨sub⸩10⸨/sub⸩ He prepareth the people to pass over Jordan. ⸨sub⸩12⸨/sub⸩ Joshua putteth the two tribes and half in mind of their promise to Moses. ⸨sub⸩16⸨/sub⸩ They promise him fealty.⸨/i⸩⸨/size⸩
+
+⸨add⸩⸨sub⸩1⸨/sub⸩ ⸨/add⸩⸨sc⸩Now⸨/sc⸩ after the death of Moses the servant of the ⸨sc⸩Lord⸨/sc⸩ it came to pass, that the ⸨sc⸩Lord⸨/sc⸩ spake unto Joshua the son of Nun, Mosesʼ ⸨sup⸩⸨i⸩a⸨/i⸩⸨/sup⸩ minister, saying,⸨marg⸩⸨fix:⸨sup⸩⸨i⸩a⸨/i⸩⸨/sup⸩ ⸩⸨/fix⸩Deut⸼ 1⸼ ⸨fix:38⸼⸩·⸨/fix⸩
+⸨sub⸩2⸨/sub⸩ Moses my servant is dead; now therefore arise, go over this Jordan, thou, and all this people, unto the land which I do give to them, ⸨i⸩even⸨/i⸩ to the children of Israel.⸨marg⸩
+⸨sub⸩3⸨/sub⸩ ⸨sup⸩⸨i⸩b⸨/i⸩⸨/sup⸩ Every place that the sole of your foot shall tread upon, that have I given unto you, as I said unto Moses.⸨marg⸩⸨sup⸩⸨i⸩b⸨/i⸩⸨/sup⸩ Deut⸼ 11⸼ 24⸼⸨row⸩ch⸼ 14⸼ ⸨fix:9⸼⸩·⸼⸨/fix⸩
+⸨sub⸩4⸨/sub⸩ From the wilderness and this Lebanon even unto the great river, the river Euphrates, all the land of the Hittites, and unto the great sea toward the going down of the sun, shall be your coast.⸨marg⸩
+⸨sub⸩5⸨/sub⸩ There shall not any man be able to stand before thee all the days of thy life: as I was with Moses, ⸨i⸩so⸨/i⸩ I will be with thee: ⸨sup⸩⸨i⸩c⸨/i⸩⸨/sup⸩ I will not fail thee, nor forsake thee.⸨marg⸩⸨sup⸩⸨i⸩c⸨/i⸩⸨/sup⸩ Heb⸼ 13⸼ 5⸼
+⸨sub⸩6⸨/sub⸩ ⸨sup⸩⸨i⸩d⸨/i⸩⸨/sup⸩ Be strong and of a good courage: for ⸨sup⸩❙⸨/sup⸩unto this people shalt thou divide for an inheritance the land, which I sware unto their fathers to give them.⸨marg⸩⸨sup⸩⸨i⸩d⸨/i⸩⸨/sup⸩ Deut⸼ 31⸼ 23⸼⸨row⸩⸨sup⸩❙⸨/sup⸩ Or, ⸨i⸩thou shalt cause this people to inherit the land⸨/i⸩, &c⸼
+⸨sub⸩7⸨/sub⸩ Only be thou strong and very courageous, that thou mayest observe to do according to all the law, which Moses my servant commanded thee: ⸨sup⸩⸨i⸩e⸨/i⸩⸨/sup⸩ turn not from it ⸨i⸩to⸨/i⸩ the right hand or ⸨i⸩to⸨/i⸩ the left, that thou mayest ⸨sup⸩❙⸨/sup⸩prosper whithersoever thou goest.⸨marg⸩⸨sup⸩⸨i⸩e⸨/i⸩⸨/sup⸩ Deut⸼ 5⸼ 32⸼⸨row⸩& 28⸼ 14⸼⸨row⸩⸨sup⸩❙⸨/sup⸩ Or, ⸨i⸩do wisely⸨/i⸩.
+⸨sub⸩8⸨/sub⸩ This book of the law shall not depart out of thy mouth; but thou shalt meditate therein day and night, that thou mayest observe to do according to all that is written therein: for then thou shalt make thy way prosperous, and then thou shalt ⸨sup⸩❙⸨/sup⸩have good success.⸨marg⸩⸨sup⸩❙⸨/sup⸩ Or, ⸨i⸩do wisely⸨/i⸩⸨fix:.⸩⸨/fix⸩
+⸨sub⸩9⸨/sub⸩ Have not I commanded thee? Be strong and of a good courage; be not afraid, neither be thou dismayed: for the ⸨sc⸩Lord⸨/sc⸩ thy God ⸨i⸩is⸨/i⸩ with thee whithersoever thou goest.⸨marg⸩
+⸨sub⸩10⸨/sub⸩ ¶ Then Joshua commanded the officers of the people, saying,⸨marg⸩
+⸨sub⸩11⸨/sub⸩ Pass through the host, and command the people, saying, Prepare you victuals; for within three days ye shall pass over this Jordan, to go in to possess the land, which the ⸨sc⸩Lord⸨/sc⸩ your God giveth you to possess it.⸨marg⸩
+⸨sub⸩12⸨/sub⸩ ¶ And to the Reubenites, and to the Gadites, and to half the tribe of Manasseh, spake Joshua, saying,⸨marg⸩
+⸨sub⸩13⸨/sub⸩ Remember ⸨sup⸩⸨i⸩f⸨/i⸩⸨/sup⸩ the word which Moses the servant of the ⸨sc⸩Lord⸨/sc⸩ commanded you, saying, The ⸨sc⸩Lord⸨/sc⸩ your God hath given you rest, and hath given you this land.⸨marg⸩⸨sup⸩⸨i⸩f⸨/i⸩⸨/sup⸩ Num⸼ 32⸼ 20⸼
+⸨sub⸩14⸨/sub⸩ Your wives, your little ones, and your cattle, shall remain in the land which Moses gave you on this side Jordan; but ye shall pass before your brethren ⸨sup⸩✝⸨/sup⸩armed, all the mighty men of valour, and help them;⸨marg⸩⸨sup⸩✝⸨/sup⸩ Heb⸼ ⸨i⸩marshalled by five⸨/i⸩.
+⸨sub⸩15⸨/sub⸩ Until the ⸨sc⸩Lord⸨/sc⸩ have given your brethren rest, as ⸨i⸩he hath given⸨/i⸩ you, and they also have possessed the land which the ⸨sc⸩Lord⸨/sc⸩ your God giveth them: then ye shall return unto the land of your possession, and enjoy it, which Moses the ⸨sc⸩Lordʼs⸨/sc⸩ servant gave you on this side Jordan toward the sunrising.⸨marg⸩
+⸨sub⸩16⸨/sub⸩ ¶ And they answered Joshua, saying, All that thou commandest us we will do, and whithersoever thou sendest us, we will go.⸨marg⸩
+⸨sub⸩17⸨/sub⸩ According as we hearkened unto Moses in all things, so will we hearken unto thee: only the ⸨sc⸩Lord⸨/sc⸩ thy God be with thee, as he was with Moses.⸨marg⸩
+⸨sub⸩18⸨/sub⸩ Whosoever ⸨i⸩he be⸨/i⸩ that doth rebel against thy commandment, and will not hearken unto thy words in all that thou commandest him, he shall be put to death: only be strong and of a good courage.⸨marg⸩

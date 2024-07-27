@@ -12,6 +12,7 @@ const KNOWN_BOOK_NAMES: Set<Name> = new Set(
         `Leviticus`,
         `Numbers`,
         `Deuteronomy`,
+        `Joshua`,
         `Masoretic Notes`,
         `Jubilees`,
         `Prolegomena to the History of Israel`,
