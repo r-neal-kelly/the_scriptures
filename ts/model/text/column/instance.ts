@@ -250,6 +250,23 @@ export class Instance
         return this.type;
     }
 
+    Is_Blank():
+        boolean
+    {
+        Utils.Assert(
+            this.Is_Finalized(),
+            `Must be finalized before being accessed.`,
+        );
+
+        for (let idx = 0, end = this.Row_Count(); idx < end; idx += 1) {
+            if (!this.Row(idx).Is_Blank()) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     Is_Tabular():
         boolean
     {

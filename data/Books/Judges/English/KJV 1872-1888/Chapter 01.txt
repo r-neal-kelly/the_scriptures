@@ -1,0 +1,43 @@
+⸨cen⸩⸨fix:⸨sc⸩The Book of⸨/sc⸩⸩⸨size:2⸩THE BOOK OF JUDGES.⸨/size⸩⸨/fix⸩
+⸨cen⸩⸨fix:⸨size:2⸩JUDGES.⸨/size⸩⸩⸨blank⸩⸨/fix⸩
+⸨cen⸩————
+
+⸨cen⸩CHAPTER I⸼
+⸨size:0.85⸩⸨i⸩⸨sub⸩1⸨/sub⸩ The acts of Judah and Simeon. ⸨sub⸩4⸨/sub⸩ Adoni‑bezek justly requited. ⸨sub⸩8⸨/sub⸩ Jerusalem taken. ⸨sub⸩10⸨/sub⸩ ⸨fix:Hebron⸩He·ron⸨/fix⸩ taken. ⸨sub⸩11⸨/sub⸩ Othniel hath Achsah to wife for taking of Debir. ⸨sub⸩16⸨/sub⸩ The Kenites dwell in Judah. ⸨sub⸩17⸨/sub⸩ Hormah, Gaza, Askelon and Ekron taken. ⸨sub⸩21⸨/sub⸩ The acts of Benjamin. ⸨sub⸩22⸨/sub⸩ Of the house of Joseph, who take Beth‑el. ⸨sub⸩30⸨/sub⸩ Of Zebulun. ⸨sub⸩31⸨/sub⸩ Of Asher. ⸨sub⸩33⸨/sub⸩ Of Naphtali. ⸨sub⸩34⸨/sub⸩ Of Dan.⸨/i⸩⸨/size⸩
+
+⸨add⸩⸨sub⸩1⸨/sub⸩ ⸨/add⸩⸨sc⸩Now⸨/sc⸩ after the death of Joshua it came to pass, that the children of Israel asked the ⸨sc⸩Lord⸨/sc⸩, saying, Who shall go up for us against the Canaanites first, to fight against them?⸨marg⸩
+⸨sub⸩2⸨/sub⸩ And the ⸨sc⸩Lord⸨/sc⸩ said, Judah shall go up: behold, I have delivered the land into his hand.⸨marg⸩
+⸨sub⸩3⸨/sub⸩ And Judah said unto Simeon his brother, Come up with me into my lot, that we may fight against the Canaanites; and I likewise will go with thee into thy lot. So Simeon went with him.⸨marg⸩
+⸨sub⸩4⸨/sub⸩ And Judah went up; and the ⸨sc⸩Lord⸨/sc⸩ delivered the Canaanites and the Perizzites into their hand: and they slew of them in Bezek ten thousand men.⸨marg⸩
+⸨sub⸩5⸨/sub⸩ And they found Adoni‑bezek in Bezek: and they fought against him, and they slew the Canaanites and the Perizzites.⸨marg⸩
+⸨sub⸩6⸨/sub⸩ But Adoni‑bezek fled; and they pursued after him, and caught him, and cut off his thumbs and his great toes.⸨marg⸩
+⸨sub⸩7⸨/sub⸩ And Adoni‑bezek said, Threescore and ten kings, having ⸨sup⸩✝⸨/sup⸩their thumbs and their great toes cut off, ⸨sup⸩❙⸨/sup⸩gathered ⸨i⸩their meat⸨/i⸩ under my table: as I have done, so God hath requited me. And they brought him to Jerusalem, and there he died.⸨marg⸩⸨sup⸩✝⸨/sup⸩ Heb⸼ ⸨i⸩the thumbs of their ⸨fix:hands⸩ha·ds⸨/fix⸩ and of their feet⸨/i⸩.⸨row⸩⸨sup⸩❙⸨/sup⸩ Or, ⸨i⸩gleaned⸨/i⸩.
+⸨sub⸩8⸨/sub⸩ Now the children of Judah had fought against Jerusalem, and had taken it, and smitten it with the edge of the sword, and set the city on fire.⸨marg⸩
+⸨sub⸩9⸨/sub⸩ ¶ ⸨sup⸩⸨i⸩a⸨/i⸩⸨/sup⸩ And afterward the children of Judah went down to fight against the Canaanites, that dwelt in the mountain, and in the south, and in the ⸨sup⸩❙⸨/sup⸩valley.⸨marg⸩⸨sup⸩⸨i⸩a⸨/i⸩⸨/sup⸩ Josh⸼ ⸨fix:10⸼⸩10⸨/fix⸩ 36⸼⸨row⸩& 11⸼ 21⸼⸨row⸩& 15⸼ 13⸼⸨row⸩⸨sup⸩❙⸨/sup⸩ Or, ⸨i⸩low country⸨/i⸩.
+⸨sub⸩10⸨/sub⸩ And Judah went against the Canaanites that dwelt in Hebron: (now the name of Hebron before ⸨i⸩was⸨/i⸩ ⸨sup⸩⸨i⸩b⸨/i⸩⸨/sup⸩ Kirjath‑arba:) and they slew Sheshai, and Ahiman, and Talmai.⸨marg⸩⸨sup⸩⸨i⸩b⸨/i⸩⸨/sup⸩ Josh⸼ 15⸼ 13⸼
+⸨sub⸩11⸨/sub⸩ And from thence he went against the inhabitants of Debir: and the name of Debir before ⸨i⸩was⸨/i⸩ Kirjath‑sepher:⸨marg⸩
+⸨sub⸩12⸨/sub⸩ And Caleb said, He that smiteth Kirjath‑sepher, and taketh it, to him will I give Achsah my daughter to wife.⸨marg⸩
+⸨sub⸩13⸨/sub⸩ And Othniel the son of Kenaz, Calebʼs younger brother, took it: and he gave him Achsah his daughter to wife.⸨marg⸩
+⸨sub⸩14⸨/sub⸩ And it came to pass, when she came ⸨i⸩to him⸨/i⸩, that she moved him to ask of her father a field: and she lighted from off ⸨i⸩her⸨/i⸩ ass; and Caleb said unto her, What wilt thou?⸨marg⸩
+⸨sub⸩15⸨/sub⸩ And she said unto him, Give me a blessing: for thou hast given me a south land; give me also springs of water. And Caleb gave her the upper springs and the nether springs.⸨marg⸩
+⸨sub⸩16⸨/sub⸩ ¶ And the children of the Kenite, Mosesʼ father in law, went up out of the city of palm trees with the children of Judah into the wilderness of Judah, which ⸨i⸩lieth⸨/i⸩ in the south of Arad; and they went and dwelt among the people.⸨marg⸩
+⸨sub⸩17⸨/sub⸩ And Judah went with Simeon his brother, and they slew the Canaanites that inhabited Zephath, and utterly destroyed it. And the name of the city was called ⸨sup⸩⸨i⸩c⸨/i⸩⸨/sup⸩ Hormah.⸨marg⸩⸨sup⸩⸨i⸩c⸨/i⸩⸨/sup⸩ Num⸼ 21⸼ 3⸼
+⸨sub⸩18⸨/sub⸩ Also Judah took Gaza with the coast thereof, and Askelon with the coast thereof, and Ekron with the coast thereof.⸨marg⸩
+⸨sub⸩19⸨/sub⸩ And the ⸨sc⸩Lord⸨/sc⸩ was with Judah; and ⸨sup⸩❙⸨/sup⸩he drave out ⸨i⸩the inhabitants of⸨/i⸩ the mountain; but could not drive out the inhabitants of the valley, because they had chariots of iron.⸨marg⸩⸨sup⸩❙⸨/sup⸩ Or, ⸨i⸩he possessed the mountain⸨/i⸩.
+⸨sub⸩20⸨/sub⸩ And they gave Hebron unto Caleb, ⸨sup⸩⸨i⸩d⸨/i⸩⸨/sup⸩ as Moses said: and he expelled thence the three sons of Anak.⸨marg⸩⸨sup⸩⸨i⸩d⸨/i⸩⸨/sup⸩ Num⸼ 14⸼ 24⸼⸨row⸩Josh⸼ 14⸼ 13⸼⸨row⸩& 15⸼ 14⸼
+⸨sub⸩21⸨/sub⸩ And the children of Benjamin did not drive out the Jebusites that inhabited Jerusalem; but the Jebusites dwell with the children of Benjamin in Jerusalem unto this day.⸨marg⸩
+⸨sub⸩22⸨/sub⸩ ¶ And the house of Joseph, they also went up against Beth‑el: and the ⸨sc⸩Lord⸨/sc⸩ ⸨i⸩was⸨/i⸩ with them.⸨marg⸩
+⸨sub⸩23⸨/sub⸩ And the house of Joseph sent to descry Beth‑el. (Now the name of the city before ⸨i⸩was⸨/i⸩ ⸨sup⸩⸨i⸩e⸨/i⸩⸨/sup⸩ Luz.)⸨marg⸩⸨sup⸩⸨i⸩e⸨/i⸩⸨/sup⸩ Gen⸼ 28⸼ 19⸼
+⸨sub⸩24⸨/sub⸩ And the spies saw a man come forth out of the city, and they said unto him, Shew us, we pray thee, the entrance into the city, and ⸨sup⸩⸨i⸩f⸨/i⸩⸨/sup⸩ we will shew thee mercy.⸨marg⸩⸨sup⸩⸨i⸩f⸨/i⸩⸨/sup⸩ Josh⸼ 2⸼ 14⸼
+⸨sub⸩25⸨/sub⸩ And when he shewed them the entrance into the city, they smote the city with the edge of the sword; but they let go the man and all his family.⸨marg⸩
+⸨sub⸩26⸨/sub⸩ And the man went into the land of the Hittites, and built a city, and called the name thereof Luz: which ⸨i⸩is⸨/i⸩ the name thereof unto this day.⸨marg⸩
+⸨sub⸩27⸨/sub⸩ ¶ ⸨sup⸩⸨i⸩g⸨/i⸩⸨/sup⸩ Neither did Manasseh drive out ⸨i⸩the inhabitants of⸨/i⸩ Beth‑shean and her towns, nor Taanach and her towns, nor the inhabitants of Dor and her towns, nor the inhabitants of Ibleam and her towns, nor the inhabitants of Megiddo and her towns; but the Canaanites would dwell in that land.⸨marg⸩⸨sup⸩⸨i⸩g⸨/i⸩⸨/sup⸩ Josh⸼ 17⸼ ⸨fix:11⸼⸩11⸨/fix⸩, 12⸼
+⸨sub⸩28⸨/sub⸩ And it came to pass, when Israel was strong, that they put the Canaanites to tribute, and did not utterly drive them out.⸨marg⸩
+⸨sub⸩29⸨/sub⸩ ¶ ⸨sup⸩⸨i⸩h⸨/i⸩⸨/sup⸩ Neither did Ephraim drive out the Canaanites that dwelt in Gezer; but the Canaanites dwelt in Gezer among them.⸨marg⸩⸨sup⸩⸨i⸩h⸨/i⸩⸨/sup⸩ Josh⸼ 16⸼ 10⸼
+⸨sub⸩30⸨/sub⸩ ¶ Neither did Zebulun drive out the inhabitants of Kitron, nor the inhabitants of Nahalol; but the Canaanites dwelt among them, and ⸨fix:became⸩·ecame⸨/fix⸩ tributaries.⸨marg⸩
+⸨sub⸩31⸨/sub⸩ ¶ Neither did Asher drive out the inhabitants of Accho, nor the inhabitants of Zidon, nor of Ahlab, nor of Achzib, nor of Helbah, nor of Aphik, nor of Rehob:⸨marg⸩
+⸨sub⸩32⸨/sub⸩ But the Asherites dwelt among the Canaanites, the inhabitants of the land: for they did not drive them out.⸨marg⸩
+⸨sub⸩33⸨/sub⸩ ¶ Neither did Naphtali drive out the inhabitants of Beth‑shemesh, nor the inhabitants of Beth‑anath; but he dwelt among the Canaanites, the inhabitants of the land: nevertheless the inhabitants of Beth‑shemesh and of Beth‑anath became tributaries unto them.⸨marg⸩
+⸨sub⸩34⸨/sub⸩ And the Amorites forced the children of Dan into the mountain: for they would not suffer them to come down to the valley:⸨marg⸩
+⸨sub⸩35⸨/sub⸩ But the Amorites would dwell in mount Heres in Aijalon, and in Shaalbim: yet the hand of the house of Joseph ⸨sup⸩✝⸨/sup⸩prevailed, so that they became tributaries.⸨marg⸩⸨sup⸩✝⸨/sup⸩ Heb⸼ ⸨i⸩was heavy⸨/i⸩.
+⸨sub⸩36⸨/sub⸩ And the coast of the Amorites ⸨i⸩was⸨/i⸩ from ⸨sup⸩❙⸨/sup⸩the going up to Akrabbim, from the rock, and upward.⸨marg⸩⸨sup⸩❙⸨/sup⸩ Or, ⸨i⸩Maale‑Akrabbim⸨/i⸩.

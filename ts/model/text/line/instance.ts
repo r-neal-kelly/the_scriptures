@@ -285,6 +285,7 @@ export class Instance
                                 value: value,
                                 size: null,
                                 language: null,
+                                is_argument: false,
                             },
                         );
 
@@ -391,6 +392,7 @@ export class Instance
                                 value: value,
                                 size: size,
                                 language: language,
+                                is_argument: (current_style & Part.Style.ARGUMENT) != 0
                             },
                         );
 
@@ -417,6 +419,7 @@ export class Instance
                                 value: Part.Command.Symbol.LAST,
                                 size: Current_Size(),
                                 language: Current_Language(),
+                                is_argument: false,
                             }
                         );
 
@@ -672,5 +675,11 @@ export class Instance
         Count
     {
         return this.Path().Padding_Count();
+    }
+
+    Is_Blank():
+        boolean
+    {
+        return this.Path().Is_Blank();
     }
 }

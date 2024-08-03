@@ -1057,8 +1057,10 @@ class Line
             },
         );
         Utils.Assert(
+            // strangely the browser sometimes adds line break when copying and pasting text
+            // with commands? try copying a short line and pasting it into a new line.
             model.Line_Count() === 1,
-            `model's line count should be 1.`,
+            `model's line count should be 1, but it's ${model.Line_Count()}.`,
         );
 
         const line: Model.Line.Instance = model.Line(0);

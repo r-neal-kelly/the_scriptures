@@ -18,6 +18,7 @@ export class Instance
 
     private is_centered: boolean;
     private padding_count: Count;
+    private is_blank: boolean;
 
     private micro_parts: Array<Part.Instance>;
     private macro_parts: Array<Part.Instance>;
@@ -51,6 +52,7 @@ export class Instance
 
         this.is_centered = false;
         this.padding_count = 0;
+        this.is_blank = false;
 
         this.micro_parts = [];
         this.macro_parts = [];
@@ -182,6 +184,11 @@ export class Instance
         ) {
             this.padding_count += 1;
             this.can_be_centered = false;
+        } else if (
+            macro_command.Is_Blank() &&
+            !macro_command.Is_Argument()
+        ) {
+            this.is_blank = true;
         } else if (
             !macro_command.Is_Column() &&
             !macro_command.Is_Row() &&
@@ -451,6 +458,17 @@ export class Instance
         );
 
         return this.padding_count;
+    }
+
+    Is_Blank():
+        boolean
+    {
+        Utils.Assert(
+            this.Is_Finalized(),
+            `Must be finalized before being accessed.`,
+        );
+
+        return this.is_blank;
     }
 
     Has_Micro_Part(

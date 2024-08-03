@@ -93,6 +93,7 @@ export enum Known_Value
     CENTER = `⸨cen⸩`,
     INDENT = `⸨in⸩`,
     PAD = `⸨pad⸩`,
+    BLANK = `⸨blank⸩`,
 
     OPEN_ITALIC = `⸨i⸩`,
     CLOSE_ITALIC = `⸨/i⸩`,
@@ -201,6 +202,7 @@ export function Is_Known_Value(
         value === Known_Value.CENTER ||
         value === Known_Value.INDENT ||
         value === Known_Value.PAD ||
+        value === Known_Value.BLANK ||
 
         value === Known_Value.OPEN_ITALIC ||
         value === Known_Value.CLOSE_ITALIC ||
@@ -556,6 +558,7 @@ export function Partition_Into_Row_Values(
                     value: maybe_valid_command_value,
                     size: null,
                     language: null,
+                    is_argument: false,
                 },
             );
             if (command.Is_Column() || command.Is_Margin() || command.Is_Interlinear()) {
@@ -655,6 +658,7 @@ export function Resolve_Errors(
                     value: maybe_command,
                     size: null,
                     language: null,
+                    is_argument: false,
                 },
             );
             if (command.Is_Open_Fix()) {
@@ -753,11 +757,13 @@ export class Instance extends Part.Instance
             value,
             size,
             language,
+            is_argument,
         }: {
             index: Index,
             value: Value,
             size: Float | null,
             language: Language.Name | null,
+            is_argument: boolean,
         },
     )
     {
@@ -771,7 +777,9 @@ export class Instance extends Part.Instance
                     Is_Valid_Value(value) ?
                         Status.UNKNOWN :
                         Status.ERROR,
-                style: Style._NONE_,
+                style: is_argument ?
+                    Style.ARGUMENT :
+                    Style._NONE_,
                 size: size,
                 language: language,
             }
@@ -936,6 +944,12 @@ export class Instance extends Part.Instance
         boolean
     {
         return this.Value() === Known_Value.PAD;
+    }
+
+    Is_Blank():
+        boolean
+    {
+        return this.Value() === Known_Value.BLANK;
     }
 
     Is_Image():

@@ -51,7 +51,7 @@ export abstract class Instance<
     Is_Blank():
         boolean
     {
-        return this.text == null;
+        return this.text == null || this.text.Is_Blank();
     }
 
     abstract Can_Be_Interior_Blank():

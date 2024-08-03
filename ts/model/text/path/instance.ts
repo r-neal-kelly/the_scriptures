@@ -277,10 +277,12 @@ export class Instance
             value,
             size,
             language,
+            is_argument,
         }: {
             value: Value,
             size: Float | null,
             language: Language.Name | null,
+            is_argument: boolean,
         },
     ):
         void
@@ -296,6 +298,7 @@ export class Instance
                 value: value,
                 size: size,
                 language: language,
+                is_argument: is_argument,
             },
         );
         const macro_command: Part.Command.Instance = new Part.Command.Instance(
@@ -304,6 +307,7 @@ export class Instance
                 value: value,
                 size: size,
                 language: language,
+                is_argument: is_argument,
             },
         );
 
@@ -397,6 +401,23 @@ export class Instance
         );
 
         return this.value;
+    }
+
+    Is_Blank():
+        boolean
+    {
+        Utils.Assert(
+            this.Is_Finalized(),
+            `Must be finalized before being accessed.`,
+        );
+
+        for (let idx = 0, end = this.Column_Count(); idx < end; idx += 1) {
+            if (!this.Column(idx).Is_Blank()) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     Has_Column_Index(
