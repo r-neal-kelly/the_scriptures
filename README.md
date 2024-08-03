@@ -46,10 +46,10 @@ We have plenty of other materials planned for addition into the program as we pr
     - Numbers
     - Deuteronomy
     - Joshua
+    - Judges
     - Masoretic Notes
     - Jubilees
     - Prolegomena to the History of Israel
-    - Judges
 
 <br>
 
