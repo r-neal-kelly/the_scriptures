@@ -290,6 +290,77 @@ export function Is_Known_Value(
     }
 }
 
+export function Is_Known_Open_Value(
+    value: Value,
+):
+    boolean
+{
+    if (
+        value === Known_Value.OPEN_ITALIC ||
+        value === Known_Value.OPEN_BOLD ||
+        value === Known_Value.OPEN_UNDERLINE ||
+        value === Known_Value.OPEN_SMALL_CAPS ||
+        value === Known_Value.OPEN_SUPERSCRIPT ||
+        value === Known_Value.OPEN_SUBSCRIPT ||
+        value === Known_Value.OPEN_GOOD ||
+        value === Known_Value.OPEN_ADDITION ||
+        value === Known_Value.OPEN_FIX ||
+        value === Known_Value.OPEN_LEFT_TO_RIGHT ||
+        value === Known_Value.OPEN_RIGHT_TO_LEFT
+    ) {
+        return true;
+
+    } else {
+        const parameter_and_argument: Parameter_And_Argument | null =
+            Interior_Parameter_And_Argument(value);
+
+        if (parameter_and_argument != null) {
+            return (
+                parameter_and_argument.parameter === Parameter.FIX ||
+                parameter_and_argument.parameter === Parameter.SIZE ||
+                parameter_and_argument.parameter === Parameter.LANGUAGE
+            )
+        } else {
+            return false;
+        }
+    }
+}
+
+export function Is_Known_Close_Value(
+    value: Value,
+):
+    boolean
+{
+    return (
+        value === Known_Value.CLOSE_ITALIC ||
+        value === Known_Value.CLOSE_BOLD ||
+        value === Known_Value.CLOSE_UNDERLINE ||
+        value === Known_Value.CLOSE_SMALL_CAPS ||
+        value === Known_Value.CLOSE_SUPERSCRIPT ||
+        value === Known_Value.CLOSE_SUBSCRIPT ||
+        value === Known_Value.CLOSE_GOOD ||
+        value === Known_Value.CLOSE_ADDITION ||
+        value === Known_Value.CLOSE_FIX ||
+        value === Known_Value.CLOSE_SIZE ||
+        value === Known_Value.CLOSE_LEFT_TO_RIGHT ||
+        value === Known_Value.CLOSE_RIGHT_TO_LEFT ||
+        value === Known_Value.CLOSE_LANGUAGE
+    );
+}
+
+export function Is_Close_Value(
+    value: Value,
+):
+    boolean
+{
+    return (
+        value.length > 1 &&
+        value[0] === Symbol.FIRST &&
+        value[1] === Symbol.CLOSE &&
+        value[value.length - 1] === Symbol.LAST
+    );
+}
+
 export function Maybe_Valid_Value_From(
     text: string,
 ):
@@ -461,6 +532,8 @@ function Test_Last_Non_Command_Index():
     Utils.Assert(Last_Non_Command_Index(`0⸨⸨⸩⸩⸨⸩7⸨anything ⸨can be⸩ in here⸩`) === 7);
 }
 
+// this function stupidly assumes that there are no mismatching commands
+// or misnumbered open or close commands
 export function Closing_Command_Index_From_Opening_Command(
     from_opening_command: string,
 ):
@@ -473,49 +546,40 @@ export function Closing_Command_Index_From_Opening_Command(
     );
 
     let command: Value | null = Maybe_Valid_Value_From(from_opening_command);
-    if (command != null) {
-        if (command.length > 1 && command[1] != Symbol.CLOSE) {
-            it = new Unicode.Iterator(
-                {
-                    text: from_opening_command,
-                    index: it.Index() + command.length,
-                },
-            );
+    if (command != null && Is_Known_Open_Value(command)) {
+        it = new Unicode.Iterator(
+            {
+                text: from_opening_command,
+                index: it.Index() + command.length,
+            },
+        );
 
-            let depth: Count = 1;
-            let index: Index | null = null;
-            while (!it.Is_At_End() && depth > 0) {
-                command = Maybe_Valid_Value_From(it.Points());
-                if (command != null) {
-                    if (command.length > 1 && command[1] != Symbol.CLOSE) {
-                        depth += 1;
-                    } else {
-                        depth -= 1;
-                    }
-
-                    if (depth < 1) {
-                        index = it.Index();
-                    } else {
-                        it = new Unicode.Iterator(
-                            {
-                                text: from_opening_command,
-                                index: it.Index() + command.length,
-                            },
-                        );
-                    }
-                } else {
-                    it = it.Next();
+        let depth: Count = 1;
+        while (!it.Is_At_End() && depth > 0) {
+            command = Maybe_Valid_Value_From(it.Points());
+            if (command != null) {
+                if (Is_Known_Open_Value(command)) {
+                    depth += 1;
+                } else if (Is_Close_Value(command)) {
+                    depth -= 1;
                 }
-            }
 
-            if (index != null) {
-                return index;
+                if (depth < 1) {
+                    return it.Index();
+                } else {
+                    it = new Unicode.Iterator(
+                        {
+                            text: from_opening_command,
+                            index: it.Index() + command.length,
+                        },
+                    );
+                }
             } else {
-                return null;
+                it = it.Next();
             }
-        } else {
-            return null;
         }
+
+        return null;
     } else {
         return null;
     }
