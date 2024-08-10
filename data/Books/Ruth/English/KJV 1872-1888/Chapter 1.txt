@@ -1,0 +1,29 @@
+⸨cen⸩⸨fix:⸨sc⸩The Book of⸨/sc⸩⸩⸨size:2⸩THE BOOK OF RUTH.⸨/size⸩⸨/fix⸩
+⸨cen⸩⸨fix:⸨size:2⸩RUTH.⸨/size⸩⸩⸨blank⸩⸨/fix⸩
+⸨cen⸩————
+
+⸨cen⸩CHAPTER I⸼
+⸨size:0.85⸩⸨i⸩⸨sub⸩1⸨/sub⸩ Elimelech driven by famine into Moab, dieth there. ⸨sub⸩4⸨/sub⸩ Mahlon and Chilion, having married wives of Moab, die also. ⸨sub⸩6⸨/sub⸩ Naomi returning homeward, ⸨sub⸩8⸨/sub⸩ dissuadeth her two daughters in law from going with her. ⸨sub⸩14⸨/sub⸩ Orpah leaveth her, but Ruth with great constancy accompanieth her. ⸨sub⸩19⸨/sub⸩ They two come to Beth‑lehem, where they are gladly received.⸨/i⸩⸨/size⸩
+
+⸨add⸩⸨sub⸩1⸨/sub⸩ ⸨/add⸩⸨sc⸩Now⸨/sc⸩ it came to pass in the days when the judges ⸨sup⸩✝⸨/sup⸩ruled, that there was a famine in the land. And a certain man of Beth‑lehem‑judah went to sojourn in the country of Moab, he, and his wife, and his two sons.⸨marg⸩⸨sup⸩✝⸨/sup⸩ Heb⸼ ⸨i⸩judged⸨/i⸩.
+⸨sub⸩2⸨/sub⸩ And the name of the man ⸨i⸩was⸨/i⸩ Elimelech, and the name of his wife Naomi, and the name of his two sons Mahlon and Chilion, Ephrathites of Beth‑lehem‑judah. And they came into the country of Moab, and ⸨sup⸩✝⸨/sup⸩continued there.⸨marg⸩⸨sup⸩✝⸨/sup⸩ Heb⸼ ⸨i⸩were⸨/i⸩.
+⸨sub⸩3⸨/sub⸩ And Elimelech Naomiʼs husband died; and she was left, and her two sons.⸨marg⸩
+⸨sub⸩4⸨/sub⸩ And they took them wives of the women of Moab; the name of the one ⸨i⸩was⸨/i⸩ Orpah, and the name of the other Ruth: and they dwelled there about ten years.⸨marg⸩
+⸨sub⸩5⸨/sub⸩ And Mahlon and Chilion died also both of them; and the woman was left of her two sons and her husband.⸨marg⸩
+⸨sub⸩6⸨/sub⸩ ¶ Then she arose with her daughters in law, that she might return from the country of Moab: for she had heard in the country of Moab how that the ⸨sc⸩Lord⸨/sc⸩ had visited his people in giving them bread.⸨marg⸩
+⸨sub⸩7⸨/sub⸩ Wherefore she went forth out of the place where she was, and her two daughters in law with her; and they went on the way to return unto the land of Judah.⸨marg⸩
+⸨sub⸩8⸨/sub⸩ And Naomi said unto her two daughters in law, Go, return each to her motherʼs house: the ⸨sc⸩Lord⸨/sc⸩ deal kindly with you, as ye have dealt with the dead, and with me.⸨marg⸩
+⸨sub⸩9⸨/sub⸩ The ⸨sc⸩Lord⸨/sc⸩ grant you that ye may find rest, each ⸨i⸩of you⸨/i⸩ in the house of her husband. Then she kissed them; and they lifted up their voice, and wept.⸨marg⸩
+⸨sub⸩10⸨/sub⸩ And they said unto her, Surely we will return with thee unto thy people.⸨marg⸩
+⸨sub⸩11⸨/sub⸩ And Naomi said, Turn again, my daughters: why will ye go with me? ⸨i⸩are⸨/i⸩ there yet ⸨i⸩any more⸨/i⸩ sons in my womb, that they may be your husbands?⸨marg⸩
+⸨sub⸩12⸨/sub⸩ Turn again, my daughters, go ⸨i⸩your way⸨/i⸩⸨fix:; ⸩⸨i⸩; ⸨/i⸩⸨/fix⸩for I am too old to have an husband. If I should say, I have hope, ⸨sup⸩❙⸨/sup⸩⸨i⸩if⸨/i⸩ I should have an husband also to night, and should also bear sons;⸨marg⸩⸨sup⸩❙⸨/sup⸩ Or, if ⸨i⸩I were with an husband⸨/i⸩.
+⸨sub⸩13⸨/sub⸩ Would ye ⸨sup⸩✝⸨/sup⸩tarry for them till they were grown? would ye stay for them from having husbands? nay, my daughters; for ⸨sup⸩✝⸨/sup⸩it grieveth me much for your sakes that the hand of the ⸨sc⸩Lord⸨/sc⸩ is gone out against me.⸨marg⸩⸨sup⸩✝⸨/sup⸩ Heb⸼ ⸨i⸩hope⸨/i⸩.⸨row⸩⸨sup⸩✝⸨/sup⸩ Heb⸼ ⸨i⸩I have much bitterness⸨/i⸩.
+⸨sub⸩14⸨/sub⸩ And they lifted up their voice, and wept again: and Orpah kissed her mother in law; but Ruth clave unto her.⸨marg⸩
+⸨sub⸩15⸨/sub⸩ And she said, Behold, thy sister in law is gone back unto her people, and unto her gods: return thou after thy sister in law.⸨marg⸩
+⸨sub⸩16⸨/sub⸩ And Ruth said, ⸨sup⸩❙⸨/sup⸩Intreat me not to leave thee, ⸨i⸩or⸨/i⸩ to return from following after thee: for whither thou goest, I will go; and where thou lodgest, I will lodge: thy people ⸨i⸩shall be⸨/i⸩ my people, and thy God my God:⸨marg⸩⸨sup⸩❙⸨/sup⸩ Or, ⸨i⸩Be not against me⸨/i⸩.
+⸨sub⸩17⸨/sub⸩ Where thou diest, will I die, and there will I be buried: the ⸨sc⸩Lord⸨/sc⸩ do so to me, and more also, ⸨i⸩if ought⸨/i⸩ but death part thee and me.⸨marg⸩
+⸨sub⸩18⸨/sub⸩ When she saw that she ⸨sup⸩✝⸨/sup⸩was stedfastly minded to go with her, then she left speaking unto her.⸨marg⸩⸨sup⸩✝⸨/sup⸩ Heb⸼ ⸨i⸩strengthened herself⸨/i⸩.
+⸨sub⸩19⸨/sub⸩ ¶ So they two went until they came to Beth‑lehem. And it came to pass, when they were come to Beth‑lehem, that all the city was moved about them, and they said, ⸨i⸩Is⸨/i⸩ this Naomi?⸨marg⸩
+⸨sub⸩20⸨/sub⸩ And she said unto them, Call me not ⸨sup⸩❙⸨/sup⸩Naomi, call me ⸨sup⸩❙⸨/sup⸩Mara: for the Almighty hath dealt very bitterly with me.⸨marg⸩⸨sup⸩❙⸨/sup⸩ That is, ⸨i⸩Pleasant⸨/i⸩.⸨row⸩⸨sup⸩❙⸨/sup⸩ That is, ⸨i⸩Bitter⸨/i⸩.
+⸨sub⸩21⸨/sub⸩ I went out full, and the ⸨sc⸩Lord⸨/sc⸩ hath brought me home again empty: why ⸨i⸩then⸨/i⸩ call ye me Naomi, seeing the ⸨sc⸩Lord⸨/sc⸩ hath testified against me, and the Almighty hath afflicted me?⸨marg⸩
+⸨sub⸩22⸨/sub⸩ So Naomi returned, and Ruth the Moabitess, her daughter in law, with her, which returned out of the country of Moab: and they came to Beth‑lehem in the beginning of barley harvest.⸨marg⸩
