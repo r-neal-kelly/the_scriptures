@@ -15,6 +15,7 @@ const KNOWN_BOOK_NAMES: Set<Name> = new Set(
         `Joshua`,
         `Judges`,
         `Ruth`,
+        `1 Samuel`,
         `Masoretic Notes`,
         `Jubilees`,
         `Prolegomena to the History of Israel`,

@@ -1,0 +1,36 @@
+⸨cen⸩⸨sc⸩⸨fix:The⸩the⸨/fix⸩ ⸨fix:First⸩first⸨/fix⸩ ⸨fix:Book⸩book⸨/fix⸩ of⸨/sc⸩
+⸨cen⸩⸨size:2⸩SAMUEL,⸨/size⸩
+⸨cen⸩⸨size:0.9⸩⸨sc⸩otherwise called, ⸨fix:The⸩the⸨/fix⸩ ⸨fix:First⸩first⸨/fix⸩ ⸨fix:Book⸩book⸨/fix⸩ of the ⸨fix:Kings⸩kings⸨/fix⸩.⸨/sc⸩⸨/size⸩
+⸨cen⸩————
+
+⸨cen⸩CHAPTER I⸼
+⸨size:0.85⸩⸨i⸩⸨sub⸩1⸨/sub⸩ ⸨fix:Elkanah⸩El·anah⸨/fix⸩ a Levite, having two wives, worshippeth yearly at Shiloh. ⸨sub⸩4⸨/sub⸩ He cherisheth Hannah, though barren, and provoked by Peninnah. ⸨sub⸩9⸨/sub⸩ Hannah in grief prayeth for a child. ⸨sub⸩12⸨/sub⸩ Eli first rebuking her, afterwards blesseth her. ⸨sub⸩19⸨/sub⸩ Hannah having born Samuel, stayeth at home till he be weaned. ⸨sub⸩24⸨/sub⸩ She presenteth him, according to her vow, to the ⸨sc⸩Lord⸨/sc⸩.⸨/i⸩⸨/size⸩
+
+⸨add⸩⸨sub⸩1⸨/sub⸩ ⸨/add⸩⸨sc⸩Now⸨/sc⸩ there was a certain man ⸨fix:of⸩o·⸨/fix⸩ Ramathaim‑zophim, of mount Ephraim, and his name ⸨i⸩was⸨/i⸩ Elkanah, the son of Jeroham, the son of Elihu, the son of Tohu, the son of Zuph, an Ephrathite:⸨marg⸩
+⸨sub⸩2⸨/sub⸩ And he had two wives; the name of the one ⸨i⸩was⸨/i⸩ Hannah, and the name of the other Peninnah: and Peninnah had children, but Hannah had no children.⸨marg⸩
+⸨sub⸩3⸨/sub⸩ And this man went up out of his city ⸨sup⸩⸨i⸩a⸨/i⸩⸨/sup⸩ ⸨sup⸩✝⸨/sup⸩yearly to worship and to sacrifice unto the ⸨sc⸩Lord⸨/sc⸩ of hosts in Shiloh. And the two sons of Eli, Hophni and Phinehas, the priests of the ⸨sc⸩Lord⸨/sc⸩, ⸨i⸩were⸨/i⸩ there.⸨marg⸩⸨sup⸩⸨i⸩a⸨/i⸩⸨/sup⸩ Deut⸼ 16⸼ 16⸼⸨row⸩⸨sup⸩✝⸨/sup⸩ Heb⸼ ⸨i⸩from year to year⸨/i⸩.
+⸨sub⸩4⸨/sub⸩ ¶ And when the time was that Elkanah offered, he gave to Peninnah his wife, and to all her sons and her daughters, portions:⸨marg⸩
+⸨sub⸩5⸨/sub⸩ But unto Hannah he gave ⸨sup⸩❙⸨/sup⸩a worthy portion; for he loved Hannah: but the ⸨sc⸩Lord⸨/sc⸩ had shut up her womb.⸨marg⸩⸨sup⸩❙⸨/sup⸩ Or, ⸨i⸩a double portion⸨/i⸩.
+⸨sub⸩6⸨/sub⸩ And her adversary also ⸨sup⸩✝⸨/sup⸩provoked her sore, for to make her fret, because the ⸨sc⸩Lord⸨/sc⸩ had shut up her womb.⸨marg⸩⸨sup⸩✝⸨/sup⸩ Heb⸼ ⸨i⸩angered her⸨/i⸩.
+⸨sub⸩7⸨/sub⸩ And ⸨i⸩as⸨/i⸩ he did so year by year, ⸨sup⸩❙✝⸨/sup⸩when she went up to the house of the ⸨sc⸩Lord⸨/sc⸩, so she provoked her; therefore she wept, and did not eat.⸨marg⸩⸨sup⸩❙⸨/sup⸩ Or, ⸨i⸩from the ⸨fix:time⸩·ime⸨/fix⸩ that she⸨/i⸩, &c⸼⸨row⸩⸨sup⸩✝⸨/sup⸩ Heb⸼ ⸨i⸩from her ⸨fix:going⸩go·ng⸨/fix⸩ up⸨/i⸩.
+⸨sub⸩8⸨/sub⸩ Then said Elkanah her husband to her, Hannah, why weepest thou? and why eatest thou not? and why is thy heart grieved? ⸨i⸩am⸨/i⸩ not I better to thee than ten sons?⸨marg⸩
+⸨sub⸩9⸨/sub⸩ ¶ So Hannah rose up after they had eaten in Shiloh, and after ⸨fix:they⸩t·ey⸨/fix⸩ had drunk. Now Eli the priest sat upon a seat by a post of the temple of the ⸨sc⸩Lord⸨/sc⸩.⸨marg⸩
+⸨sub⸩10⸨/sub⸩ And she ⸨i⸩was⸨/i⸩ ⸨sup⸩✝⸨/sup⸩in bitterness of soul, and prayed unto the ⸨sc⸩Lord⸨/sc⸩, and wept sore.⸨marg⸩⸨sup⸩✝⸨/sup⸩ Heb⸼ ⸨i⸩bitter ⸨fix:of⸩o·⸨/fix⸩ soul⸨/i⸩.
+⸨sub⸩11⸨/sub⸩ And she vowed a vow, and said, O ⸨sc⸩Lord⸨/sc⸩ of hosts, if thou wilt indeed look on the affliction of thine handmaid, and remember me, and not forget thine handmaid, but wilt give unto thine handmaid ⸨sup⸩✝⸨/sup⸩a man child, then I will give him unto the ⸨sc⸩Lord⸨/sc⸩ all the days of his life, and ⸨sup⸩⸨i⸩⸨fix:b⸩a⸨/fix⸩⸨/i⸩⸨/sup⸩ there shall no razor come upon his head.⸨marg⸩⸨sup⸩✝⸨/sup⸩ Heb⸼ ⸨i⸩seed of men⸨/i⸩.⸨row⸩⸨sup⸩⸨i⸩⸨fix:b⸩a⸨/fix⸩⸨/i⸩⸨/sup⸩ Num⸼ 6⸼ 5⸼⸨row⸩Judg⸼ 13⸼ 5⸼
+⸨sub⸩12⸨/sub⸩ And it came to pass, as she ⸨sup⸩✝⸨/sup⸩continued praying before the ⸨sc⸩Lord⸨/sc⸩, that Eli marked her mouth.⸨marg⸩⸨sup⸩✝⸨/sup⸩ Heb⸼ ⸨i⸩multiplied to pray⸨/i⸩.
+⸨sub⸩13⸨/sub⸩ Now Hannah, she spake in her heart; only her lips moved, but her voice was not heard: therefore Eli thought she had been drunken.⸨marg⸩
+⸨sub⸩14⸨/sub⸩ And Eli said unto her, How long wilt thou be drunken? put away thy wine from thee.⸨marg⸩
+⸨sub⸩15⸨/sub⸩ And Hannah answered and said, No, my lord, I ⸨i⸩am⸨/i⸩ a woman ⸨sup⸩✝⸨/sup⸩of a sorrowful spirit: I have drunk neither wine nor strong drink, but have poured out my soul before the ⸨sc⸩Lord⸨/sc⸩.⸨marg⸩⸨sup⸩✝⸨/sup⸩ Heb⸼ ⸨i⸩hard of spirit⸨/i⸩.
+⸨sub⸩16⸨/sub⸩ Count not thine handmaid for a daughter of Belial: for out of the abundance of my ⸨sup⸩❙⸨/sup⸩complaint and grief have I spoken hitherto.⸨marg⸩⸨sup⸩❙⸨/sup⸩ Or, ⸨i⸩meditation⸨/i⸩.
+⸨sub⸩17⸨/sub⸩ Then Eli answered and said, Go in peace: and the God of Israel grant ⸨i⸩thee⸨/i⸩ thy petition that thou hast asked of him.⸨marg⸩
+⸨sub⸩18⸨/sub⸩ And she said, Let thine handmaid find grace in thy sight. So the woman went her way, and did eat, and her countenance was no more ⸨i⸩sad⸨/i⸩.⸨marg⸩
+⸨sub⸩19⸨/sub⸩ ¶ And they rose up in the morning early, and worshipped before the ⸨sc⸩Lord⸨/sc⸩, and returned, and came to their house to Ramah: and Elkanah knew Hannah his wife; and the ⸨sc⸩Lord⸨/sc⸩ remembered her.⸨marg⸩
+⸨sub⸩20⸨/sub⸩ Wherefore it came to pass, when ⸨sup⸩✝⸨/sup⸩the time was come about after Hannah had conceived, that she bare a son, and called his name ⸨sup⸩❙⸨/sup⸩Samuel, ⸨i⸩saying⸨/i⸩, Because I have asked him of the ⸨sc⸩Lord⸨/sc⸩.⸨marg⸩⸨sup⸩✝⸨/sup⸩ Heb⸼ ⸨i⸩revolution of days⸨/i⸩.⸨row⸩⸨sup⸩❙⸨/sup⸩ That is, ⸨i⸩Asked of God⸨/i⸩.
+⸨sub⸩21⸨/sub⸩ And the man Elkanah, and all his house, went up to offer unto the ⸨sc⸩Lord⸨/sc⸩ the yearly sacrifice, and his vow.⸨marg⸩
+⸨sub⸩22⸨/sub⸩ But Hannah went not up; for she said unto her husband, ⸨i⸩I will not go up⸨/i⸩ until the child be weaned, and ⸨i⸩then⸨/i⸩ I will bring him, that he may appear before the ⸨sc⸩Lord⸨/sc⸩, and there abide for ever.⸨marg⸩
+⸨sub⸩23⸨/sub⸩ And Elkanah her husband said unto her, Do what seemeth thee good; tarry until thou have weaned him; only the ⸨sc⸩Lord⸨/sc⸩ establish his word. So the woman abode, and gave her son suck until she weaned him.⸨marg⸩
+⸨sub⸩24⸨/sub⸩ ¶ And when she had weaned him, she took him up with her, with three bullocks, and one ephah of flour, and a bottle of wine, and brought him unto the house of the ⸨sc⸩Lord⸨/sc⸩ in Shiloh: and the child ⸨i⸩was⸨/i⸩ young.⸨marg⸩
+⸨sub⸩25⸨/sub⸩ And they slew a bullock, and brought the child to Eli.⸨marg⸩
+⸨sub⸩26⸨/sub⸩ And she said, Oh my lord, ⸨i⸩as⸨/i⸩ thy soul liveth, my lord, I ⸨i⸩am⸨/i⸩ the woman that stood by thee here, praying unto the ⸨sc⸩Lord⸨/sc⸩.⸨marg⸩
+⸨sub⸩27⸨/sub⸩ For this child I prayed; and the ⸨sc⸩Lord⸨/sc⸩ hath given me my petition which I asked of him:⸨marg⸩
+⸨sub⸩28⸨/sub⸩ Therefore also I have ⸨sup⸩❙⸨/sup⸩lent him to the ⸨sc⸩Lord⸨/sc⸩; as long as he liveth ⸨sup⸩❙⸨/sup⸩he shall be lent to the ⸨sc⸩Lord⸨/sc⸩. And he worshipped the ⸨sc⸩Lord⸨/sc⸩ there.⸨marg⸩⸨sup⸩❙⸨/sup⸩ Or, ⸨i⸩⸨fix:returned⸩·eturned⸨/fix⸩ him, whom I have obtained by petition, to the ⸨sc⸩Lord⸨/sc⸩⸨/i⸩.⸨row⸩⸨sup⸩❙⸨/sup⸩ Or, ⸨i⸩he whom I have obtained by petition shall be returned⸨/i⸩.
