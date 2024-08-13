@@ -1,7 +1,7 @@
 ⸨cen⸩CHAPTER II⸼
 ⸨cen⸩⸨size:0.85⸩⸨i⸩The order of the tribes in their tents.⸨/i⸩⸨/size⸩
 
-⸨sub⸩1⸨/sub⸩ ⸨sc⸩And⸨/sc⸩ the ⸨sc⸩Lord⸨/sc⸩ spake unto Moses and unto Aaron, saying,⸨marg⸩
+⸨add⸩⸨sub⸩1⸨/sub⸩ ⸨/add⸩⸨sc⸩And⸨/sc⸩ the ⸨sc⸩Lord⸨/sc⸩ spake unto Moses and unto Aaron, saying,⸨marg⸩
 ⸨sub⸩2⸨/sub⸩ Every man of the children of Israel shall pitch by his own standard, with the ensign of their fatherʼs house: ⸨sup⸩✝⸨/sup⸩far off about the tabernacle of the congregation shall they pitch.⸨marg⸩⸨sup⸩✝⸨/sup⸩ Heb⸼ ⸨i⸩over against⸨/i⸩⸨fix:.⸩⸨/fix⸩
 ⸨sub⸩3⸨/sub⸩ And on the east side toward the rising of the sun shall they of the standard of the camp of Judah pitch throughout their armies: and Nahshon the son of Amminadab ⸨i⸩shall be⸨/i⸩ captain of the children of Judah.⸨marg⸩
 ⸨sub⸩4⸨/sub⸩ And his host, and those that were numbered of them, ⸨i⸩were⸨/i⸩ threescore and fourteen thousand and six hundred.⸨marg⸩

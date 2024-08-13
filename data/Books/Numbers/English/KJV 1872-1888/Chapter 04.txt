@@ -1,7 +1,7 @@
 ⸨cen⸩CHAPTER IV⸼
 ⸨size:0.85⸩⸨i⸩⸨sub⸩1⸨/sub⸩ The age and time of the Levitesʼ service. ⸨sub⸩4⸨/sub⸩ The carriage of the Kohathites, when the priests have taken down the tabernacle. ⸨sub⸩16⸨/sub⸩ The charge of Eleazar. ⸨sub⸩17⸨/sub⸩ The office of the priests. ⸨sub⸩21⸨/sub⸩ The carriage of the Gershonites. ⸨sub⸩29⸨/sub⸩ The carriage of the Merarites. ⸨sub⸩34⸨/sub⸩ The number of the Kohathites, ⸨sub⸩38⸨/sub⸩ of the Gershonites, ⸨sub⸩42⸨/sub⸩ and of the Merarites.⸨/i⸩⸨/size⸩
 
-⸨sub⸩1⸨/sub⸩ ⸨sc⸩And⸨/sc⸩ the ⸨sc⸩Lord⸨/sc⸩ spake unto Moses and unto Aaron, saying,⸨marg⸩
+⸨add⸩⸨sub⸩1⸨/sub⸩ ⸨/add⸩⸨sc⸩And⸨/sc⸩ the ⸨sc⸩Lord⸨/sc⸩ spake unto Moses and unto Aaron, saying,⸨marg⸩
 ⸨sub⸩2⸨/sub⸩ Take the sum of the sons of Kohath from among the sons of Levi, after their families, by the house of their fathers,⸨marg⸩
 ⸨sub⸩3⸨/sub⸩ From thirty years old and upward even until fifty years old, all that enter into the host, to do the work in the tabernacle of the congregation.⸨marg⸩
 ⸨sub⸩4⸨/sub⸩ This ⸨i⸩shall be⸨/i⸩ the service of the sons of Kohath in the tabernacle of the congregation, ⸨i⸩about⸨/i⸩ the most holy things:⸨marg⸩

@@ -1,7 +1,7 @@
 ⸨cen⸩CHAPTER XIX⸼
 ⸨cen⸩⸨size:0.85⸩⸨i⸩A repetition of sundry laws.⸨/i⸩⸨/size⸩
 
-⸨sub⸩1⸨/sub⸩ ⸨sc⸩And⸨/sc⸩ the ⸨sc⸩Lord⸨/sc⸩ spake unto Moses, saying,⸨marg⸩
+⸨add⸩⸨sub⸩1⸨/sub⸩ ⸨/add⸩⸨sc⸩And⸨/sc⸩ the ⸨sc⸩Lord⸨/sc⸩ spake unto Moses, saying,⸨marg⸩
 ⸨sub⸩2⸨/sub⸩ Speak unto all the congregation of the children of Israel, and say unto them, ⸨sup⸩⸨i⸩a⸨/i⸩⸨/sup⸩ Ye shall be holy: for I the ⸨sc⸩Lord⸨/sc⸩ your God ⸨i⸩am⸨/i⸩ holy.⸨marg⸩⸨sup⸩⸨i⸩a⸨/i⸩⸨/sup⸩ ch⸼ 11⸼ 44⸼⸨row⸩& 20⸼ 7⸼⸨row⸩1 Pet⸼ 1⸼ 16⸼
 ⸨sub⸩3⸨/sub⸩ ¶ Ye shall fear every man his mother, and his father, and keep my sabbaths: I ⸨i⸩am⸨/i⸩ the ⸨sc⸩Lord⸨/sc⸩ your God.⸨marg⸩
 ⸨sub⸩4⸨/sub⸩ ¶ Turn ye not unto idols, nor make to yourselves molten gods: I ⸨i⸩am⸨/i⸩ the ⸨sc⸩Lord⸨/sc⸩ your God.⸨marg⸩

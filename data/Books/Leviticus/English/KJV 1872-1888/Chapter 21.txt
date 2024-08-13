@@ -1,7 +1,7 @@
 ⸨cen⸩CHAPTER XXI⸼
 ⸨size:0.85⸩⸨i⸩⸨sub⸩1⸨/sub⸩ Of the priestsʼ mourning. ⸨sub⸩6⸨/sub⸩ Of their holiness. ⸨sub⸩8⸨/sub⸩ Of their estimation. ⸨sub⸩7, 13⸨/sub⸩ Of their marriages. ⸨sub⸩17⸨/sub⸩ The priests that have blemishes must not minister in the sanctuary.⸨/i⸩⸨/size⸩
 
-⸨sub⸩1⸨/sub⸩ ⸨sc⸩And⸨/sc⸩ the ⸨sc⸩Lord⸨/sc⸩ said unto Moses, Speak unto the priests the sons of Aaron, and say unto them, There shall none be defiled for the dead among his people:⸨marg⸩
+⸨add⸩⸨sub⸩1⸨/sub⸩ ⸨/add⸩⸨sc⸩And⸨/sc⸩ the ⸨sc⸩Lord⸨/sc⸩ said unto Moses, Speak unto the priests the sons of Aaron, and say unto them, There shall none be defiled for the dead among his people:⸨marg⸩
 ⸨sub⸩2⸨/sub⸩ But for his kin, that is near unto him, ⸨i⸩that is⸨/i⸩⸨fix:⸨i⸩, ⸨/i⸩⸩, ⸨/fix⸩for his mother, and for his father, and for his son, and for his daughter, and for his brother,⸨marg⸩
 ⸨sub⸩3⸨/sub⸩ And for his sister a virgin, that is nigh unto him, which hath had no husband; for her may he be defiled.⸨marg⸩
 ⸨sub⸩4⸨/sub⸩ ⸨i⸩But⸨/i⸩ ⸨sup⸩❙⸨/sup⸩he shall not defile himself, ⸨i⸩being⸨/i⸩ a chief man among his people, to profane himself.⸨marg⸩⸨sup⸩❙⸨/sup⸩ Or, ⸨i⸩being an husband among his people, he shall not defile himself⸨/i⸩ for his wife, &c⸼

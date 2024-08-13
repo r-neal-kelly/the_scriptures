@@ -1,7 +1,7 @@
 ⸨cen⸩CHAPTER XXV⸼
 ⸨size:0.85⸩⸨i⸩⸨sub⸩1⸨/sub⸩ The sabbath of the seventh year. ⸨sub⸩8⸨/sub⸩ The jubile in the fiftieth year. ⸨sub⸩14⸨/sub⸩ Of oppression. ⸨sub⸩18⸨/sub⸩ A blessing of obedience. ⸨sub⸩23⸨/sub⸩ The redemption of land. ⸨sub⸩29⸨/sub⸩ Of houses. ⸨sub⸩35⸨/sub⸩ Compassion of the poor. ⸨sub⸩39⸨/sub⸩ The usage of bondmen. ⸨sub⸩47⸨/sub⸩ The redemption of servants.⸨/i⸩⸨/size⸩
 
-⸨sub⸩1⸨/sub⸩ ⸨sc⸩And⸨/sc⸩ the ⸨sc⸩Lord⸨/sc⸩ spake unto Moses in mount Sinai, saying,⸨marg⸩
+⸨add⸩⸨sub⸩1⸨/sub⸩ ⸨/add⸩⸨sc⸩And⸨/sc⸩ the ⸨sc⸩Lord⸨/sc⸩ spake unto Moses in mount Sinai, saying,⸨marg⸩
 ⸨sub⸩2⸨/sub⸩ Speak unto the children of Israel, and say unto them, When ye come into the land which I give you, then shall the land ⸨sup⸩✝⸨/sup⸩keep ⸨sup⸩⸨i⸩a⸨/i⸩⸨/sup⸩ a sabbath unto the ⸨sc⸩Lord⸨/sc⸩.⸨marg⸩⸨sup⸩✝⸨/sup⸩ Heb⸼ ⸨i⸩rest⸨/i⸩.⸨row⸩⸨sup⸩⸨i⸩a⸨/i⸩⸨/sup⸩ Exod⸼ 23⸼ 10⸼
 ⸨sub⸩3⸨/sub⸩ Six years thou shalt sow thy field, and six years thou shalt prune thy vineyard, and gather in the fruit thereof;⸨marg⸩
 ⸨sub⸩4⸨/sub⸩ But in the seventh year shall be a sabbath of rest unto the land, a sabbath for the ⸨sc⸩Lord⸨/sc⸩: thou shalt neither sow thy field, nor prune thy vineyard.⸨marg⸩

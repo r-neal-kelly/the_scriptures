@@ -1,7 +1,7 @@
 ⸨cen⸩CHAPTER XIV⸼
 ⸨size:0.85⸩⸨i⸩⸨sub⸩1⸨/sub⸩ The rites and sacrifices in cleansing of the leper. ⸨sub⸩33⸨/sub⸩ The signs of leprosy in a house. ⸨sub⸩43⸨/sub⸩ The cleansing of that house.⸨/i⸩⸨/size⸩
 
-⸨sub⸩1⸨/sub⸩ ⸨sc⸩And⸨/sc⸩ the ⸨sc⸩Lord⸨/sc⸩ spake unto Moses, saying,⸨marg⸩
+⸨add⸩⸨sub⸩1⸨/sub⸩ ⸨/add⸩⸨sc⸩And⸨/sc⸩ the ⸨sc⸩Lord⸨/sc⸩ spake unto Moses, saying,⸨marg⸩
 ⸨sub⸩2⸨/sub⸩ This shall be the law of the leper in the day of his cleansing: He ⸨sup⸩⸨i⸩a⸨/i⸩⸨/sup⸩ shall be brought unto the priest:⸨marg⸩⸨sup⸩⸨i⸩a⸨/i⸩⸨/sup⸩ Matt⸼ 8⸼ 2⸼⸨row⸩Mark 1⸼ 40⸼⸨row⸩Luke 5⸼ ⸨fix:12⸼⸩12⸨/fix⸩
 ⸨sub⸩3⸨/sub⸩ And the priest shall go forth out of the camp; and the priest shall look, and, behold, ⸨i⸩if⸨/i⸩ the plague of leprosy be healed in the leper;⸨marg⸩
 ⸨sub⸩4⸨/sub⸩ Then shall the priest command to take for him that is to be cleansed two ⸨sup⸩❙⸨/sup⸩birds alive ⸨i⸩and⸨/i⸩ clean, and cedar wood, and scarlet, and hyssop:⸨marg⸩⸨sup⸩❙⸨/sup⸩ Or, ⸨i⸩⸨fix:sparrows⸩s·arrows⸨/fix⸩⸨/i⸩.

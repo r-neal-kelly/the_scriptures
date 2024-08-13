@@ -1,7 +1,7 @@
 ⸨cen⸩CHAPTER X⸼
 ⸨size:0.85⸩⸨i⸩⸨sub⸩1⸨/sub⸩ God threateneth to send locusts. ⸨sub⸩7⸨/sub⸩ Pharaoh, moved by his servants, inclineth to let the Israelites go. ⸨sub⸩12⸨/sub⸩ The plague of the locusts. ⸨sub⸩16⸨/sub⸩ Pharaoh sueth to Moses. ⸨sub⸩21⸨/sub⸩ The plague of darkness. ⸨sub⸩24⸨/sub⸩ Pharaoh sueth unto Moses, ⸨sub⸩27⸨/sub⸩ but yet is hardened.⸨/i⸩⸨/size⸩
 
-⸨sub⸩1⸨/sub⸩ ⸨sc⸩And⸨/sc⸩ the ⸨sc⸩Lord⸨/sc⸩ said unto Moses, Go in unto Pharaoh: for ⸨sup⸩⸨i⸩a⸨/i⸩⸨/sup⸩ I have hardened his heart, and the heart of his servants, that I might shew these my signs before him:⸨marg⸩⸨sup⸩⸨i⸩a⸨/i⸩⸨/sup⸩ ⸨fix:chap⸼⸩chap⸨/fix⸩ ⸨fix:4⸼⸩4⸨/fix⸩ 21⸼
+⸨add⸩⸨sub⸩1⸨/sub⸩ ⸨/add⸩⸨sc⸩And⸨/sc⸩ the ⸨sc⸩Lord⸨/sc⸩ said unto Moses, Go in unto Pharaoh: for ⸨sup⸩⸨i⸩a⸨/i⸩⸨/sup⸩ I have hardened his heart, and the heart of his servants, that I might shew these my signs before him:⸨marg⸩⸨sup⸩⸨i⸩a⸨/i⸩⸨/sup⸩ ⸨fix:chap⸼⸩chap⸨/fix⸩ ⸨fix:4⸼⸩4⸨/fix⸩ 21⸼
 ⸨sub⸩2⸨/sub⸩ And that thou mayest tell in the ears of thy son, and of thy sonʼs son, what things I have wrought in Egypt, and my signs which I have done among them; that ye may know how that I ⸨i⸩am⸨/i⸩ the ⸨sc⸩Lord⸨/sc⸩.⸨marg⸩
 ⸨sub⸩3⸨/sub⸩ And Moses and Aaron came in unto Pharaoh, and said unto him, Thus saith the ⸨sc⸩Lord⸨/sc⸩ God of the Hebrews, How long wilt thou refuse to humble thyself before me? let my people go, that they may serve me.⸨marg⸩
 ⸨sub⸩4⸨/sub⸩ Else, if thou refuse to let my people go, behold, to morrow will I bring the ⸨sup⸩⸨i⸩b⸨/i⸩⸨/sup⸩ locusts into thy coast:⸨marg⸩⸨sup⸩⸨i⸩⸨fix:b⸩·⸨/fix⸩⸨/i⸩⸨/sup⸩ Wisd⸼ 16⸼ 9⸼

@@ -6,7 +6,7 @@
 ⸨cen⸩CHAPTER I⸼
 ⸨cen⸩⸨size:0.85⸩⸨i⸩⸨sub⸩1⸨/sub⸩ The burnt offerings. ⸨sub⸩3⸨/sub⸩ Of the herd, ⸨sub⸩10⸨/sub⸩ of the flocks, ⸨sub⸩14⸨/sub⸩ of the fowls.⸨/i⸩⸨/size⸩
 
-⸨sub⸩1⸨/sub⸩ ⸨sc⸩And⸨/sc⸩ the ⸨sc⸩Lord⸨/sc⸩ called unto Moses, and spake unto him out of the tabernacle of the congregation, saying,⸨marg⸩
+⸨add⸩⸨sub⸩1⸨/sub⸩ ⸨/add⸩⸨sc⸩And⸨/sc⸩ the ⸨sc⸩Lord⸨/sc⸩ called unto Moses, and spake unto him out of the tabernacle of the congregation, saying,⸨marg⸩
 ⸨sub⸩2⸨/sub⸩ Speak unto the children of Israel, and say unto them, If any man of you bring an offering unto the ⸨sc⸩Lord⸨/sc⸩, ye shall bring your offering of the cattle, ⸨i⸩even⸨/i⸩ of the herd, and of the flock.⸨marg⸩
 ⸨sub⸩3⸨/sub⸩ If his offering ⸨i⸩be⸨/i⸩ a burnt sacrifice of the herd, let him offer a male without blemish: he shall offer it of his own voluntary will at the door of the tabernacle of the congregation before the ⸨sc⸩Lord⸨/sc⸩.⸨marg⸩
 ⸨sub⸩4⸨/sub⸩ ⸨sup⸩⸨i⸩a⸨/i⸩⸨/sup⸩ And he shall put his hand upon the head of the burnt offering; and it shall be accepted for him to make atonement for him.⸨marg⸩⸨sup⸩⸨i⸩a⸨/i⸩⸨/sup⸩ Exod⸼ 29⸼ 10⸼

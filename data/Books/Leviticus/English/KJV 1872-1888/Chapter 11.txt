@@ -1,7 +1,7 @@
 ⸨cen⸩CHAPTER XI⸼
 ⸨size:0.85⸩⸨i⸩⸨sub⸩1⸨/sub⸩ What beasts may, ⸨sub⸩4⸨/sub⸩ and what may not be eaten. ⸨sub⸩9⸨/sub⸩ What fishes. ⸨sub⸩13⸨/sub⸩ What fowls. ⸨sub⸩29⸨/sub⸩ The creeping things which are unclean.⸨/i⸩⸨/size⸩
 
-⸨sub⸩1⸨/sub⸩ ⸨sc⸩And⸨/sc⸩ the ⸨sc⸩Lord⸨/sc⸩ spake unto Moses and to Aaron, saying unto them,⸨marg⸩
+⸨add⸩⸨sub⸩1⸨/sub⸩ ⸨/add⸩⸨sc⸩And⸨/sc⸩ the ⸨sc⸩Lord⸨/sc⸩ spake unto Moses and to Aaron, saying unto them,⸨marg⸩
 ⸨sub⸩2⸨/sub⸩ Speak unto the children of Israel, saying, ⸨sup⸩⸨i⸩a⸨/i⸩⸨/sup⸩ These ⸨i⸩are⸨/i⸩ the beasts which ye shall eat among all the beasts that ⸨i⸩are⸨/i⸩ on the earth.⸨marg⸩⸨sup⸩⸨i⸩a⸨/i⸩⸨/sup⸩ Deut⸼ 14⸼ 4⸼⸨row⸩Acts 10⸼ ⸨fix:14⸼⸩·4⸼⸨/fix⸩
 ⸨sub⸩3⸨/sub⸩ Whatsoever parteth the hoof, and is clovenfooted, ⸨i⸩and⸨/i⸩ cheweth the cud, among the beasts, that shall ye eat.⸨marg⸩
 ⸨sub⸩4⸨/sub⸩ Nevertheless these shall ye not eat of them that chew the cud, or of them that divide the hoof: ⸨i⸩as⸨/i⸩ the camel, because he cheweth the cud, but divideth not the hoof; he ⸨i⸩is⸨/i⸩ unclean unto you.⸨marg⸩

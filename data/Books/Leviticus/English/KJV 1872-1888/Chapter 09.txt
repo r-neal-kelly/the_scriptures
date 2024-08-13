@@ -1,7 +1,7 @@
 ⸨cen⸩CHAPTER IX⸼
 ⸨size:0.85⸩⸨i⸩⸨sub⸩1⸨/sub⸩ The first offerings of Aaron, for himself and the people. ⸨sub⸩8⸨/sub⸩ The sin offering, ⸨sub⸩12⸨/sub⸩ and the burnt offering for himself. ⸨sub⸩15⸨/sub⸩ The offerings for the people. ⸨sub⸩23⸨/sub⸩ Moses and Aaron bless the people. ⸨sub⸩24⸨/sub⸩ Fire cometh from the ⸨fix:⸨sc⸩Lord⸨/sc⸩⸩Lord⸨/fix⸩, upon the altar.⸨/i⸩⸨/size⸩
 
-⸨sub⸩1⸨/sub⸩ ⸨sc⸩And⸨/sc⸩ it came to pass on the eighth day, ⸨i⸩that⸨/i⸩ Moses called Aaron and his sons, and the elders of Israel;⸨marg⸩
+⸨add⸩⸨sub⸩1⸨/sub⸩ ⸨/add⸩⸨sc⸩And⸨/sc⸩ it came to pass on the eighth day, ⸨i⸩that⸨/i⸩ Moses called Aaron and his sons, and the elders of Israel;⸨marg⸩
 ⸨sub⸩2⸨/sub⸩ And he said unto Aaron, ⸨sup⸩⸨i⸩a⸨/i⸩⸨/sup⸩ Take thee a young calf for a sin offering, and a ram for a burnt offering, without blemish, and offer ⸨i⸩them⸨/i⸩ before the ⸨sc⸩Lord⸨/sc⸩.⸨marg⸩⸨sup⸩⸨i⸩a⸨/i⸩⸨/sup⸩ Exod⸼ 29⸼ 1⸼
 ⸨sub⸩3⸨/sub⸩ And unto the children of Israel thou shalt speak, saying, Take ye a kid of the goats for a sin offering; and a calf and a lamb, ⸨i⸩both⸨/i⸩ of the first year, without blemish, for a burnt offering;⸨marg⸩
 ⸨sub⸩4⸨/sub⸩ Also a bullock and a ram for peace offerings, to sacrifice before the ⸨sc⸩Lord⸨/sc⸩; and a meat offering mingled with oil: for to day the ⸨sc⸩Lord⸨/sc⸩ will appear unto you.⸨marg⸩

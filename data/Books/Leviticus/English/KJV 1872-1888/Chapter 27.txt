@@ -1,7 +1,7 @@
 ⸨cen⸩CHAPTER XXVII⸼
 ⸨size:0.85⸩⸨i⸩⸨sub⸩1⸨/sub⸩ He that maketh a singular vow must be the ⸨fix:⸨sc⸩Lordʼs⸨/sc⸩⸩Lordʼs⸨/fix⸩. ⸨sub⸩2⸨/sub⸩ The estimation of the person. ⸨sub⸩9⸨/sub⸩ Of a beast given by vow. ⸨sub⸩14⸨/sub⸩ Of a house. ⸨sub⸩16⸨/sub⸩ Of a field, and the redemption thereof. ⸨sub⸩28⸨/sub⸩ No devoted thing may be redeemed. ⸨sub⸩32⸨/sub⸩ The tithe may not be changed.⸨/i⸩⸨/size⸩
 
-⸨sub⸩1⸨/sub⸩ ⸨sc⸩And⸨/sc⸩ the ⸨sc⸩Lord⸨/sc⸩ spake unto Moses, saying,⸨marg⸩
+⸨add⸩⸨sub⸩1⸨/sub⸩ ⸨/add⸩⸨sc⸩And⸨/sc⸩ the ⸨sc⸩Lord⸨/sc⸩ spake unto Moses, saying,⸨marg⸩
 ⸨sub⸩2⸨/sub⸩ Speak unto the children of Israel, and say unto them, When a man shall make a singular vow, the persons ⸨i⸩shall be⸨/i⸩ for the ⸨sc⸩Lord⸨/sc⸩ by thy estimation.⸨marg⸩
 ⸨sub⸩3⸨/sub⸩ And thy estimation shall be of the male from twenty years old even unto sixty years old, even thy estimation shall be fifty shekels of silver, after the shekel of the sanctuary.⸨marg⸩
 ⸨sub⸩4⸨/sub⸩ And if it ⸨i⸩be⸨/i⸩ a female, then thy estimation shall be thirty shekels.⸨marg⸩

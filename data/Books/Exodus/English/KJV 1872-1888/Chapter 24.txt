@@ -1,7 +1,7 @@
 ⸨cen⸩CHAPTER XXIV⸼
 ⸨size:0.85⸩⸨i⸩⸨sub⸩1⸨/sub⸩ Moses is called up into the mountain. ⸨sub⸩3⸨/sub⸩ The people promise obedience. ⸨sub⸩4⸨/sub⸩ Moses buildeth an altar, and twelve pillars. ⸨sub⸩6⸨/sub⸩ He sprinkleth the blood of the covenant. ⸨sub⸩9⸨/sub⸩ The glory of God appeareth. ⸨sub⸩14⸨/sub⸩ Aaron and Hur have the charge of the people. ⸨sub⸩15⸨/sub⸩ Moses goeth into the mountain, where he continueth forty days and forty nights.⸨/i⸩⸨/size⸩
 
-⸨sub⸩1⸨/sub⸩ ⸨sc⸩And⸨/sc⸩ he said unto Moses, Come up unto the ⸨sc⸩Lord⸨/sc⸩, thou, and Aaron, Nadab, and Abihu, and seventy of the elders of Israel; and worship ye afar off.⸨marg⸩
+⸨add⸩⸨sub⸩1⸨/sub⸩ ⸨/add⸩⸨sc⸩And⸨/sc⸩ he said unto Moses, Come up unto the ⸨sc⸩Lord⸨/sc⸩, thou, and Aaron, Nadab, and Abihu, and seventy of the elders of Israel; and worship ye afar off.⸨marg⸩
 ⸨sub⸩2⸨/sub⸩ And Moses alone shall come near the ⸨sc⸩Lord⸨/sc⸩: but they shall not come nigh; neither shall the people go up with him.⸨marg⸩
 ⸨sub⸩3⸨/sub⸩ ¶ And Moses came and told the people all the words of the ⸨sc⸩Lord⸨/sc⸩, and all the judgments: and all the people answered with one voice, and said, ⸨sup⸩⸨i⸩a⸨/i⸩⸨/sup⸩ All the words which the ⸨sc⸩Lord⸨/sc⸩ hath said will we do.⸨marg⸩⸨sup⸩⸨i⸩a⸨/i⸩⸨/sup⸩ chap⸼ ⸨fix:19⸼⸩19⸨/fix⸩ 8⸼⸨row⸩& 24⸼ ⸨fix:3⸼⸩3⸨/fix⸩, ⸨fix:7⸼⸩7⸨/fix⸩⸨row⸩Deut⸼ 5⸼ 27⸼
 ⸨sub⸩4⸨/sub⸩ And Moses wrote all the words of the ⸨sc⸩Lord⸨/sc⸩, and rose up early in the morning, and builded an altar under the hill, and twelve pillars, according to the twelve tribes of Israel.⸨marg⸩

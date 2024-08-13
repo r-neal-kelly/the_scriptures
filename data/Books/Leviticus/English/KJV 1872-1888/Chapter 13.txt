@@ -1,7 +1,7 @@
 ⸨cen⸩CHAPTER XIII⸼
 ⸨cen⸩⸨size:0.85⸩⸨i⸩⸨sub⸩1⸨/sub⸩ The laws and tokens whereby the priest is to be guided in discerning the leprosy.⸨/i⸩⸨/size⸩
 
-⸨sub⸩1⸨/sub⸩ ⸨sc⸩And⸨/sc⸩ the ⸨sc⸩Lord⸨/sc⸩ spake unto Moses and Aaron, saying,⸨marg⸩
+⸨add⸩⸨sub⸩1⸨/sub⸩ ⸨/add⸩⸨sc⸩And⸨/sc⸩ the ⸨sc⸩Lord⸨/sc⸩ spake unto Moses and Aaron, saying,⸨marg⸩
 ⸨sub⸩2⸨/sub⸩ When a man shall have in the skin of his flesh a ⸨sup⸩❙⸨/sup⸩rising, a scab, or bright spot, and it be in the skin of his flesh ⸨i⸩like⸨/i⸩ the plague of leprosy; then he shall be brought unto Aaron the priest, or unto one of his sons the priests:⸨marg⸩⸨sup⸩❙⸨/sup⸩ Or, ⸨i⸩swelling⸨/i⸩.
 ⸨sub⸩3⸨/sub⸩ And the priest shall look on the plague in the skin of the flesh: and ⸨i⸩when⸨/i⸩ the hair in the plague is turned white, and the plague in sight ⸨i⸩be⸨/i⸩ deeper than the skin of his flesh, it ⸨i⸩is⸨/i⸩ a plague of leprosy: and the priest shall look on him, and pronounce him unclean.⸨marg⸩
 ⸨sub⸩4⸨/sub⸩ If the bright spot ⸨i⸩be⸨/i⸩ white in the skin of his flesh, and in sight ⸨i⸩be⸨/i⸩ not deeper than the skin, and the hair thereof be not turned white; then the priest shall shut up ⸨i⸩him that hath⸨/i⸩ the plague seven days:⸨marg⸩

@@ -1,7 +1,7 @@
 ⸨cen⸩CHAPTER V⸼
 ⸨size:0.85⸩⸨i⸩⸨sub⸩1⸨/sub⸩ He that sinneth in concealing his knowledge, ⸨sub⸩2⸨/sub⸩ in touching an unclean thing, ⸨sub⸩4⸨/sub⸩ or in making an oath. ⸨sub⸩6⸨/sub⸩ His trespass offering, of the flock, ⸨sub⸩7⸨/sub⸩ of fowls, ⸨sub⸩11⸨/sub⸩ or of flour. ⸨sub⸩14⸨/sub⸩ The trespass offering in sacrilege, ⸨sub⸩17⸨/sub⸩ and in sins of ignorance.⸨/i⸩⸨/size⸩
 
-⸨sub⸩1⸨/sub⸩ ⸨sc⸩And⸨/sc⸩ if a soul sin, and hear the voice of swearing, and ⸨i⸩is⸨/i⸩ a witness, whether he hath seen or known ⸨i⸩of it⸨/i⸩⸨fix:; ⸩⸨i⸩; ⸨/i⸩⸨/fix⸩if he do not utter ⸨i⸩it⸨/i⸩, then he shall bear his iniquity.⸨marg⸩
+⸨add⸩⸨sub⸩1⸨/sub⸩ ⸨/add⸩⸨sc⸩And⸨/sc⸩ if a soul sin, and hear the voice of swearing, and ⸨i⸩is⸨/i⸩ a witness, whether he hath seen or known ⸨i⸩of it⸨/i⸩⸨fix:; ⸩⸨i⸩; ⸨/i⸩⸨/fix⸩if he do not utter ⸨i⸩it⸨/i⸩, then he shall bear his iniquity.⸨marg⸩
 ⸨sub⸩2⸨/sub⸩ Or if a soul touch any unclean thing, whether ⸨i⸩it be⸨/i⸩ a carcase of an unclean beast, or a carcase of unclean cattle, or the carcase of unclean creeping things, and ⸨i⸩if⸨/i⸩ it be hidden from him; he also shall be unclean, and guilty.⸨marg⸩
 ⸨sub⸩3⸨/sub⸩ Or if he touch the uncleanness of man, whatsoever uncleanness ⸨i⸩it be⸨/i⸩ that a man shall be defiled withal, and it be hid from him; when he knoweth ⸨i⸩of it⸨/i⸩, then he shall be guilty.⸨marg⸩
 ⸨sub⸩4⸨/sub⸩ Or if a soul swear, pronouncing with ⸨i⸩his⸨/i⸩ lips to do evil, or to do good, whatsoever ⸨i⸩it be⸨/i⸩ that a man shall pronounce with an oath, and it be hid from him; when he knoweth ⸨i⸩of it⸨/i⸩, then he shall be guilty in one of these.⸨marg⸩

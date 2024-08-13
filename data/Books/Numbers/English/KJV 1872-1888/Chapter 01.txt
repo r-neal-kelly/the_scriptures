@@ -6,7 +6,7 @@
 ⸨cen⸩CHAPTER I⸼
 ⸨size:0.85⸩⸨i⸩⸨sub⸩1⸨/sub⸩ God commandeth Moses to number the people. ⸨sub⸩5⸨/sub⸩ The princes of the tribes. ⸨sub⸩17⸨/sub⸩ The number of every tribe. ⸨sub⸩47⸨/sub⸩ The Levites are exempted for the service of the ⸨fix:⸨sc⸩Lord⸨/sc⸩⸩Lord⸨/fix⸩.⸨/i⸩⸨/size⸩
 
-⸨sub⸩1⸨/sub⸩ ⸨sc⸩And⸨/sc⸩ the ⸨sc⸩Lord⸨/sc⸩ spake unto Moses in the wilderness of Sinai, in the tabernacle of the congregation, on the first ⸨i⸩day⸨/i⸩ of the second month, in the second year after they were come out of the land of Egypt, saying,⸨marg⸩
+⸨add⸩⸨sub⸩1⸨/sub⸩ ⸨/add⸩⸨sc⸩And⸨/sc⸩ the ⸨sc⸩Lord⸨/sc⸩ spake unto Moses in the wilderness of Sinai, in the tabernacle of the congregation, on the first ⸨i⸩day⸨/i⸩ of the second month, in the second year after they were come out of the land of Egypt, saying,⸨marg⸩
 ⸨sub⸩2⸨/sub⸩ ⸨sup⸩⸨i⸩a⸨/i⸩⸨/sup⸩ Take ye the sum of all the congregation of the children of Israel, after their families, by the house of their fathers, with the number of ⸨i⸩their⸨/i⸩ names, every male by their polls;⸨marg⸩⸨sup⸩⸨i⸩a⸨/i⸩⸨/sup⸩ Exod⸼ 30⸼ 12⸼
 ⸨sub⸩3⸨/sub⸩ From twenty years old and upward, all that are able to go forth to war in Israel: thou and Aaron shall number them by their armies.⸨marg⸩
 ⸨sub⸩4⸨/sub⸩ And with you there shall be a man of every tribe; every one head of the house of his fathers.⸨marg⸩

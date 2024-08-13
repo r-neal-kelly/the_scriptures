@@ -1,7 +1,7 @@
 ⸨cen⸩CHAPTER XII⸼
 ⸨size:0.85⸩⸨i⸩⸨sub⸩1⸨/sub⸩ The beginning of the year is changed. ⸨sub⸩3⸨/sub⸩ The passover is instituted. ⸨sub⸩11⸨/sub⸩ The rite of the passover. ⸨sub⸩15⸨/sub⸩ Unleavened bread. ⸨sub⸩29⸨/sub⸩ The firstborn are slain. ⸨sub⸩31⸨/sub⸩ The Israelites are driven out of the land. ⸨sub⸩37⸨/sub⸩ They come to Succoth. ⸨sub⸩43⸨/sub⸩ The ordinance of the passover.⸨/i⸩⸨/size⸩
 
-⸨sub⸩1⸨/sub⸩ ⸨sc⸩And⸨/sc⸩ the ⸨sc⸩Lord⸨/sc⸩ spake unto Moses and Aaron in the land of Egypt, saying,⸨marg⸩
+⸨add⸩⸨sub⸩1⸨/sub⸩ ⸨/add⸩⸨sc⸩And⸨/sc⸩ the ⸨sc⸩Lord⸨/sc⸩ spake unto Moses and Aaron in the land of Egypt, saying,⸨marg⸩
 ⸨sub⸩2⸨/sub⸩ This month ⸨i⸩shall be⸨/i⸩ unto you the beginning of months: it ⸨i⸩shall be⸨/i⸩ the first month of the year to you.⸨marg⸩
 ⸨sub⸩3⸨/sub⸩ ¶ Speak ye unto all the congregation of Israel, saying, In the tenth ⸨i⸩day⸨/i⸩ of this month they shall take to them every man a ⸨sup⸩❙⸨/sup⸩lamb, according to the house of ⸨i⸩their⸨/i⸩ fathers, a lamb for an house:⸨marg⸩⸨sup⸩❙⸨/sup⸩ Or, ⸨i⸩kid⸨/i⸩.
 ⸨sub⸩4⸨/sub⸩ And if the household be too little for the lamb, let him and his neighbour next unto his house take ⸨i⸩it⸨/i⸩ according to the number of the souls; every man according to his eating shall make your count for the lamb.⸨marg⸩

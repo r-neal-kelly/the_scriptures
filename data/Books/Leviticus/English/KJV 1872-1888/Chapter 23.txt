@@ -1,7 +1,7 @@
 ⸨cen⸩CHAPTER XXIII⸼
 ⸨size:0.85⸩⸨i⸩⸨sub⸩1⸨/sub⸩ The feasts of the ⸨fix:⸨sc⸩Lord⸨/sc⸩⸩Lord⸨/fix⸩. ⸨sub⸩3⸨/sub⸩ The sabbath. ⸨sub⸩4⸨/sub⸩ The passover. ⸨sub⸩9⸨/sub⸩ The sheaf of firstfruits. ⸨sub⸩15⸨/sub⸩ The feast of Pentecost. ⸨sub⸩22⸨/sub⸩ Gleanings to be left for the poor. ⸨sub⸩23⸨/sub⸩ The feast of trumpets. ⸨sub⸩26⸨/sub⸩ The day of atonement. ⸨sub⸩33⸨/sub⸩ The feast of tabernacles.⸨/i⸩⸨/size⸩
 
-⸨sub⸩1⸨/sub⸩ ⸨sc⸩And⸨/sc⸩ the ⸨sc⸩Lord⸨/sc⸩ spake unto Moses, saying,⸨marg⸩
+⸨add⸩⸨sub⸩1⸨/sub⸩ ⸨/add⸩⸨sc⸩And⸨/sc⸩ the ⸨sc⸩Lord⸨/sc⸩ spake unto Moses, saying,⸨marg⸩
 ⸨sub⸩2⸨/sub⸩ Speak unto the children of Israel, and say unto them, ⸨i⸩Concerning⸨/i⸩ the feasts of the ⸨sc⸩Lord⸨/sc⸩, which ye shall proclaim ⸨i⸩to be⸨/i⸩ holy convocations, ⸨i⸩even⸨/i⸩ these ⸨i⸩are⸨/i⸩ my feasts.⸨marg⸩
 ⸨sub⸩3⸨/sub⸩ ⸨sup⸩⸨i⸩a⸨/i⸩⸨/sup⸩ Six days shall work be done: but the seventh day ⸨i⸩is⸨/i⸩ the sabbath of rest, an holy convocation; ye shall do no work ⸨i⸩therein⸨/i⸩⸨fix:: ⸩⸨i⸩: ⸨/i⸩⸨/fix⸩it ⸨i⸩is⸨/i⸩ the sabbath of the ⸨sc⸩Lord⸨/sc⸩ in all your dwellings.⸨marg⸩⸨sup⸩⸨i⸩a⸨/i⸩⸨/sup⸩ Exod⸼ 20⸼ 9⸼⸨row⸩Deut⸼ 5⸼ 13⸼⸨row⸩Luke 13⸼ 14⸼
 ⸨sub⸩4⸨/sub⸩ ¶ These ⸨i⸩are⸨/i⸩ the feasts of the ⸨sc⸩Lord⸨/sc⸩, ⸨i⸩even⸨/i⸩ holy convocations, which ye shall proclaim in their seasons.⸨marg⸩

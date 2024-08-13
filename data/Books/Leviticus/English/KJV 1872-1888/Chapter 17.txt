@@ -1,7 +1,7 @@
 ⸨cen⸩CHAPTER XVII⸼
 ⸨size:0.85⸩⸨i⸩⸨sub⸩1⸨/sub⸩ The blood of all slain beasts must be offered to the ⸨fix:⸨sc⸩Lord⸨/sc⸩⸩Lord⸨/fix⸩ at the door of the tabernacle. ⸨sub⸩7⸨/sub⸩ They must not offer to devils. ⸨sub⸩10⸨/sub⸩ All eating of blood is forbidden, ⸨sub⸩15⸨/sub⸩ and all that dieth alone, or is torn.⸨/i⸩⸨/size⸩
 
-⸨sub⸩1⸨/sub⸩ ⸨sc⸩And⸨/sc⸩ the ⸨sc⸩Lord⸨/sc⸩ spake unto Moses, saying,⸨marg⸩
+⸨add⸩⸨sub⸩1⸨/sub⸩ ⸨/add⸩⸨sc⸩And⸨/sc⸩ the ⸨sc⸩Lord⸨/sc⸩ spake unto Moses, saying,⸨marg⸩
 ⸨sub⸩2⸨/sub⸩ Speak unto Aaron, and unto his sons, and unto all the children of Israel, and say unto them; This ⸨i⸩is⸨/i⸩ the thing which the ⸨sc⸩Lord⸨/sc⸩ hath commanded, saying,⸨marg⸩
 ⸨sub⸩3⸨/sub⸩ What man soever ⸨i⸩there be⸨/i⸩ of the house of Israel, that killeth an ox, or lamb, or goat, in the camp, or that killeth ⸨i⸩it⸨/i⸩ out of the camp,⸨marg⸩
 ⸨sub⸩4⸨/sub⸩ And bringeth it not unto the door of the tabernacle of the congregation, to offer an offering unto the ⸨sc⸩Lord⸨/sc⸩ before the tabernacle of the ⸨sc⸩Lord⸨/sc⸩; blood shall be imputed unto that man; he hath shed blood; and that man shall be cut off from among his people:⸨marg⸩

@@ -1,7 +1,7 @@
 ⸨cen⸩CHAPTER XXIV⸼
 ⸨size:0.85⸩⸨i⸩⸨sub⸩1⸨/sub⸩ The oil for the lamps. ⸨sub⸩5⸨/sub⸩ The shewbread. ⸨sub⸩10⸨/sub⸩ Shelomithʼs son blasphemeth. ⸨sub⸩13⸨/sub⸩ The law of blasphemy. ⸨sub⸩17⸨/sub⸩ Of murder. ⸨sub⸩18⸨/sub⸩ Of damage. ⸨sub⸩23⸨/sub⸩ The blasphemer is stoned.⸨/i⸩⸨/size⸩
 
-⸨sub⸩1⸨/sub⸩ ⸨sc⸩And⸨/sc⸩ the ⸨sc⸩Lord⸨/sc⸩ spake unto Moses, saying,⸨marg⸩
+⸨add⸩⸨sub⸩1⸨/sub⸩ ⸨/add⸩⸨sc⸩And⸨/sc⸩ the ⸨sc⸩Lord⸨/sc⸩ spake unto Moses, saying,⸨marg⸩
 ⸨sub⸩2⸨/sub⸩ Command the children of Israel, that they bring unto thee pure oil olive beaten for the light, ⸨sup⸩✝⸨/sup⸩to cause the lamps to burn continually.⸨marg⸩⸨sup⸩⸨fix:✝⸩·⸨/fix⸩⸨/sup⸩ Heb⸼ ⸨i⸩to cause to ascend⸨/i⸩.
 ⸨sub⸩3⸨/sub⸩ Without the vail of the testimony, in the tabernacle of the congregation, shall Aaron order it from the evening unto the morning before the ⸨sc⸩Lord⸨/sc⸩ continually: ⸨i⸩it shall be⸨/i⸩ a statute for ever in your generations.⸨marg⸩
 ⸨sub⸩4⸨/sub⸩ He shall order the lamps upon ⸨sup⸩⸨i⸩a⸨/i⸩⸨/sup⸩ the pure candlestick before the ⸨sc⸩Lord⸨/sc⸩ continually.⸨marg⸩⸨sup⸩⸨i⸩a⸨/i⸩⸨/sup⸩ Exod⸼ 31⸼ 8⸼
