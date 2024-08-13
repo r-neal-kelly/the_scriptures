@@ -1,7 +1,7 @@
 ⸨cen⸩CHAPTER XL⸼
 ⸨size:0.85⸩⸨i⸩⸨sub⸩1⸨/sub⸩ The butler and baker of Pharaoh in prison. ⸨sub⸩4⸨/sub⸩ Joseph hath charge of them. ⸨sub⸩5⸨/sub⸩ He interpreteth their dreams. ⸨sub⸩20⸨/sub⸩ They come to pass according to his interpretation. ⸨sub⸩23⸨/sub⸩ The ingratitude of the butler.⸨/i⸩⸨/size⸩
 
-⸨sub⸩1⸨/sub⸩ ⸨sc⸩And⸨/sc⸩ it came to pass after these things, ⸨i⸩that⸨/i⸩ the butler of the king of Egypt and ⸨i⸩his⸨/i⸩ baker had offended their lord the king of Egypt.⸨marg⸩
+⸨add⸩⸨sub⸩1⸨/sub⸩ ⸨/add⸩⸨sc⸩And⸨/sc⸩ it came to pass after these things, ⸨i⸩that⸨/i⸩ the butler of the king of Egypt and ⸨i⸩his⸨/i⸩ baker had offended their lord the king of Egypt.⸨marg⸩
 ⸨sub⸩2⸨/sub⸩ And Pharaoh was wroth against two ⸨i⸩of⸨/i⸩ his officers, against the chief of the butlers, and against the chief of the bakers.⸨marg⸩
 ⸨sub⸩3⸨/sub⸩ And he put them in ward in the house of the captain of the guard, into the prison, the place where Joseph ⸨i⸩was⸨/i⸩ bound.⸨marg⸩
 ⸨sub⸩4⸨/sub⸩ And the captain of the guard charged Joseph with them, and he served them: and they continued a season in ward.⸨marg⸩

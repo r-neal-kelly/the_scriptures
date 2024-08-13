@@ -1,7 +1,7 @@
 ⸨cen⸩CHAPTER XLIII⸼
 ⸨size:0.85⸩⸨i⸩⸨sub⸩1⸨/sub⸩ Jacob is hardly persuaded to send Benjamin. ⸨sub⸩15⸨/sub⸩ Joseph entertaineth his brethren. ⸨sub⸩31⸨/sub⸩ He maketh them a feast.⸨/i⸩⸨/size⸩
 
-⸨sub⸩1⸨/sub⸩ ⸨sc⸩And⸨/sc⸩ the famine ⸨i⸩was⸨/i⸩ sore in the land.⸨marg⸩
+⸨add⸩⸨sub⸩1⸨/sub⸩ ⸨/add⸩⸨sc⸩And⸨/sc⸩ the famine ⸨i⸩was⸨/i⸩ sore in the land.⸨marg⸩
 ⸨sub⸩2⸨/sub⸩ And it came to pass, when they had eaten up the corn which they had brought out of Egypt, their father said unto them, Go again, buy us a little food.⸨marg⸩
 ⸨sub⸩3⸨/sub⸩ And Judah spake unto him, saying, The man ⸨sup⸩✝⸨/sup⸩did solemnly protest unto us, saying, Ye shall not see my face, except your ⸨sup⸩⸨i⸩a⸨/i⸩⸨/sup⸩ brother ⸨i⸩be⸨/i⸩ with you.⸨marg⸩⸨sup⸩✝⸨/sup⸩ Heb⸼ ⸨i⸩protesting he protested⸨/i⸩.⸨row⸩⸨sup⸩⸨i⸩a⸨/i⸩⸨/sup⸩ chap⸼ 42⸼ 20⸼
 ⸨sub⸩4⸨/sub⸩ If thou wilt send our brother with us, we will go down and buy thee food:⸨marg⸩

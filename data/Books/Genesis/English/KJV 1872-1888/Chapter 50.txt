@@ -1,7 +1,7 @@
 ⸨cen⸩CHAPTER L⸼
 ⸨size:0.85⸩⸨i⸩⸨sub⸩1⸨/sub⸩ The mourning for Jacob. ⸨sub⸩4⸨/sub⸩ Joseph getteth leave of Pharaoh to go to bury him. ⸨sub⸩7⸨/sub⸩ The funeral. ⸨sub⸩15⸨/sub⸩ Joseph comforteth his brethren, who craved his pardon. ⸨sub⸩22⸨/sub⸩ His age. ⸨sub⸩23⸨/sub⸩ He seeth the third generation of his sons. ⸨sub⸩24⸨/sub⸩ He prophesieth unto his brethren of their return. ⸨sub⸩25⸨/sub⸩ He taketh an oath of them for his bones. ⸨sub⸩26⸨/sub⸩ He dieth, and is chested.⸨/i⸩⸨/size⸩
 
-⸨sub⸩1⸨/sub⸩ ⸨sc⸩And⸨/sc⸩ Joseph fell upon his fatherʼs face, and wept upon him, and kissed him.⸨marg⸩
+⸨add⸩⸨sub⸩1⸨/sub⸩ ⸨/add⸩⸨sc⸩And⸨/sc⸩ Joseph fell upon his fatherʼs face, and wept upon him, and kissed him.⸨marg⸩
 ⸨sub⸩2⸨/sub⸩ And Joseph commanded his servants the physicians to embalm his father: and the physicians embalmed Israel.⸨marg⸩
 ⸨sub⸩3⸨/sub⸩ And forty days were fulfilled for him; for so are fulfilled the days of those which are embalmed: and the Egyptians ⸨sup⸩✝⸨/sup⸩mourned for him threescore and ten days.⸨marg⸩⸨sup⸩✝⸨/sup⸩ Heb⸼ ⸨i⸩wept⸨/i⸩.
 ⸨sub⸩4⸨/sub⸩ And when the days of his mourning were past, Joseph spake unto the house of Pharaoh, saying, If now I have found grace in your eyes, speak, I pray you, in the ears of Pharaoh, saying,⸨marg⸩

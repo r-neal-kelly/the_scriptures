@@ -88,9 +88,9 @@ We have plenty of other materials planned for addition into the program as we pr
     - French: 2 (~0%)
     - Italian: 0 (~0%)
     - Dutch: 0 (~0%)
-- Total Parts: 2,001,373
+- Total Parts: 2,001,473
     - <i>By Language</i>
-        - English: 1,332,734 (~67%)
+        - English: 1,332,834 (~67%)
         - Hebrew: 184,062 (~9%)
         - Greek: 270,584 (~14%)
         - Latin: 212,398 (~11%)
@@ -112,8 +112,8 @@ We have plenty of other materials planned for addition into the program as we pr
             - French: 504 (~0%)
             - Italian: 9 (~0%)
             - Dutch: 21 (~0%)
-        - Meta-Words: 155,377 (~8%)
-            - English: 113,777 (~73%)
+        - Meta-Words: 155,477 (~8%)
+            - English: 113,877 (~73%)
             - Hebrew: 16,094 (~10%)
             - Greek: 12,873 (~8%)
             - Latin: 12,541 (~8%)
@@ -134,9 +134,9 @@ We have plenty of other materials planned for addition into the program as we pr
             - French: 474 (~0%)
             - Italian: 8 (~0%)
             - Dutch: 12 (~0%)
-- Total Unicode Points: 6,428,882
+- Total Unicode Points: 6,429,432
     - <i>By Language</i>
-        - English: 3,665,309 (~57%)
+        - English: 3,665,859 (~57%)
         - Hebrew: 906,627 (~14%)
         - Greek: 1,064,260 (~17%)
         - Latin: 787,164 (~12%)
@@ -158,8 +158,8 @@ We have plenty of other materials planned for addition into the program as we pr
             - French: 2,647 (~0%)
             - Italian: 53 (~0%)
             - Dutch: 150 (~0%)
-        - Meta-Letters: 987,918 (~15%)
-            - English: 578,860 (~59%)
+        - Meta-Letters: 988,468 (~15%)
+            - English: 579,410 (~59%)
             - Hebrew: 152,853 (~15%)
             - Greek: 129,231 (~13%)
             - Latin: 126,634 (~13%)

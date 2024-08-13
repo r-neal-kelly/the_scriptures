@@ -1,7 +1,7 @@
 ⸨cen⸩CHAPTER XXI⸼
 ⸨size:0.85⸩⸨i⸩⸨sub⸩1⸨/sub⸩ Isaac is born. ⸨sub⸩4⸨/sub⸩ He is circumcised. ⸨sub⸩6⸨/sub⸩ Sarahʼs joy. ⸨sub⸩9⸨/sub⸩ Hagar and Ishmael are cast forth. ⸨sub⸩15⸨/sub⸩ Hagar in distress. ⸨sub⸩17⸨/sub⸩ The angel comforteth her. ⸨sub⸩22⸨/sub⸩ Abimelechʼs covenant with Abraham at Beer‑sheba.⸨/i⸩⸨/size⸩
 
-⸨sub⸩1⸨/sub⸩ ⸨sc⸩And⸨/sc⸩ the ⸨sc⸩Lord⸨/sc⸩ visited Sarah as he had said, and the ⸨sc⸩Lord⸨/sc⸩ did unto Sarah ⸨sup⸩⸨i⸩a⸨/i⸩⸨/sup⸩ as he had spoken.⸨marg⸩⸨sup⸩⸨i⸩a⸨/i⸩⸨/sup⸩ chap⸼ 17⸼ ⸨fix:19⸼⸩19⸨/fix⸩⸨row⸩& 18⸼ 10⸼
+⸨add⸩⸨sub⸩1⸨/sub⸩ ⸨/add⸩⸨sc⸩And⸨/sc⸩ the ⸨sc⸩Lord⸨/sc⸩ visited Sarah as he had said, and the ⸨sc⸩Lord⸨/sc⸩ did unto Sarah ⸨sup⸩⸨i⸩a⸨/i⸩⸨/sup⸩ as he had spoken.⸨marg⸩⸨sup⸩⸨i⸩a⸨/i⸩⸨/sup⸩ chap⸼ 17⸼ ⸨fix:19⸼⸩19⸨/fix⸩⸨row⸩& 18⸼ 10⸼
 ⸨sub⸩2⸨/sub⸩ For Sarah ⸨sup⸩⸨i⸩b⸨/i⸩⸨/sup⸩ conceived, and bare Abraham a son in his old age, at the set time of which God had spoken to him.⸨marg⸩⸨sup⸩⸨i⸩b⸨/i⸩⸨/sup⸩ Acts 7⸼ 8⸼⸨row⸩Gal⸼ 4⸼ 22⸼⸨row⸩⸨fix:Hebr⸼⸩Heb⸼⸨/fix⸩ 11⸼ 11⸼
 ⸨sub⸩3⸨/sub⸩ And Abraham called the name of his son that was born unto him, whom Sarah bare to him, Isaac.⸨marg⸩
 ⸨sub⸩4⸨/sub⸩ And Abraham circumcised his son Isaac being eight days old, ⸨sup⸩⸨i⸩c⸨/i⸩⸨/sup⸩ as God had commanded him.⸨marg⸩⸨sup⸩⸨i⸩c⸨/i⸩⸨/sup⸩ chap⸼ 17⸼ 12⸼
