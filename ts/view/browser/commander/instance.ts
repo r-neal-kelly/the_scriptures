@@ -104,6 +104,8 @@ export class Instance extends Entity.Instance
 
                 .Commander_Grey {
                     color: grey;
+
+                    cursor: default;
                 }
             `,
         );
