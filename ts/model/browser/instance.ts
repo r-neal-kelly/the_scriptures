@@ -15,7 +15,7 @@ export class Instance extends Async.Instance
     constructor(
         {
             selection = null,
-            selector_slot_order = Selector.Slot.Order.BOOKS_LANGUAGES_VERSIONS,
+            selector_slot_order = Selector.Slot.Order.LANGUAGES_VERSIONS_BOOKS,
             is_selector_open = false,
             allow_errors = false,
         }: {
