@@ -150,6 +150,28 @@ export class Instance
         return maybe_item as Item.Instance;
     }
 
+    First_Item():
+        Item.Instance
+    {
+        Utils.Assert(
+            this.Item_Count() > 0,
+            `there are no items.`,
+        );
+
+        return this.Item_At_Index(0);
+    }
+
+    Last_Item():
+        Item.Instance
+    {
+        Utils.Assert(
+            this.Item_Count() > 0,
+            `there are no items.`,
+        );
+
+        return this.Item_At_Index(this.Item_Count() - 1);
+    }
+
     Items():
         Array<Item.Instance>
     {

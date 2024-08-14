@@ -55,17 +55,27 @@ export class Instance
         const files: Selector.Slot.Instance =
             this.Commander().Browser().Body().Selector().Files();
 
-        const file_count: Count = files.Item_Count();
         if (files.Has_Selected_Item()) {
             const current_file: Selector.Slot.Item.Instance =
                 files.Selected_Item();
+
             if (current_file.Index() > 0) {
                 files.Item_At_Index(current_file.Index() - 1).Select();
             } else {
-                files.Item_At_Index(file_count - 1).Select();
+                const books: Selector.Slot.Instance =
+                    files.Selector().Books();
+                const current_book: Selector.Slot.Item.Instance =
+                    books.Selected_Item();
+
+                if (current_book.Index() > 0) {
+                    books.Item_At_Index(current_book.Index() - 1).Select();
+                } else {
+                    books.Last_Item().Select();
+                }
+                books.Selector().Files().Last_Item().Select();
             }
         } else {
-            files.Item_At_Index(file_count - 1).Select();
+            files.Last_Item().Select();
         }
     }
 }

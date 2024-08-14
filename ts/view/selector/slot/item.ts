@@ -83,7 +83,18 @@ export class Instance extends Entity.Instance
     override On_Refresh():
         void
     {
-        this.Element().textContent = this.Model().Name();
+        const model: Model.Instance = this.Model();
+        const element: HTMLElement = this.Element();
+
+        element.textContent = model.Name();
+        if (model.Is_Selected()) {
+            element.scrollIntoView(
+                {
+                    block: `nearest`,
+                    inline: `nearest`,
+                },
+            );
+        }
     }
 
     override On_Reclass():
