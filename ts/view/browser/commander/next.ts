@@ -53,6 +53,18 @@ export class Instance extends Entity.Instance
                     event_priority: 0,
                 },
             ),
+
+            new Event.Listener_Info(
+                {
+                    event_name: new Event.Name(
+                        Event.Prefix.AFTER,
+                        Events.SELECTOR_SLOT_ITEM_SELECT,
+                        this.Commander().Browser().ID(),
+                    ),
+                    event_handler: this.After_Selector_Slot_Item_Select,
+                    event_priority: 0,
+                },
+            ),
         ];
     }
 
@@ -65,7 +77,15 @@ export class Instance extends Entity.Instance
     override On_Reclass():
         Array<string>
     {
-        return [`Commander_Next`];
+        const model: Model.Instance = this.Model();
+        const classes: Array<string> = [];
+
+        classes.push(`Commander_Next`);
+        if (!model.Can_Activate()) {
+            classes.push(`Commander_Grey`);
+        }
+
+        return classes;
     }
 
     private async On_Click(
@@ -98,6 +118,12 @@ export class Instance extends Entity.Instance
                 this.Model().Activate(),
             ],
         );
+    }
+
+    private async After_Selector_Slot_Item_Select():
+        Promise<void>
+    {
+        this.Reclass();
     }
 
     Model():

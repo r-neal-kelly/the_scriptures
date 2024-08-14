@@ -101,6 +101,10 @@ export class Instance extends Entity.Instance
 
                     cursor: pointer;
                 }
+
+                .Commander_Grey {
+                    color: grey;
+                }
             `,
         );
 
