@@ -64,6 +64,12 @@ export class Instance
             } else {
                 const books: Selector.Slot.Instance =
                     files.Selector().Books();
+
+                Utils.Assert(
+                    books.Has_Selected_Item(),
+                    `books should have a selected item, because there is a selected file!`,
+                );
+
                 const current_book: Selector.Slot.Item.Instance =
                     books.Selected_Item();
 
@@ -72,7 +78,12 @@ export class Instance
                 } else {
                     books.Last_Item().Select();
                 }
-                books.Selector().Files().Last_Item().Select();
+
+                // We can actually loose files depending on the slot order,
+                // if books is not second to last.
+                if (books.Selector().Has_Files()) {
+                    books.Selector().Files().Last_Item().Select();
+                }
             }
         } else {
             files.Last_Item().Select();
