@@ -10,13 +10,12 @@ The Scriptures are available to read online [here](https://r-neal-kelly.github.i
 
 ## Status
 
-Adding the *Prolegomenon* from *The Hexaglot Bible* we've already copied the Pentateuch in Hebrew, Greek, Latin, and English from. After that, we will start working on *Joshua*, sourced from the same Hexaglot. First we may add the German and the French of the Pentateuch, and then as we move forward, we'll add all six languages simultaneously for each book.
+*The following texts are currently being added*:
 
-Additionally, we're adding an 1800's copy of the *King James Version* that faithfully keeps all the original marginal notes intact, and the *World English Bible with Apocrypha* alongside it.
-
-Also, periodically working on Wellhausen's *Prolegomena to the History of Israel*.
-
-We have plenty of other materials planned for addition into the program as we proceed forwards.
+- An 1800's copy of the *King James Version* that faithfully keeps all of the original marginal notes intact. 
+- The *World English Bible with Apocrypha*.
+- *The Hexaglot Bible* in Hebrew, Greek, Latin, and English. Possibly the German and the French.
+- Wellhausen's *Prolegomena to the History of Israel*.
 
 ## Stats
 
