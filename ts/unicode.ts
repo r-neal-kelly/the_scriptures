@@ -17,6 +17,11 @@ export enum TRAILING_SURROGATE
 export { LEADING_SURROGATE as HIGH_SURROGATE };
 export { TRAILING_SURROGATE as LOW_SURROGATE };
 
+export const POINT_COUNT: Count = 0x110000;
+export const SURROGATE_POINT_COUNT: Count = TRAILING_SURROGATE.LAST + 1 - LEADING_SURROGATE.FIRST;
+export const FIRST_POINT: Index = 0x0;
+export const LAST_POINT: Index = POINT_COUNT - 1;
+
 export function Is_Point(
     text: string,
 ):

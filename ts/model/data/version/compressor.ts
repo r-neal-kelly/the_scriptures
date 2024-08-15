@@ -4,14 +4,27 @@ import * as Utils from "../../../utils.js";
 
 import * as Text from "../../text.js";
 
+import * as Compression_Tools from "./compression_tools.js";
 import { Compressed_Symbol } from "./compressed_symbol.js";
 
-// Are we handling surrogates being used as indices messing up the unicode string?
-// Or does that matter in this code?
+const ZERO: string =
+    String.fromCodePoint(0);
+const ONE: string =
+    String.fromCodePoint(1);
+const QUOTE: string =
+    `"`;
+const COMMA: string =
+    `,`;
+const ESCAPE: string =
+    `\\`;
+const NEWLINE: string =
+    String.fromCodePoint(Compressed_Symbol.NEWLINE);
+const VERBATIM_CLOSE: string =
+    String.fromCodePoint(Compressed_Symbol.VERBATIM_CLOSE);
 
 export class Instance
 {
-    private indices: { [index: string]: Index };
+    private values_to_indices: { [value: string]: Index };
 
     constructor(
         {
@@ -22,14 +35,13 @@ export class Instance
     )
     {
         Utils.Assert(
-            unique_parts.length <= 0x110000 - Compressed_Symbol._COUNT_,
-            `There are too may unique parts in the index to compress.`,
+            unique_parts.length <= Compression_Tools.MAX_UNIQUE_PART_COUNT,
+            `There are too may unique parts to compress.`,
         );
 
-        this.indices = {};
+        this.values_to_indices = {};
         for (let idx = 0, end = unique_parts.length; idx < end; idx += 1) {
-            const compressor_index: Index = idx + Compressed_Symbol._COUNT_;
-            this.indices[unique_parts[idx]] = compressor_index;
+            this.values_to_indices[unique_parts[idx]] = Compression_Tools.Compressed_Index(idx);
         }
     }
 
@@ -42,12 +54,6 @@ export class Instance
     ):
         string
     {
-        const zero: string = String.fromCodePoint(0);
-        const one: string = String.fromCodePoint(1);
-        const quote: string = `"`;
-        const comma: string = `,`;
-        const escape: string = `\\`;
-
         let compressed_parts: string = ``;
         let is_in_quote: boolean = false;
         let is_in_sequence: boolean = false;
@@ -57,59 +63,59 @@ export class Instance
             const value: string = dictionary_value[idx];
 
             Utils.Assert(
-                value !== zero &&
-                value !== one,
+                value !== ZERO &&
+                value !== ONE,
                 `Cannot compress a dictionary that contains a code point of 0 or 1.`,
             );
 
             if (is_in_quote) {
                 if (
-                    value === escape &&
+                    value === ESCAPE &&
                     idx + 1 < end &&
-                    dictionary_value[idx + 1] === quote
+                    dictionary_value[idx + 1] === QUOTE
                 ) {
                     idx += 1;
-                } else if (value === quote) {
+                } else if (value === QUOTE) {
                     const part: string = dictionary_value.slice(part_start_index, idx);
-                    if (this.indices.hasOwnProperty(part)) {
+                    if (this.values_to_indices.hasOwnProperty(part)) {
                         if (
                             idx + 1 < end &&
-                            dictionary_value[idx + 1] === comma
+                            dictionary_value[idx + 1] === COMMA
                         ) {
                             if (!is_in_sequence) {
-                                compressed_parts += zero;
+                                compressed_parts += ZERO;
                                 is_in_sequence = true;
                             }
-                            compressed_parts += String.fromCodePoint(this.indices[part]);
+                            compressed_parts += String.fromCodePoint(this.values_to_indices[part]);
                             idx += 1;
                         } else {
                             if (is_in_sequence) {
-                                compressed_parts += zero;
+                                compressed_parts += ZERO;
                                 is_in_sequence = false;
                             }
-                            compressed_parts += one;
-                            compressed_parts += String.fromCodePoint(this.indices[part]);
+                            compressed_parts += ONE;
+                            compressed_parts += String.fromCodePoint(this.values_to_indices[part]);
                         }
                     } else {
                         if (is_in_sequence) {
-                            compressed_parts += zero;
+                            compressed_parts += ZERO;
                             is_in_sequence = false;
                         }
-                        compressed_parts += quote;
+                        compressed_parts += QUOTE;
                         compressed_parts += part;
-                        compressed_parts += quote;
+                        compressed_parts += QUOTE;
                     }
 
                     is_in_quote = false;
                     part_start_index = 0;
                 }
             } else {
-                if (value === quote) {
+                if (value === QUOTE) {
                     is_in_quote = true;
                     part_start_index = idx + 1;
                 } else {
                     if (is_in_sequence) {
-                        compressed_parts += zero;
+                        compressed_parts += ZERO;
                         is_in_sequence = false;
                     }
                     compressed_parts += value;
@@ -132,10 +138,6 @@ export class Instance
         string
     {
         const compressed_parts: Array<string> = [];
-        const newline: string = String.fromCodePoint(Compressed_Symbol.NEWLINE);
-        const verbatim_open: string = String.fromCodePoint(Compressed_Symbol.VERBATIM_OPEN);
-        const verbatim_close: string = String.fromCodePoint(Compressed_Symbol.VERBATIM_CLOSE);
-
         const text: Text.Instance = new Text.Instance(
             {
                 dictionary: dictionary,
@@ -168,8 +170,8 @@ export class Instance
                     ) {
                         const part: Text.Part.Instance = row.Macro_Part(part_idx);
                         const value: Text.Value = part.Value();
-                        if (this.indices.hasOwnProperty(value)) {
-                            const index: string = String.fromCodePoint(this.indices[value]);
+                        if (this.values_to_indices.hasOwnProperty(value)) {
+                            const index: string = String.fromCodePoint(this.values_to_indices[value]);
                             if (part.Is_Word()) {
                                 compressed_parts.push(index);
                                 previous_part_is_word = true;
@@ -187,20 +189,20 @@ export class Instance
                                 previous_part_is_word = false;
                             }
                         } else {
-                            if (compressed_parts[compressed_parts.length - 1] === verbatim_close) {
+                            if (compressed_parts[compressed_parts.length - 1] === VERBATIM_CLOSE) {
                                 compressed_parts.pop();
                             } else {
-                                compressed_parts.push(verbatim_open);
+                                compressed_parts.push(VERBATIM_CLOSE);
                             }
                             compressed_parts.push(value);
-                            compressed_parts.push(verbatim_close);
+                            compressed_parts.push(VERBATIM_CLOSE);
                             previous_part_is_word = false;
                         }
                     }
                 }
             }
             if (line_idx < line_end - 1) {
-                compressed_parts.push(newline);
+                compressed_parts.push(NEWLINE);
             }
         }
 

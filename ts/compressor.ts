@@ -4,7 +4,7 @@ import { Index } from "./types.js";
 import * as Utils from "./utils.js";
 import * as Unicode from "./unicode.js";
 
-export const LZSS_MAX_MEMORY_LENGTH: Count = 0x110000;
+export const LZSS_MAX_MEMORY_LENGTH: Count = Unicode.POINT_COUNT;
 export const LZSS_ESCAPE_INDEX: Index = 0x10;
 export const LZSS_ESCAPE_STRING: string = String.fromCodePoint(LZSS_ESCAPE_INDEX);
 export const LZSS_FIRST_SURROGATE_INDEX: Index = Unicode.LEADING_SURROGATE.FIRST;
@@ -160,7 +160,7 @@ class LZSS_Window
             `length must be greater than 0`,
         );
 
-        // subtract one for 0x110000 - 1 unicode limit
+        // subtract one for the unicode limit
         // but we add one in decompressor so we can use
         // the full limit of the max_memory_length.
         offset -= 1;

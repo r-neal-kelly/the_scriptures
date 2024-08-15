@@ -5,14 +5,21 @@ import * as Unicode from "../../../unicode.js";
 
 import * as Text from "../../text.js";
 
+import * as Compression_Tools from "./compression_tools.js";
 import { Compressed_Symbol } from "./compressed_symbol.js";
 
-// Are we handling surrogates being used as indices messing up the unicode string?
-// Or does that matter in this code?
+const ZERO: string =
+    String.fromCodePoint(0);
+const ONE: string =
+    String.fromCodePoint(1);
+const QUOTE: string =
+    `"`;
+const COMMA: string =
+    `,`;
 
 export class Instance
 {
-    private values: { [index: Index]: string };
+    private indices_to_values: { [index: Index]: string };
 
     constructor(
         {
@@ -23,14 +30,13 @@ export class Instance
     )
     {
         Utils.Assert(
-            unique_parts.length <= 0x110000 - Compressed_Symbol._COUNT_,
-            `There are too may unique parts in the index to compress.`,
+            unique_parts.length <= Compression_Tools.MAX_UNIQUE_PART_COUNT,
+            `There are too may unique parts to compress.`,
         );
 
-        this.values = {};
+        this.indices_to_values = {};
         for (let idx = 0, end = unique_parts.length; idx < end; idx += 1) {
-            const compressor_index: Index = idx + Compressed_Symbol._COUNT_;
-            this.values[compressor_index] = unique_parts[idx];
+            this.indices_to_values[Compression_Tools.Compressed_Index(idx)] = unique_parts[idx];
         }
     }
 
@@ -43,11 +49,6 @@ export class Instance
     ):
         string
     {
-        const zero: string = String.fromCodePoint(0);
-        const one: string = String.fromCodePoint(1);
-        const quote: string = `"`;
-        const comma: string = `,`;
-
         let decompressed_parts: string = ``;
         let it: Unicode.Iterator = new Unicode.Iterator(
             {
@@ -58,22 +59,30 @@ export class Instance
 
         for (; !it.Is_At_End(); it = it.Next()) {
             if (is_in_sequence) {
-                if (it.Point() === zero) {
+                if (it.Point() === ZERO) {
                     is_in_sequence = false;
                 } else {
-                    decompressed_parts += quote;
-                    decompressed_parts += this.values[it.Point().codePointAt(0) as Index];
-                    decompressed_parts += quote;
-                    decompressed_parts += comma;
+                    Utils.Assert(
+                        this.indices_to_values.hasOwnProperty(it.Point().codePointAt(0) as Index),
+                        `Cannot decompress unknown index! Bad unique_parts.`,
+                    );
+                    decompressed_parts += QUOTE;
+                    decompressed_parts += this.indices_to_values[it.Point().codePointAt(0) as Index];
+                    decompressed_parts += QUOTE;
+                    decompressed_parts += COMMA;
                 }
             } else {
-                if (it.Point() === zero) {
+                if (it.Point() === ZERO) {
                     is_in_sequence = true;
-                } else if (it.Point() === one) {
+                } else if (it.Point() === ONE) {
                     it = it.Next();
-                    decompressed_parts += quote;
-                    decompressed_parts += this.values[it.Point().codePointAt(0) as Index];
-                    decompressed_parts += quote;
+                    Utils.Assert(
+                        this.indices_to_values.hasOwnProperty(it.Point().codePointAt(0) as Index),
+                        `Cannot decompress unknown index! Bad unique_parts.`,
+                    );
+                    decompressed_parts += QUOTE;
+                    decompressed_parts += this.indices_to_values[it.Point().codePointAt(0) as Index];
+                    decompressed_parts += QUOTE;
                 } else {
                     decompressed_parts += it.Point();
                 }
@@ -115,7 +124,11 @@ export class Instance
                 uncompressed_parts.push(`\n`);
                 previous_part_is_word = false;
             } else {
-                const value: string = this.values[it.Point().codePointAt(0) as Index];
+                Utils.Assert(
+                    this.indices_to_values.hasOwnProperty(it.Point().codePointAt(0) as Index),
+                    `Cannot decompress unknown index! Bad unique_parts.`,
+                );
+                const value: string = this.indices_to_values[it.Point().codePointAt(0) as Index];
                 if (
                     dictionary.Is_Word(value) ||
                     dictionary.Is_Word_Error(value)

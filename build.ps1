@@ -1,23 +1,27 @@
 param(
     [switch]$help,
+    [switch]$debug,
     [switch]$release,
-    [switch]$minify,
     [switch]$generate,
-    [switch]$force_generate
+    [switch]$clean
 )
 
-if ($help.IsPresent) {
+function Display_Help {
     Write-Host
-    Write-Host "Info:"
-    Write-Host "    Builds the TypeScript files, and optionally generates cache and or minifies the JavaScript."
+    Write-Host "    Compiles and generates the Scriptures."
     Write-Host
     Write-Host "Parameters:"
     Write-Host "    -help: Brings up this help message."
-    Write-Host "    -release: Minifies all JavaScript files and removes asserts."
-    Write-Host "    -minify: Minifies all JavaScript files."
-    Write-Host "    -generate: Generates all out of date Info and compressed files in data."
-    Write-Host "    -force_generate: Forcefully generates all Info and compressed files in data."
+    Write-Host "    -debug: Compiles JavaScript files in debug mode. Optionally cleans old files."
+    Write-Host "    -release: Compiles JavaScript files in release mode. Always cleans old files."
+    Write-Host "    -generate: Compiles Data files. Optionally cleans old files."
+    Write-Host "    -clean: Removes all compiled JavaScript files with debug and release,"
+    Write-Host "            and all data files with generate before recompiling them."
     Write-Host
+}
+
+if ($help.IsPresent) {
+    Display_Help
 }
 else {
     if ((Get-Command "node" -ErrorAction SilentlyContinue) -eq $null) {
@@ -35,37 +39,49 @@ else {
         Write-Host "This program requires terser to be installed and available in the PATH."
         Write-Host
     }
-    else {
-        if ($release.IsPresent -or $minify.IsPresent) {
-            Write-Host "    Removing old JavaScript..."
-            if (Test-Path ./js -PathType Container) {
-                Remove-Item -Recurse -Force ./js
+    elseif ($debug.IsPresent -and $release.IsPresent) {
+        Write-Host
+        Write-Host "This program requires either the debug flag or the release flag, but cannot proceed with both."
+        Write-Host
+    }
+    elseif ($debug.IsPresent -or $release.IsPresent -or $generate.IsPresent) {
+        if ($debug.IsPresent -or $release.IsPresent) {
+            if ($clean.IsPresent -or $release.IsPresent) {
+                Write-Host "    Removing old JavaScript..."
+                if (Test-Path ./js -PathType Container) {
+                    Remove-Item -Recurse -Force ./js
+                }
+            }
+
+            Write-Host "    Compiling TypeScript into JavaScript..."
+            tsc --build
+
+            if ($release.IsPresent) {
+                Write-Host "    Minifying all JavaScript files..."
+                node ./js/tool/minify.js
+
+                Write-Host "    Removing Asserts from JavaScript files..."
+                node ./js/tool/remove_asserts.js
             }
         }
+
+        if ($generate.IsPresent) {
+            if ($clean.IsPresent) {
+                node ./js/tool/generate.js --force
+            }
+            else {
+                node ./js/tool/generate.js
+            }
+        }
+
+        if ($debug.IsPresent -or $release.IsPresent) {
+            Write-Host "    Updating Data Consts..."
+            node ./js/tool/update_data_consts.js
+        }
         
-        Write-Host "    Compiling TypeScript into JavaScript..."
-        tsc --build
-
-        if ($release.IsPresent -or $minify.IsPresent) {
-            Write-Host "    Minifying all JavaScript files..."
-            node ./js/tool/minify.js
-        }
-
-        if ($release.IsPresent) {
-            Write-Host "    Removing Asserts from JavaScript files..."
-            node ./js/tool/remove_asserts.js
-        }
-
-        if ($force_generate.IsPresent) {
-            node ./js/tool/generate.js --force
-        }
-        elseif ($generate.IsPresent) {
-            node ./js/tool/generate.js
-        }
-
-        Write-Host "    Updating Data Consts..."
-        node ./js/tool/update_data_consts.js
-
         Write-Host "    Done building."
+    }
+    else {
+        Display_Help
     }
 }
