@@ -16,6 +16,8 @@ import * as Executor from "./executor.js";
 import * as Result from "./result.js";
 import * as Percent_Done from "./percent_done.js";
 
+const WORKERS: Array<Worker> = [];
+
 export class Instance
 {
     private executor: Executor.Instance;
@@ -70,7 +72,7 @@ export class Instance
         return this.Text(await data_file.Text(), expression);
     }
 
-    async Data_File_With_Node(
+    private async Data_File_With_Node(
         data_file: Data.File.Instance,
         node: Node.Instance,
     ):
@@ -82,7 +84,7 @@ export class Instance
         );
     }
 
-    async Data_File_Concurrently(
+    private async Data_File_Concurrently(
         data_file: Data.File.Instance,
         expression: string,
         worker: Worker,
@@ -114,12 +116,11 @@ export class Instance
         );
     }
 
-    async Data_Version(
+    private async Data_Version(
         data_version: Data.Version.Instance,
         expression: string,
         wait_per_file_millisecond_interval: Count,
         percent_done: Percent_Done.Instance,
-        workers: Array<Worker> = [],
     ):
         Promise<Result.Version | Parser.Help>
     {
@@ -143,8 +144,8 @@ export class Instance
             await data_version.Cache_Files();
 
             if (Utils.Can_Use_Workers()) {
-                while (workers.length < 4) {
-                    workers.push(
+                while (WORKERS.length < 4) {
+                    WORKERS.push(
                         new Worker(
                             `js/model/search/worker.js`,
                             {
@@ -156,10 +157,10 @@ export class Instance
                 for (
                     let file_idx = 0, file_end = data_version.File_Count();
                     file_idx < file_end;
-                    file_idx += workers.length
+                    file_idx += WORKERS.length
                 ) {
                     const usable_worker_count: Count =
-                        Math.min(file_end - file_idx, workers.length);
+                        Math.min(file_end - file_idx, WORKERS.length);
                     const worker_promises: Array<Promise<Array<Result.Instance>>> =
                         [];
                     for (
@@ -171,7 +172,7 @@ export class Instance
                             this.Data_File_Concurrently(
                                 data_version.File_At(file_idx + worker_idx),
                                 expression,
-                                workers[worker_idx],
+                                WORKERS[worker_idx],
                             ),
                         );
                     }
@@ -225,7 +226,6 @@ export class Instance
         Promise<Result.Versions | Parser.Help>
     {
         const versions_result: Result.Versions = new Map();
-        const workers: Array<Worker> = [];
 
         if (!percent_done.Has_Total_Count()) {
             let total_file_count: Count = 0;
@@ -243,7 +243,6 @@ export class Instance
                     expression,
                     Math.round(wait_per_version_millisecond_interval / data_version.File_Count()),
                     percent_done,
-                    workers,
                 );
             if (version_result instanceof Parser.Help) {
                 return version_result as Parser.Help;
