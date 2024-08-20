@@ -4,12 +4,13 @@ import { Index } from "./types.js";
 import * as Utils from "./utils.js";
 import * as Unicode from "./unicode.js";
 
-export const LZSS_MAX_STRING_LENGTH: Count = (Unicode.POINT_COUNT * Unicode.POINT_COUNT) + Unicode.POINT_COUNT;
-export const LZSS_MAX_MEMORY_LENGTH: Count = Unicode.POINT_COUNT;
+export const LZSS_INDEX_COUNT: Count = Unicode.POINT_COUNT;
+export const LZSS_LAST_INDEX: Index = Unicode.LAST_POINT;
 export const LZSS_ESCAPE_INDEX: Index = 0x10;
 export const LZSS_ESCAPE_STRING: string = String.fromCodePoint(LZSS_ESCAPE_INDEX);
-export const LZSS_FIRST_SURROGATE_INDEX: Index = Unicode.LEADING_SURROGATE.FIRST;
-export const LZSS_LAST_SURROGATE_INDEX: Index = Unicode.TRAILING_SURROGATE.LAST;
+
+export const LZSS_MAX_STRING_LENGTH: Count = (LZSS_LAST_INDEX * LZSS_INDEX_COUNT) + LZSS_LAST_INDEX;
+export const LZSS_MAX_MEMORY_LENGTH: Count = LZSS_INDEX_COUNT;
 
 /*
     There is a max of 4 flags. We may use the
@@ -20,58 +21,53 @@ export const LZSS_LAST_SURROGATE_INDEX: Index = Unicode.TRAILING_SURROGATE.LAST;
     at the beginning of the compressed string
     to tell us which encoding was optimized for.
 */
-enum LZSS_Flags
+enum LZSS_Pair_Flags
 {
-    SURROGATE_A = 1 << 0,
-    SURROGATE_B = 1 << 1,
+    SURROGATE_INDEX_A = 1 << 0,
+    SURROGATE_INDEX_B = 1 << 1,
     UNUSED_1 = 1 << 2,
     UNUSED_2 = 1 << 3,
 }
 
-function LZSS_Create_Pair(
-    count_a: Count,
-    count_b: Count,
+function LZSS_Write_Pair(
+    index_a: Count,
+    index_b: Count,
 ):
     string
 {
     Utils.Assert(
-        count_a >= 0,
-        `count_a must be greater than or equal to 0`,
+        index_a >= 0 &&
+        index_a <= LZSS_LAST_INDEX,
+        `index_a must be greater than or equal to 0 and less than or equal to ${LZSS_LAST_INDEX}`,
     );
     Utils.Assert(
-        count_a < LZSS_MAX_MEMORY_LENGTH,
-        `count_a must be less than ${LZSS_MAX_MEMORY_LENGTH}`,
+        index_b >= 0 &&
+        index_b <= LZSS_LAST_INDEX,
+        `index_b must be greater than or equal to 0 and less than or equal to ${LZSS_LAST_INDEX}`,
     );
-    Utils.Assert(
-        count_b >= 0,
-        `count_b must be greater than or equal to 0`,
-    );
-    Utils.Assert(
-        count_b < LZSS_MAX_MEMORY_LENGTH,
-        `count_b must be less than ${LZSS_MAX_MEMORY_LENGTH}`,
-    );
-
-    const has_surrogate_a: boolean =
-        count_a >= LZSS_FIRST_SURROGATE_INDEX &&
-        count_a <= LZSS_LAST_SURROGATE_INDEX;
-    const has_surrogate_b: boolean =
-        count_b >= LZSS_FIRST_SURROGATE_INDEX &&
-        count_b <= LZSS_LAST_SURROGATE_INDEX;
 
     let control_index: Index = 0;
-    if (has_surrogate_a) {
-        control_index |= LZSS_Flags.SURROGATE_A;
-        count_a -= LZSS_FIRST_SURROGATE_INDEX;
+
+    if (
+        index_a >= Unicode.LEADING_SURROGATE.FIRST &&
+        index_a <= Unicode.TRAILING_SURROGATE.LAST
+    ) {
+        control_index |= LZSS_Pair_Flags.SURROGATE_INDEX_A;
+        index_a -= Unicode.LEADING_SURROGATE.FIRST;
     }
-    if (has_surrogate_b) {
-        control_index |= LZSS_Flags.SURROGATE_B;
-        count_b -= LZSS_FIRST_SURROGATE_INDEX;
+
+    if (
+        index_b >= Unicode.LEADING_SURROGATE.FIRST &&
+        index_b <= Unicode.TRAILING_SURROGATE.LAST
+    ) {
+        control_index |= LZSS_Pair_Flags.SURROGATE_INDEX_B;
+        index_b -= Unicode.LEADING_SURROGATE.FIRST;
     }
 
     return (
         String.fromCodePoint(control_index) +
-        String.fromCodePoint(count_a) +
-        String.fromCodePoint(count_b)
+        String.fromCodePoint(index_a) +
+        String.fromCodePoint(index_b)
     );
 }
 
@@ -89,28 +85,28 @@ function LZSS_Read_Pair(
 
     iter = iter.Next();
 
-    let count_a: Count = iter.Point().codePointAt(0) as Count;
-    if ((control_index & LZSS_Flags.SURROGATE_A) !== 0) {
-        count_a += LZSS_FIRST_SURROGATE_INDEX;
+    let index_a: Count = iter.Point().codePointAt(0) as Count;
+    if ((control_index & LZSS_Pair_Flags.SURROGATE_INDEX_A) !== 0) {
+        index_a += Unicode.LEADING_SURROGATE.FIRST;
     }
 
     iter = iter.Next();
 
-    let count_b: Count = iter.Point().codePointAt(0) as Count;
-    if ((control_index & LZSS_Flags.SURROGATE_B) !== 0) {
-        count_b += LZSS_FIRST_SURROGATE_INDEX;
+    let index_b: Count = iter.Point().codePointAt(0) as Count;
+    if ((control_index & LZSS_Pair_Flags.SURROGATE_INDEX_B) !== 0) {
+        index_b += Unicode.LEADING_SURROGATE.FIRST;
     }
 
     iter = iter.Next();
 
     return [
         iter,
-        count_a,
-        count_b,
+        index_a,
+        index_b,
     ];
 }
 
-function LZSS_Create_Header(
+function LZSS_Write_Header(
     decompressed_length: Count,
 ):
     string
@@ -123,11 +119,11 @@ function LZSS_Create_Header(
     );
 
     const length_multiplyer: Count =
-        Math.floor(decompressed_length / LZSS_MAX_MEMORY_LENGTH);
+        Math.floor(decompressed_length / LZSS_INDEX_COUNT);
     const length_remainder: Count =
-        decompressed_length % LZSS_MAX_MEMORY_LENGTH;
+        decompressed_length % LZSS_INDEX_COUNT;
     const compressed_length: string =
-        LZSS_Create_Pair(length_multiplyer, length_remainder);
+        LZSS_Write_Pair(length_multiplyer, length_remainder);
 
     result += compressed_length;
 
@@ -154,7 +150,7 @@ function LZSS_Read_Header(
         length_remainder,
     ] = LZSS_Read_Pair(iter);
 
-    let decompressed_length: Count = (length_multiplyer * LZSS_MAX_MEMORY_LENGTH) + length_remainder;
+    let decompressed_length: Count = (length_multiplyer * LZSS_INDEX_COUNT) + length_remainder;
 
     return [
         iter,
@@ -162,27 +158,21 @@ function LZSS_Read_Header(
     ];
 }
 
-function LZSS_Create_Token(
+function LZSS_Write_Token(
     offset: Count,
     length: Count,
 ):
     string
 {
     Utils.Assert(
-        offset > 0,
-        `offset must be greater than 0`,
-    );
-    Utils.Assert(
+        offset > 0 &&
         offset <= LZSS_MAX_MEMORY_LENGTH,
-        `offset must be less than or equal to ${LZSS_MAX_MEMORY_LENGTH}`,
+        `offset must be greater than 0 and less than or equal to ${LZSS_MAX_MEMORY_LENGTH}`,
     );
     Utils.Assert(
-        length > 0,
-        `length must be greater than 0`,
-    );
-    Utils.Assert(
+        length > 0 &&
         length <= LZSS_MAX_MEMORY_LENGTH,
-        `length must be less than or equal to ${LZSS_MAX_MEMORY_LENGTH}`,
+        `length must be greater than 0 and less than or equal to ${LZSS_MAX_MEMORY_LENGTH}`,
     );
 
     // subtract one for the unicode limit
@@ -191,7 +181,7 @@ function LZSS_Create_Token(
     offset -= 1;
     length -= 1;
 
-    return LZSS_Create_Pair(offset, length);
+    return LZSS_Write_Pair(offset, length);
 }
 
 function LZSS_Read_Token(
@@ -223,6 +213,7 @@ class LZSS_Window
     private text_index: Index;
     private memory: string;
     private max_memory_length: Count;
+    private optimize_for_utf_8_encoding: boolean;
     private matches_buffer_a: Array<[Index, Index]>;
     private matches_buffer_b: Array<[Index, Index]>;
 
@@ -230,9 +221,11 @@ class LZSS_Window
         {
             text,
             max_memory_length,
+            optimize_for_utf_8_encoding,
         }: {
             text: string,
             max_memory_length: Count,
+            optimize_for_utf_8_encoding: boolean,
         },
     )
     {
@@ -240,6 +233,7 @@ class LZSS_Window
         this.text_index = 0;
         this.memory = ``;
         this.max_memory_length = max_memory_length;
+        this.optimize_for_utf_8_encoding = optimize_for_utf_8_encoding;
         this.matches_buffer_a = [];
         this.matches_buffer_b = [];
     }
@@ -332,11 +326,10 @@ class LZSS_Window
     private Can_Use_Token(
         token: string,
         text: string,
-        optimize_for_utf_8_encoding: boolean,
     ):
         boolean
     {
-        if (optimize_for_utf_8_encoding) {
+        if (this.optimize_for_utf_8_encoding) {
             return (
                 Unicode.Expected_UTF_8_Unit_Count(token) <
                 Unicode.Expected_UTF_8_Unit_Count(text)
@@ -346,7 +339,7 @@ class LZSS_Window
         }
     }
 
-    private Create_Non_Token(
+    private Write_Non_Token(
         point: string,
     ):
         string
@@ -368,9 +361,8 @@ class LZSS_Window
 
     Token_Or_Non_Token(
         iter: Unicode.Iterator,
-        optimize_for_utf_8_encoding: boolean,
     ):
-        [string, Unicode.Iterator]
+        [Unicode.Iterator, string]
     {
         Utils.Assert(
             !iter.Is_At_End(),
@@ -402,44 +394,44 @@ class LZSS_Window
             const length: Count =
                 match[1] - match[0];
             const token: string =
-                LZSS_Create_Token(offset, length);
+                LZSS_Write_Token(offset, length);
 
-            if (this.Can_Use_Token(token, points.slice(0, length), optimize_for_utf_8_encoding)) {
+            if (this.Can_Use_Token(token, points.slice(0, length))) {
                 this.Move_Memory(length);
 
                 return [
-                    token,
                     new Unicode.Iterator(
                         {
                             text: iter.Text(),
                             index: iter.Index() + length,
                         },
                     ),
+                    token,
                 ];
             } else {
                 this.Move_Memory(first_point.length);
 
                 return [
-                    this.Create_Non_Token(first_point),
                     new Unicode.Iterator(
                         {
                             text: iter.Text(),
                             index: iter.Index() + first_point.length,
                         },
                     ),
+                    this.Write_Non_Token(first_point),
                 ];
             }
         } else {
             this.Move_Memory(first_point.length);
 
             return [
-                this.Create_Non_Token(first_point),
                 new Unicode.Iterator(
                     {
                         text: iter.Text(),
                         index: iter.Index() + first_point.length,
                     },
                 ),
+                this.Write_Non_Token(first_point),
             ];
         }
     }
@@ -462,34 +454,39 @@ export function LZSS_Compress(
     string
 {
     Utils.Assert(
-        max_memory_length > 0,
-        `max_memory_length must be greater than 0`,
+        value.length <= LZSS_MAX_STRING_LENGTH,
+        `value.length must be less than or equal to ${LZSS_MAX_STRING_LENGTH}`,
     );
     Utils.Assert(
+        max_memory_length > 0 &&
         max_memory_length <= LZSS_MAX_MEMORY_LENGTH,
-        `max_memory_length must be less than or equal to ${LZSS_MAX_MEMORY_LENGTH}`,
+        `max_memory_length must be greater than 0 and less than or equal to ${LZSS_MAX_MEMORY_LENGTH}`,
     );
 
     const window: LZSS_Window = new LZSS_Window(
         {
             text: value,
             max_memory_length: max_memory_length,
+            optimize_for_utf_8_encoding: optimize_for_utf_8_encoding,
         },
     );
 
-    let result: string = LZSS_Create_Header(value.length);
+    let result: string = LZSS_Write_Header(value.length);
 
     let iter: Unicode.Iterator = new Unicode.Iterator(
         {
             text: value,
         },
     );
+    let token_or_non_token: string;
+
     for (; !iter.Is_At_End();) {
-        const [token_or_non_token, new_iter]: [string, Unicode.Iterator] =
-            window.Token_Or_Non_Token(iter, optimize_for_utf_8_encoding);
+        [
+            iter,
+            token_or_non_token,
+        ] = window.Token_Or_Non_Token(iter);
 
         result += token_or_non_token;
-        iter = new_iter;
     }
 
     return result;
