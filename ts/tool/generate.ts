@@ -310,6 +310,48 @@ function Decompression_Line_Mismatches(
     }
 }
 
+async function Interlineate():
+    Promise<void>
+{
+    /*
+        We'll have to read each file and build a map of encountered interlineation markers in the text.
+        We'll have to combine unique book's dictionaries. This can actually result in a flat out hard exit error.
+        The reason being that it is possible for dictioanries to be incompatible, in which case we'd have to
+        update that dictionary to get it compatible with others. And we can actually produce a warning instead
+        that says "this unique book couldn't be interlineated because of incompatible dictionary", but that may
+        be a little too complex to write at first.
+
+        So part of the question that remains is how will the interlineation files be stored on disk? See, we'd
+        like to be able to choose what is the primary source text to interlineate from. See, it's the text that
+        decides how parts of rows get both broken up and sequenced. That means we will probably need to have that
+        data stored in each unique book's folder. The data may be very very big however. And again, it would need
+        its own dictionary.
+
+        It's okay to run some tests to see how much data it will create. I imagine it will be fairly large.
+
+        Oh! Also, I'm not sure, but it's probably okay to interlineate with source texts that have margin commands.
+        I figure, there will be no interlineation in the margin for the time being, so it should work until we
+        potentially add another layer of abstraction into text buffers to support true margins. Right now, margins
+        share the same layer of abstraction as interlineation blocks, which is maybe not what would be intuitively
+        expected by the declaritve programmer.
+
+        If I make the interlineation file its own format above the declaritive language (of which it includes) then
+        I can send small bits of info over the net in a header to load up what dictionaries its needs and to combine
+        dynamically on the client side. We can use the static generator to set a constant value for the cache, so I
+        can actually determine what amount of dictionaries should be cachable at a time based on the max number of
+        dictioanries required by the highest volume interlineation.
+
+        And of course the dynamically created dictionaries themselves would be cached, so if you want to look at multiple
+        chapters in an interlineation, you won't be having to generate it each time. And the number of generatred dicts
+        should be limited to within reason, probably five at a time.
+
+        And actually, the dynamic ones could be an efficient type that just points to already existent dictionaries, but that's
+        maybe harder to cache? Perhaps not, as JS will keep them alive as long as they are pointed to. And it's still theoritcally
+        going to save memory because we can just grab it from the cache if it's there, point to it, and even when it's removed from
+        cache, if one of the bulky interlineations needs it, it will have it even though it's no longer in cache.
+    */
+}
+
 async function Generate(
     do_force: boolean,
 ):
@@ -531,7 +573,7 @@ async function Generate(
                         );
                         for (let idx = 0, end = file_names.length; idx < end; idx += 1) {
                             const file_name: string = file_names[idx];
-                            const file_text: string = file_texts[idx];
+                            const file_text: string = file_texts[idx]; // I think we can remove the interlineation markers here, just for this scope. however, not removing it for counts will cause bloat in the optimization for browser, because it's counted in the numbers
                             const compressed_file_text: string =
                                 compressor.Compress_File(
                                     {
