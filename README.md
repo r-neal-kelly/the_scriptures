@@ -48,10 +48,10 @@ The Scriptures are available to read online [here](https://r-neal-kelly.github.i
     - Judges
     - Ruth
     - 1 Samuel
+    - 2 Samuel
     - Masoretic Notes
     - Jubilees
     - Prolegomena to the History of Israel
-    - 2 Samuel
 
 <br>
 

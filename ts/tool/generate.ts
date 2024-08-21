@@ -210,6 +210,41 @@ async function Read_File_Text(
     return file_text;
 }
 
+/*
+    Currently the editor doesn't allow one to set the deafult_language_name of
+    a dictionary, so we add it in when we generate the project.
+*/
+async function Read_And_Write_Dictionary_With_Default_Language_Name(
+    files_path: Path,
+    default_language_name: Language.Name,
+):
+    Promise<[string, Text.Dictionary.Instance]>
+{
+    const dictionary_json_path: Path =
+        `${files_path}/${Data.Consts.DICTIONARY_JSON_NAME}`;
+
+    let dictionary_json: string =
+        await File_System.Read_File(dictionary_json_path);
+
+    const dictionary: Text.Dictionary.Instance =
+        new Text.Dictionary.Instance(
+            {
+                json: dictionary_json,
+            },
+        );
+
+    if (dictionary.Default_Language_Name() !== default_language_name) {
+        dictionary.Set_Default_Language_Name(default_language_name);
+        dictionary_json = dictionary.To_JSON();
+        await File_System.Write_File(dictionary_json_path, dictionary_json);
+    }
+
+    return [
+        dictionary_json,
+        dictionary,
+    ];
+}
+
 async function Should_Version_Be_Updated(
     last_timestamp: Count,
     files_path: Path,
@@ -395,12 +430,10 @@ async function Generate(
                     data_info.Add_Unique_Version_Name(version_name);
                     if (await Should_Version_Be_Updated(last_timestamp, files_path, file_names)) {
                         const version_info: Data.Version.Info.Instance = new Data.Version.Info.Instance({});
-                        const dictionary_json: string = await File_System.Read_File(`${files_path}/${Data.Consts.DICTIONARY_JSON_NAME}`);
-                        const dictionary: Text.Dictionary.Instance = new Text.Dictionary.Instance(
-                            {
-                                json: dictionary_json,
-                            },
-                        );
+                        const [dictionary_json, dictionary]: [
+                            string,
+                            Text.Dictionary.Instance,
+                        ] = await Read_And_Write_Dictionary_With_Default_Language_Name(files_path, language_name as Language.Name);
                         const maybe_dictionary_validation_error: Text.Dictionary.Validation_Error | null =
                             dictionary.Maybe_Validation_Error();
                         const unique_parts: Unique_Parts = new Unique_Parts();
