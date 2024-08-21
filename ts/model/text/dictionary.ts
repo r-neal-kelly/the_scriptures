@@ -6,6 +6,11 @@ import * as Unicode from "../../unicode.js";
 import * as Language from "../language.js";
 
 import { Value } from "./value.js";
+import * as Text from "./instance.js";
+import * as Line from "./line.js";
+import * as Column from "./column.js";
+import * as Row from "./row.js";
+import * as Part from "./part.js";
 
 export type Letter = Value;
 export type Word = Value;
@@ -97,6 +102,150 @@ export class Instance
                 } as Info,
             );
         }
+    }
+
+    From_JSON(
+        json: string,
+    ):
+        void
+    {
+        const object: any = JSON.parse(json);
+
+        this.info = Object.create(null);
+
+        if (object.default_language_name != null) {
+            this.info.default_language_name = object.default_language_name;
+        } else {
+            this.info.default_language_name = NULL_DEFAULT_LANGUAGE_NAME;
+        }
+
+        if (object.letters != null) {
+            this.info.letters = Object.assign(
+                Object.create(null),
+                object.letters,
+            );
+        }
+
+        if (object.markers != null) {
+            this.info.markers = Object.assign(
+                Object.create(null),
+                object.markers,
+            );
+        }
+
+        if (object.words != null) {
+            this.info.words = Object.create(null);
+            for (const language_name of Object.keys(object.words)) {
+                this.info.words[language_name] = Object.assign(
+                    Object.create(null),
+                    object.words[language_name],
+                );
+            }
+        }
+
+        if (object.breaks != null) {
+            this.info.breaks = Object.create(null);
+            for (const language_name of Object.keys(object.breaks)) {
+                this.info.breaks[language_name] = Object.create(null);
+                for (const boundary of [Boundary.START, Boundary.MIDDLE, Boundary.END]) {
+                    if (object.breaks[language_name][boundary] != null) {
+                        this.info.breaks[language_name][boundary] = Object.assign(
+                            Object.create(null),
+                            object.breaks[language_name][boundary],
+                        );
+                    }
+                }
+            }
+        }
+
+        if (object.word_errors != null) {
+            this.info.word_errors = Object.assign(
+                Object.create(null),
+                object.word_errors,
+            );
+        }
+
+        if (object.break_errors != null) {
+            this.info.break_errors = Object.create(null);
+            for (const language_name of Object.keys(object.break_errors)) {
+                this.info.break_errors[language_name] = Object.create(null);
+                for (const boundary of [Boundary.START, Boundary.MIDDLE, Boundary.END]) {
+                    if (object.break_errors[language_name][boundary] != null) {
+                        this.info.break_errors[language_name][boundary] =
+                            object.break_errors[language_name][boundary];
+                    }
+                }
+            }
+        }
+
+        Utils.Assert(
+            this.Maybe_Validation_Error() === null,
+            `json is invalid: ${this.Maybe_Validation_Error()}`,
+        );
+    }
+
+    To_JSON():
+        string
+    {
+        // Object.keys returns only an object's own keys, nothing on the prototype,
+        // which is what we want. Unlike getOwnPropertyNames, keys only returns
+        // enumerable properties, which is fine, because these should all be enumerable.
+
+        const sorted_letters: Letters = Object.create(null);
+        for (const language_name of Object.keys(this.info.letters).sort()) {
+            sorted_letters[language_name] =
+                this.info.letters[language_name].sort();
+        }
+        this.info.letters = sorted_letters;
+
+        const sorted_markers: Markers = Object.create(null);
+        for (const language_name of Object.keys(this.info.markers).sort()) {
+            sorted_markers[language_name] =
+                this.info.markers[language_name].sort();
+        }
+        this.info.markers = sorted_markers;
+
+        const sorted_words: Words = Object.create(null);
+        for (const language_name of Object.keys(this.info.words).sort()) {
+            sorted_words[language_name] = Object.create(null);
+            for (const letter of Object.keys(this.info.words[language_name]).sort()) {
+                sorted_words[language_name][letter] =
+                    this.info.words[language_name][letter].sort();
+            }
+        }
+        this.info.words = sorted_words;
+
+        const sorted_breaks: Breaks = Object.create(null);
+        for (const language_name of Object.keys(this.info.breaks).sort()) {
+            sorted_breaks[language_name] = Object.create(null);
+            for (const boundary of [Boundary.START, Boundary.MIDDLE, Boundary.END]) {
+                sorted_breaks[language_name][boundary] = Object.create(null);
+                for (const marker of Object.keys(this.info.breaks[language_name][boundary]).sort()) {
+                    sorted_breaks[language_name][boundary][marker] =
+                        this.info.breaks[language_name][boundary][marker].sort();
+                }
+            }
+        }
+        this.info.breaks = sorted_breaks;
+
+        const sorted_word_errors: Word_Errors = Object.create(null);
+        for (const language_name of Object.keys(this.info.word_errors).sort()) {
+            sorted_word_errors[language_name] =
+                this.info.word_errors[language_name].sort();
+        }
+        this.info.word_errors = sorted_word_errors;
+
+        const sorted_break_errors: Break_Errors = Object.create(null);
+        for (const language_name of Object.keys(this.info.break_errors).sort()) {
+            sorted_break_errors[language_name] = Object.create(null);
+            for (const boundary of [Boundary.START, Boundary.MIDDLE, Boundary.END]) {
+                sorted_break_errors[language_name][boundary] =
+                    this.info.break_errors[language_name][boundary].sort();
+            }
+        }
+        this.info.break_errors = sorted_break_errors;
+
+        return JSON.stringify(this.info);
     }
 
     Maybe_Validation_Error():
@@ -986,7 +1135,7 @@ export class Instance
         }
     }
 
-    Combine_With(
+    Add_All_From(
         other: Instance,
     ):
         void
@@ -999,153 +1148,175 @@ export class Instance
         // we'll be able to implement this once we have the default language name update done.
     }
 
-    private Sort():
-        void
-    {
-        // Object.keys returns only an object's own keys, nothing on the prototype,
-        // which is what we want. Unlike getOwnPropertyNames, keys only returns
-        // enumerable properties, which is fine, because these should all be enumerable.
-
-        const sorted_letters: Letters = Object.create(null);
-        for (const language_name of Object.keys(this.info.letters).sort()) {
-            sorted_letters[language_name] =
-                this.info.letters[language_name].sort();
-        }
-        this.info.letters = sorted_letters;
-
-        const sorted_markers: Markers = Object.create(null);
-        for (const language_name of Object.keys(this.info.markers).sort()) {
-            sorted_markers[language_name] =
-                this.info.markers[language_name].sort();
-        }
-        this.info.markers = sorted_markers;
-
-        const sorted_words: Words = Object.create(null);
-        for (const language_name of Object.keys(this.info.words).sort()) {
-            sorted_words[language_name] = Object.create(null);
-            for (const letter of Object.keys(this.info.words[language_name]).sort()) {
-                sorted_words[language_name][letter] =
-                    this.info.words[language_name][letter].sort();
-            }
-        }
-        this.info.words = sorted_words;
-
-        const sorted_breaks: Breaks = Object.create(null);
-        for (const language_name of Object.keys(this.info.breaks).sort()) {
-            sorted_breaks[language_name] = Object.create(null);
-            for (const boundary of [Boundary.START, Boundary.MIDDLE, Boundary.END]) {
-                sorted_breaks[language_name][boundary] = Object.create(null);
-                for (const marker of Object.keys(this.info.breaks[language_name][boundary]).sort()) {
-                    sorted_breaks[language_name][boundary][marker] =
-                        this.info.breaks[language_name][boundary][marker].sort();
-                }
-            }
-        }
-        this.info.breaks = sorted_breaks;
-
-        const sorted_word_errors: Word_Errors = Object.create(null);
-        for (const language_name of Object.keys(this.info.word_errors).sort()) {
-            sorted_word_errors[language_name] =
-                this.info.word_errors[language_name].sort();
-        }
-        this.info.word_errors = sorted_word_errors;
-
-        const sorted_break_errors: Break_Errors = Object.create(null);
-        for (const language_name of Object.keys(this.info.break_errors).sort()) {
-            sorted_break_errors[language_name] = Object.create(null);
-            for (const boundary of [Boundary.START, Boundary.MIDDLE, Boundary.END]) {
-                sorted_break_errors[language_name][boundary] =
-                    this.info.break_errors[language_name][boundary].sort();
-            }
-        }
-        this.info.break_errors = sorted_break_errors;
-    }
-
-    From_JSON(
-        json: string,
+    /*
+        Only add parts from lines in the given text that have no unknown points.
+    */
+    Add_All_Possible_From_Text(
+        text: Text.Instance,
     ):
         void
     {
-        const object: any = JSON.parse(json);
-
-        this.info = Object.create(null);
-
-        if (object.default_language_name != null) {
-            this.info.default_language_name = object.default_language_name;
-        } else {
-            this.info.default_language_name = NULL_DEFAULT_LANGUAGE_NAME;
-        }
-
-        if (object.letters != null) {
-            this.info.letters = Object.assign(
-                Object.create(null),
-                object.letters,
-            );
-        }
-
-        if (object.markers != null) {
-            this.info.markers = Object.assign(
-                Object.create(null),
-                object.markers,
-            );
-        }
-
-        if (object.words != null) {
-            this.info.words = Object.create(null);
-            for (const language_name of Object.keys(object.words)) {
-                this.info.words[language_name] = Object.assign(
-                    Object.create(null),
-                    object.words[language_name],
-                );
-            }
-        }
-
-        if (object.breaks != null) {
-            this.info.breaks = Object.create(null);
-            for (const language_name of Object.keys(object.breaks)) {
-                this.info.breaks[language_name] = Object.create(null);
-                for (const boundary of [Boundary.START, Boundary.MIDDLE, Boundary.END]) {
-                    if (object.breaks[language_name][boundary] != null) {
-                        this.info.breaks[language_name][boundary] = Object.assign(
-                            Object.create(null),
-                            object.breaks[language_name][boundary],
-                        );
+        const text_default_language_name: Language.Name | null =
+            text.Default_Language_Name();
+        const possible_lines: Array<Line.Instance> = text.Lines().filter(
+            function (
+                line: Line.Instance,
+            ):
+                boolean
+            {
+                for (
+                    let column_idx = 0, column_end = line.Column_Count();
+                    column_idx < column_end;
+                    column_idx += 1
+                ) {
+                    const column: Column.Instance = line.Column(column_idx);
+                    for (
+                        let row_idx = 0, row_end = column.Row_Count();
+                        row_idx < row_end;
+                        row_idx += 1
+                    ) {
+                        const row: Row.Instance = column.Row(row_idx);
+                        for (
+                            let part_idx = 0, part_end = row.Micro_Part_Count();
+                            part_idx < part_end;
+                            part_idx += 1
+                        ) {
+                            const part: Part.Instance = row.Micro_Part(part_idx);
+                            if (part.Is_Unknown()) {
+                                return false;
+                            }
+                        }
                     }
                 }
-            }
-        }
 
-        if (object.word_errors != null) {
-            this.info.word_errors = Object.assign(
-                Object.create(null),
-                object.word_errors,
-            );
-        }
-
-        if (object.break_errors != null) {
-            this.info.break_errors = Object.create(null);
-            for (const language_name of Object.keys(object.break_errors)) {
-                this.info.break_errors[language_name] = Object.create(null);
-                for (const boundary of [Boundary.START, Boundary.MIDDLE, Boundary.END]) {
-                    if (object.break_errors[language_name][boundary] != null) {
-                        this.info.break_errors[language_name][boundary] =
-                            object.break_errors[language_name][boundary];
-                    }
-                }
-            }
-        }
-
-        Utils.Assert(
-            this.Maybe_Validation_Error() === null,
-            `json is invalid: ${this.Maybe_Validation_Error()}`,
+                return true;
+            },
         );
-    }
 
-    To_JSON():
-        string
-    {
-        this.Sort();
-
-        return JSON.stringify(this.info);
+        for (
+            let line_idx = 0, line_end = possible_lines.length;
+            line_idx < line_end;
+            line_idx += 1
+        ) {
+            const line: Line.Instance = possible_lines[line_idx];
+            for (
+                let column_idx = 0, column_end = line.Column_Count();
+                column_idx < column_end;
+                column_idx += 1
+            ) {
+                const column: Column.Instance = line.Column(column_idx);
+                for (
+                    let row_idx = 0, row_end = column.Row_Count();
+                    row_idx < row_end;
+                    row_idx += 1
+                ) {
+                    const row: Row.Instance = column.Row(row_idx);
+                    for (
+                        let part_idx = 0, part_end = row.Macro_Part_Count();
+                        part_idx < part_end;
+                        part_idx += 1
+                    ) {
+                        const part: Part.Instance = row.Macro_Part(part_idx);
+                        if (!part.Is_Command()) {
+                            const value: Value = part.Value();
+                            const language_name: Language.Name | null =
+                                part.Language() || text_default_language_name;
+                            if (part.Is_Word()) {
+                                if (
+                                    !this.Has_Word(
+                                        value,
+                                        language_name,
+                                    )
+                                ) {
+                                    if (
+                                        this.Has_Word_Error(
+                                            value,
+                                            language_name,
+                                        )
+                                    ) {
+                                        // if not in a fix tag, then it's assumed as not an error
+                                        // even if it's currently a static error in its own dictionary.
+                                        // This allows its own dictionary to update itself when parts
+                                        // are no longer considered static errors.
+                                        if (!part.Has_Error_Style()) {
+                                            this.Remove_Word_Error(
+                                                value,
+                                                language_name,
+                                            );
+                                            this.Add_Word(
+                                                value,
+                                                language_name,
+                                            );
+                                        }
+                                    } else {
+                                        if (part.Is_Error() || part.Has_Error_Style()) {
+                                            this.Add_Word_Error(
+                                                value,
+                                                language_name,
+                                            );
+                                        } else {
+                                            this.Add_Word(
+                                                value,
+                                                language_name,
+                                            );
+                                        }
+                                    }
+                                }
+                            } else if (part.Is_Break()) {
+                                const boundary: Boundary = (part as Part.Break.Instance).Boundary();
+                                if (
+                                    !this.Has_Break(
+                                        value,
+                                        boundary,
+                                        language_name,
+                                    )
+                                ) {
+                                    if (
+                                        this.Has_Break_Error(
+                                            value,
+                                            boundary,
+                                            language_name,
+                                        )
+                                    ) {
+                                        // see comment above where part is a word
+                                        if (!part.Has_Error_Style()) {
+                                            this.Remove_Break_Error(
+                                                value,
+                                                boundary,
+                                                language_name,
+                                            );
+                                            this.Add_Break(
+                                                value,
+                                                boundary,
+                                                language_name,
+                                            );
+                                        }
+                                    } else {
+                                        if (part.Is_Error() || part.Has_Error_Style()) {
+                                            this.Add_Break_Error(
+                                                value,
+                                                boundary,
+                                                language_name,
+                                            );
+                                        } else {
+                                            this.Add_Break(
+                                                value,
+                                                boundary,
+                                                language_name,
+                                            );
+                                        }
+                                    }
+                                }
+                            } else {
+                                Utils.Assert(
+                                    false,
+                                    `unknown part type`,
+                                );
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }

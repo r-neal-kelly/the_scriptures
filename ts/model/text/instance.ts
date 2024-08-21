@@ -3,6 +3,8 @@ import { Index } from "../../types.js";
 
 import * as Utils from "../../utils.js";
 
+import * as Language from "../language.js";
+
 import * as Dictionary from "./dictionary.js";
 import { Value } from "./value.js";
 import * as Line from "./line.js";
@@ -89,6 +91,12 @@ export class Instance
         return this.lines.length;
     }
 
+    Lines():
+        Array<Line.Instance>
+    {
+        return Array.from(this.lines);
+    }
+
     Has_Line(
         line: Line.Instance,
     ):
@@ -164,6 +172,12 @@ export class Instance
         void
     {
         this.path_type = path_type;
+    }
+
+    Default_Language_Name():
+        Language.Name | null
+    {
+        return this.Dictionary().Default_Language_Name();
     }
 
     private Evaluate_Tables():
