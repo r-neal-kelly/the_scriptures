@@ -57,6 +57,7 @@ type Break_Errors = {
 };
 
 type Info = {
+    default_language_name: string;
     letters: Letters;
     markers: Markers;
     words: Words;
@@ -65,7 +66,7 @@ type Info = {
     break_errors: Break_Errors;
 };
 
-const DEFAULT_LANGUAGE_KEY: string = ``;
+const NULL_DEFAULT_LANGUAGE_NAME: string = ``;
 
 export class Instance
 {
@@ -86,6 +87,7 @@ export class Instance
             this.info = Object.assign(
                 Object.create(null),
                 {
+                    default_language_name: NULL_DEFAULT_LANGUAGE_NAME,
                     letters: Object.create(null) as Letters,
                     markers: Object.create(null) as Markers,
                     words: Object.create(null) as Words,
@@ -104,6 +106,13 @@ export class Instance
 
         if (!Utils.Is.Object(info)) {
             return `info is not an object.`;
+        }
+
+        if (info[`default_language_name`] == null) {
+            return `default_language_name is missing.`;
+        }
+        if (!Utils.Is.String(info[`default_language_name`])) {
+            return `default_language_name is not a string.`;
         }
 
         for (const property of [`letters`, `markers`]) {
@@ -243,6 +252,66 @@ export class Instance
         return null;
     }
 
+    Default_Language_Name():
+        Language.Name | null
+    {
+        return this.info.default_language_name !== NULL_DEFAULT_LANGUAGE_NAME ?
+            this.info.default_language_name as Language.Name :
+            null;
+    }
+
+    Set_Default_Language_Name(
+        default_language_name: Language.Name | null,
+    ):
+        void
+    {
+        const previous_default_language_name: string =
+            this.info.default_language_name;
+        const next_default_language_name: string = default_language_name != null ?
+            default_language_name as string :
+            NULL_DEFAULT_LANGUAGE_NAME;
+
+        if (previous_default_language_name !== next_default_language_name) {
+            this.info.default_language_name = next_default_language_name;
+
+            if (this.info.letters[previous_default_language_name] != null) {
+                this.info.letters[next_default_language_name] =
+                    this.info.letters[previous_default_language_name];
+                delete this.info.letters[previous_default_language_name];
+            }
+
+            if (this.info.markers[previous_default_language_name] != null) {
+                this.info.markers[next_default_language_name] =
+                    this.info.markers[previous_default_language_name];
+                delete this.info.markers[previous_default_language_name];
+            }
+
+            if (this.info.words[previous_default_language_name] != null) {
+                this.info.words[next_default_language_name] =
+                    this.info.words[previous_default_language_name];
+                delete this.info.words[previous_default_language_name];
+            }
+
+            if (this.info.breaks[previous_default_language_name] != null) {
+                this.info.breaks[next_default_language_name] =
+                    this.info.breaks[previous_default_language_name];
+                delete this.info.breaks[previous_default_language_name];
+            }
+
+            if (this.info.word_errors[previous_default_language_name] != null) {
+                this.info.word_errors[next_default_language_name] =
+                    this.info.word_errors[previous_default_language_name];
+                delete this.info.word_errors[previous_default_language_name];
+            }
+
+            if (this.info.break_errors[previous_default_language_name] != null) {
+                this.info.break_errors[next_default_language_name] =
+                    this.info.break_errors[previous_default_language_name];
+                delete this.info.break_errors[previous_default_language_name];
+            }
+        }
+    }
+
     private Language_Key(
         language_name: Language.Name | null,
     ):
@@ -251,19 +320,7 @@ export class Instance
         if (language_name != null) {
             return language_name as string;
         } else {
-            return DEFAULT_LANGUAGE_KEY;
-        }
-    }
-
-    private Language_Name(
-        language_key: string
-    ):
-        Language.Name | null
-    {
-        if (language_key === DEFAULT_LANGUAGE_KEY) {
-            return null;
-        } else {
-            return language_key as Language.Name;
+            return this.info.default_language_name;
         }
     }
 
@@ -297,7 +354,7 @@ export class Instance
         );
 
         for (const language_key of Object.keys(this.info.letters)) {
-            if (this.Has_Letter(letter, this.Language_Name(language_key))) {
+            if (this.Has_Letter(letter, language_key as Language.Name)) {
                 return true;
             }
         }
@@ -417,7 +474,7 @@ export class Instance
         );
 
         for (const language_key of Object.keys(this.info.markers)) {
-            if (this.Has_Marker(marker, this.Language_Name(language_key))) {
+            if (this.Has_Marker(marker, language_key as Language.Name)) {
                 return true;
             }
         }
@@ -554,7 +611,7 @@ export class Instance
         );
 
         for (const language_key of Object.keys(this.info.words)) {
-            if (this.Has_Word(word, this.Language_Name(language_key))) {
+            if (this.Has_Word(word, language_key as Language.Name)) {
                 return true;
             }
         }
@@ -659,7 +716,7 @@ export class Instance
         );
 
         for (const language_key of Object.keys(this.info.breaks)) {
-            if (this.Has_Break(break_, boundary, this.Language_Name(language_key))) {
+            if (this.Has_Break(break_, boundary, language_key as Language.Name)) {
                 return true;
             }
         }
@@ -760,7 +817,7 @@ export class Instance
         );
 
         for (const language_key of Object.keys(this.info.word_errors)) {
-            if (this.Has_Word_Error(word_error, this.Language_Name(language_key))) {
+            if (this.Has_Word_Error(word_error, language_key as Language.Name)) {
                 return true;
             }
         }
@@ -857,7 +914,7 @@ export class Instance
         );
 
         for (const language_key of Object.keys(this.info.break_errors)) {
-            if (this.Has_Break_Error(break_error, boundary, this.Language_Name(language_key))) {
+            if (this.Has_Break_Error(break_error, boundary, language_key as Language.Name)) {
                 return true;
             }
         }
@@ -927,6 +984,19 @@ export class Instance
                 this.info.break_errors[language_key][boundary].pop();
             }
         }
+    }
+
+    Combine_With(
+        other: Instance,
+    ):
+        void
+    {
+        Utils.Assert(
+            false,
+            `not implemented.`,
+        );
+
+        // we'll be able to implement this once we have the default language name update done.
     }
 
     private Sort():
@@ -1000,6 +1070,12 @@ export class Instance
 
         this.info = Object.create(null);
 
+        if (object.default_language_name != null) {
+            this.info.default_language_name = object.default_language_name;
+        } else {
+            this.info.default_language_name = NULL_DEFAULT_LANGUAGE_NAME;
+        }
+
         if (object.letters != null) {
             this.info.letters = Object.assign(
                 Object.create(null),
@@ -1058,6 +1134,11 @@ export class Instance
                 }
             }
         }
+
+        Utils.Assert(
+            this.Maybe_Validation_Error() === null,
+            `json is invalid: ${this.Maybe_Validation_Error()}`,
+        );
     }
 
     To_JSON():
