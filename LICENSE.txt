@@ -1,4 +1,4 @@
-Copyright © 2023 Neal Raulerson, aka r-neal-kelly
+Copyright © 2023, 2024 Neal Raulerson, aka r-neal-kelly
 https://github.com/r-neal-kelly/the_scriptures
 
 Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
