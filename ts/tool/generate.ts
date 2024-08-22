@@ -236,7 +236,7 @@ async function Read_Dictionary_And_Files(
         );
     }
 
-    dictionary.Normalize_With(file_texts);
+    dictionary.Reset_With(file_texts);
     file_texts.splice(0, file_texts.length);
     maybe_validation_error = dictionary.Maybe_Validation_Error();
 

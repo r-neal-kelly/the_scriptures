@@ -1135,17 +1135,93 @@ export class Instance
         }
     }
 
+    Can_Add_All_From(
+        dictionary: Instance,
+    ):
+        boolean
+    {
+        for (const language_name of Object.keys(dictionary.info.letters)) {
+            for (const letter of dictionary.info.letters[language_name]) {
+                if (this.Has_Marker(letter, language_name as Language.Name)) {
+                    return false;
+                }
+            }
+        }
+
+        for (const language_name of Object.keys(dictionary.info.markers)) {
+            for (const marker of dictionary.info.markers[language_name]) {
+                if (this.Has_Letter(marker, language_name as Language.Name)) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
     Add_All_From(
-        other: Instance,
+        dictionary: Instance,
     ):
         void
     {
-        Utils.Assert(
-            false,
-            `not implemented.`,
+        Utils.Assert_Even_In_Release(
+            this.Can_Add_All_From(dictionary),
+            `cannot add all from the provided dictionary.`,
         );
 
-        // we'll be able to implement this once we have the default language name update done.
+        for (const language_name of Object.keys(dictionary.info.letters)) {
+            for (const letter of dictionary.info.letters[language_name]) {
+                this.Add_Letter(letter, language_name as Language.Name);
+            }
+        }
+
+        for (const language_name of Object.keys(dictionary.info.markers)) {
+            for (const marker of dictionary.info.markers[language_name]) {
+                this.Add_Marker(marker, language_name as Language.Name);
+            }
+        }
+
+        for (const language_name of Object.keys(dictionary.info.words)) {
+            for (const letter of Object.keys(dictionary.info.words[language_name])) {
+                for (const word of dictionary.info.words[language_name][letter]) {
+                    if (this.Has_Word_Error(word, language_name as Language.Name)) {
+                        this.Remove_Word_Error(word, language_name as Language.Name);
+                    }
+                    this.Add_Word(word, language_name as Language.Name);
+                }
+            }
+        }
+
+        for (const language_name of Object.keys(dictionary.info.breaks)) {
+            for (const boundary of Object.keys(dictionary.info.breaks[language_name])) {
+                for (const marker of Object.keys(dictionary.info.breaks[language_name][boundary as Boundary])) {
+                    for (const break_ of dictionary.info.breaks[language_name][boundary as Boundary][marker]) {
+                        if (this.Has_Break_Error(break_, boundary as Boundary, language_name as Language.Name)) {
+                            this.Remove_Break_Error(break_, boundary as Boundary, language_name as Language.Name);
+                        }
+                        this.Add_Break(break_, boundary as Boundary, language_name as Language.Name);
+                    }
+                }
+            }
+        }
+
+        for (const language_name of Object.keys(dictionary.info.word_errors)) {
+            for (const word_error of dictionary.info.word_errors[language_name]) {
+                if (!this.Has_Word(word_error, language_name as Language.Name)) {
+                    this.Add_Word_Error(word_error, language_name as Language.Name);
+                }
+            }
+        }
+
+        for (const language_name of Object.keys(dictionary.info.break_errors)) {
+            for (const boundary of Object.keys(dictionary.info.break_errors[language_name])) {
+                for (const break_error of dictionary.info.break_errors[language_name][boundary as Boundary]) {
+                    if (!this.Has_Break(break_error, boundary as Boundary, language_name as Language.Name)) {
+                        this.Add_Break_Error(break_error, boundary as Boundary, language_name as Language.Name);
+                    }
+                }
+            }
+        }
     }
 
     /*
@@ -1156,8 +1232,7 @@ export class Instance
     ):
         void
     {
-        const text_default_language_name: Language.Name | null =
-            text.Default_Language_Name();
+        const text_default_language_name: Language.Name | null = text.Default_Language_Name();
         const possible_lines: Array<Line.Instance> = text.Lines().filter(
             function (
                 line: Line.Instance,
@@ -1219,91 +1294,41 @@ export class Instance
                         const part: Part.Instance = row.Macro_Part(part_idx);
                         if (!part.Is_Command()) {
                             const value: Value = part.Value();
-                            const language_name: Language.Name | null =
-                                part.Language() || text_default_language_name;
+                            const language_name: Language.Name | null = part.Language() || text_default_language_name;
                             if (part.Is_Word()) {
-                                if (
-                                    !this.Has_Word(
-                                        value,
-                                        language_name,
-                                    )
-                                ) {
-                                    if (
-                                        this.Has_Word_Error(
-                                            value,
-                                            language_name,
-                                        )
-                                    ) {
+                                if (!this.Has_Word(value, language_name)) {
+                                    if (this.Has_Word_Error(value, language_name)) {
                                         // if not in a fix tag, then it's assumed as not an error
                                         // even if it's currently a static error in its own dictionary.
                                         // This allows its own dictionary to update itself when parts
                                         // are no longer considered static errors.
                                         if (!part.Has_Error_Style()) {
-                                            this.Remove_Word_Error(
-                                                value,
-                                                language_name,
-                                            );
-                                            this.Add_Word(
-                                                value,
-                                                language_name,
-                                            );
+                                            this.Remove_Word_Error(value, language_name);
+                                            this.Add_Word(value, language_name);
                                         }
                                     } else {
                                         if (part.Is_Error() || part.Has_Error_Style()) {
-                                            this.Add_Word_Error(
-                                                value,
-                                                language_name,
-                                            );
+                                            this.Add_Word_Error(value, language_name);
                                         } else {
-                                            this.Add_Word(
-                                                value,
-                                                language_name,
-                                            );
+                                            this.Add_Word(value, language_name);
                                         }
                                     }
                                 }
                             } else if (part.Is_Break()) {
                                 const boundary: Boundary = (part as Part.Break.Instance).Boundary();
-                                if (
-                                    !this.Has_Break(
-                                        value,
-                                        boundary,
-                                        language_name,
-                                    )
-                                ) {
+                                if (!this.Has_Break(value, boundary, language_name)) {
                                     if (
-                                        this.Has_Break_Error(
-                                            value,
-                                            boundary,
-                                            language_name,
-                                        )
-                                    ) {
+                                        this.Has_Break_Error(value, boundary, language_name)) {
                                         // see comment above where part is a word
                                         if (!part.Has_Error_Style()) {
-                                            this.Remove_Break_Error(
-                                                value,
-                                                boundary,
-                                                language_name,
-                                            );
-                                            this.Add_Break(
-                                                value,
-                                                boundary,
-                                                language_name,
-                                            );
+                                            this.Remove_Break_Error(value, boundary, language_name);
+                                            this.Add_Break(value, boundary, language_name);
                                         }
                                     } else {
                                         if (part.Is_Error() || part.Has_Error_Style()) {
-                                            this.Add_Break_Error(
-                                                value,
-                                                boundary,
-                                                language_name,
-                                            );
+                                            this.Add_Break_Error(value, boundary, language_name);
                                         } else {
-                                            this.Add_Break(
-                                                value,
-                                                boundary,
-                                                language_name,
-                                            );
+                                            this.Add_Break(value, boundary, language_name);
                                         }
                                     }
                                 }
@@ -1320,7 +1345,7 @@ export class Instance
         }
     }
 
-    Normalize_With(
+    Reset_With(
         texts: Array<Text.Instance>,
     ):
         void
