@@ -189,60 +189,103 @@ async function Read_And_Sort_File_Names(
     }
 }
 
-async function Read_File_Text(
+/*
+    Currently the editor doesn't allow one to set the deafult_language_name of
+    a dictionary, so we add it in when we generate the project. We also normalize
+    all of its macro parts to make sure there is no excess in the dictionary from edits.
+*/
+async function Read_Dictionary_And_Files(
+    files_path: Path,
+    file_names: Array<string>,
+    default_language_name: Language.Name,
+):
+    Promise<[Text.Dictionary.Instance, Array<Text.Value>, Array<Text.Instance>]>
+{
+    const dictionary: Text.Dictionary.Instance =
+        new Text.Dictionary.Instance(
+            {
+                json: await File_System.Read_File(`${files_path}/${Data.Consts.DICTIONARY_JSON_NAME}`),
+            },
+        );
+    const file_values: Array<string> = [];
+    const file_texts: Array<Text.Instance> = [];
+
+    let maybe_validation_error: Text.Dictionary.Validation_Error | null =
+        dictionary.Maybe_Validation_Error();
+
+    Utils.Assert_Even_In_Release(
+        maybe_validation_error == null,
+        `Dictionary failed to validate: ${maybe_validation_error}`,
+    );
+
+    dictionary.Set_Default_Language_Name(default_language_name);
+
+    for (const file_name of file_names) {
+        const file_value: string =
+            await Read_File_Value(`${files_path}/${file_name}`);
+        file_values.push(
+            file_value,
+        );
+        file_texts.push(
+            new Text.Instance(
+                {
+                    dictionary: dictionary,
+                    value: file_value,
+                },
+            ),
+        );
+    }
+
+    dictionary.Normalize_With(file_texts);
+    file_texts.splice(0, file_texts.length);
+    maybe_validation_error = dictionary.Maybe_Validation_Error();
+
+    Utils.Assert_Even_In_Release(
+        maybe_validation_error == null,
+        `Dictionary failed to validate: ${maybe_validation_error}`,
+    );
+    Utils.Assert(
+        file_texts.length === 0,
+        `did not clear file_texts correctly`,
+    );
+
+    for (const file_value of file_values) {
+        file_texts.push(
+            new Text.Instance(
+                {
+                    dictionary: dictionary,
+                    value: file_value,
+                },
+            ),
+        );
+    }
+
+    return [
+        dictionary,
+        file_values,
+        file_texts,
+    ];
+}
+
+async function Read_File_Value(
     file_path: Path,
 ):
     Promise<string>
 {
-    const file_text: string =
+    const file_value: string =
         await File_System.Read_And_Write_File_With_No_Carriage_Returns(file_path);
 
     Utils.Assert_Even_In_Release(
         Language.Greek.Normalize_With_Combined_Points(
-            Language.Greek.Normalize_With_Baked_Points(file_text),
-        ) === file_text,
+            Language.Greek.Normalize_With_Baked_Points(file_value),
+        ) === file_value,
         `
-            Failed to reproduce original file_text after Greek normalization!
-            ${file_path}
+            Failed to reproduce original file_value after Greek normalization!
+            ${file_value}
         `,
     );
 
-    return file_text;
-}
-
-/*
-    Currently the editor doesn't allow one to set the deafult_language_name of
-    a dictionary, so we add it in when we generate the project.
-*/
-async function Read_And_Write_Dictionary_With_Default_Language_Name(
-    files_path: Path,
-    default_language_name: Language.Name,
-):
-    Promise<[string, Text.Dictionary.Instance]>
-{
-    const dictionary_json_path: Path =
-        `${files_path}/${Data.Consts.DICTIONARY_JSON_NAME}`;
-
-    let dictionary_json: string =
-        await File_System.Read_File(dictionary_json_path);
-
-    const dictionary: Text.Dictionary.Instance =
-        new Text.Dictionary.Instance(
-            {
-                json: dictionary_json,
-            },
-        );
-
-    if (dictionary.Default_Language_Name() !== default_language_name) {
-        dictionary.Set_Default_Language_Name(default_language_name);
-        dictionary_json = dictionary.To_JSON();
-        await File_System.Write_File(dictionary_json_path, dictionary_json);
-    }
-
-    return [
-        dictionary_json,
-        dictionary,
-    ];
+    return file_value;
 }
 
 async function Should_Version_Be_Updated(
@@ -429,32 +472,23 @@ async function Generate(
                     language_branch.versions.push(version_branch);
                     data_info.Add_Unique_Version_Name(version_name);
                     if (await Should_Version_Be_Updated(last_timestamp, files_path, file_names)) {
-                        const version_info: Data.Version.Info.Instance = new Data.Version.Info.Instance({});
-                        const [dictionary_json, dictionary]: [
-                            string,
+                        const version_info: Data.Version.Info.Instance =
+                            new Data.Version.Info.Instance({});
+                        const [dictionary, file_values, file_texts]: [
                             Text.Dictionary.Instance,
-                        ] = await Read_And_Write_Dictionary_With_Default_Language_Name(files_path, language_name as Language.Name);
-                        const maybe_dictionary_validation_error: Text.Dictionary.Validation_Error | null =
-                            dictionary.Maybe_Validation_Error();
+                            Array<Text.Value>,
+                            Array<Text.Instance>,
+                        ] = await Read_Dictionary_And_Files(files_path, file_names, language_name as Language.Name);
                         const unique_parts: Unique_Parts = new Unique_Parts();
-                        const file_texts: Array<string> = [];
-                        Utils.Assert_Even_In_Release(
-                            maybe_dictionary_validation_error == null,
-                            `Dictionary failed to validate: ${maybe_dictionary_validation_error}`,
-                        );
                         version_info.Increment_File_Count(language_name, file_names.length);
                         await Delete_Compiled_Files(files_path);
-                        for (const file_name of file_names) {
-                            const file_path: Path = `${files_path}/${file_name}`;
-                            const file_text: string = await Read_File_Text(file_path);
-                            const text: Text.Instance = new Text.Instance(
-                                {
-                                    dictionary: dictionary,
-                                    value: file_text,
-                                },
-                            );
+                        for (
+                            let file_idx = 0, file_end = file_names.length;
+                            file_idx < file_end;
+                            file_idx += 1
+                        ) {
+                            const text: Text.Instance = file_texts[file_idx];
                             version_info.Update_Buffer_Counts(text);
-                            file_texts.push(file_text);
                             for (
                                 let line_idx = 0, line_end = text.Line_Count();
                                 line_idx < line_end;
@@ -491,7 +525,7 @@ async function Generate(
                                                 `   Book Name:          ${book_name}\n` +
                                                 `   Language Name:      ${language_name}\n` +
                                                 `   Version Name:       ${version_name}\n` +
-                                                `   File Name:          ${file_name}\n` +
+                                                `   File Name:          ${file_names[file_idx]}\n` +
                                                 `   Line Index:         ${line_idx}\n` +
                                                 `   Column Index:       ${column_idx}\n` +
                                                 `   Row Index:          ${row_idx}\n` +
@@ -505,7 +539,7 @@ async function Generate(
                                                     `   Book Name:          ${book_name}\n` +
                                                     `   Language Name:      ${language_name}\n` +
                                                     `   Version Name:       ${version_name}\n` +
-                                                    `   File Name:          ${file_name}\n` +
+                                                    `   File Name:          ${file_names[file_idx]}\n` +
                                                     `   Line Index:         ${line_idx}\n` +
                                                     `   Column Index:       ${column_idx}\n` +
                                                     `   Row Index:          ${row_idx}\n` +
@@ -564,6 +598,8 @@ async function Generate(
                                 unique_parts: unique_part_values,
                             },
                         );
+                        const dictionary_json: Text.Value =
+                            dictionary.To_JSON();
                         const compressed_dictionary_json: Text.Value =
                             compressor.Compress_Dictionary(
                                 {
@@ -576,7 +612,7 @@ async function Generate(
                                     dictionary_value: compressed_dictionary_json,
                                 },
                             );
-                        const compressed_file_texts: Array<string> = [];
+                        const compressed_file_values: Array<string> = [];
                         Utils.Assert_Even_In_Release(
                             decompressed_unique_part_values_json === unique_part_values_json,
                             `Invalid unique_part_values_json decompression!`,
@@ -600,45 +636,51 @@ async function Generate(
                         );
                         files_to_write.push(
                             File_System.Write_File(
+                                `${files_path}/${Data.Consts.DICTIONARY_JSON_NAME}`,
+                                dictionary_json,
+                            ),
+                        );
+                        files_to_write.push(
+                            File_System.Write_File(
                                 `${files_path}/${Data.Consts.DICTIONARY_NAME}`,
                                 compressed_dictionary_json,
                             ),
                         );
                         for (let idx = 0, end = file_names.length; idx < end; idx += 1) {
                             const file_name: string = file_names[idx];
-                            const file_text: string = file_texts[idx]; // I think we can remove the interlineation markers here, just for this scope. however, not removing it for counts will cause bloat in the optimization for browser, because it's counted in the numbers
-                            const compressed_file_text: string =
+                            const file_value: string = file_values[idx]; // I think we can remove the interlineation markers here, just for this scope. however, not removing it for counts will cause bloat in the optimization for browser, because it's counted in the numbers
+                            const compressed_file_value: string =
                                 compressor.Compress_File(
                                     {
                                         dictionary: dictionary,
-                                        file_value: file_text,
+                                        file_value: file_value,
                                     },
                                 );
-                            const decompressed_file_text: string =
+                            const decompressed_file_value: string =
                                 decompressor.Decompress_File(
                                     {
                                         dictionary: dictionary,
-                                        file_value: compressed_file_text,
+                                        file_value: compressed_file_value,
                                     },
                                 );
                             Utils.Assert_Even_In_Release(
-                                decompressed_file_text === file_text,
+                                decompressed_file_value === file_value,
                                 `Invalid decompression!\n` +
                                 `   Book Name: ${book_name}\n` +
                                 `   Language Name: ${language_name}\n` +
                                 `   Version Name: ${version_name}\n` +
                                 `   File Name: ${file_name}\n` +
-                                `${Decompression_Line_Mismatches(file_text, decompressed_file_text)}`,
+                                `${Decompression_Line_Mismatches(file_value, decompressed_file_value)}`,
                             );
-                            compressed_file_texts.push(compressed_file_text);
+                            compressed_file_values.push(compressed_file_value);
                             files_to_write.push(
                                 File_System.Write_File(
                                     `${files_path}/${file_name.replace(/\.[^.]*$/, `.${Data.Consts.FILE_EXTENSION}`)}`,
-                                    compressed_file_text,
+                                    compressed_file_value,
                                 ),
                             );
                         }
-                        const compressed_full_text: string = compressed_file_texts.join(Data.Consts.VERSION_TEXT_FILE_BREAK);
+                        const compressed_full_text: string = compressed_file_values.join(Data.Consts.VERSION_TEXT_FILE_BREAK);
                         files_to_write.push(
                             File_System.Write_File(
                                 `${files_path}/${Data.Consts.VERSION_TEXT_NAME}`,

@@ -1319,4 +1319,36 @@ export class Instance
             }
         }
     }
+
+    Normalize_With(
+        texts: Array<Text.Instance>,
+    ):
+        void
+    {
+        const letters: Letters = this.info.letters;
+        const markers: Markers = this.info.markers;
+
+        this.info.letters = Object.create(null) as Letters;
+        this.info.markers = Object.create(null) as Markers;
+        this.info.words = Object.create(null) as Words;
+        this.info.breaks = Object.create(null) as Breaks;
+        this.info.word_errors = Object.create(null) as Word_Errors;
+        this.info.break_errors = Object.create(null) as Break_Errors;
+
+        for (const language_key of Object.keys(letters)) {
+            for (const letter of letters[language_key]) {
+                this.Add_Letter(letter, language_key as Language.Name);
+            }
+        }
+
+        for (const language_key of Object.keys(markers)) {
+            for (const marker of markers[language_key]) {
+                this.Add_Marker(marker, language_key as Language.Name);
+            }
+        }
+
+        for (const text of texts) {
+            this.Add_All_Possible_From_Text(text);
+        }
+    }
 }
