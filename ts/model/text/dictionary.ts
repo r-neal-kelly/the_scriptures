@@ -1233,12 +1233,16 @@ export class Instance
         void
     {
         const text_default_language_name: Language.Name | null = text.Default_Language_Name();
-        const possible_lines: Array<Line.Instance> = text.Lines().filter(
+
+        const possible_macro_lines: Array<Line.Instance> = text.Lines().filter(
             function (
+                this: Instance,
                 line: Line.Instance,
             ):
                 boolean
             {
+                let is_possible: boolean = true;
+
                 for (
                     let column_idx = 0, column_end = line.Column_Count();
                     column_idx < column_end;
@@ -1257,23 +1261,34 @@ export class Instance
                             part_idx += 1
                         ) {
                             const part: Part.Instance = row.Micro_Part(part_idx);
-                            if (part.Is_Unknown()) {
-                                return false;
+                            if (!part.Is_Command()) {
+                                if (part.Is_Unknown()) {
+                                    is_possible = false;
+                                } else if (part.Is_Letter()) {
+                                    this.Add_Letter(part.Value(), part.Language() || text_default_language_name);
+                                } else if (part.Is_Marker()) {
+                                    this.Add_Marker(part.Value(), part.Language() || text_default_language_name);
+                                } else {
+                                    Utils.Assert(
+                                        false,
+                                        `unknown part type`,
+                                    );
+                                }
                             }
                         }
                     }
                 }
 
-                return true;
-            },
+                return is_possible;
+            }.bind(this),
         );
 
         for (
-            let line_idx = 0, line_end = possible_lines.length;
+            let line_idx = 0, line_end = possible_macro_lines.length;
             line_idx < line_end;
             line_idx += 1
         ) {
-            const line: Line.Instance = possible_lines[line_idx];
+            const line: Line.Instance = possible_macro_lines[line_idx];
             for (
                 let column_idx = 0, column_end = line.Column_Count();
                 column_idx < column_end;
@@ -1300,7 +1315,7 @@ export class Instance
                                     if (this.Has_Word_Error(value, language_name)) {
                                         // if not in a fix tag, then it's assumed as not an error
                                         // even if it's currently a static error in its own dictionary.
-                                        // This allows its own dictionary to update itself when parts
+                                        // This allows a dictionary to update itself when parts
                                         // are no longer considered static errors.
                                         if (!part.Has_Error_Style()) {
                                             this.Remove_Word_Error(value, language_name);
@@ -1350,27 +1365,12 @@ export class Instance
     ):
         void
     {
-        const letters: Letters = this.info.letters;
-        const markers: Markers = this.info.markers;
-
         this.info.letters = Object.create(null) as Letters;
         this.info.markers = Object.create(null) as Markers;
         this.info.words = Object.create(null) as Words;
         this.info.breaks = Object.create(null) as Breaks;
         this.info.word_errors = Object.create(null) as Word_Errors;
         this.info.break_errors = Object.create(null) as Break_Errors;
-
-        for (const language_key of Object.keys(letters)) {
-            for (const letter of letters[language_key]) {
-                this.Add_Letter(letter, language_key as Language.Name);
-            }
-        }
-
-        for (const language_key of Object.keys(markers)) {
-            for (const marker of markers[language_key]) {
-                this.Add_Marker(marker, language_key as Language.Name);
-            }
-        }
 
         for (const text of texts) {
             this.Add_All_Possible_From_Text(text);
