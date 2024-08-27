@@ -36,7 +36,7 @@ The Scriptures are available to read online [here](https://r-neal-kelly.github.i
     - KJV 1872-1888
     - R. H. Charles 1913
     - World English Bible with Apocrypha
-- Unique Books: 15
+- Unique Books: 16
     - Introduction
     - Prolegomenon
     - Genesis
@@ -49,25 +49,26 @@ The Scriptures are available to read online [here](https://r-neal-kelly.github.i
     - Ruth
     - 1 Samuel
     - 2 Samuel
+    - 1 Kings
     - Masoretic Notes
     - Jubilees
     - Prolegomena to the History of Israel
 
 <br>
 
-- Total Books: 37
-    - English: 21 (~57%)
+- Total Books: 38
+    - English: 22 (~58%)
     - Hebrew: 6 (~16%)
-    - Greek: 5 (~14%)
-    - Latin: 5 (~14%)
+    - Greek: 5 (~13%)
+    - Latin: 5 (~13%)
     - Aramaic: 0 (~0%)
     - Arabic: 0 (~0%)
     - German: 0 (~0%)
     - French: 0 (~0%)
     - Italian: 0 (~0%)
     - Dutch: 0 (~0%)
-- Total Files: 1,258
-    - English: 691 (~55%)
+- Total Files: 1,259
+    - English: 692 (~55%)
     - Hebrew: 193 (~15%)
     - Greek: 187 (~15%)
     - Latin: 187 (~15%)
@@ -77,8 +78,8 @@ The Scriptures are available to read online [here](https://r-neal-kelly.github.i
     - French: 0 (~0%)
     - Italian: 0 (~0%)
     - Dutch: 0 (~0%)
-- Total Lines: 42,455
-    - English: 20,611 (~49%)
+- Total Lines: 42,516
+    - English: 20,672 (~49%)
     - Hebrew: 9,013 (~21%)
     - Greek: 6,356 (~15%)
     - Latin: 6,471 (~15%)
@@ -88,9 +89,9 @@ The Scriptures are available to read online [here](https://r-neal-kelly.github.i
     - French: 2 (~0%)
     - Italian: 0 (~0%)
     - Dutch: 0 (~0%)
-- Total Parts: 2,109,031
+- Total Parts: 2,112,972
     - <i>By Language</i>
-        - English: 1,440,392 (~68%)
+        - English: 1,444,333 (~68%)
         - Hebrew: 184,062 (~9%)
         - Greek: 270,584 (~13%)
         - Latin: 212,398 (~10%)
@@ -101,8 +102,8 @@ The Scriptures are available to read online [here](https://r-neal-kelly.github.i
         - Italian: 17 (~0%)
         - Dutch: 49 (~0%)
     - <i>By Components</i>
-        - Words: 971,791 (~46%)
-            - English: 655,835 (~67%)
+        - Words: 973,533 (~46%)
+            - English: 657,577 (~68%)
             - Hebrew: 85,364 (~9%)
             - Greek: 129,363 (~13%)
             - Latin: 100,430 (~10%)
@@ -112,8 +113,8 @@ The Scriptures are available to read online [here](https://r-neal-kelly.github.i
             - French: 504 (~0%)
             - Italian: 9 (~0%)
             - Dutch: 21 (~0%)
-        - Meta-Words: 168,261 (~8%)
-            - English: 126,661 (~75%)
+        - Meta-Words: 168,694 (~8%)
+            - English: 127,094 (~75%)
             - Hebrew: 16,094 (~10%)
             - Greek: 12,873 (~8%)
             - Latin: 12,541 (~7%)
@@ -123,8 +124,8 @@ The Scriptures are available to read online [here](https://r-neal-kelly.github.i
             - French: 26 (~0%)
             - Italian: 0 (~0%)
             - Dutch: 16 (~0%)
-        - Non-Words: 968,979 (~46%)
-            - English: 657,896 (~68%)
+        - Non-Words: 970,745 (~46%)
+            - English: 659,662 (~68%)
             - Hebrew: 82,604 (~9%)
             - Greek: 128,348 (~13%)
             - Latin: 99,427 (~10%)
@@ -134,9 +135,9 @@ The Scriptures are available to read online [here](https://r-neal-kelly.github.i
             - French: 474 (~0%)
             - Italian: 8 (~0%)
             - Dutch: 12 (~0%)
-- Total Unicode Points: 6,731,727
+- Total Unicode Points: 6,743,020
     - <i>By Language</i>
-        - English: 3,968,154 (~59%)
+        - English: 3,979,447 (~59%)
         - Hebrew: 906,627 (~13%)
         - Greek: 1,064,260 (~16%)
         - Latin: 787,164 (~12%)
@@ -147,8 +148,8 @@ The Scriptures are available to read online [here](https://r-neal-kelly.github.i
         - Italian: 63 (~0%)
         - Dutch: 223 (~0%)
     - <i>By Components</i>
-        - Letters: 4,600,829 (~68%)
-            - English: 2,585,451 (~56%)
+        - Letters: 4,607,878 (~68%)
+            - English: 2,592,500 (~56%)
             - Hebrew: 670,127 (~15%)
             - Greek: 795,854 (~17%)
             - Latin: 544,971 (~12%)
@@ -158,8 +159,8 @@ The Scriptures are available to read online [here](https://r-neal-kelly.github.i
             - French: 2,647 (~0%)
             - Italian: 53 (~0%)
             - Dutch: 150 (~0%)
-        - Meta-Letters: 1,051,777 (~16%)
-            - English: 642,719 (~61%)
+        - Meta-Letters: 1,054,017 (~16%)
+            - English: 644,959 (~61%)
             - Hebrew: 152,853 (~15%)
             - Greek: 129,231 (~12%)
             - Latin: 126,634 (~12%)
@@ -169,8 +170,8 @@ The Scriptures are available to read online [here](https://r-neal-kelly.github.i
             - French: 99 (~0%)
             - Italian: 0 (~0%)
             - Dutch: 61 (~0%)
-        - Non-Letters: 1,079,121 (~16%)
-            - English: 739,984 (~69%)
+        - Non-Letters: 1,081,125 (~16%)
+            - English: 741,988 (~69%)
             - Hebrew: 83,647 (~8%)
             - Greek: 139,175 (~13%)
             - Latin: 115,559 (~11%)
