@@ -67,8 +67,8 @@ The Scriptures are available to read online [here](https://r-neal-kelly.github.i
     - French: 0 (~0%)
     - Italian: 0 (~0%)
     - Dutch: 0 (~0%)
-- Total Files: 1,262
-    - English: 695 (~55%)
+- Total Files: 1,263
+    - English: 696 (~55%)
     - Hebrew: 193 (~15%)
     - Greek: 187 (~15%)
     - Latin: 187 (~15%)
@@ -78,8 +78,8 @@ The Scriptures are available to read online [here](https://r-neal-kelly.github.i
     - French: 0 (~0%)
     - Italian: 0 (~0%)
     - Dutch: 0 (~0%)
-- Total Lines: 42,633
-    - English: 20,789 (~49%)
+- Total Lines: 42,654
+    - English: 20,810 (~49%)
     - Hebrew: 9,013 (~21%)
     - Greek: 6,356 (~15%)
     - Latin: 6,471 (~15%)
@@ -89,9 +89,9 @@ The Scriptures are available to read online [here](https://r-neal-kelly.github.i
     - French: 2 (~0%)
     - Italian: 0 (~0%)
     - Dutch: 0 (~0%)
-- Total Parts: 2,121,373
+- Total Parts: 2,122,917
     - <i>By Language</i>
-        - English: 1,452,734 (~68%)
+        - English: 1,454,278 (~69%)
         - Hebrew: 184,062 (~9%)
         - Greek: 270,584 (~13%)
         - Latin: 212,398 (~10%)
@@ -102,8 +102,8 @@ The Scriptures are available to read online [here](https://r-neal-kelly.github.i
         - Italian: 17 (~0%)
         - Dutch: 49 (~0%)
     - <i>By Components</i>
-        - Words: 977,181 (~46%)
-            - English: 661,225 (~68%)
+        - Words: 977,840 (~46%)
+            - English: 661,884 (~68%)
             - Hebrew: 85,364 (~9%)
             - Greek: 129,363 (~13%)
             - Latin: 100,430 (~10%)
@@ -113,8 +113,8 @@ The Scriptures are available to read online [here](https://r-neal-kelly.github.i
             - French: 504 (~0%)
             - Italian: 9 (~0%)
             - Dutch: 21 (~0%)
-        - Meta-Words: 169,816 (~8%)
-            - English: 128,216 (~76%)
+        - Meta-Words: 170,045 (~8%)
+            - English: 128,445 (~76%)
             - Hebrew: 16,094 (~9%)
             - Greek: 12,873 (~8%)
             - Latin: 12,541 (~7%)
@@ -124,8 +124,8 @@ The Scriptures are available to read online [here](https://r-neal-kelly.github.i
             - French: 26 (~0%)
             - Italian: 0 (~0%)
             - Dutch: 16 (~0%)
-        - Non-Words: 974,376 (~46%)
-            - English: 663,293 (~68%)
+        - Non-Words: 975,032 (~46%)
+            - English: 663,949 (~68%)
             - Hebrew: 82,604 (~8%)
             - Greek: 128,348 (~13%)
             - Latin: 99,427 (~10%)
@@ -135,9 +135,9 @@ The Scriptures are available to read online [here](https://r-neal-kelly.github.i
             - French: 474 (~0%)
             - Italian: 8 (~0%)
             - Dutch: 12 (~0%)
-- Total Unicode Points: 6,767,022
+- Total Unicode Points: 6,771,582
     - <i>By Language</i>
-        - English: 4,003,449 (~59%)
+        - English: 4,008,009 (~59%)
         - Hebrew: 906,627 (~13%)
         - Greek: 1,064,260 (~16%)
         - Latin: 787,164 (~12%)
@@ -148,8 +148,8 @@ The Scriptures are available to read online [here](https://r-neal-kelly.github.i
         - Italian: 63 (~0%)
         - Dutch: 223 (~0%)
     - <i>By Components</i>
-        - Letters: 4,622,115 (~68%)
-            - English: 2,606,737 (~56%)
+        - Letters: 4,624,797 (~68%)
+            - English: 2,609,419 (~56%)
             - Hebrew: 670,127 (~14%)
             - Greek: 795,854 (~17%)
             - Latin: 544,971 (~12%)
@@ -159,8 +159,8 @@ The Scriptures are available to read online [here](https://r-neal-kelly.github.i
             - French: 2,647 (~0%)
             - Italian: 53 (~0%)
             - Dutch: 150 (~0%)
-        - Meta-Letters: 1,059,683 (~16%)
-            - English: 650,625 (~61%)
+        - Meta-Letters: 1,060,842 (~16%)
+            - English: 651,784 (~61%)
             - Hebrew: 152,853 (~14%)
             - Greek: 129,231 (~12%)
             - Latin: 126,634 (~12%)
@@ -170,8 +170,8 @@ The Scriptures are available to read online [here](https://r-neal-kelly.github.i
             - French: 99 (~0%)
             - Italian: 0 (~0%)
             - Dutch: 61 (~0%)
-        - Non-Letters: 1,085,224 (~16%)
-            - English: 746,087 (~69%)
+        - Non-Letters: 1,085,943 (~16%)
+            - English: 746,806 (~69%)
             - Hebrew: 83,647 (~8%)
             - Greek: 139,175 (~13%)
             - Latin: 115,559 (~11%)
