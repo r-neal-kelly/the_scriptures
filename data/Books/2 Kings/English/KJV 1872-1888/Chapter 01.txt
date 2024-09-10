@@ -1,6 +1,6 @@
 ⸨cen⸩⸨sc⸩⸨fix:The⸩the⸨/fix⸩ ⸨fix:Second⸩second⸨/fix⸩ ⸨fix:Book⸩book⸨/fix⸩ of the⸨/sc⸩
 ⸨cen⸩⸨size:2⸩KINGS,⸨/size⸩
-⸨cen⸩⸨sc⸩commonly called, ⸨fix:The⸩the⸨/fix⸩ ⸨fix:Fourth⸩fourth⸨/fix⸩ ⸨fix:Book⸩book⸨/fix⸩ of the ⸨fix:Kings⸩kings⸨/fix⸩.⸨/sc⸩
+⸨cen⸩⸨size:0.9⸩⸨sc⸩commonly called, ⸨fix:The⸩the⸨/fix⸩ ⸨fix:Fourth⸩fourth⸨/fix⸩ ⸨fix:Book⸩book⸨/fix⸩ of the ⸨fix:Kings⸩kings⸨/fix⸩.⸨/sc⸩⸨/size⸩
 ⸨cen⸩————
 
 ⸨cen⸩CHAPTER I⸼
